@@ -24,13 +24,13 @@ depends_on = ["reference-extraction"]
 [[steps]]
 id = "implementation-strategy"
 title = "Define firmware architecture for selectable SmartDMA/EZH and FlexIO capture backends"
-status = "active"
+status = "done"
 depends_on = ["pinmux-strategy"]
 
 [[steps]]
 id = "signal-instrumentation"
 title = "Add non-invasive camera signal instrumentation for XCLK, PCLK, VSYNC, and HSYNC"
-status = "pending"
+status = "active"
 depends_on = ["implementation-strategy"]
 
 [[steps]]
@@ -70,7 +70,7 @@ status = "met"
 [[exit_criteria]]
 id = "capture-architecture"
 title = "Firmware has a documented backend strategy that can disable EZH/SmartDMA for FlexIO tests"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "signal-counts"
@@ -126,6 +126,8 @@ known-good loop for build, flash, reset, and RTT observation.
 - FlexIO examples:
   `docs/examples/frdmmcxn947/flexio_mculcd_edma_transfer_cm33_core0`
   and `docs/research/an-flexio_camera_rt1010`
+- FlexIO camera implementation strategy:
+  `docs/research/MCXN947/flexio_camera_implementation_strategy.md`
 
 ## Working Strategy
 
@@ -192,6 +194,12 @@ byte sampling from PCLK, then introduce eDMA and frame-buffer integration.
   RT1010 app note repo only after confirming they match MCXN947 SDK APIs.
 - Disable bunny-build/EZH generation only for the FlexIO backend path, not for
   the current baseline.
+- Completed with `docs/research/MCXN947/flexio_camera_implementation_strategy.md`.
+  The selected architecture keeps SmartDMA/EZH as the default backend, adds
+  diagnostic and FlexIO/eDMA backends behind compile-time configuration, keeps
+  the existing public camera API and frame handoff, and stages the work from
+  no-behavior-change configuration through signal counts, byte capture, DMA,
+  and LCD integration.
 
 ### signal-instrumentation
 
