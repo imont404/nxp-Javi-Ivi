@@ -18,13 +18,13 @@ depends_on = ["tooling-flash-rtt"]
 [[steps]]
 id = "pinmux-strategy"
 title = "Choose candidate FlexIO camera pins and document wiring constraints"
-status = "active"
+status = "done"
 depends_on = ["reference-extraction"]
 
 [[steps]]
 id = "implementation-strategy"
 title = "Define firmware architecture for selectable SmartDMA/EZH and FlexIO capture backends"
-status = "pending"
+status = "active"
 depends_on = ["pinmux-strategy"]
 
 [[steps]]
@@ -65,7 +65,7 @@ status = "met"
 [[exit_criteria]]
 id = "pins-selected"
 title = "FlexIO pin assignment is documented with board-header wiring and conflicts"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "capture-architecture"
@@ -120,6 +120,9 @@ known-good loop for build, flash, reset, and RTT observation.
 - Extracted reference chapters:
   `docs/research/MCXN947/extracted/MCXNx4xRM`
 - Reference extraction script: `scripts/tools/extract_mcxn_reference.py`
+- FlexIO pin candidate summary:
+  `docs/research/MCXN947/flexio_pin_candidates`
+- FlexIO pin summary script: `scripts/tools/summarize_flexio_pins.py`
 - FlexIO examples:
   `docs/examples/frdmmcxn947/flexio_mculcd_edma_transfer_cm33_core0`
   and `docs/research/an-flexio_camera_rt1010`
@@ -168,6 +171,15 @@ byte sampling from PCLK, then introduce eDMA and frame-buffer integration.
 - Identify pins for at least D0-D7, PCLK, VSYNC, HSYNC, and optional debug GPIOs.
 - Record wiring assumptions for the OV5640 module, including any fly wires from
   camera PCLK/VSYNC/HSYNC back to the FRDM board.
+- Completed with `scripts/tools/summarize_flexio_pins.py`. The generated
+  `docs/research/MCXN947/flexio_pin_candidates` bundle selects `P4_12..P4_23`
+  as the NXP-confirmed contiguous Port 4 FlexIO group (`FLEXIO0_D20..D31`) and
+  flags the workbook `FLEXIO_LCD A18` camera map as stale or mismatched for
+  `P4_2..P4_7`.
+- Initial wiring strategy: keep current SCCB/I2C on `P3_2/P3_3`, keep XCLK on
+  `P2_2`, keep reset and power-down on `P1_19/P1_18`, fly-wire camera D0-D7 to
+  `P4_12..P4_19`, and route returned PCLK/HSYNC/VSYNC to the remaining Port 4
+  FlexIO pins or GPIO/PINT pins during instrumentation.
 
 ### implementation-strategy
 
@@ -221,8 +233,8 @@ byte sampling from PCLK, then introduce eDMA and frame-buffer integration.
 ## Open Questions
 
 - Exact OV5640 module pins available for PCLK, VSYNC, HSYNC, and data D0-D7.
-- Whether Port 4 can provide enough contiguous or practical FlexIO0 data pins
-  without shield conflicts.
+- Whether the physical header and solder-jumper state make `P4_12..P4_23`
+  immediately usable, or whether fly wires need to land elsewhere.
 - Whether FlexIO can use the camera PCLK directly as a timer clock on MCXN947 or
   needs a routed/gated signal through a specific FlexIO pin or INPUTMUX path.
 - Whether VSYNC/HSYNC should gate capture in FlexIO hardware, trigger GPIO/PINT

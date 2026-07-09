@@ -1,0 +1,21 @@
+source,header_pin,logical_signal,pio,pin_description,workbook_flexio_data,nxp_flexio_data,status,note
+FLEXIO_LCD A18 camera left,2,3V3,,VDD,,,not_mcu_pin,"Power, ground, or non-PIO entry."
+FLEXIO_LCD A18 camera right,1,GND,,GND,,,not_mcu_pin,"Power, ground, or non-PIO entry."
+FLEXIO_LCD A18 camera left,4,I2C_SCL,P1_14,P1_14/LPI2C1_SCL-FXIO_HDR,,D22,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD A18 camera right,3,I2C_SDA,P1_15,P1_15/LPI2C1_SDA-FXIO_HDR,,D23,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD A18 camera left,6,VSYNC,P3_1,P3_1/CAM_VSYNC,,D9,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD A18 camera right,5,HREF,P3_18,P3_18/FXIO_D26_CAM_HSYNC,D26,D26,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD A18 camera left,8,PCLK,P3_21,P3_21/FXIO_D29_CAM_PCLK,D29,D29,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD A18 camera right,7,XCLK,P0_6,P0_6/CAM_CLKIN,,,not_flexio,No FlexIO function expected for this signal.
+FLEXIO_LCD A18 camera left,10,D7,P4_7,P4_7/FXIO_D15_CAM_D7,D15,,workbook_nxp_mismatch,"Workbook labels this as FlexIO, but MCXN947VDF signal data does not."
+FLEXIO_LCD A18 camera right,9,D6,P4_6,P4_6/FXIO_D14_CAM_D6,D14,,workbook_nxp_mismatch,"Workbook labels this as FlexIO, but MCXN947VDF signal data does not."
+FLEXIO_LCD A18 camera left,12,D5,P4_5,P4_5/FXIO_D13_CAM_D5,D13,,workbook_nxp_mismatch,"Workbook labels this as FlexIO, but MCXN947VDF signal data does not."
+FLEXIO_LCD A18 camera right,11,D4,P4_4,P4_4/FXIO_D12_CAM_D4,D12,,workbook_nxp_mismatch,"Workbook labels this as FlexIO, but MCXN947VDF signal data does not."
+FLEXIO_LCD A18 camera left,14,D3,P4_3,P4_3/FXIO_D11_CAM_D3,D11,,workbook_nxp_mismatch,"Workbook labels this as FlexIO, but MCXN947VDF signal data does not."
+FLEXIO_LCD A18 camera right,13,D2,P4_2,P4_2/FXIO_D10_CAM_D2,D10,,workbook_nxp_mismatch,"Workbook labels this as FlexIO, but MCXN947VDF signal data does not."
+FLEXIO_LCD A18 camera left,16,D1,P2_1,P2_1/FXIO_D9_CAM_D1,D9,D9,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD A18 camera right,15,D0,P2_0,P2_0/FXIO_D8_CAM_D0,D8,D8,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD A18 camera left,18,RESET,P3_19,P3_19/CAM_RESET,,D27,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD A18 camera right,17,PWDN,P3_20,P3_20/CAM_PWDN,,D28,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD A18 camera left,20,RESET,P3_19,P3_19/CAM_RESET,,D27,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD A18 camera right,19,PWDN,P3_20,P3_20/CAM_PWDN,,D28,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.

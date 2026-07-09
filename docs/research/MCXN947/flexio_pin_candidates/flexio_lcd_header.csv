@@ -1,0 +1,29 @@
+source,header_pin,logical_signal,pio,pin_description,workbook_flexio_data,nxp_flexio_data,status,note
+FLEXIO_LCD left,2,,,GND,,,not_mcu_pin,"Power, ground, or non-PIO entry."
+FLEXIO_LCD right,1,,,3V3,,,not_mcu_pin,"Power, ground, or non-PIO entry."
+FLEXIO_LCD left,4,,P4_0,P4_0/FC2_I2C_SDA-FXIO_HDR,,,not_flexio,No FlexIO function expected for this signal.
+FLEXIO_LCD right,3,,P4_1,P4_1/FC2_I2C_SCL-FXIO_HDR,,,not_flexio,No FlexIO function expected for this signal.
+FLEXIO_LCD left,6,,P4_5,P4_5/FLEXIO_LCD_GPIO,,,not_flexio,No FlexIO function expected for this signal.
+FLEXIO_LCD right,5,,P4_6,P4_6/FXIO_LCD_INT,,,not_flexio,No FlexIO function expected for this signal.
+FLEXIO_LCD left,8,,P0_7,P0_7/FXIO_LCD_DC,,,not_flexio,No FlexIO function expected for this signal.
+FLEXIO_LCD right,7,,P4_7,P4_7/FXIO_LCD_RST,,,not_flexio,No FlexIO function expected for this signal.
+FLEXIO_LCD left,10,,P0_9,P0_9/FXIO_LCD_WR,,D1,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD right,9,,P0_12,P0_12/FXIO_LCD_CS,,D4,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD left,12,,P0_13,P0_13/FXIO_LCD_TE,,D5,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD right,11,,P0_8,P0_8/FXIO_LCD_RD,,D0,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+FLEXIO_LCD left,14,,P2_9,P2_9/FXIO_D17-FXIO_HDR,D17,D17,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,13,,P2_8,P2_8/FXIO_D16-FXIO_HDR,D16,D16,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD left,16,,P2_11,P2_11/FXIO_D19,D19,D19,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,15,,P2_10,P2_10/FXIO_D18-FXIO_HDR,D18,D18,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD left,18,,P4_13,P4_13/FXIO_D21,D21,D21,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,17,,P4_12,P4_12/FXIO_D20,D20,D20,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD left,20,,P4_15,P4_15/FXIO_D23,D23,D23,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,19,,P4_14,P4_14/FXIO_D22,D22,D22,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD left,22,,P4_17,P4_17/FXIO_D25,D25,D25,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,21,,P4_16,P4_16/FXIO_D24,D24,D24,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD left,24,,P4_19,P4_19/FXIO_D27,D27,D27,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,23,,P4_18,P4_18/FXIO_D26,D26,D26,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD left,26,,P4_21,P4_21/FXIO_D29,D29,D29,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,25,,P4_20,P4_20/FXIO_D28,D28,D28,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD left,28,,P4_23,P4_23/FXIO_D31,D31,D31,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.
+FLEXIO_LCD right,27,,P4_22,P4_22/FXIO_D30,D30,D30,matches_nxp,Workbook FlexIO label matches MCXN947VDF signal data.

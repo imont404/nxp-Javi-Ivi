@@ -1,0 +1,33 @@
+source,header_pin,logical_signal,pio,pin_description,workbook_flexio_data,nxp_flexio_data,status,note
+EZH_CAMERA top,32,,P1_8,P1_8,,D16,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,31,,P5_8,P5_8,,,not_flexio,No FlexIO function expected for this signal.
+EZH_CAMERA top,30,,P1_9,P1_9,,D17,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,29,,P5_9,P5_9,,,not_flexio,No FlexIO function expected for this signal.
+EZH_CAMERA top,28,,P1_12,P1_12,,D20,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,27,,P1_13,P1_13,,D21,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,26,,P4_4,P4_4,,,not_flexio,No FlexIO function expected for this signal.
+EZH_CAMERA bottom,25,,P2_0,P2_0,,D8,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,24,,P1_22,P1_22,,D30,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,23,,P1_23,P1_23,,D31,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,22,GND,,GND,,,not_mcu_pin,"Power, ground, or non-PIO entry."
+EZH_CAMERA bottom,21,3V3,,3V3,,,not_mcu_pin,"Power, ground, or non-PIO entry."
+EZH_CAMERA top,20,I3C_SDA,P3_2,P3_2,,D10,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,19,I3C_SCL,P3_3,P3_3,,D11,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,18,HSYNC,P0_11,P0_11,,D3,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,17,VSYNC,P0_4,P0_4,,,not_flexio,No FlexIO function expected for this signal.
+EZH_CAMERA top,16,CLKIN,P2_2,P2_2,,D10,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,15,PCLK,P0_5,P0_5,,,not_flexio,No FlexIO function expected for this signal.
+EZH_CAMERA top,14,D6,P1_10,P1_10,,D18,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,13,D7,P1_11,P1_11,,D19,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,12,D4,P3_4,P3_4,,D12,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,11,D5,P3_5,P3_5,,D13,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,10,D2,P1_6,P1_6,,D14,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,9,D3,P1_7,P1_7,,D15,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,8,D0,P1_4,P1_4,,D12,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,7,D1,P1_5,P1_5,,D13,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,6,PDWON,P1_18,P1_18,,D26,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,5,RESET,P1_19,P1_19,,D27,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,4,,P1_16,P1_16,,D24,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,3,,P1_17,P1_17,,D25,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA top,2,,P1_14,P1_14,,D22,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
+EZH_CAMERA bottom,1,,P1_15,P1_15,,D23,nxp_flexio_available,NXP signal data exposes FlexIO on this pin; workbook entry is not labeled as FlexIO.
