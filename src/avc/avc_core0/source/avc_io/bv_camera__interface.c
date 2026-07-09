@@ -27,7 +27,8 @@
 #define CAMERA_DIAG_PCLK_MASK (1UL << CAMERA_DIAG_PCLK_PIN)
 #define CAMERA_DIAG_HSYNC_MASK (1UL << CAMERA_DIAG_HSYNC_PIN)
 #define CAMERA_DIAG_VSYNC_MASK (1UL << CAMERA_DIAG_VSYNC_PIN)
-#define CAMERA_DIAG_IRQ_MASK (CAMERA_DIAG_HSYNC_MASK)
+#define CAMERA_DIAG_IRQ_MASK (CAMERA_DIAG_HSYNC_MASK | CAMERA_DIAG_VSYNC_MASK)
+#define CAMERA_DIAG_VSYNC_IRQ_MAX_PER_SECOND (120U)
 
 #define CAMERA_REF_PCLK_PIN (5U)
 #define CAMERA_REF_HSYNC_PIN (11U)
@@ -58,6 +59,10 @@ static volatile uint8_t g_samrtdma_stack[EZH_STACK_SIZE];
 volatile uint32_t ezh_binary[512];
 
 static volatile uint32_t g_camera_diag_hsync_count;
+static volatile uint32_t g_camera_diag_vsync_count;
+static volatile uint32_t g_camera_diag_lines_last_frame;
+static volatile uint32_t g_camera_diag_hsync_at_last_vsync;
+static volatile uint32_t g_camera_diag_vsync_irq_disabled;
 static volatile uint32_t g_camera_diag_irq_unexpected_count;
 static volatile uint32_t g_camera_ref_hsync_count;
 static volatile uint32_t g_camera_ref_vsync_count;
@@ -424,14 +429,16 @@ static void camera__configure_flexio_diag_inputs(void)
 
     GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_PCLK_PIN, kGPIO_FlagRisingEdge);
     GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_HSYNC_PIN, kGPIO_InterruptRisingEdge);
-    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_FlagRisingEdge);
+    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptRisingEdge);
 
     NVIC_ClearPendingIRQ(GPIO40_IRQn);
     NVIC_SetPriority(GPIO40_IRQn, 4);
     EnableIRQ(GPIO40_IRQn);
 
     DEBUG("FlexIO camera diag inputs configured: PCLK=P4_20 HSYNC/HREF=P4_21 VSYNC=P4_22\r\n");
-    DEBUG("FlexIO camera diag interrupts: P4_21 HSYNC/HREF rising edges on GPIO40_IRQn; P4_20 PCLK and P4_22 VSYNC flags polled\r\n");
+    DEBUG("FlexIO camera diag interrupts: P4_21 HSYNC/HREF and P4_22 VSYNC rising edges on GPIO40_IRQn; P4_20 PCLK flag polled\r\n");
+    DEBUG("FlexIO camera diag VSYNC IRQ guard: disable P4_22 IRQ above %u edges/sec and fall back to flag polling\r\n",
+          CAMERA_DIAG_VSYNC_IRQ_MAX_PER_SECOND);
     DEBUG("FlexIO camera diag sync inputs use weak pulldown and passive filter\r\n");
     DEBUG("FlexIO camera diag levels: pclk=%u hsync=%u vsync=%u\r\n",
           GPIO_PinRead(GPIO4, CAMERA_DIAG_PCLK_PIN),
@@ -480,6 +487,15 @@ void GPIO40_IRQHandler(void)
     if ((status & CAMERA_DIAG_HSYNC_MASK) != 0UL)
     {
         g_camera_diag_hsync_count++;
+    }
+
+    if ((status & CAMERA_DIAG_VSYNC_MASK) != 0UL)
+    {
+        uint32_t hsync_count = g_camera_diag_hsync_count;
+
+        g_camera_diag_vsync_count++;
+        g_camera_diag_lines_last_frame = hsync_count - g_camera_diag_hsync_at_last_vsync;
+        g_camera_diag_hsync_at_last_vsync = hsync_count;
     }
 
     if ((status & CAMERA_DIAG_IRQ_MASK) == 0UL)
@@ -537,6 +553,7 @@ static uint32_t camera__diag_take_gpio_flag(GPIO_Type *base, uint32_t pin)
 static void camera__run_flexio_diag_loop(void)
 {
     uint32_t last_hsync_count = 0;
+    uint32_t last_vsync_count = 0;
     uint32_t last_ref_hsync_count = 0;
     uint32_t last_ref_vsync_count = 0;
     uint32_t elapsed_ms = 0;
@@ -547,25 +564,45 @@ static void camera__run_flexio_diag_loop(void)
         elapsed_ms += 1000U;
 
         uint32_t hsync_count = g_camera_diag_hsync_count;
+        uint32_t vsync_count = g_camera_diag_vsync_count;
         uint32_t ref_hsync_count = g_camera_ref_hsync_count;
         uint32_t ref_vsync_count = g_camera_ref_vsync_count;
         uint32_t hsync_delta = hsync_count - last_hsync_count;
+        uint32_t vsync_delta = vsync_count - last_vsync_count;
         uint32_t ref_hsync_delta = ref_hsync_count - last_ref_hsync_count;
         uint32_t ref_vsync_delta = ref_vsync_count - last_ref_vsync_count;
         uint32_t p4_pclk_seen = camera__diag_take_gpio_flag(GPIO4, CAMERA_DIAG_PCLK_PIN);
-        uint32_t p4_vsync_seen = camera__diag_take_gpio_flag(GPIO4, CAMERA_DIAG_VSYNC_PIN);
+        uint32_t p4_vsync_irq_disabled = g_camera_diag_vsync_irq_disabled;
+        uint32_t p4_vsync_flag_seen = 0U;
         uint32_t ref_pclk_seen = camera__diag_take_gpio_flag(GPIO0, CAMERA_REF_PCLK_PIN);
 
+        if ((vsync_delta > CAMERA_DIAG_VSYNC_IRQ_MAX_PER_SECOND) && (p4_vsync_irq_disabled == 0U))
+        {
+            GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_FlagRisingEdge);
+            g_camera_diag_vsync_irq_disabled = 1U;
+            p4_vsync_irq_disabled = 1U;
+        }
+
+        if (p4_vsync_irq_disabled != 0U)
+        {
+            p4_vsync_flag_seen = camera__diag_take_gpio_flag(GPIO4, CAMERA_DIAG_VSYNC_PIN);
+        }
+
         last_hsync_count = hsync_count;
+        last_vsync_count = vsync_count;
         last_ref_hsync_count = ref_hsync_count;
         last_ref_vsync_count = ref_vsync_count;
 
-        DEBUG("cam_diag t_ms=%u p4_hs=%u(+%u) p4_pclk=%u p4_vs=%u ref_hs=%u(+%u) ref_vs=%u(+%u) ref_lines=%u ref_pclk=%u lvl_p4=%u%u%u lvl_ref=%u%u%u unexp=%u/%u\r\n",
+        DEBUG("cam_diag t_ms=%u p4_hs=%u(+%u) p4_vs_irq=%u(+%u) p4_lines=%u p4_pclk=%u p4_vs_flag=%u p4_vs_off=%u ref_hs=%u(+%u) ref_vs=%u(+%u) ref_lines=%u ref_pclk=%u lvl_p4=%u%u%u lvl_ref=%u%u%u unexp=%u/%u\r\n",
               elapsed_ms,
               hsync_count,
               hsync_delta,
+              vsync_count,
+              vsync_delta,
+              g_camera_diag_lines_last_frame,
               p4_pclk_seen,
-              p4_vsync_seen,
+              p4_vsync_flag_seen,
+              p4_vsync_irq_disabled,
               ref_hsync_count,
               ref_hsync_delta,
               ref_vsync_count,
