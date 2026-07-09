@@ -1,0 +1,188 @@
+{
+  "resource_table": {
+    "@_xmlns": {
+      "resource": "http://swtools.freescale.net/XSD/resource/1.0",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd",
+    "@id": "lpadc",
+    "user_types": {
+      "struct": {
+        "@id": "voltage_references",
+        "@label": "LPADC voltage references",
+        "string": [
+          {
+            "@id": "id",
+            "@label": "Id of the dynamic enum item"
+          },
+          {
+            "@id": "label",
+            "@label": "Label of the dynamic enum item"
+          },
+          {
+            "@id": "value",
+            "@label": "Value of the dynamic enum item"
+          },
+          {
+            "@id": "description",
+            "@label": "Description of the dynamic enum item"
+          }
+        ]
+      }
+    },
+    "definition": {
+      "array": [
+        {
+          "@id": "ADC0",
+          "@label": "ADC0 voltage references",
+          "@type": "voltage_references"
+        },
+        {
+          "@id": "ADC1",
+          "@label": "ADC1 voltage references",
+          "@type": "voltage_references"
+        }
+      ]
+    },
+    "data": {
+      "array": [
+        {
+          "@name": "ADC0",
+          "struct": [
+            {
+              "@name": "0",
+              "setting": [
+                {
+                  "@name": "id",
+                  "@value": "kLPADC_ReferenceVoltageAlt1"
+                },
+                {
+                  "@name": "label",
+                  "@value": "VREFH"
+                },
+                {
+                  "@name": "value",
+                  "@value": "0"
+                },
+                {
+                  "@name": "description",
+                  "@value": "VREFH - connected as the primary reference option."
+                }
+              ]
+            },
+            {
+              "@name": "1",
+              "setting": [
+                {
+                  "@name": "id",
+                  "@value": "kLPADC_ReferenceVoltageAlt2"
+                },
+                {
+                  "@name": "label",
+                  "@value": "ANA_7 (VREFI/VREFO)"
+                },
+                {
+                  "@name": "value",
+                  "@value": "1"
+                },
+                {
+                  "@name": "description",
+                  "@value": "ANA_7 (VREFI/VREFO) pin, can be feed from external reference or VREF_OUT signal - connected as the alternative reference option."
+                }
+              ]
+            },
+            {
+              "@name": "2",
+              "setting": [
+                {
+                  "@name": "id",
+                  "@value": "kLPADC_ReferenceVoltageAlt3"
+                },
+                {
+                  "@name": "label",
+                  "@value": "VDDA"
+                },
+                {
+                  "@name": "value",
+                  "@value": "2"
+                },
+                {
+                  "@name": "description",
+                  "@value": "VDDA supply pin - connected as the second alternative reference option."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@name": "ADC1",
+          "struct": [
+            {
+              "@name": "0",
+              "setting": [
+                {
+                  "@name": "id",
+                  "@value": "kLPADC_ReferenceVoltageAlt1"
+                },
+                {
+                  "@name": "label",
+                  "@value": "VREFH"
+                },
+                {
+                  "@name": "value",
+                  "@value": "0"
+                },
+                {
+                  "@name": "description",
+                  "@value": "VREFH - connected as the primary reference option."
+                }
+              ]
+            },
+            {
+              "@name": "1",
+              "setting": [
+                {
+                  "@name": "id",
+                  "@value": "kLPADC_ReferenceVoltageAlt2"
+                },
+                {
+                  "@name": "label",
+                  "@value": "ANA_7 (VREFI/VREFO)"
+                },
+                {
+                  "@name": "value",
+                  "@value": "1"
+                },
+                {
+                  "@name": "description",
+                  "@value": "ANA_7 (VREFI/VREFO) pin, can be feed from external reference or VREF_OUT signal - connected as the alternative reference option."
+                }
+              ]
+            },
+            {
+              "@name": "2",
+              "setting": [
+                {
+                  "@name": "id",
+                  "@value": "kLPADC_ReferenceVoltageAlt3"
+                },
+                {
+                  "@name": "label",
+                  "@value": "VDDA"
+                },
+                {
+                  "@name": "value",
+                  "@value": "2"
+                },
+                {
+                  "@name": "description",
+                  "@value": "VDDA supply pin - connected as the second alternative reference option."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

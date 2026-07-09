@@ -1,0 +1,510 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "CTRL1",
+        "@description": "USB OTG Control 1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL1"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "7",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "3",
+            "@reset_value": "0x2"
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "22",
+            "@width": "7",
+            "@reset_value": "0x40"
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "OVER_CUR_DIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Disable Overcurrent Detection",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_OVER_CUR_DIS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_OVER_CUR_DIS_OVRCRNT_DETCT_EN",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "CTRL1_OVER_CUR_DIS_OVRCRNT_DETCT_DIS",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "OVER_CUR_POL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Polarity of Overcurrent",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_OVER_CUR_POL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_OVER_CUR_POL_ACTIVE_HI_OVRCRNT",
+                "@value": "0b0",
+                "@description": "High active (high on this signal represents an overcurrent condition)"
+              },
+              {
+                "@name": "CTRL1_OVER_CUR_POL_ACTIVE_LOW_OVRCRNT",
+                "@value": "0b1",
+                "@description": "Low active (low on this signal represents an overcurrent condition)"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "PWR_POL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Power Polarity",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_PWR_POL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_PWR_POL_ACTIVE_LO_PMIC",
+                "@value": "0b0",
+                "@description": "PMIC Power Pin is Low active."
+              },
+              {
+                "@name": "CTRL1_PWR_POL_ACTIVE_HI_PMIC",
+                "@value": "0b1",
+                "@description": "PMIC Power Pin is High active."
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "WIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_WIE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_WIE_INT_DIS",
+                "@value": "0b0",
+                "@description": "Interrupt Disabled"
+              },
+              {
+                "@name": "CTRL1_WIE_INT_EN",
+                "@value": "0b1",
+                "@description": "Interrupt Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "WKUP_SW_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Software Wake-up Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_WKUP_SW_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_WKUP_SW_EN_SW_WKUP_DIS",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "CTRL1_WKUP_SW_EN_SW_WKUP_EN",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "WKUP_SW",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Software Wake-up",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_WKUP_SW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_WKUP_SW_INACTIVE",
+                "@value": "0b0",
+                "@description": "Inactive"
+              },
+              {
+                "@name": "CTRL1_WKUP_SW_FORCE_WKUP",
+                "@value": "0b1",
+                "@description": "Force wake-up"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "WKUP_ID_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up on ID Change Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_WKUP_ID_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_WKUP_ID_EN_WKUP_ID_DIS",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "CTRL1_WKUP_ID_EN_WKUP_ID_EN",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "WKUP_VBUS_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up on VBUS Change Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_WKUP_VBUS_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_WKUP_VBUS_EN_WKUP_VBUS_DIS",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "CTRL1_WKUP_VBUS_EN_WKUP_VBUS_EN",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "WKUP_DPDM_EN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Wake-up on DPDM Change Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_WKUP_DPDM_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_WKUP_DPDM_EN_DPDM_WKUP_DIS",
+                "@value": "0b0",
+                "@description": "DPDM changes wake-up to be disabled only when VBUS is 0"
+              },
+              {
+                "@name": "CTRL1_WKUP_DPDM_EN_DPDM_WKUP_EN",
+                "@value": "0b1",
+                "@description": "DPDM changes wake-up to be enabled, it is for device only"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "WIR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Wake-up Interrupt Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL1_WIR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL1_WIR_NO_WKUP_REQ",
+                "@value": "0b0",
+                "@description": "No request received"
+              },
+              {
+                "@name": "CTRL1_WIR_WKUP_REQ",
+                "@value": "0b1",
+                "@description": "Request received"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "CTRL2",
+        "@description": "USB OTG Control 2",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL2"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "VBUS_SOURCE_SEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "VBUS Source Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL2_VBUS_SOURCE_SEL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL2_VBUS_SOURCE_SEL_VBUS_VALID",
+                "@value": "0b00",
+                "@description": "vbus_valid"
+              },
+              {
+                "@name": "CTRL2_VBUS_SOURCE_SEL_SESS_VALID_1",
+                "@value": "0b01",
+                "@description": "sess_valid"
+              },
+              {
+                "@name": "CTRL2_VBUS_SOURCE_SEL_SESS_VALID_2",
+                "@value": "0b10",
+                "@description": "sess_valid"
+              },
+              {
+                "@name": "CTRL2_VBUS_SOURCE_SEL_SESS_VALID_3",
+                "@value": "0b11",
+                "@description": "sess_valid"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "AUTURESUME_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Auto Resume Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL2_AUTURESUME_EN(x)"
+            },
+            "bit_field_value": {
+              "@name": "CTRL2_AUTURESUME_EN_DEFAULT",
+              "@value": "0b0",
+              "@description": "Default"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "LOWSPEED_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Low Speed Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL2_LOWSPEED_EN(x)"
+            },
+            "bit_field_value": {
+              "@name": "CTRL2_LOWSPEED_EN_DEFAULT",
+              "@value": "0b0",
+              "@description": "Default"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "UTMI_CLK_VLD",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "UTMI Clock Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_CTRL2_UTMI_CLK_VLD(x)"
+            },
+            "bit_field_value": {
+              "@name": "CTRL2_UTMI_CLK_VLD_DEFAULT",
+              "@value": "0b0",
+              "@description": "Default"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "16",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "8",
+            "@reset_value": "0xF0"
+          },
+          {
+            "@offset": "28",
+            "@width": "3",
+            "@reset_value": "0x5"
+          }
+        ]
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "HSIC_CTRL",
+        "@description": "USB Host HSIC Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HSIC_CTRL"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "11",
+            "@reset_value": "0x84"
+          },
+          {
+            "@offset": "13",
+            "@width": "18",
+            "@reset_value": "0x8002"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "HSIC_CLK_ON",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "HSIC Clock ON",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_HSIC_CTRL_HSIC_CLK_ON(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HSIC_CTRL_HSIC_CLK_ON_INACTIVE",
+                "@value": "0b0",
+                "@description": "Inactive"
+              },
+              {
+                "@name": "HSIC_CTRL_HSIC_CLK_ON_ACTIVE",
+                "@value": "0b1",
+                "@description": "Active"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "HSIC_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Host HSIC Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_HSIC_CTRL_HSIC_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HSIC_CTRL_HSIC_EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "HSIC_CTRL_HSIC_EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "CLK_VLD",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Clock Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBNC_HSIC_CTRL_CLK_VLD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HSIC_CTRL_CLK_VLD_INVALID",
+                "@value": "0b0",
+                "@description": "Invalid"
+              },
+              {
+                "@name": "HSIC_CTRL_CLK_VLD_VALID",
+                "@value": "0b1",
+                "@description": "Valid"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "cores": {
+    "@_xmlns": {
+      "cores": "http://swtools.freescale.net/XSD/processor/2.0/",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/processor/2.0/ http://swtools.freescale.net/XSD/processor/2.0/cores.xsd",
+    "core": [
+      {
+        "@name": "Cortex-M33 (Core #0)",
+        "@id": "cm33_core0",
+        "@description": "",
+        "@master": "true",
+        "@master_default": "true"
+      },
+      {
+        "@name": "Cortex-M33 (Core #1)",
+        "@id": "cm33_core1",
+        "@description": "",
+        "@master": "true"
+      }
+    ]
+  }
+}

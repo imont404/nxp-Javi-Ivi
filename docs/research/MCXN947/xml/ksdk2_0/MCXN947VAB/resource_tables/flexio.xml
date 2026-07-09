@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource:resource_table xmlns:resource="http://swtools.freescale.net/XSD/resource/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd" id="flexio">
+  <user_types>
+    <struct id="trigger" label="Trigger">
+      <string id="reg_id" label="Trigger ID in the registers component enumeration"/>
+      <string id="sdk_id" label="Trigger ID in the SDK component enumeration if exists."/>
+      <string id="label" label="Trigger label"/>
+      <string id="description" label="Trigger description"/>
+      <string id="type" label="Signal type (e.g. INPUT_SIGNAL, PERIPHERAL_SIGNAL, PIN_SIGNAL, NOT_CONNECTED). Optional. Default peripheral signal."/>
+      <string id="uid" label="Signal unified id (e.g. pin signal unified id). Optional."/>
+    </struct>
+  </user_types>
+  <definition>
+    <array id="FLEXIO0" label="Triggers list for FLEXIO0" type="trigger"/>
+    
+    
+  </definition>
+  <data>
+    <array name="FLEXIO0">
+      <struct name="0">
+        <setting name="reg_id" value="0"/>
+        <setting name="label" value="Trigger 0"/>
+        <setting name="description" value="External trigger 0."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.0"/>
+      </struct>
+      <struct name="1">
+        <setting name="reg_id" value="1"/>
+        <setting name="label" value="Trigger 1"/>
+        <setting name="description" value="External trigger 1."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.1"/>
+      </struct>
+      <struct name="2">
+        <setting name="reg_id" value="2"/>
+        <setting name="label" value="Trigger 2"/>
+        <setting name="description" value="External trigger 2."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.2"/>
+      </struct>
+      <struct name="3">
+        <setting name="reg_id" value="3"/>
+        <setting name="label" value="Trigger 3"/>
+        <setting name="description" value="External trigger 3."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.3"/>
+      </struct>
+      <struct name="4">
+        <setting name="reg_id" value="4"/>
+        <setting name="label" value="Trigger 4"/>
+        <setting name="description" value="External trigger 4."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.4"/>
+      </struct>
+      <struct name="5">
+        <setting name="reg_id" value="5"/>
+        <setting name="label" value="Trigger 5"/>
+        <setting name="description" value="External trigger 5."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.5"/>
+      </struct>
+      <struct name="6">
+        <setting name="reg_id" value="6"/>
+        <setting name="label" value="Trigger 6"/>
+        <setting name="description" value="External trigger 6."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.6"/>
+      </struct>
+      <struct name="7">
+        <setting name="reg_id" value="7"/>
+        <setting name="label" value="Trigger 7"/>
+        <setting name="description" value="External trigger 7."/>
+        <setting name="type" value="PIN_SIGNAL"/>
+        <setting name="uid" value="flexio_ext_trigger.7"/>
+      </struct>
+    </array>
+    
+    
+  </data>
+</resource:resource_table>

@@ -1,0 +1,1691 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "8",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "OUT{1}_SEL{2}",
+        "@description": "Trigger Source IN0 to IN15 selector",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OUT_SEL[{1}][{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "IN0_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects digital glitch detector as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN0_SELn(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "IN1_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects TDET event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN1_SELn(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "IN2_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects Code Watchdog 0 event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN2_SELn(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "IN3_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects VBAT voltage tamper event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN3_SELn(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "IN4_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects low-voltage event on VDD_CORE rail as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN4_SELn(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "IN5_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects Watchdog 0 timer event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN5_SELn(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "IN6_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects Flash ECC mismatch event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN6_SELn(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "IN7_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects AHB secure bus or MBC bus illegal access event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN7_SELn(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "IN8_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects ELS error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN8_SELn(x)"
+            }
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "IN9_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects SPC VDD_CORE glitch detector as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN9_SELn(x)"
+            }
+          },
+          {
+            "@offset": "20",
+            "@width": "2",
+            "@name": "IN10_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects PKC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN10_SELn(x)"
+            }
+          },
+          {
+            "@offset": "22",
+            "@width": "2",
+            "@name": "IN11_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects Code Watchdog 1 event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN11_SELn(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "2",
+            "@name": "IN12_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects Watchdog 1 timer event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN12_SELn(x)"
+            }
+          },
+          {
+            "@offset": "26",
+            "@width": "2",
+            "@name": "IN13_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects FREQME out of range status output as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN13_SELn(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "2",
+            "@name": "IN14_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects software event 0 as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN14_SELn(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "IN15_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects software event 1 as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_IN15_SELn(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "72",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "OUT{1}_SEL{2}_1",
+        "@description": "Trigger Source IN16 to IN31 selector",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OUT_SEL_1[{1}][{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "IN16_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects SPC VDD_SYS_LVD detect as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN16_SELn(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "IN17_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects SPC VDD_IO_LVD detect as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN17_SELn(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "IN18_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Reserved.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN18_SELn(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "IN19_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects VBAT temperature tamper output event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN19_SELn(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "IN20_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects VBAT clock tamper output event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN20_SELn(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "IN21_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects INTM interrupt monitor error 0 event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN21_SELn(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "IN22_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects INTM interrupt monitor error 1 event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN22_SELn(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "IN23_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects INTM interrupt monitor error 2 event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN23_SELn(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "IN24_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects INTM interrupt monitor error 3 event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN24_SELn(x)"
+            }
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "IN25_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 0 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN25_SELn(x)"
+            }
+          },
+          {
+            "@offset": "20",
+            "@width": "2",
+            "@name": "IN26_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 1 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN26_SELn(x)"
+            }
+          },
+          {
+            "@offset": "22",
+            "@width": "2",
+            "@name": "IN27_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 2 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN27_SELn(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "2",
+            "@name": "IN28_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 3 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN28_SELn(x)"
+            }
+          },
+          {
+            "@offset": "26",
+            "@width": "2",
+            "@name": "IN29_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 4 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN29_SELn(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "2",
+            "@name": "IN30_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 5 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN30_SELn(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "IN31_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 6 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_1_IN31_SELn(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "136",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "OUT{1}_SEL{2}_2",
+        "@description": "Trigger source IN32 to IN47 selector",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OUT_SEL_2[{1}][{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "IN32_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects MSF SOCTRIM 7 ECC error event as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN32_SELn(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "IN33_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects GDET0 & 1 SFR error detect as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN33_SELn(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "IN34_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects SPC VDD_CORE_HVD as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN34_SELn(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "IN35_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects VDD_SYS_HVD as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN35_SELn(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "IN36_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects VDD_IO_HVD as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN36_SELn(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "IN37_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects FLEXSPI GCM error as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN37_SELn(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "2",
+            "@name": "IN46_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects SM3 SGI error as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN46_SELn(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "IN47_SELn",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Selects TRNG HW Error as a trigger source.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_OUT_SEL_2_IN47_SELn(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@reset_value": "0x2"
+          },
+          {
+            "@offset": "14",
+            "@width": "14",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "240",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SW_EVENT{1}",
+        "@description": "Software event {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SW_EVENT{1}"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "TRIGGER_SW_EVENT_{1}",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Trigger software event {1}.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ITRC_SW_EVENT{1}_TRIGGER_SW_EVENT_{1}(x)"
+          }
+        }
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "STATUS",
+        "@description": "ITRC outputs and IN0 to IN15 Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STATUS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "IN0_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "GDET0 & 1 interrupt.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN0_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN0_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN0_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "IN1_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0x1",
+            "@description": "TDET tamper output.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN1_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN1_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN1_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "IN2_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 0 interrupt.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN2_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN2_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN2_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "IN3_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0x1",
+            "@description": "VBAT volt tamper output.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN3_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN3_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN3_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "IN4_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SPC VDD_CORE_LVD detect.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN4_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN4_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN4_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "IN5_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Watch Dog timer event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN5_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN5_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN5_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "IN6_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Flash ECC mismatch event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN6_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN6_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN6_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "IN7_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "AHB secure bus checkers detected illegal access.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN7_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN7_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN7_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "IN8_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ELS error event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN8_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN8_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN8_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "IN9_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SPC VDD_CORE glitch detect event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN9_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN9_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN9_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "IN10_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "PKC module detected an error event.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN10_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN10_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN10_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "IN11_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 1 interrupt.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN11_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN11_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN11_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "IN112_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Watchdog 1 timer event interrupt.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "ITRC_STATUS_IN112_STATUS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "IN12_STATUS"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN112_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN112_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "IN113_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "FREQME out of range status output.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "ITRC_STATUS_IN113_STATUS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "IN13_STATUS"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN113_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN113_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "IN14_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Software event 0 occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN14_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN14_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN14_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "IN15_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Software event 1 occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_IN15_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_IN15_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_IN15_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "OUT0_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ITRC triggered ITRC_IRQ output.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_OUT0_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_OUT0_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_OUT0_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "OUT1_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ITRC triggered ELS_RESET to clear ELS key store.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_OUT1_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_OUT1_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_OUT1_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "OUT2_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ITRC triggered PUF_ZEROIZE to clear PUF key store and RAM.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_OUT2_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_OUT2_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_OUT2_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "OUT3_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ITRC triggered RAM_ZEROIZE.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_OUT3_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_OUT3_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_OUT3_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "OUT4_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ITRC triggered CHIP_RESET to reset the chip after all other response process finished.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_OUT4_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_OUT4_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_OUT4_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "OUT5_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ITRC triggered TMPR_OUT0 internal signal connected to various on-chip multiplexers.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_OUT5_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_OUT5_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_OUT5_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "OUT6_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ITRC triggered TMPR_OUT1 internal signal connected to various on-chip multiplexers.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS_OUT6_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS_OUT6_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS_OUT6_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "23",
+          "@width": "9",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "STATUS1",
+        "@description": "ITRC IN16 to IN47 Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STATUS1"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "IN16_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SSPC VDD_SYS_LVD detect event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN16_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN16_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN16_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "IN17_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SPC VDD_IO_LVD detect event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN17_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN17_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN17_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "IN18_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0x1",
+            "@description": "Reserved",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN18_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN18_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN18_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "IN19_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0x1",
+            "@description": "Reserved",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN19_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN19_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN19_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "IN20_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0x1",
+            "@description": "VBAT clock tamper output event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN20_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN20_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN20_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "4",
+            "@name": "IN24_21_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "INTM interrupt monitor error 3~0 event occurred.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "ITRC_STATUS1_IN24_21_STATUS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "IN21_24_STATUS"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN24_21_STATUS_DISABLE",
+                "@value": "0b0000",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN24_21_STATUS_ENABLE",
+                "@value": "0b0001",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "8",
+            "@name": "IN32_25_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "MSF SOCTRIM 7~0 ECC error event occurred.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "ITRC_STATUS1_IN32_25_STATUS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "IN25_32_STATUS"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN32_25_STATUS_DISABLE",
+                "@value": "0b00000000",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN32_25_STATUS_ENABLE",
+                "@value": "0b00000001",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "IN33_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "GDET0/1 SFR error event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN33_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN33_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN33_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "IN34_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SPC VDD_CORE high voltage detect event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN34_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN34_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN34_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "IN35_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SPC VDD_SYS_HVD high voltage detect event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN35_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN35_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN35_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "IN36_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SPC VDD_IO high voltage detect event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN36_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN36_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN36_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "IN37_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "FLEXSPI GCM error event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN37_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN37_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN37_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "IN46_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SM3 SGI error event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN46_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN46_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN46_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "IN47_STATUS",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "TRNG HW error event occurred.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ITRC_STATUS1_IN47_STATUS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STATUS1_IN47_STATUS_DISABLE",
+                "@value": "0b0",
+                "@description": "Output not triggered."
+              },
+              {
+                "@name": "STATUS1_IN47_STATUS_ENABLE",
+                "@value": "0b1",
+                "@description": "Output has been triggered."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "22",
+          "@width": "8",
+          "@reset_value": "0"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "8",
+        "@vals": "0x8 0 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xC 0 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x10 1 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x14 1 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x18 2 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x1C 2 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x20 3 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x24 3 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x28 4 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x2C 4 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x30 5 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x34 5 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x38 6 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x3C 6 1"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x48 0 0"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x4C 0 1"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x50 1 0"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x54 1 1"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x58 2 0"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x5C 2 1"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x60 3 0"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x64 3 1"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x68 4 0"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x6C 4 1"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x70 5 0"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x74 5 1"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x78 6 0"
+      },
+      {
+        "@rid": "72",
+        "@vals": "0x7C 6 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x88 0 0"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x8C 0 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x90 1 0"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x94 1 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x98 2 0"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x9C 2 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xA0 3 0"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xA4 3 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xA8 4 0"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xAC 4 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xB0 5 0"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xB4 5 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xB8 6 0"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0xBC 6 1"
+      },
+      {
+        "@rid": "240",
+        "@vals": "0xF0 0"
+      },
+      {
+        "@rid": "240",
+        "@vals": "0xF4 1"
+      }
+    ]
+  }
+}

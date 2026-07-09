@@ -1,0 +1,1633 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="32" offset="{0}" width="32" name="FCCOB{1}" description="Flash Command Control {1} Register">
+    <alias type="CMSIS" value="FCCOB{1}"/>
+    <bit_field offset="0" width="32" name="CMDDATA{2}" access="RW" reset_value="0" description="Command data word {2}">
+      <alias type="CMSIS" value="FMUTEST_FCCOB{1}_CMDDATA{2}(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="332" offset="{0}" width="32" name="RD_DATA{1}" description="Read Data {1} Register">
+    <alias type="CMSIS" value="RD_DATA{1}"/>
+    <bit_field offset="0" width="32" name="RD_DATA{1}" access="RW" reset_value="0" description="Read Data {1}">
+      <alias type="CMSIS" value="FMUTEST_RD_DATA{1}_RD_DATA{1}(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="356" offset="{0}" width="32" name="SMW_DIN{1}" description="SMW DIN {1} Register">
+    <alias type="CMSIS" value="SMW_DIN{1}"/>
+    <bit_field offset="0" width="32" name="SMW_DIN{1}" access="RW" reset_value="0" description="SMW DIN {1}">
+      <alias type="CMSIS" value="FMUTEST_SMW_DIN{1}_SMW_DIN{1}(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="384" offset="{0}" width="32" name="SOCTRIM{1}_{2}" description="SoC Trim Phrase {1} Word {2} Register">
+    <alias type="CMSIS" value="SOCTRIM{1}_{2}"/>
+    <bit_field offset="0" width="32" name="TRIM{1}_{2}" access="RW" reset_value="0xFFFFFFFF" description="TRIM{1}_{2}">
+      <alias type="CMSIS" value="FMUTEST_SOCTRIM{1}_{2}_TRIM{1}_{2}(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="532" offset="{0}" width="32" name="R_DATA_CTRL{1}" description="BIST Data Control {1} Register">
+    <alias type="CMSIS" value="R_DATA_CTRL{1}"/>
+    <bit_field offset="0" width="32" name="DATA{1}" access="RW" reset_value="0" description="BIST Data {1} Low">
+      <alias type="CMSIS" value="FMUTEST_R_DATA_CTRL{1}_DATA{1}(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="644" offset="{0}" width="32" name="R_REPAIR{1}_{2}" description="BIST Repair {2} Block {1} Register">
+    <alias type="CMSIS" value="R_REPAIR{1}_{2}"/>
+    <bit_field offset="0" width="1" name="RDIS{1}_{2}" access="RO" reset_value="0x1" description="Control Repair {2} in Block {1}.">
+      <alias type="CMSIS" value="FMUTEST_R_REPAIR{1}_{2}_RDIS{1}_{2}(x)"/>
+      <bit_field_value name="R_REPAIR{1}_{2}_RDIS{1}_{2}_zz{3}" value="0b0" description="Repair address is valid"/>
+      <bit_field_value name="R_REPAIR{1}_{2}_RDIS{1}_{2}_zz{4}" value="0b1" description="Repair address is not valid"/>
+    </bit_field>
+    <bit_field offset="1" width="8" name="RADR{1}_{2}" access="RO" reset_value="0xFF" description="XADR for Repair {2} in Block {1}.">
+      <alias type="CMSIS" value="FMUTEST_R_REPAIR{1}_{2}_RADR{1}_{2}(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0"/>
+  </reg_template>
+  <reg_template rid="788" offset="{0}" width="32" name="R_DATA_CTRL{1}_EX" description="BIST Data Control {1} Extension Register">
+    <alias type="CMSIS" value="R_DATA_CTRL{1}_EX"/>
+    <bit_field offset="0" width="3" name="DATA{1}X" access="RW" reset_value="0" description="BIST Data {1} High">
+      <alias type="CMSIS" value="FMUTEST_R_DATA_CTRL{1}_EX_DATA{1}X(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </reg_template>
+  <reg_template rid="1280" offset="{0}" width="32" name="REPAIR{1}_{2}" description="FMU Repair {2} Block {1} Register">
+    <alias type="CMSIS" value="REPAIR{1}_{2}"/>
+    <bit_field offset="0" width="1" name="RDIS{1}_{2}" access="RW" reset_value="0x1" description="RDIS{1}_{2}">
+      <alias type="CMSIS" value="FMUTEST_REPAIR{1}_{2}_RDIS{1}_{2}(x)"/>
+      <bit_field_value name="REPAIR{1}_{2}_RDIS{1}_{2}_zz{3}" value="0b0" description="Repair address is valid"/>
+      <bit_field_value name="REPAIR{1}_{2}_RDIS{1}_{2}_zz{4}" value="0b1" description="Repair address is not valid"/>
+    </bit_field>
+    <bit_field offset="1" width="8" name="RADR{1}_{2}" access="RW" reset_value="0xFF" description="RADR{1}_{2}">
+      <alias type="CMSIS" value="FMUTEST_REPAIR{1}_{2}_RADR{1}_{2}(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0"/>
+  </reg_template>
+  <reg_template rid="1556" offset="{0}" width="32" name="PGM_PULSE_CNT{1}" description="Block {1} Program Pulse Count Register">
+    <alias type="CMSIS" value="PGM_PULSE_CNT{1}"/>
+    <bit_field offset="0" width="32" name="PGM_CNT{1}" access="RW" reset_value="0" description="Program Pulse Count">
+      <alias type="CMSIS" value="FMUTEST_PGM_PULSE_CNT{1}_PGM_CNT{1}(x)"/>
+    </bit_field>
+  </reg_template>
+  <register offset="0" width="32" name="FSTAT" description="Flash Status Register">
+    <alias type="CMSIS" value="FSTAT"/>
+    <bit_field offset="0" width="1" name="FAIL" access="RW" reset_value="0" description="Command Fail Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_FAIL(x)"/>
+      <bit_field_value name="FSTAT_FAIL_zz27" value="0b0" description="Error not detected"/>
+      <bit_field_value name="FSTAT_FAIL_zz28" value="0b1" description="Error detected"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="1" name="CMDABT" access="RO" reset_value="0" description="Command Abort Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_CMDABT(x)"/>
+      <bit_field_value name="FSTAT_CMDABT_zz25" value="0b0" description="No command abort detected"/>
+      <bit_field_value name="FSTAT_CMDABT_zz26" value="0b1" description="Command abort detected"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="PVIOL" access="W1C" reset_value="0" description="Command Protection Violation Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_PVIOL(x)"/>
+      <bit_field_value name="FSTAT_PVIOL_zz23" value="0b0" description="No protection violation detected"/>
+      <bit_field_value name="FSTAT_PVIOL_zz24" value="0b1" description="Protection violation detected"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="ACCERR" access="W1C" reset_value="0" description="Command Access Error Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_ACCERR(x)"/>
+      <bit_field_value name="FSTAT_ACCERR_zz21" value="0b0" description="No access error detected"/>
+      <bit_field_value name="FSTAT_ACCERR_zz22" value="0b1" description="Access error detected"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CWSABT" access="RO" reset_value="0" description="Command Write Sequence Abort Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_CWSABT(x)"/>
+      <bit_field_value name="FSTAT_CWSABT_zz19" value="0b0" description="Command write sequence not aborted"/>
+      <bit_field_value name="FSTAT_CWSABT_zz20" value="0b1" description="Command write sequence aborted"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CCIF" access="W1C" reset_value="0" description="Command Complete Interrupt Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_CCIF(x)"/>
+      <bit_field_value name="FSTAT_CCIF_zz17" value="0b0" description="Flash command or initialization in progress"/>
+      <bit_field_value name="FSTAT_CCIF_zz18" value="0b1" description="Flash command or initialization has completed"/>
+    </bit_field>
+    <bit_field offset="8" width="2" name="CMDPRT" access="RO" reset_value="0" description="Command Protection Level">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_CMDPRT(x)"/>
+      <bit_field_value name="FSTAT_CMDPRT_zz13" value="0b00" description="Secure, normal access"/>
+      <bit_field_value name="FSTAT_CMDPRT_zz14" value="0b01" description="Secure, privileged access"/>
+      <bit_field_value name="FSTAT_CMDPRT_zz15" value="0b10" description="Nonsecure, normal access"/>
+      <bit_field_value name="FSTAT_CMDPRT_zz16" value="0b11" description="Nonsecure, privileged access"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="1" reset_value="0"/>
+    <bit_field offset="11" width="1" name="CMDP" access="RO" reset_value="0" description="Command Protection Status Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_CMDP(x)"/>
+      <bit_field_value name="FSTAT_CMDP_zz11" value="0b0" description="Command protection level and domain ID are stale"/>
+      <bit_field_value name="FSTAT_CMDP_zz12" value="0b1" description="Command protection level (CMDPRT) and domain ID (CMDDID) are set"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="CMDDID" access="RO" reset_value="0" description="Command Domain ID">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_CMDDID(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="DFDIF" access="RO" reset_value="0" description="Double Bit Fault Detect Interrupt Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_DFDIF(x)"/>
+      <bit_field_value name="FSTAT_DFDIF_zz9" value="0b0" description="Double bit fault not detected during a valid flash read access from the FMC"/>
+      <bit_field_value name="FSTAT_DFDIF_zz10" value="0b1" description="Double bit fault detected (or FCTRL[FDFD] is set) during a valid flash read access from the FMC"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="SALV_USED" access="RW" reset_value="0" description="Salvage Used for Erase operation">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_SALV_USED(x)"/>
+      <bit_field_value name="FSTAT_SALV_USED_zz7" value="0b0" description="Salvage not used during the last operation"/>
+      <bit_field_value name="FSTAT_SALV_USED_zz8" value="0b1" description="Salvage used during the last erase operation"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="6" reset_value="0"/>
+    <bit_field offset="24" width="2" name="PEWEN" access="RW" reset_value="0" description="Program-Erase Write Enable Control">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_PEWEN(x)"/>
+      <bit_field_value name="FSTAT_PEWEN_zz3" value="0b00" description="Writes are not enabled"/>
+      <bit_field_value name="FSTAT_PEWEN_zz4" value="0b01" description="Writes are enabled for one flash or IFR phrase (phrase programming, sector erase)"/>
+      <bit_field_value name="FSTAT_PEWEN_zz5" value="0b10" description="Writes are enabled for one flash or IFR page (page programming)"/>
+      <bit_field_value name="FSTAT_PEWEN_zz6" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="5" reset_value="0"/>
+    <bit_field offset="31" width="1" name="PERDY" access="RW" reset_value="0" description="Program/Erase Ready Control/Status Flag">
+      <alias type="CMSIS" value="FMUTEST_FSTAT_PERDY(x)"/>
+      <bit_field_value name="FSTAT_PERDY_zz1" value="0b0" description="Program or sector erase command operation is not stalled"/>
+      <bit_field_value name="FSTAT_PERDY_zz2" value="0b1" description="Program or sector erase command operation is stalled"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="FCNFG" description="Flash Configuration Register">
+    <alias type="CMSIS" value="FCNFG"/>
+    <reserved_bit_field offset="0" width="7" reset_value="0"/>
+    <bit_field offset="7" width="1" name="CCIE" access="RO" reset_value="0" description="Command Complete Interrupt Enable">
+      <alias type="CMSIS" value="FMUTEST_FCNFG_CCIE(x)"/>
+      <bit_field_value name="FCNFG_CCIE_zz37" value="0b0" description="Command complete interrupt disabled"/>
+      <bit_field_value name="FCNFG_CCIE_zz38" value="0b1" description="Command complete interrupt enabled. An interrupt request is generated whenever the FSTAT[CCIF] flag is set."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="ERSREQ" access="RO" reset_value="0" description="Mass Erase (Erase All) Request">
+      <alias type="CMSIS" value="FMUTEST_FCNFG_ERSREQ(x)"/>
+      <bit_field_value name="FCNFG_ERSREQ_zz35" value="0b0" description="No request or request complete"/>
+      <bit_field_value name="FCNFG_ERSREQ_zz36" value="0b1" description="Request to run the Mass Erase operation"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <bit_field offset="16" width="1" name="DFDIE" access="RO" reset_value="0" description="Double Bit Fault Detect Interrupt Enable">
+      <alias type="CMSIS" value="FMUTEST_FCNFG_DFDIE(x)"/>
+      <bit_field_value name="FCNFG_DFDIE_zz33" value="0b0" description="Double bit fault detect interrupt disabled"/>
+      <bit_field_value name="FCNFG_DFDIE_zz34" value="0b1" description="Double bit fault detect interrupt enabled; an interrupt request is generated whenever the FSTAT[DFDIF] flag is set"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="7" reset_value="0"/>
+    <bit_field offset="24" width="4" name="ERSIEN0" access="RW" reset_value="0xE" description="Erase IFR Sector Enable - Block 0">
+      <alias type="CMSIS" value="FMUTEST_FCNFG_ERSIEN0(x)"/>
+      <bit_field_value name="FCNFG_ERSIEN0_zz31" value="0b0000" description="Block 0 IFR Sector X is protected from erase by ERSSCR command"/>
+      <bit_field_value name="FCNFG_ERSIEN0_zz32" value="0b0001" description="Block 0 IFR Sector X is not protected from erase by ERSSCR command"/>
+    </bit_field>
+    <bit_field offset="28" width="4" name="ERSIEN1" access="RW" reset_value="0xF" description="Erase IFR Sector Enable - Block 1 (for dual block configs)">
+      <alias type="CMSIS" value="FMUTEST_FCNFG_ERSIEN1(x)"/>
+      <bit_field_value name="FCNFG_ERSIEN1_zz29" value="0b0000" description="Block 1 IFR Sector X is protected from erase by ERSSCR command"/>
+      <bit_field_value name="FCNFG_ERSIEN1_zz30" value="0b0001" description="Block 1 IFR Sector X is not protected from erase by ERSSCR command"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="FCTRL" description="Flash Control Register">
+    <alias type="CMSIS" value="FCTRL"/>
+    <bit_field offset="0" width="4" name="RWSC" access="RW" reset_value="0" description="Read Wait-State Control">
+      <alias type="CMSIS" value="FMUTEST_FCTRL_RWSC(x)"/>
+      <bit_field_value name="FCTRL_RWSC_zz45" value="0b0000" description="no additional wait-states are added (single cycle access)"/>
+      <bit_field_value name="FCTRL_RWSC_zz46" value="0b0001" description="1 additional wait-state is added"/>
+      <bit_field_value name="FCTRL_RWSC_zz47" value="0b0010" description="2 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz48" value="0b0011" description="3 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz49" value="0b0100" description="4 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz50" value="0b0101" description="5 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz51" value="0b0110" description="6 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz52" value="0b0111" description="7 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz53" value="0b1000" description="8 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz54" value="0b1001" description="9 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz55" value="0b1010" description="10 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz56" value="0b1011" description="11 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz57" value="0b1100" description="12 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz58" value="0b1101" description="13 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz59" value="0b1110" description="14 additional wait-states are added"/>
+      <bit_field_value name="FCTRL_RWSC_zz60" value="0b1111" description="15 additional wait-states are added"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="1" name="LSACTIVE" access="RW" reset_value="0x1" description="Low Speed Active Mode">
+      <alias type="CMSIS" value="FMUTEST_FCTRL_LSACTIVE(x)"/>
+      <bit_field_value name="FCTRL_LSACTIVE_zz43" value="0b0" description="Full speed active mode requested"/>
+      <bit_field_value name="FCTRL_LSACTIVE_zz44" value="0b1" description="Low speed active mode requested"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <bit_field offset="16" width="1" name="FDFD" access="RO" reset_value="0" description="Force Double Bit Fault Detect">
+      <alias type="CMSIS" value="FMUTEST_FCTRL_FDFD(x)"/>
+      <bit_field_value name="FCTRL_FDFD_zz41" value="0b0" description="FSTAT[DFDIF] sets only if a double bit fault is detected during a valid flash read access from the FMC"/>
+      <bit_field_value name="FCTRL_FDFD_zz42" value="0b1" description="FSTAT[DFDIF] sets during any valid flash read access from the FMC; an interrupt request is generated if the DFDIE bit is set"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="7" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ABTREQ" access="RO" reset_value="0" description="Abort Request">
+      <alias type="CMSIS" value="FMUTEST_FCTRL_ABTREQ(x)"/>
+      <bit_field_value name="FCTRL_ABTREQ_zz39" value="0b0" description="No request to abort a command write sequence"/>
+      <bit_field_value name="FCTRL_ABTREQ_zz40" value="0b1" description="Request to abort a command write sequence"/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="FTEST" description="Flash Test Register">
+    <alias type="CMSIS" value="FTEST"/>
+    <bit_field offset="0" width="1" name="TMECTL" access="RO" reset_value="0x1" description="Test Mode Entry Control">
+      <alias type="CMSIS" value="FMUTEST_FTEST_TMECTL(x)"/>
+      <bit_field_value name="FTEST_TMECTL_zz69" value="0b0" description="FTEST register always reads 0 and writes to FTEST are ignored"/>
+      <bit_field_value name="FTEST_TMECTL_zz70" value="0b1" description="FTEST register is readable and can be written to enable writability of TME"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TMEWR" access="RO" reset_value="0" description="Test Mode Entry Writable">
+      <alias type="CMSIS" value="FMUTEST_FTEST_TMEWR(x)"/>
+      <bit_field_value name="FTEST_TMEWR_zz67" value="0b0" description="TME bit is not writable"/>
+      <bit_field_value name="FTEST_TMEWR_zz68" value="0b1" description="TME bit is writable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TME" access="RO" reset_value="0" description="Test Mode Entry">
+      <alias type="CMSIS" value="FMUTEST_FTEST_TME(x)"/>
+      <bit_field_value name="FTEST_TME_zz65" value="0b0" description="Test mode entry not requested"/>
+      <bit_field_value name="FTEST_TME_zz66" value="0b1" description="Test mode entry requested"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TMODE" access="RO" reset_value="0" description="Test Mode Status">
+      <alias type="CMSIS" value="FMUTEST_FTEST_TMODE(x)"/>
+      <bit_field_value name="FTEST_TMODE_zz63" value="0b0" description="Test mode not active"/>
+      <bit_field_value name="FTEST_TMODE_zz64" value="0b1" description="Test mode active"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TMELOCK" access="RO" reset_value="0" description="Test Mode Entry Lock">
+      <alias type="CMSIS" value="FMUTEST_FTEST_TMELOCK(x)"/>
+      <bit_field_value name="FTEST_TMELOCK_zz61" value="0b0" description="FTEST register not locked from accepting writes"/>
+      <bit_field_value name="FTEST_TMELOCK_zz62" value="0b1" description="FTEST register locked from accepting writes"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="27" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="FCCOB0" description="Flash Command Control 0 Register">
+    <alias type="CMSIS" value="FCCOB0"/>
+    <bit_field offset="0" width="8" name="CMDCODE" access="RW" reset_value="0" description="Command code">
+      <alias type="CMSIS" value="FMUTEST_FCCOB0_CMDCODE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="FCCOB1" description="Flash Command Control 1 Register">
+    <alias type="CMSIS" value="FCCOB1"/>
+    <bit_field offset="0" width="8" name="CMDOPT" access="RW" reset_value="0" description="Command options">
+      <alias type="CMSIS" value="FMUTEST_FCCOB1_CMDOPT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="FCCOB2" description="Flash Command Control 2 Register">
+    <alias type="CMSIS" value="FCCOB2"/>
+    <bit_field offset="0" width="32" name="CMDADDR" access="RW" reset_value="0" description="Command starting address">
+      <alias type="CMSIS" value="FMUTEST_FCCOB2_CMDADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x1C" width="32" name="FCCOB3" description="Flash Command Control 3 Register">
+    <alias type="CMSIS" value="FCCOB3"/>
+    <bit_field offset="0" width="32" name="CMDADDRE" access="RW" reset_value="0" description="Command ending address">
+      <alias type="CMSIS" value="FMUTEST_FCCOB3_CMDADDRE(x)"/>
+    </bit_field>
+  </register>
+  <reg_instance rid="32" vals="0x20 4 0"/>
+  <reg_instance rid="32" vals="0x24 5 1"/>
+  <reg_instance rid="32" vals="0x28 6 2"/>
+  <reg_instance rid="32" vals="0x2C 7 3"/>
+  <register offset="0x100" width="32" name="RESET_STATUS" description="FMU Initialization Tracking Register">
+    <alias type="CMSIS" value="RESET_STATUS"/>
+    <bit_field offset="0" width="1" name="ARY_TRIM_DONE" access="RW" reset_value="0" description="Array Trim Complete">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_ARY_TRIM_DONE(x)"/>
+      <bit_field_value name="RESET_STATUS_ARY_TRIM_DONE_zz93" value="0b0" description="Recall register load operation has not been completed"/>
+      <bit_field_value name="RESET_STATUS_ARY_TRIM_DONE_zz94" value="0b1" description="Recall register load operation has completed"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FMU_PARM_EN" access="RW" reset_value="0" description="Status of the C0DE_C0DEh check to enable loading of the FMU parameters">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_FMU_PARM_EN(x)"/>
+      <bit_field_value name="RESET_STATUS_FMU_PARM_EN_zz91" value="0b0" description="C0DE_C0DEh check not attempted"/>
+      <bit_field_value name="RESET_STATUS_FMU_PARM_EN_zz92" value="0b1" description="C0DE_C0DEh check completed"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FMU_PARM_DONE" access="RW" reset_value="0" description="FMU Register Load Complete">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_FMU_PARM_DONE(x)"/>
+      <bit_field_value name="RESET_STATUS_FMU_PARM_DONE_zz89" value="0b0" description="FMU registers have not been loaded"/>
+      <bit_field_value name="RESET_STATUS_FMU_PARM_DONE_zz90" value="0b1" description="FMU registers have been loaded"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="SOC_TRIM_EN" access="RW" reset_value="0" description="Status of the C0DE_C0DEh check to enable loading of the SoC trim settings">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_SOC_TRIM_EN(x)"/>
+      <bit_field_value name="RESET_STATUS_SOC_TRIM_EN_zz87" value="0b0" description="C0DE_C0DEh check not attempted"/>
+      <bit_field_value name="RESET_STATUS_SOC_TRIM_EN_zz88" value="0b1" description="C0DE_C0DEh check completed"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="SOC_TRIM_ECC" access="RW" reset_value="0" description="Status of the C0DE_C0DEh check for enabling ECC decoder during reads of SoC trim settings">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_SOC_TRIM_ECC(x)"/>
+      <bit_field_value name="RESET_STATUS_SOC_TRIM_ECC_zz85" value="0b0" description="C0DE_C0DEh check failed"/>
+      <bit_field_value name="RESET_STATUS_SOC_TRIM_ECC_zz86" value="0b1" description="C0DE_C0DEh check passed"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SOC_TRIM_DONE" access="RW" reset_value="0" description="SoC Trim Complete">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_SOC_TRIM_DONE(x)"/>
+      <bit_field_value name="RESET_STATUS_SOC_TRIM_DONE_zz83" value="0b0" description="SoC Trim registers have not been updated"/>
+      <bit_field_value name="RESET_STATUS_SOC_TRIM_DONE_zz84" value="0b1" description="All SoC Trim registers have been updated"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="RPR_DONE" access="RW" reset_value="0" description="Array Repair Complete">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_RPR_DONE(x)"/>
+      <bit_field_value name="RESET_STATUS_RPR_DONE_zz81" value="0b0" description="Repair registers have not been loaded"/>
+      <bit_field_value name="RESET_STATUS_RPR_DONE_zz82" value="0b1" description="Repair registers have been loaded"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="INIT_DONE" access="RW" reset_value="0" description="Initialization Done">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_INIT_DONE(x)"/>
+      <bit_field_value name="RESET_STATUS_INIT_DONE_zz79" value="0b0" description="All initialization steps did not complete"/>
+      <bit_field_value name="RESET_STATUS_INIT_DONE_zz80" value="0b1" description="All initialization steps completed"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="RST_SF_ERR" access="RW" reset_value="0" description="ECC Single Fault during Reset Recovery">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_RST_SF_ERR(x)"/>
+      <bit_field_value name="RESET_STATUS_RST_SF_ERR_zz77" value="0b0" description="No single-bit faults detected during initialization"/>
+      <bit_field_value name="RESET_STATUS_RST_SF_ERR_zz78" value="0b1" description="At least one single ECC fault was detected during initialization"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="RST_DF_ERR" access="RW" reset_value="0" description="ECC Double Fault during Reset Recovery">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_RST_DF_ERR(x)"/>
+      <bit_field_value name="RESET_STATUS_RST_DF_ERR_zz75" value="0b0" description="No double-bit faults detected during initialization"/>
+      <bit_field_value name="RESET_STATUS_RST_DF_ERR_zz76" value="0b1" description="Double-bit ECC fault was detected during initialization"/>
+    </bit_field>
+    <bit_field offset="10" width="8" name="SOC_TRIM_DF_ERR" access="RW" reset_value="0" description="ECC Double Fault during load of SoC Trim phrases">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_SOC_TRIM_DF_ERR(x)"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="RST_PATCH_LD" access="RW" reset_value="0" description="Reset Patch Required">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_RST_PATCH_LD(x)"/>
+      <bit_field_value name="RESET_STATUS_RST_PATCH_LD_zz73" value="0b0" description="No patch required to be loaded during reset"/>
+      <bit_field_value name="RESET_STATUS_RST_PATCH_LD_zz74" value="0b1" description="Patch loaded during reset"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="RECALL_DATA_MISMATCH" access="RW" reset_value="0" description="Recall Data Mismatch">
+      <alias type="CMSIS" value="FMUTEST_RESET_STATUS_RECALL_DATA_MISMATCH(x)"/>
+      <bit_field_value name="RESET_STATUS_RECALL_DATA_MISMATCH_zz71" value="0b0" description="Data read towards end of reset matched data read for Recall"/>
+      <bit_field_value name="RESET_STATUS_RECALL_DATA_MISMATCH_zz72" value="0b1" description="Data read towards end of reset did not match data read for recall"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x104" width="32" name="MCTL" description="FMU Control Register">
+    <alias type="CMSIS" value="MCTL"/>
+    <bit_field offset="0" width="1" name="COREHLD" access="RW" reset_value="0x1" description="Core Hold">
+      <alias type="CMSIS" value="FMUTEST_MCTL_COREHLD(x)"/>
+      <bit_field_value name="MCTL_COREHLD_zz125" value="0b0" description="CPU access is allowed"/>
+      <bit_field_value name="MCTL_COREHLD_zz126" value="0b1" description="CPU access must be blocked"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="1" name="LSACT_EN" access="RW" reset_value="0x1" description="LSACTIVE Feature Enable">
+      <alias type="CMSIS" value="FMUTEST_MCTL_LSACT_EN(x)"/>
+      <bit_field_value name="MCTL_LSACT_EN_zz123" value="0b0" description="LSACTIVE feature disabled completely: FCTRL[LSACTIVE] is forced low and no longer writable, LVE cannot assert at the TSMC array interface."/>
+      <bit_field_value name="MCTL_LSACT_EN_zz124" value="0b1" description="LSACTIVE feature fully enabled and controllable by SoC and internal UINT SM."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="LSACTWREN" access="RW" reset_value="0x1" description="LSACTIVE Write Enable">
+      <alias type="CMSIS" value="FMUTEST_MCTL_LSACTWREN(x)"/>
+      <bit_field_value name="MCTL_LSACTWREN_zz121" value="0b0" description="Unrestricted write access allowed"/>
+      <bit_field_value name="MCTL_LSACTWREN_zz122" value="0b1" description="Write access while CMP set must match CMDDID and CMDPRT"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MASTER_REPAIR_EN" access="RW" reset_value="0x1" description="Master Repair Enable">
+      <alias type="CMSIS" value="FMUTEST_MCTL_MASTER_REPAIR_EN(x)"/>
+      <bit_field_value name="MCTL_MASTER_REPAIR_EN_zz119" value="0b0" description="Repair disabled"/>
+      <bit_field_value name="MCTL_MASTER_REPAIR_EN_zz120" value="0b1" description="Repair enable determined by bit 0 of each REPAIR register"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="RFCMDEN" access="RW" reset_value="0x1" description="RF Active Command Enable Control">
+      <alias type="CMSIS" value="FMUTEST_MCTL_RFCMDEN(x)"/>
+      <bit_field_value name="MCTL_RFCMDEN_zz117" value="0b0" description="Flash commands blocked (CCIF not writable)"/>
+      <bit_field_value name="MCTL_RFCMDEN_zz118" value="0b1" description="Flash commands allowed"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CWSABTEN" access="RW" reset_value="0x1" description="Command Write Sequence Abort Enable">
+      <alias type="CMSIS" value="FMUTEST_MCTL_CWSABTEN(x)"/>
+      <bit_field_value name="MCTL_CWSABTEN_zz115" value="0b0" description="CWS abort feature is disabled"/>
+      <bit_field_value name="MCTL_CWSABTEN_zz116" value="0b1" description="CWS abort feature is enabled"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="MRGRDDIS" access="RW" reset_value="0x1" description="Margin Read Disable">
+      <alias type="CMSIS" value="FMUTEST_MCTL_MRGRDDIS(x)"/>
+      <bit_field_value name="MCTL_MRGRDDIS_zz113" value="0b0" description="Margin Read Settings are enabled"/>
+      <bit_field_value name="MCTL_MRGRDDIS_zz114" value="0b1" description="Margin Read Settings are disabled"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="MRGRD0" access="RW" reset_value="0x8" description="Margin Read Setting for Program">
+      <alias type="CMSIS" value="FMUTEST_MCTL_MRGRD0(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="MRGRD1" access="RW" reset_value="0x4" description="Margin Read Setting for Erase">
+      <alias type="CMSIS" value="FMUTEST_MCTL_MRGRD1(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="ERSAACK" access="RW" reset_value="0" description="Mass Erase (Erase All) Acknowledge">
+      <alias type="CMSIS" value="FMUTEST_MCTL_ERSAACK(x)"/>
+      <bit_field_value name="MCTL_ERSAACK_zz111" value="0b0" description="Mass Erase operation is not active (operation has completed or has not started)"/>
+      <bit_field_value name="MCTL_ERSAACK_zz112" value="0b1" description="Mass Erase operation is active (controller acknowledges that the soc_ersall_req input is asserted and will continue with the operation)"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="2" reset_value="0"/>
+    <bit_field offset="19" width="1" name="SCAN_OBS" access="RW" reset_value="0" description="Scan Observability Control">
+      <alias type="CMSIS" value="FMUTEST_MCTL_SCAN_OBS(x)"/>
+      <bit_field_value name="MCTL_SCAN_OBS_zz109" value="0b0" description="Normal functional behavior"/>
+      <bit_field_value name="MCTL_SCAN_OBS_zz110" value="0b1" description="Enables observation of signals that may otherwise be ATPG untestable"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="BIST_CTL" access="RW" reset_value="0x1" description="BIST IP Control">
+      <alias type="CMSIS" value="FMUTEST_MCTL_BIST_CTL(x)"/>
+      <bit_field_value name="MCTL_BIST_CTL_zz107" value="0b0" description="BIST IP disabled"/>
+      <bit_field_value name="MCTL_BIST_CTL_zz108" value="0b1" description="BIST IP enabled"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="SMWR_CTL" access="RW" reset_value="0x1" description="SMWR IP Control">
+      <alias type="CMSIS" value="FMUTEST_MCTL_SMWR_CTL(x)"/>
+      <bit_field_value name="MCTL_SMWR_CTL_zz105" value="0b0" description="SMWR IP disabled"/>
+      <bit_field_value name="MCTL_SMWR_CTL_zz106" value="0b1" description="SMWR IP enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="1" reset_value="0"/>
+    <reserved_bit_field offset="23" width="1" reset_value="0"/>
+    <bit_field offset="24" width="1" name="SALV_DIS" access="RW" reset_value="0x1" description="Salvage Disable">
+      <alias type="CMSIS" value="FMUTEST_MCTL_SALV_DIS(x)"/>
+      <bit_field_value name="MCTL_SALV_DIS_zz103" value="0b0" description="Salvage enabled (ECC used during erase verify)"/>
+      <bit_field_value name="MCTL_SALV_DIS_zz104" value="0b1" description="Salvage disabled (ECC not used during erase verify)"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="SOC_ECC_CTL" access="RW" reset_value="0" description="SOC ECC Control">
+      <alias type="CMSIS" value="FMUTEST_MCTL_SOC_ECC_CTL(x)"/>
+      <bit_field_value name="MCTL_SOC_ECC_CTL_zz101" value="0b0" description="ECC is enabled for SOC read access"/>
+      <bit_field_value name="MCTL_SOC_ECC_CTL_zz102" value="0b1" description="ECC is disabled for SOC read access"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="FMU_ECC_CTL" access="RW" reset_value="0" description="FMU ECC Control">
+      <alias type="CMSIS" value="FMUTEST_MCTL_FMU_ECC_CTL(x)"/>
+      <bit_field_value name="MCTL_FMU_ECC_CTL_zz99" value="0b0" description="ECC is enabled for FMU program operations"/>
+      <bit_field_value name="MCTL_FMU_ECC_CTL_zz100" value="0b1" description="ECC is disabled for FMU program operations"/>
+    </bit_field>
+    <reserved_bit_field offset="27" width="1" reset_value="0"/>
+    <reserved_bit_field offset="28" width="1" reset_value="0"/>
+    <bit_field offset="29" width="1" name="BIST_PWR_DIS" access="RW" reset_value="0x1" description="BIST Power Mode Disable">
+      <alias type="CMSIS" value="FMUTEST_MCTL_BIST_PWR_DIS(x)"/>
+      <bit_field_value name="MCTL_BIST_PWR_DIS_zz97" value="0b0" description="BIST DFT logic has full control of SLM and LVE when BIST is enabled (including during commands)"/>
+      <bit_field_value name="MCTL_BIST_PWR_DIS_zz98" value="0b1" description="BIST DFT logic has no control of SLM and LVE; power mode RTL is in complete control of SLM and LVE values"/>
+    </bit_field>
+    <reserved_bit_field offset="30" width="1" reset_value="0"/>
+    <bit_field offset="31" width="1" name="OSC_H" access="RW" reset_value="0" description="Oscillator control">
+      <alias type="CMSIS" value="FMUTEST_MCTL_OSC_H(x)"/>
+      <bit_field_value name="MCTL_OSC_H_zz95" value="0b0" description="Use APB clock"/>
+      <bit_field_value name="MCTL_OSC_H_zz96" value="0b1" description="Use a known fixed-frequency clock, e.g. 12 MHz"/>
+    </bit_field>
+  </register>
+  <register offset="0x108" width="32" name="BSEL_GEN" description="FMU Block Select Generation Register">
+    <alias type="CMSIS" value="BSEL_GEN"/>
+    <bit_field offset="0" width="2" name="SBSEL_GEN" access="RO" reset_value="0x1" description="Generated SBSEL">
+      <alias type="CMSIS" value="FMUTEST_BSEL_GEN_SBSEL_GEN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <bit_field offset="8" width="2" name="MBSEL_GEN" access="RO" reset_value="0x3" description="Generated MBSEL">
+      <alias type="CMSIS" value="FMUTEST_BSEL_GEN_MBSEL_GEN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="22" reset_value="0"/>
+  </register>
+  <register offset="0x10C" width="32" name="PWR_OPT" description="Power Mode Options Register">
+    <alias type="CMSIS" value="PWR_OPT"/>
+    <bit_field offset="0" width="8" name="PD_CDIV" access="RW" reset_value="0x32" description="Power Down Clock Divider Setting">
+      <alias type="CMSIS" value="FMUTEST_PWR_OPT_PD_CDIV(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="10" name="SLM_COUNT" access="RW" reset_value="0xFA" description="Sleep Recovery Timer Count">
+      <alias type="CMSIS" value="FMUTEST_PWR_OPT_SLM_COUNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="5" reset_value="0"/>
+    <bit_field offset="31" width="1" name="PD_TIMER_EN" access="RW" reset_value="0x1" description="Power Down BIST Timer Enable">
+      <alias type="CMSIS" value="FMUTEST_PWR_OPT_PD_TIMER_EN(x)"/>
+      <bit_field_value name="PWR_OPT_PD_TIMER_EN_zz127" value="0b0" description="BIST timer is not triggered during Power Down recovery"/>
+      <bit_field_value name="PWR_OPT_PD_TIMER_EN_zz128" value="0b1" description="BIST timer is triggered during Power Down recovery (default behavior)"/>
+    </bit_field>
+  </register>
+  <register offset="0x110" width="32" name="CMD_CHECK" description="FMU Command Check Register">
+    <alias type="CMSIS" value="CMD_CHECK"/>
+    <bit_field offset="0" width="1" name="ALIGNFAIL_PHR" access="RO" reset_value="0" description="Phrase Alignment Fail">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_ALIGNFAIL_PHR(x)"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_PHR_zz149" value="0b0" description="The address is phrase-aligned"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_PHR_zz150" value="0b1" description="The address is not phrase-aligned"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ALIGNFAIL_PG" access="RO" reset_value="0" description="Page Alignment Fail">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_ALIGNFAIL_PG(x)"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_PG_zz147" value="0b0" description="The address is page-aligned"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_PG_zz148" value="0b1" description="The address is not page-aligned"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ALIGNFAIL_SCR" access="RO" reset_value="0" description="Sector Alignment Fail">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_ALIGNFAIL_SCR(x)"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_SCR_zz145" value="0b0" description="The address is sector-aligned"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_SCR_zz146" value="0b1" description="The address is not sector-aligned"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ALIGNFAIL_BLK" access="RO" reset_value="0" description="Block Alignment Fail">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_ALIGNFAIL_BLK(x)"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_BLK_zz143" value="0b0" description="The address is block-aligned"/>
+      <bit_field_value name="CMD_CHECK_ALIGNFAIL_BLK_zz144" value="0b1" description="The address is not block-aligned"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="ADDR_FAIL" access="RO" reset_value="0" description="Address Fail">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_ADDR_FAIL(x)"/>
+      <bit_field_value name="CMD_CHECK_ADDR_FAIL_zz141" value="0b0" description="The address is within the flash or IFR address space"/>
+      <bit_field_value name="CMD_CHECK_ADDR_FAIL_zz142" value="0b1" description="The address is outside the flash or IFR address space"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="IFR_CMD" access="RO" reset_value="0" description="IFR Command">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_IFR_CMD(x)"/>
+      <bit_field_value name="CMD_CHECK_IFR_CMD_zz139" value="0b0" description="The command operates on a main flash address"/>
+      <bit_field_value name="CMD_CHECK_IFR_CMD_zz140" value="0b1" description="The command operates on an IFR address"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="ALL_CMD" access="RO" reset_value="0x1" description="All Blocks Command">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_ALL_CMD(x)"/>
+      <bit_field_value name="CMD_CHECK_ALL_CMD_zz137" value="0b0" description="The command operates on a single flash block"/>
+      <bit_field_value name="CMD_CHECK_ALL_CMD_zz138" value="0b1" description="The command operates on all flash blocks"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="RANGE_FAIL" access="RO" reset_value="0" description="Address Range Fail">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_RANGE_FAIL(x)"/>
+      <bit_field_value name="CMD_CHECK_RANGE_FAIL_zz135" value="0b0" description="The address range is valid"/>
+      <bit_field_value name="CMD_CHECK_RANGE_FAIL_zz136" value="0b1" description="The address range is invalid"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="SCR_ALIGN_CHK" access="RO" reset_value="0" description="Sector Alignment Check">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_SCR_ALIGN_CHK(x)"/>
+      <bit_field_value name="CMD_CHECK_SCR_ALIGN_CHK_zz133" value="0b0" description="No sector alignment check"/>
+      <bit_field_value name="CMD_CHECK_SCR_ALIGN_CHK_zz134" value="0b1" description="Sector alignment check"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="OPTION_FAIL" access="RO" reset_value="0" description="Option Check Fail">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_OPTION_FAIL(x)"/>
+      <bit_field_value name="CMD_CHECK_OPTION_FAIL_zz131" value="0b0" description="Option check passes for read command or command is not a read command"/>
+      <bit_field_value name="CMD_CHECK_OPTION_FAIL_zz132" value="0b1" description="Option check fails for read command"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="ILLEGAL_CMD" access="RO" reset_value="0" description="Illegal Command">
+      <alias type="CMSIS" value="FMUTEST_CMD_CHECK_ILLEGAL_CMD(x)"/>
+      <bit_field_value name="CMD_CHECK_ILLEGAL_CMD_zz129" value="0b0" description="Command is legal"/>
+      <bit_field_value name="CMD_CHECK_ILLEGAL_CMD_zz130" value="0b1" description="Command is illegal"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="21" reset_value="0"/>
+  </register>
+  <register offset="0x120" width="32" name="BSEL" description="FMU Block Select Register">
+    <alias type="CMSIS" value="BSEL"/>
+    <bit_field offset="0" width="2" name="SBSEL" access="RW" reset_value="0x1" description="Slave Block Select">
+      <alias type="CMSIS" value="FMUTEST_BSEL_SBSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <bit_field offset="8" width="2" name="MBSEL" access="RW" reset_value="0x1" description="Master Block Select">
+      <alias type="CMSIS" value="FMUTEST_BSEL_MBSEL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="22" reset_value="0"/>
+  </register>
+  <register offset="0x124" width="32" name="MSIZE" description="FMU Memory Size Register">
+    <alias type="CMSIS" value="MSIZE"/>
+    <bit_field offset="0" width="8" name="MAXADDR0" access="RW" reset_value="0x20" description="Size of Flash Block 0">
+      <alias type="CMSIS" value="FMUTEST_MSIZE_MAXADDR0(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="MAXADDR1" access="RW" reset_value="0x20" description="Size of Flash Block 1">
+      <alias type="CMSIS" value="FMUTEST_MSIZE_MAXADDR1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x128" width="32" name="FLASH_RD_ADD" description="Flash Read Address Register">
+    <alias type="CMSIS" value="FLASH_RD_ADD"/>
+    <bit_field offset="0" width="32" name="FLASH_RD_ADD" access="RW" reset_value="0" description="Flash Read Address">
+      <alias type="CMSIS" value="FMUTEST_FLASH_RD_ADD_FLASH_RD_ADD(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x130" width="32" name="FLASH_STOP_ADD" description="Flash Stop Address Register">
+    <alias type="CMSIS" value="FLASH_STOP_ADD"/>
+    <bit_field offset="0" width="32" name="FLASH_STOP_ADD" access="RW" reset_value="0" description="Flash Stop Address">
+      <alias type="CMSIS" value="FMUTEST_FLASH_STOP_ADD_FLASH_STOP_ADD(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x134" width="32" name="FLASH_RD_CTRL" description="Flash Read Control Register">
+    <alias type="CMSIS" value="FLASH_RD_CTRL"/>
+    <bit_field offset="0" width="1" name="FLASH_RD" access="RW" reset_value="0" description="Flash Read Enable">
+      <alias type="CMSIS" value="FMUTEST_FLASH_RD_CTRL_FLASH_RD(x)"/>
+      <bit_field_value name="FLASH_RD_CTRL_FLASH_RD_zz155" value="0b0" description="Manual flash read not enabled.(default)"/>
+      <bit_field_value name="FLASH_RD_CTRL_FLASH_RD_zz156" value="0b1" description="Manual flash read enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="WIDE_LOAD" access="RW" reset_value="0" description="Wide Load Enable">
+      <alias type="CMSIS" value="FMUTEST_FLASH_RD_CTRL_WIDE_LOAD(x)"/>
+      <bit_field_value name="FLASH_RD_CTRL_WIDE_LOAD_zz153" value="0b0" description="Wide load mode disabled (default)"/>
+      <bit_field_value name="FLASH_RD_CTRL_WIDE_LOAD_zz154" value="0b1" description="Wide load mode enabled"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="SINGLE_RD" access="RW" reset_value="0" description="Single Flash Read">
+      <alias type="CMSIS" value="FMUTEST_FLASH_RD_CTRL_SINGLE_RD(x)"/>
+      <bit_field_value name="FLASH_RD_CTRL_SINGLE_RD_zz151" value="0b0" description="Normal UINT operation"/>
+      <bit_field_value name="FLASH_RD_CTRL_SINGLE_RD_zz152" value="0b1" description="UINT configured for single cycle reads"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x138" width="32" name="MM_ADDR" description="Memory Map Address Register">
+    <alias type="CMSIS" value="MM_ADDR"/>
+    <bit_field offset="0" width="32" name="MM_ADDR" access="RW" reset_value="0" description="Memory Map Address">
+      <alias type="CMSIS" value="FMUTEST_MM_ADDR_MM_ADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x140" width="32" name="MM_WDATA" description="Memory Map Write Data Register">
+    <alias type="CMSIS" value="MM_WDATA"/>
+    <bit_field offset="0" width="32" name="MM_WDATA" access="RW" reset_value="0" description="Memory Map Write Data">
+      <alias type="CMSIS" value="FMUTEST_MM_WDATA_MM_WDATA(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x144" width="32" name="MM_CTL" description="Memory Map Control Register">
+    <alias type="CMSIS" value="MM_CTL"/>
+    <bit_field offset="0" width="1" name="MM_SEL" access="RW" reset_value="0" description="Register Access Enable">
+      <alias type="CMSIS" value="FMUTEST_MM_CTL_MM_SEL(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="MM_RD" access="RW" reset_value="0" description="Register R/W Control">
+      <alias type="CMSIS" value="FMUTEST_MM_CTL_MM_RD(x)"/>
+      <bit_field_value name="MM_CTL_MM_RD_zz161" value="0b0" description="Write to register"/>
+      <bit_field_value name="MM_CTL_MM_RD_zz162" value="0b1" description="Read register"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="BIST_ON" access="RW" reset_value="0" description="BIST on">
+      <alias type="CMSIS" value="FMUTEST_MM_CTL_BIST_ON(x)"/>
+      <bit_field_value name="MM_CTL_BIST_ON_zz159" value="0b0" description="BIST enable not forced by user interface"/>
+      <bit_field_value name="MM_CTL_BIST_ON_zz160" value="0b1" description="BIST enable control by user interface"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FORCE_SW_CLK" access="RW" reset_value="0" description="Force Switch Clock">
+      <alias type="CMSIS" value="FMUTEST_MM_CTL_FORCE_SW_CLK(x)"/>
+      <bit_field_value name="MM_CTL_FORCE_SW_CLK_zz157" value="0b0" description="Switch clock not forced on (gated normally)"/>
+      <bit_field_value name="MM_CTL_FORCE_SW_CLK_zz158" value="0b1" description="Switch clock forced on"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x148" width="32" name="UINT_CTL" description="User Interface Control Register">
+    <alias type="CMSIS" value="UINT_CTL"/>
+    <bit_field offset="0" width="1" name="SET_FAIL" access="RW" reset_value="0" description="Set Fail On Exit">
+      <alias type="CMSIS" value="FMUTEST_UINT_CTL_SET_FAIL(x)"/>
+      <bit_field_value name="UINT_CTL_SET_FAIL_zz165" value="0b0" description="FAIL flag should not be set on command exit (no failure detected)"/>
+      <bit_field_value name="UINT_CTL_SET_FAIL_zz166" value="0b1" description="FAIL flag should be set on command exit"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="DBERR" access="RW" reset_value="0" description="Double-Bit ECC Fault Detect">
+      <alias type="CMSIS" value="FMUTEST_UINT_CTL_DBERR(x)"/>
+      <bit_field_value name="UINT_CTL_DBERR_zz163" value="0b0" description="No double-bit fault detected during UINT-driven read sequence"/>
+      <bit_field_value name="UINT_CTL_DBERR_zz164" value="0b1" description="Double-bit fault detected during UINT-driven read sequence"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <reg_instance rid="332" vals="0x14C 0"/>
+  <reg_instance rid="332" vals="0x150 1"/>
+  <reg_instance rid="332" vals="0x154 2"/>
+  <reg_instance rid="332" vals="0x158 3"/>
+  <register offset="0x15C" width="32" name="PARITY" description="Parity Register">
+    <alias type="CMSIS" value="PARITY"/>
+    <bit_field offset="0" width="9" name="PARITY" access="RW" reset_value="0" description="Read data [136:128]">
+      <alias type="CMSIS" value="FMUTEST_PARITY_PARITY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0"/>
+  </register>
+  <register offset="0x160" width="32" name="RD_PATH_CTRL_STATUS" description="Read Path Control and Status Register">
+    <alias type="CMSIS" value="RD_PATH_CTRL_STATUS"/>
+    <bit_field offset="0" width="8" name="RD_CAPT" access="RW" reset_value="0" description="Read Capture Clock Periods">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_RD_CAPT(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="SE_SIZE" access="RW" reset_value="0" description="SE Clock Periods">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_SE_SIZE(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="ECC_ENABLEB" access="RW" reset_value="0" description="ECC Decoder Control">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_ECC_ENABLEB(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_ECC_ENABLEB_zz189" value="0b0" description="ECC decoder enabled (default)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_ECC_ENABLEB_zz190" value="0b1" description="ECC decoder disabled"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="MISR_EN" access="RW" reset_value="0" description="MISR Enable">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_MISR_EN(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_MISR_EN_zz187" value="0b0" description="MISR option disabled (default)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_MISR_EN_zz188" value="0b1" description="MISR option enabled"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="CPY_PAR_EN" access="RW" reset_value="0" description="Copy Parity Enable">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_CPY_PAR_EN(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_CPY_PAR_EN_zz185" value="0b0" description="Copy parity disabled"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_CPY_PAR_EN_zz186" value="0b1" description="Copy parity enabled"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="BIST_MUX_TO_SMW" access="RW" reset_value="0" description="BIST Mux to SMW">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_BIST_MUX_TO_SMW(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_BIST_MUX_TO_SMW_zz183" value="0b0" description="BIST drives fields"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_BIST_MUX_TO_SMW_zz184" value="0b1" description="SMW registers drive fields"/>
+    </bit_field>
+    <bit_field offset="20" width="4" name="AD_SET" access="RW" reset_value="0" description="Multi-Cycle Address Setup Time">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_AD_SET(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="WR_PATH_EN" access="RW" reset_value="0" description="Write Path Enable">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_WR_PATH_EN(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_WR_PATH_EN_zz181" value="0b0" description="Writes to BIST setting registers driven by MM_WDATA"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_WR_PATH_EN_zz182" value="0b1" description="Writes to BIST setting registers driven by SMW_DIN"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="WR_PATH_ECC_EN" access="RW" reset_value="0" description="Write Path ECC Enable">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_WR_PATH_ECC_EN(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_WR_PATH_ECC_EN_zz179" value="0b0" description="ECC encoding disabled"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_WR_PATH_ECC_EN_zz180" value="0b1" description="ECC encoding enabled"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="DBERR_REG" access="RO" reset_value="0" description="Double-Bit Error">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_DBERR_REG(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_DBERR_REG_zz177" value="0b0" description="Double-bit fault not detected"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_DBERR_REG_zz178" value="0b1" description="Double-bit fault detected on previous UINT flash read"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="SBERR_REG" access="RO" reset_value="0" description="Single-Bit Error">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_SBERR_REG(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_SBERR_REG_zz175" value="0b0" description="Single-bit fault not detected"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_SBERR_REG_zz176" value="0b1" description="Single-bit fault detected on previous UINT flash read"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="CPY_PHRASE_EN" access="RW" reset_value="0" description="Copy Phrase Enable">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_CPY_PHRASE_EN(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_CPY_PHRASE_EN_zz173" value="0b0" description="Copy Flash read data disabled"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_CPY_PHRASE_EN_zz174" value="0b1" description="Copy Flash read data enabled"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="SMW_ARRAY1_SMW0_SEL" access="RW" reset_value="0" description="SMW_ARRAY1_SMW0_SEL">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_SMW_ARRAY1_SMW0_SEL(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_SMW_ARRAY1_SMW0_SEL_zz171" value="0b0" description="Select block 0"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_SMW_ARRAY1_SMW0_SEL_zz172" value="0b1" description="Select block 1"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="BIST_ECC_EN" access="RW" reset_value="0" description="BIST ECC Enable">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_BIST_ECC_EN(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_BIST_ECC_EN_zz169" value="0b0" description="ECC correction disabled"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_BIST_ECC_EN_zz170" value="0b1" description="ECC correction enabled"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="LAST_READ" access="RW" reset_value="0" description="Last Read">
+      <alias type="CMSIS" value="FMUTEST_RD_PATH_CTRL_STATUS_LAST_READ(x)"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_LAST_READ_zz167" value="0b0" description="Latest read not last in multi-address operation"/>
+      <bit_field_value name="RD_PATH_CTRL_STATUS_LAST_READ_zz168" value="0b1" description="Latest read last in multi-address operation"/>
+    </bit_field>
+  </register>
+  <reg_instance rid="356" vals="0x164 0"/>
+  <reg_instance rid="356" vals="0x168 1"/>
+  <reg_instance rid="356" vals="0x16C 2"/>
+  <reg_instance rid="356" vals="0x170 3"/>
+  <register offset="0x174" width="32" name="SMW_ADDR" description="SMW Address Register">
+    <alias type="CMSIS" value="SMW_ADDR"/>
+    <bit_field offset="0" width="32" name="SMW_ADDR" access="RW" reset_value="0" description="SMW Address">
+      <alias type="CMSIS" value="FMUTEST_SMW_ADDR_SMW_ADDR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x178" width="32" name="SMW_CMD_WAIT" description="SMW Command and Wait Register">
+    <alias type="CMSIS" value="SMW_CMD_WAIT"/>
+    <bit_field offset="0" width="3" name="CMD" access="RW" reset_value="0" description="SMW Command">
+      <alias type="CMSIS" value="FMUTEST_SMW_CMD_WAIT_CMD(x)"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz193" value="0b000" description="IDLE"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz194" value="0b001" description="ABORT"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz195" value="0b010" description="SME2 to one-shot mass erase"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz196" value="0b011" description="SME3 to sector erase on selected array"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz197" value="0b100" description="SMP1 to program phrase or page on selected array with shot disabled on previously programmed bit"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz198" value="0b101" description="Reserved for SME4 (multi-sector erase)"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz199" value="0b110" description="SMP2 to program phrase or page on selected array to repair cells of weak program after power loss"/>
+      <bit_field_value name="SMW_CMD_WAIT_CMD_zz200" value="0b111" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="WAIT_EN" access="RW" reset_value="0" description="SMW Wait Enable">
+      <alias type="CMSIS" value="FMUTEST_SMW_CMD_WAIT_WAIT_EN(x)"/>
+      <bit_field_value name="SMW_CMD_WAIT_WAIT_EN_zz191" value="0b0" description="Wait feature disabled"/>
+      <bit_field_value name="SMW_CMD_WAIT_WAIT_EN_zz192" value="0b1" description="Wait feature enabled"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="WAIT_AUTO_SET" access="RW" reset_value="0" description="SMW Wait Auto Set">
+      <alias type="CMSIS" value="FMUTEST_SMW_CMD_WAIT_WAIT_AUTO_SET(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="27" reset_value="0"/>
+  </register>
+  <register offset="0x17C" width="32" name="SMW_STATUS" description="SMW Status Register">
+    <alias type="CMSIS" value="SMW_STATUS"/>
+    <bit_field offset="0" width="1" name="SMW_ERR" access="RO" reset_value="0" description="SMW Error">
+      <alias type="CMSIS" value="FMUTEST_SMW_STATUS_SMW_ERR(x)"/>
+      <bit_field_value name="SMW_STATUS_SMW_ERR_zz205" value="0b0" description="Error not detected"/>
+      <bit_field_value name="SMW_STATUS_SMW_ERR_zz206" value="0b1" description="Error detected"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SMW_BUSY" access="RO" reset_value="0" description="SMW Busy">
+      <alias type="CMSIS" value="FMUTEST_SMW_STATUS_SMW_BUSY(x)"/>
+      <bit_field_value name="SMW_STATUS_SMW_BUSY_zz203" value="0b0" description="SMW command not active"/>
+      <bit_field_value name="SMW_STATUS_SMW_BUSY_zz204" value="0b1" description="SMW command is active"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="BIST_BUSY" access="RO" reset_value="0" description="BIST Busy">
+      <alias type="CMSIS" value="FMUTEST_SMW_STATUS_BIST_BUSY(x)"/>
+      <bit_field_value name="SMW_STATUS_BIST_BUSY_zz201" value="0b0" description="BIST Command not active"/>
+      <bit_field_value name="SMW_STATUS_BIST_BUSY_zz202" value="0b1" description="BIST Command is active"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <reg_instance rid="384" vals="0x180 0 0"/>
+  <reg_instance rid="384" vals="0x184 0 1"/>
+  <reg_instance rid="384" vals="0x188 0 2"/>
+  <reg_instance rid="384" vals="0x18C 0 3"/>
+  <reg_instance rid="384" vals="0x190 1 0"/>
+  <reg_instance rid="384" vals="0x194 1 1"/>
+  <reg_instance rid="384" vals="0x198 1 2"/>
+  <reg_instance rid="384" vals="0x19C 1 3"/>
+  <reg_instance rid="384" vals="0x1A0 2 0"/>
+  <reg_instance rid="384" vals="0x1A4 2 1"/>
+  <reg_instance rid="384" vals="0x1A8 2 2"/>
+  <reg_instance rid="384" vals="0x1AC 2 3"/>
+  <reg_instance rid="384" vals="0x1B0 3 0"/>
+  <reg_instance rid="384" vals="0x1B4 3 1"/>
+  <reg_instance rid="384" vals="0x1B8 3 2"/>
+  <reg_instance rid="384" vals="0x1BC 3 3"/>
+  <reg_instance rid="384" vals="0x1C0 4 0"/>
+  <reg_instance rid="384" vals="0x1C4 4 1"/>
+  <reg_instance rid="384" vals="0x1C8 4 2"/>
+  <reg_instance rid="384" vals="0x1CC 4 3"/>
+  <reg_instance rid="384" vals="0x1D0 5 0"/>
+  <reg_instance rid="384" vals="0x1D4 5 1"/>
+  <reg_instance rid="384" vals="0x1D8 5 2"/>
+  <reg_instance rid="384" vals="0x1DC 5 3"/>
+  <reg_instance rid="384" vals="0x1E0 6 0"/>
+  <reg_instance rid="384" vals="0x1E4 6 1"/>
+  <reg_instance rid="384" vals="0x1E8 6 2"/>
+  <reg_instance rid="384" vals="0x1EC 6 3"/>
+  <reg_instance rid="384" vals="0x1F0 7 0"/>
+  <reg_instance rid="384" vals="0x1F4 7 1"/>
+  <reg_instance rid="384" vals="0x1F8 7 2"/>
+  <reg_instance rid="384" vals="0x1FC 7 3"/>
+  <register offset="0x204" width="32" name="R_IP_CONFIG" description="BIST Configuration Register">
+    <alias type="CMSIS" value="R_IP_CONFIG"/>
+    <bit_field offset="0" width="2" name="IPSEL0" access="RW" reset_value="0" description="Block 0 Select Control">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_IPSEL0(x)"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL0_zz223" value="0b00" description="Unselect block 0"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL0_zz224" value="0b01" description="not used, reserved"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL0_zz225" value="0b10" description="Enable block 0 test, repair off (default)"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL0_zz226" value="0b11" description="Enable block 0 test, repair on"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="IPSEL1" access="RW" reset_value="0" description="Block 1 Select Control">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_IPSEL1(x)"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL1_zz219" value="0b00" description="Unselect block 1"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL1_zz220" value="0b01" description="not used, reserved"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL1_zz221" value="0b10" description="Enable block 1 test, repair off (default)"/>
+      <bit_field_value name="R_IP_CONFIG_IPSEL1_zz222" value="0b11" description="Enable block 1 test, repair on"/>
+    </bit_field>
+    <bit_field offset="4" width="8" name="BIST_CDIVL" access="RW" reset_value="0" description="Clock Divide Scalar for Long Pulse">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_BIST_CDIVL(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="CDIVS" access="RW" reset_value="0" description="Number of clock cycles to generate short pulse">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_CDIVS(x)"/>
+    </bit_field>
+    <bit_field offset="15" width="5" name="BIST_TVFY" access="RW" reset_value="0" description="Timer adjust for verify">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_BIST_TVFY(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="2" name="TSTCTL" access="RW" reset_value="0" description="BIST self-test control">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_TSTCTL(x)"/>
+      <bit_field_value name="R_IP_CONFIG_TSTCTL_zz215" value="0b00" description="Default, disable both BIST self-test and MISR"/>
+      <bit_field_value name="R_IP_CONFIG_TSTCTL_zz216" value="0b01" description="Enable BIST self-test mode DOUT from macro will be forced to '0', and disable MISR."/>
+      <bit_field_value name="R_IP_CONFIG_TSTCTL_zz217" value="0b10" description="Enable MISR"/>
+      <bit_field_value name="R_IP_CONFIG_TSTCTL_zz218" value="0b11" description="Enable both BIST self-test mode and MISR"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="DBGCTL" access="RW" reset_value="0" description="Debug feature control">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_DBGCTL(x)"/>
+      <bit_field_value name="R_IP_CONFIG_DBGCTL_zz213" value="0b0" description="Default"/>
+      <bit_field_value name="R_IP_CONFIG_DBGCTL_zz214" value="0b1" description="Enable debug feature to collect failure address and data."/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="BIST_CLK_SEL" access="RW" reset_value="0" description="BIST Clock Select">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_BIST_CLK_SEL(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="SMWTST" access="RW" reset_value="0" description="SMWR DOUT Function Control">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_SMWTST(x)"/>
+      <bit_field_value name="R_IP_CONFIG_SMWTST_zz209" value="0b00" description="Default"/>
+      <bit_field_value name="R_IP_CONFIG_SMWTST_zz210" value="0b01" description="Enable SMWR self-test mode, DOUT from macro will be forced to all 0"/>
+      <bit_field_value name="R_IP_CONFIG_SMWTST_zz211" value="0b10" description="Enable SMWR self-test mode, DOUT from macro will be forced to all 1"/>
+      <bit_field_value name="R_IP_CONFIG_SMWTST_zz212" value="0b11" description="Reserved (unused)"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="ECCEN" access="RW" reset_value="0" description="BIST ECC Control">
+      <alias type="CMSIS" value="FMUTEST_R_IP_CONFIG_ECCEN(x)"/>
+      <bit_field_value name="R_IP_CONFIG_ECCEN_zz207" value="0b0" description="Default mode (no ECC encode or decode)"/>
+      <bit_field_value name="R_IP_CONFIG_ECCEN_zz208" value="0b1" description="Enable ECC encode/decode"/>
+    </bit_field>
+    <reserved_bit_field offset="27" width="5" reset_value="0"/>
+  </register>
+  <register offset="0x208" width="32" name="R_TESTCODE" description="BIST Test Code Register">
+    <alias type="CMSIS" value="R_TESTCODE"/>
+    <bit_field offset="0" width="6" name="TESTCODE" access="RW" reset_value="0" description="Used to store test code information before running TMR-RST/TMRSET BIST command">
+      <alias type="CMSIS" value="FMUTEST_R_TESTCODE_TESTCODE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="26" reset_value="0"/>
+  </register>
+  <register offset="0x20C" width="32" name="R_DFT_CTRL" description="BIST DFT Control Register">
+    <alias type="CMSIS" value="R_DFT_CTRL"/>
+    <bit_field offset="0" width="4" name="DFT_XADR" access="RW" reset_value="0" description="DFT XADR Pattern">
+      <alias type="CMSIS" value="FMUTEST_R_DFT_CTRL_DFT_XADR(x)"/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz252" value="0b0000" description="XADR fixed, no change at all"/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz253" value="0b0001" description="XADR increased by 1 after row. For READ operation, XADR increases by 1 after reading the last word of row. For PROG operation, XADR increases by 1 after NVSTR falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz254" value="0b0010" description="XADR increased for diagonal. For PROG-DIAGONAL operation, XADR is increased to create diagonal pattern."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz255" value="0b0011" description="XADR increased by sector. During ERASE operation, XADR increased by number of rows in a sector when NVSTR falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz256" value="0b0100" description="XADR inversed. XADR is inversed after reading one word or after programming one row when NVSTR falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz257" value="0b0101" description="XADR increased by 2 after row. For READ operation, XADR is increased by 2 after reading the last word of a row. For PROG operation, XADR is increased by 2 when NVSTR falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz258" value="0b0110" description="XADR[0] inversed. XADR[0] is inversed after reading one word or after programming one row when NVSTR falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz259" value="0b0111" description="XADR increased by 1. For READ operations only, XADR increased by 1 after each read cycle."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz260" value="0b1000" description="XADR decreased by 1 after row. For READ operations only, XADR is decreased by 1 after YADR decreases to 0."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_XADR_zz261" value="0b1001" description="XADR decreased by 1. For READ operations only, XADR is decreased by 1 after each read cycle."/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="DFT_YADR" access="RW" reset_value="0" description="DFT YADR Pattern">
+      <alias type="CMSIS" value="FMUTEST_R_DFT_CTRL_DFT_YADR(x)"/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz242" value="0b0000" description="YADR fixed, no change at all"/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz243" value="0b0001" description="YADR for ICKBD. For PROG and READ operations, YADR changed to generate inverse checkerboard pattern."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz244" value="0b0010" description="YADR for CKBD. For PROG and READ operations, YADR changed to generate checkerboard pattern."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz245" value="0b0011" description="YADR increased by 1. For READ operations, YADR increased by 1 after each read cycle. For PROG operations, YADR increased by 1 after YE falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz246" value="0b0100" description="YADR increased for diagonal. For PROG-DIAGONAL operation, YADR is increased to create diagonal pattern."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz247" value="0b0101" description="YADR inversed. YADR is inversed after reading one word or after programming one word when YE falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz248" value="0b0110" description="YADR[0] inversed. YADR[0] is inversed after reading one word or after programming one word when YE falls."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz249" value="0b0111" description="YADR increased by 1 after last row. For READ operations only, YADR is increased by 1 after XADR reaches last row."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz250" value="0b1000" description="YADR decreased by 1. For READ operations only, YADR is decreased by 1 after each read cycle."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_YADR_zz251" value="0b1001" description="YADR decreased by 1 after first row. For READ operations only, YADR is decreased by 1 after XADR decreases to 0."/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="DFT_DATA" access="RW" reset_value="0" description="DFT Data Pattern">
+      <alias type="CMSIS" value="FMUTEST_R_DFT_CTRL_DFT_DATA(x)"/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz232" value="0b0000" description="CKBD pattern. For READ operations only, compare DOUT with checkerboard data pattern for each read cycle."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz233" value="0b0001" description="ICKBD pattern. For READ operations only, compare DOUT with inverse checkerboard data pattern for each read cycle."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz234" value="0b0010" description="Diagonal pattern. Used for READ operations only, compare DOUT to diagonal pattern."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz235" value="0b0011" description="Fixed data pattern. For READ operations, comparison to DOUT for selected groups; refer to R_ADR_CTRL[GRPSEL] for modules with multiple groups."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz236" value="0b0100" description="Random data pattern which will be generated based on the initial seed set in R_DATA; for READ operations, used for DOUT comparison of selected groups. For PROG operations, used to control DIN of selected groups."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz237" value="0b0101" description="DOUT based pattern. For READ operations only, DOUT of selected group will be latched in R_DATA. If more than one group is selected in R_ADR_CTRL[GRPSEL], the group with the lower index will be latched."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz238" value="0b0110" description="R_DATA based pattern. For READ operations, expected DOUT value of selected groups equals to R_DATA when XADR[0]==YADR[0] or ~R_DATA when XADR[0]!=YADR[0]. For PROG operations, DIN of selected groups equals R_DATA when XADR[0]==YADR[0] or ~R_DATA when XADR[0]!=YADR[0]."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz239" value="0b0111" description="SCAN-IO pattern. For READ operations, control expected DOUT value of selected groups to SCAN-IO data pattern. For PROG operations, control DIN of selected groups to SCAN-IO data pattern."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz240" value="0b1000" description="REPAIR set. For PROG operation to IFR1(7,1) and IFR1(7,2), R_REPAIR0_0 and R_REPAIR0_1 or R_REPAIR1_0 and R_REPAIR1_1 will control DIN. For READ operation on IFR1(7,1) and IFR1(7,2), DOUT will be compared against R_REPAIR0_0 and R_REPAIR0_1 or R_REPAIR1_0 andR_REPAIR1_1. When this option is selected, only one flash block can be selected."/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_zz241" value="0b1001" description="REPAIR load. For READ operation only, DOUT from IFR1(7,1) and IFR1(7,2) is loaded to R_REPAIR0 and R_REPAIR1."/>
+    </bit_field>
+    <bit_field offset="12" width="2" name="CMP_MASK" access="RW" reset_value="0" description="Data Compare Mask">
+      <alias type="CMSIS" value="FMUTEST_R_DFT_CTRL_CMP_MASK(x)"/>
+      <bit_field_value name="R_DFT_CTRL_CMP_MASK_zz229" value="0b00" description="Expected data is compared to DOUT"/>
+      <bit_field_value name="R_DFT_CTRL_CMP_MASK_zz230" value="0b01" description="Expected data (only 0s are considered) are compared to DOUT"/>
+      <bit_field_value name="R_DFT_CTRL_CMP_MASK_zz231" value="0b10" description="Expected data (only 1s are considered) are compared to DOUT"/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="DFT_DATA_SRC" access="RW" reset_value="0" description="DFT Data Source">
+      <alias type="CMSIS" value="FMUTEST_R_DFT_CTRL_DFT_DATA_SRC(x)"/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_SRC_zz227" value="0b0" description="{R_DATA_CTRL0,R_DATA_CTRL_EX[2:0],R_DATA_CTRL0,R_DATA_CTRL_EX[2:0],R_DATA_CTRL0,R_DATA_CTRL_EX[2:0],R_DATA_CTRL0} is used"/>
+      <bit_field_value name="R_DFT_CTRL_DFT_DATA_SRC_zz228" value="0b1" description="{R_DATA_CTRL3,R_DATA_CTRL2_EX[2:0],R_DATA_CTRL2,R_DATA_CTRL1_EX[2:0],R_DATA_CTRL1,R_DATA_CTRL_EX[2:0],R_DATA_CTRL0} is used"/>
+    </bit_field>
+    <reserved_bit_field offset="15" width="17" reset_value="0"/>
+  </register>
+  <register offset="0x210" width="32" name="R_ADR_CTRL" description="BIST Address Control Register">
+    <alias type="CMSIS" value="R_ADR_CTRL"/>
+    <bit_field offset="0" width="4" name="GRPSEL" access="RW" reset_value="0" description="Data Group Select">
+      <alias type="CMSIS" value="FMUTEST_R_ADR_CTRL_GRPSEL(x)"/>
+      <bit_field_value name="R_ADR_CTRL_GRPSEL_zz270" value="0b0000" description="Select no data"/>
+      <bit_field_value name="R_ADR_CTRL_GRPSEL_zz271" value="0b0001" description="Select data slice [34:0]"/>
+      <bit_field_value name="R_ADR_CTRL_GRPSEL_zz272" value="0b0010" description="Select data slice [69:35]"/>
+      <bit_field_value name="R_ADR_CTRL_GRPSEL_zz273" value="0b0100" description="Select data slice [104:70]"/>
+      <bit_field_value name="R_ADR_CTRL_GRPSEL_zz274" value="0b1000" description="Select data slice [136:105]"/>
+      <bit_field_value name="R_ADR_CTRL_GRPSEL_zz275" value="0b1111" description="Select data [136:0]"/>
+    </bit_field>
+    <bit_field offset="4" width="12" name="XADR" access="RW" reset_value="0" description="BIST XADR">
+      <alias type="CMSIS" value="FMUTEST_R_ADR_CTRL_XADR(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="5" name="YADR" access="RW" reset_value="0" description="BIST YADR">
+      <alias type="CMSIS" value="FMUTEST_R_ADR_CTRL_YADR(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="3" name="PROG_ATTR" access="RW" reset_value="0" description="Program Attribute">
+      <alias type="CMSIS" value="FMUTEST_R_ADR_CTRL_PROG_ATTR(x)"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz262" value="0b000" description="One YE pulse will program one data slice group"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz263" value="0b001" description="One YE pulse will program two data slice groups"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz264" value="0b010" description="One YE pulse will program three data slice groups (reserved)"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz265" value="0b011" description="One YE pulse will program four data slice groups"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz266" value="0b100" description="One YE pulse will program five data slice groups (reserved)"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz267" value="0b101" description="One YE pulse will program six data slice groups (reserved)"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz268" value="0b110" description="One YE pulse will program seven data slice groups (reserved)"/>
+      <bit_field_value name="R_ADR_CTRL_PROG_ATTR_zz269" value="0b111" description="One YE pulse will program eight data slice groups (reserved)"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <reg_instance rid="532" vals="0x214 0"/>
+  <register offset="0x218" width="32" name="R_PIN_CTRL" description="BIST Pin Control Register">
+    <alias type="CMSIS" value="R_PIN_CTRL"/>
+    <bit_field offset="0" width="1" name="MAS1" access="RW" reset_value="0" description="Mass Erase">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_MAS1(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="IFREN" access="RW" reset_value="0" description="IFR Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_IFREN(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="IFREN1" access="RW" reset_value="0" description="IFR1 Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_IFREN1(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="REDEN" access="RW" reset_value="0" description="Redundancy Block Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_REDEN(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="LVE" access="RW" reset_value="0" description="Low Voltage Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_LVE(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="PV" access="RW" reset_value="0" description="Program Verify Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_PV(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="EV" access="RW" reset_value="0" description="Erase Verify Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_EV(x)"/>
+    </bit_field>
+    <bit_field offset="7" width="2" name="WIPGM" access="RW" reset_value="0" description="Program Current">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_WIPGM(x)"/>
+    </bit_field>
+    <bit_field offset="9" width="4" name="WHV" access="RW" reset_value="0" description="High Voltage Level">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_WHV(x)"/>
+    </bit_field>
+    <bit_field offset="13" width="3" name="WMV" access="RW" reset_value="0" description="Medium Voltage Level">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_WMV(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="XE" access="RW" reset_value="0" description="X Address Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_XE(x)"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="YE" access="RW" reset_value="0" description="Y Address Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_YE(x)"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="SE" access="RW" reset_value="0" description="Sense Amp Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_SE(x)"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="ERASE" access="RW" reset_value="0" description="Erase Mode">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_ERASE(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="PROG" access="RW" reset_value="0" description="Program Mode">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_PROG(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="NVSTR" access="RW" reset_value="0" description="NVM Store">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_NVSTR(x)"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="SLM" access="RW" reset_value="0" description="Sleep Mode Enable">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_SLM(x)"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="RECALL" access="RW" reset_value="0" description="Recall Trim Code">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_RECALL(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="HEM" access="RW" reset_value="0" description="HEM Control">
+      <alias type="CMSIS" value="FMUTEST_R_PIN_CTRL_HEM(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x21C" width="32" name="R_CNT_LOOP_CTRL" description="BIST Loop Count Control Register">
+    <alias type="CMSIS" value="R_CNT_LOOP_CTRL"/>
+    <bit_field offset="0" width="12" name="LOOPCNT" access="RW" reset_value="0" description="Loop Count Control">
+      <alias type="CMSIS" value="FMUTEST_R_CNT_LOOP_CTRL_LOOPCNT(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="3" name="LOOPOPT" access="RW" reset_value="0" description="Loop Option">
+      <alias type="CMSIS" value="FMUTEST_R_CNT_LOOP_CTRL_LOOPOPT(x)"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPOPT_zz284" value="0b000" description="Loop is disabled; selected BIST operation is run once"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPOPT_zz285" value="0b001" description="Loop is enabled; XADR increments by 1 XADR increments by 1 for each new loop. Stops when total loop count meets LOOPCNT+1."/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPOPT_zz286" value="0b010" description="Loop is enabled; YADR increments by 1 YADR increments by 1 for each new loop. Stops when total loop count meets LOOPCNT+1."/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPOPT_zz287" value="0b011" description="Loop is enabled; XADR increments by 2 XADR increments by 2 for each new loop. Stops when total loop count meets LOOPCNT+1."/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPOPT_zz288" value="0b100" description="Loop is enabled; XADR increments by sector XADR increments by 16 for each new loop. Stops when total loop count meets LOOPCNT+1."/>
+    </bit_field>
+    <bit_field offset="15" width="3" name="LOOPUNIT" access="RW" reset_value="0" description="Loop Time Unit">
+      <alias type="CMSIS" value="FMUTEST_R_CNT_LOOP_CTRL_LOOPUNIT(x)"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz276" value="0b000" description="Clock cycles"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz277" value="0b001" description="0.5 usec"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz278" value="0b010" description="1 usec"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz279" value="0b011" description="10 usec"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz280" value="0b100" description="100 usec"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz281" value="0b101" description="1 msec"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz282" value="0b110" description="10 msec"/>
+      <bit_field_value name="R_CNT_LOOP_CTRL_LOOPUNIT_zz283" value="0b111" description="100 msec"/>
+    </bit_field>
+    <bit_field offset="18" width="7" name="LOOPDLY" access="RW" reset_value="0" description="Loop Time Delay Scalar">
+      <alias type="CMSIS" value="FMUTEST_R_CNT_LOOP_CTRL_LOOPDLY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <register offset="0x220" width="32" name="R_TIMER_CTRL" description="BIST Timer Control Register">
+    <alias type="CMSIS" value="R_TIMER_CTRL"/>
+    <bit_field offset="0" width="3" name="TNVSUNIT" access="RW" reset_value="0x2" description="Tnvs Time Unit">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TNVSUNIT(x)"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz321" value="0b000" description="Clock cycles"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz322" value="0b001" description="0.5 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz323" value="0b010" description="1 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz324" value="0b011" description="10 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz325" value="0b100" description="100 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz326" value="0b101" description="1 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz327" value="0b110" description="10 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVSUNIT_zz328" value="0b111" description="100 msec"/>
+    </bit_field>
+    <bit_field offset="3" width="4" name="TNVSDLY" access="RW" reset_value="0x8" description="Tnvs Time Delay Scalar">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TNVSDLY(x)"/>
+    </bit_field>
+    <bit_field offset="7" width="3" name="TNVHUNIT" access="RW" reset_value="0x2" description="Tnvh Time Unit">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TNVHUNIT(x)"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz313" value="0b000" description="Clock cycles"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz314" value="0b001" description="0.5 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz315" value="0b010" description="1 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz316" value="0b011" description="10 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz317" value="0b100" description="100 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz318" value="0b101" description="1 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz319" value="0b110" description="10 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TNVHUNIT_zz320" value="0b111" description="100 msec"/>
+    </bit_field>
+    <bit_field offset="10" width="4" name="TNVHDLY" access="RW" reset_value="0x5" description="Tnvh Time Delay Scalar">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TNVHDLY(x)"/>
+    </bit_field>
+    <bit_field offset="14" width="3" name="TPGSUNIT" access="RW" reset_value="0x2" description="Tpgs Time Unit">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TPGSUNIT(x)"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz305" value="0b000" description="Clock cycles"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz306" value="0b001" description="0.5 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz307" value="0b010" description="1 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz308" value="0b011" description="10 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz309" value="0b100" description="100 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz310" value="0b101" description="1 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz311" value="0b110" description="10 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TPGSUNIT_zz312" value="0b111" description="100 msec"/>
+    </bit_field>
+    <bit_field offset="17" width="4" name="TPGSDLY" access="RW" reset_value="0x2" description="Tpgs Time Delay Scalar">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TPGSDLY(x)"/>
+    </bit_field>
+    <bit_field offset="21" width="3" name="TRCVUNIT" access="RW" reset_value="0x2" description="Trcv Time Unit">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TRCVUNIT(x)"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz297" value="0b000" description="Clock cycles"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz298" value="0b001" description="0.5 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz299" value="0b010" description="1 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz300" value="0b011" description="10 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz301" value="0b100" description="100 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz302" value="0b101" description="1 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz303" value="0b110" description="10 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TRCVUNIT_zz304" value="0b111" description="100 msec"/>
+    </bit_field>
+    <bit_field offset="24" width="4" name="TRCVDLY" access="RW" reset_value="0xA" description="Trcv Time Delay Scalar">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TRCVDLY(x)"/>
+    </bit_field>
+    <bit_field offset="28" width="3" name="TLVSUNIT" access="RW" reset_value="0x1" description="Tlvs Time Unit">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TLVSUNIT(x)"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz289" value="0b000" description="Clock cycles"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz290" value="0b001" description="0.5 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz291" value="0b010" description="1 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz292" value="0b011" description="10 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz293" value="0b100" description="100 usec"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz294" value="0b101" description="1 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz295" value="0b110" description="10 msec"/>
+      <bit_field_value name="R_TIMER_CTRL_TLVSUNIT_zz296" value="0b111" description="100 msec"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="TLVSDLY_L" access="RW" reset_value="0x1" description="Tlvs Time Delay Scalar Low">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_TLVSDLY_L(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x224" width="32" name="R_TEST_CTRL" description="BIST Test Control Register">
+    <alias type="CMSIS" value="R_TEST_CTRL"/>
+    <bit_field offset="0" width="1" name="BUSY" access="RO" reset_value="0" description="BIST Busy Status">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_BUSY(x)"/>
+      <bit_field_value name="R_TEST_CTRL_BUSY_zz333" value="0b0" description="BIST is idle"/>
+      <bit_field_value name="R_TEST_CTRL_BUSY_zz334" value="0b1" description="BIST is busy"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="DEBUG" access="RO" reset_value="0" description="BIST Debug Status">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_DEBUG(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="STATUS0" access="RO" reset_value="0" description="BIST Status 0">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_STATUS0(x)"/>
+      <bit_field_value name="R_TEST_CTRL_STATUS0_zz331" value="0b0" description="BIST test passed on flash block 0"/>
+      <bit_field_value name="R_TEST_CTRL_STATUS0_zz332" value="0b1" description="BIST test failed on flash block 0"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="STATUS1" access="RO" reset_value="0" description="BIST status 1">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_STATUS1(x)"/>
+      <bit_field_value name="R_TEST_CTRL_STATUS1_zz329" value="0b0" description="BIST test passed on flash block 1"/>
+      <bit_field_value name="R_TEST_CTRL_STATUS1_zz330" value="0b1" description="BIST test failed on flash block 1"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="DEBUGRUN" access="RW" reset_value="0" description="BIST Continue Debug Run">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_DEBUGRUN(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="STARTRUN" access="RW" reset_value="0" description="Run New BIST Operation">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_STARTRUN(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="10" name="CMDINDEX" access="RW" reset_value="0" description="BIST Command Index (code)">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_CMDINDEX(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="DISABLE_IP1" access="RW" reset_value="0" description="BIST Disable IP1">
+      <alias type="CMSIS" value="FMUTEST_R_TEST_CTRL_DISABLE_IP1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="15" reset_value="0"/>
+  </register>
+  <register offset="0x228" width="32" name="R_ABORT_LOOP" description="BIST Abort Loop Register">
+    <alias type="CMSIS" value="R_ABORT_LOOP"/>
+    <bit_field offset="0" width="1" name="ABORT_LOOP" access="WORZ" reset_value="0" description="Abort Loop">
+      <alias type="CMSIS" value="FMUTEST_R_ABORT_LOOP_ABORT_LOOP(x)"/>
+      <bit_field_value name="R_ABORT_LOOP_ABORT_LOOP_zz335" value="0b0" description="No effect"/>
+      <bit_field_value name="R_ABORT_LOOP_ABORT_LOOP_zz336" value="0b1" description="Abort BIST loop commands and force the loop counter to return to 0x0"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x22C" width="32" name="R_ADR_QUERY" description="BIST Address Query Register">
+    <alias type="CMSIS" value="R_ADR_QUERY"/>
+    <bit_field offset="0" width="5" name="YADRFAIL" access="RO" reset_value="0" description="Failing YADR">
+      <alias type="CMSIS" value="FMUTEST_R_ADR_QUERY_YADRFAIL(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="12" name="XADRFAIL" access="RO" reset_value="0" description="Failing XADR">
+      <alias type="CMSIS" value="FMUTEST_R_ADR_QUERY_XADRFAIL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="15" reset_value="0"/>
+  </register>
+  <register offset="0x230" width="32" name="R_DOUT_QUERY0" description="BIST DOUT Query 0 Register">
+    <alias type="CMSIS" value="R_DOUT_QUERY0"/>
+    <bit_field offset="0" width="32" name="DOUTFAIL" access="RO" reset_value="0" description="Failing DOUT Low">
+      <alias type="CMSIS" value="FMUTEST_R_DOUT_QUERY0_DOUTFAIL(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x23C" width="32" name="R_SMW_QUERY" description="BIST SMW Query Register">
+    <alias type="CMSIS" value="R_SMW_QUERY"/>
+    <bit_field offset="0" width="10" name="SMWLOOP" access="RO" reset_value="0" description="SMW Total Loop Count">
+      <alias type="CMSIS" value="FMUTEST_R_SMW_QUERY_SMWLOOP(x)"/>
+    </bit_field>
+    <bit_field offset="10" width="9" name="SMWLAST" access="RO" reset_value="0" description="SMW Last Voltage Setting">
+      <alias type="CMSIS" value="FMUTEST_R_SMW_QUERY_SMWLAST(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="13" reset_value="0"/>
+  </register>
+  <register offset="0x240" width="32" name="R_SMW_SETTING0" description="BIST SMW Setting 0 Register">
+    <alias type="CMSIS" value="R_SMW_SETTING0"/>
+    <bit_field offset="0" width="31" name="SMWPARM0" access="RW" reset_value="0xF0B4000" description="SMW Parameter Set 0">
+      <alias type="CMSIS" value="FMUTEST_R_SMW_SETTING0_SMWPARM0(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+  <register offset="0x244" width="32" name="R_SMW_SETTING1" description="BIST SMW Setting 1 Register">
+    <alias type="CMSIS" value="R_SMW_SETTING1"/>
+    <bit_field offset="0" width="28" name="SMWPARM1" access="RW" reset_value="0x315CE2A" description="SMW Parameter Set 1">
+      <alias type="CMSIS" value="FMUTEST_R_SMW_SETTING1_SMWPARM1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x248" width="32" name="R_SMP_WHV0" description="BIST SMP WHV Setting 0 Register">
+    <alias type="CMSIS" value="R_SMP_WHV0"/>
+    <bit_field offset="0" width="32" name="SMPWHV0" access="RW" reset_value="0x77777765" description="SMP WHV Parameter Set 0">
+      <alias type="CMSIS" value="FMUTEST_R_SMP_WHV0_SMPWHV0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x24C" width="32" name="R_SMP_WHV1" description="BIST SMP WHV Setting 1 Register">
+    <alias type="CMSIS" value="R_SMP_WHV1"/>
+    <bit_field offset="0" width="32" name="SMPWHV1" access="RW" reset_value="0x77777777" description="SMP WHV Parameter Set 1">
+      <alias type="CMSIS" value="FMUTEST_R_SMP_WHV1_SMPWHV1(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x250" width="32" name="R_SME_WHV0" description="BIST SME WHV Setting 0 Register">
+    <alias type="CMSIS" value="R_SME_WHV0"/>
+    <bit_field offset="0" width="32" name="SMEWHV0" access="RW" reset_value="0xCCBA9876" description="SME WHV Parameter Set 0">
+      <alias type="CMSIS" value="FMUTEST_R_SME_WHV0_SMEWHV0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x254" width="32" name="R_SME_WHV1" description="BIST SME WHV Setting 1 Register">
+    <alias type="CMSIS" value="R_SME_WHV1"/>
+    <bit_field offset="0" width="32" name="SMEWHV1" access="RW" reset_value="0xCCCCCCCC" description="SME WHV Parameter Set 1">
+      <alias type="CMSIS" value="FMUTEST_R_SME_WHV1_SMEWHV1(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x258" width="32" name="R_SMW_SETTING2" description="BIST SMW Setting 2 Register">
+    <alias type="CMSIS" value="R_SMW_SETTING2"/>
+    <bit_field offset="0" width="29" name="SMWPARM2" access="RW" reset_value="0xA80151" description="SMW Parameter Set 2">
+      <alias type="CMSIS" value="FMUTEST_R_SMW_SETTING2_SMWPARM2(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0x25C" width="32" name="R_D_MISR0" description="BIST DIN MISR 0 Register">
+    <alias type="CMSIS" value="R_D_MISR0"/>
+    <bit_field offset="0" width="32" name="DATASIG0" access="RO" reset_value="0" description="Data Signature">
+      <alias type="CMSIS" value="FMUTEST_R_D_MISR0_DATASIG0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x260" width="32" name="R_A_MISR0" description="BIST Address MISR 0 Register">
+    <alias type="CMSIS" value="R_A_MISR0"/>
+    <bit_field offset="0" width="32" name="ADRSIG0" access="RO" reset_value="0" description="Address Signature">
+      <alias type="CMSIS" value="FMUTEST_R_A_MISR0_ADRSIG0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x264" width="32" name="R_C_MISR0" description="BIST Control MISR 0 Register">
+    <alias type="CMSIS" value="R_C_MISR0"/>
+    <bit_field offset="0" width="32" name="CTRLSIG0" access="RO" reset_value="0" description="Control Signature">
+      <alias type="CMSIS" value="FMUTEST_R_C_MISR0_CTRLSIG0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x268" width="32" name="R_SMW_SETTING3" description="BIST SMW Setting 3 Register">
+    <alias type="CMSIS" value="R_SMW_SETTING3"/>
+    <bit_field offset="0" width="17" name="SMWPARM3" access="RW" reset_value="0x1BE00" description="SMW Parameter Set 3">
+      <alias type="CMSIS" value="FMUTEST_R_SMW_SETTING3_SMWPARM3(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="15" reset_value="0"/>
+  </register>
+  <reg_instance rid="532" vals="0x26C 1"/>
+  <reg_instance rid="532" vals="0x270 2"/>
+  <reg_instance rid="532" vals="0x274 3"/>
+  <register offset="0x280" width="32" name="R_REPAIR0_0" description="BIST Repair 0 for Block 0 Register">
+    <alias type="CMSIS" value="R_REPAIR0_0"/>
+    <bit_field offset="0" width="1" name="RDIS0_0" access="RO" reset_value="0x1" description="Control Repair 0 in Block 0.">
+      <alias type="CMSIS" value="FMUTEST_R_REPAIR0_0_RDIS0_0(x)"/>
+      <bit_field_value name="R_REPAIR0_0_RDIS0_0_zz337" value="0b0" description="Repair address is valid"/>
+      <bit_field_value name="R_REPAIR0_0_RDIS0_0_zz338" value="0b1" description="Repair address is not valid"/>
+    </bit_field>
+    <bit_field offset="1" width="8" name="RADR0_0" access="RO" reset_value="0xFF" description="XADR for Repair 0 in Block 0">
+      <alias type="CMSIS" value="FMUTEST_R_REPAIR0_0_RADR0_0(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0"/>
+  </register>
+  <reg_instance rid="644" vals="0x284 0 1 339 340"/>
+  <reg_instance rid="644" vals="0x288 1 0 341 342"/>
+  <reg_instance rid="644" vals="0x28C 1 1 343 344"/>
+  <reg_instance rid="788" vals="0x314 0"/>
+  <register offset="0x320" width="32" name="R_TIMER_CTRL_EX" description="BIST Timer Control Extension Register">
+    <alias type="CMSIS" value="R_TIMER_CTRL_EX"/>
+    <bit_field offset="0" width="3" name="TLVSDLY_H" access="RW" reset_value="0x1" description="Tlvs Time Delay Scalar High">
+      <alias type="CMSIS" value="FMUTEST_R_TIMER_CTRL_EX_TLVSDLY_H(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x330" width="32" name="R_DOUT_QUERY1" description="BIST DOUT Query 1 Register">
+    <alias type="CMSIS" value="R_DOUT_QUERY1"/>
+    <bit_field offset="0" width="3" name="DOUT" access="RO" reset_value="0" description="Failing DOUT High">
+      <alias type="CMSIS" value="FMUTEST_R_DOUT_QUERY1_DOUT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x35C" width="32" name="R_D_MISR1" description="BIST DIN MISR 1 Register">
+    <alias type="CMSIS" value="R_D_MISR1"/>
+    <bit_field offset="0" width="8" name="DATASIG1" access="RO" reset_value="0" description="MISR Data Signature High">
+      <alias type="CMSIS" value="FMUTEST_R_D_MISR1_DATASIG1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x360" width="32" name="R_A_MISR1" description="BIST Address MISR 1 Register">
+    <alias type="CMSIS" value="R_A_MISR1"/>
+    <bit_field offset="0" width="8" name="ADRSIG1" access="RO" reset_value="0" description="MISR Address Signature High">
+      <alias type="CMSIS" value="FMUTEST_R_A_MISR1_ADRSIG1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x364" width="32" name="R_C_MISR1" description="BIST Control MISR 1 Register">
+    <alias type="CMSIS" value="R_C_MISR1"/>
+    <bit_field offset="0" width="8" name="CTRLSIG1" access="RO" reset_value="0" description="MISR Control Signature High">
+      <alias type="CMSIS" value="FMUTEST_R_C_MISR1_CTRLSIG1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <reg_instance rid="788" vals="0x36C 1"/>
+  <reg_instance rid="788" vals="0x370 2"/>
+  <reg_instance rid="788" vals="0x374 3"/>
+  <register offset="0x400" width="32" name="SMW_TIMER_OPTION" description="SMW Timer Option Register">
+    <alias type="CMSIS" value="SMW_TIMER_OPTION"/>
+    <bit_field offset="0" width="8" name="SMW_CDIVL" access="RW" reset_value="0" description="Clock Divide Scalar for Long Pulse">
+      <alias type="CMSIS" value="FMUTEST_SMW_TIMER_OPTION_SMW_CDIVL(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="5" name="SMW_TVFY" access="RW" reset_value="0" description="Timer Adjust for Verify">
+      <alias type="CMSIS" value="FMUTEST_SMW_TIMER_OPTION_SMW_TVFY(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="19" reset_value="0"/>
+  </register>
+  <register offset="0x404" width="32" name="SMW_SETTING_OPTION0" description="SMW Setting Option 0 Register">
+    <alias type="CMSIS" value="SMW_SETTING_OPTION0"/>
+    <reserved_bit_field offset="0" width="14" reset_value="0"/>
+    <bit_field offset="14" width="3" name="MV_INIT" access="RW" reset_value="0x5" description="Medium Voltage Level Select Initial">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION0_MV_INIT(x)"/>
+    </bit_field>
+    <bit_field offset="17" width="3" name="MV_END" access="RW" reset_value="0x5" description="Medium Voltage Level Select Final">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION0_MV_END(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="4" name="MV_MISC" access="RW" reset_value="0" description="Medium Voltage Control Misc">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION0_MV_MISC(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="IPGM_INIT" access="RW" reset_value="0x3" description="Program Current Control Initial">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION0_IPGM_INIT(x)"/>
+    </bit_field>
+    <bit_field offset="26" width="2" name="IPGM_END" access="RW" reset_value="0x3" description="Program Current Control Final">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION0_IPGM_END(x)"/>
+    </bit_field>
+    <bit_field offset="28" width="3" name="IPGM_MISC" access="RW" reset_value="0" description="Program Current Control Misc">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION0_IPGM_MISC(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+  <register offset="0x408" width="32" name="SMW_SETTING_OPTION2" description="SMW Setting Option 2 Register">
+    <alias type="CMSIS" value="SMW_SETTING_OPTION2"/>
+    <bit_field offset="0" width="3" name="THVS_CTRL" access="RW" reset_value="0x1" description="Thvs control">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_THVS_CTRL(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="3" name="TRCV_CTRL" access="RW" reset_value="0x2" description="Trcv Control">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_TRCV_CTRL(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="XTRA_ERS" access="RW" reset_value="0x1" description="Number of Post Shots for SME">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_XTRA_ERS(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="2" name="XTRA_PGM" access="RW" reset_value="0x1" description="Number of Post Shots for SMP">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_XTRA_PGM(x)"/>
+    </bit_field>
+    <bit_field offset="10" width="8" name="WHV_CNTR" access="RW" reset_value="0" description="WHV Counter">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_WHV_CNTR(x)"/>
+    </bit_field>
+    <bit_field offset="18" width="3" name="POST_TERS" access="RW" reset_value="0x2" description="Post Ters Time">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_POST_TERS(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz361" value="0b000" description="50 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz362" value="0b001" description="100 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz363" value="0b010" description="200 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz364" value="0b011" description="300 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz365" value="0b100" description="500 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz366" value="0b101" description="1 msec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz367" value="0b110" description="1.5 msec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TERS_zz368" value="0b111" description="2 msec"/>
+    </bit_field>
+    <bit_field offset="21" width="2" name="POST_TPGM" access="RW" reset_value="0x1" description="Post Tpgm Time">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_POST_TPGM(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TPGM_zz357" value="0b00" description="1 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TPGM_zz358" value="0b01" description="2 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TPGM_zz359" value="0b10" description="4 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_POST_TPGM_zz360" value="0b11" description="8 usec"/>
+    </bit_field>
+    <bit_field offset="23" width="2" name="VFY_OPT" access="RW" reset_value="0x1" description="Verify Option">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_VFY_OPT(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_VFY_OPT_zz353" value="0b00" description="Skip verify for post shot only, verify for all other shots"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_VFY_OPT_zz354" value="0b01" description="Skip verify for the 1st and post shots"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_VFY_OPT_zz355" value="0b10" description="Skip the 1st, 2nd, and post shots"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_VFY_OPT_zz356" value="0b11" description="Skip verify for all shots"/>
+    </bit_field>
+    <bit_field offset="25" width="2" name="TPGM_OPT" access="RW" reset_value="0" description="Tpgm Option">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_TPGM_OPT(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_TPGM_OPT_zz349" value="0b00" description="Fixed Tpgm for all shots, except post shot"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_TPGM_OPT_zz350" value="0b01" description="Increase Tpgm option by 1 for each loop until Tpgm reaches 4 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_TPGM_OPT_zz351" value="0b10" description="Increase Tpgm option by 1 for each loop until Tpgm reaches 8 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_TPGM_OPT_zz352" value="0b11" description="Unused"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="MASK0_OPT" access="RW" reset_value="0" description="MASK0_OPT">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_MASK0_OPT(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_MASK0_OPT_zz347" value="0b0" description="Mask programmed bits passing PV until extra shot"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_MASK0_OPT_zz348" value="0b1" description="Always program bits even if they pass PV"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="DIS_PRER" access="RW" reset_value="0" description="Disable pre-PV Read before First Program Shot">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION2_DIS_PRER(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_DIS_PRER_zz345" value="0b0" description="Enable pre-PV read before first program shot"/>
+      <bit_field_value name="SMW_SETTING_OPTION2_DIS_PRER_zz346" value="0b1" description="Disable pre-PV read before first program shot"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0x40C" width="32" name="SMW_SETTING_OPTION3" description="SMW Setting Option 3 Register">
+    <alias type="CMSIS" value="SMW_SETTING_OPTION3"/>
+    <bit_field offset="0" width="8" name="HEM_WHV_CNTR" access="RW" reset_value="0" description="WHV_COUNTER for HEM-erase Cycle">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION3_HEM_WHV_CNTR(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="9" name="HEM_MAX_ERS" access="RW" reset_value="0x1BD" description="HEM Max Erase Shot Count">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION3_HEM_MAX_ERS(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="15" reset_value="0"/>
+  </register>
+  <register offset="0x410" width="32" name="SMW_SMP_WHV_OPTION0" description="SMW SMP WHV Option 0 Register">
+    <alias type="CMSIS" value="SMW_SMP_WHV_OPTION0"/>
+    <bit_field offset="0" width="32" name="SMP_WHV_OPT0" access="RW" reset_value="0x77777765" description="Smart Program WHV Option Low">
+      <alias type="CMSIS" value="FMUTEST_SMW_SMP_WHV_OPTION0_SMP_WHV_OPT0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x414" width="32" name="SMW_SME_WHV_OPTION0" description="SMW SME WHV Option 0 Register">
+    <alias type="CMSIS" value="SMW_SME_WHV_OPTION0"/>
+    <bit_field offset="0" width="32" name="SME_WHV_OPT0" access="RW" reset_value="0xCCBA9876" description="Smart Erase WHV Option Low">
+      <alias type="CMSIS" value="FMUTEST_SMW_SME_WHV_OPTION0_SME_WHV_OPT0(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x418" width="32" name="SMW_SETTING_OPTION1" description="SMW Setting Option 1 Register">
+    <alias type="CMSIS" value="SMW_SETTING_OPTION1"/>
+    <bit_field offset="0" width="3" name="TERS_CTRL0" access="RW" reset_value="0x2" description="Ters Control">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION1_TERS_CTRL0(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz397" value="0b000" description="50 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz398" value="0b001" description="100 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz399" value="0b010" description="200 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz400" value="0b011" description="300 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz401" value="0b100" description="500 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz402" value="0b101" description="1 msec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz403" value="0b110" description="1.5 msec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TERS_CTRL0_zz404" value="0b111" description="2 msec"/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="TPGM_CTRL" access="RW" reset_value="0x1" description="Tpgm Control">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION1_TPGM_CTRL(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGM_CTRL_zz393" value="0b00" description="1 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGM_CTRL_zz394" value="0b01" description="2 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGM_CTRL_zz395" value="0b10" description="4 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGM_CTRL_zz396" value="0b11" description="8 usec"/>
+    </bit_field>
+    <bit_field offset="5" width="3" name="TNVS_CTRL" access="RW" reset_value="0x1" description="Tnvs Control">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION1_TNVS_CTRL(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz385" value="0b000" description="5 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz386" value="0b001" description="8 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz387" value="0b010" description="11 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz388" value="0b011" description="14 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz389" value="0b100" description="17 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz390" value="0b101" description="20 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz391" value="0b110" description="23 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVS_CTRL_zz392" value="0b111" description="26 usec"/>
+    </bit_field>
+    <bit_field offset="8" width="3" name="TNVH_CTRL" access="RW" reset_value="0x6" description="Tnvh Control">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION1_TNVH_CTRL(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz377" value="0b000" description="2 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz378" value="0b001" description="2.5 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz379" value="0b010" description="3 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz380" value="0b011" description="3.5 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz381" value="0b100" description="4 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz382" value="0b101" description="4.5 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz383" value="0b110" description="5 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TNVH_CTRL_zz384" value="0b111" description="5.5 usec"/>
+    </bit_field>
+    <bit_field offset="11" width="3" name="TPGS_CTRL" access="RW" reset_value="0x1" description="Tpgs Control">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION1_TPGS_CTRL(x)"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz369" value="0b000" description="1 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz370" value="0b001" description="2 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz371" value="0b010" description="3 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz372" value="0b011" description="4 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz373" value="0b100" description="5 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz374" value="0b101" description="6 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz375" value="0b110" description="7 usec"/>
+      <bit_field_value name="SMW_SETTING_OPTION1_TPGS_CTRL_zz376" value="0b111" description="8 usec"/>
+    </bit_field>
+    <bit_field offset="14" width="9" name="MAX_ERASE" access="RW" reset_value="0x56" description="Number of Erase Shots">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION1_MAX_ERASE(x)"/>
+    </bit_field>
+    <bit_field offset="23" width="5" name="MAX_PROG" access="RW" reset_value="0x5" description="Number of Program Shots">
+      <alias type="CMSIS" value="FMUTEST_SMW_SETTING_OPTION1_MAX_PROG(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x41C" width="32" name="SMW_SMP_WHV_OPTION1" description="SMW SMP WHV Option 1 Register">
+    <alias type="CMSIS" value="SMW_SMP_WHV_OPTION1"/>
+    <bit_field offset="0" width="32" name="SMP_WHV_OPT1" access="RW" reset_value="0x77777777" description="Smart Program WHV Option High">
+      <alias type="CMSIS" value="FMUTEST_SMW_SMP_WHV_OPTION1_SMP_WHV_OPT1(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x420" width="32" name="SMW_SME_WHV_OPTION1" description="SMW SME WHV Option 1 Register">
+    <alias type="CMSIS" value="SMW_SME_WHV_OPTION1"/>
+    <bit_field offset="0" width="32" name="SME_WHV_OPT1" access="RW" reset_value="0xCCCCCCCC" description="Smart Erase WHV Option High">
+      <alias type="CMSIS" value="FMUTEST_SMW_SME_WHV_OPTION1_SME_WHV_OPT1(x)"/>
+    </bit_field>
+  </register>
+  <reg_instance rid="1280" vals="0x500 0 0 405 406"/>
+  <reg_instance rid="1280" vals="0x504 0 1 407 408"/>
+  <reg_instance rid="1280" vals="0x508 1 0 409 410"/>
+  <reg_instance rid="1280" vals="0x50C 1 1 411 412"/>
+  <register offset="0x600" width="32" name="SMW_HB_SIGNALS" description="SMW HB Signals Register">
+    <alias type="CMSIS" value="SMW_HB_SIGNALS"/>
+    <bit_field offset="0" width="3" name="SMW_ARRAY" access="RW" reset_value="0" description="SMW Region Select">
+      <alias type="CMSIS" value="FMUTEST_SMW_HB_SIGNALS_SMW_ARRAY(x)"/>
+      <bit_field_value name="SMW_HB_SIGNALS_SMW_ARRAY_zz425" value="0b000" description="Main array"/>
+      <bit_field_value name="SMW_HB_SIGNALS_SMW_ARRAY_zz426" value="0b001" description="IFR space only or main (and REDEN space) with IFR space for mass erase"/>
+      <bit_field_value name="SMW_HB_SIGNALS_SMW_ARRAY_zz427" value="0b010" description="IFR1 space"/>
+      <bit_field_value name="SMW_HB_SIGNALS_SMW_ARRAY_zz428" value="0b100" description="REDEN space"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="USER_IFREN1" access="RW" reset_value="0x1" description="IFR1 Enable">
+      <alias type="CMSIS" value="FMUTEST_SMW_HB_SIGNALS_USER_IFREN1(x)"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_IFREN1_zz423" value="0b0" description="IFREN1 input to the flash array is driven LOW"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_IFREN1_zz424" value="0b1" description="IFREN1 input to the flash array is driven HIGH"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="USER_PV" access="RW" reset_value="0" description="Program Verify">
+      <alias type="CMSIS" value="FMUTEST_SMW_HB_SIGNALS_USER_PV(x)"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_PV_zz421" value="0b0" description="PV input to the flash array is driven LOW"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_PV_zz422" value="0b1" description="PV input to the flash array is driven HIGH"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="USER_EV" access="RW" reset_value="0" description="Erase Verify">
+      <alias type="CMSIS" value="FMUTEST_SMW_HB_SIGNALS_USER_EV(x)"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_EV_zz419" value="0b0" description="EV input to the flash array is driven LOW"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_EV_zz420" value="0b1" description="EV input to the flash array is driven HIGH"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="USER_IFREN" access="RW" reset_value="0" description="IFR Enable">
+      <alias type="CMSIS" value="FMUTEST_SMW_HB_SIGNALS_USER_IFREN(x)"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_IFREN_zz417" value="0b0" description="IFREN input to the flash array is driven LOW"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_IFREN_zz418" value="0b1" description="IFREN input to the flash array is driven HIGH"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="USER_REDEN" access="RW" reset_value="0" description="Repair Read Enable">
+      <alias type="CMSIS" value="FMUTEST_SMW_HB_SIGNALS_USER_REDEN(x)"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_REDEN_zz415" value="0b0" description="REDEN input to the flash array is driven LOW"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_REDEN_zz416" value="0b1" description="REDEN input to the flash array is driven HIGH"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="USER_HEM" access="RW" reset_value="0" description="High Endurance Enable">
+      <alias type="CMSIS" value="FMUTEST_SMW_HB_SIGNALS_USER_HEM(x)"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_HEM_zz413" value="0b0" description="HEM input to SMW / BIST PIN_CTRL[24] is driven LOW"/>
+      <bit_field_value name="SMW_HB_SIGNALS_USER_HEM_zz414" value="0b1" description="HEM input to SMW / BIST PIN_CTRL[24] is driven HIGH"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0"/>
+  </register>
+  <register offset="0x604" width="32" name="BIST_DUMP_CTRL" description="BIST Datadump Control Register">
+    <alias type="CMSIS" value="BIST_DUMP_CTRL"/>
+    <reserved_bit_field offset="0" width="16" reset_value="0"/>
+    <bit_field offset="16" width="1" name="BIST_DONE" access="RW" reset_value="0x1" description="BIST Done">
+      <alias type="CMSIS" value="FMUTEST_BIST_DUMP_CTRL_BIST_DONE(x)"/>
+      <bit_field_value name="BIST_DUMP_CTRL_BIST_DONE_zz439" value="0b0" description="The BIST (or data dump) is running"/>
+      <bit_field_value name="BIST_DUMP_CTRL_BIST_DONE_zz440" value="0b1" description="The BIST (or data dump) has completed"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="BIST_FAIL" access="RW" reset_value="0" description="BIST Fail">
+      <alias type="CMSIS" value="FMUTEST_BIST_DUMP_CTRL_BIST_FAIL(x)"/>
+      <bit_field_value name="BIST_DUMP_CTRL_BIST_FAIL_zz437" value="0b0" description="The last BIST operation completed successfully (or could not fail)"/>
+      <bit_field_value name="BIST_DUMP_CTRL_BIST_FAIL_zz438" value="0b1" description="The last BIST operation failed"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="DATADUMP" access="RW" reset_value="0" description="Data Dump Enable">
+      <alias type="CMSIS" value="FMUTEST_BIST_DUMP_CTRL_DATADUMP(x)"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="DATADUMP_TRIG" access="RW" reset_value="0" description="Data Dump Trigger">
+      <alias type="CMSIS" value="FMUTEST_BIST_DUMP_CTRL_DATADUMP_TRIG(x)"/>
+    </bit_field>
+    <bit_field offset="20" width="2" name="DATADUMP_PATT" access="RW" reset_value="0" description="Data Dump Pattern Select">
+      <alias type="CMSIS" value="FMUTEST_BIST_DUMP_CTRL_DATADUMP_PATT(x)"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_PATT_zz433" value="0b00" description="All ones"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_PATT_zz434" value="0b01" description="All zeroes"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_PATT_zz435" value="0b10" description="Checkerboard"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_PATT_zz436" value="0b11" description="Inverse checkerboard"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="DATADUMP_MRGEN" access="RW" reset_value="0" description="Data Dump Margin Enable">
+      <alias type="CMSIS" value="FMUTEST_BIST_DUMP_CTRL_DATADUMP_MRGEN(x)"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_MRGEN_zz431" value="0b0" description="Normal read pulse shape"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_MRGEN_zz432" value="0b1" description="Margin read pulse shape"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="DATADUMP_MRGTYPE" access="RW" reset_value="0" description="Data Dump Margin Type">
+      <alias type="CMSIS" value="FMUTEST_BIST_DUMP_CTRL_DATADUMP_MRGTYPE(x)"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_MRGTYPE_zz429" value="0b0" description="DIN method used"/>
+      <bit_field_value name="BIST_DUMP_CTRL_DATADUMP_MRGTYPE_zz430" value="0b1" description="TM method used"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x60C" width="32" name="ATX_PIN_CTRL" description="ATX Pin Control Register">
+    <alias type="CMSIS" value="ATX_PIN_CTRL"/>
+    <bit_field offset="0" width="8" name="TM_TO_ATX" access="RW" reset_value="0" description="TM to ATX">
+      <alias type="CMSIS" value="FMUTEST_ATX_PIN_CTRL_TM_TO_ATX(x)"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz441" value="0b00000001" description="TM[0] to ATX0"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz442" value="0b00000010" description="TM[1] to ATX0"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz443" value="0b00000100" description="TM[2] to ATX0"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz444" value="0b00001000" description="TM[3] to ATX0"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz445" value="0b00010000" description="TM[0] to ATX1"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz446" value="0b00100000" description="TM[1] to ATX1"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz447" value="0b01000000" description="TM[2] to ATX1"/>
+      <bit_field_value name="ATX_PIN_CTRL_TM_TO_ATX_zz448" value="0b10000000" description="TM[3] to ATX1"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x610" width="32" name="FAILCNT" description="Fail Count Register">
+    <alias type="CMSIS" value="FAILCNT"/>
+    <bit_field offset="0" width="32" name="FAILCNT" access="RW" reset_value="0" description="Fail Count">
+      <alias type="CMSIS" value="FMUTEST_FAILCNT_FAILCNT(x)"/>
+    </bit_field>
+  </register>
+  <reg_instance rid="1556" vals="0x614 0"/>
+  <reg_instance rid="1556" vals="0x618 1"/>
+  <register offset="0x61C" width="32" name="ERS_PULSE_CNT" description="Erase Pulse Count Register">
+    <alias type="CMSIS" value="ERS_PULSE_CNT"/>
+    <bit_field offset="0" width="16" name="ERS_CNT0" access="RW" reset_value="0" description="Block 0 Erase Pulse Count">
+      <alias type="CMSIS" value="FMUTEST_ERS_PULSE_CNT_ERS_CNT0(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="ERS_CNT1" access="RW" reset_value="0" description="Block 1 Erase Pulse Count">
+      <alias type="CMSIS" value="FMUTEST_ERS_PULSE_CNT_ERS_CNT1(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x620" width="32" name="MAX_PULSE_CNT" description="Maximum Pulse Count Register">
+    <alias type="CMSIS" value="MAX_PULSE_CNT"/>
+    <bit_field offset="0" width="9" name="LAST_PCNT" access="RW" reset_value="0" description="Last SMW Operation's Pulse Count">
+      <alias type="CMSIS" value="FMUTEST_MAX_PULSE_CNT_LAST_PCNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <bit_field offset="16" width="9" name="MAX_ERS_CNT" access="RW" reset_value="0" description="Maximum Erase Pulse Count">
+      <alias type="CMSIS" value="FMUTEST_MAX_PULSE_CNT_MAX_ERS_CNT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="2" reset_value="0"/>
+    <bit_field offset="27" width="5" name="MAX_PGM_CNT" access="RW" reset_value="0" description="Maximum Program Pulse Count">
+      <alias type="CMSIS" value="FMUTEST_MAX_PULSE_CNT_MAX_PGM_CNT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x624" width="32" name="PORT_CTRL" description="Port Control Register">
+    <alias type="CMSIS" value="PORT_CTRL"/>
+    <bit_field offset="0" width="2" name="BDONE_SEL" access="RW" reset_value="0" description="BIST Done Select">
+      <alias type="CMSIS" value="FMUTEST_PORT_CTRL_BDONE_SEL(x)"/>
+      <bit_field_value name="PORT_CTRL_BDONE_SEL_zz453" value="0b00" description="Select internal bist_done signal from current module instantiation"/>
+      <bit_field_value name="PORT_CTRL_BDONE_SEL_zz454" value="0b01" description="Select ipt_bist_fail signal from current module instantiation"/>
+      <bit_field_value name="PORT_CTRL_BDONE_SEL_zz455" value="0b10" description="Select ipt_bist_done signal from other module instantiation"/>
+      <bit_field_value name="PORT_CTRL_BDONE_SEL_zz456" value="0b11" description="Select AND of internal bist_done signal from current module instantiation with ipt_bist_done signal from other module instantiation"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="BSDO_SEL" access="RW" reset_value="0" description="BIST Serial Data Output Select">
+      <alias type="CMSIS" value="FMUTEST_PORT_CTRL_BSDO_SEL(x)"/>
+      <bit_field_value name="PORT_CTRL_BSDO_SEL_zz449" value="0b00" description="Select internal bist_sdo signal from current module instantiation"/>
+      <bit_field_value name="PORT_CTRL_BSDO_SEL_zz450" value="0b01" description="Select ipt_bist_done signal from current module instantiation"/>
+      <bit_field_value name="PORT_CTRL_BSDO_SEL_zz451" value="0b10" description="Select ipt_bist_sdo signal from other module instantiation"/>
+      <bit_field_value name="PORT_CTRL_BSDO_SEL_zz452" value="0b11" description="Select ipt_bist_done signal from other module instantiation"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+</regs:peripheral>

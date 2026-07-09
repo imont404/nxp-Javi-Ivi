@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="36" offset="{0}" width="32" name="DATACH{1}" description="MICFIL Output Result">
+    <alias type="CMSIS" value="DATACH[{1}]"/>
+    <bit_field offset="0" width="32" name="DATA" access="RO" reset_value="0" description="Channel n Data">
+      <alias type="CMSIS" value="PDM_DATACHN_DATACH_DATA(x)"/>
+    </bit_field>
+  </reg_template>
+  <register offset="0" width="32" name="CTRL_1" description="MICFIL Control 1">
+    <alias type="CMSIS" value="CTRL_1"/>
+    <bit_field offset="0" width="1" name="CH0EN" access="RW" reset_value="0" description="Channel 0 Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_CH0EN(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH1EN" access="RW" reset_value="0" description="Channel 1 Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_CH1EN(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH2EN" access="RW" reset_value="0" description="Channel 2 Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_CH2EN(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH3EN" access="RW" reset_value="0" description="Channel 3 Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_CH3EN(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="1" name="FSYNCEN" access="RW" reset_value="0" description="Frame Synchronization Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_FSYNCEN(x)"/>
+      <bit_field_value name="CTRL_1_FSYNCEN_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="CTRL_1_FSYNCEN_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="3" reset_value="0"/>
+    <bit_field offset="20" width="1" name="DECFILS" access="RW" reset_value="0" description="Decimation Filter Enable in Stop">
+      <alias type="CMSIS" value="PDM_CTRL_1_DECFILS(x)"/>
+      <bit_field_value name="CTRL_1_DECFILS_stop" value="0b0" description="Stops decimation filter"/>
+      <bit_field_value name="CTRL_1_DECFILS_run" value="0b1" description="Keeps decimation filter running"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="2" reset_value="0"/>
+    <bit_field offset="23" width="1" name="ERREN" access="RW" reset_value="0" description="Error Interruption Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_ERREN(x)"/>
+      <bit_field_value name="CTRL_1_ERREN_disabled" value="0b0" description="Disables"/>
+      <bit_field_value name="CTRL_1_ERREN_enabled" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="DISEL" access="RW" reset_value="0" description="DMA Interrupt Selection">
+      <alias type="CMSIS" value="PDM_CTRL_1_DISEL(x)"/>
+      <bit_field_value name="CTRL_1_DISEL_all_disabled" value="0b00" description="Disables DMA and interrupt requests"/>
+      <bit_field_value name="CTRL_1_DISEL_dmareq_enabled" value="0b01" description="Enables DMA requests"/>
+      <bit_field_value name="CTRL_1_DISEL_intreq_enabled" value="0b10" description="Enables interrupt requests"/>
+      <bit_field_value name="CTRL_1_DISEL_rsvd_11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="DBGE" access="RW" reset_value="0" description="Module Enable in Debug">
+      <alias type="CMSIS" value="PDM_CTRL_1_DBGE(x)"/>
+      <bit_field_value name="CTRL_1_DBGE_disabled" value="0b0" description="Disables after completing the current frame"/>
+      <bit_field_value name="CTRL_1_DBGE_enabled" value="0b1" description="Enables operation"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="SRES" access="WORZ" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="PDM_CTRL_1_SRES(x)"/>
+      <bit_field_value name="CTRL_1_SRES_no_action" value="0b0" description="No action"/>
+      <bit_field_value name="CTRL_1_SRES_sw_reset" value="0b1" description="Software reset"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="DBG" access="RW" reset_value="0" description="Debug Mode">
+      <alias type="CMSIS" value="PDM_CTRL_1_DBG(x)"/>
+      <bit_field_value name="CTRL_1_DBG_normal" value="0b0" description="Normal"/>
+      <bit_field_value name="CTRL_1_DBG_debug" value="0b1" description="Debug"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="PDMIEN" access="RW" reset_value="0" description="MICFIL Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_PDMIEN(x)"/>
+      <bit_field_value name="CTRL_1_PDMIEN_stopped" value="0b0" description="Stops MICFIL operation"/>
+      <bit_field_value name="CTRL_1_PDMIEN_started" value="0b1" description="Starts MICFIL operation"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="DOZEN" access="RW" reset_value="0" description="Stop Enable">
+      <alias type="CMSIS" value="PDM_CTRL_1_DOZEN(x)"/>
+      <bit_field_value name="CTRL_1_DOZEN_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="CTRL_1_DOZEN_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="MDIS" access="RW" reset_value="0" description="Module Disable">
+      <alias type="CMSIS" value="PDM_CTRL_1_MDIS(x)"/>
+      <bit_field_value name="CTRL_1_MDIS_normal" value="0b0" description="Normal mode"/>
+      <bit_field_value name="CTRL_1_MDIS_low_leakage" value="0b1" description="DLL mode"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="CTRL_2" description="MICFIL Control 2">
+    <alias type="CMSIS" value="CTRL_2"/>
+    <bit_field offset="0" width="8" name="CLKDIV" access="RW" reset_value="0" description="Clock Divider">
+      <alias type="CMSIS" value="PDM_CTRL_2_CLKDIV(x)"/>
+      <bit_field_value name="CTRL_2_CLKDIV_CLKDIV_0" value="0b00000000" description="Internal clock divider value = 0"/>
+      <bit_field_value name="CTRL_2_CLKDIV_CLKDIV_1" value="0b00000001" description="Internal clock divider value = 1"/>
+      <bit_field_value name="CTRL_2_CLKDIV_CLKDIV_2" value="0b00000010-0b11111110" description="..."/>
+      <bit_field_value name="CTRL_2_CLKDIV_CLKDIV_255" value="0b11111111" description="Internal clock divider value = 255"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="7" reset_value="0"/>
+    <bit_field offset="15" width="1" name="CLKDIVDIS" access="RW" reset_value="0" description="Clock Divider Disable">
+      <alias type="CMSIS" value="PDM_CTRL_2_CLKDIVDIS(x)"/>
+      <bit_field_value name="CTRL_2_CLKDIVDIS_ENABLE" value="0b0" description="Enables"/>
+      <bit_field_value name="CTRL_2_CLKDIVDIS_DISABLE" value="0b1" description="Disables"/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="CICOSR" access="RW" reset_value="0" description="CIC Decimation Rate">
+      <alias type="CMSIS" value="PDM_CTRL_2_CICOSR(x)"/>
+      <bit_field_value name="CTRL_2_CICOSR_CICOSR_0" value="0b0000" description="CIC oversampling rate = 0"/>
+      <bit_field_value name="CTRL_2_CICOSR_CICOSR_1" value="0b0001" description="CIC oversampling rate = 1"/>
+      <bit_field_value name="CTRL_2_CICOSR_CICOSR_2" value="0b0010-0b1110" description="..."/>
+      <bit_field_value name="CTRL_2_CICOSR_CICOSR_15" value="0b1111" description="CIC oversampling rate = 15"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="5" reset_value="0"/>
+    <bit_field offset="25" width="3" name="QSEL" access="RW" reset_value="0" description="Quality Mode">
+      <alias type="CMSIS" value="PDM_CTRL_2_QSEL(x)"/>
+      <bit_field_value name="CTRL_2_QSEL_mq_mode" value="0b000" description="Medium-Quality mode"/>
+      <bit_field_value name="CTRL_2_QSEL_hq_mode" value="0b001" description="High-Quality mode"/>
+      <bit_field_value name="CTRL_2_QSEL_vlq2_mode" value="0b100" description="Very-Low-Quality 2 mode"/>
+      <bit_field_value name="CTRL_2_QSEL_vlq1_mode" value="0b101" description="Very-Low-Quality 1 mode"/>
+      <bit_field_value name="CTRL_2_QSEL_vlq0_mode" value="0b110" description="Very-Low-Quality 0 mode"/>
+      <bit_field_value name="CTRL_2_QSEL_lq_mode" value="0b111" description="Low-Quality mode"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="STAT" description="MICFIL Status">
+    <alias type="CMSIS" value="STAT"/>
+    <bit_field offset="0" width="1" name="CH0F" access="W1C" reset_value="0" description="Channel 0 Output Data Flag">
+      <alias type="CMSIS" value="PDM_STAT_CH0F(x)"/>
+      <bit_field_value name="STAT_CH0F_wm_notreached" value="0b0" description="Not surpassed"/>
+      <bit_field_value name="STAT_CH0F_wm_reached" value="0b1" description="Surpassed"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CH1F" access="W1C" reset_value="0" description="Channel 1 Output Data Flag">
+      <alias type="CMSIS" value="PDM_STAT_CH1F(x)"/>
+      <bit_field_value name="STAT_CH1F_wm_notreached" value="0b0" description="Not surpassed"/>
+      <bit_field_value name="STAT_CH1F_wm_reached" value="0b1" description="Surpassed"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CH2F" access="W1C" reset_value="0" description="Channel 2 Output Data Flag">
+      <alias type="CMSIS" value="PDM_STAT_CH2F(x)"/>
+      <bit_field_value name="STAT_CH2F_wm_notreached" value="0b0" description="Not surpassed"/>
+      <bit_field_value name="STAT_CH2F_wm_reached" value="0b1" description="Surpassed"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CH3F" access="W1C" reset_value="0" description="Channel 3 Output Data Flag">
+      <alias type="CMSIS" value="PDM_STAT_CH3F(x)"/>
+      <bit_field_value name="STAT_CH3F_wm_notreached" value="0b0" description="Not surpassed"/>
+      <bit_field_value name="STAT_CH3F_wm_reached" value="0b1" description="Surpassed"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <reserved_bit_field offset="16" width="13" reset_value="0"/>
+    <reserved_bit_field offset="29" width="1" reset_value="0"/>
+    <reserved_bit_field offset="30" width="1" reset_value="0"/>
+    <bit_field offset="31" width="1" name="BSY_FIL" access="RO" reset_value="0" description="Busy Flag">
+      <alias type="CMSIS" value="PDM_STAT_BSY_FIL(x)"/>
+      <bit_field_value name="STAT_BSY_FIL_stopped" value="0b0" description="MICFIL is stopped"/>
+      <bit_field_value name="STAT_BSY_FIL_running" value="0b1" description="MICFIL is running"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="FIFO_CTRL" description="MICFIL FIFO Control">
+    <alias type="CMSIS" value="FIFO_CTRL"/>
+    <bit_field offset="0" width="4" name="FIFOWMK" access="RW" reset_value="0xF" description="FIFO Watermark Control">
+      <alias type="CMSIS" value="PDM_FIFO_CTRL_FIFOWMK(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="FIFO_STAT" description="MICFIL FIFO Status">
+    <alias type="CMSIS" value="FIFO_STAT"/>
+    <bit_field offset="0" width="1" name="FIFOOVF0" access="W1C" reset_value="0" description="FIFO Overflow Exception Flag for Channel 0">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOOVF0(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF0_no_exception" value="0b0" description="No exception by FIFO overflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF0_exception" value="0b1" description="Exception by FIFO overflow"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FIFOOVF1" access="W1C" reset_value="0" description="FIFO Overflow Exception Flag for Channel 1">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOOVF1(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF1_no_exception" value="0b0" description="No exception by FIFO overflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF1_exception" value="0b1" description="Exception by FIFO overflow"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FIFOOVF2" access="W1C" reset_value="0" description="FIFO Overflow Exception Flag for Channel 2">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOOVF2(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF2_no_exception" value="0b0" description="No exception by FIFO overflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF2_exception" value="0b1" description="Exception by FIFO overflow"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FIFOOVF3" access="W1C" reset_value="0" description="FIFO Overflow Exception Flag for Channel 3">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOOVF3(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF3_no_exception" value="0b0" description="No exception by FIFO overflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOOVF3_exception" value="0b1" description="Exception by FIFO overflow"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="1" name="FIFOUND0" access="W1C" reset_value="0" description="FIFO Underflow Exception Flag for Channel 0">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOUND0(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND0_no_exception" value="0b0" description="No exception by FIFO underflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND0_exception" value="0b1" description="Exception by FIFO underflow"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="FIFOUND1" access="W1C" reset_value="0" description="FIFO Underflow Exception Flag for Channel 1">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOUND1(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND1_no_exception" value="0b0" description="No exception by FIFO underflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND1_exception" value="0b1" description="Exception by FIFO underflow"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="FIFOUND2" access="W1C" reset_value="0" description="FIFO Underflow Exception Flag for Channel 2">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOUND2(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND2_no_exception" value="0b0" description="No exception by FIFO underflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND2_exception" value="0b1" description="Exception by FIFO underflow"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="FIFOUND3" access="W1C" reset_value="0" description="FIFO Underflow Exception Flag for Channel 3">
+      <alias type="CMSIS" value="PDM_FIFO_STAT_FIFOUND3(x)"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND3_no_exception" value="0b0" description="No exception by FIFO underflow"/>
+      <bit_field_value name="FIFO_STAT_FIFOUND3_exception" value="0b1" description="Exception by FIFO underflow"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <reg_instance rid="36" vals="0x24 0"/>
+  <reg_instance rid="36" vals="0x28 1"/>
+  <reg_instance rid="36" vals="0x2C 2"/>
+  <reg_instance rid="36" vals="0x30 3"/>
+  <register offset="0x64" width="32" name="DC_CTRL" description="MICFIL DC Remover Control">
+    <alias type="CMSIS" value="DC_CTRL"/>
+    <bit_field offset="0" width="2" name="DCCONFIG0" access="RO" reset_value="0x3" description="Channel 0 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_CTRL_DCCONFIG0(x)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG0_dc_rem_20Hz" value="0b00" description="20 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG0_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG0_dc_rem_40Hz" value="0b10" description="40 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG0_dc_rem_bypass" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="DCCONFIG1" access="RO" reset_value="0x3" description="Channel 1 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_CTRL_DCCONFIG1(x)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG1_dc_rem_20Hz" value="0b00" description="20 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG1_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG1_dc_rem_40Hz" value="0b10" description="40 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG1_dc_rem_bypass" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="DCCONFIG2" access="RO" reset_value="0x3" description="Channel 2 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_CTRL_DCCONFIG2(x)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG2_dc_rem_20Hz" value="0b00" description="20 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG2_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG2_dc_rem_40Hz" value="0b10" description="40 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG2_dc_rem_bypass" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="DCCONFIG3" access="RO" reset_value="0x3" description="Channel 3 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_CTRL_DCCONFIG3(x)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG3_dc_rem_20Hz" value="0b00" description="20 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG3_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG3_dc_rem_40Hz" value="0b10" description="40 Hz (PDM_CLK = 3.072 MHz)"/>
+      <bit_field_value name="DC_CTRL_DCCONFIG3_dc_rem_bypass" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x68" width="32" name="DC_OUT_CTRL" description="MICFIL Output DC Remover Control">
+    <alias type="CMSIS" value="DC_OUT_CTRL"/>
+    <bit_field offset="0" width="2" name="DCCONFIG0" access="RW" reset_value="0" description="Channel 0 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_OUT_CTRL_DCCONFIG0(x)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG0_dc_rem_20Hz" value="0b00" description="20 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG0_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG0_dc_rem_40Hz" value="0b10" description="40 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG0_dc_rem_bypassed" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="DCCONFIG1" access="RW" reset_value="0" description="Channel 1 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_OUT_CTRL_DCCONFIG1(x)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG1_dc_rem_20Hz" value="0b00" description="20 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG1_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG1_dc_rem_40Hz" value="0b10" description="40 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG1_dc_rem_bypassed" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="DCCONFIG2" access="RW" reset_value="0" description="Channel 2 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_OUT_CTRL_DCCONFIG2(x)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG2_dc_rem_20Hz" value="0b00" description="20 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG2_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG2_dc_rem_40Hz" value="0b10" description="40 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG2_dc_rem_bypassed" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <bit_field offset="6" width="2" name="DCCONFIG3" access="RW" reset_value="0" description="Channel 3 DC Remover Configuration">
+      <alias type="CMSIS" value="PDM_DC_OUT_CTRL_DCCONFIG3(x)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG3_dc_rem_20Hz" value="0b00" description="20 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG3_dc_rem_13p3Hz" value="0b01" description="13.3 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG3_dc_rem_40Hz" value="0b10" description="40 Hz (FS = 48 kHz)"/>
+      <bit_field_value name="DC_OUT_CTRL_DCCONFIG3_dc_rem_bypassed" value="0b11" description="DC remover is bypassed"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x74" width="32" name="RANGE_CTRL" description="MICFIL Range Control">
+    <alias type="CMSIS" value="RANGE_CTRL"/>
+    <bit_field offset="0" width="4" name="RANGEADJ0" access="RW" reset_value="0" description="Channel 0 Range Adjustment">
+      <alias type="CMSIS" value="PDM_RANGE_CTRL_RANGEADJ0(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="RANGEADJ1" access="RW" reset_value="0" description="Channel 1 Range Adjustment">
+      <alias type="CMSIS" value="PDM_RANGE_CTRL_RANGEADJ1(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="RANGEADJ2" access="RW" reset_value="0" description="Channel 2 Range Adjustment">
+      <alias type="CMSIS" value="PDM_RANGE_CTRL_RANGEADJ2(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="RANGEADJ3" access="RW" reset_value="0" description="Channel 3 Range Adjustment">
+      <alias type="CMSIS" value="PDM_RANGE_CTRL_RANGEADJ3(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x7C" width="32" name="RANGE_STAT" description="MICFIL Range Status">
+    <alias type="CMSIS" value="RANGE_STAT"/>
+    <bit_field offset="0" width="1" name="RANGEOVF0" access="W1C" reset_value="0" description="Channel 0 Range Overflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEOVF0(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF0_no_exception" value="0b0" description="No exception by range overflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF0_exception" value="0b1" description="Exception by range overflow"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RANGEOVF1" access="W1C" reset_value="0" description="Channel 1 Range Overflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEOVF1(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF1_no_exception" value="0b0" description="No exception by range overflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF1_exception" value="0b1" description="Exception by range overflow"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="RANGEOVF2" access="W1C" reset_value="0" description="Channel 2 Range Overflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEOVF2(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF2_no_exception" value="0b0" description="No exception by range overflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF2_exception" value="0b1" description="Exception by range overflow"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="RANGEOVF3" access="W1C" reset_value="0" description="Channel 3 Range Overflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEOVF3(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF3_no_exception" value="0b0" description="No exception by range overflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEOVF3_exception" value="0b1" description="Exception by range overflow"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="1" name="RANGEUNF0" access="W1C" reset_value="0" description="Channel 0 Range Underflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEUNF0(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF0_no_exception" value="0b0" description="No exception by range underflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF0_exception" value="0b1" description="Exception by range underflow"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="RANGEUNF1" access="W1C" reset_value="0" description="Channel 1 Range Underflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEUNF1(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF1_no_exception" value="0b0" description="No exception by range underflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF1_exception" value="0b1" description="Exception by range underflow"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="RANGEUNF2" access="W1C" reset_value="0" description="Channel 2 Range Underflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEUNF2(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF2_no_exception" value="0b0" description="No exception by range underflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF2_exception" value="0b1" description="Exception by range underflow"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="RANGEUNF3" access="W1C" reset_value="0" description="Channel 3 Range Underflow Error Flag">
+      <alias type="CMSIS" value="PDM_RANGE_STAT_RANGEUNF3(x)"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF3_no_exception" value="0b0" description="No exception by range underflow"/>
+      <bit_field_value name="RANGE_STAT_RANGEUNF3_exception" value="0b1" description="Exception by range underflow"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x80" width="32" name="FSYNC_CTRL" description="Frame Synchronization Control">
+    <alias type="CMSIS" value="FSYNC_CTRL"/>
+    <bit_field offset="0" width="32" name="FSYNCLEN" access="RW" reset_value="0" description="Frame Synchronization Window Length">
+      <alias type="CMSIS" value="PDM_FSYNC_CTRL_FSYNCLEN(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x84" width="32" name="VERID" description="Version ID">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0" description="Feature Specification Number">
+      <alias type="CMSIS" value="PDM_VERID_FEATURE(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0xF" description="Minor Version Number">
+      <alias type="CMSIS" value="PDM_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x2" description="Major Version Number">
+      <alias type="CMSIS" value="PDM_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x88" width="32" name="PARAM" description="Parameter">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="4" name="NPAIR" access="RO" reset_value="0x2" description="Number of Microphone Pairs">
+      <alias type="CMSIS" value="PDM_PARAM_NPAIR(x)"/>
+      <bit_field_value name="PARAM_NPAIR_NPAIR_0" value="0b0000" description="None"/>
+      <bit_field_value name="PARAM_NPAIR_NPAIR_1" value="0b0001" description="1 pair"/>
+      <bit_field_value name="PARAM_NPAIR_NPAIR_2" value="0b0010" description="2 pairs"/>
+      <bit_field_value name="PARAM_NPAIR_NPAIR_3" value="0b0011-0b1110" description="..."/>
+      <bit_field_value name="PARAM_NPAIR_NPAIR_15" value="0b1111" description="15 pairs"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="FIFO_PTRWID" access="RO" reset_value="0x4" description="FIFO Pointer Width">
+      <alias type="CMSIS" value="PDM_PARAM_FIFO_PTRWID(x)"/>
+      <bit_field_value name="PARAM_FIFO_PTRWID_PTRWID_0" value="0b0000" description="0 bits"/>
+      <bit_field_value name="PARAM_FIFO_PTRWID_PTRWID_1" value="0b0001" description="1 bit"/>
+      <bit_field_value name="PARAM_FIFO_PTRWID_PTRWID_2" value="0b0010" description="2 bits"/>
+      <bit_field_value name="PARAM_FIFO_PTRWID_PTRWID_3" value="0b0011-0b1110" description="..."/>
+      <bit_field_value name="PARAM_FIFO_PTRWID_PTRWID_15" value="0b1111" description="15 bits"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="FIL_OUT_WIDTH_24B" access="RO" reset_value="0x1" description="Filter Output Width">
+      <alias type="CMSIS" value="PDM_PARAM_FIL_OUT_WIDTH_24B(x)"/>
+      <bit_field_value name="PARAM_FIL_OUT_WIDTH_24B_WID16B" value="0b0" description="16 bits"/>
+      <bit_field_value name="PARAM_FIL_OUT_WIDTH_24B_WID24B" value="0b1" description="24 bits"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="LOW_POWER" access="RO" reset_value="0x1" description="Low-Power Decimation Filter">
+      <alias type="CMSIS" value="PDM_PARAM_LOW_POWER(x)"/>
+      <bit_field_value name="PARAM_LOW_POWER_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="PARAM_LOW_POWER_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="DC_BYPASS" access="RO" reset_value="0x1" description="Input DC Remover Bypass">
+      <alias type="CMSIS" value="PDM_PARAM_DC_BYPASS(x)"/>
+      <bit_field_value name="PARAM_DC_BYPASS_DCACTIVE" value="0b0" description="Active"/>
+      <bit_field_value name="PARAM_DC_BYPASS_DCBYPASSED" value="0b1" description="Disabled"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="DC_OUT_BYPASS" access="RO" reset_value="0" description="Output DC Remover Bypass">
+      <alias type="CMSIS" value="PDM_PARAM_DC_OUT_BYPASS(x)"/>
+      <bit_field_value name="PARAM_DC_OUT_BYPASS_DCACTIVE" value="0b0" description="Active"/>
+      <bit_field_value name="PARAM_DC_OUT_BYPASS_DCBYPASSED" value="0b1" description="Disabled"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+</regs:peripheral>

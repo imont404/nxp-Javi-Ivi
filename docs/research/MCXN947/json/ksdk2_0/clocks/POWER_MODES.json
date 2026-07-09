@@ -1,0 +1,42 @@
+{
+  "power_modes": {
+    "@_xmlns": {
+      "clocks": "http://apif.freescale.net/schemas/clocks/1.2",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://apif.freescale.net/schemas/clocks/1.2 http://apif.nxp.com/schemas/clocks/1.2/clocks.xsd",
+    "power_mode": [
+      {
+        "@id": "ACTIVE",
+        "@type": "run",
+        "@default": "true",
+        "@description": "Active mode"
+      },
+      {
+        "@id": "SLEEP",
+        "@type": "wait",
+        "@description": "Sleep mode"
+      },
+      {
+        "@id": "DEEP_SLEEP",
+        "@type": "wait",
+        "@description": "Deep-sleep mode"
+      },
+      {
+        "@id": "POWER_DOWN",
+        "@type": "stop",
+        "@description": "Power-down mode"
+      },
+      {
+        "@id": "DEEP_POWER_DOWN",
+        "@type": "stop",
+        "@description": "Deep power-down mode"
+      },
+      {
+        "@id": "VBAT",
+        "@type": "stop",
+        "@description": "VBAT mode"
+      }
+    ]
+  }
+}

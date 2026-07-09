@@ -1,0 +1,510 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="68" offset="{0}" width="32" name="GPCNT{1}_VAL" description="General Purpose Counter {1} Timeout Value">
+    <alias type="CMSIS" value="GPCNT{1}_VAL"/>
+    <bit_field offset="0" width="16" name="GPCNT{1}" access="RW" reset_value="0xFFFF" description="General Purpose Counter {1} Timeout Value">
+      <alias type="CMSIS" value="EMVSIM_GPCNT{1}_VAL_GPCNT{1}(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </reg_template>
+  <register offset="0" width="32" name="VER_ID" description="Version ID">
+    <alias type="CMSIS" value="VER_ID"/>
+    <bit_field offset="0" width="32" name="VER" access="RO" reset_value="0" description="Version ID">
+      <alias type="CMSIS" value="EMVSIM_VER_ID_VER(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="Parameters">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="8" name="RX_FIFO_DEPTH" access="RO" reset_value="0x10" description="Receive FIFO Depth">
+      <alias type="CMSIS" value="EMVSIM_PARAM_RX_FIFO_DEPTH(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="TX_FIFO_DEPTH" access="RO" reset_value="0x10" description="Transmit FIFO Depth">
+      <alias type="CMSIS" value="EMVSIM_PARAM_TX_FIFO_DEPTH(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="CLKCFG" description="Clock Configuration">
+    <alias type="CMSIS" value="CLKCFG"/>
+    <bit_field offset="0" width="8" name="CLK_PRSC" access="RW" reset_value="0" description="Clock Prescaler Value">
+      <alias type="CMSIS" value="EMVSIM_CLKCFG_CLK_PRSC(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="2" name="GPCNT1_CLK_SEL" access="RW" reset_value="0" description="General Purpose Counter 1 Clock Select">
+      <alias type="CMSIS" value="EMVSIM_CLKCFG_GPCNT1_CLK_SEL(x)"/>
+      <bit_field_value name="CLKCFG_GPCNT1_CLK_SEL_disabled" value="0b00" description="Disable/reset"/>
+      <bit_field_value name="CLKCFG_GPCNT1_CLK_SEL_cardclk" value="0b01" description="Card clock"/>
+      <bit_field_value name="CLKCFG_GPCNT1_CLK_SEL_rxclk" value="0b10" description="Receive clock"/>
+      <bit_field_value name="CLKCFG_GPCNT1_CLK_SEL_txclk" value="0b11" description="ETU clock (transmit clock)"/>
+    </bit_field>
+    <bit_field offset="10" width="2" name="GPCNT0_CLK_SEL" access="RW" reset_value="0" description="General Purpose Counter 0 Clock Select">
+      <alias type="CMSIS" value="EMVSIM_CLKCFG_GPCNT0_CLK_SEL(x)"/>
+      <bit_field_value name="CLKCFG_GPCNT0_CLK_SEL_disabled" value="0b00" description="Disable/reset"/>
+      <bit_field_value name="CLKCFG_GPCNT0_CLK_SEL_cardclk" value="0b01" description="Card clock"/>
+      <bit_field_value name="CLKCFG_GPCNT0_CLK_SEL_rxclk" value="0b10" description="Receive clock"/>
+      <bit_field_value name="CLKCFG_GPCNT0_CLK_SEL_txclk" value="0b11" description="ETU clock (transmit clock)"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="DIVISOR" description="Baud Rate Divisor">
+    <alias type="CMSIS" value="DIVISOR"/>
+    <bit_field offset="0" width="9" name="DIVISOR_VALUE" access="RW" reset_value="0x174" description="Divisor (F/D) Value">
+      <alias type="CMSIS" value="EMVSIM_DIVISOR_DIVISOR_VALUE(x)"/>
+      <bit_field_value name="DIVISOR_DIVISOR_VALUE_invalid" value="0b000000000-0b000000100" description="Invalid. As per ISO 7816 specification, the minimum value of F/D is 5."/>
+      <bit_field_value name="DIVISOR_DIVISOR_VALUE_valid" value="0b000000101-0b011111111" description="Divisor value F/D"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="CTRL" description="Control">
+    <alias type="CMSIS" value="CTRL"/>
+    <bit_field offset="0" width="1" name="IC" access="RW" reset_value="0" description="Inverse Convention">
+      <alias type="CMSIS" value="EMVSIM_CTRL_IC(x)"/>
+      <bit_field_value name="CTRL_IC_dir_convention" value="0b0" description="Direct"/>
+      <bit_field_value name="CTRL_IC_inv_convention" value="0b1" description="Inverse"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="ICM" access="RW" reset_value="0x1" description="Initial Character Mode">
+      <alias type="CMSIS" value="EMVSIM_CTRL_ICM(x)"/>
+      <bit_field_value name="CTRL_ICM_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_ICM_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ANACK" access="RW" reset_value="0x1" description="Auto NACK Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_ANACK(x)"/>
+      <bit_field_value name="CTRL_ANACK_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_ANACK_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ONACK" access="RW" reset_value="0" description="Overrun NACK Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_ONACK(x)"/>
+      <bit_field_value name="CTRL_ONACK_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_ONACK_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="1" name="FLSH_RX" access="WORZ" reset_value="0" description="Flush Receiver">
+      <alias type="CMSIS" value="EMVSIM_CTRL_FLSH_RX(x)"/>
+      <bit_field_value name="CTRL_FLSH_RX_normalop" value="0b0" description="Normal"/>
+      <bit_field_value name="CTRL_FLSH_RX_resethold" value="0b1" description="Reset"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="FLSH_TX" access="WORZ" reset_value="0" description="Flush Transmitter">
+      <alias type="CMSIS" value="EMVSIM_CTRL_FLSH_TX(x)"/>
+      <bit_field_value name="CTRL_FLSH_TX_normalop" value="0b0" description="Normal"/>
+      <bit_field_value name="CTRL_FLSH_TX_resethold" value="0b1" description="Reset"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="SW_RST" access="WORZ" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="EMVSIM_CTRL_SW_RST(x)"/>
+      <bit_field_value name="CTRL_SW_RST_normalop" value="0b0" description="Normal"/>
+      <bit_field_value name="CTRL_SW_RST_resethold" value="0b1" description="Reset"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="KILL_CLOCKS" access="RW" reset_value="0" description="Kill Internal Clocks">
+      <alias type="CMSIS" value="EMVSIM_CTRL_KILL_CLOCKS(x)"/>
+      <bit_field_value name="CTRL_KILL_CLOCKS_inclk_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="CTRL_KILL_CLOCKS_inclk_disabled" value="0b1" description="Disable"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="DOZE_EN" access="RW" reset_value="0" description="Doze Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_DOZE_EN(x)"/>
+      <bit_field_value name="CTRL_DOZE_EN_doze_gate" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_DOZE_EN_doze_nogate" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="STOP_EN" access="RW" reset_value="0" description="STOP Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_STOP_EN(x)"/>
+      <bit_field_value name="CTRL_STOP_EN_stop_all_clks" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_STOP_EN_only_sck_on" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+    <bit_field offset="16" width="1" name="RCV_EN" access="RW" reset_value="0" description="Receiver Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_RCV_EN(x)"/>
+      <bit_field_value name="CTRL_RCV_EN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_RCV_EN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="XMT_EN" access="RW" reset_value="0" description="Transmitter Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_XMT_EN(x)"/>
+      <bit_field_value name="CTRL_XMT_EN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_XMT_EN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="RCVR_11" access="RW" reset_value="0" description="Receiver 11 ETU Mode Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_RCVR_11(x)"/>
+      <bit_field_value name="CTRL_RCVR_11_rcvr_12" value="0b0" description="12 ETU operation"/>
+      <bit_field_value name="CTRL_RCVR_11_rcvr_11" value="0b1" description="11 ETU operation"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="RX_DMA_EN" access="RW" reset_value="0" description="Receive DMA Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_RX_DMA_EN(x)"/>
+      <bit_field_value name="CTRL_RX_DMA_EN_no_dmaread_req" value="0b0" description="Not asserted"/>
+      <bit_field_value name="CTRL_RX_DMA_EN_dmaread_req" value="0b1" description="Asserted"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="TX_DMA_EN" access="RW" reset_value="0" description="Transmit DMA Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_TX_DMA_EN(x)"/>
+      <bit_field_value name="CTRL_TX_DMA_EN_no_dmawrite_req" value="0b0" description="Not asserted"/>
+      <bit_field_value name="CTRL_TX_DMA_EN_dmawrite_req" value="0b1" description="Asserted"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="1" name="INV_CRC_VAL" access="RW" reset_value="0x1" description="Invert CRC Output Value Bits">
+      <alias type="CMSIS" value="EMVSIM_CTRL_INV_CRC_VAL(x)"/>
+      <bit_field_value name="CTRL_INV_CRC_VAL_no_invert" value="0b0" description="Not inverted"/>
+      <bit_field_value name="CTRL_INV_CRC_VAL_invert" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="CRC_OUT_FLIP" access="RW" reset_value="0" description="CRC Output Value Bit Reversal Or Flip Control">
+      <alias type="CMSIS" value="EMVSIM_CTRL_CRC_OUT_FLIP(x)"/>
+      <bit_field_value name="CTRL_CRC_OUT_FLIP_not_reversed" value="0b0" description="Not reversed"/>
+      <bit_field_value name="CTRL_CRC_OUT_FLIP_reversed" value="0b1" description="Reversed"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="CRC_IN_FLIP" access="RW" reset_value="0" description="CRC Input Byte's Bit Reversal Or Flip Control">
+      <alias type="CMSIS" value="EMVSIM_CTRL_CRC_IN_FLIP(x)"/>
+      <bit_field_value name="CTRL_CRC_IN_FLIP_not_reversed" value="0b0" description="Not reversed"/>
+      <bit_field_value name="CTRL_CRC_IN_FLIP_reversed" value="0b1" description="Reversed"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="CWT_EN" access="RW" reset_value="0" description="CWT Counter Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_CWT_EN(x)"/>
+      <bit_field_value name="CTRL_CWT_EN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_CWT_EN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="LRC_EN" access="RW" reset_value="0" description="LRC Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_LRC_EN(x)"/>
+      <bit_field_value name="CTRL_LRC_EN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_LRC_EN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="CRC_EN" access="RW" reset_value="0" description="CRC Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_CRC_EN(x)"/>
+      <bit_field_value name="CTRL_CRC_EN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_CRC_EN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="XMT_CRC_LRC" access="RW" reset_value="0" description="Transmit CRC or LRC Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_XMT_CRC_LRC(x)"/>
+      <bit_field_value name="CTRL_XMT_CRC_LRC_no_crc_lrc_tx" value="0b0" description="Do not transmit"/>
+      <bit_field_value name="CTRL_XMT_CRC_LRC_crc_lrc_tx" value="0b1" description="Transmit"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="BWT_EN" access="RW" reset_value="0" description="Block Wait Time Counter Enable">
+      <alias type="CMSIS" value="EMVSIM_CTRL_BWT_EN(x)"/>
+      <bit_field_value name="CTRL_BWT_EN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="CTRL_BWT_EN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="INT_MASK" description="Interrupt Mask">
+    <alias type="CMSIS" value="INT_MASK"/>
+    <bit_field offset="0" width="1" name="RDT_IM" access="RW" reset_value="0x1" description="Receive Data Threshold Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_RDT_IM(x)"/>
+      <bit_field_value name="INT_MASK_RDT_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_RDT_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TC_IM" access="RW" reset_value="0x1" description="Transmit Complete Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_TC_IM(x)"/>
+      <bit_field_value name="INT_MASK_TC_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_TC_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="RFO_IM" access="RW" reset_value="0x1" description="Receive FIFO Overflow Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_RFO_IM(x)"/>
+      <bit_field_value name="INT_MASK_RFO_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_RFO_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="ETC_IM" access="RW" reset_value="0x1" description="Early Transmit Complete Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_ETC_IM(x)"/>
+      <bit_field_value name="INT_MASK_ETC_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_ETC_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TFE_IM" access="RW" reset_value="0x1" description="Transmit FIFO Empty Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_TFE_IM(x)"/>
+      <bit_field_value name="INT_MASK_TFE_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_TFE_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TNACK_IM" access="RW" reset_value="0x1" description="Transmit NACK Threshold Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_TNACK_IM(x)"/>
+      <bit_field_value name="INT_MASK_TNACK_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_TNACK_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TFF_IM" access="RW" reset_value="0x1" description="Transmit FIFO Full Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_TFF_IM(x)"/>
+      <bit_field_value name="INT_MASK_TFF_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_TFF_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TDT_IM" access="RW" reset_value="0x1" description="Transmit Data Threshold Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_TDT_IM(x)"/>
+      <bit_field_value name="INT_MASK_TDT_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_TDT_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="GPCNT0_IM" access="RW" reset_value="0x1" description="General Purpose Timer 0 Timeout Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_GPCNT0_IM(x)"/>
+      <bit_field_value name="INT_MASK_GPCNT0_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_GPCNT0_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="CWT_ERR_IM" access="RW" reset_value="0x1" description="Character Wait Time Error Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_CWT_ERR_IM(x)"/>
+      <bit_field_value name="INT_MASK_CWT_ERR_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_CWT_ERR_IM_int_disabled" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="RNACK_IM" access="RW" reset_value="0x1" description="Receiver NACK Threshold Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_RNACK_IM(x)"/>
+      <bit_field_value name="INT_MASK_RNACK_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_RNACK_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="BWT_ERR_IM" access="RW" reset_value="0x1" description="Block Wait Time Error Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_BWT_ERR_IM(x)"/>
+      <bit_field_value name="INT_MASK_BWT_ERR_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_BWT_ERR_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="BGT_ERR_IM" access="RW" reset_value="0x1" description="Block Guard Time Error Interrupt">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_BGT_ERR_IM(x)"/>
+      <bit_field_value name="INT_MASK_BGT_ERR_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_BGT_ERR_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="GPCNT1_IM" access="RW" reset_value="0x1" description="General Purpose Counter 1 Timeout Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_GPCNT1_IM(x)"/>
+      <bit_field_value name="INT_MASK_GPCNT1_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_GPCNT1_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="RX_DATA_IM" access="RW" reset_value="0x1" description="Receive Data Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_RX_DATA_IM(x)"/>
+      <bit_field_value name="INT_MASK_RX_DATA_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_RX_DATA_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="PEF_IM" access="RW" reset_value="0x1" description="Parity Error Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_INT_MASK_PEF_IM(x)"/>
+      <bit_field_value name="INT_MASK_PEF_IM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="INT_MASK_PEF_IM_int_masked" value="0b1" description="Masked"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="RX_THD" description="Receiver Threshold">
+    <alias type="CMSIS" value="RX_THD"/>
+    <bit_field offset="0" width="4" name="RDT" access="RW" reset_value="0x1" description="Receiver Data Threshold Value">
+      <alias type="CMSIS" value="EMVSIM_RX_THD_RDT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="4" name="RNCK_THD" access="RW" reset_value="0" description="Receiver NACK Threshold Value">
+      <alias type="CMSIS" value="EMVSIM_RX_THD_RNCK_THD(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="TX_THD" description="Transmitter Threshold">
+    <alias type="CMSIS" value="TX_THD"/>
+    <bit_field offset="0" width="4" name="TDT" access="RW" reset_value="0xF" description="Transmitter Data Threshold Value">
+      <alias type="CMSIS" value="EMVSIM_TX_THD_TDT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="4" name="TNCK_THD" access="RW" reset_value="0" description="Transmitter NACK Threshold Value">
+      <alias type="CMSIS" value="EMVSIM_TX_THD_TNCK_THD(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="RX_STATUS" description="Receive Status">
+    <alias type="CMSIS" value="RX_STATUS"/>
+    <bit_field offset="0" width="1" name="RFO" access="W1C" reset_value="0" description="Receive FIFO Overflow Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_RFO(x)"/>
+      <bit_field_value name="RX_STATUS_RFO_no_overrun" value="0b0" description="No overrun error"/>
+      <bit_field_value name="RX_STATUS_RFO_overflow" value="0b1" description="Overrun error"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="3" reset_value="0"/>
+    <bit_field offset="4" width="1" name="RX_DATA" access="W1C" reset_value="0" description="Receive Data Interrupt Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_RX_DATA(x)"/>
+      <bit_field_value name="RX_STATUS_RX_DATA_no_byte_rx" value="0b0" description="No new byte"/>
+      <bit_field_value name="RX_STATUS_RX_DATA_byte_rx" value="0b1" description="New byte"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="RDTF" access="RO" reset_value="0" description="Receive Data Threshold Interrupt Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_RDTF(x)"/>
+      <bit_field_value name="RX_STATUS_RDTF_lessthan_rxthresh" value="0b0" description="Less than threshold"/>
+      <bit_field_value name="RX_STATUS_RDTF_greater_eq_rxthresh" value="0b1" description="Greater than or equal to threshold"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="LRC_OK" access="RO" reset_value="0" description="LRC Check OK Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_LRC_OK(x)"/>
+      <bit_field_value name="RX_STATUS_LRC_OK_lrc_notok" value="0b0" description="No match"/>
+      <bit_field_value name="RX_STATUS_LRC_OK_lrc_ok" value="0b1" description="Match"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CRC_OK" access="RO" reset_value="0" description="CRC Check OK Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_CRC_OK(x)"/>
+      <bit_field_value name="RX_STATUS_CRC_OK_crc_notok" value="0b0" description="Current CRC value does not match remainder."/>
+      <bit_field_value name="RX_STATUS_CRC_OK_crc_ok" value="0b1" description="Current calculated CRC value matches the expected result."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="CWT_ERR" access="W1C" reset_value="0" description="Character Wait Time Error Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_CWT_ERR(x)"/>
+      <bit_field_value name="RX_STATUS_CWT_ERR_no_cwt_err" value="0b0" description="No CWT violation"/>
+      <bit_field_value name="RX_STATUS_CWT_ERR_cwt_err" value="0b1" description="CWT violation"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="RTE" access="W1C" reset_value="0" description="Received NACK Threshold Error Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_RTE(x)"/>
+      <bit_field_value name="RX_STATUS_RTE_lessthan_nackthresh" value="0b0" description="Less than"/>
+      <bit_field_value name="RX_STATUS_RTE_greater_eq_nackthresh" value="0b1" description="Equal to"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="BWT_ERR" access="W1C" reset_value="0" description="Block Wait Time Error Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_BWT_ERR(x)"/>
+      <bit_field_value name="RX_STATUS_BWT_ERR_bwt_err_no" value="0b0" description="Not exceeded"/>
+      <bit_field_value name="RX_STATUS_BWT_ERR_bwt_err_yes" value="0b1" description="Exceeded"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="BGT_ERR" access="W1C" reset_value="0" description="Block Guard Time Error Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_BGT_ERR(x)"/>
+      <bit_field_value name="RX_STATUS_BGT_ERR_bgt_err_sufficient" value="0b0" description="Sufficient"/>
+      <bit_field_value name="RX_STATUS_BGT_ERR_bgt_err_toosmall" value="0b1" description="Too small"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="PEF" access="W1C" reset_value="0" description="Parity Error Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_PEF(x)"/>
+      <bit_field_value name="RX_STATUS_PEF_no_parity_detect" value="0b0" description="No error"/>
+      <bit_field_value name="RX_STATUS_PEF_parity_detect" value="0b1" description="Error"/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="FEF" access="W1C" reset_value="0" description="Frame Error Flag">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_FEF(x)"/>
+      <bit_field_value name="RX_STATUS_FEF_no_fef_detect" value="0b0" description="No error"/>
+      <bit_field_value name="RX_STATUS_FEF_fef_detect" value="0b1" description="Error"/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+    <bit_field offset="16" width="4" name="RX_WPTR" access="RO" reset_value="0" description="Receive FIFO Write Pointer Value">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_RX_WPTR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="4" name="RX_CNT" access="RO" reset_value="0" description="Receive FIFO Byte Count">
+      <alias type="CMSIS" value="EMVSIM_RX_STATUS_RX_CNT(x)"/>
+      <bit_field_value name="RX_STATUS_RX_CNT_fifo_empty" value="0b0000" description="FIFO empty"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="TX_STATUS" description="Transmitter Status">
+    <alias type="CMSIS" value="TX_STATUS"/>
+    <bit_field offset="0" width="1" name="TNTE" access="W1C" reset_value="0" description="Transmit NACK Threshold Error Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_TNTE(x)"/>
+      <bit_field_value name="TX_STATUS_TNTE_lessthan_nackthresh" value="0b0" description="Threshold not reached"/>
+      <bit_field_value name="TX_STATUS_TNTE_greater_eq_nackthresh" value="0b1" description="Threshold reached"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="2" reset_value="0"/>
+    <bit_field offset="3" width="1" name="TFE" access="W1C" reset_value="0x1" description="Transmit FIFO Empty Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_TFE(x)"/>
+      <bit_field_value name="TX_STATUS_TFE_fifo_empty" value="0b0" description="Not empty"/>
+      <bit_field_value name="TX_STATUS_TFE_fifo_notempty" value="0b1" description="Empty"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="ETCF" access="W1C" reset_value="0x1" description="Early Transmit Complete Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_ETCF(x)"/>
+      <bit_field_value name="TX_STATUS_ETCF_etx_pending" value="0b0" description="Pending or incomplete"/>
+      <bit_field_value name="TX_STATUS_ETCF_etx_complete" value="0b1" description="Complete"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TCF" access="W1C" reset_value="0x1" description="Transmit Complete Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_TCF(x)"/>
+      <bit_field_value name="TX_STATUS_TCF_tx_pending" value="0b0" description="Pending or incomplete"/>
+      <bit_field_value name="TX_STATUS_TCF_tx_complete" value="0b1" description="Complete"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TFF" access="W1C" reset_value="0" description="Transmit FIFO Full Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_TFF(x)"/>
+      <bit_field_value name="TX_STATUS_TFF_tx_fifo_notfull" value="0b0" description="Not full"/>
+      <bit_field_value name="TX_STATUS_TFF_tx_fifo_full" value="0b1" description="Full"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TDTF" access="RO" reset_value="0x1" description="Transmit Data Threshold Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_TDTF(x)"/>
+      <bit_field_value name="TX_STATUS_TDTF_lessthan_txthresh" value="0b0" description="Threshold exceeded or this field written to 0"/>
+      <bit_field_value name="TX_STATUS_TDTF_greater_eq_txthresh" value="0b1" description="Threshold not exceeded"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="GPCNT0_TO" access="W1C" reset_value="0" description="General Purpose Counter 0 Timeout Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_GPCNT0_TO(x)"/>
+      <bit_field_value name="TX_STATUS_GPCNT0_TO_gpcnt0_to_notreached" value="0b0" description="GPCNT0 not reached, or flag cleared"/>
+      <bit_field_value name="TX_STATUS_GPCNT0_TO_gpcnt0_to_reached" value="0b1" description="GPCNT0 reached"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="GPCNT1_TO" access="W1C" reset_value="0" description="General Purpose Counter 1 Timeout Flag">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_GPCNT1_TO(x)"/>
+      <bit_field_value name="TX_STATUS_GPCNT1_TO_gpcnt1_to_notreached" value="0b0" description="GPCNT1 not reached, or flag cleared"/>
+      <bit_field_value name="TX_STATUS_GPCNT1_TO_gpcnt1_to_reached" value="0b1" description="GPCNT1 reached"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="6" reset_value="0"/>
+    <bit_field offset="16" width="4" name="TX_RPTR" access="RO" reset_value="0" description="Transmit FIFO Read Pointer">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_TX_RPTR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="4" reset_value="0"/>
+    <bit_field offset="24" width="4" name="TX_CNT" access="RO" reset_value="0" description="Transmit FIFO Byte Count">
+      <alias type="CMSIS" value="EMVSIM_TX_STATUS_TX_CNT(x)"/>
+      <bit_field_value name="TX_STATUS_TX_CNT_fifo_empty" value="0b0000" description="FIFO empty"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="PCSR" description="Port Control and Status">
+    <alias type="CMSIS" value="PCSR"/>
+    <bit_field offset="0" width="1" name="SAPD" access="RW" reset_value="0" description="Auto Power Down Enable">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SAPD(x)"/>
+      <bit_field_value name="PCSR_SAPD_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="PCSR_SAPD_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SVCC_EN" access="RW" reset_value="0" description="Vcc Enable for Smart Card">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SVCC_EN(x)"/>
+      <bit_field_value name="PCSR_SVCC_EN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="PCSR_SVCC_EN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="VCCENP" access="RW" reset_value="0" description="VCC Enable Polarity Control">
+      <alias type="CMSIS" value="EMVSIM_PCSR_VCCENP(x)"/>
+      <bit_field_value name="PCSR_VCCENP_active_high" value="0b0" description="Active high"/>
+      <bit_field_value name="PCSR_VCCENP_active_low" value="0b1" description="Active low"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="SRST" access="RW" reset_value="0" description="Reset Smart Card">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SRST(x)"/>
+      <bit_field_value name="PCSR_SRST_asserted" value="0b0" description="Assert"/>
+      <bit_field_value name="PCSR_SRST_de_asserted" value="0b1" description="Deassert"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="SCEN" access="RW" reset_value="0" description="Clock Enable for Smart Card">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SCEN(x)"/>
+      <bit_field_value name="PCSR_SCEN_disabled" value="0b0" description="Disable"/>
+      <bit_field_value name="PCSR_SCEN_enabled" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SCSP" access="RW" reset_value="0" description="Smart Card Clock Stop Polarity">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SCSP(x)"/>
+      <bit_field_value name="PCSR_SCSP_scsp_logic0" value="0b0" description="Logic 0"/>
+      <bit_field_value name="PCSR_SCSP_scsp_logic1" value="0b1" description="Logic 1"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <bit_field offset="7" width="1" name="SPD" access="RW" reset_value="0" description="Auto Power-Down Control">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SPD(x)"/>
+      <bit_field_value name="PCSR_SPD_no_effect" value="0b0" description="No"/>
+      <bit_field_value name="PCSR_SPD_powerdown" value="0b1" description="Yes"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="16" reset_value="0"/>
+    <bit_field offset="24" width="1" name="SPDIM" access="RW" reset_value="0x1" description="Smart Card Presence Detect Interrupt Mask">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SPDIM(x)"/>
+      <bit_field_value name="PCSR_SPDIM_int_enabled" value="0b0" description="Enable"/>
+      <bit_field_value name="PCSR_SPDIM_int_masked" value="0b1" description="Mask"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="SPDIF" access="W1C" reset_value="0" description="Smart Card Presence Detect Interrupt Flag">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SPDIF(x)"/>
+      <bit_field_value name="PCSR_SPDIF_no_insert_remove_detect" value="0b0" description="No insertion or removal"/>
+      <bit_field_value name="PCSR_SPDIF_insert_remove_detect" value="0b1" description="Insertion or removal"/>
+    </bit_field>
+    <bit_field offset="26" width="1" name="SPDP" access="RO" reset_value="0" description="Smart Card Presence Detect Pin Status">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SPDP(x)"/>
+      <bit_field_value name="PCSR_SPDP_logic_low" value="0b0" description="Logic low"/>
+      <bit_field_value name="PCSR_SPDP_logic_high" value="0b1" description="Logic high"/>
+    </bit_field>
+    <bit_field offset="27" width="1" name="SPDES" access="RW" reset_value="0" description="SIM Presence Detect Edge Select">
+      <alias type="CMSIS" value="EMVSIM_PCSR_SPDES(x)"/>
+      <bit_field_value name="PCSR_SPDES_falling_edge" value="0b0" description="Falling edge"/>
+      <bit_field_value name="PCSR_SPDES_rising_edge" value="0b1" description="Rising edge"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="4" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="RX_BUF" description="Receive Data Read Buffer">
+    <alias type="CMSIS" value="RX_BUF"/>
+    <bit_field offset="0" width="8" name="RX_BYTE" access="RO" reset_value="0" description="Receive Data Byte Read">
+      <alias type="CMSIS" value="EMVSIM_RX_BUF_RX_BYTE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="TX_BUF" description="Transmit Data Buffer">
+    <alias type="CMSIS" value="TX_BUF"/>
+    <bit_field offset="0" width="8" name="TX_BYTE" access="WORZ" reset_value="0" description="Transmit Data Byte">
+      <alias type="CMSIS" value="EMVSIM_TX_BUF_TX_BYTE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x34" width="32" name="TX_GETU" description="Transmitter Guard ETU Value">
+    <alias type="CMSIS" value="TX_GETU"/>
+    <bit_field offset="0" width="8" name="GETU" access="RW" reset_value="0" description="Transmitter Guard Time Value in ETU">
+      <alias type="CMSIS" value="EMVSIM_TX_GETU_GETU(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x38" width="32" name="CWT_VAL" description="Character Wait Time Value">
+    <alias type="CMSIS" value="CWT_VAL"/>
+    <bit_field offset="0" width="16" name="CWT" access="RW" reset_value="0xFFFF" description="Character Wait Time Value">
+      <alias type="CMSIS" value="EMVSIM_CWT_VAL_CWT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x3C" width="32" name="BWT_VAL" description="Block Wait Time Value">
+    <alias type="CMSIS" value="BWT_VAL"/>
+    <bit_field offset="0" width="32" name="BWT" access="RW" reset_value="0xFFFFFFFF" description="Block Wait Time Value">
+      <alias type="CMSIS" value="EMVSIM_BWT_VAL_BWT(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x40" width="32" name="BGT_VAL" description="Block Guard Time Value">
+    <alias type="CMSIS" value="BGT_VAL"/>
+    <bit_field offset="0" width="16" name="BGT" access="RW" reset_value="0" description="Block Guard Time Value">
+      <alias type="CMSIS" value="EMVSIM_BGT_VAL_BGT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <reg_instance rid="68" vals="0x44 0"/>
+  <reg_instance rid="68" vals="0x48 1"/>
+</regs:peripheral>

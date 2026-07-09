@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="512" offset="{0}" width="32" name="GPREG{1}" description="General Purpose Register Bank n">
+    <alias type="CMSIS" value="GPREG[{1}]"/>
+    <bit_field offset="0" width="32" name="GPREG" access="RW" reset_value="0" description="General Purpose Bank">
+      <alias type="CMSIS" value="POWERQUAD_GPREG_GPREG(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="576" offset="{0}" width="32" name="COMPREG{1}" description="Compute Register Bank n">
+    <alias type="CMSIS" value="COMPREG[{1}]"/>
+    <bit_field offset="0" width="32" name="COMPREG" access="RW" reset_value="0" description="Compute bank">
+      <alias type="CMSIS" value="POWERQUAD_COMPREGS_COMPREG_COMPREG(x)"/>
+    </bit_field>
+  </reg_template>
+  <register offset="0" width="32" name="OUTBASE" description="Output Base">
+    <alias type="CMSIS" value="OUTBASE"/>
+    <bit_field offset="0" width="32" name="OUTBASE" access="RW" reset_value="0" description="Output Region Base Address">
+      <alias type="CMSIS" value="POWERQUAD_OUTBASE_OUTBASE(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="OUTFORMAT" description="Output Format">
+    <alias type="CMSIS" value="OUTFORMAT"/>
+    <bit_field offset="0" width="2" name="OUT_FORMATINT" access="RW" reset_value="0" description="Output Internal Format">
+      <alias type="CMSIS" value="POWERQUAD_OUTFORMAT_OUT_FORMATINT(x)"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATINT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATINT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATINT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATINT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="OUT_FORMATEXT" access="RW" reset_value="0" description="Output External Format">
+      <alias type="CMSIS" value="POWERQUAD_OUTFORMAT_OUT_FORMATEXT(x)"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATEXT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATEXT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATEXT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="OUTFORMAT_OUT_FORMATEXT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="8" name="OUT_SCALER" access="RW" reset_value="0" description="8-bit Scaling Value for Result Data">
+      <alias type="CMSIS" value="POWERQUAD_OUTFORMAT_OUT_SCALER(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="TMPBASE" description="Temporary Base">
+    <alias type="CMSIS" value="TMPBASE"/>
+    <bit_field offset="0" width="32" name="TMPBASE" access="RW" reset_value="0" description="Base Address for the Temporary Region">
+      <alias type="CMSIS" value="POWERQUAD_TMPBASE_TMPBASE(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="TMPFORMAT" description="Temporary Format">
+    <alias type="CMSIS" value="TMPFORMAT"/>
+    <bit_field offset="0" width="2" name="TMP_FORMATINT" access="RW" reset_value="0" description="Temporary Internal Format">
+      <alias type="CMSIS" value="POWERQUAD_TMPFORMAT_TMP_FORMATINT(x)"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATINT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATINT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATINT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATINT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="TMP_FORMATEXT" access="RW" reset_value="0" description="Temporary External Format">
+      <alias type="CMSIS" value="POWERQUAD_TMPFORMAT_TMP_FORMATEXT(x)"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATEXT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATEXT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATEXT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="TMPFORMAT_TMP_FORMATEXT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="8" name="TMP_SCALER" access="RW" reset_value="0" description="Scaling Value for Temporary Data.">
+      <alias type="CMSIS" value="POWERQUAD_TMPFORMAT_TMP_SCALER(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="INABASE" description="Input A Base">
+    <alias type="CMSIS" value="INABASE"/>
+    <bit_field offset="0" width="32" name="INABASE" access="RW" reset_value="0" description="Input A Base">
+      <alias type="CMSIS" value="POWERQUAD_INABASE_INABASE(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="INAFORMAT" description="Input A Format">
+    <alias type="CMSIS" value="INAFORMAT"/>
+    <bit_field offset="0" width="2" name="INA_FORMATINT" access="RW" reset_value="0" description="Input A Internal Format">
+      <alias type="CMSIS" value="POWERQUAD_INAFORMAT_INA_FORMATINT(x)"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATINT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATINT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATINT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATINT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="INA_FORMATEXT" access="RW" reset_value="0" description="Input A External Format">
+      <alias type="CMSIS" value="POWERQUAD_INAFORMAT_INA_FORMATEXT(x)"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATEXT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATEXT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATEXT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="INAFORMAT_INA_FORMATEXT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="8" name="INA_SCALER" access="RW" reset_value="0" description="Input A Scaler Value">
+      <alias type="CMSIS" value="POWERQUAD_INAFORMAT_INA_SCALER(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="INBBASE" description="Input B Base">
+    <alias type="CMSIS" value="INBBASE"/>
+    <bit_field offset="0" width="32" name="INBBASE" access="RW" reset_value="0" description="Input B Base">
+      <alias type="CMSIS" value="POWERQUAD_INBBASE_INBBASE(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x1C" width="32" name="INBFORMAT" description="Input B Format">
+    <alias type="CMSIS" value="INBFORMAT"/>
+    <bit_field offset="0" width="2" name="INB_FORMATINT" access="RW" reset_value="0" description="Input B Internal Format">
+      <alias type="CMSIS" value="POWERQUAD_INBFORMAT_INB_FORMATINT(x)"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATINT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATINT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATINT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATINT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="INB_FORMATEXT" access="RW" reset_value="0" description="Input B External Format">
+      <alias type="CMSIS" value="POWERQUAD_INBFORMAT_INB_FORMATEXT(x)"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATEXT_Q15" value="0b00" description="Q15 16-bit fixed-point integer"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATEXT_Q31" value="0b01" description="Q31 32-bit fixed-point integer"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATEXT_FLOAT" value="0b10" description="F32 32-bit floating-point format"/>
+      <bit_field_value name="INBFORMAT_INB_FORMATEXT_0b11" value="0b11" description="Reserved value."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="8" name="INB_SCALER" access="RW" reset_value="0" description="Input B Scaler">
+      <alias type="CMSIS" value="POWERQUAD_INBFORMAT_INB_SCALER(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x100" width="32" name="CONTROL" description="Control">
+    <alias type="CMSIS" value="CONTROL"/>
+    <bit_field offset="0" width="4" name="DECODE_OPCODE" access="RW" reset_value="0" description="Decode Opcode">
+      <alias type="CMSIS" value="POWERQUAD_CONTROL_DECODE_OPCODE(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="4" name="DECODE_MACHINE" access="RW" reset_value="0" description="Decode Machine">
+      <alias type="CMSIS" value="POWERQUAD_CONTROL_DECODE_MACHINE(x)"/>
+      <bit_field_value name="CONTROL_DECODE_MACHINE_COPROCESSOR" value="0b0000" description="Coprocessor"/>
+      <bit_field_value name="CONTROL_DECODE_MACHINE_MATRIX" value="0b0001" description="Matrix engine"/>
+      <bit_field_value name="CONTROL_DECODE_MACHINE_TRANSFORM" value="0b0010" description="Transform engine"/>
+      <bit_field_value name="CONTROL_DECODE_MACHINE_FILTER" value="0b0011" description="Filter engine"/>
+      <bit_field_value name="CONTROL_DECODE_MACHINE_0b0100" value="0b0100 0b0110-0b1111" description="Reserved value."/>
+      <bit_field_value name="CONTROL_DECODE_MACHINE_CORDIC" value="0b0101" description="CORDIC engine"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="23" reset_value="0"/>
+    <bit_field offset="31" width="1" name="INST_BUSY" access="RO" reset_value="0" description="Instruction Busy">
+      <alias type="CMSIS" value="POWERQUAD_CONTROL_INST_BUSY(x)"/>
+      <bit_field_value name="CONTROL_INST_BUSY_NOT_BUSY" value="0b0" description="Not busy"/>
+      <bit_field_value name="CONTROL_INST_BUSY_BUSY" value="0b1" description="Busy"/>
+    </bit_field>
+  </register>
+  <register offset="0x104" width="32" name="LENGTH" description="Length">
+    <alias type="CMSIS" value="LENGTH"/>
+    <bit_field offset="0" width="32" name="INST_LENGTH" access="RW" reset_value="0" description="Instruction length">
+      <alias type="CMSIS" value="POWERQUAD_LENGTH_INST_LENGTH(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x108" width="32" name="CPPRE" description="Coprocessor Prescale">
+    <alias type="CMSIS" value="CPPRE"/>
+    <bit_field offset="0" width="8" name="CPPRE_IN" access="RW" reset_value="0" description="Prescaling Input">
+      <alias type="CMSIS" value="POWERQUAD_CPPRE_CPPRE_IN(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="CPPRE_OUT" access="RW" reset_value="0" description="Postscaling Output">
+      <alias type="CMSIS" value="POWERQUAD_CPPRE_CPPRE_OUT(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="CPPRE_SAT" access="RW" reset_value="0" description="Saturation">
+      <alias type="CMSIS" value="POWERQUAD_CPPRE_CPPRE_SAT(x)"/>
+      <bit_field_value name="CPPRE_CPPRE_SAT_DISABLE" value="0b0" description="No saturation"/>
+      <bit_field_value name="CPPRE_CPPRE_SAT_ENABLE" value="0b1" description="Forces sub-32 bit saturation"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="CPPRE_SAT8" access="RW" reset_value="0" description="Saturation 8">
+      <alias type="CMSIS" value="POWERQUAD_CPPRE_CPPRE_SAT8(x)"/>
+      <bit_field_value name="CPPRE_CPPRE_SAT8_SAT_8_BITS" value="0b0" description="8 bits"/>
+      <bit_field_value name="CPPRE_CPPRE_SAT8_SAT_16_BITS" value="0b1" description="16 bits"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="14" reset_value="0"/>
+  </register>
+  <register offset="0x10C" width="32" name="MISC" description="Miscellaneous">
+    <alias type="CMSIS" value="MISC"/>
+    <bit_field offset="0" width="32" name="INST_MISC" access="RW" reset_value="0" description="Scaling Factor">
+      <alias type="CMSIS" value="POWERQUAD_MISC_INST_MISC(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x110" width="32" name="CURSORY" description="Cursory">
+    <alias type="CMSIS" value="CURSORY"/>
+    <bit_field offset="0" width="1" name="CURSORY" access="RW" reset_value="0" description="Cursory Mode">
+      <alias type="CMSIS" value="POWERQUAD_CURSORY_CURSORY(x)"/>
+      <bit_field_value name="CURSORY_CURSORY_DISABLE" value="0b0" description="Disable cursory mode, full floating-point accuracy (24-bit mantissa + 2 bits before rounding)."/>
+      <bit_field_value name="CURSORY_CURSORY_ENABLE" value="0b1" description="Enable cursory Mode, 16-bit mantissa (bottom bits are zeroed for inputs and outputs of MACs)."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x180" width="32" name="CORDIC_X" description="CORDIC Input X">
+    <alias type="CMSIS" value="CORDIC_X"/>
+    <bit_field offset="0" width="32" name="CORDIC_X" access="RW" reset_value="0" description="CORDIC Input X">
+      <alias type="CMSIS" value="POWERQUAD_CORDIC_X_CORDIC_X(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x184" width="32" name="CORDIC_Y" description="CORDIC Input Y">
+    <alias type="CMSIS" value="CORDIC_Y"/>
+    <bit_field offset="0" width="32" name="CORDIC_Y" access="RW" reset_value="0" description="CORDIC Input Y">
+      <alias type="CMSIS" value="POWERQUAD_CORDIC_Y_CORDIC_Y(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x188" width="32" name="CORDIC_Z" description="CORDIC Input Z">
+    <alias type="CMSIS" value="CORDIC_Z"/>
+    <bit_field offset="0" width="32" name="CORDIC_Z" access="RW" reset_value="0" description="CORDIC Input Z">
+      <alias type="CMSIS" value="POWERQUAD_CORDIC_Z_CORDIC_Z(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x18C" width="32" name="ERRSTAT" description="Error Status">
+    <alias type="CMSIS" value="ERRSTAT"/>
+    <bit_field offset="0" width="1" name="OVERFLOW" access="W1C" reset_value="0" description="Floating-point Overflow">
+      <alias type="CMSIS" value="POWERQUAD_ERRSTAT_OVERFLOW(x)"/>
+      <bit_field_value name="ERRSTAT_OVERFLOW_NO_ERROR" value="0b0" description="No error"/>
+      <bit_field_value name="ERRSTAT_OVERFLOW_ERROR" value="0b1" description="Error on floating-point overflow"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="NAN" access="W1C" reset_value="0" description="Floating-Point Not-a-Number (NaN)">
+      <alias type="CMSIS" value="POWERQUAD_ERRSTAT_NAN(x)"/>
+      <bit_field_value name="ERRSTAT_NAN_NO_ERROR" value="0b0" description="No error"/>
+      <bit_field_value name="ERRSTAT_NAN_ERROR" value="0b1" description="Error on floating-point NaN"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="FIXEDOVERFLOW" access="W1C" reset_value="0" description="Fixed-point Overflow">
+      <alias type="CMSIS" value="POWERQUAD_ERRSTAT_FIXEDOVERFLOW(x)"/>
+      <bit_field_value name="ERRSTAT_FIXEDOVERFLOW_NO_ERROR" value="0b0" description="No error"/>
+      <bit_field_value name="ERRSTAT_FIXEDOVERFLOW_ERROR" value="0b1" description="Error on fixed-point overflow"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="UNDERFLOW" access="W1C" reset_value="0" description="Underflow">
+      <alias type="CMSIS" value="POWERQUAD_ERRSTAT_UNDERFLOW(x)"/>
+      <bit_field_value name="ERRSTAT_UNDERFLOW_NO_ERROR" value="0b0" description="No error"/>
+      <bit_field_value name="ERRSTAT_UNDERFLOW_ERROR" value="0b1" description="Error on underflow"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="BUSERROR" access="W1C" reset_value="0" description="Bus Error">
+      <alias type="CMSIS" value="POWERQUAD_ERRSTAT_BUSERROR(x)"/>
+      <bit_field_value name="ERRSTAT_BUSERROR_NO_ERROR" value="0b0" description="No error"/>
+      <bit_field_value name="ERRSTAT_BUSERROR_ERROR" value="0b1" description="Error on bus"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="27" reset_value="0"/>
+  </register>
+  <register offset="0x190" width="32" name="INTREN" description="Interrupt Enable">
+    <alias type="CMSIS" value="INTREN"/>
+    <bit_field offset="0" width="1" name="INTR_OFLOW" access="RW" reset_value="0" description="Interrupt Floating-point Overflow">
+      <alias type="CMSIS" value="POWERQUAD_INTREN_INTR_OFLOW(x)"/>
+      <bit_field_value name="INTREN_INTR_OFLOW_DISABLE" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="INTREN_INTR_OFLOW_ENABLE" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="INTR_NAN" access="RW" reset_value="0" description="Interrupt Floating-point NaN">
+      <alias type="CMSIS" value="POWERQUAD_INTREN_INTR_NAN(x)"/>
+      <bit_field_value name="INTREN_INTR_NAN_DISABLE" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="INTREN_INTR_NAN_ENABLE" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="INTR_FIXED" access="RW" reset_value="0" description="Interrupt on Fixed-point Overflow">
+      <alias type="CMSIS" value="POWERQUAD_INTREN_INTR_FIXED(x)"/>
+      <bit_field_value name="INTREN_INTR_FIXED_DISABLE" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="INTREN_INTR_FIXED_ENABLE" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="INTR_UFLOW" access="RW" reset_value="0" description="Interrupt on Underflow">
+      <alias type="CMSIS" value="POWERQUAD_INTREN_INTR_UFLOW(x)"/>
+      <bit_field_value name="INTREN_INTR_UFLOW_DISABLE" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="INTREN_INTR_UFLOW_ENABLE" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="INTR_BERR" access="RW" reset_value="0" description="Interrupt on AHBM Bus Error">
+      <alias type="CMSIS" value="POWERQUAD_INTREN_INTR_BERR(x)"/>
+      <bit_field_value name="INTREN_INTR_BERR_DISABLE" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="INTREN_INTR_BERR_ENABLE" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="2" reset_value="0"/>
+    <bit_field offset="7" width="1" name="INTR_COMP" access="RW" reset_value="0" description="Interrupt on Instruction Completion">
+      <alias type="CMSIS" value="POWERQUAD_INTREN_INTR_COMP(x)"/>
+      <bit_field_value name="INTREN_INTR_COMP_DISABLE" value="0b0" description="Disable interrupt"/>
+      <bit_field_value name="INTREN_INTR_COMP_ENABLE" value="0b1" description="Enable interrupt"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x194" width="32" name="EVENTEN" description="Event Enable">
+    <alias type="CMSIS" value="EVENTEN"/>
+    <bit_field offset="0" width="1" name="EVENT_OFLOW" access="RW" reset_value="0" description="Event Trigger on Floating-point Overflow">
+      <alias type="CMSIS" value="POWERQUAD_EVENTEN_EVENT_OFLOW(x)"/>
+      <bit_field_value name="EVENTEN_EVENT_OFLOW_DISABLE" value="0b0" description="Disable event trigger"/>
+      <bit_field_value name="EVENTEN_EVENT_OFLOW_ENABLE" value="0b1" description="Enable event trigger"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="EVENT_NAN" access="RW" reset_value="0" description="Event Trigger on Floating-Point NaN">
+      <alias type="CMSIS" value="POWERQUAD_EVENTEN_EVENT_NAN(x)"/>
+      <bit_field_value name="EVENTEN_EVENT_NAN_DISABLE" value="0b0" description="Disable event trigger"/>
+      <bit_field_value name="EVENTEN_EVENT_NAN_ENABLE" value="0b1" description="Enable event trigger"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="EVENT_FIXED" access="RW" reset_value="0" description="Event Trigger on Fixed-point Overflow">
+      <alias type="CMSIS" value="POWERQUAD_EVENTEN_EVENT_FIXED(x)"/>
+      <bit_field_value name="EVENTEN_EVENT_FIXED_DISABLE" value="0b0" description="Disable event trigger"/>
+      <bit_field_value name="EVENTEN_EVENT_FIXED_ENABLE" value="0b1" description="Enable event trigger"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="EVENT_UFLOW" access="RW" reset_value="0" description="Event Trigger on Underflow">
+      <alias type="CMSIS" value="POWERQUAD_EVENTEN_EVENT_UFLOW(x)"/>
+      <bit_field_value name="EVENTEN_EVENT_UFLOW_DISABLE" value="0b0" description="Disable event trigger"/>
+      <bit_field_value name="EVENTEN_EVENT_UFLOW_ENABLE" value="0b1" description="Enable event trigger"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="EVENT_BERR" access="RW" reset_value="0" description="Event Trigger on AHBM Bus Error">
+      <alias type="CMSIS" value="POWERQUAD_EVENTEN_EVENT_BERR(x)"/>
+      <bit_field_value name="EVENTEN_EVENT_BERR_DISABLE" value="0b0" description="Disable event trigger"/>
+      <bit_field_value name="EVENTEN_EVENT_BERR_ENABLE" value="0b1" description="Enable event trigger"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="2" reset_value="0"/>
+    <bit_field offset="7" width="1" name="EVENT_COMP" access="RW" reset_value="0" description="Event Trigger on Instruction Completion">
+      <alias type="CMSIS" value="POWERQUAD_EVENTEN_EVENT_COMP(x)"/>
+      <bit_field_value name="EVENTEN_EVENT_COMP_DISABLE" value="0b0" description="Disable event trigger"/>
+      <bit_field_value name="EVENTEN_EVENT_COMP_ENABLE" value="0b1" description="Enable event trigger"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x198" width="32" name="INTRSTAT" description="Interrupt Status">
+    <alias type="CMSIS" value="INTRSTAT"/>
+    <bit_field offset="0" width="1" name="INTR_STAT" access="W1C" reset_value="0" description="Interrupt Status">
+      <alias type="CMSIS" value="POWERQUAD_INTRSTAT_INTR_STAT(x)"/>
+      <bit_field_value name="INTRSTAT_INTR_STAT_DISABLE" value="0b0" description="No new interrupt"/>
+      <bit_field_value name="INTRSTAT_INTR_STAT_ENABLE" value="0b1" description="Interrupt captured"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <reg_instance rid="512" vals="0x200 0"/>
+  <reg_instance rid="512" vals="0x204 1"/>
+  <reg_instance rid="512" vals="0x208 2"/>
+  <reg_instance rid="512" vals="0x20C 3"/>
+  <reg_instance rid="512" vals="0x210 4"/>
+  <reg_instance rid="512" vals="0x214 5"/>
+  <reg_instance rid="512" vals="0x218 6"/>
+  <reg_instance rid="512" vals="0x21C 7"/>
+  <reg_instance rid="512" vals="0x220 8"/>
+  <reg_instance rid="512" vals="0x224 9"/>
+  <reg_instance rid="512" vals="0x228 10"/>
+  <reg_instance rid="512" vals="0x22C 11"/>
+  <reg_instance rid="512" vals="0x230 12"/>
+  <reg_instance rid="512" vals="0x234 13"/>
+  <reg_instance rid="512" vals="0x238 14"/>
+  <reg_instance rid="512" vals="0x23C 15"/>
+  <reg_instance rid="576" vals="0x240 0"/>
+  <reg_instance rid="576" vals="0x244 1"/>
+  <reg_instance rid="576" vals="0x248 2"/>
+  <reg_instance rid="576" vals="0x24C 3"/>
+  <reg_instance rid="576" vals="0x250 4"/>
+  <reg_instance rid="576" vals="0x254 5"/>
+  <reg_instance rid="576" vals="0x258 6"/>
+  <reg_instance rid="576" vals="0x25C 7"/>
+</regs:peripheral>

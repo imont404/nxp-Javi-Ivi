@@ -1,0 +1,260 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "INDUCTOR_FERRITE.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "INDUCTOR_FERRITE",
+        "Description": "IND FER BEAD 120 OHM@100MHZ 0.5A 25% 0402",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "INDUCTOR_FERRITE",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "ES6YR11N",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "INDUCTOR_FERRITE",
+            "Color": 128,
+            "AllPinCount": 2,
+            "ComponentDescription": "IND FER BEAD 120 OHM@100MHZ 0.5A 25% 0402",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGRR5GKAAUZDRkMG5hq1GgYACwIBuQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGRR5gJSN/6DOUaMRgzMNWo1DAAnrQOU",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 3,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "QAQIJGYP",
+            "IndexInSheet": 2,
+            "Location.Y": -5,
+            "Color": 16711680,
+            "Radius": 5,
+            "StartAngle": 90.0,
+            "EndAngle": 180.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 4,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "QAIJYOSA",
+            "IndexInSheet": 3,
+            "Location.Y": -5,
+            "Color": 16711680,
+            "Radius": 5,
+            "EndAngle": 90.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 5,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "VNHVWCNQ",
+            "IndexInSheet": 4,
+            "Location.Y": -15,
+            "Color": 16711680,
+            "Radius": 5,
+            "StartAngle": 90.0,
+            "EndAngle": 180.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 6,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "XVFNNSUT",
+            "IndexInSheet": 5,
+            "Location.Y": -15,
+            "Color": 16711680,
+            "Radius": 5,
+            "EndAngle": 90.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 7,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "IOLRQMAV",
+            "IndexInSheet": 6,
+            "Location.Y": -25,
+            "Color": 16711680,
+            "Radius": 5,
+            "StartAngle": 90.0,
+            "EndAngle": 180.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 8,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "RTKGVZAR",
+            "IndexInSheet": 7,
+            "Location.Y": -25,
+            "Color": 16711680,
+            "Radius": 5,
+            "EndAngle": 90.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "ECCRLGDO",
+            "IndexInSheet": 8,
+            "Location.Y": -35,
+            "Color": 16711680,
+            "Radius": 5,
+            "StartAngle": 90.0,
+            "EndAngle": 180.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "NZLNBLBY",
+            "IndexInSheet": 9,
+            "Location.Y": -35,
+            "Color": 16711680,
+            "Radius": 5,
+            "EndAngle": 90.0,
+            "SecondaryRadius": 5
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "FPAKCAKI",
+            "IndexInSheet": 10,
+            "Location.X": 10,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Corner.X": 15,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 12,
+            "OwnerPartId": 1,
+            "UniqueID": "MWHKOCDN",
+            "Location.X": 20,
+            "Location.Y": -10,
+            "Name": "Designator",
+            "Text": "L?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 13
+          }
+        ]
+      }
+    ]
+  }
+}

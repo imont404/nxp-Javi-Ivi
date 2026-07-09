@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <register offset="0xFF4" width="32" name="ISTAT" description="Interrupt Status">
+    <alias type="CMSIS" value="ISTAT"/>
+    <bit_field offset="0" width="1" name="UARTTX" access="RO" reset_value="0" description="UART TX Interrupt">
+      <alias type="CMSIS" value="LP_FLEXCOMM_ISTAT_UARTTX(x)"/>
+      <bit_field_value name="ISTAT_UARTTX_CLR" value="0b0" description="Clear"/>
+      <bit_field_value name="ISTAT_UARTTX_SET" value="0b1" description="Set"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="UARTRX" access="RO" reset_value="0" description="UART RX Interrupt">
+      <alias type="CMSIS" value="LP_FLEXCOMM_ISTAT_UARTRX(x)"/>
+      <bit_field_value name="ISTAT_UARTRX_CLR" value="0b0" description="Clear"/>
+      <bit_field_value name="ISTAT_UARTRX_SET" value="0b1" description="Set"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="SPI" access="RO" reset_value="0" description="SPI Interrupt">
+      <alias type="CMSIS" value="LP_FLEXCOMM_ISTAT_SPI(x)"/>
+      <bit_field_value name="ISTAT_SPI_CLR" value="0b0" description="Clear"/>
+      <bit_field_value name="ISTAT_SPI_SET" value="0b1" description="Set"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="I2CM" access="RO" reset_value="0" description="I2C Controller Interrupt">
+      <alias type="CMSIS" value="LP_FLEXCOMM_ISTAT_I2CM(x)"/>
+      <bit_field_value name="ISTAT_I2CM_CLR" value="0b0" description="Clear"/>
+      <bit_field_value name="ISTAT_I2CM_SET" value="0b1" description="Set"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="I2CS" access="RO" reset_value="0" description="I2C Subordinate Interrupt">
+      <alias type="CMSIS" value="LP_FLEXCOMM_ISTAT_I2CS(x)"/>
+      <bit_field_value name="ISTAT_I2CS_CLR" value="0b0" description="Clear"/>
+      <bit_field_value name="ISTAT_I2CS_SET" value="0b1" description="Set"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="26" reset_value="0"/>
+  </register>
+  <register offset="0xFF8" width="32" name="PSELID" description="Peripheral Select and ID">
+    <alias type="CMSIS" value="PSELID"/>
+    <bit_field offset="0" width="3" name="PERSEL" access="RW" reset_value="0" description="Peripheral Select">
+      <alias type="CMSIS" value="LP_FLEXCOMM_PSELID_PERSEL(x)"/>
+      <bit_field_value name="PSELID_PERSEL_NONE" value="0b000" description="No peripheral selected"/>
+      <bit_field_value name="PSELID_PERSEL_UART" value="0b001" description="UART"/>
+      <bit_field_value name="PSELID_PERSEL_SPI" value="0b010" description="SPI"/>
+      <bit_field_value name="PSELID_PERSEL_I2C" value="0b011" description="I2C"/>
+      <bit_field_value name="PSELID_PERSEL_UARTI2C" value="0b111" description="UART and I2C"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="LP_FLEXCOMM_PSELID_LOCK(x)"/>
+      <bit_field_value name="PSELID_LOCK_FALSE" value="0b0" description="PERSEL is writable"/>
+      <bit_field_value name="PSELID_LOCK_TRUE" value="0b1" description="PERSEL is not writable"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="UARTPRESENT" access="RO" reset_value="0x1" description="UART Present">
+      <alias type="CMSIS" value="LP_FLEXCOMM_PSELID_UARTPRESENT(x)"/>
+      <bit_field_value name="PSELID_UARTPRESENT_FALSE" value="0b0" description="Not supported"/>
+      <bit_field_value name="PSELID_UARTPRESENT_TRUE" value="0b1" description="Supported"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SPIPRESENT" access="RO" reset_value="0x1" description="SPI Present">
+      <alias type="CMSIS" value="LP_FLEXCOMM_PSELID_SPIPRESENT(x)"/>
+      <bit_field_value name="PSELID_SPIPRESENT_FALSE" value="0b0" description="Not supported"/>
+      <bit_field_value name="PSELID_SPIPRESENT_TRUE" value="0b1" description="Supported"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="I2CPRESENT" access="RO" reset_value="0x1" description="I2C Present">
+      <alias type="CMSIS" value="LP_FLEXCOMM_PSELID_I2CPRESENT(x)"/>
+      <bit_field_value name="PSELID_I2CPRESENT_FALSE" value="0b0" description="Not supported"/>
+      <bit_field_value name="PSELID_I2CPRESENT_TRUE" value="0b1" description="Supported"/>
+    </bit_field>
+    <reserved_bit_field offset="7" width="5" reset_value="0"/>
+    <bit_field offset="12" width="20" name="ID" access="RO" reset_value="0x103" description="LP_FLEXCOMM interface ID">
+      <alias type="CMSIS" value="LP_FLEXCOMM_PSELID_ID(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

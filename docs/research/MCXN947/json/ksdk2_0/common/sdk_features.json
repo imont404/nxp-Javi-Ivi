@@ -1,0 +1,3300 @@
+{
+  "sdk_features": {
+    "@_xmlns": {
+      "features": "http://swtools.freescale.net/XSD/features/1.0",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/features/1.0 http://swtools.freescale.net/XSD/features/1.0/features.xsd",
+    "@prefix": "FSL_FEATURE_",
+    "soc_specific": {
+      "@id": "SOC",
+      "feature": [
+        {
+          "@name": "SOC_CACHE64_CTRL_COUNT",
+          "@value": "1",
+          "@description": "CACHE64_CTRL availability on the SoC."
+        },
+        {
+          "@name": "SOC_CACHE64_POLSEL_COUNT",
+          "@value": "1",
+          "@description": "CACHE64_POLSEL availability on the SoC."
+        },
+        {
+          "@name": "SOC_CDOG_COUNT",
+          "@value": "2",
+          "@description": "CDOG availability on the SoC."
+        },
+        {
+          "@name": "SOC_CMC_COUNT",
+          "@value": "1",
+          "@description": "CMC availability on the SoC."
+        },
+        {
+          "@name": "SOC_CRC_COUNT",
+          "@value": "1",
+          "@description": "CRC availability on the SoC."
+        },
+        {
+          "@name": "SOC_CTIMER_COUNT",
+          "@value": "5",
+          "@description": "CTIMER availability on the SoC."
+        },
+        {
+          "@name": "SOC_EDMA_COUNT",
+          "@value": "2",
+          "@description": "EDMA availability on the SoC."
+        },
+        {
+          "@name": "SOC_EIM_COUNT",
+          "@value": "1",
+          "@description": "EIM availability on the SoC."
+        },
+        {
+          "@name": "SOC_EMVSIM_COUNT",
+          "@value": "2",
+          "@description": "EMVSIM availability on the SoC."
+        },
+        {
+          "@name": "SOC_EVTG_COUNT",
+          "@value": "1",
+          "@description": "EVTG availability on the SoC."
+        },
+        {
+          "@name": "SOC_EWM_COUNT",
+          "@value": "1",
+          "@description": "EWM availability on the SoC."
+        },
+        {
+          "@name": "SOC_FLEXCAN_COUNT",
+          "@value": "2",
+          "@description": "FLEXCAN availability on the SoC."
+        },
+        {
+          "@name": "SOC_FLEXIO_COUNT",
+          "@value": "1",
+          "@description": "FLEXIO availability on the SoC."
+        },
+        {
+          "@name": "SOC_FLEXSPI_COUNT",
+          "@value": "1",
+          "@description": "FLEXSPI availability on the SoC."
+        },
+        {
+          "@name": "SOC_FMC_COUNT",
+          "@value": "1",
+          "@description": "FMC availability on the SoC."
+        },
+        {
+          "@name": "SOC_FREQME_COUNT",
+          "@value": "1",
+          "@description": "FREQME availability on the SoC."
+        },
+        {
+          "@name": "SOC_GPIO_COUNT",
+          "@value": "12",
+          "@description": "GPIO availability on the SoC."
+        },
+        {
+          "@name": "SOC_SPC_COUNT",
+          "@value": "1",
+          "@description": "SPC availability on the SoC."
+        },
+        {
+          "@name": "SOC_HPDAC_COUNT",
+          "@value": "1",
+          "@description": "HPDAC availability on the SoC."
+        },
+        {
+          "@name": "SOC_I3C_COUNT",
+          "@value": "2",
+          "@description": "I3C availability on the SoC."
+        },
+        {
+          "@name": "SOC_I2S_COUNT",
+          "@value": "2",
+          "@description": "I2S availability on the SoC."
+        },
+        {
+          "@name": "SOC_INPUTMUX_COUNT",
+          "@value": "1",
+          "@description": "INPUTMUX availability on the SoC."
+        },
+        {
+          "@name": "SOC_ITRC_COUNT",
+          "@value": "1",
+          "@description": "ITRC availability on the SoC."
+        },
+        {
+          "@name": "SOC_LPADC_COUNT",
+          "@value": "2",
+          "@description": "LPADC availability on the SoC."
+        },
+        {
+          "@name": "SOC_LPCMP_COUNT",
+          "@value": "3",
+          "@description": "LPCMP availability on the SoC."
+        },
+        {
+          "@name": "SOC_LPDAC_COUNT",
+          "@value": "2",
+          "@description": "LPDAC availability on the SoC."
+        },
+        {
+          "@name": "SOC_LPI2C_COUNT",
+          "@value": "10",
+          "@description": "LPI2C availability on the SoC."
+        },
+        {
+          "@name": "SOC_LPSPI_COUNT",
+          "@value": "10",
+          "@description": "LPSPI availability on the SoC."
+        },
+        {
+          "@name": "SOC_LPTMR_COUNT",
+          "@value": "2",
+          "@description": "LPTMR availability on the SoC."
+        },
+        {
+          "@name": "SOC_LPUART_COUNT",
+          "@value": "10",
+          "@description": "LPUART availability on the SoC."
+        },
+        {
+          "@name": "SOC_MAILBOX_COUNT",
+          "@value": "1",
+          "@description": "MAILBOX availability on the SoC."
+        },
+        {
+          "@name": "SOC_MCX_ENET_COUNT",
+          "@value": "1",
+          "@description": "MCX_ENET availability on the SoC."
+        },
+        {
+          "@name": "SOC_MPU_COUNT",
+          "@value": "1",
+          "@description": "MPU availability on the SoC."
+        },
+        {
+          "@name": "SOC_MRT_COUNT",
+          "@value": "1",
+          "@description": "MRT availability on the SoC."
+        },
+        {
+          "@name": "SOC_OPAMP_COUNT",
+          "@value": "3",
+          "@description": "OPAMP availability on the SoC."
+        },
+        {
+          "@name": "SOC_OSTIMER_COUNT",
+          "@value": "1",
+          "@description": "OSTIMER availability on the SoC."
+        },
+        {
+          "@name": "SOC_PDM_COUNT",
+          "@value": "1",
+          "@description": "PDM availability on the SoC."
+        },
+        {
+          "@name": "SOC_PINT_COUNT",
+          "@value": "1",
+          "@description": "PINT availability on the SoC."
+        },
+        {
+          "@name": "SOC_PKC_COUNT",
+          "@value": "1",
+          "@description": "PKC availability on the SoC."
+        },
+        {
+          "@name": "SOC_POWERQUAD_COUNT",
+          "@value": "1",
+          "@description": "POWERQUAD availability on the SoC."
+        },
+        {
+          "@name": "SOC_PORT_COUNT",
+          "@value": "6",
+          "@description": "PORT availability on the SoC."
+        },
+        {
+          "@name": "SOC_PWM_COUNT",
+          "@value": "2",
+          "@description": "PWM availability on the SoC."
+        },
+        {
+          "@name": "SOC_PUF_COUNT",
+          "@value": "4",
+          "@description": "PUF availability on the SoC."
+        },
+        {
+          "@name": "SOC_QDC_COUNT",
+          "@value": "2",
+          "@description": "QDC availability on the SoC."
+        },
+        {
+          "@name": "SOC_RTC_COUNT",
+          "@value": "1",
+          "@description": "RTC availability on the SoC."
+        },
+        {
+          "@name": "SOC_SCG_COUNT",
+          "@value": "1",
+          "@description": "SCG availability on the SoC."
+        },
+        {
+          "@name": "SOC_SCT_COUNT",
+          "@value": "1",
+          "@description": "SCT availability on the SoC."
+        },
+        {
+          "@name": "SOC_SEMA42_COUNT",
+          "@value": "1",
+          "@description": "SEMA42 availability on the SoC."
+        },
+        {
+          "@name": "SOC_SINC_COUNT",
+          "@value": "1",
+          "@description": "SINC availability on the SoC."
+        },
+        {
+          "@name": "SOC_SMARTDMA_COUNT",
+          "@value": "1",
+          "@description": "SMARTDMA availability on the SoC."
+        },
+        {
+          "@name": "SOC_SYSCON_COUNT",
+          "@value": "1",
+          "@description": "SYSCON availability on the SoC."
+        },
+        {
+          "@name": "SOC_SYSPM_COUNT",
+          "@value": "2",
+          "@description": "SYSPM availability on the SoC."
+        },
+        {
+          "@name": "SOC_TSI_COUNT",
+          "@value": "1",
+          "@description": "TSI availability on the SoC."
+        },
+        {
+          "@name": "SOC_USB_COUNT",
+          "@value": "1",
+          "@description": "USB availability on the SoC."
+        },
+        {
+          "@name": "SOC_USBHS_COUNT",
+          "@value": "1",
+          "@description": "USBHS availability on the SoC."
+        },
+        {
+          "@name": "SOC_USBHSDCD_COUNT",
+          "@value": "2",
+          "@description": "USBHSDCD availability on the SoC."
+        },
+        {
+          "@name": "SOC_USBNC_COUNT",
+          "@value": "1",
+          "@description": "USBNC availability on the SoC."
+        },
+        {
+          "@name": "SOC_USBPHY_COUNT",
+          "@value": "1",
+          "@description": "USBPHY availability on the SoC."
+        },
+        {
+          "@name": "SOC_USDHC_COUNT",
+          "@value": "1",
+          "@description": "USDHC availability on the SoC."
+        },
+        {
+          "@name": "SOC_UTICK_COUNT",
+          "@value": "1",
+          "@description": "UTICK availability on the SoC."
+        },
+        {
+          "@name": "SOC_VREF_COUNT",
+          "@value": "1",
+          "@description": "VREF availability on the SoC."
+        },
+        {
+          "@name": "SOC_WWDT_COUNT",
+          "@value": "2",
+          "@description": "WWDT availability on the SoC."
+        },
+        {
+          "@name": "SOC_WUU_COUNT",
+          "@value": "1",
+          "@description": "WUU availability on the SoC."
+        }
+      ]
+    },
+    "module_specific": [
+      {
+        "@id": "LPADC",
+        "feature": [
+          {
+            "@name": "LPADC_FIFO_COUNT",
+            "@value": "2",
+            "@description": "FIFO availability on the SoC."
+          },
+          {
+            "@name": "LPADC_HAS_NO_TCTRL_FIFO_SEL_B",
+            "@value": "0",
+            "@description": "Does not support two simultanious single ended conversions (bitfield TCTRL[FIFO_SEL_B])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_SUBSEQUENT_PRIORITY",
+            "@value": "1",
+            "@description": "Has subsequent trigger priority (bitfield CFG[TPRICTRL])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDL_DIFF",
+            "@value": "0",
+            "@description": "Has differential mode (bitfield CMDLn[DIFF])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDL_CSCALE",
+            "@value": "0",
+            "@description": "Has channel scale (bitfield CMDLn[CSCALE])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDL_CTYPE",
+            "@value": "1",
+            "@description": "Has conversion type select (bitfield CMDLn[CTYPE])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDL_MODE",
+            "@value": "1",
+            "@description": "Has conversion resolution select (bitfield CMDLn[MODE])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDH_WAIT_TRIG",
+            "@value": "1",
+            "@description": "Has Wait for trigger assertion before execution (bitfield CMDHn[WAIT_TRIG])."
+          },
+          {
+            "@name": "LPADC_HAS_CTRL_CALOFS",
+            "@value": "1",
+            "@description": "Has offset calibration (bitfield CTRL[CALOFS])."
+          },
+          {
+            "@name": "LPADC_HAS_CTRL_CAL_REQ",
+            "@value": "1",
+            "@description": "Has gain calibration (bitfield CTRL[CAL_REQ])."
+          },
+          {
+            "@name": "LPADC_HAS_CTRL_CAL_AVGS",
+            "@value": "1",
+            "@description": "Has calibration average (bitfield CTRL[CAL_AVGS])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_ADCKEN",
+            "@value": "0",
+            "@description": "Has internal clock (bitfield CFG[ADCKEN])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_VREF1RNG",
+            "@value": "0",
+            "@description": "Enable support for low voltage reference on option 1 reference (bitfield CFG[VREF1RNG])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_CALOFS",
+            "@value": "0",
+            "@description": "Has calibration (bitfield CFG[CALOFS])."
+          },
+          {
+            "@name": "LPADC_HAS_OFSTRIM",
+            "@value": "1",
+            "@description": "Has offset trim (register OFSTRIM)."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_PWRSEL",
+            "@value": "1",
+            "@description": "Has power select (bitfield CFG[PWRSEL])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDL_ALTB_CSCALE",
+            "@value": "0",
+            "@description": "Has alternate channel B scale (bitfield CMDLn[ALTB_CSCALE])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDL_ALTBEN",
+            "@value": "1",
+            "@description": "Has alternate channel B select enable (bitfield CMDLn[ALTBEN])."
+          },
+          {
+            "@name": "LPADC_HAS_CMDL_ALTB_ADCH",
+            "@value": "1",
+            "@description": "Has alternate channel input (bitfield CMDLn[ALTB_ADCH])."
+          },
+          {
+            "@name": "LPADC_HAS_CTRL_CALOFSMODE",
+            "@value": "0",
+            "@description": "Has offset calibration mode (bitfield CTRL[CALOFSMODE])."
+          },
+          {
+            "@name": "LPADC_CONVERSIONS_AVERAGED_BITFIELD_WIDTH",
+            "@value": "4",
+            "@description": "Conversion averaged bitfiled width."
+          },
+          {
+            "@name": "LPADC_HAS_TCTRL_CMD_SEL",
+            "@value": "0",
+            "@description": "Enable hardware trigger command selection"
+          },
+          {
+            "@name": "LPADC_OFSTRIM_COUNT",
+            "@value": "2",
+            "@description": "OFSTRIM availability on the SoC."
+          },
+          {
+            "@name": "LPADC_HAS_TSTAT",
+            "@value": "1",
+            "@description": "Has Trigger status register."
+          },
+          {
+            "@name": "LPADC_HAS_B_SIDE_CHANNELS",
+            "@value": "1",
+            "@description": "Has B side channels."
+          },
+          {
+            "@name": "LPADC_HAS_STAT_TEXC_INT",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC STAT register has trigger exception interrupt function (bitfield STAT[TEXC_INT])."
+          },
+          {
+            "@name": "LPADC_HAS_STAT_TCOMP_INT",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC STAT register has trigger completion interrupt function (bitfield STAT[TCOMP_INT])."
+          },
+          {
+            "@name": "LPADC_HAS_STAT_CAL_RDY",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC STAT register has calibration ready function (bitfield STAT[CAL_RDY])."
+          },
+          {
+            "@name": "LPADC_HAS_STAT_ADC_ACTIVE",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC STAT register has ADC active function (bitfield STAT[ADC_ACTIVE])."
+          },
+          {
+            "@name": "LPADC_HAS_IE_TEXC_IE",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC IE register has trigger exception interrupt enable function (bitfield IE[TEXC_IE])."
+          },
+          {
+            "@name": "LPADC_HAS_IE_TCOMP_IE",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC IE register has trigger completion interrupt enable function (bitfield IE[TCOMP_IE])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_TRES",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC CFG register has trigger resume/restart enable function (bitfield CFG[TRES])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_TCMDRES",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC CFG register has trigger command resume/restart enable function (bitfield CFG[TCMDRES])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG_HPT_EXDI",
+            "@value": "1",
+            "@description": "Indicate whether the LPADC CFG register has high priority trigger exception disable function (bitfield CFG[HPT_EXDI])."
+          },
+          {
+            "@name": "LPADC_CFG_TPRICTRL_BITFIELD_WIDTH",
+            "@value": "2",
+            "@description": "Indicate LPADC CFG register TPRICTRL bitfield width."
+          },
+          {
+            "@name": "LPADC_HAS_CMDH_CMPEN",
+            "@value": "1",
+            "@description": "Has compare function enable (bitfield CMDHn[CMPEN])."
+          },
+          {
+            "@name": "LPADC_HAS_CTRL_CALHS",
+            "@value": "0",
+            "@description": "Has High Speed Mode Trim Request (bitfield CTRL[CALHS])."
+          },
+          {
+            "@name": "LPADC_HAS_CFG2_JLEFT",
+            "@value": "0",
+            "@description": "Has Justified Left Enable (bitfield CFG2[JLEFT])."
+          },
+          {
+            "@name": "LPADC_TEMP_PARAMETER_A",
+            "@value": "783",
+            "@description": "Temperature sensor parameter A (slope)."
+          },
+          {
+            "@name": "LPADC_TEMP_PARAMETER_B",
+            "@value": "297",
+            "@description": "Temperature sensor parameter B (offset)."
+          },
+          {
+            "@name": "LPADC_TEMP_PARAMETER_ALPHA",
+            "@value": "9.63",
+            "@description": "Temperature sensor parameter Alpha."
+          },
+          {
+            "@name": "LPADC_TEMP_SENS_BUFFER_SIZE",
+            "@value": "2",
+            "@description": "The buffer size of temperature sensor."
+          }
+        ]
+      },
+      {
+        "@id": "CACHE64_CTRL",
+        "feature": [
+          {
+            "@name": "CACHE64_CTRL_LINESIZE_BYTE",
+            "@value": "32",
+            "@description": "Cache Line size in byte."
+          },
+          {
+            "@name": "CACHE64_CTRL_HAS_NO_WRITE_BUF",
+            "@value": "0",
+            "@description": "Cache does not support write buffer."
+          }
+        ]
+      },
+      {
+        "@id": "FLEXCAN",
+        "feature": [
+          {
+            "@name": "FLEXCAN_HAS_MESSAGE_BUFFER_MAX_NUMBER",
+            "@value": "32",
+            "@description": "Message buffer size"
+          },
+          {
+            "@name": "FLEXCAN_HAS_DOZE_MODE_SUPPORT",
+            "@value": "0",
+            "@description": "Has doze mode support (register bit field MCR[DOZE])."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_HAS_DOZE_MODE_SUPPORT",
+            "@value": "0",
+            "@description": "Insatnce has doze mode support (register bit field MCR[DOZE])."
+          },
+          {
+            "@name": "FLEXCAN_HAS_GLITCH_FILTER",
+            "@value": "1",
+            "@description": "Has a glitch filter on the receive pin (register bit field MCR[WAKSRC])."
+          },
+          {
+            "@name": "FLEXCAN_HAS_EXTENDED_FLAG_REGISTER",
+            "@value": "0",
+            "@description": "Has extended interrupt mask and flag register (register IMASK2, IFLAG2)."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_HAS_EXTENDED_TIMING_REGISTER",
+            "@value": "1",
+            "@description": "Instance has extended bit timing register (register CBT)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_RX_FIFO_DMA",
+            "@value": "1",
+            "@description": "Has a receive FIFO DMA feature (register bit field MCR[DMA])."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_HAS_RX_FIFO_DMA",
+            "@value": "1",
+            "@description": "Instance has a receive FIFO DMA feature (register bit field MCR[DMA])."
+          },
+          {
+            "@name": "FLEXCAN_SUPPORT_ENGINE_CLK_SEL_REMOVE",
+            "@value": "1",
+            "@description": "Remove CAN Engine Clock Source Selection from unsupported part."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_SUPPORT_ENGINE_CLK_SEL_REMOVE",
+            "@value": "1",
+            "@description": "Instance remove CAN Engine Clock Source Selection from unsupported part."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ERRATA_5641",
+            "@value": "0",
+            "@description": "Is affected by errata with ID 5641 (Module does not transmit a message that is enabled to be transmitted at a specific moment during the arbitration process)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ERRATA_5829",
+            "@value": "0",
+            "@description": "Is affected by errata with ID 5829 (FlexCAN: FlexCAN does not transmit a message that is enabled to be transmitted in a specific moment during the arbitration process)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ERRATA_6032",
+            "@value": "0",
+            "@description": "Is affected by errata with ID 6032 (FlexCAN: A frame with wrong ID or payload is transmitted into the CAN bus when the Message Buffer under transmission is either aborted or deactivated while the CAN bus is in the Bus Idle state)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ERRATA_9595",
+            "@value": "0",
+            "@description": "Is affected by errata with ID 9595 (FlexCAN: Corrupt frame possible if the Freeze Mode or the Low-Power Mode are entered during a Bus-Off state)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_FLEXIBLE_DATA_RATE",
+            "@value": "1",
+            "@description": "Has CAN with Flexible Data rate (CAN FD) protocol."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_HAS_FLEXIBLE_DATA_RATE",
+            "@value": "1",
+            "@description": "CAN instance support Flexible Data rate (CAN FD) protocol."
+          },
+          {
+            "@name": "FLEXCAN_HAS_MEMORY_ERROR_CONTROL",
+            "@value": "0",
+            "@description": "Has memory error control (register MECR)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ENHANCED_BIT_TIMING_REG",
+            "@value": "1",
+            "@description": "Has enhanced bit timing register (register EPRS, ENCBT, EDCBT and ETDC)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_PN_MODE",
+            "@value": "1",
+            "@description": "Has Pretended Networking mode support."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ENHANCED_RX_FIFO",
+            "@value": "1",
+            "@description": "Has Enhanced Rx FIFO."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_HAS_ENHANCED_RX_FIFO",
+            "@value": "1",
+            "@description": "Has Enhanced Rx FIFO."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ENHANCED_RX_FIFO_SIZE",
+            "@value": "12",
+            "@description": "Enhanced Rx FIFO size (Indicates how many CAN FD messages can be stored)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ENHANCED_RX_FIFO_FILTER_MAX_NUMBER",
+            "@value": "32",
+            "@description": "The number of enhanced Rx FIFO filter element registers."
+          },
+          {
+            "@name": "FLEXCAN_HAS_NO_SUPV_SUPPORT",
+            "@value": "1",
+            "@description": "Does not support Supervisor Mode (bitfield MCR[SUPV]."
+          },
+          {
+            "@name": "FLEXCAN_HAS_MORE_THAN_64_MB",
+            "@value": "0",
+            "@description": "Has more than 64 MBs."
+          },
+          {
+            "@name": "FLEXCAN_HAS_NO_SLFWAK_SUPPORT",
+            "@value": "0",
+            "@description": "Does not support self wake feature(bitfield MCR[SLFWAK])"
+          },
+          {
+            "@name": "FLEXCAN_HAS_EXTERNAL_TIME_TICK",
+            "@value": "0",
+            "@description": "Has external time tick source (bitfield CTRL2[TIMER_SRC])."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_HAS_EXTERNAL_TIME_TICK",
+            "@value": "0",
+            "@description": "Instance has external time tick source (register bit field CTRL2[TIMER_SRC])."
+          },
+          {
+            "@name": "FLEXCAN_HAS_HIGH_RESOLUTION_TIMESTAMP",
+            "@value": "0",
+            "@description": "Has Time Stamp Capture Point(bitfield CTRL2[TSTAMPCAP])."
+          },
+          {
+            "@name": "FLEXCAN_INSTANCE_HAS_PN_MODE",
+            "@value": "1",
+            "@description": "Instance has Pretended Networking option (register bit field MCR[PNET_EN])."
+          },
+          {
+            "@name": "FLEXCAN_MAX_CANFD_BITRATE",
+            "@value": "10000000",
+            "@description": "FlexCAN maximum data rate."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ENDIANNESS_SELECTION",
+            "@value": "0",
+            "@description": "Support payload endianness selection (bitfield CTRL2[PES])."
+          },
+          {
+            "@name": "FLEXCAN_ENTER_FREEZE_MODE",
+            "@value": "0",
+            "@description": "Enter Freeze mode before entering Disable and Stop mode."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ERRATA_8341",
+            "@value": "0",
+            "@description": "Is affected by errata with ID 8341 (FlexCAN: Entering Freeze Mode or Low Power Mode from Normal Mode can cause the FlexCAN module to stop operating)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_ERRATA_050443",
+            "@value": "0",
+            "@description": "Is affected by errata with ID 050443 (FlexCAN: : Receive Message Buffers may have its CODE Field corrupted if the Receive FIFO function is used in Classical CAN mode)."
+          },
+          {
+            "@name": "FLEXCAN_HAS_MEMORY_ERROR_INTERRUPT",
+            "@value": "0",
+            "@description": "Support memory error interrupt (bitfield MECR[CEI_MSK])."
+          }
+        ]
+      },
+      {
+        "@id": "CDOG",
+        "feature": [
+          {
+            "@name": "CDOG_HAS_NO_RESET",
+            "@value": "1",
+            "@description": "SOC has no reset driver."
+          },
+          {
+            "@name": "CDOG_NEED_LOAD_DEFAULT_CONF",
+            "@value": "0",
+            "@description": "CDOG Load default configurations during init function"
+          },
+          {
+            "@name": "CDOG_USE_RESTART",
+            "@value": "1",
+            "@description": "CDOG Uses restart"
+          }
+        ]
+      },
+      {
+        "@id": "CMC",
+        "feature": [
+          {
+            "@name": "MCX_CMC_HAS_SRAM_DIS_REG",
+            "@value": "1",
+            "@description": "Has SRAM_DIS register"
+          },
+          {
+            "@name": "MCX_CMC_HAS_BSR_REG",
+            "@value": "1",
+            "@description": "Has BSR register"
+          },
+          {
+            "@name": "MCX_CMC_HAS_RSTCNT_REG",
+            "@value": "1",
+            "@description": "Has RSTCNT register"
+          },
+          {
+            "@name": "MCX_CMC_HAS_BLR_REG",
+            "@value": "1",
+            "@description": "Has BLR register"
+          },
+          {
+            "@name": "MCX_CMC_HAS_NO_FLASHCR_WAKE",
+            "@value": "1",
+            "@description": "Has no bitfield FLASHWAKE in FLASHCR register"
+          },
+          {
+            "@name": "MCX_CMC_HAS_BSR_SCR_BIT",
+            "@value": "0",
+            "@description": "Has SCR bit in BSR register"
+          }
+        ]
+      },
+      {
+        "@id": "LPCMP",
+        "feature": [
+          {
+            "@name": "LPCMP_HAS_CCR1_FUNC_CLK_SEL",
+            "@value": "1",
+            "@description": "Has CCR1 FUNC_CLK_SEL bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_IER_RRF_IE",
+            "@value": "1",
+            "@description": "Has IER RRF_IE bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_CSR_RRF",
+            "@value": "1",
+            "@description": "Has CSR RRF bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_ROUNDROBIN_MODE",
+            "@value": "1",
+            "@description": "Has Round Robin mode (related to existence of registers RRCR0)."
+          },
+          {
+            "@name": "LPCMP_HAS_WINDOW_CONTROL",
+            "@value": "1",
+            "@description": "Has window mode (related to existence of CCR1.WINDOW_CLS)."
+          },
+          {
+            "@name": "LPCMP_HAS_RRCR0_RR_CLK_SEL",
+            "@value": "1",
+            "@description": "Has RRCR0 RR_CLK_SEL bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_RRCR0_RR_TRG_SEL",
+            "@value": "1",
+            "@description": "Has RRCR0 RR_TRG_SEL bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_RRCR0_RR_SAMPLE_CNT",
+            "@value": "1",
+            "@description": "Has RRCR0 RR_SAMPLE_CNT bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_RRCR0_RR_SAMPLE_THRESHOLD",
+            "@value": "1",
+            "@description": "Has RRCR0 RR_SAMPLE_THRESHOLD bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_CCR2_INPSEL",
+            "@value": "0",
+            "@description": "Has CCR2 INPSEL bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_CCR2_INMSEL",
+            "@value": "0",
+            "@description": "Has CCR2 INMSEL bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_CCR2_CMP_NPMD",
+            "@value": "1",
+            "@description": "Has CCR2 CMP_NPMD bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_DCR_DAC_HPMD",
+            "@value": "1",
+            "@description": "Has DCR DAC_HPMD bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_CCR0_LINKEN",
+            "@value": "0",
+            "@description": "Has CCR0 LINKEN bitfield."
+          },
+          {
+            "@name": "LPCMP_HAS_RRCR2",
+            "@value": "1",
+            "@description": "Has RRCR2 register."
+          }
+        ],
+        "peripheral_specific": [
+          {
+            "@peripherals": "CMP0 CMP1",
+            "feature": {
+              "@name": "LPCMP_HAS_NO_CCR0_CMP_STOP_EN",
+              "@value": "1",
+              "@description": "Has no CCR0 CMP_STOP_EN bitfield."
+            }
+          },
+          {
+            "@peripherals": "CMP2",
+            "feature": {
+              "@name": "LPCMP_HAS_NO_CCR0_CMP_STOP_EN",
+              "@value": "0",
+              "@description": "Has no CCR0 CMP_STOP_EN bitfield."
+            }
+          },
+          {
+            "@peripherals": "CMP0 CMP1",
+            "feature": {
+              "@name": "LPCMP_HAS_CCR0_CMP_STOP_EN",
+              "@value": "0",
+              "@description": "Has CCR0 CMP_STOP_EN bitfield."
+            }
+          },
+          {
+            "@peripherals": "CMP2",
+            "feature": {
+              "@name": "LPCMP_HAS_CCR0_CMP_STOP_EN",
+              "@value": "1",
+              "@description": "Has CCR0 CMP_STOP_EN bitfield."
+            }
+          },
+          {
+            "@peripherals": "CMP0 CMP1",
+            "feature": {
+              "@name": "LPCMP_INSTANCE_SUPPORT_CCR0_CMP_STOP_EN",
+              "@value": "0",
+              "@description": "CMP instance support CCR0 CMP_STOP_EN bitfield."
+            }
+          },
+          {
+            "@peripherals": "CMP2",
+            "feature": {
+              "@name": "LPCMP_INSTANCE_SUPPORT_CCR0_CMP_STOP_EN",
+              "@value": "1",
+              "@description": "CMP instance support CCR0 CMP_STOP_EN bitfield."
+            }
+          }
+        ]
+      },
+      {
+        "@id": "SYSPM",
+        "feature": [
+          {
+            "@name": "SYSPM_HAS_PMCR_DCIFSH",
+            "@value": "0",
+            "@description": "SYSPM support disable counters if stopped or halted."
+          },
+          {
+            "@name": "SYSPM_HAS_PMCR_RICTR",
+            "@value": "0",
+            "@description": "SYSPM has reset instruction counter."
+          },
+          {
+            "@name": "SYSPM_PMCR_COUNT",
+            "@value": "1",
+            "@description": "Number of PMCR registers signals number of performance monitors available in single SYSPM instance."
+          },
+          {
+            "@name": "SYSPM_HAS_PMICTR",
+            "@value": "0",
+            "@description": "SYSPM has instruction counter."
+          }
+        ]
+      },
+      {
+        "@id": "CTIMER",
+        "feature": [
+          {
+            "@name": "CTIMER_HAS_NO_INPUT_CAPTURE",
+            "@value": "0",
+            "@description": "CTIMER has no capture channel."
+          },
+          {
+            "@name": "CTIMER_HAS_NO_IR_CR2INT",
+            "@value": "0",
+            "@description": "CTIMER has no capture 2 interrupt."
+          },
+          {
+            "@name": "CTIMER_HAS_IR_CR3INT",
+            "@value": "1",
+            "@description": "CTIMER capture 3 interrupt."
+          },
+          {
+            "@name": "CTIMER_HAS_NO_CCR_CAP2",
+            "@value": "0",
+            "@description": "Has CTIMER CCR_CAP2 (register bits CCR[CAP2RE][CAP2FE][CAP2I]."
+          },
+          {
+            "@name": "CTIMER_HAS_CCR_CAP3",
+            "@value": "1",
+            "@description": "Has CTIMER CCR_CAP3 (register bits CCR[CAP3RE][CAP3FE][CAP3I])."
+          },
+          {
+            "@name": "CTIMER_HAS_MSR",
+            "@value": "1",
+            "@description": "CTIMER Has register MSR"
+          }
+        ]
+      },
+      {
+        "@id": "LPDAC",
+        "feature": [
+          {
+            "@name": "LPDAC_FIFO_SIZE",
+            "@value": "16",
+            "@description": "FIFO size."
+          },
+          {
+            "@name": "LPDAC_HAS_GCR_BUF_SPD_CTRL",
+            "@value": "1",
+            "@description": "Has OPAMP as buffer, speed control signal (bitfield GCR[BUF_SPD_CTRL])."
+          },
+          {
+            "@name": "LPDAC_HAS_GCR_BUF_EN",
+            "@value": "1",
+            "@description": "Buffer Enable(bitfield GCR[BUF_EN])."
+          },
+          {
+            "@name": "LPDAC_HAS_GCR_LATCH_CYC",
+            "@value": "1",
+            "@description": "RCLK cycles before data latch(bitfield GCR[LATCH_CYC])."
+          },
+          {
+            "@name": "ANALOG_NUM_OF_VREF_SRC",
+            "@value": "3",
+            "@description": "VREF source number."
+          },
+          {
+            "@name": "LPDAC_HAS_INTERNAL_REFERENCE_CURRENT",
+            "@value": "1",
+            "@description": "Has internal reference current options."
+          },
+          {
+            "@name": "LPDAC_HAS_PERIODIC_TRIGGER_MODE",
+            "@value": "1",
+            "@description": "Support Period trigger mode DAC (bitfield IER[PTGCOCO_IE])."
+          }
+        ]
+      },
+      {
+        "@id": "EDMA",
+        "feature": [
+          {
+            "@name": "EDMA_MODULE_CHANNEL",
+            "@value": "16",
+            "@description": "Number of DMA channels (related to number of registers TCD, DCHPRI, bit fields ERQ[ERQn], EEI[EEIn], INT[INTn], ERR[ERRn], HRS[HRSn] and bit field widths ES[ERRCHN], CEEI[CEEI], SEEI[SEEI], CERQ[CERQ], SERQ[SERQ], CDNE[CDNE], SSRT[SSRT], CERR[CERR], CINT[CINT], TCDn_CITER_ELINKYES[LINKCH], TCDn_CSR[MAJORLINKCH], TCDn_BITER_ELINKYES[LINKCH]). (Valid only for eDMA modules.)"
+          },
+          {
+            "@name": "EDMA_SUPPORT_8_BYTES_TRANSFER",
+            "@value": "1",
+            "@description": "If 8 bytes transfer supported."
+          },
+          {
+            "@name": "EDMA_CHANNEL_GROUP_COUNT",
+            "@value": "1",
+            "@description": "Number of DMA channel groups (register bit fields CR[ERGA], CR[GRPnPRI], ES[GPE], DCHPRIn[GRPPRI]). (Valid only for eDMA modules.)"
+          },
+          {
+            "@name": "EDMA_SUPPORT_16_BYTES_TRANSFER",
+            "@value": "1",
+            "@description": "If 16 bytes transfer supported."
+          },
+          {
+            "@name": "EDMA_HAS_ERROR_IRQ",
+            "@value": "1",
+            "@description": "Has DMA_Error interrupt vector."
+          },
+          {
+            "@name": "EDMA_SUPPORT_64_BYTES_TRANSFER",
+            "@value": "0",
+            "@description": "If 64 bytes transfer supported."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_PROT_REGISTER",
+            "@value": "0",
+            "@description": "whether has prot register"
+          },
+          {
+            "@name": "EDMA_SUPPORT_128_BYTES_TRANSFER",
+            "@value": "0",
+            "@description": "If 128 bytes transfer supported."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_MP_CHANNEL_MUX",
+            "@value": "0",
+            "@description": "whether has MP channel mux"
+          },
+          {
+            "@name": "EDMA_INSTANCE_SUPPORT_128_BYTES_TRANSFER",
+            "@value": "0",
+            "@description": "If 128 bytes transfer supported."
+          },
+          {
+            "@name": "EDMA_CHANNEL_HAS_OWN_CLOCK_GATE",
+            "@value": "1",
+            "@description": "If channel clock controlled independently"
+          },
+          {
+            "@name": "EDMA_HAS_CHANNEL_CONFIG",
+            "@value": "1",
+            "@description": "Has register CH_CSR."
+          },
+          {
+            "@name": "EDMA_INSTANCE_CHANNEL",
+            "@value": "16",
+            "@description": "Number of channel for each EDMA instance, (only defined for soc with different channel numbers for difference instance)"
+          },
+          {
+            "@name": "EDMA_HAS_CHANNEL_MUX",
+            "@value": "1",
+            "@description": "Has channel mux"
+          },
+          {
+            "@name": "EDMA_HAS_NO_MP_CSR_EBW",
+            "@value": "1",
+            "@description": "Has no register bit fields MP_CSR[EBW]."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_CHANNEL_MUX",
+            "@value": "1",
+            "@description": "Instance has channel mux"
+          },
+          {
+            "@name": "EDMA_HAS_COMMON_CLOCK_GATE",
+            "@value": "0",
+            "@description": "If dma has common clock gate"
+          },
+          {
+            "@name": "EDMA_HAS_SBR",
+            "@value": "1",
+            "@description": "Has register CH_SBR."
+          },
+          {
+            "@name": "EDMA_MODULE_CHANNEL_IRQ_ENTRY_SUPPORT_PARAMETER",
+            "@value": "0",
+            "@description": "If dma channel IRQ support parameter"
+          },
+          {
+            "@name": "EDMA_HAS_NO_CH_SBR_ATTR",
+            "@value": "1",
+            "@description": "Has no register bit fields CH_SBR[ATTR]."
+          },
+          {
+            "@name": "EDMA_HAS_ERRATA_51327",
+            "@value": "0",
+            "@description": "NBYTES must be multiple of 8 when using scatter gather."
+          },
+          {
+            "@name": "EDMA_HAS_CHANNEL_SWAP_SIZE",
+            "@value": "0",
+            "@description": "Has register bit field CH_CSR[SWAP]."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_ERRATA_51327",
+            "@value": "0",
+            "@description": "NBYTES must be multiple of 8 when using scatter gather."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_CHANNEL_SWAP_SIZE",
+            "@value": "0",
+            "@description": "Instance has register bit field CH_CSR[SWAP]."
+          },
+          {
+            "@name": "EDMA_HAS_GLOBAL_MASTER_ID_REPLICATION",
+            "@value": "1",
+            "@description": "Has register bit fields MP_CSR[GMRC]."
+          },
+          {
+            "@name": "EDMA_HAS_CHANNEL_ACCESS_TYPE",
+            "@value": "0",
+            "@description": "Has register bit field CH_SBR[INSTR]."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_CHANNEL_ACCESS_TYPE",
+            "@value": "0",
+            "@description": "Instance has register bit field CH_SBR[INSTR]."
+          },
+          {
+            "@name": "EDMA_HAS_CHANNEL_MEMORY_ATTRIBUTE",
+            "@value": "0",
+            "@description": "Has register bit fields CH_MATTR[WCACHE], CH_MATTR[RCACHE]."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_CHANNEL_MEMORY_ATTRIBUTE",
+            "@value": "0",
+            "@description": "Instance has register CH_MATTR."
+          },
+          {
+            "@name": "EDMA_HAS_CHANNEL_SIGN_EXTENSION",
+            "@value": "0",
+            "@description": "Has register bit field CH_CSR[SIGNEXT]."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_CHANNEL_SIGN_EXTENSION",
+            "@value": "0",
+            "@description": "Instance Has register bit field CH_CSR[SIGNEXT]."
+          },
+          {
+            "@name": "EDMA_HAS_BANDWIDTH",
+            "@value": "1",
+            "@description": "Has register bit field TCD_CSR[BWC]."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_BANDWIDTH",
+            "@value": "1",
+            "@description": "Instance has register bit field TCD_CSR[BWC]."
+          },
+          {
+            "@name": "EDMA_HAS_TRANSFER_MODE",
+            "@value": "0",
+            "@description": "Has register bit fields TCD_CSR[TMC]."
+          },
+          {
+            "@name": "EDMA_INSTANCE_HAS_TRANSFER_MODE",
+            "@value": "0",
+            "@description": "Instance has register bit fields TCD_CSR[TMC]."
+          },
+          {
+            "@name": "EDMA_HAS_NO_CH_SBR_SEC",
+            "@value": "0",
+            "@description": "Has no register bit fields CH_SBR[SEC]."
+          },
+          {
+            "@name": "EDMA_TCD_TYPE",
+            "@value": "0",
+            "@description": "edma5 has different tcd type."
+          },
+          {
+            "@name": "EDMA_ASYNCHRO_REQUEST_CHANNEL_COUNT",
+            "@value": "16",
+            "@description": "Number of DMA channels with asynchronous request capability. (Valid only for eDMA modules.)"
+          }
+        ]
+      },
+      {
+        "@id": "EVTG",
+        "feature": {
+          "@name": "EVTG_HAS_FORCE_BYPASS_FLIPFLOP",
+          "@value": "1",
+          "@description": "OPAMP support force bypass"
+        }
+      },
+      {
+        "@id": "EWM",
+        "feature": [
+          {
+            "@name": "EWM_HAS_CLOCK_SELECT",
+            "@value": "1",
+            "@description": "Has clock select (register CLKCTRL)."
+          },
+          {
+            "@name": "EWM_HAS_PRESCALER",
+            "@value": "1",
+            "@description": "Has clock prescaler (register CLKPRESCALER)."
+          }
+        ]
+      },
+      {
+        "@id": "FLEXIO",
+        "feature": [
+          {
+            "@name": "FLEXIO_HAS_RESET",
+            "@value": "0",
+            "@description": "FLEXIO support reset from RSTCTL"
+          },
+          {
+            "@name": "FLEXIO_HAS_SHIFTER_STATUS",
+            "@value": "1",
+            "@description": "Has Shifter Status Register (FLEXIO_SHIFTSTAT)"
+          },
+          {
+            "@name": "FLEXIO_HAS_PIN_STATUS",
+            "@value": "1",
+            "@description": "Has Pin Data Input Register (FLEXIO_PIN)"
+          },
+          {
+            "@name": "FLEXIO_HAS_SHFT_BUFFER_NIBBLE_BYTE_SWAP",
+            "@value": "1",
+            "@description": "Has Shifter Buffer N Nibble Byte Swapped Register (FLEXIO_SHIFTBUFNBSn)"
+          },
+          {
+            "@name": "FLEXIO_HAS_SHFT_BUFFER_HALF_WORD_SWAP",
+            "@value": "1",
+            "@description": "Has Shifter Buffer N Half Word Swapped Register (FLEXIO_SHIFTBUFHWSn)"
+          },
+          {
+            "@name": "FLEXIO_HAS_SHFT_BUFFER_NIBBLE_SWAP",
+            "@value": "1",
+            "@description": "Has Shifter Buffer N Nibble Swapped Register (FLEXIO_SHIFTBUFNISn)"
+          },
+          {
+            "@name": "FLEXIO_HAS_STATE_MODE",
+            "@value": "1",
+            "@description": "Supports Shifter State Mode (FLEXIO_SHIFTCTLn[SMOD])"
+          },
+          {
+            "@name": "FLEXIO_HAS_LOGIC_MODE",
+            "@value": "1",
+            "@description": "Supports Shifter Logic Mode (FLEXIO_SHIFTCTLn[SMOD])"
+          },
+          {
+            "@name": "FLEXIO_HAS_PARALLEL_WIDTH",
+            "@value": "1",
+            "@description": "Supports paralle width (FLEXIO_SHIFTCFGn[PWIDTH])"
+          },
+          {
+            "@name": "FLEXIO_VERID_RESET_VALUE",
+            "@value": "0x2010003",
+            "@description": "Reset value of the FLEXIO_VERID register"
+          },
+          {
+            "@name": "FLEXIO_PARAM_RESET_VALUE",
+            "@value": "0x8200808",
+            "@description": "Reset value of the FLEXIO_PARAM register"
+          },
+          {
+            "@name": "FLEXIO_DMA_REQUEST_BASE_CHANNEL",
+            "@value": "0",
+            "@description": "Flexio DMA request base channel"
+          },
+          {
+            "@name": "FLEXIO_TIMCFG_TIMDCE_FIELD_WIDTH",
+            "@value": "3",
+            "@description": "Represent the bit width of the TIMDCE field (FLEXIO_TIMCFGLn[TIMDEC])"
+          },
+          {
+            "@name": "FLEXIO_HAS_PIN_REGISTER",
+            "@value": "1",
+            "@description": "Has pin input output related registers"
+          },
+          {
+            "@name": "FLEXIO_HAS_DOZE_MODE_SUPPORT",
+            "@value": "1",
+            "@description": "Has DOZEN bit(CTRL[DOZEN])"
+          }
+        ]
+      },
+      {
+        "@id": "FLEXSPI",
+        "feature": [
+          {
+            "@name": "FLEXSPI_AHB_BUFFER_COUNT",
+            "@value": "8",
+            "@description": "FlexSPI AHB buffer count"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_DATA_LEARN",
+            "@value": "0",
+            "@description": "FlexSPI has no data learn."
+          },
+          {
+            "@name": "FLEXSPI_HAS_INTEN_AHBBUSERROREN",
+            "@value": "0",
+            "@description": "There is AHBBUSERROREN bit in INTEN register."
+          },
+          {
+            "@name": "FLEXSPI_HAS_AHBCR_CLRAHBTX_RXBUF",
+            "@value": "1",
+            "@description": "There is CLRAHBTX_RXBUF bit in AHBCR register."
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_IP_PARALLEL_MODE",
+            "@value": "0",
+            "@description": "FLEXSPI has no IP parallel mode."
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_AHB_PARALLEL_MODE",
+            "@value": "0",
+            "@description": "FLEXSPI has no AHB parallel mode."
+          },
+          {
+            "@name": "FLEXSPI_SUPPORT_ADDRESS_SHIFT",
+            "@value": "1",
+            "@description": "FLEXSPI support address shift."
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_MCR0_ARDFEN",
+            "@value": "1",
+            "@description": "FlexSPI has no MCR0 ARDFEN bit"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_MCR0_ATDFEN",
+            "@value": "1",
+            "@description": "FlexSPI has no MCR0 ATDFEN bit"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_MCR0_COMBINATIONEN",
+            "@value": "0",
+            "@description": "FlexSPI has no MCR0 COMBINATIONEN bit"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_FLSHCR4_WMENB",
+            "@value": "0",
+            "@description": "FlexSPI has no FLSHCR4 WMENB bit"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_STS0_DATALEARNPHASEB",
+            "@value": "0",
+            "@description": "FlexSPI has no STS0 DATALEARNPHASEB bit"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_MCR2_SCKBDIFFOPT",
+            "@value": "0",
+            "@description": "FlexSPI has no MCR2 SCKBDIFFOPT bit"
+          },
+          {
+            "@name": "FLEXSPI_AHB_RX_BUFFER_SIZE",
+            "@value": "2048",
+            "@description": "FlexSPI AHB RX buffer size (byte)"
+          },
+          {
+            "@name": "FLEXSPI_ARRAY_LEN",
+            "@value": "1",
+            "@description": "FlexSPI Array Length"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_STS2_BSLVLOCK",
+            "@value": "0",
+            "@description": "FlexSPI has no STS2 BSLVLOCK bit"
+          },
+          {
+            "@name": "FLEXSPI_HAS_NO_STS2_BREFLOCK",
+            "@value": "0",
+            "@description": "FlexSPI has no STS2 BREFLOCK bit"
+          },
+          {
+            "@name": "FLEXSPI_NO_SUPPORT_PORTB",
+            "@value": "0",
+            "@description": "FlexSPI supports Port A only, do not support Port B."
+          },
+          {
+            "@name": "FLEXSPI_LUTKEY_IS_RO",
+            "@value": "0",
+            "@description": "FlexSPI LUTKEY is read only."
+          },
+          {
+            "@name": "FLEXSPI_HAS_SHARED_IRQ0_IRQ1",
+            "@value": "0",
+            "@description": "FlexSPI0 and FlexSPI1 have shared IRQ"
+          },
+          {
+            "@name": "FLEXSPI_DMA_MULTIPLE_DES",
+            "@value": "1",
+            "@description": "FlexSPI DMA needs multiple DES to transfer"
+          },
+          {
+            "@name": "FLEXSPI_DQS_DELAY_MIN",
+            "@value": "0",
+            "@description": "FlexSPI uses min DQS delay"
+          },
+          {
+            "@name": "FLEXSPI_SUPPORT_SEPERATE_RXCLKSRC_PORTB",
+            "@value": "1",
+            "@description": "FlexSPI support sample clock source selection"
+          },
+          {
+            "@name": "FLEXSPI_SUPPORT_RXCLKSRC_DIFF",
+            "@value": "1",
+            "@description": "FlexSPI support sample clock source or source_b selection"
+          },
+          {
+            "@name": "FLEXSPI_IPED_REGION_COUNT",
+            "@value": "7",
+            "@description": "FlexSPI IPED REGION COUNT"
+          },
+          {
+            "@name": "FLEXSPI_HAS_ERRATA_052733",
+            "@value": "1",
+            "@description": "FlexSPI Has ERRATA052733"
+          },
+          {
+            "@name": "FLEXSPI_HAS_ERRATA_051426",
+            "@value": "0",
+            "@description": "FlexSPI Has ERRATA051426"
+          },
+          {
+            "@name": "FLEXSPI_HAS_RESUMEDISABLE_BIT_CONFIG_SUPPORT",
+            "@value": "1",
+            "@description": "FlexSPI has AHBCR RESUMEDISABLE bit"
+          }
+        ]
+      },
+      {
+        "@id": "FMU",
+        "feature": [
+          {
+            "@name": "FLASH_PFLASH_START_ADDRESS",
+            "@value": "0x00000000",
+            "@description": "P-Flash block0 start address."
+          },
+          {
+            "@name": "FLASH_PFLASH_BLOCK_COUNT",
+            "@value": "2",
+            "@description": "P-Flash block count."
+          },
+          {
+            "@name": "FLASH_PFLASH_BLOCK_SIZE",
+            "@value": "0x100000",
+            "@description": "P-Flash block0 size."
+          },
+          {
+            "@name": "FLASH_IFR0_START_ADDRESS",
+            "@value": "0x01000000",
+            "@description": "flash BLOCK0 IFR0 start address."
+          },
+          {
+            "@name": "FLASH_IFR0_SIZE",
+            "@value": "0x8000",
+            "@description": "flash block IFR0 size."
+          },
+          {
+            "@name": "FLASH_PFLASH_SECTOR_SIZE",
+            "@value": "0x2000",
+            "@description": "P-Flash sector size."
+          },
+          {
+            "@name": "FLASH_PFLASH_PHRASE_SIZE",
+            "@value": "16",
+            "@description": "P-Flash phrase size."
+          },
+          {
+            "@name": "FLASH_PFLASH_PAGE_SIZE",
+            "@value": "128",
+            "@description": "P-Flash page size."
+          }
+        ]
+      },
+      {
+        "@id": "GPIO",
+        "feature": [
+          {
+            "@name": "GPIO_HAS_ATTRIBUTE_CHECKER",
+            "@value": "0",
+            "@description": "Has GPIO attribute checker register (GACR)."
+          },
+          {
+            "@name": "GPIO_HAS_VERSION_INFO_REGISTER",
+            "@value": "1",
+            "@description": "Has GPIO version ID register (VERID)."
+          },
+          {
+            "@name": "GPIO_HAS_SECURE_PRIVILEGE_CONTROL",
+            "@value": "1",
+            "@description": "Has secure/non-secure access protection registers (LOCK, PCNS, PCNP, ICNS, ICNP)."
+          },
+          {
+            "@name": "GPIO_HAS_PORT_INPUT_CONTROL",
+            "@value": "1",
+            "@description": "Has GPIO port input disable register (PIDR)."
+          },
+          {
+            "@name": "GPIO_HAS_INTERRUPT_CHANNEL_SELECT",
+            "@value": "1",
+            "@description": "Has GPIO interrupt/DMA request/trigger output selection."
+          }
+        ]
+      },
+      {
+        "@id": "I3C",
+        "feature": [
+          {
+            "@name": "I3C_HAS_NO_MERRWARN_TERM",
+            "@value": "1",
+            "@description": "Has TERM bitfile in MERRWARN register."
+          },
+          {
+            "@name": "I3C_HAS_NO_RESET",
+            "@value": "0",
+            "@description": "SOC has no reset driver."
+          },
+          {
+            "@name": "I3C_HAS_NO_SCONFIG_BAMATCH",
+            "@value": "0",
+            "@description": "Use fixed BAMATCH count, do not provide editable BAMATCH."
+          },
+          {
+            "@name": "I3C_HAS_NO_SCONFIG_IDRAND",
+            "@value": "0",
+            "@description": "Register SCONFIG do not have IDRAND bitfield."
+          },
+          {
+            "@name": "I3C_HAS_HDROK",
+            "@value": "0",
+            "@description": "Register SCONFIG has HDROK bitfield."
+          },
+          {
+            "@name": "I3C_HAS_ERRATA_051617",
+            "@value": "0",
+            "@description": "Has ERRATA_051617."
+          },
+          {
+            "@name": "I3C_HAS_NO_SLAVE_IBI_MR_HJ",
+            "@value": "0",
+            "@description": "SOC does not support slave IBI/MR/HJ"
+          },
+          {
+            "@name": "I3C_HAS_ERRATA_052086",
+            "@value": "0",
+            "@description": "Has ERRATA_052086."
+          },
+          {
+            "@name": "I3C_HAS_ERRATA_052123",
+            "@value": "0",
+            "@description": "Has ERRATA_052123."
+          },
+          {
+            "@name": "I3C_HAS_IBI_PAYLOAD_SIZE_OPTIONAL_BYTE",
+            "@value": "0",
+            "@description": "Has IBI bytes."
+          },
+          {
+            "@name": "I3C_HAS_START_SCL_DELAY",
+            "@value": "0",
+            "@description": "Has SCL delay after START."
+          },
+          {
+            "@name": "I3C_HAS_NO_MASTER_DMA_WDATA_REG",
+            "@value": "0",
+            "@description": "Has no the master write data register for DMA."
+          }
+        ]
+      },
+      {
+        "@id": "INPUTMUX",
+        "feature": [
+          {
+            "@name": "INPUTMUX_HAS_SIGNAL_ENA",
+            "@value": "1",
+            "@description": "Inputmux has DMA Request Enable"
+          },
+          {
+            "@name": "INPUTMUX_HAS_CHANNEL_MUX",
+            "@value": "0",
+            "@description": "Inputmux has channel mux control"
+          }
+        ]
+      },
+      {
+        "@id": "INTM",
+        "feature": {
+          "@name": "INTM_MONITOR_COUNT",
+          "@value": "4",
+          "@description": "Up to 4 programmable interrupt monitors"
+        }
+      },
+      {
+        "@id": "LPI2C",
+        "feature": [
+          {
+            "@name": "LPI2C_HAS_SEPARATE_DMA_RX_TX_REQ",
+            "@value": "1",
+            "@description": "Has separate DMA RX and TX requests."
+          },
+          {
+            "@name": "LPI2C_FIFO_SIZE",
+            "@value": "8",
+            "@description": "Capacity (number of entries) of the transmit/receive FIFO (or zero if no FIFO is available)."
+          },
+          {
+            "@name": "LPI2C_HAS_ROLE_SPLIT_IRQ",
+            "@value": "0",
+            "@description": "Has dedicated interrupt for master and slave."
+          },
+          {
+            "@name": "LPI2C_IS_LPFLEXCOMM",
+            "@value": "1",
+            "@description": "Belong to LPFLEXCOMM"
+          }
+        ]
+      },
+      {
+        "@id": "LPSPI",
+        "feature": [
+          {
+            "@name": "LPSPI_FIFO_SIZE",
+            "@value": "8",
+            "@description": "Capacity (number of entries) of the transmit/receive FIFO."
+          },
+          {
+            "@name": "LPSPI_HAS_SEPARATE_DMA_RX_TX_REQ",
+            "@value": "1",
+            "@description": "Has separate DMA RX and TX requests."
+          },
+          {
+            "@name": "LPSPI_HAS_CCR1",
+            "@value": "1",
+            "@description": "Has CCR1 (related to existence of registers CCR1)."
+          },
+          {
+            "@name": "LPSPI_HAS_NO_PCSCFG",
+            "@value": "0",
+            "@description": "Has no PCSCFG bit in CFGR1 register."
+          },
+          {
+            "@name": "LPSPI_HAS_NO_MULTI_WIDTH",
+            "@value": "0",
+            "@description": "Has no WIDTH bits in TCR register."
+          },
+          {
+            "@name": "LPSPI_IS_LPFLEXCOMM",
+            "@value": "1",
+            "@description": "Belong to LPFLEXCOMM"
+          }
+        ]
+      },
+      {
+        "@id": "LPTMR",
+        "feature": [
+          {
+            "@name": "LPTMR_HAS_SHARED_IRQ_HANDLER",
+            "@value": "0",
+            "@description": "Has shared interrupt handler with another LPTMR module."
+          },
+          {
+            "@name": "LPTMR_CNR_WIDTH_IS_32B",
+            "@value": "1",
+            "@description": "Whether LPTMR counter is 32 bits width."
+          },
+          {
+            "@name": "LPTMR_HAS_CSR_TDRE",
+            "@value": "1",
+            "@description": "Has timer DMA request enable (register bit CSR[TDRE])."
+          },
+          {
+            "@name": "LPTMR_HAS_NO_PRESCALER_CLOCK_SOURCE_0_SUPPORT",
+            "@value": "0",
+            "@description": "Do not has prescaler clock source 0."
+          },
+          {
+            "@name": "LPTMR_HAS_NO_PRESCALER_CLOCK_SOURCE_1_SUPPORT",
+            "@value": "0",
+            "@description": "Do not has prescaler clock source 1."
+          },
+          {
+            "@name": "LPTMR_HAS_NO_PRESCALER_CLOCK_SOURCE_2_SUPPORT",
+            "@value": "0",
+            "@description": "Do not has prescaler clock source 2."
+          },
+          {
+            "@name": "LPTMR_HAS_NO_PRESCALER_CLOCK_SOURCE_3_SUPPORT",
+            "@value": "0",
+            "@description": "Do not has prescaler clock source 3."
+          }
+        ]
+      },
+      {
+        "@id": "LPUART",
+        "feature": [
+          {
+            "@name": "LPUART_HAS_IRQ_EXTENDED_FUNCTIONS",
+            "@value": "0",
+            "@description": "Has receive FIFO overflow detection (bit field CFIFO[RXOFE])."
+          },
+          {
+            "@name": "LPUART_HAS_LOW_POWER_UART_SUPPORT",
+            "@value": "1",
+            "@description": "Has low power features (can be enabled in wait mode via register bit C1[DOZEEN] or CTRL[DOZEEN] if the registers are 32-bit wide)."
+          },
+          {
+            "@name": "LPUART_HAS_EXTENDED_DATA_REGISTER_FLAGS",
+            "@value": "1",
+            "@description": "Has extended data register ED (or extra flags in the DATA register if the registers are 32-bit wide)."
+          },
+          {
+            "@name": "LPUART_HAS_FIFO",
+            "@value": "1",
+            "@description": "Capacity (number of entries) of the transmit/receive FIFO (or zero if no FIFO is available)."
+          },
+          {
+            "@name": "LPUART_HAS_MODIR",
+            "@value": "1",
+            "@description": "Has 32-bit register MODIR"
+          },
+          {
+            "@name": "LPUART_HAS_MODEM_SUPPORT",
+            "@value": "1",
+            "@description": "Hardware flow control (RTS, CTS) is supported."
+          },
+          {
+            "@name": "LPUART_HAS_IR_SUPPORT",
+            "@value": "1",
+            "@description": "Infrared (modulation) is supported."
+          },
+          {
+            "@name": "LPUART_HAS_STOP_BIT_CONFIG_SUPPORT",
+            "@value": "1",
+            "@description": "2 bits long stop bit is available."
+          },
+          {
+            "@name": "LPUART_HAS_10BIT_DATA_SUPPORT",
+            "@value": "1",
+            "@description": "If 10-bit mode is supported."
+          },
+          {
+            "@name": "LPUART_HAS_7BIT_DATA_SUPPORT",
+            "@value": "1",
+            "@description": "If 7-bit mode is supported."
+          },
+          {
+            "@name": "LPUART_HAS_BAUD_RATE_FINE_ADJUST_SUPPORT",
+            "@value": "0",
+            "@description": "Baud rate fine adjustment is available."
+          },
+          {
+            "@name": "LPUART_HAS_BAUD_RATE_OVER_SAMPLING_SUPPORT",
+            "@value": "1",
+            "@description": "Baud rate oversampling is available (has bit fields C4[OSR], C5[BOTHEDGE], C5[RESYNCDIS] or BAUD[OSR], BAUD[BOTHEDGE], BAUD[RESYNCDIS] if the registers are 32-bit wide)."
+          },
+          {
+            "@name": "LPUART_HAS_RX_RESYNC_SUPPORT",
+            "@value": "1",
+            "@description": "Baud rate oversampling is available."
+          },
+          {
+            "@name": "LPUART_HAS_BOTH_EDGE_SAMPLING_SUPPORT",
+            "@value": "1",
+            "@description": "Baud rate oversampling is available."
+          },
+          {
+            "@name": "LPUART_IS_SCI",
+            "@value": "1",
+            "@description": "Peripheral type."
+          },
+          {
+            "@name": "LPUART_HAS_ADDRESS_MATCHING",
+            "@value": "1",
+            "@description": "Supports two match addresses to filter incoming frames."
+          },
+          {
+            "@name": "LPUART_HAS_DMA_ENABLE",
+            "@value": "1",
+            "@description": "Has transmitter/receiver DMA enable bits C5[TDMAE]/C5[RDMAE] (or BAUD[TDMAE]/BAUD[RDMAE] if the registers are 32-bit wide)."
+          },
+          {
+            "@name": "LPUART_HAS_DMA_SELECT",
+            "@value": "0",
+            "@description": "Has transmitter/receiver DMA select bits C4[TDMAS]/C4[RDMAS], resp. C5[TDMAS]/C5[RDMAS] if IS_SCI = 0."
+          },
+          {
+            "@name": "LPUART_HAS_BIT_ORDER_SELECT",
+            "@value": "1",
+            "@description": "Data character bit order selection is supported (bit field S2[MSBF] or STAT[MSBF] if the registers are 32-bit wide)."
+          },
+          {
+            "@name": "LPUART_HAS_SMART_CARD_SUPPORT",
+            "@value": "0",
+            "@description": "Has smart card (ISO7816 protocol) support and no improved smart card support."
+          },
+          {
+            "@name": "LPUART_HAS_IMPROVED_SMART_CARD_SUPPORT",
+            "@value": "0",
+            "@description": "Has improved smart card (ISO7816 protocol) support."
+          },
+          {
+            "@name": "LPUART_HAS_LOCAL_OPERATION_NETWORK_SUPPORT",
+            "@value": "0",
+            "@description": "Has local operation network (CEA709.1-B protocol) support."
+          },
+          {
+            "@name": "LPUART_HAS_32BIT_REGISTERS",
+            "@value": "1",
+            "@description": "Has 32-bit registers (BAUD, STAT, CTRL, DATA, MATCH, MODIR) instead of 8-bit (BDH, BDL, C1, S1, D, etc.)."
+          },
+          {
+            "@name": "LPUART_HAS_LIN_BREAK_DETECT",
+            "@value": "1",
+            "@description": "Lin break detect available (has bit BAUD[LBKDIE])."
+          },
+          {
+            "@name": "LPUART_HAS_WAIT_MODE_OPERATION",
+            "@value": "0",
+            "@description": "UART stops in Wait mode available (has bit C1[UARTSWAI])."
+          },
+          {
+            "@name": "LPUART_HAS_SEPARATE_DMA_RX_TX_REQ",
+            "@value": "1",
+            "@description": "Has separate DMA RX and TX requests."
+          },
+          {
+            "@name": "LPUART_HAS_SEPARATE_RX_TX_IRQ",
+            "@value": "0",
+            "@description": "Has separate RX and TX interrupts."
+          },
+          {
+            "@name": "LPUART_HAS_PARAM",
+            "@value": "1",
+            "@description": "Has LPAURT_PARAM."
+          },
+          {
+            "@name": "LPUART_HAS_VERID",
+            "@value": "1",
+            "@description": "Has LPUART_VERID."
+          },
+          {
+            "@name": "LPUART_HAS_GLOBAL",
+            "@value": "1",
+            "@description": "Has LPUART_GLOBAL."
+          },
+          {
+            "@name": "LPUART_HAS_PINCFG",
+            "@value": "1",
+            "@description": "Has LPUART_PINCFG."
+          },
+          {
+            "@name": "LPUART_IS_LPFLEXCOMM",
+            "@value": "1",
+            "@description": "Belong to LPFLEXCOMM"
+          },
+          {
+            "@name": "LPUART_HAS_MCR",
+            "@value": "1",
+            "@description": "Has register MODEM Control."
+          },
+          {
+            "@name": "LPUART_HAS_HDCR",
+            "@value": "1",
+            "@description": "Has register Half Duplex Control."
+          },
+          {
+            "@name": "LPUART_HAS_TIMEOUT",
+            "@value": "1",
+            "@description": "Has register Timeout."
+          },
+          {
+            "@name": "LPUART_HAS_CTRL_SWAP",
+            "@value": "0",
+            "@description": "UART support swap TX and RX (has bit CTRL[SWAP])."
+          },
+          {
+            "@name": "LPUART_FIFO_SIZE",
+            "@value": "8",
+            "@description": "Capacity (number of entries) of the transmit/receive FIFO (or zero if no FIFO is available)."
+          },
+          {
+            "@name": "LPUART_HAS_MODIR_RTSWATER",
+            "@value": "1",
+            "@description": "UART support receive rts configuration (has bit MODIR[RTSWATER])."
+          }
+        ]
+      },
+      {
+        "@id": "MAILBOX",
+        "core_specific": [
+          {
+            "@cores": "cm33_core0",
+            "feature": {
+              "@name": "MAILBOX_SIDE_A",
+              "@value": "1",
+              "@description": "Mailbox side for current core"
+            }
+          },
+          {
+            "@cores": "cm33_core1",
+            "feature": {
+              "@name": "MAILBOX_SIDE_B",
+              "@value": "1",
+              "@description": "Mailbox side for current core"
+            }
+          }
+        ]
+      },
+      {
+        "@id": "MRT",
+        "feature": {
+          "@name": "MRT_NUMBER_OF_CHANNELS",
+          "@value": "4",
+          "@description": "number of channels."
+        }
+      },
+      {
+        "@id": "OPAMP",
+        "feature": [
+          {
+            "@name": "OPAMP_HAS_OPAMP_CTR_OUTSW",
+            "@value": "1",
+            "@description": "Opamp has OPAMP_CTR OUTSW bit"
+          },
+          {
+            "@name": "OPAMP_HAS_OPAMP_CTR_ADCSW1",
+            "@value": "1",
+            "@description": "Opamp has OPAMP_CTR ADCSW1 bit"
+          },
+          {
+            "@name": "OPAMP_HAS_OPAMP_CTR_ADCSW2",
+            "@value": "1",
+            "@description": "Opamp has OPAMP_CTR ADCSW2 bit"
+          },
+          {
+            "@name": "OPAMP_HAS_OPAMP_CTR_BUFEN",
+            "@value": "1",
+            "@description": "Opamp has OPAMP_CTR BUFEN bit"
+          },
+          {
+            "@name": "OPAMP_HAS_OPAMP_CTR_INPSEL",
+            "@value": "1",
+            "@description": "Opamp has OPAMP_CTR INPSEL bit"
+          },
+          {
+            "@name": "OPAMP_HAS_OPAMP_CTR_TRIGMD",
+            "@value": "1",
+            "@description": "Opamp has OPAMP_CTR TRIGMD bit"
+          },
+          {
+            "@name": "OPAMP_HAS_SUPPORT_REFERENCE_BUFFER",
+            "@value": "1",
+            "@description": "OPAMP support reference buffer"
+          }
+        ]
+      },
+      {
+        "@id": "PDM",
+        "feature": [
+          {
+            "@name": "PDM_FIFO_OFFSET",
+            "@value": "4",
+            "@description": "PDM FIFO offset"
+          },
+          {
+            "@name": "PDM_CHANNEL_NUM",
+            "@value": "4",
+            "@description": "PDM Channel Number"
+          },
+          {
+            "@name": "PDM_FIFO_WIDTH",
+            "@value": "4",
+            "@description": "PDM FIFO WIDTH Size"
+          },
+          {
+            "@name": "PDM_FIFO_DEPTH",
+            "@value": "16",
+            "@description": "PDM FIFO DEPTH Size"
+          },
+          {
+            "@name": "PDM_HAS_RANGE_CTRL",
+            "@value": "1",
+            "@description": "PDM has RANGE_CTRL register"
+          },
+          {
+            "@name": "PDM_HAS_STATUS_LOW_FREQ",
+            "@value": "0",
+            "@description": "PDM Has Low Frequency"
+          },
+          {
+            "@name": "PDM_HAS_NO_VADEF",
+            "@value": "1",
+            "@description": "PDM Has No VADEF Bitfield In PDM VAD0_STAT Register"
+          },
+          {
+            "@name": "PDM_HAS_NO_MINIMUM_CLKDIV",
+            "@value": "1",
+            "@description": "PDM has no minimum clkdiv."
+          },
+          {
+            "@name": "PDM_HAS_NO_FIR_RDY",
+            "@value": "1",
+            "@description": "PDM Has no FIR_RDY Bitfield In PDM STAT Register"
+          },
+          {
+            "@name": "PDM_HAS_NO_DOZEN",
+            "@value": "0",
+            "@description": "PDM Has no DOZEN Bitfield In PDM CTRL_1 Register"
+          },
+          {
+            "@name": "PDM_HAS_DECIMATION_FILTER_BYPASS",
+            "@value": "0",
+            "@description": "PDM Has DEC_BYPASS Bitfield In PDM CTRL_2 Register"
+          },
+          {
+            "@name": "PDM_HAS_DC_OUT_CTRL",
+            "@value": "1",
+            "@description": "PDM Has DC_OUT_CTRL."
+          },
+          {
+            "@name": "PDM_DC_CTRL_VALUE_FIXED",
+            "@value": "1",
+            "@description": "PDM Has Fixed DC CTRL VALUE."
+          },
+          {
+            "@name": "PDM_HAS_NO_INDEPENDENT_ERROR_IRQ",
+            "@value": "1",
+            "@description": "PDM Has no independent error IRQ."
+          },
+          {
+            "@name": "PDM_HAS_NO_HWVAD",
+            "@value": "1",
+            "@description": "PDM has no hardware Voice Activity Detector"
+          }
+        ]
+      },
+      {
+        "@id": "PINT",
+        "feature": [
+          {
+            "@name": "PINT_NUMBER_OF_CONNECTED_OUTPUTS",
+            "@value": "8",
+            "@description": "Number of connected outputs"
+          },
+          {
+            "@name": "PINT_INTERRUPT_COMBINE",
+            "@value": "1",
+            "@description": "PINT Interrupt Combine"
+          }
+        ]
+      },
+      {
+        "@id": "PLU",
+        "feature": {
+          "@name": "PLU_HAS_WAKEINT_CTRL_REG",
+          "@value": "1",
+          "@description": "Has WAKEINT_CTRL register."
+        }
+      },
+      {
+        "@id": "PORT",
+        "feature": [
+          {
+            "@name": "PORT_HAS_PIN_CONTROL_LOCK",
+            "@value": "1",
+            "@description": "Has control lock (register bit PCR[LK])."
+          },
+          {
+            "@name": "PORT_HAS_OPEN_DRAIN",
+            "@value": "1",
+            "@description": "Has open drain control (register bit PCR[ODE])."
+          },
+          {
+            "@name": "PORT_HAS_DIGITAL_FILTER",
+            "@value": "0",
+            "@description": "Has digital filter (registers DFER, DFCR and DFWR)."
+          },
+          {
+            "@name": "PORT_HAS_DMA_REQUEST",
+            "@value": "0",
+            "@description": "Has DMA request (register bit field PCR[IRQC] or ICR[IRQC] values)."
+          },
+          {
+            "@name": "PORT_HAS_PULL_SELECTION",
+            "@value": "1",
+            "@description": "Has pull resistor selection available."
+          },
+          {
+            "@name": "PORT_HAS_PULL_ENABLE",
+            "@value": "1",
+            "@description": "Has pull resistor enable (register bit PCR[PE])."
+          },
+          {
+            "@name": "PORT_HAS_NO_INTERRUPT",
+            "@value": "1",
+            "@description": "Do not has interrupt control (register ISFR)."
+          },
+          {
+            "@name": "PORT_HAS_DRIVE_STRENGTH1",
+            "@value": "0",
+            "@description": "Has drive strength1 control (register bit PCR[DSE1])."
+          },
+          {
+            "@name": "PORT_HAS_VERSION_INFO_REGISTER",
+            "@value": "1",
+            "@description": "Has version ID register (register VERID)."
+          },
+          {
+            "@name": "PORT_SUPPORT_DIFFERENT_VOLTAGE_RANGE",
+            "@value": "1",
+            "@description": "Has voltage range control (register bit CONFIG[RANGE])."
+          },
+          {
+            "@name": "PORT_SUPPORT_EFT",
+            "@value": "1",
+            "@description": "Has EFT detect (registers EDFR, EDIER and EDCR)."
+          },
+          {
+            "@name": "PORT_PCR_MUX_GPIO",
+            "@value": "0",
+            "@description": "Function 0 is GPIO."
+          },
+          {
+            "@name": "PORT_HAS_INTERRUPT_VECTOR",
+            "@value": "1",
+            "@description": "Has dedicated interrupt vector."
+          },
+          {
+            "@name": "PORT_HAS_INDEPENDENT_INTERRUPT_CONTROL",
+            "@value": "0",
+            "@description": "Has independent interrupt control(register ICR)."
+          },
+          {
+            "@name": "PORT_HAS_MULTIPLE_IRQ_CONFIG",
+            "@value": "0",
+            "@description": "Has multiple pin IRQ configuration (register GICLR and GICHR)."
+          },
+          {
+            "@name": "PORT_HAS_INPUT_BUFFER",
+            "@value": "1",
+            "@description": "Has Input Buffer Enable (register bit field PCR[IBE])."
+          },
+          {
+            "@name": "PORT_HAS_INVERT_INPUT",
+            "@value": "1",
+            "@description": "Has Invert Input (register bit field PCR[IBE])."
+          },
+          {
+            "@name": "PORT_HAS_IRQC_FLAG",
+            "@value": "0",
+            "@description": "Defines whether PCR[IRQC] bit-field has flag states."
+          },
+          {
+            "@name": "PORT_HAS_IRQC_TRIGGER",
+            "@value": "0",
+            "@description": "Defines whether PCR[IRQC] bit-field has trigger states."
+          }
+        ],
+        "peripheral_specific": [
+          {
+            "@peripherals": "PORT0 PORT1 PORT2 PORT3 PORT4",
+            "feature": {
+              "@name": "PORT_HAS_SLEW_RATE",
+              "@value": "1",
+              "@description": "Has slew rate control (register bit PCR[SRE])."
+            }
+          },
+          {
+            "@peripherals": "PORT5",
+            "feature": {
+              "@name": "PORT_HAS_SLEW_RATE",
+              "@value": "0",
+              "@description": "Has slew rate control (register bit PCR[SRE])."
+            }
+          },
+          {
+            "@peripherals": "PORT0 PORT2 PORT3 PORT4",
+            "feature": {
+              "@name": "PORT_HAS_PASSIVE_FILTER",
+              "@value": "0",
+              "@description": "Has passive filter (register bit field PCR[PFE])."
+            }
+          },
+          {
+            "@peripherals": "PORT1 PORT5",
+            "feature": {
+              "@name": "PORT_HAS_PASSIVE_FILTER",
+              "@value": "1",
+              "@description": "Has passive filter (register bit field PCR[PFE])."
+            }
+          },
+          {
+            "@peripherals": "PORT0 PORT1 PORT2 PORT3 PORT4",
+            "feature": {
+              "@name": "PORT_PCR_HAS_PULL_VALUE",
+              "@value": "0",
+              "@description": "Has pull value (register bit field PCR[PV])."
+            }
+          },
+          {
+            "@peripherals": "PORT5",
+            "feature": {
+              "@name": "PORT_PCR_HAS_PULL_VALUE",
+              "@value": "1",
+              "@description": "Has pull value (register bit field PCR[PV])."
+            }
+          },
+          {
+            "@peripherals": "PORT0 PORT1 PORT2 PORT3 PORT4",
+            "feature": {
+              "@name": "PORT_HAS_DRIVE_STRENGTH",
+              "@value": "1",
+              "@description": "Has drive strength control (register bit PCR[DSE])."
+            }
+          },
+          {
+            "@peripherals": "PORT5",
+            "feature": {
+              "@name": "PORT_HAS_DRIVE_STRENGTH",
+              "@value": "0",
+              "@description": "Has drive strength control (register bit PCR[DSE])."
+            }
+          },
+          {
+            "@peripherals": "PORT0 PORT1 PORT2 PORT3 PORT4",
+            "feature": {
+              "@name": "PORT_PCR_MUX_WIDTH",
+              "@value": "4",
+              "@description": "Defines width of PCR[MUX] field."
+            }
+          },
+          {
+            "@peripherals": "PORT5",
+            "feature": {
+              "@name": "PORT_PCR_MUX_WIDTH",
+              "@value": "2",
+              "@description": "Defines width of PCR[MUX] field."
+            }
+          }
+        ]
+      },
+      {
+        "@id": "POWERQUAD"
+      },
+      {
+        "@id": "PUF",
+        "feature": [
+          {
+            "@name": "PUF_ACTIVATION_CODE_ADDRESS",
+            "@value": "17826304",
+            "@description": "Puf Activation Code Address."
+          },
+          {
+            "@name": "PUF_ACTIVATION_CODE_SIZE",
+            "@value": "1000",
+            "@description": "Puf Activation Code Size."
+          }
+        ]
+      },
+      {
+        "@id": "PWM",
+        "feature": [
+          {
+            "@name": "PWM_HAS_CHANNELA",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has module A channels (outputs)."
+          },
+          {
+            "@name": "PWM_HAS_CHANNELB",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has module B channels (outputs)."
+          },
+          {
+            "@name": "PWM_HAS_CHANNELX",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has module X channels (outputs)."
+          },
+          {
+            "@name": "PWM_HAS_FRACTIONAL",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has fractional feature."
+          },
+          {
+            "@name": "PWM_HAS_MUX_TRIGGER_SOURCE_SEL",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has mux trigger source select bit field."
+          },
+          {
+            "@name": "PWM_SUBMODULE_COUNT",
+            "@value": "4",
+            "@description": "Number of submodules in each (e)FlexPWM module."
+          },
+          {
+            "@name": "PWM_FAULT_CH_COUNT",
+            "@value": "1",
+            "@description": "Number of fault channel in each (e)FlexPWM module."
+          },
+          {
+            "@name": "PWM_HAS_NO_WAITEN",
+            "@value": "1",
+            "@description": "(e)FlexPWM has no WAITEN Bitfield In CTRL2 Register."
+          },
+          {
+            "@name": "PWM_HAS_PHASE_DELAY",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has phase delay feature."
+          },
+          {
+            "@name": "PWM_HAS_INPUT_FILTER_CAPTURE",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has input filter capture feature."
+          },
+          {
+            "@name": "PWM_HAS_CAPTURE_ON_CHANNELA",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has module capture functionality on A channels (inputs)."
+          },
+          {
+            "@name": "PWM_HAS_CAPTURE_ON_CHANNELB",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has module capture functionality on B channels (inputs)."
+          },
+          {
+            "@name": "PWM_HAS_CAPTURE_ON_CHANNELX",
+            "@value": "1",
+            "@description": "If (e)FlexPWM has module capture functionality on X channels (inputs)."
+          },
+          {
+            "@name": "PWM_HAS_ERRATA_51989",
+            "@value": "1",
+            "@description": "Is affected by errata with ID 51989."
+          }
+        ]
+      },
+      {
+        "@id": "QDC",
+        "feature": [
+          {
+            "@name": "QDC_HAS_NO_CTRL2_SAB_INT",
+            "@value": "0",
+            "@description": "Has no simultaneous PHASEA and PHASEB change interrupt (register bit field CTRL2[SABIE] and CTRL2[SABIRQ])."
+          },
+          {
+            "@name": "QDC_HAS_CTRL3",
+            "@value": "1",
+            "@description": "Has register CTRL3."
+          },
+          {
+            "@name": "QDC_HAS_LASTEDGE",
+            "@value": "1",
+            "@description": "Has register LASTEDGE or LASTEDGEH."
+          },
+          {
+            "@name": "QDC_HAS_POSDPER",
+            "@value": "1",
+            "@description": "Has register POSDPERBFR, POSDPERH, or POSDPER."
+          },
+          {
+            "@name": "QDC_HAS_FILT_PRSC",
+            "@value": "1",
+            "@description": "Has bitfiled FILT[FILT_PRSC]."
+          }
+        ]
+      },
+      {
+        "@id": "RTC",
+        "feature": [
+          {
+            "@name": "RTC_HAS_TAMPER_DIRECTION",
+            "@value": "0",
+            "@description": "Has Tamper Direction Register support."
+          },
+          {
+            "@name": "RTC_HAS_TAMPER_QUEUE",
+            "@value": "0",
+            "@description": "Has Tamper Queue Status and Control Register support."
+          },
+          {
+            "@name": "RTC_HAS_SUBSYSTEM",
+            "@value": "1",
+            "@description": "Has RTC subsystem."
+          },
+          {
+            "@name": "RTC_HAS_FILTER23_CFG",
+            "@value": "0",
+            "@description": "Has RTC Tamper 23 Filter Configuration Register support."
+          },
+          {
+            "@name": "RTC_HAS_NO_CTRL2_WAKEUP_MODE",
+            "@value": "1",
+            "@description": "Has WAKEUP_MODE bitfile in CTRL2 register."
+          },
+          {
+            "@name": "RTC_HAS_CLOCK_SELECT",
+            "@value": "1",
+            "@description": "Has CLK_SEL bitfile in CTRL register."
+          },
+          {
+            "@name": "RTC_HAS_CLOCK_OUTPUT_DISABLE",
+            "@value": "1",
+            "@description": "Has CLKO_DIS bitfile in CTRL register."
+          },
+          {
+            "@name": "RTC_HAS_NO_TAMPER_FEATURE",
+            "@value": "1",
+            "@description": "Has No Tamper in RTC."
+          },
+          {
+            "@name": "RTC_HAS_NO_CPU_LOW_VOLT_FLAG",
+            "@value": "1",
+            "@description": "Has CPU_LOW_VOLT bitfile in STATUS register."
+          },
+          {
+            "@name": "RTC_HAS_NO_RST_SRC_FLAG",
+            "@value": "1",
+            "@description": "Has RST_SRC bitfile in STATUS register."
+          },
+          {
+            "@name": "RTC_HAS_NO_GP_DATA_REG",
+            "@value": "1",
+            "@description": "Has GP_DATA_REG register."
+          },
+          {
+            "@name": "RTC_HAS_NO_TIMER_STB_MASK",
+            "@value": "1",
+            "@description": "Has TIMER_STB_MASK bitfile in CTRL register."
+          },
+          {
+            "@name": "RTC_HAS_FILTER45_CFG",
+            "@value": "0",
+            "@description": "Has RTC Tamper 45 Filter Configuration Register support"
+          },
+          {
+            "@name": "RTC_HAS_FILTER67_CFG",
+            "@value": "0",
+            "@description": "Has RTC Tamper 67 Filter Configuration Register support"
+          },
+          {
+            "@name": "RTC_HAS_MINUTES_TIMER_FEATURE",
+            "@value": "0",
+            "@description": "Has RTC Minutes Count Down Timer Register support"
+          },
+          {
+            "@name": "RTC_HAS_BCD_MODE",
+            "@value": "0",
+            "@description": "Has RTC BCD mode support"
+          }
+        ]
+      },
+      {
+        "@id": "SAI",
+        "feature": [
+          {
+            "@name": "SAI_FIFO_COUNT",
+            "@value": "8",
+            "@description": "Receive/transmit FIFO size in item count (register bit fields TCSR[FRDE], TCSR[FRIE], TCSR[FRF], TCR1[TFW], RCSR[FRDE], RCSR[FRIE], RCSR[FRF], RCR1[RFW], registers TFRn, RFRn)."
+          },
+          {
+            "@name": "SAI_CHANNEL_COUNT",
+            "@value": "2",
+            "@description": "Receive/transmit channel number (register bit fields TCR3[TCE], RCR3[RCE], registers TDRn and RDRn)."
+          },
+          {
+            "@name": "SAI_MAX_WORDS_PER_FRAME",
+            "@value": "32",
+            "@description": "Maximum words per frame (register bit fields TCR3[WDFL], TCR4[FRSZ], TMR[TWM], RCR3[WDFL], RCR4[FRSZ], RMR[RWM])."
+          },
+          {
+            "@name": "SAI_HAS_FIFO_COMBINE_MODE",
+            "@value": "1",
+            "@description": "Has support of combining multiple data channel FIFOs into single channel FIFO (register bit fields TCR3[CFR], TCR4[FCOMB], TFR0[WCP], TFR1[WCP], RCR3[CFR], RCR4[FCOMB], RFR0[RCP], RFR1[RCP])."
+          },
+          {
+            "@name": "SAI_HAS_FIFO_PACKING",
+            "@value": "1",
+            "@description": "Has packing of 8-bit and 16-bit data into each 32-bit FIFO word (register bit fields TCR4[FPACK], RCR4[FPACK])."
+          },
+          {
+            "@name": "SAI_HAS_FIFO_FUNCTION_AFTER_ERROR",
+            "@value": "1",
+            "@description": "Configures when the SAI will continue transmitting after a FIFO error has been detected (register bit fields TCR4[FCONT], RCR4[FCONT])."
+          },
+          {
+            "@name": "SAI_HAS_ON_DEMAND_MODE",
+            "@value": "1",
+            "@description": "Configures if the frame sync is generated internally, a frame sync is only generated when the FIFO warning flag is clear or continuously (register bit fields TCR4[ONDEM], RCR4[ONDEM])."
+          },
+          {
+            "@name": "SAI_HAS_CLOCKING_MODE",
+            "@value": "0",
+            "@description": "Simplified bit clock source and asynchronous/synchronous mode selection (register bit fields TCR2[CLKMODE], RCR2[CLKMODE]), in comparison with the exclusively implemented TCR2[SYNC,BCS,BCI,MSEL], RCR2[SYNC,BCS,BCI,MSEL]."
+          },
+          {
+            "@name": "SAI_HAS_MCLKDIV_REGISTER",
+            "@value": "0",
+            "@description": "Has register for configuration of the MCLK divide ratio (register bit fields MDR[FRACT], MDR[DIVIDE])."
+          },
+          {
+            "@name": "SAI_INT_SOURCE_NUM",
+            "@value": "1",
+            "@description": "Interrupt source number"
+          },
+          {
+            "@name": "SAI_HAS_MCR",
+            "@value": "1",
+            "@description": "Has register of MCR."
+          },
+          {
+            "@name": "SAI_HAS_NO_MCR_MICS",
+            "@value": "1",
+            "@description": "Has bit field MICS of the MCR register."
+          },
+          {
+            "@name": "SAI_HAS_MDR",
+            "@value": "0",
+            "@description": "Has register of MDR"
+          },
+          {
+            "@name": "SAI_HAS_BCLK_BYPASS",
+            "@value": "1",
+            "@description": "Has support the BCLK bypass mode when BCLK = MCLK."
+          },
+          {
+            "@name": "SAI_HAS_MCR_MCLK_POST_DIV",
+            "@value": "1",
+            "@description": "Has DIV bit fields of MCR register (register bit fields MCR[DIV])."
+          },
+          {
+            "@name": "SAI_HAS_CHANNEL_MODE",
+            "@value": "1",
+            "@description": "Support Channel Mode (register bit fields TCR4[CHMOD])."
+          },
+          {
+            "@name": "SAI_HAS_FIFO",
+            "@value": "1",
+            "@description": "SAI has FIFO in this soc (register bit fields TCR1[TFW]."
+          },
+          {
+            "@name": "SAI_HAS_SYNC_WITH_ANOTHER_SAI",
+            "@value": "1",
+            "@description": "Support synchronous with another SAI."
+          },
+          {
+            "@name": "SAI_HAS_BIT_CLOCK_SWAP",
+            "@value": "1",
+            "@description": "Has Bit Clock Swap option (register bit fields RCR2[BCS])"
+          },
+          {
+            "@name": "SAI_SAI5_SAI6_SHARE_IRQ",
+            "@value": "0",
+            "@description": "SAI5 and SAI6 share one irq number."
+          }
+        ]
+      },
+      {
+        "@id": "SCT",
+        "feature": [
+          {
+            "@name": "SCT_NUMBER_OF_EVENTS",
+            "@value": "16",
+            "@description": "Number of events"
+          },
+          {
+            "@name": "SCT_NUMBER_OF_STATES",
+            "@value": "16",
+            "@description": "Number of states"
+          },
+          {
+            "@name": "SCT_NUMBER_OF_MATCH_CAPTURE",
+            "@value": "16",
+            "@description": "Number of match capture"
+          },
+          {
+            "@name": "SCT_NUMBER_OF_OUTPUTS",
+            "@value": "10",
+            "@description": "Number of outputs"
+          },
+          {
+            "@name": "SCT_WRITE_ZERO_ASSERT_RESET",
+            "@value": "0",
+            "@description": "Writing a zero asserts the SCT reset."
+          }
+        ]
+      },
+      {
+        "@id": "SEMA42",
+        "feature": {
+          "@name": "SEMA42_GATE_COUNT",
+          "@value": "16",
+          "@description": "Gate counts"
+        }
+      },
+      {
+        "@id": "SINC",
+        "feature": [
+          {
+            "@name": "SINC_CHANNEL_COUNT",
+            "@value": "5",
+            "@description": "SINC channel count."
+          },
+          {
+            "@name": "SINC_CACFR_HAS_ADMASEL",
+            "@value": "1",
+            "@description": "SINC CACFR register has bitfield ADMASEL."
+          },
+          {
+            "@name": "SINC_CACFR_HAS_NO_PTMUX",
+            "@value": "1",
+            "@description": "SINC CACFR register has no bitfield PTMUX."
+          }
+        ]
+      },
+      {
+        "@id": "SPC",
+        "feature": [
+          {
+            "@name": "MCX_SPC_HAS_DCDC",
+            "@value": "1",
+            "@description": "Has DCDC"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SYS_LDO",
+            "@value": "1",
+            "@description": "Has SYS LDO"
+          },
+          {
+            "@name": "MCX_SPC_HAS_IOVDD_VD",
+            "@value": "1",
+            "@description": "Has IOVDD_LVDF"
+          },
+          {
+            "@name": "MCX_SPC_HAS_COREVDD_HVD",
+            "@value": "1",
+            "@description": "Has COREVDD_HVDF"
+          },
+          {
+            "@name": "SPC_HAS_CORELDO_VDD_DS",
+            "@value": "1",
+            "@description": "Has CORELDO_VDD_DS"
+          },
+          {
+            "@name": "MCX_SPC_HAS_LPBUFF_EN_BIT",
+            "@value": "1",
+            "@description": "Has LPBUFF_EN"
+          },
+          {
+            "@name": "MCX_SPC_HAS_COREVDD_IVS_EN_BIT",
+            "@value": "1",
+            "@description": "Has COREVDD_IVS_EN"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SWITCH_STATE_BIT",
+            "@value": "0",
+            "@description": "Has SWITCH_STATE"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SRAMRETLDO_REG",
+            "@value": "0",
+            "@description": "Has SRAMRETLDO"
+          },
+          {
+            "@name": "MCX_SPC_HAS_CFG_REG",
+            "@value": "0",
+            "@description": "Has CFG register"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SRAMLDO_DPD_ON_BIT",
+            "@value": "0",
+            "@description": "Has SRAMLDO_DPD_ON"
+          },
+          {
+            "@name": "MCX_SPC_HAS_CNTRL_REG",
+            "@value": "1",
+            "@description": "Has CNTRL register"
+          },
+          {
+            "@name": "MCX_SPC_HAS_DPDOWN_PULLDOWN_DISABLE_BIT",
+            "@value": "1",
+            "@description": "Has DPDOWN_PULLDOWN_DISABLE"
+          },
+          {
+            "@name": "MCX_SPC_HAS_NO_GLITCH_DETECT",
+            "@value": "0",
+            "@description": "Not have glitch detect"
+          },
+          {
+            "@name": "MCX_SPC_HAS_DCDC_CFG_BLEED_EN",
+            "@value": "1",
+            "@description": "Has BLEED_EN"
+          },
+          {
+            "@name": "MCX_SPC_HAS_PD_STATUS_PWR_REQ_STATUS_BIT",
+            "@value": "1",
+            "@description": "Has Power Request Status Flag"
+          },
+          {
+            "@name": "MCX_SPC_SUPPORT_OVERDRIVE_VOLTAGE",
+            "@value": "1",
+            "@description": "Support overdrive voltage"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SC_SPC_LP_REQ_BIT",
+            "@value": "1",
+            "@description": "Has SPC_LP_REQ bit in SC register"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SC_SPC_LP_MODE_BIT",
+            "@value": "1",
+            "@description": "Has SPC_LP_MODE bit in SC register"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SRAMCTL_REG",
+            "@value": "1",
+            "@description": "Has SRAMCTL register"
+          },
+          {
+            "@name": "MCX_SPC_HAS_PD_STATUS_REG",
+            "@value": "1",
+            "@description": "Has PD_STATUS register"
+          },
+          {
+            "@name": "MCX_SPC_HAS_SRAMRETLDO_REFTRIM_REG",
+            "@value": "0",
+            "@description": "Has SRAMRETLDO_REFTRIM register"
+          }
+        ]
+      },
+      {
+        "@id": "SYSCON",
+        "feature": [
+          {
+            "@name": "SYSCON_FLASH_PAGE_SIZE_BYTES",
+            "@value": "128",
+            "@description": "Flash page size in bytes"
+          },
+          {
+            "@name": "SYSCON_FLASH_SECTOR_SIZE_BYTES",
+            "@value": "8192",
+            "@description": "Flash sector size in bytes"
+          },
+          {
+            "@name": "SYSCON_FLASH_SIZE_BYTES",
+            "@value": "2097152",
+            "@description": "Flash size in bytes"
+          },
+          {
+            "@name": "SYSCON_STARTER_DISCONTINUOUS",
+            "@value": "1",
+            "@description": "Starter register discontinuous."
+          },
+          {
+            "@name": "SYSCON_ROMAPI",
+            "@value": "1",
+            "@description": "Support ROMAPI."
+          },
+          {
+            "@name": "POWERLIB_EXTEND",
+            "@value": "1",
+            "@description": "Powerlib API is different with other series devices.."
+          },
+          {
+            "@name": "SYSCON_HAS_LPCAC_CTRL_PARITY_MISS_EN_BIT",
+            "@value": "1",
+            "@description": "Has parity miss (bitfield LPCAC_CTRL[PARITY_MISS_EN])."
+          },
+          {
+            "@name": "SYSCON_HAS_LPCAC_CTRL_PARITY_FAULT_EN_BIT",
+            "@value": "1",
+            "@description": "Has parity error report (bitfield LPCAC_CTRL[PARITY_FAULT_EN])."
+          }
+        ]
+      },
+      {
+        "@id": "SysTick",
+        "core_specific": [
+          {
+            "@cores": "cm33_core0",
+            "feature": {
+              "@name": "SYSTICK_HAS_EXT_REF",
+              "@value": "0",
+              "@description": "Systick has external reference clock."
+            }
+          },
+          {
+            "@cores": "cm33_core0",
+            "feature": {
+              "@name": "SYSTICK_EXT_REF_CORE_DIV",
+              "@value": "0",
+              "@description": "Systick external reference clock is core clock divided by this value."
+            }
+          }
+        ]
+      },
+      {
+        "@id": "TRDC",
+        "feature": [
+          {
+            "@name": "TRDC_PROCESSOR_MASTER_COUNT",
+            "@value": "2",
+            "@description": "Process master count."
+          },
+          {
+            "@name": "TRDC_INSTANCE_HAS_PID_CONFIGURATION",
+            "@value": "0",
+            "@description": "TRDC instance has PID configuration or not."
+          },
+          {
+            "@name": "TRDC_HAS_MBC",
+            "@value": "1",
+            "@description": "TRDC instance has MBC."
+          },
+          {
+            "@name": "TRDC_HAS_MRC",
+            "@value": "0",
+            "@description": "TRDC instance has MRC."
+          },
+          {
+            "@name": "TRDC_HAS_GENERAL_CONFIG",
+            "@value": "0",
+            "@description": "TRDC instance has TRDC_CR."
+          },
+          {
+            "@name": "TRDC_HAS_DOMAIN_ASSIGNMENT",
+            "@value": "0",
+            "@description": "TRDC instance has MDA_Wx_y_DFMT."
+          },
+          {
+            "@name": "TRDC_HAS_DOMAIN_ERROR",
+            "@value": "0",
+            "@description": "TRDC instance has TRDC_FDID."
+          },
+          {
+            "@name": "TRDC_HAS_FLW",
+            "@value": "0",
+            "@description": "TRDC instance has TRDC_FLW_CTL."
+          }
+        ]
+      },
+      {
+        "@id": "TSI",
+        "feature": [
+          {
+            "@name": "TSI_VERSION",
+            "@value": "6",
+            "@description": "TSI Version"
+          },
+          {
+            "@name": "TSI_HAS_CHANNEL_SEL",
+            "@value": "0",
+            "@description": "Has channels selection reigster(Self-cap,Shield,Mutual TX or Mutual RX)."
+          },
+          {
+            "@name": "TSI_HAS_SELF_SEL",
+            "@value": "0",
+            "@description": "Has Self-cap mode channels selection reigster."
+          },
+          {
+            "@name": "TSI_HAS_SHIELD_SEL",
+            "@value": "0",
+            "@description": "Has Shield mode channels selection reigster."
+          },
+          {
+            "@name": "TSI_HAS_MUTUAL_TX_SEL",
+            "@value": "0",
+            "@description": "Has Mutual TX mode channels selection reigster."
+          },
+          {
+            "@name": "TSI_HAS_MUTUAL_RX_SEL",
+            "@value": "0",
+            "@description": "Has Mutual RX mode channels selection reigster."
+          },
+          {
+            "@name": "TSI_HAS_NO_SETCLK",
+            "@value": "0",
+            "@description": "Has no bitfield SETCLK in GENCS register."
+          },
+          {
+            "@name": "TSI_HAS_NO_MUTUAL_TX_USED",
+            "@value": "0",
+            "@description": "Do not has bitfield M_TX_USED in MUL register."
+          },
+          {
+            "@name": "TSI_HAS_NO_S_CTRIM",
+            "@value": "0",
+            "@description": "Do not has bitfield S_CTRIM in CONFIG register."
+          },
+          {
+            "@name": "TSI_HAS_CLK_SEL",
+            "@value": "0",
+            "@description": "Has bitfield CLK_SEL in GENCS register."
+          },
+          {
+            "@name": "TSI_DVOLT_OPTION_NUM",
+            "@value": "5",
+            "@description": "DVOLT value option num."
+          },
+          {
+            "@name": "TSI_HAS_SINC_SINC_BITFIELD",
+            "@value": "0",
+            "@description": "Has SINC_BITFIELD in SINC register."
+          },
+          {
+            "@name": "TSI_CHANNEL_COUNT",
+            "@value": "25",
+            "@description": "TSI Channel Count"
+          }
+        ]
+      },
+      {
+        "@id": "USBHSDCD",
+        "feature": [
+          {
+            "@name": "USB_USB_RAM",
+            "@value": "2048",
+            "@description": "Size of the USB dedicated RAM"
+          },
+          {
+            "@name": "USB_USB_RAM_BASE_ADDRESS",
+            "@value": "1074503680",
+            "@description": "Base address of the USB dedicated RAM"
+          }
+        ]
+      },
+      {
+        "@id": "USB",
+        "feature": [
+          {
+            "@name": "USB_KHCI_COUNT",
+            "@value": "1",
+            "@description": "KHCI module instance count"
+          },
+          {
+            "@name": "USB_KHCI_HOST_ENABLED",
+            "@value": "1",
+            "@description": "HOST mode enabled"
+          },
+          {
+            "@name": "USB_KHCI_OTG_ENABLED",
+            "@value": "1",
+            "@description": "OTG mode enabled"
+          },
+          {
+            "@name": "USB_KHCI_USB_RAM",
+            "@value": "2048",
+            "@description": "Size of the USB dedicated RAM"
+          },
+          {
+            "@name": "USB_KHCI_USB_RAM_BASE_ADDRESS",
+            "@value": "1074503680",
+            "@description": "Base address of the USB dedicated RAM"
+          },
+          {
+            "@name": "USB_KHCI_KEEP_ALIVE_ENABLED",
+            "@value": "1",
+            "@description": "Has KEEP_ALIVE_CTRL register"
+          },
+          {
+            "@name": "USB_KHCI_KEEP_ALIVE_MODE_CONTROL",
+            "@value": "USB_KEEP_ALIVE_CTRL_WAKE_REQ_EN_MASK",
+            "@description": "Mode control of the USB Keep Alive"
+          },
+          {
+            "@name": "USB_KHCI_DYNAMIC_SOF_THRESHOLD_COMPARE_ENABLED",
+            "@value": "1",
+            "@description": "Has the Dynamic SOF threshold compare support"
+          },
+          {
+            "@name": "USB_KHCI_VBUS_DETECT_ENABLED",
+            "@value": "1",
+            "@description": "Has the VBUS detect support"
+          },
+          {
+            "@name": "USB_KHCI_IRC48M_MODULE_CLOCK_ENABLED",
+            "@value": "1",
+            "@description": "Has the IRC48M module clock support"
+          },
+          {
+            "@name": "USB_ENDPT_COUNT",
+            "@value": "16",
+            "@description": "Number of endpoints supported"
+          },
+          {
+            "@name": "USB_KHCI_HAS_STALL_LOW",
+            "@value": "1",
+            "@description": "Has STALL_IL/OL_DIS registers"
+          },
+          {
+            "@name": "USB_KHCI_HAS_STALL_HIGH",
+            "@value": "1",
+            "@description": "Has STALL_IH/OH_DIS registers"
+          }
+        ]
+      },
+      {
+        "@id": "USBHS",
+        "feature": [
+          {
+            "@name": "USBHS_EHCI_COUNT",
+            "@value": "1",
+            "@description": "EHCI module instance count"
+          },
+          {
+            "@name": "USBHS_ENDPT_COUNT",
+            "@value": "8",
+            "@description": "Number of endpoints supported"
+          },
+          {
+            "@name": "USBHS_SUPPORT_EUSB",
+            "@value": "0",
+            "@description": "If the USB controller support eUSB PHY"
+          }
+        ]
+      },
+      {
+        "@id": "USBPHY",
+        "feature": [
+          {
+            "@name": "USBPHY_HAS_DCD_ANALOG",
+            "@value": "0",
+            "@description": "USBPHY contain DCD analog module"
+          },
+          {
+            "@name": "USBPHY_HAS_TRIM_OVERRIDE_EN",
+            "@value": "1",
+            "@description": "USBPHY has register TRIM_OVERRIDE_EN"
+          },
+          {
+            "@name": "USBPHY_28FDSOI",
+            "@value": "0",
+            "@description": "USBPHY is 28FDSOI"
+          }
+        ]
+      },
+      {
+        "@id": "USDHC",
+        "feature": [
+          {
+            "@name": "USDHC_HAS_EXT_DMA",
+            "@value": "0",
+            "@description": "Has external DMA support (VEND_SPEC[EXT_DMA_EN])"
+          },
+          {
+            "@name": "USDHC_HAS_HS400_MODE",
+            "@value": "0",
+            "@description": "Has HS400 mode (MIX_CTRL[HS400_MODE])"
+          },
+          {
+            "@name": "USDHC_HAS_SDR50_MODE",
+            "@value": "1",
+            "@description": "Has SDR50 support (HOST_CTRL_CAP[SDR50_SUPPORT])"
+          },
+          {
+            "@name": "USDHC_HAS_SDR104_MODE",
+            "@value": "1",
+            "@description": "Has SDR104 support (HOST_CTRL_CAP[SDR104_SUPPORT])"
+          },
+          {
+            "@name": "USDHC_HAS_RESET",
+            "@value": "0",
+            "@description": "USDHC has reset control"
+          },
+          {
+            "@name": "USDHC_HAS_NO_RW_BURST_LEN",
+            "@value": "0",
+            "@description": "USDHC has no bitfield WTMK_LVL[WR_BRST_LEN] and WTMK_LVL[RD_BRST_LEN]"
+          },
+          {
+            "@name": "USDHC_INSTANCE_SUPPORT_8_BIT_WIDTH",
+            "@value": "1",
+            "@description": "If USDHC instance support 8 bit width"
+          },
+          {
+            "@name": "USDHC_INSTANCE_SUPPORT_HS400_MODE",
+            "@value": "0",
+            "@description": "If USDHC instance support HS400 mode"
+          },
+          {
+            "@name": "USDHC_INSTANCE_SUPPORT_1V8_SIGNAL",
+            "@value": "1",
+            "@description": "If USDHC instance support 1v8 signal"
+          },
+          {
+            "@name": "USDHC_REGISTER_HOST_CTRL_CAP_HAS_NO_RETUNING_TIME_COUNTER",
+            "@value": "1",
+            "@description": "Has no retuning time counter (HOST_CTRL_CAP[TIME_COUNT_RETURNING])"
+          },
+          {
+            "@name": "USDHC_HAS_NO_VOLTAGE_SELECT",
+            "@value": "1",
+            "@description": "Has no VSELECT bit in VEND_SPEC register"
+          },
+          {
+            "@name": "USDHC_HAS_NO_VS18",
+            "@value": "0",
+            "@description": "Has no VS18 bit in HOST_CTRL_CAP register"
+          }
+        ]
+      },
+      {
+        "@id": "UTICK",
+        "feature": {
+          "@name": "UTICK_HAS_NO_PDCFG",
+          "@value": "1",
+          "@description": "UTICK does not support power down configure."
+        }
+      },
+      {
+        "@id": "VBAT",
+        "feature": [
+          {
+            "@name": "MCX_VBAT_HAS_STATUS_REG",
+            "@value": "1",
+            "@description": "Has STATUS register"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_TAMPER_REG",
+            "@value": "1",
+            "@description": "Has TAMPER register"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_BANDGAP_TIMER",
+            "@value": "1",
+            "@description": "Has BANDGAP register"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_LDOCTL_REG",
+            "@value": "1",
+            "@description": "Has LDOCTL register"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_OSCCTL_REG",
+            "@value": "1",
+            "@description": "Has OSCCTL register"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_SWICTL_REG",
+            "@value": "1",
+            "@description": "Has SWICTL register"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_CLKMON_REG",
+            "@value": "0",
+            "@description": "Has CLKMON register"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_OSCCTLA_FINE_AMP_GAIN_BIT",
+            "@value": "0",
+            "@description": "Has FINE_AMP_GAIN bitfield in register OSCCTLA"
+          },
+          {
+            "@name": "MCX_VBAT_HAS_B_SIDE_REG",
+            "@value": "1",
+            "@description": "Has OSCCTLB register"
+          }
+        ]
+      },
+      {
+        "@id": "VREF",
+        "feature": [
+          {
+            "@name": "VREF_HAS_CHOP_OSC",
+            "@value": "0",
+            "@description": "Has chop oscillator (bit TRM[CHOPEN])"
+          },
+          {
+            "@name": "VREF_HAS_COMPENSATION",
+            "@value": "0",
+            "@description": "Has second order curvature compensation (bit SC[ICOMPEN])"
+          },
+          {
+            "@name": "VREF_MODE_LV_TYPE",
+            "@value": "0",
+            "@description": "If high/low buffer mode supported"
+          },
+          {
+            "@name": "VREF_HAS_LOW_REFERENCE",
+            "@value": "0",
+            "@description": "Module has also low reference (registers VREFL/VREFH)"
+          },
+          {
+            "@name": "VREF_HAS_TRM4",
+            "@value": "0",
+            "@description": "Has VREF_TRM4."
+          },
+          {
+            "@name": "VREF_HAS_LOWPOWER_BUFFER",
+            "@value": "1",
+            "@description": "Has bitfield LPBG_BUF_EN in CSR register."
+          },
+          {
+            "@name": "VREF_HAS_LPBGEN",
+            "@value": "1",
+            "@description": "Has bitfield LPBGEN in CSR register."
+          },
+          {
+            "@name": "VREF_HAS_IBIAS_EN",
+            "@value": "0",
+            "@description": "Has bitfield IBIAS_EN in CSR register."
+          },
+          {
+            "@name": "VREF_HAS_REFCHSELN_EN",
+            "@value": "0",
+            "@description": "Has bitfield REFCHSELN_EN in CSR register."
+          },
+          {
+            "@name": "VREF_HAS_REFCHSELP_EN",
+            "@value": "0",
+            "@description": "Has bitfield REFCHSELP_EN in CSR register."
+          },
+          {
+            "@name": "VREF_SUPPORT_2V5",
+            "@value": "0",
+            "@description": "Support max voltage of 2.5V."
+          }
+        ]
+      },
+      {
+        "@id": "WUU",
+        "feature": {
+          "@name": "WUU_HAS_MF",
+          "@value": "0",
+          "@description": "Has MF register."
+        }
+      },
+      {
+        "@id": "WWDT",
+        "feature": [
+          {
+            "@name": "WWDT_HAS_NO_OSCILLATOR_LOCK",
+            "@value": "0",
+            "@description": "WWDT does not support oscillator lock."
+          },
+          {
+            "@name": "WWDT_HAS_NO_PDCFG",
+            "@value": "1",
+            "@description": "WWDT does not support power down configure."
+          },
+          {
+            "@name": "WWDT_HAS_NO_RESET",
+            "@value": "1",
+            "@description": "soc has reset."
+          },
+          {
+            "@name": "WWDT_HAS_LPOSC_CLOCK_SOURCE",
+            "@value": "0",
+            "@description": "Has LPOSC as clock source."
+          },
+          {
+            "@name": "WWDT_WDTRESET_FROM_PMC",
+            "@value": "0",
+            "@description": "WWDT WDTOF is not set in case of WD reset - get info from PMC instead."
+          }
+        ]
+      }
+    ]
+  }
+}

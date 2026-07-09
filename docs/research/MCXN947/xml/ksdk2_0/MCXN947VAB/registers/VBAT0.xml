@@ -1,0 +1,881 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="1792" offset="{0}" width="32" name="WAKEUP{1}A" description="Wakeup 0 Register A">
+    <alias type="CMSIS" value="WAKEUP[{1}].WAKEUPA"/>
+    <bit_field offset="0" width="32" name="REG" access="RW" reset_value="0" description="Register">
+      <alias type="CMSIS" value="VBAT_WAKEUPA_REG(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="1796" offset="{0}" width="32" name="WAKEUP{1}B" description="Wakeup 0 Register B">
+    <alias type="CMSIS" value="WAKEUP[{1}].WAKEUPB"/>
+    <bit_field offset="0" width="32" name="INVERSE" access="RW" reset_value="0xFFFFFFFF" description="Inverse value">
+      <alias type="CMSIS" value="VBAT_WAKEUPB_INVERSE(x)"/>
+    </bit_field>
+  </reg_template>
+  <register offset="0" width="32" name="VERID" description="Version ID">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0xF" description="Feature Specification Number">
+      <alias type="CMSIS" value="VBAT_VERID_FEATURE(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0x1" description="Minor Version Number">
+      <alias type="CMSIS" value="VBAT_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x1" description="Major Version Number">
+      <alias type="CMSIS" value="VBAT_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="STATUSA" description="Status A">
+    <alias type="CMSIS" value="STATUSA"/>
+    <bit_field offset="0" width="1" name="POR_DET" access="W1C" reset_value="0x1" description="POR Detect Flag">
+      <alias type="CMSIS" value="VBAT_STATUSA_POR_DET(x)"/>
+      <alias type="id" value="POR"/>
+      <bit_field_value name="STATUSA_POR_DET_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="STATUSA_POR_DET_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="WAKEUP_FLAG" access="W1C" reset_value="0" description="Wakeup Pin Flag">
+      <alias type="CMSIS" value="VBAT_STATUSA_WAKEUP_FLAG(x)"/>
+      <bit_field_value name="STATUSA_WAKEUP_FLAG_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="STATUSA_WAKEUP_FLAG_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TIMER0_FLAG" access="W1C" reset_value="0" description="Bandgap Timer 0 Flag">
+      <alias type="CMSIS" value="VBAT_STATUSA_TIMER0_FLAG(x)"/>
+      <bit_field_value name="STATUSA_TIMER0_FLAG_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="STATUSA_TIMER0_FLAG_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIMER1_FLAG" access="W1C" reset_value="0" description="Bandgap Timer 1 Flag">
+      <alias type="CMSIS" value="VBAT_STATUSA_TIMER1_FLAG(x)"/>
+      <bit_field_value name="STATUSA_TIMER1_FLAG_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="STATUSA_TIMER1_FLAG_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="LDO_RDY" access="RO" reset_value="0" description="LDO Ready">
+      <alias type="CMSIS" value="VBAT_STATUSA_LDO_RDY(x)"/>
+      <bit_field_value name="STATUSA_LDO_RDY_CLR" value="0b0" description="Disabled (not ready)"/>
+      <bit_field_value name="STATUSA_LDO_RDY_SET" value="0b1" description="Enabled (ready)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="OSC_RDY" access="RO" reset_value="0" description="OSC32k Ready">
+      <alias type="CMSIS" value="VBAT_STATUSA_OSC_RDY(x)"/>
+      <bit_field_value name="STATUSA_OSC_RDY_CLR" value="0b0" description="Disabled (clock not ready)"/>
+      <bit_field_value name="STATUSA_OSC_RDY_SET" value="0b1" description="Enabled (clock ready)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CLOCK_DET" access="W1C" reset_value="0x1" description="Clock Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_CLOCK_DET(x)"/>
+      <bit_field_value name="STATUSA_CLOCK_DET_CLR" value="0b0" description="Clock error not detected"/>
+      <bit_field_value name="STATUSA_CLOCK_DET_SET" value="0b1" description="Clock error detected"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CONFIG_DET" access="W1C" reset_value="0x1" description="Configuration Detect Flag">
+      <alias type="CMSIS" value="VBAT_STATUSA_CONFIG_DET(x)"/>
+      <alias type="id" value="CFG_ERR"/>
+      <bit_field_value name="STATUSA_CONFIG_DET_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="STATUSA_CONFIG_DET_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="VOLT_DET" access="W1C" reset_value="0x1" description="Voltage Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_VOLT_DET(x)"/>
+      <bit_field_value name="STATUSA_VOLT_DET_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="STATUSA_VOLT_DET_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TEMP_DET" access="W1C" reset_value="0x1" description="Temperature Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_TEMP_DET(x)"/>
+      <bit_field_value name="STATUSA_TEMP_DET_CLR" value="0b0" description="Temperature error not detected"/>
+      <bit_field_value name="STATUSA_TEMP_DET_SET" value="0b1" description="Temperature error detected"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="LIGHT_DET" access="W1C" reset_value="0x1" description="Light Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_LIGHT_DET(x)"/>
+      <bit_field_value name="STATUSA_LIGHT_DET_CLR" value="0b0" description="Light error not detected"/>
+      <bit_field_value name="STATUSA_LIGHT_DET_SET" value="0b1" description="Light error detected"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="1" name="SEC0_DET" access="W1C" reset_value="0x1" description="Input 0 Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_SEC0_DET(x)"/>
+      <bit_field_value name="STATUSA_SEC0_DET_CLR" value="0b0" description="Security input 0 not detected"/>
+      <bit_field_value name="STATUSA_SEC0_DET_SET" value="0b1" description="Security input 0 detected"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <reserved_bit_field offset="14" width="1" reset_value="0"/>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="1" name="IRQ0_DET" access="RO" reset_value="0" description="Interrupt 0 Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_IRQ0_DET(x)"/>
+      <bit_field_value name="STATUSA_IRQ0_DET_CLR" value="0b0" description="Not asserted"/>
+      <bit_field_value name="STATUSA_IRQ0_DET_SET" value="0b1" description="Asserted"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="IRQ1_DET" access="RO" reset_value="0" description="Interrupt 1 Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_IRQ1_DET(x)"/>
+      <bit_field_value name="STATUSA_IRQ1_DET_CLR" value="0b0" description="Not asserted"/>
+      <bit_field_value name="STATUSA_IRQ1_DET_SET" value="0b1" description="Asserted"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="IRQ2_DET" access="RO" reset_value="0" description="Interrupt 2 Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_IRQ2_DET(x)"/>
+      <bit_field_value name="STATUSA_IRQ2_DET_CLR" value="0b0" description="Not asserted"/>
+      <bit_field_value name="STATUSA_IRQ2_DET_SET" value="0b1" description="Asserted"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="IRQ3_DET" access="RO" reset_value="0" description="Interrupt 3 Detect">
+      <alias type="CMSIS" value="VBAT_STATUSA_IRQ3_DET(x)"/>
+      <bit_field_value name="STATUSA_IRQ3_DET_CLR" value="0b0" description="Not asserted"/>
+      <bit_field_value name="STATUSA_IRQ3_DET_SET" value="0b1" description="Asserted"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x14" width="32" name="STATUSB" description="Status B">
+    <alias type="CMSIS" value="STATUSB"/>
+    <bit_field offset="0" width="20" name="INVERSE" access="W0C" reset_value="0xF003E" description="Inverse value">
+      <alias type="CMSIS" value="VBAT_STATUSB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="IRQENA" description="Interrupt Enable A">
+    <alias type="CMSIS" value="IRQENA"/>
+    <bit_field offset="0" width="1" name="POR_DET" access="RW" reset_value="0" description="POR Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_POR_DET(x)"/>
+      <alias type="id" value="POR"/>
+      <bit_field_value name="IRQENA_POR_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_POR_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="WAKEUP_FLAG" access="RW" reset_value="0" description="Wakeup Pin Flag">
+      <alias type="CMSIS" value="VBAT_IRQENA_WAKEUP_FLAG(x)"/>
+      <bit_field_value name="IRQENA_WAKEUP_FLAG_CLR" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_WAKEUP_FLAG_SET" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TIMER0_FLAG" access="RW" reset_value="0" description="Bandgap Timer 0">
+      <alias type="CMSIS" value="VBAT_IRQENA_TIMER0_FLAG(x)"/>
+      <bit_field_value name="IRQENA_TIMER0_FLAG_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_TIMER0_FLAG_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIMER1_FLAG" access="RW" reset_value="0" description="Bandgap Timer 2">
+      <alias type="CMSIS" value="VBAT_IRQENA_TIMER1_FLAG(x)"/>
+      <bit_field_value name="IRQENA_TIMER1_FLAG_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_TIMER1_FLAG_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="LDO_RDY" access="RW" reset_value="0" description="LDO Ready">
+      <alias type="CMSIS" value="VBAT_IRQENA_LDO_RDY(x)"/>
+      <bit_field_value name="IRQENA_LDO_RDY_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_LDO_RDY_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="OSC_RDY" access="RW" reset_value="0" description="OSC32k Ready">
+      <alias type="CMSIS" value="VBAT_IRQENA_OSC_RDY(x)"/>
+      <bit_field_value name="IRQENA_OSC_RDY_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_OSC_RDY_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CLOCK_DET" access="RW" reset_value="0" description="Clock Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_CLOCK_DET(x)"/>
+      <bit_field_value name="IRQENA_CLOCK_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_CLOCK_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CONFIG_DET" access="RW" reset_value="0" description="Configuration Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_CONFIG_DET(x)"/>
+      <alias type="id" value="CFG_ERR"/>
+      <bit_field_value name="IRQENA_CONFIG_DET_CLR" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_CONFIG_DET_SET" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="VOLT_DET" access="RW" reset_value="0" description="Voltage Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_VOLT_DET(x)"/>
+      <bit_field_value name="IRQENA_VOLT_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_VOLT_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TEMP_DET" access="RW" reset_value="0" description="Temperature Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_TEMP_DET(x)"/>
+      <bit_field_value name="IRQENA_TEMP_DET_DISABLE" value="0b0" description="Interrupt disabled"/>
+      <bit_field_value name="IRQENA_TEMP_DET_ENABLE" value="0b1" description="Interrupt enabled"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="LIGHT_DET" access="RW" reset_value="0" description="Light Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_LIGHT_DET(x)"/>
+      <bit_field_value name="IRQENA_LIGHT_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_LIGHT_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="1" name="SEC0_DET" access="RW" reset_value="0" description="Input 0 Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_SEC0_DET(x)"/>
+      <bit_field_value name="IRQENA_SEC0_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_SEC0_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <reserved_bit_field offset="14" width="1" reset_value="0"/>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="1" name="IRQ0_DET" access="RW" reset_value="0" description="Interrupt 0 Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_IRQ0_DET(x)"/>
+      <bit_field_value name="IRQENA_IRQ0_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_IRQ0_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="IRQ1_DET" access="RW" reset_value="0" description="Interrupt 1 Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_IRQ1_DET(x)"/>
+      <bit_field_value name="IRQENA_IRQ1_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_IRQ1_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="IRQ2_DET" access="RW" reset_value="0" description="Interrupt 2 Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_IRQ2_DET(x)"/>
+      <bit_field_value name="IRQENA_IRQ2_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_IRQ2_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="IRQ3_DET" access="RW" reset_value="0" description="Interrupt 3 Detect">
+      <alias type="CMSIS" value="VBAT_IRQENA_IRQ3_DET(x)"/>
+      <bit_field_value name="IRQENA_IRQ3_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="IRQENA_IRQ3_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="IRQENB" description="Interrupt Enable B">
+    <alias type="CMSIS" value="IRQENB"/>
+    <bit_field offset="0" width="20" name="INVERSE" access="RW" reset_value="0xFFFFF" description="Inverse Value">
+      <alias type="CMSIS" value="VBAT_IRQENB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="WAKENA" description="Wake-up Enable A">
+    <alias type="CMSIS" value="WAKENA"/>
+    <bit_field offset="0" width="1" name="POR_DET" access="RW" reset_value="0" description="POR Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_POR_DET(x)"/>
+      <alias type="id" value="POR"/>
+      <bit_field_value name="WAKENA_POR_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_POR_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="WAKEUP_FLAG" access="RW" reset_value="0" description="Wake-up Pin Flag">
+      <alias type="CMSIS" value="VBAT_WAKENA_WAKEUP_FLAG(x)"/>
+      <bit_field_value name="WAKENA_WAKEUP_FLAG_CLR" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_WAKEUP_FLAG_SET" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TIMER0_FLAG" access="RW" reset_value="0" description="Bandgap Timer 0">
+      <alias type="CMSIS" value="VBAT_WAKENA_TIMER0_FLAG(x)"/>
+      <bit_field_value name="WAKENA_TIMER0_FLAG_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_TIMER0_FLAG_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIMER1_FLAG" access="RW" reset_value="0" description="Bandgap Timer 2">
+      <alias type="CMSIS" value="VBAT_WAKENA_TIMER1_FLAG(x)"/>
+      <bit_field_value name="WAKENA_TIMER1_FLAG_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_TIMER1_FLAG_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="LDO_RDY" access="RW" reset_value="0" description="LDO Ready">
+      <alias type="CMSIS" value="VBAT_WAKENA_LDO_RDY(x)"/>
+      <bit_field_value name="WAKENA_LDO_RDY_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_LDO_RDY_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="OSC_RDY" access="RW" reset_value="0" description="OSC32K Ready">
+      <alias type="CMSIS" value="VBAT_WAKENA_OSC_RDY(x)"/>
+      <bit_field_value name="WAKENA_OSC_RDY_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_OSC_RDY_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CLOCK_DET" access="RW" reset_value="0" description="Clock Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_CLOCK_DET(x)"/>
+      <bit_field_value name="WAKENA_CLOCK_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_CLOCK_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CONFIG_DET" access="RW" reset_value="0" description="Configuration Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_CONFIG_DET(x)"/>
+      <alias type="id" value="CFG_ERR"/>
+      <bit_field_value name="WAKENA_CONFIG_DET_CLR" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_CONFIG_DET_SET" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="VOLT_DET" access="RW" reset_value="0" description="Voltage Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_VOLT_DET(x)"/>
+      <bit_field_value name="WAKENA_VOLT_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_VOLT_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TEMP_DET" access="RW" reset_value="0" description="Temperature Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_TEMP_DET(x)"/>
+      <bit_field_value name="WAKENA_TEMP_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_TEMP_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="LIGHT_DET" access="RW" reset_value="0" description="Light Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_LIGHT_DET(x)"/>
+      <bit_field_value name="WAKENA_LIGHT_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_LIGHT_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="1" name="SEC0_DET" access="RW" reset_value="0" description="Input 0 Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_SEC0_DET(x)"/>
+      <bit_field_value name="WAKENA_SEC0_DET_DISABLE" value="0b0" description="Disabled"/>
+      <bit_field_value name="WAKENA_SEC0_DET_ENABLE" value="0b1" description="Enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <reserved_bit_field offset="14" width="1" reset_value="0"/>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <bit_field offset="16" width="1" name="IRQ0_DET" access="RW" reset_value="0" description="Interrupt 0 Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_IRQ0_DET(x)"/>
+      <bit_field_value name="WAKENA_IRQ0_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_IRQ0_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="IRQ1_DET" access="RW" reset_value="0" description="Interrupt 1 Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_IRQ1_DET(x)"/>
+      <bit_field_value name="WAKENA_IRQ1_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_IRQ1_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="IRQ2_DET" access="RW" reset_value="0" description="Interrupt 2 Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_IRQ2_DET(x)"/>
+      <bit_field_value name="WAKENA_IRQ2_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_IRQ2_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="IRQ3_DET" access="RW" reset_value="0" description="Interrupt 3 Detect">
+      <alias type="CMSIS" value="VBAT_WAKENA_IRQ3_DET(x)"/>
+      <bit_field_value name="WAKENA_IRQ3_DET_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="WAKENA_IRQ3_DET_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="WAKENB" description="Wake-up Enable B">
+    <alias type="CMSIS" value="WAKENB"/>
+    <bit_field offset="0" width="20" name="INVERSE" access="RW" reset_value="0xFFFFF" description="Inverse Value">
+      <alias type="CMSIS" value="VBAT_WAKENB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="TAMPERA" description="Tamper Enable A">
+    <alias type="CMSIS" value="TAMPERA"/>
+    <bit_field offset="0" width="1" name="POR_DET" access="RW" reset_value="0x1" description="POR Detect">
+      <alias type="CMSIS" value="VBAT_TAMPERA_POR_DET(x)"/>
+      <alias type="id" value="POR"/>
+      <bit_field_value name="TAMPERA_POR_DET_DISABLE" value="0b0" description="Tamper disabled"/>
+      <bit_field_value name="TAMPERA_POR_DET_ENABLE" value="0b1" description="Tamper enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <reserved_bit_field offset="2" width="1" reset_value="0"/>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="1" reset_value="0"/>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <bit_field offset="6" width="1" name="CLOCK_DET" access="RW" reset_value="0" description="Clock Detect">
+      <alias type="CMSIS" value="VBAT_TAMPERA_CLOCK_DET(x)"/>
+      <bit_field_value name="TAMPERA_CLOCK_DET_DISABLE" value="0b0" description="Tamper disabled"/>
+      <bit_field_value name="TAMPERA_CLOCK_DET_ENABLE" value="0b1" description="Tamper enabled"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CONFIG_DET" access="RW" reset_value="0" description="Configuration Detect">
+      <alias type="CMSIS" value="VBAT_TAMPERA_CONFIG_DET(x)"/>
+      <alias type="id" value="CFG_ERR"/>
+      <bit_field_value name="TAMPERA_CONFIG_DET_CLR" value="0b0" description="Tamper disabled"/>
+      <bit_field_value name="TAMPERA_CONFIG_DET_SET" value="0b1" description="Tamper enabled"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="VOLT_DET" access="RW" reset_value="0" description="Voltage Detect">
+      <alias type="CMSIS" value="VBAT_TAMPERA_VOLT_DET(x)"/>
+      <bit_field_value name="TAMPERA_VOLT_DET_DISABLE" value="0b0" description="Tamper disabled"/>
+      <bit_field_value name="TAMPERA_VOLT_DET_ENABLE" value="0b1" description="Tamper enabled"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TEMP_DET" access="RW" reset_value="0" description="Temperature Detect">
+      <alias type="CMSIS" value="VBAT_TAMPERA_TEMP_DET(x)"/>
+      <bit_field_value name="TAMPERA_TEMP_DET_DISABLE" value="0b0" description="Tamper disabled"/>
+      <bit_field_value name="TAMPERA_TEMP_DET_ENABLE" value="0b1" description="Tamper enabled"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="LIGHT_DET" access="RW" reset_value="0" description="Light Detect">
+      <alias type="CMSIS" value="VBAT_TAMPERA_LIGHT_DET(x)"/>
+      <bit_field_value name="TAMPERA_LIGHT_DET_DISABLE" value="0b0" description="Tamper disabled"/>
+      <bit_field_value name="TAMPERA_LIGHT_DET_ENABLE" value="0b1" description="Tamper enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="11" width="1" reset_value="0"/>
+    <bit_field offset="12" width="1" name="SEC0_DET" access="RW" reset_value="0" description="Input 0 Detect">
+      <alias type="CMSIS" value="VBAT_TAMPERA_SEC0_DET(x)"/>
+      <bit_field_value name="TAMPERA_SEC0_DET_DISABLE" value="0b0" description="Tamper disabled"/>
+      <bit_field_value name="TAMPERA_SEC0_DET_ENABLE" value="0b1" description="Tamper enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="1" reset_value="0"/>
+    <reserved_bit_field offset="14" width="1" reset_value="0"/>
+    <reserved_bit_field offset="15" width="1" reset_value="0"/>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="TAMPERB" description="Tamper Enable B">
+    <alias type="CMSIS" value="TAMPERB"/>
+    <bit_field offset="0" width="16" name="INVERSE" access="RW" reset_value="0xFFC0" description="Inverse value">
+      <alias type="CMSIS" value="VBAT_TAMPERB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="16" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="LOCKA" description="Lock A">
+    <alias type="CMSIS" value="LOCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_LOCKA_LOCK(x)"/>
+      <bit_field_value name="LOCKA_LOCK_DISABLE" value="0b0" description="Disables lock"/>
+      <bit_field_value name="LOCKA_LOCK_ENABLE" value="0b1" description="Enables lock. Cleared by VBAT POR."/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x34" width="32" name="LOCKB" description="Lock B">
+    <alias type="CMSIS" value="LOCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_LOCKB_LOCK(x)"/>
+      <bit_field_value name="LOCKB_LOCK_ENABLE" value="0b0" description="Enables lock"/>
+      <bit_field_value name="LOCKB_LOCK_DISABLE" value="0b1" description="Disables lock"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x38" width="32" name="WAKECFG" description="Wake-up Configuration">
+    <alias type="CMSIS" value="WAKECFG"/>
+    <bit_field offset="0" width="1" name="OUT" access="RW" reset_value="0" description="Output">
+      <alias type="CMSIS" value="VBAT_WAKECFG_OUT(x)"/>
+      <bit_field_value name="WAKECFG_OUT_ON" value="0b0" description="Logic zero (asserted)"/>
+      <bit_field_value name="WAKECFG_OUT_OFF" value="0b1" description="Logic one"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x100" width="32" name="OSCCTLA" description="Oscillator Control A">
+    <alias type="CMSIS" value="OSCCTLA"/>
+    <bit_field offset="0" width="1" name="OSC_EN" access="RW" reset_value="0" description="Crystal Oscillator Enable">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_OSC_EN(x)"/>
+      <bit_field_value name="OSCCTLA_OSC_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="OSCCTLA_OSC_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="OSC_BYP_EN" access="RW" reset_value="0" description="Crystal Oscillator Bypass Enable">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_OSC_BYP_EN(x)"/>
+      <bit_field_value name="OSCCTLA_OSC_BYP_EN_DISABLE" value="0b0" description="Does not bypass"/>
+      <bit_field_value name="OSCCTLA_OSC_BYP_EN_ENABLE" value="0b1" description="Bypass"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="COARSE_AMP_GAIN" access="RW" reset_value="0" description="Amplifier gain adjustment bits to allow the use of a wide range of external crystal ESR values See the device datasheet for the ranges supported by this device">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_COARSE_AMP_GAIN(x)"/>
+      <alias type="id" value="IBIAS_CTRL"/>
+      <bit_field_value name="OSCCTLA_COARSE_AMP_GAIN_GAIN05" value="0b00" description="ESR Range 0"/>
+      <bit_field_value name="OSCCTLA_COARSE_AMP_GAIN_GAIN10" value="0b01" description="ESR Range 1"/>
+      <bit_field_value name="OSCCTLA_COARSE_AMP_GAIN_GAIN18" value="0b10" description="ESR Range 2"/>
+      <bit_field_value name="OSCCTLA_COARSE_AMP_GAIN_GAIN33" value="0b11" description="ESR Range 3"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="2" reset_value="0"/>
+    <reserved_bit_field offset="6" width="1" reset_value="0"/>
+    <bit_field offset="7" width="1" name="CAP_SEL_EN" access="RW" reset_value="0" description="Crystal Load Capacitance Selection Enable">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_CAP_SEL_EN(x)"/>
+      <bit_field_value name="OSCCTLA_CAP_SEL_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="OSCCTLA_CAP_SEL_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="EXTAL_CAP_SEL" access="RW" reset_value="0" description="Crystal Load Capacitance Selection">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_EXTAL_CAP_SEL(x)"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL0" value="0b0000" description="0 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL2" value="0b0001" description="2 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL4" value="0b0010" description="4 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL6" value="0b0011" description="6 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL8" value="0b0100" description="8 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL10" value="0b0101" description="10 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL12" value="0b0110" description="12 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL14" value="0b0111" description="14 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL16" value="0b1000" description="16 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL18" value="0b1001" description="18 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL20" value="0b1010" description="20 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL22" value="0b1011" description="22 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL24" value="0b1100" description="24 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL26" value="0b1101" description="26 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL28" value="0b1110" description="28 pF"/>
+      <bit_field_value name="OSCCTLA_EXTAL_CAP_SEL_SEL30" value="0b1111" description="30 pF"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="XTAL_CAP_SEL" access="RW" reset_value="0" description="Crystal Load Capacitance Selection">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_XTAL_CAP_SEL(x)"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL0" value="0b0000" description="0 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL2" value="0b0001" description="2 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL4" value="0b0010" description="4 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL6" value="0b0011" description="6 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL8" value="0b0100" description="8 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL10" value="0b0101" description="10 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL12" value="0b0110" description="12 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL14" value="0b0111" description="14 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL16" value="0b1000" description="16 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL18" value="0b1001" description="18 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL20" value="0b1010" description="20 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL22" value="0b1011" description="22 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL24" value="0b1100" description="24 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL26" value="0b1101" description="26 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL28" value="0b1110" description="28 pF"/>
+      <bit_field_value name="OSCCTLA_XTAL_CAP_SEL_SEL30" value="0b1111" description="30 pF"/>
+    </bit_field>
+    <bit_field offset="16" width="2" name="MODE_EN" access="RW" reset_value="0" description="Mode Enable">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_MODE_EN(x)"/>
+      <bit_field_value name="OSCCTLA_MODE_EN_HP" value="0b00" description="Normal mode"/>
+      <bit_field_value name="OSCCTLA_MODE_EN_LP" value="0b01" description="Startup mode"/>
+      <bit_field_value name="OSCCTLA_MODE_EN_SW" value="0b11" description="Low power mode"/>
+    </bit_field>
+    <bit_field offset="18" width="2" name="SUPPLY_DET" access="RW" reset_value="0" description="Supply Detector Trim">
+      <alias type="CMSIS" value="VBAT_OSCCTLA_SUPPLY_DET(x)"/>
+      <bit_field_value name="OSCCTLA_SUPPLY_DET_0b00" value="0b00" description="VBAT supply is less than 3V"/>
+      <bit_field_value name="OSCCTLA_SUPPLY_DET_0b01" value="0b01" description="VBAT supply is greater than 3V"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x104" width="32" name="OSCCTLB" description="Oscillator Control B">
+    <alias type="CMSIS" value="OSCCTLB"/>
+    <bit_field offset="0" width="20" name="INVERSE" access="RW" reset_value="0xFFFFF" description="Inverse Value">
+      <alias type="CMSIS" value="VBAT_OSCCTLB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x108" width="32" name="OSCCFGA" description="Oscillator Configuration A">
+    <alias type="CMSIS" value="OSCCFGA"/>
+    <bit_field offset="0" width="2" name="CMP_TRIM" access="RW" reset_value="0" description="Comparator Trim">
+      <alias type="CMSIS" value="VBAT_OSCCFGA_CMP_TRIM(x)"/>
+      <bit_field_value name="OSCCFGA_CMP_TRIM_0b00" value="0b00" description="760 mV"/>
+      <bit_field_value name="OSCCFGA_CMP_TRIM_0b01" value="0b01" description="770 mV"/>
+      <bit_field_value name="OSCCFGA_CMP_TRIM_0b11" value="0b11" description="740 mV"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="CAP2_TRIM" access="RW" reset_value="0" description="CAP2_TRIM">
+      <alias type="CMSIS" value="VBAT_OSCCFGA_CAP2_TRIM(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="4" name="DLY_TRIM" access="RW" reset_value="0" description="Delay Trim">
+      <alias type="CMSIS" value="VBAT_OSCCFGA_DLY_TRIM(x)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b0000" value="0b0000" description="P current 9(nA) and N Current 6(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b0001" value="0b0001" description="P current 13(nA) and N Current 6(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b0011" value="0b0011" description="P current 4(nA) and N Current 6(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b0100" value="0b0100" description="P current 9(nA) and N Current 4(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b0101" value="0b0101" description="P current 13(nA) and N Current 4(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b0111" value="0b0111" description="P current 4(nA) and N Current 4(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b1000" value="0b1000" description="P current 9(nA) and N Current 2(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b1001" value="0b1001" description="P current 13(nA) and N Current 2(nA)"/>
+      <bit_field_value name="OSCCFGA_DLY_TRIM_0b1011" value="0b1011" description="P current 4(nA) and N Current 2(nA)"/>
+    </bit_field>
+    <bit_field offset="7" width="2" name="CAP_TRIM" access="RW" reset_value="0" description="Capacitor Trim">
+      <alias type="CMSIS" value="VBAT_OSCCFGA_CAP_TRIM(x)"/>
+      <bit_field_value name="OSCCFGA_CAP_TRIM_VAL0" value="0b00" description="Default (when CAP2_TRIM = 0 and CAP_TRIM[1:0] = 00 )"/>
+      <bit_field_value name="OSCCFGA_CAP_TRIM_VAL1" value="0b01" description="-1us (when CAP2_TRIM = 0 and CAP_TRIM[1:0] = 01)"/>
+      <bit_field_value name="OSCCFGA_CAP_TRIM_VAL2" value="0b10" description="-2us (when CAP2_TRIM = 0 and CAP_TRIM[1:0] = 10) or or +3.5us (when CAP2_TRIM = 1 and CAP_TRIM[1:0] = 10)"/>
+      <bit_field_value name="OSCCFGA_CAP_TRIM_VAL3" value="0b11" description="-2.5us (when CAP2_TRIM = 0 and CAP_TRIM[1:0] = 11) or +1us (when CAP2_TRIM = 1 and CAP_TRIM[1:0] = 11)"/>
+    </bit_field>
+    <bit_field offset="9" width="3" name="INIT_TRIM" access="RW" reset_value="0" description="Initialization Trim">
+      <alias type="CMSIS" value="VBAT_OSCCFGA_INIT_TRIM(x)"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL0" value="0b000" description="8 s"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL1" value="0b001" description="4 s"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL2" value="0b010" description="2 s"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL3" value="0b011" description="1 s"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL4" value="0b100" description="0.5 s"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL5" value="0b101" description="0.25 s"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL6" value="0b110" description="0.125 s"/>
+      <bit_field_value name="OSCCFGA_INIT_TRIM_SEL7" value="0b111" description="0.5 ms"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x10C" width="32" name="OSCCFGB" description="Oscillator Configuration B">
+    <alias type="CMSIS" value="OSCCFGB"/>
+    <bit_field offset="0" width="12" name="INVERSE" access="RW" reset_value="0xFFF" description="Inverse Value">
+      <alias type="CMSIS" value="VBAT_OSCCFGB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x118" width="32" name="OSCLCKA" description="Oscillator Lock A">
+    <alias type="CMSIS" value="OSCLCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_OSCLCKA_LOCK(x)"/>
+      <bit_field_value name="OSCLCKA_LOCK_DISABLE" value="0b0" description="Do not block"/>
+      <bit_field_value name="OSCLCKA_LOCK_ENABLE" value="0b1" description="Block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x11C" width="32" name="OSCLCKB" description="Oscillator Lock B">
+    <alias type="CMSIS" value="OSCLCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_OSCLCKB_LOCK(x)"/>
+      <bit_field_value name="OSCLCKB_LOCK_ENABLE" value="0b0" description="Block"/>
+      <bit_field_value name="OSCLCKB_LOCK_DISABLE" value="0b1" description="Do not block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x120" width="32" name="OSCCLKE" description="Oscillator Clock Enable">
+    <alias type="CMSIS" value="OSCCLKE"/>
+    <bit_field offset="0" width="4" name="CLKE" access="RW" reset_value="0" description="Clock Enable">
+      <alias type="CMSIS" value="VBAT_OSCCLKE_CLKE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x200" width="32" name="FROCTLA" description="FRO16K Control A">
+    <alias type="CMSIS" value="FROCTLA"/>
+    <bit_field offset="0" width="1" name="FRO_EN" access="RW" reset_value="0x1" description="FRO16K Enable">
+      <alias type="CMSIS" value="VBAT_FROCTLA_FRO_EN(x)"/>
+      <bit_field_value name="FROCTLA_FRO_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="FROCTLA_FRO_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x204" width="32" name="FROCTLB" description="FRO16K Control B">
+    <alias type="CMSIS" value="FROCTLB"/>
+    <bit_field offset="0" width="1" name="INVERSE" access="RW" reset_value="0" description="Inverse Value">
+      <alias type="CMSIS" value="VBAT_FROCTLB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x218" width="32" name="FROLCKA" description="FRO16K Lock A">
+    <alias type="CMSIS" value="FROLCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_FROLCKA_LOCK(x)"/>
+      <bit_field_value name="FROLCKA_LOCK_DISABLE" value="0b0" description="Do not block"/>
+      <bit_field_value name="FROLCKA_LOCK_ENABLE" value="0b1" description="Block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x21C" width="32" name="FROLCKB" description="FRO16K Lock B">
+    <alias type="CMSIS" value="FROLCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_FROLCKB_LOCK(x)"/>
+      <bit_field_value name="FROLCKB_LOCK_ENABLE" value="0b0" description="Block"/>
+      <bit_field_value name="FROLCKB_LOCK_DISABLE" value="0b1" description="Do not block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x220" width="32" name="FROCLKE" description="FRO16K Clock Enable">
+    <alias type="CMSIS" value="FROCLKE"/>
+    <bit_field offset="0" width="4" name="CLKE" access="RW" reset_value="0" description="Clock Enable">
+      <alias type="CMSIS" value="VBAT_FROCLKE_CLKE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x300" width="32" name="LDOCTLA" description="LDO_RAM Control A">
+    <alias type="CMSIS" value="LDOCTLA"/>
+    <bit_field offset="0" width="1" name="BG_EN" access="RW" reset_value="0" description="Bandgap Enable">
+      <alias type="CMSIS" value="VBAT_LDOCTLA_BG_EN(x)"/>
+      <bit_field_value name="LDOCTLA_BG_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="LDOCTLA_BG_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="LDO_EN" access="RW" reset_value="0" description="LDO Enable">
+      <alias type="CMSIS" value="VBAT_LDOCTLA_LDO_EN(x)"/>
+      <bit_field_value name="LDOCTLA_LDO_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="LDOCTLA_LDO_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="REFRESH_EN" access="RW" reset_value="0" description="Refresh Enable">
+      <alias type="CMSIS" value="VBAT_LDOCTLA_REFRESH_EN(x)"/>
+      <bit_field_value name="LDOCTLA_REFRESH_EN_DISABLE" value="0b0" description="Refresh mode is disabled"/>
+      <bit_field_value name="LDOCTLA_REFRESH_EN_ENABLE" value="0b1" description="Refresh mode is enabled for low power operation"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x304" width="32" name="LDOCTLB" description="LDO_RAM Control B">
+    <alias type="CMSIS" value="LDOCTLB"/>
+    <bit_field offset="0" width="3" name="INVERSE" access="RW" reset_value="0x7" description="Inverse Value">
+      <alias type="CMSIS" value="VBAT_LDOCTLB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x318" width="32" name="LDOLCKA" description="LDO_RAM Lock A">
+    <alias type="CMSIS" value="LDOLCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_LDOLCKA_LOCK(x)"/>
+      <bit_field_value name="LDOLCKA_LOCK_DISABLE" value="0b0" description="Do not block"/>
+      <bit_field_value name="LDOLCKA_LOCK_ENABLE" value="0b1" description="Block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x31C" width="32" name="LDOLCKB" description="LDO_RAM Lock B">
+    <alias type="CMSIS" value="LDOLCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_LDOLCKB_LOCK(x)"/>
+      <bit_field_value name="LDOLCKB_LOCK_ENABLE" value="0b0" description="Block"/>
+      <bit_field_value name="LDOLCKB_LOCK_DISABLE" value="0b1" description="Do not block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x320" width="32" name="LDORAMC" description="RAM Control">
+    <alias type="CMSIS" value="LDORAMC"/>
+    <bit_field offset="0" width="1" name="ISO" access="RW" reset_value="0" description="Isolate SRAM">
+      <alias type="CMSIS" value="VBAT_LDORAMC_ISO(x)"/>
+      <bit_field_value name="LDORAMC_ISO_DISABLE" value="0b0" description="State follows the chip power modes"/>
+      <bit_field_value name="LDORAMC_ISO_ENABLE" value="0b1" description="Isolates SRAM and places it in Low-Power Retention mode"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SWI" access="RW" reset_value="0" description="Switch SRAM">
+      <alias type="CMSIS" value="VBAT_LDORAMC_SWI(x)"/>
+      <bit_field_value name="LDORAMC_SWI_DISABLE" value="0b0" description="Supply follows the chip power modes"/>
+      <bit_field_value name="LDORAMC_SWI_ENABLE" value="0b1" description="LDO_RAM powers the array"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <bit_field offset="8" width="1" name="RET0" access="RW" reset_value="0" description="Retention">
+      <alias type="CMSIS" value="VBAT_LDORAMC_RET0(x)"/>
+      <bit_field_value name="LDORAMC_RET0_DISABLE" value="0b0" description="Corresponding SRAM array is retained in low-power modes"/>
+      <bit_field_value name="LDORAMC_RET0_ENABLE" value="0b1" description="Corresponding SRAM array is not retained in low-power modes"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="RET1" access="RW" reset_value="0" description="Retention">
+      <alias type="CMSIS" value="VBAT_LDORAMC_RET1(x)"/>
+      <bit_field_value name="LDORAMC_RET1_DISABLE" value="0b0" description="Corresponding SRAM array is retained in low-power modes"/>
+      <bit_field_value name="LDORAMC_RET1_ENABLE" value="0b1" description="Corresponding SRAM array is not retained in low-power modes"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="RET2" access="RW" reset_value="0" description="Retention">
+      <alias type="CMSIS" value="VBAT_LDORAMC_RET2(x)"/>
+      <bit_field_value name="LDORAMC_RET2_DISABLE" value="0b0" description="Corresponding SRAM array is retained in low-power modes"/>
+      <bit_field_value name="LDORAMC_RET2_ENABLE" value="0b1" description="Corresponding SRAM array is not retained in low-power modes"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="RET3" access="RW" reset_value="0" description="Retention">
+      <alias type="CMSIS" value="VBAT_LDORAMC_RET3(x)"/>
+      <bit_field_value name="LDORAMC_RET3_DISABLE" value="0b0" description="Corresponding SRAM array is retained in low-power modes"/>
+      <bit_field_value name="LDORAMC_RET3_ENABLE" value="0b1" description="Corresponding SRAM array is not retained in low-power modes"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="20" reset_value="0"/>
+  </register>
+  <register offset="0x330" width="32" name="LDOTIMER0" description="Bandgap Timer 0">
+    <alias type="CMSIS" value="LDOTIMER0"/>
+    <bit_field offset="0" width="3" name="TIMCFG" access="RW" reset_value="0" description="Timeout Configuration">
+      <alias type="CMSIS" value="VBAT_LDOTIMER0_TIMCFG(x)"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG1000" value="0b000" description="1 s"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG500" value="0b001" description="500 ms"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG250" value="0b010" description="250 ms"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG125" value="0b011" description="125 ms"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG62" value="0b100" description="62.5 ms"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG31" value="0b101" description="31.25 ms"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG15" value="0b110" description="15.625 ms"/>
+      <bit_field_value name="LDOTIMER0_TIMCFG_CFG7" value="0b111" description="7.8125 ms"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="28" reset_value="0"/>
+    <bit_field offset="31" width="1" name="TIMEN" access="RW" reset_value="0" description="Bandgap Timeout Period Enable">
+      <alias type="CMSIS" value="VBAT_LDOTIMER0_TIMEN(x)"/>
+      <bit_field_value name="LDOTIMER0_TIMEN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="LDOTIMER0_TIMEN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+  </register>
+  <register offset="0x338" width="32" name="LDOTIMER1" description="Bandgap Timer 1">
+    <alias type="CMSIS" value="LDOTIMER1"/>
+    <bit_field offset="0" width="24" name="TIMCFG" access="RW" reset_value="0" description="Timeout Configuration">
+      <alias type="CMSIS" value="VBAT_LDOTIMER1_TIMCFG(x)"/>
+      <alias type="id" value="TIMCFG1"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="7" reset_value="0"/>
+    <bit_field offset="31" width="1" name="TIMEN" access="RW" reset_value="0" description="Bandgap Timeout Period Enable">
+      <alias type="CMSIS" value="VBAT_LDOTIMER1_TIMEN(x)"/>
+      <bit_field_value name="LDOTIMER1_TIMEN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="LDOTIMER1_TIMEN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+  </register>
+  <register offset="0x400" width="32" name="MONCTLA" description="CLKMON Control A">
+    <alias type="CMSIS" value="MONCTLA"/>
+    <bit_field offset="0" width="1" name="MON_EN" access="RW" reset_value="0" description="CLKMON Enable">
+      <alias type="CMSIS" value="VBAT_MONCTLA_MON_EN(x)"/>
+      <bit_field_value name="MONCTLA_MON_EN_DISABLE" value="0b0" description="CLKMON is disabled"/>
+      <bit_field_value name="MONCTLA_MON_EN_ENABLE" value="0b1" description="CLKMON is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x404" width="32" name="MONCTLB" description="CLKMON Control B">
+    <alias type="CMSIS" value="MONCTLB"/>
+    <bit_field offset="0" width="1" name="INVERSE" access="RW" reset_value="0x1" description="Inverse value">
+      <alias type="CMSIS" value="VBAT_MONCTLB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x408" width="32" name="MONCFGA" description="CLKMON Configuration A">
+    <alias type="CMSIS" value="MONCFGA"/>
+    <bit_field offset="0" width="2" name="FREQ_TRIM" access="RW" reset_value="0x3" description="Frequency Trim">
+      <alias type="CMSIS" value="VBAT_MONCFGA_FREQ_TRIM(x)"/>
+      <bit_field_value name="MONCFGA_FREQ_TRIM_CFG0" value="0b00" description="Clock monitor asserts 2 cycle after expected edge"/>
+      <bit_field_value name="MONCFGA_FREQ_TRIM_CFG1" value="0b01" description="Clock monitor asserts 4 cycles after expected edge"/>
+      <bit_field_value name="MONCFGA_FREQ_TRIM_CFG2" value="0b10" description="Clock monitor asserts 6 cycles after expected edge"/>
+      <bit_field_value name="MONCFGA_FREQ_TRIM_CFG3" value="0b11" description="Clock monitor asserts 8 cycles after expected edge"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="DIVIDE_TRIM" access="RW" reset_value="0x1" description="Divide Trim">
+      <alias type="CMSIS" value="VBAT_MONCFGA_DIVIDE_TRIM(x)"/>
+      <bit_field_value name="MONCFGA_DIVIDE_TRIM_CFG0" value="0b0" description="Clock monitor operates at 1 kHz"/>
+      <bit_field_value name="MONCFGA_DIVIDE_TRIM_CFG1" value="0b1" description="Clock monitor operates at 64 Hz"/>
+    </bit_field>
+    <bit_field offset="3" width="5" name="RSVD_TRIM" access="RW" reset_value="0x1F" description="Reserved Trim">
+      <alias type="CMSIS" value="VBAT_MONCFGA_RSVD_TRIM(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x40C" width="32" name="MONCFGB" description="CLKMON Configuration B">
+    <alias type="CMSIS" value="MONCFGB"/>
+    <bit_field offset="0" width="8" name="INVERSE" access="RW" reset_value="0" description="Inverse value">
+      <alias type="CMSIS" value="VBAT_MONCFGB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x418" width="32" name="MONLCKA" description="CLKMON Lock A">
+    <alias type="CMSIS" value="MONLCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_MONLCKA_LOCK(x)"/>
+      <bit_field_value name="MONLCKA_LOCK_DISABLE" value="0b0" description="Lock is disabled"/>
+      <bit_field_value name="MONLCKA_LOCK_ENABLE" value="0b1" description="Lock is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x41C" width="32" name="MONLCKB" description="CLKMON Lock B">
+    <alias type="CMSIS" value="MONLCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_MONLCKB_LOCK(x)"/>
+      <bit_field_value name="MONLCKB_LOCK_ENABLE" value="0b0" description="Lock is enabled"/>
+      <bit_field_value name="MONLCKB_LOCK_DISABLE" value="0b1" description="Lock is disabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x500" width="32" name="TAMCTLA" description="TAMPER Control A">
+    <alias type="CMSIS" value="TAMCTLA"/>
+    <bit_field offset="0" width="1" name="VOLT_EN" access="RW" reset_value="0" description="Voltage Detect Enable">
+      <alias type="CMSIS" value="VBAT_TAMCTLA_VOLT_EN(x)"/>
+      <bit_field_value name="TAMCTLA_VOLT_EN_DISABLE" value="0b0" description="Voltage detect is disabled"/>
+      <bit_field_value name="TAMCTLA_VOLT_EN_ENABLE" value="0b1" description="Voltage detect is enabled"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TEMP_EN" access="RW" reset_value="0" description="Temperature Detect Enable">
+      <alias type="CMSIS" value="VBAT_TAMCTLA_TEMP_EN(x)"/>
+      <bit_field_value name="TAMCTLA_TEMP_EN_DISABLE" value="0b0" description="Temperature detect is disabled"/>
+      <bit_field_value name="TAMCTLA_TEMP_EN_ENABLE" value="0b1" description="Temperature detect is enabled"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="LIGHT_EN" access="RW" reset_value="0" description="Light Detect Enable">
+      <alias type="CMSIS" value="VBAT_TAMCTLA_LIGHT_EN(x)"/>
+      <bit_field_value name="TAMCTLA_LIGHT_EN_DISABLE" value="0b0" description="Light detect is disabled"/>
+      <bit_field_value name="TAMCTLA_LIGHT_EN_ENABLE" value="0b1" description="Light detect is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x504" width="32" name="TAMCTLB" description="TAMPER Control B">
+    <alias type="CMSIS" value="TAMCTLB"/>
+    <bit_field offset="0" width="4" name="INVERSE" access="RW" reset_value="0xF" description="Inverse value">
+      <alias type="CMSIS" value="VBAT_TAMCTLB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x518" width="32" name="TAMLCKA" description="TAMPER Lock A">
+    <alias type="CMSIS" value="TAMLCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_TAMLCKA_LOCK(x)"/>
+      <bit_field_value name="TAMLCKA_LOCK_DISABLE" value="0b0" description="Lock is disabled"/>
+      <bit_field_value name="TAMLCKA_LOCK_ENABLE" value="0b1" description="Lock is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x51C" width="32" name="TAMLCKB" description="TAMPER Lock B">
+    <alias type="CMSIS" value="TAMLCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_TAMLCKB_LOCK(x)"/>
+      <bit_field_value name="TAMLCKB_LOCK_ENABLE" value="0b0" description="Lock is enabled"/>
+      <bit_field_value name="TAMLCKB_LOCK_DISABLE" value="0b1" description="Lock is disabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x600" width="32" name="SWICTLA" description="Switch Control A">
+    <alias type="CMSIS" value="SWICTLA"/>
+    <bit_field offset="0" width="1" name="SWI_EN" access="RW" reset_value="0" description="Switch Enable">
+      <alias type="CMSIS" value="VBAT_SWICTLA_SWI_EN(x)"/>
+      <bit_field_value name="SWICTLA_SWI_EN_DISABLE" value="0b0" description="VDD_BAT"/>
+      <bit_field_value name="SWICTLA_SWI_EN_ENABLE" value="0b1" description="VDD_SYS"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="LP_EN" access="RW" reset_value="0" description="Low Power Enable">
+      <alias type="CMSIS" value="VBAT_SWICTLA_LP_EN(x)"/>
+      <bit_field_value name="SWICTLA_LP_EN_DISABLE" value="0b0" description="VDD_BAT always supplies VBAT modules in low-power modes"/>
+      <bit_field_value name="SWICTLA_LP_EN_ENABLE" value="0b1" description="VDD_SYS always supplies VBAT modules if SWI_EN is also 1"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x604" width="32" name="SWICTLB" description="Switch Control B">
+    <alias type="CMSIS" value="SWICTLB"/>
+    <bit_field offset="0" width="2" name="INVERSE" access="RW" reset_value="0x3" description="Inverse Value">
+      <alias type="CMSIS" value="VBAT_SWICTLB_INVERSE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0x618" width="32" name="SWILCKA" description="Switch Lock A">
+    <alias type="CMSIS" value="SWILCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_SWILCKA_LOCK(x)"/>
+      <bit_field_value name="SWILCKA_LOCK_DISABLE" value="0b0" description="Do not block"/>
+      <bit_field_value name="SWILCKA_LOCK_ENABLE" value="0b1" description="Block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x61C" width="32" name="SWILCKB" description="Switch Lock B">
+    <alias type="CMSIS" value="SWILCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_SWILCKB_LOCK(x)"/>
+      <bit_field_value name="SWILCKB_LOCK_ENABLE" value="0b0" description="Block"/>
+      <bit_field_value name="SWILCKB_LOCK_DISABLE" value="0b1" description="Do not block"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <reg_instance rid="1792" vals="0x700 0"/>
+  <reg_instance rid="1796" vals="0x704 0"/>
+  <reg_instance rid="1792" vals="0x708 1"/>
+  <reg_instance rid="1796" vals="0x70C 1"/>
+  <register offset="0x7F8" width="32" name="WAKLCKA" description="Wakeup Lock A">
+    <alias type="CMSIS" value="WAKLCKA"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0" description="Lock">
+      <alias type="CMSIS" value="VBAT_WAKLCKA_LOCK(x)"/>
+      <bit_field_value name="WAKLCKA_LOCK_DISABLE" value="0b0" description="Lock is disabled"/>
+      <bit_field_value name="WAKLCKA_LOCK_ENABLE" value="0b1" description="Lock is enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+  <register offset="0x7FC" width="32" name="WAKLCKB" description="Wakeup Lock B">
+    <alias type="CMSIS" value="WAKLCKB"/>
+    <bit_field offset="0" width="1" name="LOCK" access="RW" reset_value="0x1" description="Lock">
+      <alias type="CMSIS" value="VBAT_WAKLCKB_LOCK(x)"/>
+      <bit_field_value name="WAKLCKB_LOCK_ENABLE" value="0b0" description="Lock is enabled"/>
+      <bit_field_value name="WAKLCKB_LOCK_DISABLE" value="0b1" description="Lock is disabled"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="31" reset_value="0"/>
+  </register>
+</regs:peripheral>

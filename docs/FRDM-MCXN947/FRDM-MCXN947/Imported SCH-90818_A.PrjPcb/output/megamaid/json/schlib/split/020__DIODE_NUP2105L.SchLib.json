@@ -1,0 +1,404 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "DIODE_NUP2105L.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "DIODE_NUP2105L",
+        "Description": "DIODE DUAL LINE CAN BUS PROTECTOR 27V 350W SOT-23",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "DIODE_NUP2105L",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "X6PBRZAI",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "DIODE_NUP2105L",
+            "Color": 128,
+            "AllPinCount": 3,
+            "ComponentDescription": "DIODE DUAL LINE CAN BUS PROTECTOR 27V 350W SOT-23",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSR/6DOBzOjiEe/i6uRoxGDMw1ajUMAE/vBY4=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGQx4GIIYLjxH8Rhc/Tzd3ENZjRmYK5Rq2EAAEzGBX8=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSb/6DOBzOjiEe/i6uhoyGDMw1ajUMAFN3BbQ=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 4,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "BJWFLNXD",
+            "IndexInSheet": 3,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "LocationCount": 4,
+            "IsSolid": true,
+            "X1": 50,
+            "Y1": -30,
+            "X2": 50,
+            "Y2": -10,
+            "X3": 40,
+            "Y3": -20,
+            "X4": 50,
+            "Y4": -30
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 5,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "YWKPZXJE",
+            "IndexInSheet": 4,
+            "Location.X": 40,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "Corner.X": 40,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 6,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "XCGHUTLN",
+            "IndexInSheet": 5,
+            "Location.Y": -60,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "Corner.Y": -60,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 7,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "KHEOQTDB",
+            "IndexInSheet": 6,
+            "Location.X": 50,
+            "Location.Y": -60,
+            "Color": 16714496,
+            "Corner.X": 70,
+            "Corner.Y": -60,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 8,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "QLJHIHXG",
+            "IndexInSheet": 7,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "LocationCount": 5,
+            "IsSolid": true,
+            "X1": 50,
+            "Y1": -70,
+            "X2": 50,
+            "Y2": -70,
+            "X3": 50,
+            "Y3": -50,
+            "X4": 40,
+            "Y4": -60,
+            "X5": 50,
+            "Y5": -70
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "YHDVMBAV",
+            "IndexInSheet": 8,
+            "Location.X": 40,
+            "Location.Y": -70,
+            "Color": 16714496,
+            "Corner.X": 40,
+            "Corner.Y": -50,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "IUNSZKBI",
+            "IndexInSheet": 9,
+            "Location.X": 50,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.X": 70,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "YIUEIJNF",
+            "IndexInSheet": 10,
+            "Location.X": 30,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 12,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "SIYNOCWP",
+            "IndexInSheet": 11,
+            "Location.X": 70,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.X": 70,
+            "Corner.Y": -60,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 13,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "EAJNPPBI",
+            "IndexInSheet": 12,
+            "Location.X": 70,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "Corner.X": 80,
+            "Corner.Y": -40,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 14,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "HJFWFLBG",
+            "IndexInSheet": 13,
+            "Location.X": 70,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 2,
+            "SecondaryRadius": 2,
+            "IsSolid": true
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 15,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "KAJZMTXO",
+            "IndexInSheet": 14,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "LocationCount": 4,
+            "IsSolid": true,
+            "X1": 30,
+            "Y1": -30,
+            "X2": 30,
+            "Y2": -10,
+            "X3": 40,
+            "Y3": -20,
+            "X4": 30,
+            "Y4": -30
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 16,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "UYCDDMGG",
+            "IndexInSheet": 15,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "LocationCount": 4,
+            "IsSolid": true,
+            "X1": 30,
+            "Y1": -70,
+            "X2": 30,
+            "Y2": -50,
+            "X3": 40,
+            "Y3": -60,
+            "X4": 30,
+            "Y4": -70
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 17,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "XXNZAOTI",
+            "IndexInSheet": 16,
+            "Location.X": 40,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "Corner.X": 47,
+            "Corner.Y": -4,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 18,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "HLXZDQAH",
+            "IndexInSheet": 17,
+            "Location.X": 40,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "Corner.X": 34,
+            "Corner.Y": -35,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 19,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "GRDOSXCL",
+            "IndexInSheet": 18,
+            "Location.X": 48,
+            "Location.Y": -44,
+            "Color": 16714496,
+            "Corner.X": 40,
+            "Corner.Y": -50,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 20,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "CVTQMXFU",
+            "IndexInSheet": 19,
+            "Location.X": 40,
+            "Location.Y": -70,
+            "Color": 16714496,
+            "Corner.X": 34,
+            "Corner.Y": -75,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 21,
+            "OwnerPartId": 1,
+            "UniqueID": "HBSIVHFV",
+            "Location.X": 0,
+            "Location.Y": 5,
+            "Name": "Designator",
+            "Text": "D?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 22
+          }
+        ]
+      }
+    ]
+  }
+}

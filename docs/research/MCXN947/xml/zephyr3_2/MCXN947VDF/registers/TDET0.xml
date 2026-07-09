@@ -1,0 +1,690 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="48" offset="{0}" width="32" name="ATR{1}" description="Active Tamper">
+    <alias type="CMSIS" value="ATR[{1}]"/>
+    <bit_field offset="0" width="16" name="ATSR" access="RW" reset_value="0" description="Active Tamper Shift Register">
+      <alias type="CMSIS" value="DIGTMP_ATR_ATSR(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="16" name="ATP" access="RW" reset_value="0" description="Active Tamper Polynomial">
+      <alias type="CMSIS" value="DIGTMP_ATR_ATP(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="64" offset="{0}" width="32" name="PGFR{1}" description="Pin Glitch Filter">
+    <alias type="CMSIS" value="PGFR[{1}]"/>
+    <bit_field offset="0" width="6" name="GFW" access="RW" reset_value="0" description="Glitch Filter Width">
+      <alias type="CMSIS" value="DIGTMP_PGFR_GFW(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="GFP" access="RW" reset_value="0" description="Glitch Filter Prescaler">
+      <alias type="CMSIS" value="DIGTMP_PGFR_GFP(x)"/>
+      <bit_field_value name="PGFR{1}_GFP_FREQ_512_HZ" value="0b0" description="512 Hz prescaler clock"/>
+      <bit_field_value name="PGFR{1}_GFP_FREQ_32_KHZ" value="0b1" description="32.768 kHz clock"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="GFE" access="RW" reset_value="0" description="Glitch Filter Enable">
+      <alias type="CMSIS" value="DIGTMP_PGFR_GFE(x)"/>
+      <bit_field_value name="PGFR{1}_GFE_BYPASS" value="0b0" description="Bypasses"/>
+      <bit_field_value name="PGFR{1}_GFE_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="8" width="2" name="TPSW" access="RW" reset_value="0" description="Tamper Pin Sample Width">
+      <alias type="CMSIS" value="DIGTMP_PGFR_TPSW(x)"/>
+      <bit_field_value name="PGFR{1}_TPSW_DISABLE" value="0b00" description="Continuous monitoring, pin sampling disabled"/>
+      <bit_field_value name="PGFR{1}_TPSW_CYCLES_2" value="0b01" description="2 cycles for pull enable and 1 cycle for input buffer enable"/>
+      <bit_field_value name="PGFR{1}_TPSW_CYCLES_4" value="0b10" description="4 cycles for pull enable and 2 cycles for input buffer enable"/>
+      <bit_field_value name="PGFR{1}_TPSW_CYCLES_8" value="0b11" description="8 cycles for pull enable and 4 cycles for input buffer enable"/>
+    </bit_field>
+    <bit_field offset="10" width="2" name="TPSF" access="RW" reset_value="0" description="Tamper Pin Sample Frequency">
+      <alias type="CMSIS" value="DIGTMP_PGFR_TPSF(x)"/>
+      <bit_field_value name="PGFR{1}_TPSF_CYCLES_8" value="0b00" description="Every 8 cycles"/>
+      <bit_field_value name="PGFR{1}_TPSF_CYCLES_32" value="0b01" description="Every 32 cycles"/>
+      <bit_field_value name="PGFR{1}_TPSF_CYCLES_128" value="0b10" description="Every 128 cycles"/>
+      <bit_field_value name="PGFR{1}_TPSF_CYCLES_512" value="0b11" description="Every 512 cycles"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="2" name="TPEX" access="RW" reset_value="0" description="Tamper Pin Expected">
+      <alias type="CMSIS" value="DIGTMP_PGFR_TPEX(x)"/>
+      <bit_field_value name="PGFR{1}_TPEX_ZERO" value="0b00" description="Zero/passive tamper"/>
+      <bit_field_value name="PGFR{1}_TPEX_VAL_TAMP0" value="0b01" description="Active Tamper 0 output"/>
+      <bit_field_value name="PGFR{1}_TPEX_VAL_TAMP1" value="0b10" description="Active Tamper 1 output"/>
+      <bit_field_value name="PGFR{1}_TPEX_TAMP0_XOR_TAMP1" value="0b11" description="Active Tamper 0 output XORed with Active Tamper 1 output"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="6" reset_value="0"/>
+    <bit_field offset="24" width="1" name="TPE" access="RW" reset_value="0" description="Tamper Pull Enable">
+      <alias type="CMSIS" value="DIGTMP_PGFR_TPE(x)"/>
+      <bit_field_value name="PGFR{1}_TPE_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="PGFR{1}_TPE_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="TPS" access="RW" reset_value="0" description="Tamper Pull Select">
+      <alias type="CMSIS" value="DIGTMP_PGFR_TPS(x)"/>
+      <bit_field_value name="PGFR{1}_TPS_ASSERT" value="0b0" description="Asserts"/>
+      <bit_field_value name="PGFR{1}_TPS_NEGATE" value="0b1" description="Negates"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </reg_template>
+  <register offset="0x10" width="32" name="CR" description="Control">
+    <alias type="CMSIS" value="CR"/>
+    <bit_field offset="0" width="1" name="SWR" access="RW" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="DIGTMP_CR_SWR(x)"/>
+      <bit_field_value name="CR_SWR_NO_EFFECT" value="0b0" description="No effect"/>
+      <bit_field_value name="CR_SWR_SW_RESET" value="0b1" description="Perform a software reset"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="DEN" access="RW" reset_value="0" description="Digital Tamper Enable">
+      <alias type="CMSIS" value="DIGTMP_CR_DEN(x)"/>
+      <bit_field_value name="CR_DEN_DISABLE" value="0b0" description="Disables TDET clock and prescaler"/>
+      <bit_field_value name="CR_DEN_ENABLE" value="0b1" description="Enables TDET clock and prescaler"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TFSR" access="RW" reset_value="0" description="Tamper Force System Reset">
+      <alias type="CMSIS" value="DIGTMP_CR_TFSR(x)"/>
+      <bit_field_value name="CR_TFSR_NO_RESET" value="0b0" description="Do not force chip reset"/>
+      <bit_field_value name="CR_TFSR_RESET" value="0b1" description="Force chip reset"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="UM" access="RW" reset_value="0" description="Update Mode">
+      <alias type="CMSIS" value="DIGTMP_CR_UM(x)"/>
+      <bit_field_value name="CR_UM_NO_EFFECT" value="0b0" description="No effect"/>
+      <bit_field_value name="CR_UM_CLEAR_INTS" value="0b1" description="Allows the clearing of interrupts"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="ATCS0" access="RW" reset_value="0" description="Active Tamper Clock Source">
+      <alias type="CMSIS" value="DIGTMP_CR_ATCS0(x)"/>
+      <bit_field_value name="CR_ATCS0_FREQ_1_HZ" value="0b0" description="1 Hz prescaler clock"/>
+      <bit_field_value name="CR_ATCS0_FREQ_64_HZ" value="0b1" description="64 Hz prescaler clock"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="ATCS1" access="RW" reset_value="0" description="Active Tamper Clock Source">
+      <alias type="CMSIS" value="DIGTMP_CR_ATCS1(x)"/>
+      <bit_field_value name="CR_ATCS1_FREQ_1_HZ" value="0b0" description="1 Hz prescaler clock"/>
+      <bit_field_value name="CR_ATCS1_FREQ_64_HZ" value="0b1" description="64 Hz prescaler clock"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="1" name="DISTAM" access="RW" reset_value="0" description="Disable Prescaler On Tamper">
+      <alias type="CMSIS" value="DIGTMP_CR_DISTAM(x)"/>
+      <bit_field_value name="CR_DISTAM_NO_EFFECT" value="0b0" description="No effect"/>
+      <bit_field_value name="CR_DISTAM_AUTO_DIS" value="0b1" description="Automatically disables the prescaler after tamper detection"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="8" reset_value="0"/>
+    <bit_field offset="17" width="15" name="DPR" access="RW" reset_value="0" description="Digital Tamper Prescaler">
+      <alias type="CMSIS" value="DIGTMP_CR_DPR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="SR" description="Status">
+    <alias type="CMSIS" value="SR"/>
+    <bit_field offset="0" width="1" name="DTF" access="W1C" reset_value="0x1" description="Digital Tamper Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_DTF(x)"/>
+      <bit_field_value name="SR_DTF_NO_DET" value="0b0" description="TDET tampering not detected"/>
+      <bit_field_value name="SR_DTF_DET" value="0b1" description="TDET tampering detected"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TAF" access="W1C" reset_value="0x1" description="Tamper Acknowledge Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TAF(x)"/>
+      <bit_field_value name="SR_TAF_NOT_OCCUR" value="0b0" description="Digital Tamper Flag (SR[DTF]) is clear or chip reset has not occurred after Digital Tamper Flag (SR[DTF]) was set."/>
+      <bit_field_value name="SR_TAF_OCCUR" value="0b1" description="Chip reset has occurred after Digital Tamper Flag (SR[DTF]) was set."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TIF0" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF0(x)"/>
+      <bit_field_value name="SR_TIF0_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF0_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIF1" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF1(x)"/>
+      <bit_field_value name="SR_TIF1_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF1_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TIF2" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF2(x)"/>
+      <bit_field_value name="SR_TIF2_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF2_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TIF3" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF3(x)"/>
+      <bit_field_value name="SR_TIF3_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF3_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TIF4" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF4(x)"/>
+      <bit_field_value name="SR_TIF4_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF4_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TIF5" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF5(x)"/>
+      <bit_field_value name="SR_TIF5_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF5_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TIF6" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF6(x)"/>
+      <bit_field_value name="SR_TIF6_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF6_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TIF7" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF7(x)"/>
+      <bit_field_value name="SR_TIF7_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF7_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="TIF8" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF8(x)"/>
+      <bit_field_value name="SR_TIF8_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF8_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="TIF9" access="W1C" reset_value="0x1" description="Tamper Input n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TIF9(x)"/>
+      <bit_field_value name="SR_TIF9_NO_DET" value="0b0" description="On-chip tamper not detected"/>
+      <bit_field_value name="SR_TIF9_DET" value="0b1" description="On-chip tamper detected"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TPF0" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF0(x)"/>
+      <bit_field_value name="SR_TPF0_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF0_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TPF1" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF1(x)"/>
+      <bit_field_value name="SR_TPF1_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF1_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TPF2" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF2(x)"/>
+      <bit_field_value name="SR_TPF2_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF2_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="TPF3" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF3(x)"/>
+      <bit_field_value name="SR_TPF3_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF3_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="TPF4" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF4(x)"/>
+      <bit_field_value name="SR_TPF4_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF4_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="TPF5" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF5(x)"/>
+      <bit_field_value name="SR_TPF5_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF5_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="TPF6" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF6(x)"/>
+      <bit_field_value name="SR_TPF6_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF6_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TPF7" access="W1C" reset_value="0" description="Tamper Pin n Flag">
+      <alias type="CMSIS" value="DIGTMP_SR_TPF7(x)"/>
+      <bit_field_value name="SR_TPF7_NO_DET" value="0b0" description="Pin tamper not detected"/>
+      <bit_field_value name="SR_TPF7_DET" value="0b1" description="Pin tamper detected"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="LR" description="Lock">
+    <alias type="CMSIS" value="LR"/>
+    <reserved_bit_field offset="0" width="1" reset_value="0x1"/>
+    <reserved_bit_field offset="1" width="3" reset_value="0x7"/>
+    <bit_field offset="4" width="1" name="CRL" access="RW" reset_value="0x1" description="Control Register Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_CRL(x)"/>
+      <bit_field_value name="LR_CRL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_CRL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SRL" access="RW" reset_value="0x1" description="Status Register Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_SRL(x)"/>
+      <bit_field_value name="LR_SRL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_SRL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="LRL" access="RW" reset_value="0x1" description="Lock Register Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_LRL(x)"/>
+      <bit_field_value name="LR_LRL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_LRL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="IEL" access="RW" reset_value="0x1" description="Interrupt Enable Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_IEL(x)"/>
+      <bit_field_value name="LR_IEL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_IEL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TSL" access="RW" reset_value="0x1" description="Tamper Seconds Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_TSL(x)"/>
+      <bit_field_value name="LR_TSL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_TSL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TEL" access="RW" reset_value="0x1" description="Tamper Enable Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_TEL(x)"/>
+      <bit_field_value name="LR_TEL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_TEL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="PDL" access="RW" reset_value="0x1" description="Pin Direction Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_PDL(x)"/>
+      <bit_field_value name="LR_PDL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_PDL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="PPL" access="RW" reset_value="0x1" description="Pin Polarity Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_PPL(x)"/>
+      <bit_field_value name="LR_PPL_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_PPL_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="ATL0" access="RW" reset_value="0x1" description="Active Tamper Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_ATL0(x)"/>
+      <bit_field_value name="LR_ATL0_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_ATL0_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="ATL1" access="RW" reset_value="0x1" description="Active Tamper Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_ATL1(x)"/>
+      <bit_field_value name="LR_ATL1_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_ATL1_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+    <bit_field offset="16" width="1" name="GFL0" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL0(x)"/>
+      <bit_field_value name="LR_GFL0_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL0_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="GFL1" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL1(x)"/>
+      <bit_field_value name="LR_GFL1_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL1_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="GFL2" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL2(x)"/>
+      <bit_field_value name="LR_GFL2_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL2_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="GFL3" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL3(x)"/>
+      <bit_field_value name="LR_GFL3_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL3_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="GFL4" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL4(x)"/>
+      <bit_field_value name="LR_GFL4_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL4_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="GFL5" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL5(x)"/>
+      <bit_field_value name="LR_GFL5_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL5_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="GFL6" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL6(x)"/>
+      <bit_field_value name="LR_GFL6_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL6_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="GFL7" access="RW" reset_value="0x1" description="Glitch Filter Lock">
+      <alias type="CMSIS" value="DIGTMP_LR_GFL7(x)"/>
+      <bit_field_value name="LR_GFL7_LOCK" value="0b0" description="Locked and writes are ignored"/>
+      <bit_field_value name="LR_GFL7_NOT_LOCK" value="0b1" description="Not locked and writes complete as normal"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="IER" description="Interrupt Enable">
+    <alias type="CMSIS" value="IER"/>
+    <bit_field offset="0" width="1" name="DTIE" access="RW" reset_value="0" description="Digital Tamper Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_DTIE(x)"/>
+      <bit_field_value name="IER_DTIE_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_DTIE_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="1" name="TIIE0" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE0(x)"/>
+      <bit_field_value name="IER_TIIE0_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE0_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIIE1" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE1(x)"/>
+      <bit_field_value name="IER_TIIE1_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE1_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TIIE2" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE2(x)"/>
+      <bit_field_value name="IER_TIIE2_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE2_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TIIE3" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE3(x)"/>
+      <bit_field_value name="IER_TIIE3_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE3_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TIIE4" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE4(x)"/>
+      <bit_field_value name="IER_TIIE4_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE4_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TIIE5" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE5(x)"/>
+      <bit_field_value name="IER_TIIE5_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE5_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TIIE6" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE6(x)"/>
+      <bit_field_value name="IER_TIIE6_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE6_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TIIE7" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE7(x)"/>
+      <bit_field_value name="IER_TIIE7_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE7_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="TIIE8" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE8(x)"/>
+      <bit_field_value name="IER_TIIE8_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE8_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="TIIE9" access="RW" reset_value="0" description="Tamper Input n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TIIE9(x)"/>
+      <bit_field_value name="IER_TIIE9_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TIIE9_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TPIE0" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE0(x)"/>
+      <bit_field_value name="IER_TPIE0_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE0_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TPIE1" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE1(x)"/>
+      <bit_field_value name="IER_TPIE1_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE1_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TPIE2" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE2(x)"/>
+      <bit_field_value name="IER_TPIE2_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE2_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="TPIE3" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE3(x)"/>
+      <bit_field_value name="IER_TPIE3_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE3_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="TPIE4" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE4(x)"/>
+      <bit_field_value name="IER_TPIE4_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE4_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="TPIE5" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE5(x)"/>
+      <bit_field_value name="IER_TPIE5_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE5_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="TPIE6" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE6(x)"/>
+      <bit_field_value name="IER_TPIE6_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE6_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TPIE7" access="RW" reset_value="0" description="Tamper Pin n Interrupt Enable">
+      <alias type="CMSIS" value="DIGTMP_IER_TPIE7(x)"/>
+      <bit_field_value name="IER_TPIE7_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="IER_TPIE7_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="TSR" description="Tamper Seconds">
+    <alias type="CMSIS" value="TSR"/>
+    <bit_field offset="0" width="32" name="TTS" access="RW" reset_value="0" description="Tamper Time Seconds">
+      <alias type="CMSIS" value="DIGTMP_TSR_TTS(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x24" width="32" name="TER" description="Tamper Enable">
+    <alias type="CMSIS" value="TER"/>
+    <reserved_bit_field offset="0" width="2" reset_value="0"/>
+    <bit_field offset="2" width="1" name="TIE0" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE0(x)"/>
+      <bit_field_value name="TER_TIE0_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE0_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TIE1" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE1(x)"/>
+      <bit_field_value name="TER_TIE1_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE1_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TIE2" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE2(x)"/>
+      <bit_field_value name="TER_TIE2_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE2_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TIE3" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE3(x)"/>
+      <bit_field_value name="TER_TIE3_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE3_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TIE4" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE4(x)"/>
+      <bit_field_value name="TER_TIE4_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE4_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TIE5" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE5(x)"/>
+      <bit_field_value name="TER_TIE5_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE5_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="TIE6" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE6(x)"/>
+      <bit_field_value name="TER_TIE6_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE6_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="TIE7" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE7(x)"/>
+      <bit_field_value name="TER_TIE7_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE7_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="TIE8" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE8(x)"/>
+      <bit_field_value name="TER_TIE8_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE8_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="TIE9" access="RW" reset_value="0" description="Tamper Input Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TIE9(x)"/>
+      <bit_field_value name="TER_TIE9_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TIE9_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TPE0" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE0(x)"/>
+      <bit_field_value name="TER_TPE0_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE0_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TPE1" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE1(x)"/>
+      <bit_field_value name="TER_TPE1_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE1_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TPE2" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE2(x)"/>
+      <bit_field_value name="TER_TPE2_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE2_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="TPE3" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE3(x)"/>
+      <bit_field_value name="TER_TPE3_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE3_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="TPE4" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE4(x)"/>
+      <bit_field_value name="TER_TPE4_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE4_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="TPE5" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE5(x)"/>
+      <bit_field_value name="TER_TPE5_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE5_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="TPE6" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE6(x)"/>
+      <bit_field_value name="TER_TPE6_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE6_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TPE7" access="RW" reset_value="0" description="Tamper Pin Enable">
+      <alias type="CMSIS" value="DIGTMP_TER_TPE7(x)"/>
+      <bit_field_value name="TER_TPE7_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="TER_TPE7_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x28" width="32" name="PDR" description="Pin Direction">
+    <alias type="CMSIS" value="PDR"/>
+    <bit_field offset="0" width="1" name="TPD0" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD0(x)"/>
+      <bit_field_value name="PDR_TPD0_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD0_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TPD1" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD1(x)"/>
+      <bit_field_value name="PDR_TPD1_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD1_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TPD2" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD2(x)"/>
+      <bit_field_value name="PDR_TPD2_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD2_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TPD3" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD3(x)"/>
+      <bit_field_value name="PDR_TPD3_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD3_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TPD4" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD4(x)"/>
+      <bit_field_value name="PDR_TPD4_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD4_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TPD5" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD5(x)"/>
+      <bit_field_value name="PDR_TPD5_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD5_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TPD6" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD6(x)"/>
+      <bit_field_value name="PDR_TPD6_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD6_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TPD7" access="RW" reset_value="0" description="Tamper Pin Direction">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPD7(x)"/>
+      <bit_field_value name="PDR_TPD7_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="PDR_TPD7_OUTPUT" value="0b1" description="Output and drives the inverse of the expected value (tamper pin is asserted)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TPOD0" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD0(x)"/>
+      <bit_field_value name="PDR_TPOD0_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD0_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TPOD1" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD1(x)"/>
+      <bit_field_value name="PDR_TPOD1_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD1_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TPOD2" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD2(x)"/>
+      <bit_field_value name="PDR_TPOD2_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD2_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="TPOD3" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD3(x)"/>
+      <bit_field_value name="PDR_TPOD3_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD3_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="TPOD4" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD4(x)"/>
+      <bit_field_value name="PDR_TPOD4_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD4_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="TPOD5" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD5(x)"/>
+      <bit_field_value name="PDR_TPOD5_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD5_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="TPOD6" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD6(x)"/>
+      <bit_field_value name="PDR_TPOD6_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD6_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TPOD7" access="RO" reset_value="0x1" description="Tamper Pin Output Data">
+      <alias type="CMSIS" value="DIGTMP_PDR_TPOD7(x)"/>
+      <bit_field_value name="PDR_TPOD7_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PDR_TPOD7_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="PPR" description="Pin Polarity">
+    <alias type="CMSIS" value="PPR"/>
+    <bit_field offset="0" width="1" name="TPP0" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP0(x)"/>
+      <bit_field_value name="PPR_TPP0_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP0_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="TPP1" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP1(x)"/>
+      <bit_field_value name="PPR_TPP1_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP1_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="TPP2" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP2(x)"/>
+      <bit_field_value name="PPR_TPP2_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP2_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="TPP3" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP3(x)"/>
+      <bit_field_value name="PPR_TPP3_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP3_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="TPP4" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP4(x)"/>
+      <bit_field_value name="PPR_TPP4_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP4_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="TPP5" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP5(x)"/>
+      <bit_field_value name="PPR_TPP5_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP5_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="TPP6" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP6(x)"/>
+      <bit_field_value name="PPR_TPP6_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP6_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="TPP7" access="RW" reset_value="0" description="Tamper Pin n Polarity">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPP7(x)"/>
+      <bit_field_value name="PPR_TPP7_NO_INVERT" value="0b0" description="Not inverted"/>
+      <bit_field_value name="PPR_TPP7_INVERT" value="0b1" description="Inverted"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="1" name="TPID0" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID0(x)"/>
+      <bit_field_value name="PPR_TPID0_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID0_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="TPID1" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID1(x)"/>
+      <bit_field_value name="PPR_TPID1_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID1_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="TPID2" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID2(x)"/>
+      <bit_field_value name="PPR_TPID2_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID2_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="TPID3" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID3(x)"/>
+      <bit_field_value name="PPR_TPID3_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID3_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="TPID4" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID4(x)"/>
+      <bit_field_value name="PPR_TPID4_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID4_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="TPID5" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID5(x)"/>
+      <bit_field_value name="PPR_TPID5_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID5_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="TPID6" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID6(x)"/>
+      <bit_field_value name="PPR_TPID6_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID6_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <bit_field offset="23" width="1" name="TPID7" access="RO" reset_value="0" description="Tamper Pin n Input Data">
+      <alias type="CMSIS" value="DIGTMP_PPR_TPID7(x)"/>
+      <bit_field_value name="PPR_TPID7_ZERO" value="0b0" description="Zero"/>
+      <bit_field_value name="PPR_TPID7_ONE" value="0b1" description="One"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <reg_instance rid="48" vals="0x30 0"/>
+  <reg_instance rid="48" vals="0x34 1"/>
+  <reg_instance rid="64" vals="0x40 0"/>
+  <reg_instance rid="64" vals="0x44 1"/>
+  <reg_instance rid="64" vals="0x48 2"/>
+  <reg_instance rid="64" vals="0x4C 3"/>
+  <reg_instance rid="64" vals="0x50 4"/>
+  <reg_instance rid="64" vals="0x54 5"/>
+  <reg_instance rid="64" vals="0x58 6"/>
+  <reg_instance rid="64" vals="0x5C 7"/>
+</regs:peripheral>

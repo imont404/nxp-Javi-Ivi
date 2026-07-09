@@ -1,0 +1,3572 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "0",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CH{1}_CSR",
+        "@description": "Channel Control and Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].CH_CSR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ERQ",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable DMA Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_CSR_ERQ(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ERQ_DISABLE",
+                "@value": "0b0",
+                "@description": "DMA hardware request signal for corresponding channel disabled"
+              },
+              {
+                "@name": "CH_ERQ_ENABLE",
+                "@value": "0b1",
+                "@description": "DMA hardware request signal for corresponding channel enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "EARQ",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Asynchronous DMA Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_CSR_EARQ(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_EARQ_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable asynchronous DMA request for the channel"
+              },
+              {
+                "@name": "CH_EARQ_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable asynchronous DMA request for the channel"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "EEI",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Error Interrupt",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_CSR_EEI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_EEI_NO_ERROR",
+                "@value": "0b0",
+                "@description": "Error signal for corresponding channel does not generate error interrupt"
+              },
+              {
+                "@name": "CH_EEI_ERROR",
+                "@value": "0b1",
+                "@description": "Assertion of error signal for corresponding channel generates error interrupt request"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "EBW",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Buffered Writes",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_CSR_EBW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_EBW_DISABLE",
+                "@value": "0b0",
+                "@description": "Buffered writes on system bus disabled"
+              },
+              {
+                "@name": "CH_EBW_ENABLE",
+                "@value": "0b1",
+                "@description": "Buffered writes on system bus enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DONE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Channel Done",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_CSR_DONE(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "ACTIVE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Channel Active",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_CSR_ACTIVE(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "26",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "4",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CH{1}_ES",
+        "@description": "Channel Error Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].CH_ES"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DBE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Destination Bus Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_DBE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_DBE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No destination bus error"
+              },
+              {
+                "@name": "CH_DBE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was bus error on destination write"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "SBE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Source Bus Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_SBE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SBE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No source bus error"
+              },
+              {
+                "@name": "CH_SBE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was bus error on source read"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "SGE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Scatter/Gather Configuration Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_SGE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SGE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No scatter/gather configuration error"
+              },
+              {
+                "@name": "CH_SGE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_DLAST_SGA field"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "NCE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "NBYTES/CITER Configuration Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_NCE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_NCE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No NBYTES/CITER configuration error"
+              },
+              {
+                "@name": "CH_NCE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_NBYTES or TCDn_CITER fields"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "DOE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Destination Offset Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_DOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_DOE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No destination offset configuration error"
+              },
+              {
+                "@name": "CH_DOE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_DOFF field"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "DAE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Destination Address Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_DAE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_DAE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No destination address configuration error"
+              },
+              {
+                "@name": "CH_DAE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_DADDR field"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "SOE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Source Offset Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_SOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SOE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No source offset configuration error"
+              },
+              {
+                "@name": "CH_SOE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_SOFF field"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "SAE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Source Address Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_SAE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SAE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No source address configuration error"
+              },
+              {
+                "@name": "CH_SAE_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_SADDR field"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "ERR",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Error In Channel",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_ES_ERR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ERR_NO_ERROR",
+                "@value": "0b0",
+                "@description": "An error in this channel has not occurred"
+              },
+              {
+                "@name": "CH_ERR_ERROR",
+                "@value": "0b1",
+                "@description": "An error in this channel has occurred"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "23",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "8",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CH{1}_INT",
+        "@description": "Channel Interrupt Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].CH_INT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "INT",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "Interrupt Request",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_CH_INT_INT(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "CH_INT_INTERRUPT_CLEARED",
+              "@value": "0b0",
+              "@description": "Interrupt request for corresponding channel cleared"
+            },
+            {
+              "@name": "CH_INT_INTERRUPT_ACTIVE",
+              "@value": "0b1",
+              "@description": "Interrupt request for corresponding channel active"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "12",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CH{1}_SBR",
+        "@description": "Channel System Bus",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].CH_SBR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "MID",
+            "@access": "RO",
+            "@reset_value": "0x7",
+            "@description": "Master ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_SBR_MID(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "SEC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Security Level",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_SBR_SEC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SEC_NONSECURE_PROTECTION",
+                "@value": "0b0",
+                "@description": "Nonsecure protection level for DMA transfers"
+              },
+              {
+                "@name": "CH_SEC_SECURE_PROTECTION",
+                "@value": "0b1",
+                "@description": "Secure protection level for DMA transfers"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "PAL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Privileged Access Level",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_SBR_PAL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_PAL_USER_PROTECTION",
+                "@value": "0b0",
+                "@description": "User protection level for DMA transfers"
+              },
+              {
+                "@name": "CH_PAL_PRIVILEGED_PROTECTION",
+                "@value": "0b1",
+                "@description": "Privileged protection level for DMA transfers"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "EMI",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Master ID Replication",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_SBR_EMI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_EMI_DISABLE",
+                "@value": "0b0",
+                "@description": "Master ID replication is disabled"
+              },
+              {
+                "@name": "CH_EMI_ENABLE",
+                "@value": "0b1",
+                "@description": "Master ID replication is enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "9",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "15",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "16",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CH{1}_PRI",
+        "@description": "Channel Priority",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].CH_PRI"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "3",
+            "@name": "APL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Arbitration Priority Level",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_PRI_APL(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DPA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Disable Preempt Ability",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_PRI_DPA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_DPA_SUSPEND",
+                "@value": "0b0",
+                "@description": "Channel can suspend a lower-priority channel"
+              },
+              {
+                "@name": "CH_DPA_CANNOT_SUSPEND",
+                "@value": "0b1",
+                "@description": "Channel cannot suspend any other channel, regardless of channel priority"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "ECP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Channel Preemption",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_CH_PRI_ECP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ECP_CANNOT_SUSPEND",
+                "@value": "0b0",
+                "@description": "Channel cannot be suspended by a higher-priority channel's service request"
+              },
+              {
+                "@name": "CH_ECP_SUSPEND",
+                "@value": "0b1",
+                "@description": "Channel can be temporarily suspended by a higher-priority channel's service request"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "3",
+          "@width": "27",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "20",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CH{1}_MUX",
+        "@description": "Channel Multiplexor Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].CH_MUX"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "7",
+          "@name": "SRC",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Service Request Source",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_CH_MUX_SRC(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "7",
+          "@width": "25",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "32",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TCD{1}_SADDR",
+        "@description": "TCD Source Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_SADDR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SADDR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Source Address",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_TCD_SADDR_SADDR(x)"
+          }
+        }
+      },
+      {
+        "@rid": "36",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_SOFF",
+        "@description": "TCD Signed Source Address Offset",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_SOFF"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "SOFF",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Source Address Signed Offset",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_TCD_SOFF_SOFF(x)"
+          }
+        }
+      },
+      {
+        "@rid": "38",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_ATTR",
+        "@description": "TCD Transfer Attributes",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_ATTR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "3",
+            "@name": "DSIZE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Destination Data Transfer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_ATTR_DSIZE(x)"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "5",
+            "@name": "DMOD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Destination Address Modulo",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_ATTR_DMOD(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "3",
+            "@name": "SSIZE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Source Data Transfer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_ATTR_SSIZE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SSIZE_EIGHT_BIT",
+                "@value": "0b000",
+                "@description": "8-bit"
+              },
+              {
+                "@name": "CH_SSIZE_SIXTEEN_BIT",
+                "@value": "0b001",
+                "@description": "16-bit"
+              },
+              {
+                "@name": "CH_SSIZE_THIRTYTWO_BIT",
+                "@value": "0b010",
+                "@description": "32-bit"
+              },
+              {
+                "@name": "CH_SSIZE_SIXTYFOUR_BIT",
+                "@value": "0b011",
+                "@description": "64-bit"
+              },
+              {
+                "@name": "CH_SSIZE_SIXTEEN_BYTE",
+                "@value": "0b100",
+                "@description": "16-byte"
+              },
+              {
+                "@name": "CH_SSIZE_THIRTYTWO_BYTE",
+                "@value": "0b101",
+                "@description": "32-byte"
+              },
+              {
+                "@name": "CH_SSIZE_0b110",
+                "@value": "0b110",
+                "@description": "Reserved value."
+              },
+              {
+                "@name": "CH_SSIZE_0b111",
+                "@value": "0b111",
+                "@description": "Reserved value."
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "5",
+            "@name": "SMOD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Source Address Modulo",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_ATTR_SMOD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SMOD_DISABLE",
+                "@value": "0b00000",
+                "@description": "Source address modulo feature disabled"
+              },
+              {
+                "@name": "CH_SMOD_ENABLE",
+                "@value": "0b00001",
+                "@description": "Source address modulo feature enabled for any non-zero value [1-31]"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@rid": "40",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TCD{1}_NBYTES_MLOFFNO",
+        "@description": "TCD Transfer Size Without Minor Loop Offsets",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_NBYTES_MLOFFNO"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "30",
+            "@name": "NBYTES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Number of Bytes To Transfer Per Service Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_NBYTES_MLOFFNO_NBYTES(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DMLOE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Destination Minor Loop Offset Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_NBYTES_MLOFFNO_DMLOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_DMLOE_OFFSET_NOT_APPLIED",
+                "@value": "0b0",
+                "@description": "Minor loop offset not applied to DADDR"
+              },
+              {
+                "@name": "CH_DMLOE_OFFSET_APPLIED",
+                "@value": "0b1",
+                "@description": "Minor loop offset applied to DADDR"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "SMLOE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Source Minor Loop Offset Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_NBYTES_MLOFFNO_SMLOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SMLOE_OFFSET_NOT_APPLIED",
+                "@value": "0b0",
+                "@description": "Minor loop offset not applied to SADDR"
+              },
+              {
+                "@name": "CH_SMLOE_OFFSET_APPLIED",
+                "@value": "0b1",
+                "@description": "Minor loop offset applied to SADDR"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@rid": "41",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TCD{1}_NBYTES_MLOFFYES",
+        "@description": "TCD Transfer Size with Minor Loop Offsets",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_NBYTES_MLOFFYES"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "10",
+            "@name": "NBYTES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Number of Bytes To Transfer Per Service Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_NBYTES_MLOFFYES_NBYTES(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "20",
+            "@name": "MLOFF",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Minor Loop Offset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_NBYTES_MLOFFYES_MLOFF(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DMLOE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Destination Minor Loop Offset Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_NBYTES_MLOFFYES_DMLOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_DMLOE_OFFSET_NOT_APPLIED",
+                "@value": "0b0",
+                "@description": "Minor loop offset not applied to DADDR"
+              },
+              {
+                "@name": "CH_DMLOE_OFFSET_APPLIED",
+                "@value": "0b1",
+                "@description": "Minor loop offset applied to DADDR"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "SMLOE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Source Minor Loop Offset Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_NBYTES_MLOFFYES_SMLOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_SMLOE_OFFSET_NOT_APPLIED",
+                "@value": "0b0",
+                "@description": "Minor loop offset not applied to SADDR"
+              },
+              {
+                "@name": "CH_SMLOE_OFFSET_APPLIED",
+                "@value": "0b1",
+                "@description": "Minor loop offset applied to SADDR"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@rid": "44",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TCD{1}_SLAST_SDA",
+        "@description": "TCD Last Source Address Adjustment / Store DADDR Address",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "CH[{1}].TCD_SLAST_SDA"
+          },
+          {
+            "@type": "id",
+            "@value": "TCD{1}_SLAST"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SLAST_SDA",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Last Source Address Adjustment / Store DADDR Address",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_TCD_SLAST_SDA_SLAST_SDA(x)"
+          }
+        }
+      },
+      {
+        "@rid": "48",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TCD{1}_DADDR",
+        "@description": "TCD Destination Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_DADDR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "DADDR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Destination Address",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_TCD_DADDR_DADDR(x)"
+          }
+        }
+      },
+      {
+        "@rid": "52",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_DOFF",
+        "@description": "TCD Signed Destination Address Offset",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_DOFF"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "DOFF",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Destination Address Signed Offset",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_TCD_DOFF_DOFF(x)"
+          }
+        }
+      },
+      {
+        "@rid": "54",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_CITER_ELINKNO",
+        "@description": "TCD Current Major Loop Count (Minor Loop Channel Linking Disabled)",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_CITER_ELINKNO"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "15",
+            "@name": "CITER",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Current Major Iteration Count",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CITER_ELINKNO_CITER(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "ELINK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Link",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CITER_ELINKNO_ELINK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ELINK_DISABLE",
+                "@value": "0b0",
+                "@description": "Channel-to-channel linking disabled"
+              },
+              {
+                "@name": "CH_ELINK_ENABLE",
+                "@value": "0b1",
+                "@description": "Channel-to-channel linking enabled"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@rid": "55",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_CITER_ELINKYES",
+        "@description": "TCD Current Major Loop Count (Minor Loop Channel Linking Enabled)",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_CITER_ELINKYES"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "9",
+            "@name": "CITER",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Current Major Iteration Count",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "DMA_TCD_CITER_ELINKYES_CITER(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "CITER_LE"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "4",
+            "@name": "LINKCH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Minor Loop Link Channel Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CITER_ELINKYES_LINKCH(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "ELINK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Link",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CITER_ELINKYES_ELINK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ELINK_DISABLE",
+                "@value": "0b0",
+                "@description": "Channel-to-channel linking disabled"
+              },
+              {
+                "@name": "CH_ELINK_ENABLE",
+                "@value": "0b1",
+                "@description": "Channel-to-channel linking enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "13",
+          "@width": "2",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@rid": "56",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TCD{1}_DLAST_SGA",
+        "@description": "TCD Last Destination Address Adjustment / Scatter Gather Address",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "CH[{1}].TCD_DLAST_SGA"
+          },
+          {
+            "@type": "id",
+            "@value": "TCD{1}_DLASTSGA"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "DLAST_SGA",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Last Destination Address Adjustment / Scatter Gather Address",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_TCD_DLAST_SGA_DLAST_SGA(x)"
+          }
+        }
+      },
+      {
+        "@rid": "60",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_CSR",
+        "@description": "TCD Control and Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_CSR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "START",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Channel Start",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_START(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_START_CHANNEL_NOT_STARTED",
+                "@value": "0b0",
+                "@description": "Channel not explicitly started"
+              },
+              {
+                "@name": "CH_START_CHANNEL_STARTED",
+                "@value": "0b1",
+                "@description": "Channel explicitly started via a software-initiated service request"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "INTMAJOR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Interrupt If Major count complete",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_INTMAJOR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_INTMAJOR_DISABLE",
+                "@value": "0b0",
+                "@description": "End-of-major loop interrupt disabled"
+              },
+              {
+                "@name": "CH_INTMAJOR_ENABLE",
+                "@value": "0b1",
+                "@description": "End-of-major loop interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "INTHALF",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Interrupt If Major Counter Half-complete",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_INTHALF(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_INTHALF_DISABLE",
+                "@value": "0b0",
+                "@description": "Halfway point interrupt disabled"
+              },
+              {
+                "@name": "CH_INTHALF_ENABLE",
+                "@value": "0b1",
+                "@description": "Halfway point interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "DREQ",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Disable Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_DREQ(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_DREQ_CHANNEL_NOT_AFFECTED",
+                "@value": "0b0",
+                "@description": "No operation"
+              },
+              {
+                "@name": "CH_DREQ_ERQ_FIELD_CLEAR",
+                "@value": "0b1",
+                "@description": "Clear the ERQ field to 0 upon major loop completion, thus disabling hardware service requests"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "ESG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Scatter/Gather Processing",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_ESG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ESG_NORMAL_FORMAT",
+                "@value": "0b0",
+                "@description": "Current channel's TCD is normal format"
+              },
+              {
+                "@name": "CH_ESG_SCATTER_GATHER_FORMAT",
+                "@value": "0b1",
+                "@description": "Current channel's TCD specifies scatter/gather format."
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "MAJORELINK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Link When Major Loop Complete",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_MAJORELINK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_MAJORELINK_DISABLE",
+                "@value": "0b0",
+                "@description": "Channel-to-channel linking disabled"
+              },
+              {
+                "@name": "CH_MAJORELINK_ENABLE",
+                "@value": "0b1",
+                "@description": "Channel-to-channel linking enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "EEOP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable End-Of-Packet Processing",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_EEOP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_EEOP_DISABLE",
+                "@value": "0b0",
+                "@description": "End-of-packet operation disabled"
+              },
+              {
+                "@name": "CH_EEOP_ENABLE",
+                "@value": "0b1",
+                "@description": "End-of-packet hardware input signal enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "ESDA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Store Destination Address",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_ESDA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ESDA_DISABLE",
+                "@value": "0b0",
+                "@description": "Ability to store destination address to system memory disabled"
+              },
+              {
+                "@name": "CH_ESDA_ENABLE",
+                "@value": "0b1",
+                "@description": "Ability to store destination address to system memory enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "MAJORLINKCH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Major Loop Link Channel Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_MAJORLINKCH(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "BWC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Bandwidth Control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_CSR_BWC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_BWC_NO_STALL",
+                "@value": "0b00",
+                "@description": "No eDMA engine stalls"
+              },
+              {
+                "@name": "CH_BWC_0b01",
+                "@value": "0b01",
+                "@description": "Reserved value."
+              },
+              {
+                "@name": "CH_BWC_ENGINE_STALLS_FOUR",
+                "@value": "0b10",
+                "@description": "eDMA engine stalls for 4 cycles after each R/W"
+              },
+              {
+                "@name": "CH_BWC_ENGINE_STALLS_EIGHT",
+                "@value": "0b11",
+                "@description": "eDMA engine stalls for 8 cycles after each R/W"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "12",
+          "@width": "2",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@rid": "62",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_BITER_ELINKNO",
+        "@description": "TCD Beginning Major Loop Count (Minor Loop Channel Linking Disabled)",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_BITER_ELINKNO"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "15",
+            "@name": "BITER",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Starting Major Iteration Count",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_BITER_ELINKNO_BITER(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "ELINK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enables Link",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_BITER_ELINKNO_ELINK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ELINK_DISABLE",
+                "@value": "0b0",
+                "@description": "Channel-to-channel linking disabled"
+              },
+              {
+                "@name": "CH_ELINK_ENABLE",
+                "@value": "0b1",
+                "@description": "Channel-to-channel linking enabled"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@rid": "63",
+        "@offset": "{0}",
+        "@width": "16",
+        "@name": "TCD{1}_BITER_ELINKYES",
+        "@description": "TCD Beginning Major Loop Count (Minor Loop Channel Linking Enabled)",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH[{1}].TCD_BITER_ELINKYES"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "9",
+            "@name": "BITER",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Starting Major Iteration Count",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_BITER_ELINKYES_BITER(x)"
+            }
+          },
+          {
+            "@offset": "9",
+            "@width": "4",
+            "@name": "LINKCH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Link Channel Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_BITER_ELINKYES_LINKCH(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "ELINK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Enable Link",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_TCD_BITER_ELINKYES_ELINK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CH_ELINK_DISABLE",
+                "@value": "0b0",
+                "@description": "Channel-to-channel linking disabled"
+              },
+              {
+                "@name": "CH_ELINK_ENABLE",
+                "@value": "0b1",
+                "@description": "Channel-to-channel linking enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "13",
+          "@width": "2",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@rid": "256",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CH{1}_GRPRI",
+        "@description": "Channel Arbitration Group",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CH_GRPRI[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "5",
+          "@name": "GRPRI",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Arbitration Group For Channel n",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_CH_GRPRI_GRPRI(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "5",
+          "@width": "27",
+          "@reset_value": "0"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "0",
+        "@vals": "0 0"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x4 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x8 0"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xC 0"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x10 0"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x14 0"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x20 0"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x24 0"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x26 0"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x28 0"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x28 0"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x2C 0"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x30 0"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x34 0"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x36 0"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x36 0"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x38 0"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x3C 0"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x3E 0"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x3E 0"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x100 0"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x104 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x108 2"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x10C 3"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x110 4"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x114 5"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x118 6"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x11C 7"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x120 8"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x124 9"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x128 10"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x12C 11"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x130 12"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x134 13"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x138 14"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x13C 15"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x1000 1"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x1004 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x1008 1"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x100C 1"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x1010 1"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x1014 1"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x1020 1"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x1024 1"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x1026 1"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x1028 1"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x1028 1"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x102C 1"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x1030 1"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x1034 1"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x1036 1"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x1036 1"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x1038 1"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x103C 1"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x103E 1"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x103E 1"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x2000 2"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x2004 2"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x2008 2"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x200C 2"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x2010 2"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x2014 2"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x2020 2"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x2024 2"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x2026 2"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x2028 2"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x2028 2"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x202C 2"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x2030 2"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x2034 2"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x2036 2"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x2036 2"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x2038 2"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x203C 2"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x203E 2"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x203E 2"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x3000 3"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x3004 3"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x3008 3"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x300C 3"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x3010 3"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x3014 3"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x3020 3"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x3024 3"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x3026 3"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x3028 3"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x3028 3"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x302C 3"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x3030 3"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x3034 3"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x3036 3"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x3036 3"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x3038 3"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x303C 3"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x303E 3"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x303E 3"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x4000 4"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x4004 4"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x4008 4"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x400C 4"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x4010 4"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x4014 4"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x4020 4"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x4024 4"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x4026 4"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x4028 4"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x4028 4"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x402C 4"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x4030 4"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x4034 4"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x4036 4"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x4036 4"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x4038 4"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x403C 4"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x403E 4"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x403E 4"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x5000 5"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x5004 5"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x5008 5"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x500C 5"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x5010 5"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x5014 5"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x5020 5"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x5024 5"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x5026 5"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x5028 5"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x5028 5"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x502C 5"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x5030 5"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x5034 5"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x5036 5"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x5036 5"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x5038 5"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x503C 5"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x503E 5"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x503E 5"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x6000 6"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x6004 6"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x6008 6"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x600C 6"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x6010 6"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x6014 6"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x6020 6"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x6024 6"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x6026 6"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x6028 6"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x6028 6"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x602C 6"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x6030 6"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x6034 6"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x6036 6"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x6036 6"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x6038 6"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x603C 6"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x603E 6"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x603E 6"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x7000 7"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x7004 7"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x7008 7"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x700C 7"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x7010 7"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x7014 7"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x7020 7"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x7024 7"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x7026 7"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x7028 7"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x7028 7"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x702C 7"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x7030 7"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x7034 7"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x7036 7"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x7036 7"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x7038 7"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x703C 7"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x703E 7"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x703E 7"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x8000 8"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x8004 8"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x8008 8"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x800C 8"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x8010 8"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x8014 8"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x8020 8"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x8024 8"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x8026 8"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x8028 8"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x8028 8"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x802C 8"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x8030 8"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x8034 8"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x8036 8"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x8036 8"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x8038 8"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x803C 8"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x803E 8"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x803E 8"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0x9000 9"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0x9004 9"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x9008 9"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x900C 9"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x9010 9"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x9014 9"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x9020 9"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x9024 9"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0x9026 9"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0x9028 9"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0x9028 9"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0x902C 9"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0x9030 9"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0x9034 9"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0x9036 9"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0x9036 9"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x9038 9"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0x903C 9"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0x903E 9"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0x903E 9"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0xA000 10"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0xA004 10"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xA008 10"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xA00C 10"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0xA010 10"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0xA014 10"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0xA020 10"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0xA024 10"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0xA026 10"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0xA028 10"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0xA028 10"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0xA02C 10"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0xA030 10"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0xA034 10"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0xA036 10"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0xA036 10"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0xA038 10"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0xA03C 10"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0xA03E 10"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0xA03E 10"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0xB000 11"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0xB004 11"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xB008 11"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xB00C 11"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0xB010 11"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0xB014 11"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0xB020 11"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0xB024 11"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0xB026 11"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0xB028 11"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0xB028 11"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0xB02C 11"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0xB030 11"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0xB034 11"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0xB036 11"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0xB036 11"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0xB038 11"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0xB03C 11"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0xB03E 11"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0xB03E 11"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0xC000 12"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0xC004 12"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xC008 12"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xC00C 12"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0xC010 12"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0xC014 12"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0xC020 12"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0xC024 12"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0xC026 12"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0xC028 12"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0xC028 12"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0xC02C 12"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0xC030 12"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0xC034 12"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0xC036 12"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0xC036 12"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0xC038 12"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0xC03C 12"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0xC03E 12"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0xC03E 12"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0xD000 13"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0xD004 13"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xD008 13"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xD00C 13"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0xD010 13"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0xD014 13"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0xD020 13"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0xD024 13"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0xD026 13"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0xD028 13"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0xD028 13"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0xD02C 13"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0xD030 13"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0xD034 13"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0xD036 13"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0xD036 13"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0xD038 13"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0xD03C 13"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0xD03E 13"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0xD03E 13"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0xE000 14"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0xE004 14"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xE008 14"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xE00C 14"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0xE010 14"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0xE014 14"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0xE020 14"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0xE024 14"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0xE026 14"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0xE028 14"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0xE028 14"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0xE02C 14"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0xE030 14"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0xE034 14"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0xE036 14"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0xE036 14"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0xE038 14"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0xE03C 14"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0xE03E 14"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0xE03E 14"
+      },
+      {
+        "@rid": "0",
+        "@vals": "0xF000 15"
+      },
+      {
+        "@rid": "4",
+        "@vals": "0xF004 15"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xF008 15"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xF00C 15"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0xF010 15"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0xF014 15"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0xF020 15"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0xF024 15"
+      },
+      {
+        "@rid": "38",
+        "@vals": "0xF026 15"
+      },
+      {
+        "@rid": "40",
+        "@vals": "0xF028 15"
+      },
+      {
+        "@rid": "41",
+        "@vals": "0xF028 15"
+      },
+      {
+        "@rid": "44",
+        "@vals": "0xF02C 15"
+      },
+      {
+        "@rid": "48",
+        "@vals": "0xF030 15"
+      },
+      {
+        "@rid": "52",
+        "@vals": "0xF034 15"
+      },
+      {
+        "@rid": "54",
+        "@vals": "0xF036 15"
+      },
+      {
+        "@rid": "55",
+        "@vals": "0xF036 15"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0xF038 15"
+      },
+      {
+        "@rid": "60",
+        "@vals": "0xF03C 15"
+      },
+      {
+        "@rid": "62",
+        "@vals": "0xF03E 15"
+      },
+      {
+        "@rid": "63",
+        "@vals": "0xF03E 15"
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "MP_CSR",
+        "@description": "Management Page Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MP_CSR"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "6",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@reset_value": "0x31"
+          },
+          {
+            "@offset": "28",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "EDBG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Debug",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_EDBG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_EDBG_DISABLE",
+                "@value": "0b0",
+                "@description": "Debug mode disabled"
+              },
+              {
+                "@name": "MP_CSR_EDBG_ENABLE",
+                "@value": "0b1",
+                "@description": "Debug mode is enabled."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ERCA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Round Robin Channel Arbitration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_ERCA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_ERCA_DISABLE",
+                "@value": "0b0",
+                "@description": "Round-robin channel arbitration disabled"
+              },
+              {
+                "@name": "MP_CSR_ERCA_ENABLE",
+                "@value": "0b1",
+                "@description": "Round-robin channel arbitration enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "HAE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Halt After Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_HAE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_HAE_NORMAL_OPERATION",
+                "@value": "0b0",
+                "@description": "Normal operation"
+              },
+              {
+                "@name": "MP_CSR_HAE_HALT",
+                "@value": "0b1",
+                "@description": "Any error causes the HALT field to be set to 1"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "HALT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Halt DMA Operations",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_HALT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_HALT_NORMAL_OPERATION",
+                "@value": "0b0",
+                "@description": "Normal operation"
+              },
+              {
+                "@name": "MP_CSR_HALT_STALL",
+                "@value": "0b1",
+                "@description": "Stall the start of any new channels"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "GCLC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Global Channel Linking Control",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "DMA_MP_CSR_GCLC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ECL"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_GCLC_DISABLE",
+                "@value": "0b0",
+                "@description": "Channel linking disabled for all channels"
+              },
+              {
+                "@name": "MP_CSR_GCLC_AVAILABLE",
+                "@value": "0b1",
+                "@description": "Channel linking available and controlled by each channel's link settings"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "GMRC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Global Master ID Replication Control",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "DMA_MP_CSR_GMRC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "EMI"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_GMRC_DISABLE",
+                "@value": "0b0",
+                "@description": "Master ID replication disabled for all channels"
+              },
+              {
+                "@name": "MP_CSR_GMRC_AVAILABLE",
+                "@value": "0b1",
+                "@description": "Master ID replication available and controlled by each channel's CHn_SBR[EMI] setting"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "ECX",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Cancel Transfer With Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_ECX(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_ECX_NORMAL_OPERATION",
+                "@value": "0b0",
+                "@description": "Normal operation"
+              },
+              {
+                "@name": "MP_CSR_ECX_CANCEL",
+                "@value": "0b1",
+                "@description": "Cancel the remaining data transfer"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "CX",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Cancel Transfer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_CX(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_CX_NORMAL_OPERATION",
+                "@value": "0b0",
+                "@description": "Normal operation"
+              },
+              {
+                "@name": "MP_CSR_CX_DATA_TRANSFER_CANCEL",
+                "@value": "0b1",
+                "@description": "Cancel the remaining data transfer"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "ACTIVE_ID",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Active Channel ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_ACTIVE_ID(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "ACTIVE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "DMA Active Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_CSR_ACTIVE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_CSR_ACTIVE_IDLE",
+                "@value": "0b0",
+                "@description": "eDMA is idle"
+              },
+              {
+                "@name": "MP_CSR_ACTIVE_EXECUTION",
+                "@value": "0b1",
+                "@description": "eDMA is executing a channel"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "MP_ES",
+        "@description": "Management Page Error Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MP_ES"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DBE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Destination Bus Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_DBE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_DBE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No destination bus error"
+              },
+              {
+                "@name": "MP_ES_DBE_BUS_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a bus error on a destination write"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "SBE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Source Bus Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_SBE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_SBE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No source bus error"
+              },
+              {
+                "@name": "MP_ES_SBE_BUS_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a bus error on a source read"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "SGE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Scatter/Gather Configuration Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_SGE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_SGE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No scatter/gather configuration error"
+              },
+              {
+                "@name": "MP_ES_SGE_CONFIGURATION_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_DLAST_SGA field"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "NCE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "NBYTES/CITER Configuration Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_NCE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_NCE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No NBYTES/CITER configuration error"
+              },
+              {
+                "@name": "MP_ES_NCE_CONFIGURATION_ERROR",
+                "@value": "0b1",
+                "@description": "The last recorded error was NBYTES equal to zero or a CITER not equal to BITER error"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "DOE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Destination Offset Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_DOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_DOE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No destination offset configuration error"
+              },
+              {
+                "@name": "MP_ES_DOE_CONFIGURATION_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_DOFF field"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "DAE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Destination Address Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_DAE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_DAE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No destination address configuration error"
+              },
+              {
+                "@name": "MP_ES_DAE_CONFIGURATION_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_DADDR field"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "SOE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Source Offset Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_SOE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_SOE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No source offset configuration error"
+              },
+              {
+                "@name": "MP_ES_SOE_CONFIGURATION_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_SOFF field"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "SAE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Source Address Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_SAE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_SAE_NO_ERROR",
+                "@value": "0b0",
+                "@description": "No source address configuration error"
+              },
+              {
+                "@name": "MP_ES_SAE_CONFIGURATION_ERROR",
+                "@value": "0b1",
+                "@description": "Last recorded error was a configuration error detected in the TCDn_SADDR field"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "ECX",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Transfer Canceled",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_ECX(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_ECX_NO_CANCELED_TRANSFERS",
+                "@value": "0b0",
+                "@description": "No canceled transfers"
+              },
+              {
+                "@name": "MP_ES_ECX_CANCELED_TRANSFER",
+                "@value": "0b1",
+                "@description": "Last recorded entry was a canceled transfer by the error cancel transfer input"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "ERRCHN",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Error Channel Number or Canceled Channel Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_ERRCHN(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "VLD",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "DMA_MP_ES_VLD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MP_ES_VLD_NO_FIELD_SET_ONE",
+                "@value": "0b0",
+                "@description": "No CHn_ES[ERR] fields are set to 1"
+              },
+              {
+                "@name": "MP_ES_VLD_ATLEAST_ONE_FIELD",
+                "@value": "0b1",
+                "@description": "At least one CHn_ES[ERR] field is set to 1, indicating a valid error exists that software has not cleared"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "9",
+            "@width": "15",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "MP_INT",
+        "@description": "Management Page Interrupt Request Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MP_INT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "INT",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Interrupt Request Status",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_MP_INT_INT(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "MP_HRS",
+        "@description": "Management Page Hardware Request Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MP_HRS"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "HRS",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Hardware Request Status",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "DMA_MP_HRS_HRS(x)"
+          }
+        }
+      }
+    ]
+  }
+}

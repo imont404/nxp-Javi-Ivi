@@ -1,0 +1,6577 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "96",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FLSHA{1}CR0",
+        "@description": "Flash Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLSHCR0[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "23",
+            "@name": "FLSHSZ",
+            "@access": "RW",
+            "@reset_value": "0x10000",
+            "@description": "Flash Size in KB",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_FLSHSZ(x)"
+            }
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "ADDRSHIFT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Address Shift Function control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_ADDRSHIFT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR0_ADDRSHIFT_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "FLSHCR0_ADDRSHIFT_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "SPLITWREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Write Access Split Function Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_SPLITWREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR0_SPLITWREN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "FLSHCR0_SPLITWREN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "SPLITRDEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read Access Split Function Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_SPLITRDEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR0_SPLITRDEN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "FLSHCR0_SPLITRDEN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "23",
+          "@width": "6",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "104",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FLSHB{1}CR0",
+        "@description": "Flash Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLSHCR0[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "23",
+            "@name": "FLSHSZ",
+            "@access": "RW",
+            "@reset_value": "0x10000",
+            "@description": "Flash Size in KB",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_FLSHSZ(x)"
+            }
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "ADDRSHIFT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Address Shift Function control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_ADDRSHIFT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR0_ADDRSHIFT_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "FLSHCR0_ADDRSHIFT_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "SPLITWREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Write Access Split Function Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_SPLITWREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR0_SPLITWREN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "FLSHCR0_SPLITWREN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "SPLITRDEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read Access Split Function Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR0_SPLITRDEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR0_SPLITRDEN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "FLSHCR0_SPLITRDEN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "23",
+          "@width": "6",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "112",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FLSHA{1}CR1",
+        "@description": "Flash Control 1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLSHCR1[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "TCSS",
+            "@access": "RW",
+            "@reset_value": "0x3",
+            "@description": "Serial Flash CS Setup Time",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_TCSS(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "5",
+            "@name": "TCSH",
+            "@access": "RW",
+            "@reset_value": "0x3",
+            "@description": "Serial Flash CS Hold Time",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_TCSH(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "WA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Word-Addressable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_WA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR1_WA_value0",
+                "@value": "0b0",
+                "@description": "Byte-addressable"
+              },
+              {
+                "@name": "FLSHCR1_WA_value1",
+                "@value": "0b1",
+                "@description": "Word-addressable"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "4",
+            "@name": "CAS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Column Address Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_CAS(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "CSINTERVALUNIT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Chip Select Interval Unit",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_CSINTERVALUNIT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR1_CSINTERVALUNIT_val0",
+                "@value": "0b0",
+                "@description": "1 serial clock cycle"
+              },
+              {
+                "@name": "FLSHCR1_CSINTERVALUNIT_val1",
+                "@value": "0b1",
+                "@description": "256 serial clock cycles"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "CSINTERVAL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Chip Select Interval",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_CSINTERVAL(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "120",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FLSHB{1}CR1",
+        "@description": "Flash Control 1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLSHCR1[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "TCSS",
+            "@access": "RW",
+            "@reset_value": "0x3",
+            "@description": "Serial Flash CS Setup Time",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_TCSS(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "5",
+            "@name": "TCSH",
+            "@access": "RW",
+            "@reset_value": "0x3",
+            "@description": "Serial Flash CS Hold Time",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_TCSH(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "WA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Word-Addressable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_WA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR1_WA_value0",
+                "@value": "0b0",
+                "@description": "Byte-addressable"
+              },
+              {
+                "@name": "FLSHCR1_WA_value1",
+                "@value": "0b1",
+                "@description": "Word-addressable"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "4",
+            "@name": "CAS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Column Address Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_CAS(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "CSINTERVALUNIT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Chip Select Interval Unit",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_CSINTERVALUNIT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR1_CSINTERVALUNIT_val0",
+                "@value": "0b0",
+                "@description": "1 serial clock cycle"
+              },
+              {
+                "@name": "FLSHCR1_CSINTERVALUNIT_val1",
+                "@value": "0b1",
+                "@description": "256 serial clock cycles"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "CSINTERVAL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Chip Select Interval",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR1_CSINTERVAL(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "128",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FLSHA{1}CR2",
+        "@description": "Flash Control 2",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLSHCR2[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "ARDSEQID",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Index for AHB Read-Triggered Command in LUT",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_ARDSEQID(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "3",
+            "@name": "ARDSEQNUM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Number for AHB Read-Triggered Command",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_ARDSEQNUM(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "AWRSEQID",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Index for AHB Write-Triggered Command",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRSEQID(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@name": "AWRSEQNUM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Number for AHB Write-Triggered Command",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRSEQNUM(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "12",
+            "@name": "AWRWAIT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Write Wait",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRWAIT(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "3",
+            "@name": "AWRWAITUNIT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AWRWAIT Unit",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRWAITUNIT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val0",
+                "@value": "0b000",
+                "@description": "2"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val1",
+                "@value": "0b001",
+                "@description": "8"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val2",
+                "@value": "0b010",
+                "@description": "32"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val3",
+                "@value": "0b011",
+                "@description": "128"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val4",
+                "@value": "0b100",
+                "@description": "512"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val5",
+                "@value": "0b101",
+                "@description": "2048"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val6",
+                "@value": "0b110",
+                "@description": "8192"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val7",
+                "@value": "0b111",
+                "@description": "32768"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "CLRINSTRPTR",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Clear Instruction Pointer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_CLRINSTRPTR(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "136",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FLSHB{1}CR2",
+        "@description": "Flash Control 2",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLSHCR2[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "ARDSEQID",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Index for AHB Read-Triggered Command in LUT",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_ARDSEQID(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "3",
+            "@name": "ARDSEQNUM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Number for AHB Read-Triggered Command",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_ARDSEQNUM(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "AWRSEQID",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Index for AHB Write-Triggered Command",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRSEQID(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@name": "AWRSEQNUM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Number for AHB Write-Triggered Command",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRSEQNUM(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "12",
+            "@name": "AWRWAIT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Write Wait",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRWAIT(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "3",
+            "@name": "AWRWAITUNIT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AWRWAIT Unit",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_AWRWAITUNIT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val0",
+                "@value": "0b000",
+                "@description": "2"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val1",
+                "@value": "0b001",
+                "@description": "8"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val2",
+                "@value": "0b010",
+                "@description": "32"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val3",
+                "@value": "0b011",
+                "@description": "128"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val4",
+                "@value": "0b100",
+                "@description": "512"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val5",
+                "@value": "0b101",
+                "@description": "2048"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val6",
+                "@value": "0b110",
+                "@description": "8192"
+              },
+              {
+                "@name": "FLSHCR2_AWRWAITUNIT_val7",
+                "@value": "0b111",
+                "@description": "32768"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "CLRINSTRPTR",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Clear Instruction Pointer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR2_CLRINSTRPTR(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "256",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "RFDR{1}",
+        "@description": "IP Receive FIFO Data {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "RFDR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "RXDATA",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Receive Data",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_RFDR_RXDATA(x)"
+          }
+        }
+      },
+      {
+        "@rid": "384",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TFDR{1}",
+        "@description": "IP TX FIFO Data {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TFDR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "TXDATA",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Transmit Data",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_TFDR_TXDATA(x)"
+          }
+        }
+      },
+      {
+        "@rid": "512",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "LUT{1}",
+        "@description": "Lookup Table {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "LUT[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "OPERAND0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "OPERAND0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUT_OPERAND0(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "NUM_PADS0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "NUM_PADS0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUT_NUM_PADS0(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "6",
+            "@name": "OPCODE0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "OPCODE",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUT_OPCODE0(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "OPERAND1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "OPERAND1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUT_OPERAND1(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "2",
+            "@name": "NUM_PADS1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "NUM_PADS1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUT_NUM_PADS1(x)"
+            }
+          },
+          {
+            "@offset": "26",
+            "@width": "6",
+            "@name": "OPCODE1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "OPCODE1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUT_OPCODE1(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "1072",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "IPSNSZSTART{1}",
+        "@description": "IPS Nonsecure Region {1} Start Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPSNSZSTART{1}"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@name": "start_address",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Start Address of Nonsecure Region",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_IPSNSZSTART{1}_start_address(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1076",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "IPSNSZEND{1}",
+        "@description": "IPS Nonsecure Region {1} End Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPSNSZEND{1}"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@name": "end_address",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "End Address of Nonsecure Region",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_IPSNSZEND{1}_end_address(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1088",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "AHBBUFREGIONSTART{1}",
+        "@description": "Receive Buffer Start Address of Region {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBBUFREGIONSTART{1}"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@name": "START_ADDRESS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Start Address of Prefetch Sub-Buffer Region",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_AHBBUFREGIONSTART{1}_START_ADDRESS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1092",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "AHBBUFREGIONEND{1}",
+        "@description": "Receive Buffer Region {1} End Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBBUFREGIONEND{1}"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@name": "END_ADDRESS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "End Address of Prefetch Sub-Buffer Region",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_AHBBUFREGIONEND{1}_END_ADDRESS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1312",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "IPEDCTX{1}IV0",
+        "@description": "IPED Context{1} IV0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTX{1}IV0"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "CTX{1}_IV0",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Lowest 32 bits of IV for region {1}.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_IPEDCTX{1}IV0_CTX{1}_IV0(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1316",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "IPEDCTX{1}IV1",
+        "@description": "IPED Context{1} IV1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTX{1}IV1"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "CTX{1}_IV1",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Highest 32 bits of IV for region {1}.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_IPEDCTX{1}IV1_CTX{1}_IV1(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1320",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "IPEDCTX{1}START",
+        "@description": "Start Address of Region",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTX{1}START"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "GCM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "GCM Mode Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTX{1}START_GCM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTX{1}START_GCM_value0",
+                "@value": "0b0",
+                "@description": "Disabled. CTR mode is used."
+              },
+              {
+                "@name": "IPEDCTX{1}START_GCM_value1",
+                "@value": "0b1",
+                "@description": "Enabled. GCM mode is used."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "ahbbuserror_dis",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Bus Error Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTX{1}START_ahbbuserror_dis(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTX{1}START_ahbbuserror_dis_value0",
+                "@value": "0b0",
+                "@description": "AHB bus errors enabled"
+              },
+              {
+                "@name": "IPEDCTX{1}START_ahbbuserror_dis_value1",
+                "@value": "0b1",
+                "@description": "AHB bus errors disabled"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "24",
+            "@name": "start_address",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start Address",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTX{1}START_start_address(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "2",
+          "@width": "6",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1324",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "IPEDCTX{1}END",
+        "@description": "End Address of Region",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTX{1}END"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@name": "end_address",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "End Address of IPED Region",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_IPEDCTX{1}END_end_address(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1328",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "IPEDCTX{1}AAD{2}",
+        "@description": "IPED Context{1} Additional Authenticated Data{2}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTX{1}AAD{2}"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "CTX{1}_AAD{2}",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "CTX AAD",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTX{1}AAD{2}_CTX{1}_AAD{2}(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "CTX_AAD"
+            }
+          ]
+        }
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "MCR0",
+        "@description": "Module Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MCR0"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "SWRESET",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Software Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_SWRESET(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_SWRESET_val0",
+                "@value": "0b0",
+                "@description": "No impact"
+              },
+              {
+                "@name": "MCR0_SWRESET_val1",
+                "@value": "0b1",
+                "@description": "Software reset"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "MDIS",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Module Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_MDIS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_MDIS_val0",
+                "@value": "0b0",
+                "@description": "No impact"
+              },
+              {
+                "@name": "MCR0_MDIS_val1",
+                "@value": "0b1",
+                "@description": "Module disable"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "RXCLKSRC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sample Clock Source for Flash Reading",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_RXCLKSRC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_RXCLKSRC_val0",
+                "@value": "0b00",
+                "@description": "Dummy Read strobe that FlexSPI generates, looped back internally"
+              },
+              {
+                "@name": "MCR0_RXCLKSRC_val1",
+                "@value": "0b01",
+                "@description": "Dummy Read strobe that FlexSPI generates, looped back from DQS pad"
+              },
+              {
+                "@name": "MCR0_RXCLKSRC_val2",
+                "@value": "0b10",
+                "@description": "SCLK output clock and looped back from SCLK pad"
+              },
+              {
+                "@name": "MCR0_RXCLKSRC_val3",
+                "@value": "0b11",
+                "@description": "Flash-memory-provided read strobe and input from DQS pad"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "3",
+            "@name": "SERCLKDIV",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Serial Root Clock Divider",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_SERCLKDIV(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_SERCLKDIV_val0",
+                "@value": "0b000",
+                "@description": "Divided by 1"
+              },
+              {
+                "@name": "MCR0_SERCLKDIV_val1",
+                "@value": "0b001",
+                "@description": "Divided by 2"
+              },
+              {
+                "@name": "MCR0_SERCLKDIV_val2",
+                "@value": "0b010",
+                "@description": "Divided by 3"
+              },
+              {
+                "@name": "MCR0_SERCLKDIV_val3",
+                "@value": "0b011",
+                "@description": "Divided by 4"
+              },
+              {
+                "@name": "MCR0_SERCLKDIV_val4",
+                "@value": "0b100",
+                "@description": "Divided by 5"
+              },
+              {
+                "@name": "MCR0_SERCLKDIV_val5",
+                "@value": "0b101",
+                "@description": "Divided by 6"
+              },
+              {
+                "@name": "MCR0_SERCLKDIV_val6",
+                "@value": "0b110",
+                "@description": "Divided by 7"
+              },
+              {
+                "@name": "MCR0_SERCLKDIV_val7",
+                "@value": "0b111",
+                "@description": "Divided by 8"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "HSEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Half Speed Serial Flash Memory Access Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_HSEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_HSEN_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "MCR0_HSEN_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "DOZEEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Doze Mode Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_DOZEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_DOZEEN_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "MCR0_DOZEEN_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "COMBINATIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Combination Mode Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_COMBINATIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_COMBINATIONEN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "MCR0_COMBINATIONEN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "SCKFREERUNEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SCLK Free-running Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_SCKFREERUNEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_SCKFREERUNEN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "MCR0_SCKFREERUNEN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "LEARNEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Data Learning Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_LEARNEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR0_LEARNEN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "MCR0_LEARNEN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "IPGRANTWAIT",
+            "@access": "RW",
+            "@reset_value": "0xFF",
+            "@description": "Timeout Wait Cycle for IP Command Grant",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_IPGRANTWAIT(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "AHBGRANTWAIT",
+            "@access": "RW",
+            "@reset_value": "0xFF",
+            "@description": "Timeouts Wait Cycle for AHB command Grant",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR0_AHBGRANTWAIT(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "MCR1",
+        "@description": "Module Control 1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MCR1"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "AHBBUSWAIT",
+            "@access": "RW",
+            "@reset_value": "0xFFFF",
+            "@description": "AHB Bus Wait",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR1_AHBBUSWAIT(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "SEQWAIT",
+            "@access": "RW",
+            "@reset_value": "0xFFFF",
+            "@description": "Command Sequence Wait",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR1_SEQWAIT(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "MCR2",
+        "@description": "Module Control 2",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MCR2"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "9",
+            "@reset_value": "0x1F7"
+          },
+          {
+            "@offset": "9",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "CLRAHBBUFOPT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Clear AHB Buffer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR2_CLRAHBBUFOPT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR2_CLRAHBBUFOPT_val0",
+                "@value": "0b0",
+                "@description": "Not cleared automatically"
+              },
+              {
+                "@name": "MCR2_CLRAHBBUFOPT_val1",
+                "@value": "0b1",
+                "@description": "Cleared automatically"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "CLRLEARNPHASE",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Clear Learn Phase Selection",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR2_CLRLEARNPHASE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR2_CLRLEARNPHASE_val0",
+                "@value": "0b0",
+                "@description": "No impact"
+              },
+              {
+                "@name": "MCR2_CLRLEARNPHASE_val1",
+                "@value": "0b1",
+                "@description": "Reset sample clock phase selection to 0"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "SAMEDEVICEEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Same Device Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR2_SAMEDEVICEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR2_SAMEDEVICEEN_individual_parallel",
+                "@value": "0b0",
+                "@description": "In Individual mode, FLSHA1CRx and FLSHA2CRx, FLSHB1CRx and FLSHB2CRx settings are applied to Flash A1, A2, B1, B2 separately. In Parallel mode, FLSHA1CRx register setting is applied to Flash A1 and B1, FLSHA2CRx register setting is applied to Flash A2 and B2. FLSHB1CRx and FLSHB2CRx register settings are ignored."
+              },
+              {
+                "@name": "MCR2_SAMEDEVICEEN_ENABLE",
+                "@value": "0b1",
+                "@description": "FLSHA1CR0, FLSHA1CR1, and FLSHA1CR2 register settings are applied to Flash A1, A2, B1, B2. FLSHA2CRx, FLSHB1CRx, and FLSHB2CRx settings are ignored."
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "SCKBDIFFOPT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SCLK Port B Differential Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR2_SCKBDIFFOPT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR2_SCKBDIFFOPT_val1",
+                "@value": "0b0",
+                "@description": "Use B_SCLK pad as port B SCLK clock output. Port B flash memory access is available."
+              },
+              {
+                "@name": "MCR2_SCKBDIFFOPT_val0",
+                "@value": "0b1",
+                "@description": "Use B_SCLK pad as port A SCLK inverted clock output (Differential clock to A_SCLK). Port B flash memory access is not available."
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "2",
+            "@name": "RXCLKSRC_B",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Port B Receiver Clock Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR2_RXCLKSRC_B(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR2_RXCLKSRC_B_val0",
+                "@value": "0b00",
+                "@description": "Dummy read strobe that FlexSPI generates, looped back internally."
+              },
+              {
+                "@name": "MCR2_RXCLKSRC_B_val1",
+                "@value": "0b01",
+                "@description": "Dummy read strobe that FlexSPI generates, looped back from DQS pad."
+              },
+              {
+                "@name": "MCR2_RXCLKSRC_B_val2",
+                "@value": "0b10",
+                "@description": "SCLK output clock and looped back from SCLK pad"
+              },
+              {
+                "@name": "MCR2_RXCLKSRC_B_val3",
+                "@value": "0b11",
+                "@description": "Flash-memory-provided read strobe and input from DQS pad"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "RX_CLK_SRC_DIFF",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sample Clock Source Different",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR2_RX_CLK_SRC_DIFF(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "MCR2_RX_CLK_SRC_DIFF_value0",
+                "@value": "0b0",
+                "@description": "Use MCR0[RXCLKSRC] for Port A and Port B. MCR2[RXCLKSRC_B] is ignored and MCR0[RXCLKSRC] selects the Sample Clock source for Flash Reading of both ports A and B."
+              },
+              {
+                "@name": "MCR2_RX_CLK_SRC_DIFF_value1",
+                "@value": "0b1",
+                "@description": "Use MCR0[RXCLKSRC] for Port A, and MCR2[RXCLKSRC_B] for Port B. MCR0[RXCLKSRC] selects the Sample Clock source for Flash Reading of port A (A_SCLK) and MCR2[RXCLKSRC_B] selects the Sample Clock source for Flash Reading of port B (B_SCLK)."
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "RESUMEWAIT",
+            "@access": "RW",
+            "@reset_value": "0x20",
+            "@description": "Resume Wait Duration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_MCR2_RESUMEWAIT(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "AHBCR",
+        "@description": "AHB Bus Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBCR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "APAREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Parallel Mode Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_APAREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_APAREN_individual",
+                "@value": "0b0",
+                "@description": "Flash is accessed in Individual mode."
+              },
+              {
+                "@name": "AHBCR_APAREN_ENABLE",
+                "@value": "0b1",
+                "@description": "Flash is accessed in Parallel mode."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "CLRAHBRXBUF",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Clear AHB Receive Buffer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_CLRAHBRXBUF(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_CLRAHBRXBUF_val0",
+                "@value": "0b0",
+                "@description": "No impact."
+              },
+              {
+                "@name": "AHBCR_CLRAHBRXBUF_val1",
+                "@value": "0b1",
+                "@description": "Enable clear operation."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "CLRAHBTXBUF",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Clear AHB Transmit Buffer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_CLRAHBTXBUF(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_CLRAHBTXBUF_val0",
+                "@value": "0b0",
+                "@description": "No impact."
+              },
+              {
+                "@name": "AHBCR_CLRAHBTXBUF_val1",
+                "@value": "0b1",
+                "@description": "Enable clear operation."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "CACHABLEEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Cacheable Read Access Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_CACHABLEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_CACHABLEEN_val0",
+                "@value": "0b0",
+                "@description": "Disabled. When an AHB bus cacheable read access occurs, FlexSPI does not check whether it hit the AHB transmit buffer."
+              },
+              {
+                "@name": "AHBCR_CACHABLEEN_val1",
+                "@value": "0b1",
+                "@description": "Enabled. When an AHB bus cacheable read access occurs, FlexSPI first checks whether the access hit the AHB transmit buffer."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "BUFFERABLEEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Bufferable Write Access Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_BUFFERABLEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_BUFFERABLEEN_val0",
+                "@value": "0b0",
+                "@description": "Disabled. For all AHB write accesses (bufferable or nonbufferable), FlexSPI returns AHB Bus Ready after transmitting all data and finishing command."
+              },
+              {
+                "@name": "AHBCR_BUFFERABLEEN_val1",
+                "@value": "0b1",
+                "@description": "Enabled. For AHB bufferable write access, FlexSPI returns AHB Bus Ready when the arbitrator grants the AHB command. FlexSPI does not wait for the AHB command to finish."
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "AHBCR_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "READADDROPT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read Address Option",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_READADDROPT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_READADDROPT_val0",
+                "@value": "0b0",
+                "@description": "AHB read burst start address alignment is limited when flash memory is accessed in parallel mode or flash is word-addressable."
+              },
+              {
+                "@name": "AHBCR_READADDROPT_val1",
+                "@value": "0b1",
+                "@description": "AHB read burst start address alignment is not limited. FlexSPI fetches more data than the AHB burst requires for address alignment."
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "RESUMEDISABLE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read Resume Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_RESUMEDISABLE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_RESUMEDISABLE_val0",
+                "@value": "0b0",
+                "@description": "Suspended AHB read prefetch resumes when AHB is IDLE."
+              },
+              {
+                "@name": "AHBCR_RESUMEDISABLE_val1",
+                "@value": "0b1",
+                "@description": "Suspended AHB read prefetch does not resume once aborted,"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "READSZALIGN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read Size Alignment",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_READSZALIGN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_READSZALIGN_val0",
+                "@value": "0b0",
+                "@description": "Register settings such as PREFETCH_EN determine AHB read size."
+              },
+              {
+                "@name": "AHBCR_READSZALIGN_val1",
+                "@value": "0b1",
+                "@description": "AHB read size to up size to 8 bytes aligned, no prefetching"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "2",
+            "@name": "ALIGNMENT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Boundary Alignment",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_ALIGNMENT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBCR_ALIGNMENT_bit0",
+                "@value": "0b00",
+                "@description": "No limit"
+              },
+              {
+                "@name": "AHBCR_ALIGNMENT_bit1",
+                "@value": "0b01",
+                "@description": "1 KB"
+              },
+              {
+                "@name": "AHBCR_ALIGNMENT_bit2",
+                "@value": "0b10",
+                "@description": "512 bytes"
+              },
+              {
+                "@name": "AHBCR_ALIGNMENT_bit3",
+                "@value": "0b11",
+                "@description": "256 bytes"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "3",
+            "@name": "AFLASHBASE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Memory-Mapped Flash Base Address",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBCR_AFLASHBASE(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "22",
+            "@width": "7",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "INTEN",
+        "@description": "Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "INTEN"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "IPCMDDONEEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP-Triggered Command Sequences Execution Finished Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_IPCMDDONEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_IPCMDDONEEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_IPCMDDONEEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "IPCMDGEEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP-Triggered Command Sequences Grant Timeout Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_IPCMDGEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_IPCMDGEEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_IPCMDGEEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "AHBCMDGEEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB-Triggered Command Sequences Grant Timeout Interrupt Enable.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_AHBCMDGEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_AHBCMDGEEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_AHBCMDGEEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "IPCMDERREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP-Triggered Command Sequences Error Detected Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_IPCMDERREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_IPCMDERREN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_IPCMDERREN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "AHBCMDERREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB-Triggered Command Sequences Error Detected Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_AHBCMDERREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_AHBCMDERREN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_AHBCMDERREN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "IPRXWAEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Receive FIFO Watermark Available Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_IPRXWAEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_IPRXWAEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_IPRXWAEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "IPTXWEEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Transmit FIFO Watermark Empty Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_IPTXWEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_IPTXWEEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_IPTXWEEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "DATALEARNFAILEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Data Learning Failed Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_DATALEARNFAILEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_DATALEARNFAILEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_DATALEARNFAILEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "SCKSTOPBYRDEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SCLK Stopped By Read Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_SCKSTOPBYRDEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_SCKSTOPBYRDEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_SCKSTOPBYRDEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "SCKSTOPBYWREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SCLK Stopped By Write Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_SCKSTOPBYWREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_SCKSTOPBYWREN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_SCKSTOPBYWREN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "AHBBUSTIMEOUTEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Bus Timeout Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_AHBBUSTIMEOUTEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_AHBBUSTIMEOUTEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_AHBBUSTIMEOUTEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "SEQTIMEOUTEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence execution Timeout Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_SEQTIMEOUTEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_SEQTIMEOUTEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_SEQTIMEOUTEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "IPCMDSECUREVIOEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Command Security Violation Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_IPCMDSECUREVIOEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_IPCMDSECUREVIOEN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_IPCMDSECUREVIOEN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "AHBGCMERREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read GCM Error Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTEN_AHBGCMERREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTEN_AHBGCMERREN_value0",
+                "@value": "0b0",
+                "@description": "Disable interrupt or no impact"
+              },
+              {
+                "@name": "INTEN_AHBGCMERREN_value1",
+                "@value": "0b1",
+                "@description": "Enable interrupt"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "14",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "INTR",
+        "@description": "Interrupt",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "INTR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "IPCMDDONE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "IP-Triggered Command Sequences Execution Finished",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_IPCMDDONE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_IPCMDDONE_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_IPCMDDONE_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "IPCMDGE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "IP-Triggered Command Sequences Grant Timeout",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_IPCMDGE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_IPCMDGE_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_IPCMDGE_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "AHBCMDGE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "AHB-Triggered Command Sequences Grant Timeout",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_AHBCMDGE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_AHBCMDGE_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_AHBCMDGE_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "IPCMDERR",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "IP-Triggered Command Sequences Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_IPCMDERR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_IPCMDERR_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_IPCMDERR_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "AHBCMDERR",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "AHB-Triggered Command Sequences Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_AHBCMDERR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_AHBCMDERR_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_AHBCMDERR_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "IPRXWA",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "IP Receive FIFO Watermark Available",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_IPRXWA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_IPRXWA_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_IPRXWA_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "IPTXWE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "IP Transmit FIFO Watermark Empty",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_IPTXWE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_IPTXWE_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_IPTXWE_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "DATALEARNFAIL",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Data Learning Failed",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_DATALEARNFAIL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_DATALEARNFAIL_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_DATALEARNFAIL_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "SCKSTOPBYRD",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SCLK Stopped Due To Full Receive FIFO",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_SCKSTOPBYRD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_SCKSTOPBYRD_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_SCKSTOPBYRD_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "SCKSTOPBYWR",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "SCLK Stopped Due To Empty Transmit FIFO",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_SCKSTOPBYWR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_SCKSTOPBYWR_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_SCKSTOPBYWR_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "AHBBUSTIMEOUT",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "AHB Bus Timeout",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_AHBBUSTIMEOUT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_AHBBUSTIMEOUT_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_AHBBUSTIMEOUT_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "SEQTIMEOUT",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Sequence Execution Timeout",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_SEQTIMEOUT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_SEQTIMEOUT_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_SEQTIMEOUT_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "IPCMDSECUREVIO",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "IP Command Security Violation",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_IPCMDSECUREVIO(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_IPCMDSECUREVIO_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_IPCMDSECUREVIO_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "AHBGCMERR",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "AHB Read GCM Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_INTR_AHBGCMERR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "INTR_AHBGCMERR_NO_EFF",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "INTR_AHBGCMERR_CLR_FLAG",
+                "@value": "0b1",
+                "@description": "Clear the flag"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "14",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "LUTKEY",
+        "@description": "LUT Key",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "LUTKEY"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "KEY",
+          "@access": "RW",
+          "@reset_value": "0x5AF05AF0",
+          "@description": "LUT Key",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_LUTKEY_KEY(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x1C",
+        "@width": "32",
+        "@name": "LUTCR",
+        "@description": "LUT Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "LUTCR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "LOCK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Lock LUT",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUTCR_LOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "LUTCR_LOCK_value0",
+                "@value": "0b0",
+                "@description": "LUT is unlocked (LUTCR[UNLOCK] must be 1)"
+              },
+              {
+                "@name": "LUTCR_LOCK_value1",
+                "@value": "0b1",
+                "@description": "LUT is locked and cannot be written"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "UNLOCK",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Unlock LUT",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUTCR_UNLOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "LUTCR_UNLOCK_value0",
+                "@value": "0b0",
+                "@description": "LUT is locked (LUTCR[LOCK] must be 1)"
+              },
+              {
+                "@name": "LUTCR_UNLOCK_value1",
+                "@value": "0b1",
+                "@description": "LUT is unlocked and can be written"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "PROTECT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "LUT Protection",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_LUTCR_PROTECT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "LUTCR_PROTECT_value0",
+                "@value": "0b0",
+                "@description": "Not protected. All IPS controllers can access LUTCR and LUT memory."
+              },
+              {
+                "@name": "LUTCR_PROTECT_value1",
+                "@value": "0b1",
+                "@description": "Protected. Only secure IPS controller can change the value of LUTCR and write to LUT memory."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "3",
+          "@width": "29",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x20",
+        "@width": "32",
+        "@name": "AHBRXBUF0CR0",
+        "@description": "AHB Receive Buffer 0 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[0]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x24",
+        "@width": "32",
+        "@name": "AHBRXBUF1CR0",
+        "@description": "AHB Receive Buffer 1 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[1]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x28",
+        "@width": "32",
+        "@name": "AHBRXBUF2CR0",
+        "@description": "AHB Receive Buffer 2 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[2]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x2C",
+        "@width": "32",
+        "@name": "AHBRXBUF3CR0",
+        "@description": "AHB Receive Buffer 3 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[3]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0x3",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x30",
+        "@width": "32",
+        "@name": "AHBRXBUF4CR0",
+        "@description": "AHB Receive Buffer 4 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[4]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0x4",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x34",
+        "@width": "32",
+        "@name": "AHBRXBUF5CR0",
+        "@description": "AHB Receive Buffer 5 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[5]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0x5",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x38",
+        "@width": "32",
+        "@name": "AHBRXBUF6CR0",
+        "@description": "AHB Receive Buffer 6 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[6]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0x6",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x3C",
+        "@width": "32",
+        "@name": "AHBRXBUF7CR0",
+        "@description": "AHB Receive Buffer 7 Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBRXBUFCR0[7]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "BUFSZ",
+            "@access": "RW",
+            "@reset_value": "0x10",
+            "@description": "AHB Receive Buffer Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_BUFSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "MSTRID",
+            "@access": "RW",
+            "@reset_value": "0x7",
+            "@description": "AHB Controller ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_MSTRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "PRIORITY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Controller Read Priority",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PRIORITY(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGIONEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer Address Region Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_REGIONEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled. The buffer hit is based on the value of MSTRID only."
+              },
+              {
+                "@name": "AHBRXBUFCR0_REGIONEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled. The buffer hit is based on the value of MSTRID and the address within AHBBUFREGIONSTARTn and AHBREGIONENDn."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PREFETCHEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "AHB Read Prefetch Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBRXBUFCR0_PREFETCHEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "AHBRXBUFCR0_PREFETCHEN_value1",
+                "@value": "0b1",
+                "@description": "Enabled when is enabled."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x94",
+        "@width": "32",
+        "@name": "FLSHCR4",
+        "@description": "Flash Control 4",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLSHCR4"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "WMOPT1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Write Mask Option 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR4_WMOPT1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR4_WMOPT1_DISABLE",
+                "@value": "0b0",
+                "@description": "When writing to an external device, DQS pin is used as write mask. When flash memory is accessed in individual mode, AHB or IP write burst start address alignment is not limited."
+              },
+              {
+                "@name": "FLSHCR4_WMOPT1_ENABLE",
+                "@value": "0b1",
+                "@description": "When writing to an external device, DQS pin is not used as write mask. When flash memory is accessed in individual mode, AHB or IP write burst start address alignment is limited."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "WMENA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Write Mask Enable for Port A",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR4_WMENA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR4_WMENA_val0",
+                "@value": "0b0",
+                "@description": "Disabled. When writing to external device, DQS(RWDS) pin is not driven."
+              },
+              {
+                "@name": "FLSHCR4_WMENA_val1",
+                "@value": "0b1",
+                "@description": "Enabled. When writing to external device, FlexSPI drives DQS(RWDS) pin as write mask output."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "WMENB",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Write Mask Enable for Port B",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_FLSHCR4_WMENB(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLSHCR4_WMENB_val0",
+                "@value": "0b0",
+                "@description": "Disabled. When writing to external device, DQS(RWDS) pin is not driven."
+              },
+              {
+                "@name": "FLSHCR4_WMENB_val1",
+                "@value": "0b1",
+                "@description": "Enabled. When writing to external device, FlexSPI drives DQS(RWDS) pin as write mask output."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "9",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "20",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xA0",
+        "@width": "32",
+        "@name": "IPCR0",
+        "@description": "IP Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPCR0"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SFAR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Serial Flash Address",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_IPCR0_SFAR(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0xA4",
+        "@width": "32",
+        "@name": "IPCR1",
+        "@description": "IP Control 1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPCR1"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "IDATSZ",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Flash Read/Program Data Size (in bytes) for IP command.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPCR1_IDATSZ(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "ISEQID",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Index in LUT for IP command.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPCR1_ISEQID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "ISEQNUM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sequence Number for IP command: ISEQNUM+1.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPCR1_ISEQNUM(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "IPAREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Parallel Mode Enable for IP Commands",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPCR1_IPAREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPCR1_IPAREN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled. Flash memory is accessed in Individual mode."
+              },
+              {
+                "@name": "IPCR1_IPAREN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled. Flash memory is accessed in Parallel mode."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xA8",
+        "@width": "32",
+        "@name": "IPCR2",
+        "@description": "IP Control 2",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPCR2"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "IPBLKAHBREQ",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Command Blocking AHB Command Request Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPCR2_IPBLKAHBREQ(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPCR2_IPBLKAHBREQ_value0",
+                "@value": "0b0",
+                "@description": "IP commands do not block AHB command requests."
+              },
+              {
+                "@name": "IPCR2_IPBLKAHBREQ_value1",
+                "@value": "0b1",
+                "@description": "IP commands block AHB command requests."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "IPBLKAHBACK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "IP Command Blocking AHB Command Acknowledgment Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPCR2_IPBLKAHBACK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPCR2_IPBLKAHBACK_value0",
+                "@value": "0b0",
+                "@description": "IP commands do not block AHB command acknowledgment."
+              },
+              {
+                "@name": "IPCR2_IPBLKAHBACK_value1",
+                "@value": "0b1",
+                "@description": "IP commands block AHB command acknowledgment."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "IPBLKALLAHB",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Command Blocking All AHB Command Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPCR2_IPBLKALLAHB(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPCR2_IPBLKALLAHB_value0",
+                "@value": "0b0",
+                "@description": "IP commands only block AHB commands that affect the IPED region."
+              },
+              {
+                "@name": "IPCR2_IPBLKALLAHB_value1",
+                "@value": "0b1",
+                "@description": "IP commands block all AHB commands."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "3",
+          "@width": "29",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xB0",
+        "@width": "32",
+        "@name": "IPCMD",
+        "@description": "IP Command",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPCMD"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "TRG",
+          "@access": "WORZ",
+          "@reset_value": "0",
+          "@description": "Command Trigger",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_IPCMD_TRG(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "IPCMD_TRG_value0",
+              "@value": "0b0",
+              "@description": "No action"
+            },
+            {
+              "@name": "IPCMD_TRG_value1",
+              "@value": "0b1",
+              "@description": "Start the IP command that the IPCR0 and IPCR1 registers define."
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xB4",
+        "@width": "32",
+        "@name": "DLPR",
+        "@description": "Data Learning Pattern",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DLPR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "DLP",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Data Learning Pattern",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_DLPR_DLP(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0xB8",
+        "@width": "32",
+        "@name": "IPRXFCR",
+        "@description": "IP Receive FIFO Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPRXFCR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "CLRIPRXF",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Clear IP Receive FIFO",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPRXFCR_CLRIPRXF(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPRXFCR_CLRIPRXF_value0",
+                "@value": "0b0",
+                "@description": "No function"
+              },
+              {
+                "@name": "IPRXFCR_CLRIPRXF_value1",
+                "@value": "0b1",
+                "@description": "A clock cycle pulse clears all valid data entries in IP receive FIFO."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "RXDMAEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Receive FIFO Reading by DMA Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPRXFCR_RXDMAEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPRXFCR_RXDMAEN_val0",
+                "@value": "0b0",
+                "@description": "Disabled. The processor reads the FIFO."
+              },
+              {
+                "@name": "IPRXFCR_RXDMAEN_val1",
+                "@value": "0b1",
+                "@description": "Enabled. DMA reads the FIFO."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "7",
+            "@name": "RXWMRK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Receive FIFO Watermark Level",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPRXFCR_RXWMRK(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "9",
+          "@width": "23",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xBC",
+        "@width": "32",
+        "@name": "IPTXFCR",
+        "@description": "IP Transmit FIFO Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPTXFCR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "CLRIPTXF",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Clear IP Transmit FIFO",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPTXFCR_CLRIPTXF(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPTXFCR_CLRIPTXF_value0",
+                "@value": "0b0",
+                "@description": "No function"
+              },
+              {
+                "@name": "IPTXFCR_CLRIPTXF_value1",
+                "@value": "0b1",
+                "@description": "A clock cycle pulse clears all valid data entries in the IP transmit FIFO."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "TXDMAEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Transmit FIFO DMA Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPTXFCR_TXDMAEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPTXFCR_TXDMAEN_val0",
+                "@value": "0b0",
+                "@description": "Processor"
+              },
+              {
+                "@name": "IPTXFCR_TXDMAEN_val1",
+                "@value": "0b1",
+                "@description": "DMA"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "7",
+            "@name": "TXWMRK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Transmit Watermark Level",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPTXFCR_TXWMRK(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "9",
+          "@width": "23",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xC0",
+        "@width": "32",
+        "@name": "DLLACR",
+        "@description": "DLL Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DLLCR[0]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DLLEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DLL Calibration Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_DLLEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DLLCR_DLLEN_value0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DLLCR_DLLEN_value1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "DLLRESET",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DLL reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_DLLRESET(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DLLCR_DLLRESET_value0",
+                "@value": "0b0",
+                "@description": "No function"
+              },
+              {
+                "@name": "DLLCR_DLLRESET_value1",
+                "@value": "0b1",
+                "@description": "Force DLL reset."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "4",
+            "@name": "SLVDLYTARGET",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Target Delay Line",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_SLVDLYTARGET(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "OVRDEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Target Clock Delay Line Override Value Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_OVRDEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DLLCR_OVRDEN_value0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DLLCR_OVRDEN_value1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "6",
+            "@name": "OVRDVAL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Target Clock Delay Line Override Value",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_OVRDVAL(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "2",
+            "@name": "REFPHASEGAP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reference Clock Delay Line Phase Adjust Gap. REFPHASEGAP setting of 2h is recommended if DLLEN is set.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_REFPHASEGAP(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xC4",
+        "@width": "32",
+        "@name": "DLLBCR",
+        "@description": "DLL Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DLLCR[1]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DLLEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DLL Calibration Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_DLLEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DLLCR_DLLEN_value0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DLLCR_DLLEN_value1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "DLLRESET",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DLL reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_DLLRESET(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DLLCR_DLLRESET_value0",
+                "@value": "0b0",
+                "@description": "No function"
+              },
+              {
+                "@name": "DLLCR_DLLRESET_value1",
+                "@value": "0b1",
+                "@description": "Force DLL reset."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "4",
+            "@name": "SLVDLYTARGET",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Target Delay Line",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_SLVDLYTARGET(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "OVRDEN",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Target Clock Delay Line Override Value Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_OVRDEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DLLCR_OVRDEN_value0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DLLCR_OVRDEN_value1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "6",
+            "@name": "OVRDVAL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Target Clock Delay Line Override Value",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_OVRDVAL(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "2",
+            "@name": "REFPHASEGAP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reference Clock Delay Line Phase Adjust Gap. REFPHASEGAP setting of 2h is recommended if DLLEN is set.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_DLLCR_REFPHASEGAP(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xE0",
+        "@width": "32",
+        "@name": "STS0",
+        "@description": "Status 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STS0"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "SEQIDLE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "SEQ_CTL State Machine Idle",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS0_SEQIDLE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS0_SEQIDLE_value0",
+                "@value": "0b0",
+                "@description": "Not idle"
+              },
+              {
+                "@name": "STS0_SEQIDLE_value1",
+                "@value": "0b1",
+                "@description": "Idle"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "ARBIDLE",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "ARB_CTL State Machine Idle",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS0_ARBIDLE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS0_ARBIDLE_value0",
+                "@value": "0b0",
+                "@description": "Not idle"
+              },
+              {
+                "@name": "STS0_ARBIDLE_value1",
+                "@value": "0b1",
+                "@description": "Idle"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "ARBCMDSRC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "ARB Command Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS0_ARBCMDSRC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS0_ARBCMDSRC_val0",
+                "@value": "0b00",
+                "@description": "Trigger source is AHB read command."
+              },
+              {
+                "@name": "STS0_ARBCMDSRC_val1",
+                "@value": "0b01",
+                "@description": "Trigger source is AHB write command."
+              },
+              {
+                "@name": "STS0_ARBCMDSRC_val2",
+                "@value": "0b10",
+                "@description": "Trigger source is IP command (by writing 1 to IPCMD[TRG])."
+              },
+              {
+                "@name": "STS0_ARBCMDSRC_val3",
+                "@value": "0b11",
+                "@description": "Trigger source is a suspended command that has resumed."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@name": "DATALEARNPHASEA",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Data Learning Phase Selection on Port A",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS0_DATALEARNPHASEA(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "DATALEARNPHASEB",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Data Learning Phase Selection on Port B",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS0_DATALEARNPHASEB(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xE4",
+        "@width": "32",
+        "@name": "STS1",
+        "@description": "Status 1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STS1"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "AHBCMDERRID",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "AHB Command Error ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS1_AHBCMDERRID(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "AHBCMDERRCODE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "AHB Command Error Code",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS1_AHBCMDERRCODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS1_AHBCMDERRCODE_val0",
+                "@value": "0b0000",
+                "@description": "No error"
+              },
+              {
+                "@name": "STS1_AHBCMDERRCODE_val2",
+                "@value": "0b0010",
+                "@description": "AHB Write command with JMP_ON_CS instruction used in the sequence"
+              },
+              {
+                "@name": "STS1_AHBCMDERRCODE_val3",
+                "@value": "0b0011",
+                "@description": "Unknown instruction opcode in the sequence"
+              },
+              {
+                "@name": "STS1_AHBCMDERRCODE_val4",
+                "@value": "0b0100",
+                "@description": "DUMMY_SDR or DUMMY_RWDS_SDR instruction used in DDR sequence"
+              },
+              {
+                "@name": "STS1_AHBCMDERRCODE_val5",
+                "@value": "0b0101",
+                "@description": "DUMMY_DDR or DUMMY_RWDS_DDR instruction used in SDR sequence"
+              },
+              {
+                "@name": "STS1_AHBCMDERRCODE_val6",
+                "@value": "0b1110",
+                "@description": "Sequence execution timeout"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "IPCMDERRID",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "IP Command Error ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS1_IPCMDERRID(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "IPCMDERRCODE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "IP Command Error Code",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS1_IPCMDERRCODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS1_IPCMDERRCODE_val0",
+                "@value": "0b0000",
+                "@description": "No error"
+              },
+              {
+                "@name": "STS1_IPCMDERRCODE_val2",
+                "@value": "0b0010",
+                "@description": "IP command with JMP_ON_CS instruction used in the sequence"
+              },
+              {
+                "@name": "STS1_IPCMDERRCODE_val3",
+                "@value": "0b0011",
+                "@description": "Unknown instruction opcode in the sequence"
+              },
+              {
+                "@name": "STS1_IPCMDERRCODE_val4",
+                "@value": "0b0100",
+                "@description": "DUMMY_SDR or DUMMY_RWDS_SDR instruction used in DDR sequence"
+              },
+              {
+                "@name": "STS1_IPCMDERRCODE_val5",
+                "@value": "0b0101",
+                "@description": "DUMMY_DDR or DUMMY_RWDS_DDR instruction used in SDR sequence"
+              },
+              {
+                "@name": "STS1_IPCMDERRCODE_val6",
+                "@value": "0b0110",
+                "@description": "Flash memory access start address exceeds entire flash address range (A1, A2, B1, and B2)"
+              },
+              {
+                "@name": "STS1_IPCMDERRCODE_val7",
+                "@value": "0b1110",
+                "@description": "Sequence execution timeout"
+              },
+              {
+                "@name": "STS1_IPCMDERRCODE_val8",
+                "@value": "0b1111",
+                "@description": "Flash boundary crossed"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xE8",
+        "@width": "32",
+        "@name": "STS2",
+        "@description": "Status 2",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STS2"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ASLVLOCK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Flash A Sample Target Delay Line Locked",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_ASLVLOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS2_ASLVLOCK_val0",
+                "@value": "0b0",
+                "@description": "Not locked"
+              },
+              {
+                "@name": "STS2_ASLVLOCK_val1",
+                "@value": "0b1",
+                "@description": "Locked"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "AREFLOCK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Flash A Sample Clock Reference Delay Line Locked",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_AREFLOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS2_AREFLOCK_val0",
+                "@value": "0b0",
+                "@description": "Not locked"
+              },
+              {
+                "@name": "STS2_AREFLOCK_val1",
+                "@value": "0b1",
+                "@description": "Locked"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "6",
+            "@name": "ASLVSEL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Flash A Sample Clock Target Delay Line Delay Cell Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_ASLVSEL(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "6",
+            "@name": "AREFSEL",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Flash A Sample Clock Reference Delay Line Delay Cell Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_AREFSEL(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "BSLVLOCK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Flash B Sample Target Reference Delay Line Locked",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_BSLVLOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS2_BSLVLOCK_val0",
+                "@value": "0b0",
+                "@description": "Not locked"
+              },
+              {
+                "@name": "STS2_BSLVLOCK_val1",
+                "@value": "0b1",
+                "@description": "Locked"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "BREFLOCK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Flash B Sample Clock Reference Delay Line Locked",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_BREFLOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STS2_BREFLOCK_val0",
+                "@value": "0b0",
+                "@description": "Not locked"
+              },
+              {
+                "@name": "STS2_BREFLOCK_val1",
+                "@value": "0b1",
+                "@description": "Locked"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "6",
+            "@name": "BSLVSEL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Flash B Sample Clock Target Delay Line Delay Cell Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_BSLVSEL(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "6",
+            "@name": "BREFSEL",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Flash B Sample Clock Reference Delay Line Delay Cell Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_STS2_BREFSEL(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xEC",
+        "@width": "32",
+        "@name": "AHBSPNDSTS",
+        "@description": "AHB Suspend Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "AHBSPNDSTS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ACTIVE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Active AHB Read Prefetch Suspended",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBSPNDSTS_ACTIVE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "AHBSPNDSTS_ACTIVE_val0",
+                "@value": "0b0",
+                "@description": "No suspended AHB read prefetch command."
+              },
+              {
+                "@name": "AHBSPNDSTS_ACTIVE_val1",
+                "@value": "0b1",
+                "@description": "An AHB read prefetch command sequence has been suspended."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "3",
+            "@name": "BUFID",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "AHB Receive Buffer ID for Suspended Command Sequence",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBSPNDSTS_BUFID(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "DATLFT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Data Left",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_AHBSPNDSTS_DATLFT(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "12",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xF0",
+        "@width": "32",
+        "@name": "IPRXFSTS",
+        "@description": "IP Receive FIFO Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPRXFSTS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "FILL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Fill Level of IP Receive FIFO",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPRXFSTS_FILL(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "RDCNTR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Read Data Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPRXFSTS_RDCNTR(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "8",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xF4",
+        "@width": "32",
+        "@name": "IPTXFSTS",
+        "@description": "IP Transmit FIFO Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPTXFSTS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "FILL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Fill Level of IP Transmit FIFO",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPTXFSTS_FILL(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "WRCNTR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Write Data Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPTXFSTS_WRCNTR(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "8",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x420",
+        "@width": "32",
+        "@name": "HADDRSTART",
+        "@description": "HADDR REMAP Start Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HADDRSTART"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "REMAPEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Bus Address Remap Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_HADDRSTART_REMAPEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HADDRSTART_REMAPEN_val0",
+                "@value": "0b0",
+                "@description": "HADDR REMAP Disabled"
+              },
+              {
+                "@name": "HADDRSTART_REMAPEN_val1",
+                "@value": "0b1",
+                "@description": "HADDR REMAP Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "20",
+            "@name": "ADDRSTART",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "HADDR Start Address",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_HADDRSTART_ADDRSTART(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "3",
+            "@width": "9",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x424",
+        "@width": "32",
+        "@name": "HADDREND",
+        "@description": "HADDR REMAP END ADDR",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HADDREND"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@name": "ENDSTART",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "End Address of HADDR Remap Range",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_HADDREND_ENDSTART(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x428",
+        "@width": "32",
+        "@name": "HADDROFFSET",
+        "@description": "HADDR Remap Offset",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HADDROFFSET"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@name": "ADDROFFSET",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "HADDR Offset",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXSPI_HADDROFFSET_ADDROFFSET(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x42C",
+        "@width": "32",
+        "@name": "IPEDCTRL",
+        "@description": "IPED Function Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "CONFIG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IPED Mode Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_CONFIG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_CONFIG_val0",
+                "@value": "0b0",
+                "@description": "Fully pipelined"
+              },
+              {
+                "@name": "IPEDCTRL_CONFIG_val1",
+                "@value": "0b1",
+                "@description": "Not fully pipelined"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "IPED_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IPED Encryption and Decryption Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_IPED_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_IPED_EN_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "IPEDCTRL_IPED_EN_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "IPWR_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Write IPED CTR Mode Encryption Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_IPWR_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_IPWR_EN_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "IPEDCTRL_IPWR_EN_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "AHBWR_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Write IPED CTR Mode Encryption Enable.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_AHBWR_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_AHBWR_EN_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "IPEDCTRL_AHBWR_EN_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "AHBRD_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read IPED CTR Mode Decryption Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_AHBRD_EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_AHBRD_EN_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "IPEDCTRL_AHBRD_EN_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "IPGCMWR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IP Write GCM Mode Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_IPGCMWR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_IPGCMWR_val0",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "IPEDCTRL_IPGCMWR_val1",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "AHGCMWR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Write IPED GCM Mode Encryption Enable",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "FLEXSPI_IPEDCTRL_AHGCMWR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "AHBGCMWR"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_AHGCMWR_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "IPEDCTRL_AHGCMWR_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "AHBGCMRD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "AHB Read IPED GCM Mode Decryption Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_AHBGCMRD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_AHBGCMRD_val0",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "IPEDCTRL_AHBGCMRD_val1",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "IPED_PROTECT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "IPED Protection",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_IPED_PROTECT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_IPED_PROTECT_val0",
+                "@value": "0b0",
+                "@description": "No restrictions"
+              },
+              {
+                "@name": "IPEDCTRL_IPED_PROTECT_val1",
+                "@value": "0b1",
+                "@description": "Only privileged controllers can write IPED registers."
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "IPED_SWRESET",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Abort Current Decryption or Encryption",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTRL_IPED_SWRESET(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IPEDCTRL_IPED_SWRESET_val0",
+                "@value": "0b0",
+                "@description": "No function."
+              },
+              {
+                "@name": "IPEDCTRL_IPED_SWRESET_val1",
+                "@value": "0b1",
+                "@description": "Aborts current decryption or encryption and waits for the next start operation."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "21",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x500",
+        "@width": "32",
+        "@name": "IPEDCTXCTRL0",
+        "@description": "IPED context control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTXCTRL[0]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "CTX0_FREEZE0",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Context Register Freeze for Region 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX0_FREEZE0(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "CTX1_FREEZE0",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Context Register Freeze for Region 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX1_FREEZE0(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "CTX2_FREEZE0",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Context Register Freeze for Region 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX2_FREEZE0(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "CTX3_FREEZE0",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Context Register Freeze for Region 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX3_FREEZE0(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "CTX4_FREEZE0",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Context Register Freeze for Region 4",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX4_FREEZE0(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "CTX5_FREEZE0",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Context Register Freeze for Region 5",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX5_FREEZE0(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "CTX6_FREEZE0",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Context Register Freeze for Region 6",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX6_FREEZE0(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "14",
+          "@width": "18",
+          "@reset_value": "0x15555"
+        }
+      },
+      {
+        "@offset": "0x504",
+        "@width": "32",
+        "@name": "IPEDCTXCTRL1",
+        "@description": "IPED context control 1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IPEDCTXCTRL[1]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "CTX0_FREEZE1",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Context Register Freeze for Region 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX0_FREEZE1(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "CTX1_FREEZE1",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Context Register Freeze for Region 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX1_FREEZE1(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "CTX2_FREEZE1",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Context Register Freeze for Region 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX2_FREEZE1(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "CTX3_FREEZE1",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Context Register Freeze for Region 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX3_FREEZE1(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "CTX4_FREEZE1",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Context Register Freeze for Region 4",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX4_FREEZE1(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "CTX5_FREEZE1",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Context Register Freeze for Region 5",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX5_FREEZE1(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "CTX6_FREEZE1",
+            "@access": "RW",
+            "@reset_value": "0x2",
+            "@description": "Context Register Freeze for Region 6",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXSPI_IPEDCTXCTRL_CTX6_FREEZE1(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "14",
+          "@width": "18",
+          "@reset_value": "0x2AAAA"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "96",
+        "@vals": "0x60 1 0"
+      },
+      {
+        "@rid": "96",
+        "@vals": "0x64 2 1"
+      },
+      {
+        "@rid": "104",
+        "@vals": "0x68 1 2"
+      },
+      {
+        "@rid": "104",
+        "@vals": "0x6C 2 3"
+      },
+      {
+        "@rid": "112",
+        "@vals": "0x70 1 0"
+      },
+      {
+        "@rid": "112",
+        "@vals": "0x74 2 1"
+      },
+      {
+        "@rid": "120",
+        "@vals": "0x78 1 2"
+      },
+      {
+        "@rid": "120",
+        "@vals": "0x7C 2 3"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x80 1 0"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x84 2 1"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x88 1 2"
+      },
+      {
+        "@rid": "136",
+        "@vals": "0x8C 2 3"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x100 0"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x104 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x108 2"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x10C 3"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x110 4"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x114 5"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x118 6"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x11C 7"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x120 8"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x124 9"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x128 10"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x12C 11"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x130 12"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x134 13"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x138 14"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x13C 15"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x140 16"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x144 17"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x148 18"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x14C 19"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x150 20"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x154 21"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x158 22"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x15C 23"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x160 24"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x164 25"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x168 26"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x16C 27"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x170 28"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x174 29"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x178 30"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x17C 31"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x180 0"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x184 1"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x188 2"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x18C 3"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x190 4"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x194 5"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x198 6"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x19C 7"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1A0 8"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1A4 9"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1A8 10"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1AC 11"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1B0 12"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1B4 13"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1B8 14"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1BC 15"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1C0 16"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1C4 17"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1C8 18"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1CC 19"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1D0 20"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1D4 21"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1D8 22"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1DC 23"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1E0 24"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1E4 25"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1E8 26"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1EC 27"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1F0 28"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1F4 29"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1F8 30"
+      },
+      {
+        "@rid": "384",
+        "@vals": "0x1FC 31"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x200 0"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x204 1"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x208 2"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x20C 3"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x210 4"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x214 5"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x218 6"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x21C 7"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x220 8"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x224 9"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x228 10"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x22C 11"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x230 12"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x234 13"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x238 14"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x23C 15"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x240 16"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x244 17"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x248 18"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x24C 19"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x250 20"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x254 21"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x258 22"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x25C 23"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x260 24"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x264 25"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x268 26"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x26C 27"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x270 28"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x274 29"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x278 30"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x27C 31"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x280 32"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x284 33"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x288 34"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x28C 35"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x290 36"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x294 37"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x298 38"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x29C 39"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2A0 40"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2A4 41"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2A8 42"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2AC 43"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2B0 44"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2B4 45"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2B8 46"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2BC 47"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2C0 48"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2C4 49"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2C8 50"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2CC 51"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2D0 52"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2D4 53"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2D8 54"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2DC 55"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2E0 56"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2E4 57"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2E8 58"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2EC 59"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2F0 60"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2F4 61"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2F8 62"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x2FC 63"
+      },
+      {
+        "@rid": "1072",
+        "@vals": "0x430 0"
+      },
+      {
+        "@rid": "1076",
+        "@vals": "0x434 0"
+      },
+      {
+        "@rid": "1072",
+        "@vals": "0x438 1"
+      },
+      {
+        "@rid": "1076",
+        "@vals": "0x43C 1"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x440 0"
+      },
+      {
+        "@rid": "1092",
+        "@vals": "0x444 0"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x448 1"
+      },
+      {
+        "@rid": "1092",
+        "@vals": "0x44C 1"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x450 2"
+      },
+      {
+        "@rid": "1092",
+        "@vals": "0x454 2"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x458 3"
+      },
+      {
+        "@rid": "1092",
+        "@vals": "0x45C 3"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x520 0"
+      },
+      {
+        "@rid": "1316",
+        "@vals": "0x524 0"
+      },
+      {
+        "@rid": "1320",
+        "@vals": "0x528 0"
+      },
+      {
+        "@rid": "1324",
+        "@vals": "0x52C 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x530 0 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x534 0 1"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x540 1"
+      },
+      {
+        "@rid": "1316",
+        "@vals": "0x544 1"
+      },
+      {
+        "@rid": "1320",
+        "@vals": "0x548 1"
+      },
+      {
+        "@rid": "1324",
+        "@vals": "0x54C 1"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x550 1 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x554 1 1"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x560 2"
+      },
+      {
+        "@rid": "1316",
+        "@vals": "0x564 2"
+      },
+      {
+        "@rid": "1320",
+        "@vals": "0x568 2"
+      },
+      {
+        "@rid": "1324",
+        "@vals": "0x56C 2"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x570 2 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x574 2 1"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x580 3"
+      },
+      {
+        "@rid": "1316",
+        "@vals": "0x584 3"
+      },
+      {
+        "@rid": "1320",
+        "@vals": "0x588 3"
+      },
+      {
+        "@rid": "1324",
+        "@vals": "0x58C 3"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x590 3 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x594 3 1"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x5A0 4"
+      },
+      {
+        "@rid": "1316",
+        "@vals": "0x5A4 4"
+      },
+      {
+        "@rid": "1320",
+        "@vals": "0x5A8 4"
+      },
+      {
+        "@rid": "1324",
+        "@vals": "0x5AC 4"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x5B0 4 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x5B4 4 1"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x5C0 5"
+      },
+      {
+        "@rid": "1316",
+        "@vals": "0x5C4 5"
+      },
+      {
+        "@rid": "1320",
+        "@vals": "0x5C8 5"
+      },
+      {
+        "@rid": "1324",
+        "@vals": "0x5CC 5"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x5D0 5 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x5D4 5 1"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x5E0 6"
+      },
+      {
+        "@rid": "1316",
+        "@vals": "0x5E4 6"
+      },
+      {
+        "@rid": "1320",
+        "@vals": "0x5E8 6"
+      },
+      {
+        "@rid": "1324",
+        "@vals": "0x5EC 6"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x5F0 6 0"
+      },
+      {
+        "@rid": "1328",
+        "@vals": "0x5F4 6 1"
+      }
+    ]
+  }
+}

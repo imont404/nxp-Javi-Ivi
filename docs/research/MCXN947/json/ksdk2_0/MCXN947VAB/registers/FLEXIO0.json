@@ -1,0 +1,2647 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "128",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTCTL{1}",
+        "@description": "Shifter Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTCTL[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "3",
+            "@name": "SMOD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Shifter Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCTL_SMOD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCTL{1}_SMOD_disable",
+                "@value": "0b000",
+                "@description": "Disable"
+              },
+              {
+                "@name": "SHIFTCTL{1}_SMOD_receive",
+                "@value": "0b001",
+                "@description": "Receive mode; capture the current shifter content into SHIFTBUF on expiration of the timer"
+              },
+              {
+                "@name": "SHIFTCTL{1}_SMOD_transmit",
+                "@value": "0b010",
+                "@description": "Transmit mode; load SHIFTBUF contents into the shifter on expiration of the timer"
+              },
+              {
+                "@name": "SHIFTCTL{1}_SMOD_reserved_0b011",
+                "@value": "0b011",
+                "@description": "Reserved"
+              },
+              {
+                "@name": "SHIFTCTL{1}_SMOD_matchstore",
+                "@value": "0b100",
+                "@description": "Match Store mode; shifter data is compared to SHIFTBUF content on expiration of the timer"
+              },
+              {
+                "@name": "SHIFTCTL{1}_SMOD_matchcont",
+                "@value": "0b101",
+                "@description": "Match Continuous mode; shifter data is continuously compared to SHIFTBUF contents"
+              },
+              {
+                "@name": "SHIFTCTL{1}_SMOD_state",
+                "@value": "0b110",
+                "@description": "State mode; SHIFTBUF contents store programmable state attributes"
+              },
+              {
+                "@name": "SHIFTCTL{1}_SMOD_logic",
+                "@value": "0b111",
+                "@description": "Logic mode; SHIFTBUF contents implement programmable logic lookup table"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "PINPOL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Shifter Pin Polarity",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCTL_PINPOL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCTL{1}_PINPOL_active_high",
+                "@value": "0b0",
+                "@description": "Active high"
+              },
+              {
+                "@name": "SHIFTCTL{1}_PINPOL_active_low",
+                "@value": "0b1",
+                "@description": "Active low"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "5",
+            "@name": "PINSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Shifter Pin Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCTL_PINSEL(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "PINCFG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Shifter Pin Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCTL_PINCFG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCTL{1}_PINCFG_disable",
+                "@value": "0b00",
+                "@description": "Shifter pin output disabled"
+              },
+              {
+                "@name": "SHIFTCTL{1}_PINCFG_opend_bidirouten",
+                "@value": "0b01",
+                "@description": "Shifter pin open-drain or bidirectional output enable"
+              },
+              {
+                "@name": "SHIFTCTL{1}_PINCFG_bidir_outdata",
+                "@value": "0b10",
+                "@description": "Shifter pin bidirectional output data"
+              },
+              {
+                "@name": "SHIFTCTL{1}_PINCFG_output",
+                "@value": "0b11",
+                "@description": "Shifter pin output"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "TIMPOL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Polarity",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCTL_TIMPOL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCTL{1}_TIMPOL_posedge",
+                "@value": "0b0",
+                "@description": "Positive edge"
+              },
+              {
+                "@name": "SHIFTCTL{1}_TIMPOL_negedge",
+                "@value": "0b1",
+                "@description": "Negative edge"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "3",
+            "@name": "TIMSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCTL_TIMSEL(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "5",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "256",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTCFG{1}",
+        "@description": "Shifter Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTCFG[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "SSTART",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Shifter Start",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCFG_SSTART(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCFG{1}_SSTART_value00",
+                "@value": "0b00",
+                "@description": "Start bit disabled for Transmitter, Receiver, and Match Store modes; Transmitter mode loads data on enable"
+              },
+              {
+                "@name": "SHIFTCFG{1}_SSTART_value01",
+                "@value": "0b01",
+                "@description": "Start bit disabled for Transmitter, Receiver, and Match Store modes; Transmitter mode loads data on first shift"
+              },
+              {
+                "@name": "SHIFTCFG{1}_SSTART_value10",
+                "@value": "0b10",
+                "@description": "Transmitter mode outputs start bit value 0 before loading data on first shift; if start bit is not 0, Receiver and Match Store modes set error flag"
+              },
+              {
+                "@name": "SHIFTCFG{1}_SSTART_value11",
+                "@value": "0b11",
+                "@description": "Transmitter mode outputs start bit value 1 before loading data on first shift; if start bit is not 1, Receiver and Match Store modes set error flag"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "SSTOP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Shifter Stop",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCFG_SSTOP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCFG{1}_SSTOP_value00",
+                "@value": "0b00",
+                "@description": "Stop bit disabled for Transmitter, Receiver, and Match Store modes"
+              },
+              {
+                "@name": "SHIFTCFG{1}_SSTOP_value01",
+                "@value": "0b01",
+                "@description": "Stop bit disabled for Transmitter, Receiver, and Match Store modes; when timer is in stop condition, Receiver and Match Store modes store receive data on the configured shift edge"
+              },
+              {
+                "@name": "SHIFTCFG{1}_SSTOP_value10",
+                "@value": "0b10",
+                "@description": "Transmitter mode outputs stop bit value 0 in Match Store mode; if stop bit is not 0, Receiver and Match Store modes set error flag (when timer is in stop condition, these modes also store receive data on the configured shift edge)"
+              },
+              {
+                "@name": "SHIFTCFG{1}_SSTOP_value11",
+                "@value": "0b11",
+                "@description": "Transmitter mode outputs stop bit value 1 in Match Store mode; if stop bit is not 1, Receiver and Match Store modes set error flag (when timer is in stop condition, these modes also store receive data on the configured shift edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "INSRC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Input Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCFG_INSRC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCFG{1}_INSRC_pin",
+                "@value": "0b0",
+                "@description": "Pin"
+              },
+              {
+                "@name": "SHIFTCFG{1}_INSRC_shifter_nplus1",
+                "@value": "0b1",
+                "@description": "Shifter n+1 output"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "LATST",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Late Store",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCFG_LATST(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCFG{1}_LATST_preshift",
+                "@value": "0b0",
+                "@description": "Store the pre-shift register state"
+              },
+              {
+                "@name": "SHIFTCFG{1}_LATST_postshift",
+                "@value": "0b1",
+                "@description": "Store the post-shift register state"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "SSIZE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Shifter Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCFG_SSIZE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SHIFTCFG{1}_SSIZE_width32",
+                "@value": "0b0",
+                "@description": "32-bit"
+              },
+              {
+                "@name": "SHIFTCFG{1}_SSIZE_width24",
+                "@value": "0b1",
+                "@description": "24-bit"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "PWIDTH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Parallel Width",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_SHIFTCFG_PWIDTH(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "11",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "512",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUF{1}",
+        "@description": "Shifter Buffer",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUF[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUF",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUF_SHIFTBUF(x)"
+          }
+        }
+      },
+      {
+        "@rid": "640",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFBIS{1}",
+        "@description": "Shifter Buffer Bit Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFBIS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFBIS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFBIS_SHIFTBUFBIS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "768",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFBYS{1}",
+        "@description": "Shifter Buffer Byte Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFBYS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFBYS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFBYS_SHIFTBUFBYS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "896",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFBBS{1}",
+        "@description": "Shifter Buffer Bit Byte Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFBBS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFBBS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFBBS_SHIFTBUFBBS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1024",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TIMCTL{1}",
+        "@description": "Timer Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TIMCTL[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "3",
+            "@name": "TIMOD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_TIMOD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCTL{1}_TIMOD_disable",
+                "@value": "0b000",
+                "@description": "Timer disabled"
+              },
+              {
+                "@name": "TIMCTL{1}_TIMOD_dual8bit_baud",
+                "@value": "0b001",
+                "@description": "Dual 8-bit counters baud mode"
+              },
+              {
+                "@name": "TIMCTL{1}_TIMOD_dual8bit_pwm_h",
+                "@value": "0b010",
+                "@description": "Dual 8-bit counters PWM high mode"
+              },
+              {
+                "@name": "TIMCTL{1}_TIMOD_single16bit",
+                "@value": "0b011",
+                "@description": "Single 16-bit counter mode"
+              },
+              {
+                "@name": "TIMCTL{1}_TIMOD_single16bit_disable",
+                "@value": "0b100",
+                "@description": "Single 16-bit counter disable mode"
+              },
+              {
+                "@name": "TIMCTL{1}_TIMOD_dual8bit_word",
+                "@value": "0b101",
+                "@description": "Dual 8-bit counters word mode"
+              },
+              {
+                "@name": "TIMCTL{1}_TIMOD_dual8bit_pwm_l",
+                "@value": "0b110",
+                "@description": "Dual 8-bit counters PWM low mode"
+              },
+              {
+                "@name": "TIMCTL{1}_TIMOD_single16bit_in_capture",
+                "@value": "0b111",
+                "@description": "Single 16-bit input capture mode"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "ONETIM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer One Time Operation",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_ONETIM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCTL{1}_ONETIM_not_blocked",
+                "@value": "0b0",
+                "@description": "Generate the timer enable event as normal"
+              },
+              {
+                "@name": "TIMCTL{1}_ONETIM_blocked",
+                "@value": "0b1",
+                "@description": "Block the timer enable event unless the timer status flag is clear"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "PININS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Pin Input Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_PININS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCTL{1}_PININS_pinsel",
+                "@value": "0b0",
+                "@description": "PINSEL selects timer pin input and output"
+              },
+              {
+                "@name": "TIMCTL{1}_PININS_pinselplus1",
+                "@value": "0b1",
+                "@description": "PINSEL + 1 selects the timer pin input; timer pin output remains selected by PINSEL"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "PINPOL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Pin Polarity",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_PINPOL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCTL{1}_PINPOL_active_high",
+                "@value": "0b0",
+                "@description": "Active high"
+              },
+              {
+                "@name": "TIMCTL{1}_PINPOL_active_low",
+                "@value": "0b1",
+                "@description": "Active low"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "5",
+            "@name": "PINSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Pin Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_PINSEL(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "PINCFG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Pin Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_PINCFG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCTL{1}_PINCFG_outdisable",
+                "@value": "0b00",
+                "@description": "Timer pin output disabled"
+              },
+              {
+                "@name": "TIMCTL{1}_PINCFG_opend_bidirouten",
+                "@value": "0b01",
+                "@description": "Timer pin open-drain or bidirectional output enable"
+              },
+              {
+                "@name": "TIMCTL{1}_PINCFG_bidir_outdata",
+                "@value": "0b10",
+                "@description": "Timer pin bidirectional output data"
+              },
+              {
+                "@name": "TIMCTL{1}_PINCFG_output",
+                "@value": "0b11",
+                "@description": "Timer pin output"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "TRGSRC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_TRGSRC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCTL{1}_TRGSRC_ext_trig",
+                "@value": "0b0",
+                "@description": "External"
+              },
+              {
+                "@name": "TIMCTL{1}_TRGSRC_internal_trig",
+                "@value": "0b1",
+                "@description": "Internal"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "TRGPOL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Polarity",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_TRGPOL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCTL{1}_TRGPOL_active_high",
+                "@value": "0b0",
+                "@description": "Active high"
+              },
+              {
+                "@name": "TIMCTL{1}_TRGPOL_active_low",
+                "@value": "0b1",
+                "@description": "Active low"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "6",
+            "@name": "TRGSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCTL_TRGSEL(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "1152",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TIMCFG{1}",
+        "@description": "Timer Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TIMCFG[{1}]"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "26",
+            "@width": "6",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "TSTART",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Start",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCFG_TSTART(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCFG{1}_TSTART_disable",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "TIMCFG{1}_TSTART_enable",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "TSTOP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Stop",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCFG_TSTOP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCFG{1}_TSTOP_stop_disable",
+                "@value": "0b00",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "TIMCFG{1}_TSTOP_enable_tmrcmp",
+                "@value": "0b01",
+                "@description": "Enabled on timer compare"
+              },
+              {
+                "@name": "TIMCFG{1}_TSTOP_enable_tmrdisable",
+                "@value": "0b10",
+                "@description": "Enabled on timer disable"
+              },
+              {
+                "@name": "TIMCFG{1}_TSTOP_enable_tmr_cmp_dis",
+                "@value": "0b11",
+                "@description": "Enabled on timer compare and timer disable"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "3",
+            "@name": "TIMENA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCFG_TIMENA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCFG{1}_TIMENA_enable",
+                "@value": "0b000",
+                "@description": "Timer always enabled"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMENA_tmr_nminus1_en",
+                "@value": "0b001",
+                "@description": "Timer enabled on timer n-1 enable"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMENA_tmr_trighi_en",
+                "@value": "0b010",
+                "@description": "Timer enabled on trigger high"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMENA_tmr_trig_pin_hi_en",
+                "@value": "0b011",
+                "@description": "Timer enabled on trigger high and pin high"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMENA_tmr_pinrise_en",
+                "@value": "0b100",
+                "@description": "Timer enabled on pin rising edge"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMENA_tmr_pinrise_trighi_en",
+                "@value": "0b101",
+                "@description": "Timer enabled on pin rising edge and trigger high"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMENA_tmr_trigrise_en",
+                "@value": "0b110",
+                "@description": "Timer enabled on trigger rising edge"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMENA_tmr_trigedge_en",
+                "@value": "0b111",
+                "@description": "Timer enabled on trigger rising or falling edge"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "3",
+            "@name": "TIMDIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCFG_TIMDIS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCFG{1}_TIMDIS_never",
+                "@value": "0b000",
+                "@description": "Timer never disabled"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDIS_tmr_nminus1",
+                "@value": "0b001",
+                "@description": "Timer disabled on timer n-1 disable"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDIS_tmr_cmp",
+                "@value": "0b010",
+                "@description": "Timer disabled on timer compare (upper 8 bits match and decrement)"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDIS_tmr_cmp_triglow",
+                "@value": "0b011",
+                "@description": "Timer disabled on timer compare (upper 8 bits match and decrement) and trigger low"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDIS_pin_edge",
+                "@value": "0b100",
+                "@description": "Timer disabled on pin rising or falling edge"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDIS_pin_edge_trighi",
+                "@value": "0b101",
+                "@description": "Timer disabled on pin rising or falling edge provided trigger is high"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDIS_trig_falledge",
+                "@value": "0b110",
+                "@description": "Timer disabled on trigger falling edge"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDIS_reserved_0b111",
+                "@value": "0b111",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "3",
+            "@name": "TIMRST",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCFG_TIMRST(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCFG{1}_TIMRST_never",
+                "@value": "0b000",
+                "@description": "Never reset timer"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMRST_tmr_out_hi",
+                "@value": "0b001",
+                "@description": "Timer reset on timer output high."
+              },
+              {
+                "@name": "TIMCFG{1}_TIMRST_pin_eq_tmr_out",
+                "@value": "0b010",
+                "@description": "Timer reset on timer pin equal to timer output"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMRST_trig_eq_tmr_out",
+                "@value": "0b011",
+                "@description": "Timer reset on timer trigger equal to timer output"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMRST_pin_rise_edge",
+                "@value": "0b100",
+                "@description": "Timer reset on timer pin rising edge"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMRST_reserved_0b101",
+                "@value": "0b101",
+                "@description": "Reserved"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMRST_trig_rise_edge",
+                "@value": "0b110",
+                "@description": "Timer reset on trigger rising edge"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMRST_trig_edge",
+                "@value": "0b111",
+                "@description": "Timer reset on trigger rising or falling edge"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "3",
+            "@name": "TIMDEC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Decrement",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCFG_TIMDEC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCFG{1}_TIMDEC_flexio_clk_shiftclk_tmr_out",
+                "@value": "0b000",
+                "@description": "Decrement counter on FLEXIO clock; shift clock equals timer output"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDEC_trig_edge_shiftclk_tmr_out",
+                "@value": "0b001",
+                "@description": "Decrement counter on trigger input (both edges); shift clock equals timer output"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDEC_pin_edge_shiftclk_tmr_out",
+                "@value": "0b010",
+                "@description": "Decrement counter on pin input (both edges); shift clock equals pin input"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDEC_trig_edge_shiftclk_trig_in",
+                "@value": "0b011",
+                "@description": "Decrement counter on trigger input (both edges); shift clock equals trigger input"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDEC_flexio_clk_div16_shiftclk_tmr_out",
+                "@value": "0b100",
+                "@description": "Decrement counter on FLEXIO clock divided by 16; shift clock equals timer output"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDEC_flexio_clk_div256_shiftclk_tmr_out",
+                "@value": "0b101",
+                "@description": "Decrement counter on FLEXIO clock divided by 256; shift clock equals timer output"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDEC_pin_rise_shiftclk_pin_in",
+                "@value": "0b110",
+                "@description": "Decrement counter on pin input (rising edge); shift clock equals pin input"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMDEC_trig_rise_shiftclk_trig_in",
+                "@value": "0b111",
+                "@description": "Decrement counter on trigger input (rising edge); shift clock equals trigger input"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "2",
+            "@name": "TIMOUT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Timer Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_TIMCFG_TIMOUT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TIMCFG{1}_TIMOUT_one",
+                "@value": "0b00",
+                "@description": "Logic one when enabled; not affected by timer reset"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMOUT_zero",
+                "@value": "0b01",
+                "@description": "Logic zero when enabled; not affected by timer reset"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMOUT_one_tmrreset",
+                "@value": "0b10",
+                "@description": "Logic one when enabled and on timer reset"
+              },
+              {
+                "@name": "TIMCFG{1}_TIMOUT_zero_tmrreset",
+                "@value": "0b11",
+                "@description": "Logic zero when enabled and on timer reset"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@rid": "1280",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TIMCMP{1}",
+        "@description": "Timer Compare",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TIMCMP[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "CMP",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Timer Compare Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_TIMCMP_CMP(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1664",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFNBS{1}",
+        "@description": "Shifter Buffer Nibble Byte Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFNBS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFNBS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFNBS_SHIFTBUFNBS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1792",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFHWS{1}",
+        "@description": "Shifter Buffer Halfword Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFHWS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFHWS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFHWS_SHIFTBUFHWS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "1920",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFNIS{1}",
+        "@description": "Shifter Buffer Nibble Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFNIS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFNIS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFNIS_SHIFTBUFNIS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "2048",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFOES{1}",
+        "@description": "Shifter Buffer Odd Even Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFOES[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFOES",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFOES_SHIFTBUFOES(x)"
+          }
+        }
+      },
+      {
+        "@rid": "2176",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFEOS{1}",
+        "@description": "Shifter Buffer Even Odd Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFEOS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFEOS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFEOS_SHIFTBUFEOS(x)"
+          }
+        }
+      },
+      {
+        "@rid": "2304",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "SHIFTBUFHBS{1}",
+        "@description": "Shifter Buffer Halfword Byte Swapped",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTBUFHBS[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SHIFTBUFHBS",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shift Buffer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTBUFHBS_SHIFTBUFHBS(x)"
+          }
+        }
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "VERID",
+        "@description": "Version ID",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "VERID"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "FEATURE",
+            "@access": "RO",
+            "@reset_value": "0x3",
+            "@description": "Feature Specification Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_VERID_FEATURE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_FEATURE_standard",
+                "@value": "0b0000000000000000",
+                "@description": "Standard features implemented"
+              },
+              {
+                "@name": "VERID_FEATURE_state_logic_parallel",
+                "@value": "0b0000000000000001",
+                "@description": "State, logic, and parallel modes supported"
+              },
+              {
+                "@name": "VERID_FEATURE_pinctrl",
+                "@value": "0b0000000000000010",
+                "@description": "Pin control registers supported"
+              },
+              {
+                "@name": "VERID_FEATURE_state_logic_parallel_pinctrl",
+                "@value": "0b0000000000000011",
+                "@description": "State, logic, and parallel modes, plus pin control registers supported"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "MINOR",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Minor Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_VERID_MINOR(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "MAJOR",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Major Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_VERID_MAJOR(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "PARAM",
+        "@description": "Parameter",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PARAM"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "SHIFTER",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Shifter Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_PARAM_SHIFTER(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "TIMER",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Timer Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_PARAM_TIMER(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "PIN",
+            "@access": "RO",
+            "@reset_value": "0x20",
+            "@description": "Pin Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_PARAM_PIN(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "TRIGGER",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Trigger Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_PARAM_TRIGGER(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "CTRL",
+        "@description": "FLEXIO Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "FLEXEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "FLEXIO Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_CTRL_FLEXEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_FLEXEN_disable",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "CTRL_FLEXEN_enable",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "SWRST",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Software Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_CTRL_SWRST(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_SWRST_disable",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CTRL_SWRST_enable",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "FASTACC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Fast Access",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_CTRL_FASTACC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_FASTACC_normal",
+                "@value": "0b0",
+                "@description": "Normal"
+              },
+              {
+                "@name": "CTRL_FASTACC_fast",
+                "@value": "0b1",
+                "@description": "Fast"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DBGE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Debug Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_CTRL_DBGE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_DBGE_disable",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "CTRL_DBGE_emable",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "DOZEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Doze Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_CTRL_DOZEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_DOZEN_enable",
+                "@value": "0b0",
+                "@description": "Enable"
+              },
+              {
+                "@name": "CTRL_DOZEN_disable",
+                "@value": "0b1",
+                "@description": "Disable"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "3",
+          "@width": "27",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "PIN",
+        "@description": "Pin State",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PIN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PDI",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Pin Data Input",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PIN_PDI(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "SHIFTSTAT",
+        "@description": "Shifter Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTSTAT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SSF",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "Shifter Status Flag",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTSTAT_SSF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "SHIFTSTAT_SSF_NO_EFF",
+              "@value": "0b00000000",
+              "@description": "No effect"
+            },
+            {
+              "@name": "SHIFTSTAT_SSF_CLEAR_FLAG",
+              "@value": "0b00000001",
+              "@description": "Clear the flag"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "SHIFTERR",
+        "@description": "Shifter Error",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTERR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SEF",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "Shifter Error Flag",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTERR_SEF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "SHIFTERR_SEF_NO_EFF",
+              "@value": "0b00000000",
+              "@description": "No effect"
+            },
+            {
+              "@name": "SHIFTERR_SEF_CLEAR_FLAG",
+              "@value": "0b00000001",
+              "@description": "Clear the flag"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "TIMSTAT",
+        "@description": "Timer Status Flag",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TIMSTAT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "TSF",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "Timer Status Flag",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_TIMSTAT_TSF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "TIMSTAT_TSF_NO_EFF",
+              "@value": "0b00000000",
+              "@description": "No effect"
+            },
+            {
+              "@name": "TIMSTAT_TSF_CLEAR_FLAG",
+              "@value": "0b00000001",
+              "@description": "Clear the flag"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x20",
+        "@width": "32",
+        "@name": "SHIFTSIEN",
+        "@description": "Shifter Status Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTSIEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SSIE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shifter Status Interrupt Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTSIEN_SSIE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x24",
+        "@width": "32",
+        "@name": "SHIFTEIEN",
+        "@description": "Shifter Error Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTEIEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SEIE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shifter Error Interrupt Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTEIEN_SEIE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x28",
+        "@width": "32",
+        "@name": "TIMIEN",
+        "@description": "Timer Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TIMIEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "TEIE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Timer Status Interrupt Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_TIMIEN_TEIE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x30",
+        "@width": "32",
+        "@name": "SHIFTSDEN",
+        "@description": "Shifter Status DMA Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTSDEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SSDE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Shifter Status DMA Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTSDEN_SSDE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x38",
+        "@width": "32",
+        "@name": "TIMERSDEN",
+        "@description": "Timer Status DMA Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TIMERSDEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "TSDE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Timer Status DMA Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_TIMERSDEN_TSDE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x40",
+        "@width": "32",
+        "@name": "SHIFTSTATE",
+        "@description": "Shifter State",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SHIFTSTATE"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "3",
+          "@name": "STATE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Current State Pointer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_SHIFTSTATE_STATE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "3",
+          "@width": "29",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x48",
+        "@width": "32",
+        "@name": "TRGSTAT",
+        "@description": "Trigger Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TRGSTAT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "ETSF",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "External Trigger Status Flag",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_TRGSTAT_ETSF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "TRGSTAT_ETSF_NO_EFF",
+              "@value": "0b00000000",
+              "@description": "No effect"
+            },
+            {
+              "@name": "TRGSTAT_ETSF_CLEAR_FLAG",
+              "@value": "0b00000001",
+              "@description": "Clear the flag"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x4C",
+        "@width": "32",
+        "@name": "TRIGIEN",
+        "@description": "External Trigger Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TRIGIEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "TRIE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "External Trigger Interrupt Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_TRIGIEN_TRIE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x50",
+        "@width": "32",
+        "@name": "PINSTAT",
+        "@description": "Pin Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINSTAT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PSF",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "Pin Status Flag",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINSTAT_PSF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PINSTAT_PSF_NO_EFF",
+              "@value": "0b00000000000000000000000000000000",
+              "@description": "No effect"
+            },
+            {
+              "@name": "PINSTAT_PSF_CLEAR_FLAG",
+              "@value": "0b00000000000000000000000000000001",
+              "@description": "Clear the flag"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x54",
+        "@width": "32",
+        "@name": "PINIEN",
+        "@description": "Pin Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINIEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PSIE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Pin Status Interrupt Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINIEN_PSIE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x58",
+        "@width": "32",
+        "@name": "PINREN",
+        "@description": "Pin Rising Edge Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINREN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PRE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Pin Rising Edge",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINREN_PRE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x5C",
+        "@width": "32",
+        "@name": "PINFEN",
+        "@description": "Pin Falling Edge Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINFEN"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PFE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Pin Falling Edge",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "FLEXIO_PINFEN_PFE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "PPE"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x60",
+        "@width": "32",
+        "@name": "PINOUTD",
+        "@description": "Pin Output Data",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINOUTD"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "OUTD",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Output Data",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINOUTD_OUTD(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x64",
+        "@width": "32",
+        "@name": "PINOUTE",
+        "@description": "Pin Output Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINOUTE"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "OUTE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Output Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINOUTE_OUTE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x68",
+        "@width": "32",
+        "@name": "PINOUTDIS",
+        "@description": "Pin Output Disable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINOUTDIS"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "OUTDIS",
+          "@access": "WORZ",
+          "@reset_value": "0",
+          "@description": "Output Disable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINOUTDIS_OUTDIS(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x6C",
+        "@width": "32",
+        "@name": "PINOUTCLR",
+        "@description": "Pin Output Clear",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINOUTCLR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "OUTCLR",
+          "@access": "WORZ",
+          "@reset_value": "0",
+          "@description": "Output Clear",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINOUTCLR_OUTCLR(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x70",
+        "@width": "32",
+        "@name": "PINOUTSET",
+        "@description": "Pin Output Set",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINOUTSET"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "OUTSET",
+          "@access": "WORZ",
+          "@reset_value": "0",
+          "@description": "Output Set",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINOUTSET_OUTSET(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x74",
+        "@width": "32",
+        "@name": "PINOUTTOG",
+        "@description": "Pin Output Toggle",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PINOUTTOG"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "OUTTOG",
+          "@access": "WORZ",
+          "@reset_value": "0",
+          "@description": "Output Toggle",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "FLEXIO_PINOUTTOG_OUTTOG(x)"
+          }
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "128",
+        "@vals": "0x80 0"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x84 1"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x88 2"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x8C 3"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x90 4"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x94 5"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x98 6"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x9C 7"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x100 0"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x104 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x108 2"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x10C 3"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x110 4"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x114 5"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x118 6"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x11C 7"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x200 0"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x204 1"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x208 2"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x20C 3"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x210 4"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x214 5"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x218 6"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x21C 7"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x280 0"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x284 1"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x288 2"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x28C 3"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x290 4"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x294 5"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x298 6"
+      },
+      {
+        "@rid": "640",
+        "@vals": "0x29C 7"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x300 0"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x304 1"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x308 2"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x30C 3"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x310 4"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x314 5"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x318 6"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x31C 7"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x380 0"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x384 1"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x388 2"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x38C 3"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x390 4"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x394 5"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x398 6"
+      },
+      {
+        "@rid": "896",
+        "@vals": "0x39C 7"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x400 0"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x404 1"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x408 2"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x40C 3"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x410 4"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x414 5"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x418 6"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x41C 7"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x480 0"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x484 1"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x488 2"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x48C 3"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x490 4"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x494 5"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x498 6"
+      },
+      {
+        "@rid": "1152",
+        "@vals": "0x49C 7"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x500 0"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x504 1"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x508 2"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x50C 3"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x510 4"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x514 5"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x518 6"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x51C 7"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x680 0"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x684 1"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x688 2"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x68C 3"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x690 4"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x694 5"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x698 6"
+      },
+      {
+        "@rid": "1664",
+        "@vals": "0x69C 7"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x700 0"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x704 1"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x708 2"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x70C 3"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x710 4"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x714 5"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x718 6"
+      },
+      {
+        "@rid": "1792",
+        "@vals": "0x71C 7"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x780 0"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x784 1"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x788 2"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x78C 3"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x790 4"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x794 5"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x798 6"
+      },
+      {
+        "@rid": "1920",
+        "@vals": "0x79C 7"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x800 0"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x804 1"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x808 2"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x80C 3"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x810 4"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x814 5"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x818 6"
+      },
+      {
+        "@rid": "2048",
+        "@vals": "0x81C 7"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x880 0"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x884 1"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x888 2"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x88C 3"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x890 4"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x894 5"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x898 6"
+      },
+      {
+        "@rid": "2176",
+        "@vals": "0x89C 7"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x900 0"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x904 1"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x908 2"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x90C 3"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x910 4"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x914 5"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x918 6"
+      },
+      {
+        "@rid": "2304",
+        "@vals": "0x91C 7"
+      }
+    ]
+  }
+}

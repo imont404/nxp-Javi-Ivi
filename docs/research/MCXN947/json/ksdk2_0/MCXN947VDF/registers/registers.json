@@ -1,0 +1,5071 @@
+{
+  "registers": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@version": "6.0",
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0 http://swtools.freescale.net/XSD/registers/6.0/registers.xsd",
+    "part_information": {
+      "part_number": {
+        "@id": "MCXN947",
+        "@family": "MCX",
+        "@endian": "little"
+      }
+    },
+    "peripherals": {
+      "peripheral": [
+        {
+          "@name": "WWDT1",
+          "@full_name": "WWDT",
+          "@link": "../../MCXN947VAB/registers/WWDT1.xml",
+          "@size": "28",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40017000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50017000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "WWDT"
+          }
+        },
+        {
+          "@name": "WWDT0",
+          "@full_name": "WWDT",
+          "@link": "../../MCXN947VAB/registers/WWDT1.xml",
+          "@size": "28",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40016000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50016000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "WWDT"
+          }
+        },
+        {
+          "@name": "WUU0",
+          "@full_name": "Low-Leakage Wakeup Unit",
+          "@link": "../../MCXN947VAB/registers/WUU0.xml",
+          "@size": "92",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40046000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50046000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "WUU"
+          }
+        },
+        {
+          "@name": "VREF0",
+          "@full_name": "VREF",
+          "@link": "../../MCXN947VAB/registers/VREF0.xml",
+          "@size": "20",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40111000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50111000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "VREF"
+          }
+        },
+        {
+          "@name": "VBAT0",
+          "@full_name": "VBAT",
+          "@link": "../../MCXN947VAB/registers/VBAT0.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40059000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50059000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "VBAT"
+          }
+        },
+        {
+          "@name": "UTICK0",
+          "@full_name": "Micro-tick timer",
+          "@link": "../../MCXN947VAB/registers/UTICK0.xml",
+          "@size": "32",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40012000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50012000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "UTICK"
+          }
+        },
+        {
+          "@name": "USDHC0",
+          "@full_name": "uSDHC",
+          "@link": "../../MCXN947VAB/registers/USDHC0.xml",
+          "@size": "208",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40109000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50109000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "USDHC"
+          }
+        },
+        {
+          "@name": "USBPHY",
+          "@full_name": "USBPHY",
+          "@link": "../../MCXN947VAB/registers/USBPHY.xml",
+          "@size": "352",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010A000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010A000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "USBPHY"
+          }
+        },
+        {
+          "@name": "USBHS1__USBNC",
+          "@full_name": "USBNC",
+          "@link": "../../MCXN947VAB/registers/USBHS1__USBNC.xml",
+          "@size": "20",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010B200"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010B200"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "USBNC"
+          }
+        },
+        {
+          "@name": "USBHS1__USBC",
+          "@full_name": "USB",
+          "@link": "../../MCXN947VAB/registers/USBHS1__USBC.xml",
+          "@size": "480",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010B000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010B000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "USBHS"
+          }
+        },
+        {
+          "@name": "USBHS1_PHY_DCD",
+          "@full_name": "USBDCD",
+          "@link": "../../MCXN947VAB/registers/USBHS1_PHY_DCD.xml",
+          "@size": "28",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010A800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010A800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "USBHSDCD"
+          }
+        },
+        {
+          "@name": "USBFS0",
+          "@full_name": "USBFS",
+          "@link": "../../MCXN947VAB/registers/USBFS0.xml",
+          "@size": "349",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400DD000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500DD000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "USB"
+          }
+        },
+        {
+          "@name": "USBDCD0",
+          "@full_name": "USBDCD",
+          "@link": "../../MCXN947VAB/registers/USBDCD0.xml",
+          "@size": "28",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400DC000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500DC000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "USBDCD"
+          }
+        },
+        {
+          "@name": "TSI0",
+          "@full_name": "Touch Sensing Input",
+          "@link": "../../MCXN947VAB/registers/TSI0.xml",
+          "@size": "272",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40050000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50050000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "TSI"
+          }
+        },
+        {
+          "@name": "TRDC",
+          "@full_name": "TRDC",
+          "@link": "../../MCXN947VAB/registers/TRDC.xml",
+          "@size": "460",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400C7000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500C7000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "TRDC"
+          }
+        },
+        {
+          "@name": "TDET0",
+          "@full_name": "Digital Tamper",
+          "@link": "../../MCXN947VAB/registers/TDET0.xml",
+          "@size": "96",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40058000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50058000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "DIGTMP"
+          }
+        },
+        {
+          "@name": "SysTick1",
+          "@full_name": "M33 Systick module",
+          "@link": "../../MCXN947VAB/registers/SysTick1.xml",
+          "@cores_access": "cm33_core1",
+          "@size": "16",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0xE000E010",
+              "@core": "cm33_core1"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0xF000E010",
+              "@core": "cm33_core1"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SYSTICK"
+          }
+        },
+        {
+          "@name": "SysTick0",
+          "@full_name": "M33 Systick module",
+          "@link": "../../MCXN947VAB/registers/SysTick1.xml",
+          "@cores_access": "cm33_core0",
+          "@size": "16",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0xE000E010",
+              "@core": "cm33_core0"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0xF000E010",
+              "@core": "cm33_core0"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SYSTICK"
+          }
+        },
+        {
+          "@name": "SYSCON0",
+          "@full_name": "System configuration module",
+          "@link": "../../MCXN947VAB/registers/SYSCON0.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40000000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50000000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SYSCON"
+          }
+        },
+        {
+          "@name": "SPC0",
+          "@full_name": "SPC",
+          "@link": "../../MCXN947VAB/registers/SPC0.xml",
+          "@size": "1536",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40045000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50045000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SPC"
+          }
+        },
+        {
+          "@name": "SMARTDMA0",
+          "@full_name": "Smart DMA Port Pin",
+          "@link": "../../MCXN947VAB/registers/SMARTDMA0.xml",
+          "@size": "76",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40033000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50033000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SMARTDMA"
+          }
+        },
+        {
+          "@name": "SINC0",
+          "@full_name": "SINC",
+          "@link": "../../MCXN947VAB/registers/SINC0.xml",
+          "@size": "512",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40108000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50108000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SINC"
+          }
+        },
+        {
+          "@name": "SEMA42_0",
+          "@full_name": "SEMA42",
+          "@link": "../../MCXN947VAB/registers/SEMA42_0.xml",
+          "@size": "68",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B1000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B1000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SEMA42"
+          }
+        },
+        {
+          "@name": "SCnSCB",
+          "@full_name": "System Control not in System Control Block",
+          "@link": "../../MCXN947VAB/registers/SCnSCB.xml",
+          "@size": "16",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0xE000E000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0xF000E000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SCNSCB"
+          }
+        },
+        {
+          "@name": "SCT0",
+          "@full_name": "SCTimer/PWM",
+          "@link": "../../MCXN947VAB/registers/SCT0.xml",
+          "@size": "1360",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40091000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50091000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SCT"
+          }
+        },
+        {
+          "@name": "SCG0",
+          "@full_name": "SCG",
+          "@link": "../../MCXN947VAB/registers/SCG0.xml",
+          "@size": "2052",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40044000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50044000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SCG"
+          }
+        },
+        {
+          "@name": "SCB",
+          "@full_name": "System Control Block",
+          "@link": "../../MCXN947VAB/registers/SCB.xml",
+          "@size": "144",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0xE000ED00"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0xF000ED00"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SCB"
+          }
+        },
+        {
+          "@name": "SAU",
+          "@full_name": "Security Attribution Unit",
+          "@link": "../../MCXN947VAB/registers/SAU.xml",
+          "@size": "236",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0xE000EDD0"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0xF000EDD0"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SAU"
+          }
+        },
+        {
+          "@name": "SAI1",
+          "@full_name": "SAI",
+          "@link": "../../MCXN947VAB/registers/SAI1.xml",
+          "@size": "260",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40107000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50107000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "I2S"
+          }
+        },
+        {
+          "@name": "SAI0",
+          "@full_name": "SAI",
+          "@link": "../../MCXN947VAB/registers/SAI1.xml",
+          "@size": "260",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40106000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50106000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "I2S"
+          }
+        },
+        {
+          "@name": "RTC0",
+          "@full_name": "RTC",
+          "@link": "../../MCXN947VAB/registers/RTC0.xml",
+          "@size": "3088",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4004C000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5004C000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "RTC"
+          }
+        },
+        {
+          "@name": "QDC1",
+          "@full_name": "ENC",
+          "@link": "../../MCXN947VAB/registers/QDC1.xml",
+          "@size": "52",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400D1000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500D1000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "QDC"
+          }
+        },
+        {
+          "@name": "QDC0",
+          "@full_name": "Quadrature Decoder",
+          "@link": "../../MCXN947VAB/registers/QDC1.xml",
+          "@size": "52",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400CF000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500CF000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "QDC"
+          }
+        },
+        {
+          "@name": "PWM1",
+          "@full_name": "Pulse Width Modulator",
+          "@link": "../../MCXN947VAB/registers/PWM1.xml",
+          "@size": "406",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400D0000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500D0000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PWM"
+          }
+        },
+        {
+          "@name": "PWM0",
+          "@full_name": "Pulse Width Modulator",
+          "@link": "../../MCXN947VAB/registers/PWM1.xml",
+          "@size": "406",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400CE000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500CE000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PWM"
+          }
+        },
+        {
+          "@name": "PUF_ALIAS3",
+          "@full_name": "PUF",
+          "@link": "../../MCXN947VAB/registers/PUF_ALIAS3.xml",
+          "@size": "1008",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4002F000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5002F000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PUF"
+          }
+        },
+        {
+          "@name": "PUF_ALIAS2",
+          "@full_name": "PUF",
+          "@link": "../../MCXN947VAB/registers/PUF_ALIAS3.xml",
+          "@size": "1008",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4002E000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5002E000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PUF"
+          }
+        },
+        {
+          "@name": "PUF_ALIAS1",
+          "@full_name": "PUF",
+          "@link": "../../MCXN947VAB/registers/PUF_ALIAS3.xml",
+          "@size": "1008",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4002D000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5002D000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PUF"
+          }
+        },
+        {
+          "@name": "PUF",
+          "@full_name": "PUF",
+          "@link": "../../MCXN947VAB/registers/PUF_ALIAS3.xml",
+          "@size": "1008",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4002C000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5002C000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PUF"
+          }
+        },
+        {
+          "@name": "POWERQUAD",
+          "@full_name": "PowerQuad",
+          "@link": "../../MCXN947VAB/registers/POWERQUAD.xml",
+          "@size": "608",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400BF000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500BF000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "POWERQUAD"
+          }
+        },
+        {
+          "@name": "PORT5",
+          "@full_name": "PORT",
+          "@link": "../../MCXN947VAB/registers/PORT5.xml",
+          "@size": "168",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40042000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50042000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PORT"
+          }
+        },
+        {
+          "@name": "PORT4",
+          "@full_name": "PORT",
+          "@link": "../../MCXN947VAB/registers/PORT4.xml",
+          "@size": "224",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4011A000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5011A000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PORT"
+          }
+        },
+        {
+          "@name": "PORT3",
+          "@full_name": "PORT",
+          "@link": "../../MCXN947VAB/registers/PORT3.xml",
+          "@size": "224",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40119000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50119000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PORT"
+          }
+        },
+        {
+          "@name": "PORT2",
+          "@full_name": "PORT",
+          "@link": "../../MCXN947VAB/registers/PORT2.xml",
+          "@size": "176",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40118000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50118000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PORT"
+          }
+        },
+        {
+          "@name": "PORT1",
+          "@full_name": "PORT",
+          "@link": "../../MCXN947VAB/registers/PORT1.xml",
+          "@size": "256",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40117000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50117000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PORT"
+          }
+        },
+        {
+          "@name": "PORT0",
+          "@full_name": "PORT",
+          "@link": "../../MCXN947VAB/registers/PORT0.xml",
+          "@size": "256",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40116000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50116000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PORT"
+          }
+        },
+        {
+          "@name": "PLU0",
+          "@full_name": "Programmable Logic Unit (PLU)",
+          "@link": "../../MCXN947VAB/registers/PLU0.xml",
+          "@size": "3104",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40034000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50034000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PLU"
+          }
+        },
+        {
+          "@name": "PKC0",
+          "@full_name": "",
+          "@link": "../../MCXN947VAB/registers/PKC0.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4002B000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5002B000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PKC"
+          }
+        },
+        {
+          "@name": "PINT0",
+          "@full_name": "Pin Interrupts and Pattern Match",
+          "@link": "../../MCXN947VAB/registers/PINT0.xml",
+          "@size": "52",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40004000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50004000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PINT"
+          }
+        },
+        {
+          "@name": "PDM",
+          "@full_name": "PDM Microphone Interface",
+          "@link": "../../MCXN947VAB/registers/PDM.xml",
+          "@size": "140",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010C000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010C000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "PDM"
+          }
+        },
+        {
+          "@name": "OTPC0",
+          "@full_name": "OTPC",
+          "@link": "../../MCXN947VAB/registers/OTPC0.xml",
+          "@size": "544",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400C9000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500C9000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "OTPC"
+          }
+        },
+        {
+          "@name": "OSTIMER0",
+          "@full_name": "OSTIMER",
+          "@link": "../../MCXN947VAB/registers/OSTIMER0.xml",
+          "@size": "32",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40049000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50049000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "OSTIMER"
+          }
+        },
+        {
+          "@name": "OPAMP2",
+          "@full_name": "OPAMP",
+          "@link": "../../MCXN947VAB/registers/OPAMP2.xml",
+          "@size": "12",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40115000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50115000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "OPAMP"
+          }
+        },
+        {
+          "@name": "OPAMP1",
+          "@full_name": "Operational amplifier",
+          "@link": "../../MCXN947VAB/registers/OPAMP2.xml",
+          "@size": "12",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40113000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50113000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "OPAMP"
+          }
+        },
+        {
+          "@name": "OPAMP0",
+          "@full_name": "Operational amplifier",
+          "@link": "../../MCXN947VAB/registers/OPAMP2.xml",
+          "@size": "12",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40110000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50110000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "OPAMP"
+          }
+        },
+        {
+          "@name": "NVIC",
+          "@full_name": "Nested Vectored Interrupt Controller",
+          "@link": "../../MCXN947VAB/registers/NVIC.xml",
+          "@size": "3588",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0xE000E100"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0xF000E100"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "NVIC"
+          }
+        },
+        {
+          "@name": "NPX0",
+          "@full_name": "NPX",
+          "@link": "../../MCXN947VAB/registers/NPX0.xml",
+          "@size": "128",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400CC000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500CC000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "NPX"
+          }
+        },
+        {
+          "@name": "MRT0",
+          "@full_name": "Multi-Rate Timer (MRT)",
+          "@link": "../../MCXN947VAB/registers/MRT0.xml",
+          "@size": "252",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40013000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50013000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "MRT"
+          }
+        },
+        {
+          "@name": "MPU",
+          "@full_name": "Memory Protection Unit",
+          "@link": "../../MCXN947VAB/registers/MPU.xml",
+          "@size": "64",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0xE000ED90"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0xF000ED90"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "MPU"
+          }
+        },
+        {
+          "@name": "MAILBOX",
+          "@full_name": "MAILBOX",
+          "@link": "../../MCXN947VAB/registers/MAILBOX.xml",
+          "@size": "252",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B2000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B2000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "MAILBOX"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM9",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B9000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B9000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM8",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B8000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B8000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM7",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B7000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B7000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM6",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B6000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B6000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM5",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B5000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B5000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM4",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B4000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B4000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM3",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40095000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50095000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM2",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40094000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50094000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM1",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40093000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50093000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM0",
+          "@full_name": "Low-power Flexcomm Interface serial communication, supports USART, SPI, I2C.",
+          "@link": "../../MCXN947VAB/registers/LP_FLEXCOMM9.xml",
+          "@size": "4092",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40092000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50092000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LP_FLEXCOMM"
+          }
+        },
+        {
+          "@name": "LPUART9",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B9000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B9000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART8",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B8000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B8000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART7",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B7000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B7000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART6",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B6000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B6000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART5",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B5000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B5000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART4",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B4000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B4000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART3",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40095000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50095000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART2",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40094000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50094000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART1",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40093000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50093000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPUART0",
+          "@full_name": "LPUART",
+          "@link": "../../MCXN947VAB/registers/LPUART9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40092000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50092000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPUART"
+          }
+        },
+        {
+          "@name": "LPTMR1",
+          "@full_name": "Low-power Timer",
+          "@link": "../../MCXN947VAB/registers/LPTMR1.xml",
+          "@size": "16",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4004B000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5004B000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPTMR"
+          }
+        },
+        {
+          "@name": "LPTMR0",
+          "@full_name": "Low-power Timer",
+          "@link": "../../MCXN947VAB/registers/LPTMR1.xml",
+          "@size": "16",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4004A000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5004A000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPTMR"
+          }
+        },
+        {
+          "@name": "LPSPI9",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B9000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B9000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI8",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B8000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B8000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI7",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B7000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B7000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI6",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B6000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B6000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI5",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B5000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B5000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI4",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B4000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B4000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI3",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40095000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50095000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI2",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40094000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50094000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI1",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40093000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50093000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPSPI0",
+          "@full_name": "Low-Power Serial Peripheral Interface",
+          "@link": "../../MCXN947VAB/registers/LPSPI9.xml",
+          "@size": "2048",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40092000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50092000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPSPI"
+          }
+        },
+        {
+          "@name": "LPI2C9",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B9800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B9800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C8",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B8800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B8800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C7",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B7800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B7800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C6",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B6800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B6800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C5",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B5800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B5800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C4",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400B4800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500B4800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C3",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40095800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50095800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C2",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40094800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50094800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C1",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40093800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50093800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "LPI2C0",
+          "@full_name": "Low-Power Inter-Integrated Circuit",
+          "@link": "../../MCXN947VAB/registers/LPI2C9.xml",
+          "@size": "2036",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40092800"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50092800"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPI2C"
+          }
+        },
+        {
+          "@name": "ITRC0",
+          "@full_name": "Intrusion and Tamper Response Controller",
+          "@link": "../../MCXN947VAB/registers/ITRC0.xml",
+          "@size": "248",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40026000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50026000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "ITRC"
+          }
+        },
+        {
+          "@name": "INTM0",
+          "@full_name": "INTM",
+          "@link": "../../MCXN947VAB/registers/INTM0.xml",
+          "@size": "72",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4005D000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5005D000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "INTM"
+          }
+        },
+        {
+          "@name": "INPUTMUX0",
+          "@full_name": "INPUTMUX",
+          "@link": "../../MCXN947VAB/registers/INPUTMUX0.xml",
+          "@size": "1980",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40006000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50006000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "INPUTMUX"
+          }
+        },
+        {
+          "@name": "I3C1",
+          "@full_name": "I3C",
+          "@link": "../../MCXN947VAB/registers/I3C1.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40022000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50022000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "I3C"
+          }
+        },
+        {
+          "@name": "I3C0",
+          "@full_name": "I3C",
+          "@link": "../../MCXN947VAB/registers/I3C1.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40021000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50021000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "I3C"
+          }
+        },
+        {
+          "@name": "GPIO5_ALIAS1",
+          "@full_name": "GPIO",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40041000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50041000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO5",
+          "@full_name": "GPIO",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40040000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50040000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO4_ALIAS1",
+          "@full_name": "GPIO",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4009F000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5009F000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO4",
+          "@full_name": "General Purpose Input/Output",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4009E000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5009E000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO3_ALIAS1",
+          "@full_name": "GPIO",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4009D000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5009D000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO3",
+          "@full_name": "General Purpose Input/Output",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4009C000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5009C000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO2_ALIAS1",
+          "@full_name": "GPIO",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4009B000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5009B000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO2",
+          "@full_name": "General Purpose Input/Output",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4009A000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5009A000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO1_ALIAS1",
+          "@full_name": "GPIO",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40099000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50099000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO1",
+          "@full_name": "General Purpose Input/Output",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40098000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50098000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO0_ALIAS1",
+          "@full_name": "GPIO",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40097000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50097000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GPIO0",
+          "@full_name": "General Purpose Input/Output",
+          "@link": "../../MCXN947VAB/registers/GPIO5_ALIAS1.xml",
+          "@size": "296",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40096000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50096000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GPIO"
+          }
+        },
+        {
+          "@name": "GDET1",
+          "@full_name": "",
+          "@link": "../../MCXN947VAB/registers/GDET1.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40025000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50025000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GDET"
+          }
+        },
+        {
+          "@name": "GDET0",
+          "@full_name": "",
+          "@link": "../../MCXN947VAB/registers/GDET0.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40024000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50024000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "GDET"
+          }
+        },
+        {
+          "@name": "FREQME0",
+          "@full_name": "FREQME",
+          "@link": "../../MCXN947VAB/registers/FREQME0.xml",
+          "@size": "16",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40011000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50011000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "FREQME"
+          }
+        },
+        {
+          "@name": "FMU0TEST",
+          "@full_name": "FlashTest",
+          "@link": "../../MCXN947VAB/registers/FMU0TEST.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40043000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50043000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "FMUTEST"
+          }
+        },
+        {
+          "@name": "FMU0",
+          "@full_name": "Flash",
+          "@link": "../../MCXN947VAB/registers/FMU0.xml",
+          "@size": "48",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40043000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50043000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "FMU"
+          }
+        },
+        {
+          "@name": "FLEXSPI0",
+          "@full_name": "FlexSPI",
+          "@link": "../../MCXN947VAB/registers/FLEXSPI0.xml",
+          "@size": "1528",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400C8000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500C8000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "FLEXSPI"
+          }
+        },
+        {
+          "@name": "FLEXIO0",
+          "@full_name": "Flexible I/O",
+          "@link": "../../MCXN947VAB/registers/FLEXIO0.xml",
+          "@size": "2336",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40105000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50105000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "FLEXIO"
+          }
+        },
+        {
+          "@name": "EWM0",
+          "@full_name": "EWM",
+          "@link": "../../MCXN947VAB/registers/EWM0.xml",
+          "@size": "6",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400C0000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500C0000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "EWM"
+          }
+        },
+        {
+          "@name": "EVTG0",
+          "@full_name": "EVTG",
+          "@link": "../../MCXN947VAB/registers/EVTG0.xml",
+          "@size": "64",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400D2000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500D2000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "EVTG"
+          }
+        },
+        {
+          "@name": "ERM0",
+          "@full_name": "ERM",
+          "@link": "../../MCXN947VAB/registers/ERM0.xml",
+          "@size": "412",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4005C000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5005C000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "ERM"
+          }
+        },
+        {
+          "@name": "ENET0",
+          "@full_name": "Ethernet QoS",
+          "@link": "../../MCXN947VAB/registers/ENET0.xml",
+          "@size": "4592",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40100000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50100000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "ENET"
+          }
+        },
+        {
+          "@name": "EMVSIM1",
+          "@full_name": "Euro/Mastercard/Visa/SIM Serial Interface Module",
+          "@link": "../../MCXN947VAB/registers/EMVSIM1.xml",
+          "@size": "76",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40104000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50104000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "EMVSIM"
+          }
+        },
+        {
+          "@name": "EMVSIM0",
+          "@full_name": "Euro/Mastercard/Visa/SIM Serial Interface Module",
+          "@link": "../../MCXN947VAB/registers/EMVSIM1.xml",
+          "@size": "76",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40103000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50103000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "EMVSIM"
+          }
+        },
+        {
+          "@name": "ELS_ALIAS3",
+          "@full_name": "",
+          "@link": "../../MCXN947VAB/registers/ELS_ALIAS3.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40057000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50057000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "S50"
+          }
+        },
+        {
+          "@name": "ELS_ALIAS2",
+          "@full_name": "",
+          "@link": "../../MCXN947VAB/registers/ELS_ALIAS3.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40056000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50056000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "S50"
+          }
+        },
+        {
+          "@name": "ELS_ALIAS1",
+          "@full_name": "",
+          "@link": "../../MCXN947VAB/registers/ELS_ALIAS3.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40055000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50055000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "S50"
+          }
+        },
+        {
+          "@name": "ELS",
+          "@full_name": "",
+          "@link": "../../MCXN947VAB/registers/ELS.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40054000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50054000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "S50"
+          }
+        },
+        {
+          "@name": "EIM0",
+          "@full_name": "EIM",
+          "@link": "../../MCXN947VAB/registers/EIM0.xml",
+          "@size": "776",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4005B000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5005B000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "EIM"
+          }
+        },
+        {
+          "@name": "DMA1",
+          "@full_name": "DMA MP",
+          "@link": "../../MCXN947VAB/registers/DMA1.xml",
+          "@size": "65600",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400A0000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500A0000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "DMA"
+          }
+        },
+        {
+          "@name": "DMA0",
+          "@full_name": "DMA MP",
+          "@link": "../../MCXN947VAB/registers/DMA0.xml",
+          "@size": "65600",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40080000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50080000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "DMA"
+          }
+        },
+        {
+          "@name": "DM0",
+          "@full_name": "DBGMB",
+          "@link": "../../MCXN947VAB/registers/DM0.xml",
+          "@size": "256",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400BD000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500BD000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "DM"
+          }
+        },
+        {
+          "@name": "DAC2",
+          "@full_name": "14-bit Digital-to-Analog Converter",
+          "@link": "../../MCXN947VAB/registers/DAC2.xml",
+          "@size": "48",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40114000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50114000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "HPDAC"
+          }
+        },
+        {
+          "@name": "DAC1",
+          "@full_name": "Digital-to-Analog Converter",
+          "@link": "../../MCXN947VAB/registers/DAC1.xml",
+          "@size": "48",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40112000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50112000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPDAC"
+          }
+        },
+        {
+          "@name": "DAC0",
+          "@full_name": "Digital-to-Analog Converter",
+          "@link": "../../MCXN947VAB/registers/DAC1.xml",
+          "@size": "48",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010F000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010F000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPDAC"
+          }
+        },
+        {
+          "@name": "CTIMER4",
+          "@full_name": "Standard counter/timer",
+          "@link": "../../MCXN947VAB/registers/CTIMER4.xml",
+          "@size": "136",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40010000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50010000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CTIMER"
+          }
+        },
+        {
+          "@name": "CTIMER3",
+          "@full_name": "Standard counter/timer",
+          "@link": "../../MCXN947VAB/registers/CTIMER4.xml",
+          "@size": "136",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4000F000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5000F000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CTIMER"
+          }
+        },
+        {
+          "@name": "CTIMER2",
+          "@full_name": "Standard counter/timer",
+          "@link": "../../MCXN947VAB/registers/CTIMER4.xml",
+          "@size": "136",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4000E000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5000E000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CTIMER"
+          }
+        },
+        {
+          "@name": "CTIMER1",
+          "@full_name": "Standard counter/timer",
+          "@link": "../../MCXN947VAB/registers/CTIMER4.xml",
+          "@size": "136",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4000D000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5000D000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CTIMER"
+          }
+        },
+        {
+          "@name": "CTIMER0",
+          "@full_name": "Standard counter/timer",
+          "@link": "../../MCXN947VAB/registers/CTIMER4.xml",
+          "@size": "136",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4000C000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5000C000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CTIMER"
+          }
+        },
+        {
+          "@name": "CRC0",
+          "@full_name": "CRC",
+          "@link": "../../MCXN947VAB/registers/CRC0.xml",
+          "@size": "12",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400CB000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500CB000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CRC"
+          }
+        },
+        {
+          "@name": "CMX_PERFMON1",
+          "@full_name": "CMX_PERFMON",
+          "@link": "../../MCXN947VAB/registers/CMX_PERFMON1.xml",
+          "@size": "48",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400C2000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500C2000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SYSPM"
+          }
+        },
+        {
+          "@name": "CMX_PERFMON0",
+          "@full_name": "CMX_PERFMON",
+          "@link": "../../MCXN947VAB/registers/CMX_PERFMON1.xml",
+          "@size": "48",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400C1000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500C1000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "SYSPM"
+          }
+        },
+        {
+          "@name": "CMP2",
+          "@full_name": "Low Power Comparator",
+          "@link": "../../MCXN947VAB/registers/CMP2.xml",
+          "@size": "60",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40053000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50053000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPCMP"
+          }
+        },
+        {
+          "@name": "CMP1",
+          "@full_name": "Low Power Comparator",
+          "@link": "../../MCXN947VAB/registers/CMP1.xml",
+          "@size": "60",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40052000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50052000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPCMP"
+          }
+        },
+        {
+          "@name": "CMP0",
+          "@full_name": "Low Power Comparator",
+          "@link": "../../MCXN947VAB/registers/CMP1.xml",
+          "@size": "60",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40051000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50051000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "LPCMP"
+          }
+        },
+        {
+          "@name": "CMC0",
+          "@full_name": "CMC",
+          "@link": "../../MCXN947VAB/registers/CMC0.xml",
+          "@size": "292",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40048000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50048000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CMC"
+          }
+        },
+        {
+          "@name": "CDOG1",
+          "@full_name": "CDOG",
+          "@link": "../../MCXN947VAB/registers/CDOG1.xml",
+          "@size": "80",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400BC000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500BC000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CDOG"
+          }
+        },
+        {
+          "@name": "CDOG0",
+          "@full_name": "CDOG",
+          "@link": "../../MCXN947VAB/registers/CDOG1.xml",
+          "@size": "80",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400BB000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500BB000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CDOG"
+          }
+        },
+        {
+          "@name": "CAN1",
+          "@full_name": "Flexible Controller Area Network",
+          "@link": "../../MCXN947VAB/registers/CAN1.xml",
+          "@size": "12416",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400D8000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500D8000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CAN"
+          }
+        },
+        {
+          "@name": "CAN0",
+          "@full_name": "Flexible Controller Area Network",
+          "@link": "../../MCXN947VAB/registers/CAN1.xml",
+          "@size": "12416",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x400D4000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x500D4000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CAN"
+          }
+        },
+        {
+          "@name": "CACHE64_POLSEL0",
+          "@full_name": "CACHE64_POLSEL",
+          "@link": "../../MCXN947VAB/registers/CACHE64_POLSEL0.xml",
+          "@size": "32",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4001B000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5001B000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CACHE64_POLSEL"
+          }
+        },
+        {
+          "@name": "CACHE64_CTRL0",
+          "@full_name": "CACHE64_CTRL",
+          "@link": "../../MCXN947VAB/registers/CACHE64_CTRL0.xml",
+          "@size": "2064",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4001B000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5001B000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "CACHE64_CTRL"
+          }
+        },
+        {
+          "@name": "BSP32_0",
+          "@full_name": "CoolFlux BSP32",
+          "@link": "../../MCXN947VAB/registers/BSP32_0.xml",
+          "@size": "56",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40032000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50032000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "BSP32"
+          }
+        },
+        {
+          "@name": "AHBSC_ALIAS3",
+          "@full_name": "AHBSC",
+          "@link": "../../MCXN947VAB/registers/AHBSC_ALIAS3.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40123000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50123000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "AHBSC"
+          }
+        },
+        {
+          "@name": "AHBSC_ALIAS2",
+          "@full_name": "AHBSC",
+          "@link": "../../MCXN947VAB/registers/AHBSC_ALIAS3.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40122000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50122000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "AHBSC"
+          }
+        },
+        {
+          "@name": "AHBSC_ALIAS1",
+          "@full_name": "AHBSC",
+          "@link": "../../MCXN947VAB/registers/AHBSC_ALIAS3.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40121000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50121000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "AHBSC"
+          }
+        },
+        {
+          "@name": "AHBSC",
+          "@full_name": "AHBSC",
+          "@link": "../../MCXN947VAB/registers/AHBSC_ALIAS3.xml",
+          "@size": "4096",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x40120000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x50120000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "AHBSC"
+          }
+        },
+        {
+          "@name": "ADC1",
+          "@full_name": "Analog-to-Digital Converter",
+          "@link": "../../MCXN947VAB/registers/ADC1.xml",
+          "@size": "1412",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010E000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010E000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "ADC"
+          }
+        },
+        {
+          "@name": "ADC0",
+          "@full_name": "Analog-to-Digital Converter",
+          "@link": "../../MCXN947VAB/registers/ADC1.xml",
+          "@size": "1412",
+          "base_address": [
+            {
+              "@mode": "non_secure",
+              "@addr": "0x4010D000"
+            },
+            {
+              "@mode": "secure",
+              "@addr": "0x5010D000"
+            }
+          ],
+          "alias": {
+            "@type": "type",
+            "@value": "ADC"
+          }
+        }
+      ]
+    },
+    "clock_gates": {
+      "clock_gate": [
+        {
+          "@name": "ADC0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "ADC0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "ADC0"
+          }
+        },
+        {
+          "@name": "ADC1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "ADC1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "ADC1"
+          }
+        },
+        {
+          "@name": "CAN0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "FLEXCAN0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CAN0"
+          }
+        },
+        {
+          "@name": "CAN1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "FLEXCAN1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CAN1"
+          }
+        },
+        {
+          "@name": "CMP2",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "CMP2",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CMP2"
+          }
+        },
+        {
+          "@name": "CTIMER0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "TIMER0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CTIMER0"
+          }
+        },
+        {
+          "@name": "CTIMER1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "TIMER1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CTIMER1"
+          }
+        },
+        {
+          "@name": "CTIMER2",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "TIMER2",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CTIMER2"
+          }
+        },
+        {
+          "@name": "CTIMER3",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "TIMER3",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CTIMER3"
+          }
+        },
+        {
+          "@name": "CTIMER4",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "TIMER4",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "CTIMER4"
+          }
+        },
+        {
+          "@name": "DAC0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "DAC0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "DAC0"
+          }
+        },
+        {
+          "@name": "DAC1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "DAC1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "DAC1"
+          }
+        },
+        {
+          "@name": "DAC2",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "DAC2",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "DAC2"
+          }
+        },
+        {
+          "@name": "DMA0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "DMA0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "DMA0"
+          }
+        },
+        {
+          "@name": "DMA1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "DMA1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "DMA1"
+          }
+        },
+        {
+          "@name": "EIM0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "EIM",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "EIM0"
+          }
+        },
+        {
+          "@name": "ELS",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "ELS",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "ELS"
+          }
+        },
+        {
+          "@name": "EMVSIM0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "EVSIM0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "EMVSIM0"
+          }
+        },
+        {
+          "@name": "EMVSIM1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "EVSIM1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "EMVSIM1"
+          }
+        },
+        {
+          "@name": "ENET0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "ENET",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "ENET0"
+          }
+        },
+        {
+          "@name": "ERM0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "ERM",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "ERM0"
+          }
+        },
+        {
+          "@name": "EVTG0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "EVTG",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "EVTG0"
+          }
+        },
+        {
+          "@name": "EWM0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "EWM",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "EWM0"
+          }
+        },
+        {
+          "@name": "FLEXIO0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "FLEXIO",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "FLEXIO0"
+          }
+        },
+        {
+          "@name": "FLEXSPI0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "FLEXSPI",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "FLEXSPI0"
+          }
+        },
+        {
+          "@name": "FREQME0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "FREQME",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "FREQME0"
+          }
+        },
+        {
+          "@name": "GDET0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "GDET",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "GDET0"
+          }
+        },
+        {
+          "@name": "GDET1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "GDET",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "GDET1"
+          }
+        },
+        {
+          "@name": "GPIO0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "GPIO0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "GPIO0"
+          }
+        },
+        {
+          "@name": "GPIO1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "GPIO1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "GPIO1"
+          }
+        },
+        {
+          "@name": "GPIO2",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "GPIO2",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "GPIO2"
+          }
+        },
+        {
+          "@name": "GPIO3",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "GPIO3",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "GPIO3"
+          }
+        },
+        {
+          "@name": "GPIO4",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "GPIO4",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "GPIO4"
+          }
+        },
+        {
+          "@name": "I3C0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "I3C0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "I3C0"
+          }
+        },
+        {
+          "@name": "I3C1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "I3C1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "I3C1"
+          }
+        },
+        {
+          "@name": "INPUTMUX0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "MUX",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "INPUTMUX0"
+          }
+        },
+        {
+          "@name": "INTM0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "INTM",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "INTM0"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM0"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM1"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM2",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC2",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM2"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM3",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC3",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM3"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM4",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC4",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM4"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM5",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC5",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM5"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM6",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC6",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM6"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM7",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC7",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM7"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM8",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC8",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM8"
+          }
+        },
+        {
+          "@name": "LP_FLEXCOMM9",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "FC9",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "LP_FLEXCOMM9"
+          }
+        },
+        {
+          "@name": "MAILBOX0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "MAILBOX",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "MAILBOX"
+          }
+        },
+        {
+          "@name": "MICFIL0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "MICFIL",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PDM"
+          }
+        },
+        {
+          "@name": "MRT0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "MRT",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "MRT0"
+          }
+        },
+        {
+          "@name": "OPAMP0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "OPAMP0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "OPAMP0"
+          }
+        },
+        {
+          "@name": "OPAMP1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "OPAMP1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "OPAMP1"
+          }
+        },
+        {
+          "@name": "OPAMP2",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "OPAMP2",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "OPAMP2"
+          }
+        },
+        {
+          "@name": "OSTIMER0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "OSTIMER",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "OSTIMER0"
+          }
+        },
+        {
+          "@name": "PINT0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "PINT",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PINT0"
+          }
+        },
+        {
+          "@name": "PKC0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "PKC",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PKC0"
+          }
+        },
+        {
+          "@name": "PLU0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "PLU_LUT",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PLU0"
+          }
+        },
+        {
+          "@name": "PORT0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "PORT0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PORT0"
+          }
+        },
+        {
+          "@name": "PORT1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "PORT1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PORT1"
+          }
+        },
+        {
+          "@name": "PORT2",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "PORT2",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PORT2"
+          }
+        },
+        {
+          "@name": "PORT3",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "PORT3",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PORT3"
+          }
+        },
+        {
+          "@name": "PORT4",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "PORT4",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PORT4"
+          }
+        },
+        {
+          "@name": "POWERQUAD0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "PQ",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "POWERQUAD"
+          }
+        },
+        {
+          "@name": "PUF",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "PUF",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PUF"
+          }
+        },
+        {
+          "@name": "PWM0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "PWM0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PWM0"
+          }
+        },
+        {
+          "@name": "PWM1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "PWM1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "PWM1"
+          }
+        },
+        {
+          "@name": "QDC0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "QDC0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "QDC0"
+          }
+        },
+        {
+          "@name": "QDC1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "QDC1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "QDC1"
+          }
+        },
+        {
+          "@name": "RTC0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "RTC",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "RTC0"
+          }
+        },
+        {
+          "@name": "SAI0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "SAI0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "SAI0"
+          }
+        },
+        {
+          "@name": "SAI1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "SAI1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "SAI1"
+          }
+        },
+        {
+          "@name": "SCT0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "SCT",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "SCT0"
+          }
+        },
+        {
+          "@name": "SEMA42_0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "SEMA42",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "SEMA42_0"
+          }
+        },
+        {
+          "@name": "SINC0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "SINC",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "SINC0"
+          }
+        },
+        {
+          "@name": "TSI0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL3",
+            "@bit_field": "TSI",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "TSI0"
+          }
+        },
+        {
+          "@name": "USBFS0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "USB0_FS",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "USBFS0"
+          }
+        },
+        {
+          "@name": "UTICK0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL1",
+            "@bit_field": "UTICK",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "UTICK0"
+          }
+        },
+        {
+          "@name": "WWDT0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "WWDT0",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "WWDT0"
+          }
+        },
+        {
+          "@name": "WWDT1",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL0",
+            "@bit_field": "WWDT1",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "WWDT1"
+          }
+        },
+        {
+          "@name": "uSDHC0",
+          "control": {
+            "@peripheral": "SYSCON0",
+            "@register": "AHBCLKCTRL2",
+            "@bit_field": "uSDHC",
+            "state": [
+              {
+                "@name": "disabled",
+                "@value": "0"
+              },
+              {
+                "@name": "enabled",
+                "@value": "1"
+              }
+            ]
+          },
+          "peripheral": {
+            "@name": "USDHC0"
+          }
+        }
+      ]
+    }
+  }
+}

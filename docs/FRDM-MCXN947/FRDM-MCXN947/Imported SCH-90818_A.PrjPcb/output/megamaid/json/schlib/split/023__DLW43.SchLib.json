@@ -1,0 +1,352 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "DLW43.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "DLW43",
+        "Description": "IND CHK 90 OHM@100MHZ 330MA 25% 0805",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "DLW43",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "TQVOYD07",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "DLW43",
+            "Color": 128,
+            "AllPinCount": 4,
+            "ComponentDescription": "IND CHK 90 OHM@100MHZ 330MA 25% 0805",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGQx4GLQgHGMGI0YmGvUahgADx0B8g==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGQx4mKAAUZDRkMG5hq1GgYADGcByg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSb/6DOSaMJgzMNWo1DAAqSAO7",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 4,
+            "BinaryData": "eJxjYgACRgYIYGQx4GLQYHjzH8wxZjRmYK5Rq2EAACzeA98=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 5,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "YCDMCBDZ",
+            "IndexInSheet": 4,
+            "Location.X": 40,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 6,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "IXELNHRR",
+            "IndexInSheet": 5,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.X": 6,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 7,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "XNQESAFQ",
+            "IndexInSheet": 6,
+            "Location.X": 26,
+            "Location.Y": -20,
+            "Color": 16711680,
+            "Radius": 4,
+            "EndAngle": 180.0,
+            "SecondaryRadius": 4
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 8,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "TUHXHOZN",
+            "IndexInSheet": 7,
+            "Location.X": 18,
+            "Location.Y": -20,
+            "Color": 16711680,
+            "Radius": 4,
+            "EndAngle": 180.0,
+            "SecondaryRadius": 4
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "IMPFJOBJ",
+            "IndexInSheet": 8,
+            "Location.X": 10,
+            "Location.Y": -20,
+            "Color": 16711680,
+            "Radius": 4,
+            "EndAngle": 180.0,
+            "SecondaryRadius": 4
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OOOHNUXZ",
+            "IndexInSheet": 9,
+            "Location.X": 40,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "PTSMHRGX",
+            "IndexInSheet": 10,
+            "Location.X": 26,
+            "Color": 16711680,
+            "Radius": 4,
+            "StartAngle": 180.0,
+            "SecondaryRadius": 4
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 12,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "XMSIUFRU",
+            "IndexInSheet": 11,
+            "Location.X": 18,
+            "Color": 16711680,
+            "Radius": 4,
+            "StartAngle": 180.0,
+            "SecondaryRadius": 4
+          },
+          {
+            "ObjectType": "EllipticalArc",
+            "ObjectIndex": 13,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "YQDBSMIJ",
+            "IndexInSheet": 12,
+            "Location.X": 10,
+            "Color": 16711680,
+            "Radius": 4,
+            "StartAngle": 180.0,
+            "SecondaryRadius": 4
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 14,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LGQEMXCZ",
+            "IndexInSheet": 13,
+            "Color": 16714496,
+            "Corner.X": 6,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 15,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WHINWNGQ",
+            "IndexInSheet": 14,
+            "Location.X": 7,
+            "Location.Y": -7,
+            "Color": 16714496,
+            "Corner.X": 31,
+            "Corner.Y": -7,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 16,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "FRHWVTPI",
+            "IndexInSheet": 15,
+            "Location.X": 31,
+            "Location.Y": -12,
+            "Color": 16714496,
+            "Corner.X": 7,
+            "Corner.Y": -12,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 17,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WUJXRWHD",
+            "IndexInSheet": 16,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "LocationCount": 2,
+            "IsSolid": false,
+            "X1": 4,
+            "Y1": -3,
+            "X2": 4,
+            "Y2": -3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 18,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LIAABCLZ",
+            "IndexInSheet": 17,
+            "Location.X": 4,
+            "Location.Y": -14,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 2,
+            "SecondaryRadius": 2,
+            "IsSolid": true
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 19,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "JTLMWEYK",
+            "IndexInSheet": 18,
+            "Location.X": 4,
+            "Location.Y": -4,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 2,
+            "SecondaryRadius": 2,
+            "IsSolid": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 20,
+            "OwnerPartId": 1,
+            "UniqueID": "RLYTKUYL",
+            "Location.X": 12,
+            "Location.Y": 2,
+            "Name": "Designator",
+            "Text": "L?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 21
+          }
+        ]
+      }
+    ]
+  }
+}

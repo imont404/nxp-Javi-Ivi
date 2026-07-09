@@ -1,0 +1,3352 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "16",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "KIDX{1}",
+        "@description": "Keystore Index {1}",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_KIDX{1}"
+          },
+          {
+            "@type": "id",
+            "@value": "css_kidx{1}"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "5",
+          "@name": "KIDX{1}",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Selects the base 128-bit section of a key in ELS keystore. ELS keystore is arranged as an array of indexable 128-bit key sections (key slots). Keys of size larger than 128 bits are constructed from multiple consecutive key slots. The value of KIDX{1} specifies the index of the first (base) slot of a key.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_KIDX{1}_KIDX{1}(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "kidx{1}"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "5",
+          "@width": "27",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "32",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "DMA_SRC{1}",
+        "@description": "DMA Source {1}",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_DMA_SRC{1}"
+          },
+          {
+            "@type": "id",
+            "@value": "css_dma_src{1}"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "ADDR_SRC{1}",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Defines the system address of the start of the data to be transferred to the ELS via DMA.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_DMA_SRC{1}_ADDR_SRC{1}(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "addr_src{1}"
+            }
+          ]
+        }
+      },
+      {
+        "@rid": "36",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "DMA_SRC{1}_LEN",
+        "@description": "DMA Source {1} Length",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_DMA_SRC{1}_LEN"
+          },
+          {
+            "@type": "id",
+            "@value": "css_dma_src{1}_len"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SIZE_SRC{1}_LEN",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Size in bytes of the data to be transferred from the target defined in SFR DMA_SRC{1}.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_DMA_SRC{1}_LEN_SIZE_SRC{1}_LEN(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "size_src{1}_len"
+            }
+          ]
+        }
+      },
+      {
+        "@rid": "340",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "KS{1}",
+        "@description": "Status Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_KS{1}"
+          },
+          {
+            "@type": "id",
+            "@value": "ks{1}"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "KS{1}_KSIZE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key size",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_KSIZE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_ksize"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "KS{1}_KS{1}_KSIZE_size128",
+                "@value": "0b00",
+                "@description": "128"
+              },
+              {
+                "@name": "KS{1}_KS{1}_KSIZE_size256",
+                "@value": "0b01",
+                "@description": "256"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "KS{1}_KACT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key is active",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_KACT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_kact"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "KS{1}_KBASE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "First slot in a multislot key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_KBASE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_kbase"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "KS{1}_FGP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature General Purpose",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_FGP(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_fgp"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "KS{1}_FRTN",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature Retention",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_FRTN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_frtn"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "KS{1}_FHWO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature Output",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_FHWO(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_fhwo"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "KS{1}_UKPUK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UKPUK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_ukpuk"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "KS{1}_UTECDH",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UTECDH(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_utecdh"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "KS{1}_UCMAC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UCMAC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_ucmac"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "KS{1}_UKSK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "KSK key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UKSK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uksk"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "KS{1}_URTF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Real Time Fingerprint key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_URTF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_urtf"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "KS{1}_UCKDF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Derivation key for CKDF command",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UCKDF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uckdf"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "KS{1}_UHKDF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Derivation key for HKDF command",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UHKDF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uhkdf"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "KS{1}_UECSG",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ecc signing key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UECSG(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uecsg"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "KS{1}_UECDH",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ecc diffie hellman key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UECDH(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uecdh"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "KS{1}_UAES",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Aes key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UAES(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uaes"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "KS{1}_UHMAC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hmac key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UHMAC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uhmac"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "KS{1}_UKWK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key wrapping key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UKWK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_ukwk"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "KS{1}_UKUOK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key unwrapping key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UKUOK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_ukuok"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "KS{1}_UTLSPMS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "TLS Pre Master Secret",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UTLSPMS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_utlspms"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "KS{1}_UTLSMS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "TLS Master Secret",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UTLSMS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_utlsms"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "KS{1}_UKGSRC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Supply KEYGEN source",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UKGSRC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_ukgsrc"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "KS{1}_UHWO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware out key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UHWO(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uhwo"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "KS{1}_UWRPOK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ok to wrap key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UWRPOK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uwrpok"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "KS{1}_UDUK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Device Unique Key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UDUK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_uduk"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "KS{1}_UPPROT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Priviledge level",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS{1}_KS{1}_UPPROT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks{1}_upprot"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "STATUS",
+        "@description": "Status Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_STATUS"
+          },
+          {
+            "@type": "id",
+            "@value": "css_status"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ELS_BUSY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "When set, indicates the ELS is executing a crypto sequence",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_ELS_BUSY(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_busy"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_ELS_BUSY_ntcry",
+                "@value": "0b0",
+                "@description": "Crypto sequence not executing"
+              },
+              {
+                "@name": "STATUS_ELS_BUSY_cryp",
+                "@value": "0b1",
+                "@description": "Crypto sequence executing"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "ELS_IRQ",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "When set, indicates the ELS has an active interrupt",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_ELS_IRQ(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_irq"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_ELS_IRQ_ntint",
+                "@value": "0b0",
+                "@description": "No active interrupt"
+              },
+              {
+                "@name": "STATUS_ELS_IRQ_int",
+                "@value": "0b1",
+                "@description": "Active interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ELS_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "When set, indicates the ELS has detected an internal error",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_ELS_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_ELS_ERR_nterr",
+                "@value": "0b0",
+                "@description": "Internal error not detected"
+              },
+              {
+                "@name": "STATUS_ELS_ERR_err",
+                "@value": "0b1",
+                "@description": "Internal error detected"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "PRNG_RDY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "When set, indicates the internal PRNG is ready. SFR PRNG_DATOUT can be read only when this status flag is high. Reading SFR PRNG_DATOUT while this status is low triggers an ELS error.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_PRNG_RDY(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "prng_rdy"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_PRNG_RDY_ntready",
+                "@value": "0b0",
+                "@description": "Internal PRNG not ready"
+              },
+              {
+                "@name": "STATUS_PRNG_RDY_ready",
+                "@value": "0b1",
+                "@description": "Internal PRNG ready"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "ECDSA_VFY_STATUS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Signature verify result status",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_ECDSA_VFY_STATUS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ecdsa_vfy_status"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_ECDSA_VFY_STATUS_no_v_run",
+                "@value": "0b00",
+                "@description": "No verify run"
+              },
+              {
+                "@name": "STATUS_ECDSA_VFY_STATUS_sig_fail",
+                "@value": "0b01",
+                "@description": "Signature verify failed"
+              },
+              {
+                "@name": "STATUS_ECDSA_VFY_STATUS_sig_pass",
+                "@value": "0b10",
+                "@description": "Signature verify passed"
+              },
+              {
+                "@name": "STATUS_ECDSA_VFY_STATUS_err",
+                "@value": "0b11",
+                "@description": "Invalid, Error"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "PPROT",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Current command privilege level",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_PPROT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "pprot"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_PPROT_secnp",
+                "@value": "0b00",
+                "@description": "Secure, non-privileged"
+              },
+              {
+                "@name": "STATUS_PPROT_secp",
+                "@value": "0b01",
+                "@description": "Secure, privileged"
+              },
+              {
+                "@name": "STATUS_PPROT_nsecnp",
+                "@value": "0b10",
+                "@description": "Non-secure, non-privileged"
+              },
+              {
+                "@name": "STATUS_PPROT_nsecp",
+                "@value": "0b11",
+                "@description": "Non-secure, privileged"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "DRBG_ENT_LVL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Entropy quality of the current DRBG instance. This value can change while executing an ELS command but remains stable when ELS is not busy.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_DRBG_ENT_LVL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "drbg_ent_lvl"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_DRBG_ENT_LVL_none",
+                "@value": "0b00",
+                "@description": "NONE"
+              },
+              {
+                "@name": "STATUS_DRBG_ENT_LVL_low",
+                "@value": "0b01",
+                "@description": "LOW, DRBG generates random numbers of low quality entropy"
+              },
+              {
+                "@name": "STATUS_DRBG_ENT_LVL_high",
+                "@value": "0b10",
+                "@description": "HIGH, DRBG generates random numbers of high quality entropy"
+              },
+              {
+                "@name": "STATUS_DRBG_ENT_LVL_rfu",
+                "@value": "0b11",
+                "@description": "RFU, Reserved for Future Use"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "DTRNG_BUSY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "When set, it indicates TRNG is gathering entropy",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_DTRNG_BUSY(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "dtrng_busy"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_DTRNG_BUSY_notent",
+                "@value": "0b0",
+                "@description": "Not gathering entropy"
+              },
+              {
+                "@name": "STATUS_DTRNG_BUSY_ent",
+                "@value": "0b1",
+                "@description": "Gathering entropy"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "ELS_LOCKED",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "When set, indicates that ELS is locked by a master",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_STATUS_ELS_LOCKED(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_locked"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "STATUS_ELS_LOCKED_notl",
+                "@value": "0b0",
+                "@description": "Not locked by master"
+              },
+              {
+                "@name": "STATUS_ELS_LOCKED_lock",
+                "@value": "0b1",
+                "@description": "Locked by master"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "11",
+            "@width": "2",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "15",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "CTRL",
+        "@description": "Control Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_CTRL"
+          },
+          {
+            "@type": "id",
+            "@value": "css_ctrl"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ELS_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "ELS enable",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_CTRL_ELS_EN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_en"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "CTRL_ELS_EN_dis",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CTRL_ELS_EN_en",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "ELS_START",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Write to 1 to start an ELS operation. Writing 0 has no effect.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_CTRL_ELS_START(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_start"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ELS_RESET",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Write to 1 to perform an ELS synchronous reset. Writing 0 has no effect.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_CTRL_ELS_RESET(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_reset"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "5",
+            "@name": "ELS_CMD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "ELS Command ID",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_CTRL_ELS_CMD(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "css_cmd"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "BYTE_ORDER",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Defines endianness",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_CTRL_BYTE_ORDER(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "byte_order"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "CTRL_BYTE_ORDER_lit",
+                "@value": "0b0",
+                "@description": "Little endian"
+              },
+              {
+                "@name": "CTRL_BYTE_ORDER_big",
+                "@value": "0b1",
+                "@description": "Big endian"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "9",
+          "@width": "23",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "CMDCFG0",
+        "@description": "Command Configuration",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_CMDCFG0"
+          },
+          {
+            "@type": "id",
+            "@value": "css_cmdcfg0"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "CMDCFG0",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "See",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_CMDCFG0_CMDCFG0(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "cmdcfg0"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "CFG",
+        "@description": "Configuration Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_CFG"
+          },
+          {
+            "@type": "id",
+            "@value": "css_cfg"
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "26",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": {
+          "@offset": "16",
+          "@width": "10",
+          "@name": "ADCTRL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Controls the maximum value of a variable delay that will be applied before any ELS AES operation is started.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_CFG_ADCTRL(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "adctrl"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "KPROPIN",
+        "@description": "Key Properties Request",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_KPROPIN"
+          },
+          {
+            "@type": "id",
+            "@value": "css_kpropin"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "KPROPIN",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Specifies requested properties of the key created by ELS command.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_KPROPIN_KPROPIN(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "kpropin"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x38",
+        "@width": "32",
+        "@name": "DMA_RES0",
+        "@description": "DMA Result 0",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_DMA_RES0"
+          },
+          {
+            "@type": "id",
+            "@value": "css_dma_res0"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "ADDR_RES0",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Defines the system start address where the result of the ELS operation is transferred via DMA.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_DMA_RES0_ADDR_RES0(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "addr_res0"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x3C",
+        "@width": "32",
+        "@name": "DMA_RES0_LEN",
+        "@description": "DMA Result 0 Length",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_DMA_RES0_LEN"
+          },
+          {
+            "@type": "id",
+            "@value": "css_dma_res0_len"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SIZE_RES0_LEN",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Size in bytes of the data to be transferred",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_DMA_RES0_LEN_SIZE_RES0_LEN(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "size_res0_len"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x40",
+        "@width": "32",
+        "@name": "INT_ENABLE",
+        "@description": "Interrupt Enable",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_INT_ENABLE"
+          },
+          {
+            "@type": "id",
+            "@value": "css_int_enable"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "INT_EN",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Enables or disables the operation of the ELS interrupt output port.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_INT_ENABLE_INT_EN(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "int_en"
+            }
+          ],
+          "bit_field_value": [
+            {
+              "@name": "INT_ENABLE_INT_EN_dis",
+              "@value": "0b0",
+              "@description": "Disables"
+            },
+            {
+              "@name": "INT_ENABLE_INT_EN_en",
+              "@value": "0b1",
+              "@description": "Enables"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x44",
+        "@width": "32",
+        "@name": "INT_STATUS_CLR",
+        "@description": "Interrupt Status Clear",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_INT_STATUS_CLR"
+          },
+          {
+            "@type": "id",
+            "@value": "css_int_status_clr"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "INT_CLR",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Interrupt status clear bit. Writing to 1 clears the ELS interrupt status flag. Writing to 0 has no effect.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_INT_STATUS_CLR_INT_CLR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "int_clr"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x48",
+        "@width": "32",
+        "@name": "INT_STATUS_SET",
+        "@description": "Interrupt Status Set",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_INT_STATUS_SET"
+          },
+          {
+            "@type": "id",
+            "@value": "css_int_status_set"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "INT_SET",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Software triggered interrupt bit. Writing to 1 triggers an ELS interrupt. Writing to 0 has no effect.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_INT_STATUS_SET_INT_SET(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "int_set"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x4C",
+        "@width": "32",
+        "@name": "ERR_STATUS",
+        "@description": "Error Status",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_ERR_STATUS"
+          },
+          {
+            "@type": "id",
+            "@value": "css_err_status"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "BUS_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Indicates public or private bus access error.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_BUS_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "bus_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "ERR_STATUS_BUS_ERR_dis",
+                "@value": "0b0",
+                "@description": "No error"
+              },
+              {
+                "@name": "ERR_STATUS_BUS_ERR_en",
+                "@value": "0b1",
+                "@description": "Error occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "OPN_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Indicates operational error, that is, ELS has been incorrectly operated.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_OPN_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "opn_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "ERR_STATUS_OPN_ERR_dis",
+                "@value": "0b0",
+                "@description": "No error"
+              },
+              {
+                "@name": "ERR_STATUS_OPN_ERR_en",
+                "@value": "0b1",
+                "@description": "Error occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ALG_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Indicates algorithm error; an internal algorithm has produced an unexpected result.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_ALG_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "alg_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "ERR_STATUS_ALG_ERR_dis",
+                "@value": "0b0",
+                "@description": "No error"
+              },
+              {
+                "@name": "ERR_STATUS_ALG_ERR_en",
+                "@value": "0b1",
+                "@description": "Error occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "ITG_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Indicates data integrity error, that is, internal data integrity check has failed.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_ITG_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "itg_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "ERR_STATUS_ITG_ERR_dis",
+                "@value": "0b0",
+                "@description": "No error"
+              },
+              {
+                "@name": "ERR_STATUS_ITG_ERR_en",
+                "@value": "0b1",
+                "@description": "Error occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "FLT_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Indicates hardware fault error; an attempt to change the value of an internal register.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_FLT_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "flt_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "ERR_STATUS_FLT_ERR_dis",
+                "@value": "0b0",
+                "@description": "No error"
+              },
+              {
+                "@name": "ERR_STATUS_FLT_ERR_en",
+                "@value": "0b1",
+                "@description": "Error occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "PRNG_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Indicates user read of PRNG_DATOUT when STATUS[PRNG_RDY] is 0.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_PRNG_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "prng_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "ERR_STATUS_PRNG_ERR_dis",
+                "@value": "0b0",
+                "@description": "No error"
+              },
+              {
+                "@name": "ERR_STATUS_PRNG_ERR_en",
+                "@value": "0b1",
+                "@description": "Error occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "ERR_LVL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Indicates the triggered error level: 0, 1 ,2.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_ERR_LVL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "err_lvl"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "DTRNG_ERR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "TRNG unable to gather entropy with the current configuration. Provide TRNG with a new and valid configuration via ELS command DTRNG_CFG_LOAD.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_ERR_STATUS_DTRNG_ERR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "dtrng_err"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "ERR_STATUS_DTRNG_ERR_dis",
+                "@value": "0b0",
+                "@description": "No error"
+              },
+              {
+                "@name": "ERR_STATUS_DTRNG_ERR_en",
+                "@value": "0b1",
+                "@description": "TRNG error occurred"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "9",
+          "@width": "23",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x50",
+        "@width": "32",
+        "@name": "ERR_STATUS_CLR",
+        "@description": "Error Status Clear",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_ERR_STATUS_CLR"
+          },
+          {
+            "@type": "id",
+            "@value": "css_err_status_clr"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "ERR_CLR",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "ELS error status bit",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_ERR_STATUS_CLR_ERR_CLR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "err_clr"
+            }
+          ],
+          "bit_field_value": [
+            {
+              "@name": "ERR_STATUS_CLR_ERR_CLR_exit",
+              "@value": "0b0",
+              "@description": "Exits ELS error state"
+            },
+            {
+              "@name": "ERR_STATUS_CLR_ERR_CLR_clr",
+              "@value": "0b1",
+              "@description": "Clears ELS error state"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x54",
+        "@width": "32",
+        "@name": "VERSION",
+        "@description": "Version Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_VERSION"
+          },
+          {
+            "@type": "id",
+            "@value": "css_version"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "Z",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the extended release version digit1; possible values are from 0-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_Z(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "z"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@name": "Y2",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the minor release version digit0; possible values are from 0-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_Y2(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "y2"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "Y1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the minor release version digit1; possible values are from 0-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_Y1(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "y1"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "4",
+            "@name": "X",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the major release version; possible values are from 1-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_X(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "x"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "SW_Z",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the software extended revision version; possible values are from 0-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_SW_Z(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sw_z"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@name": "SW_Y2",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the software minor release version digit0; possible values are from 0-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_SW_Y2(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sw_y2"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "SW_Y1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the software minor release version digit1; possible values are from 0-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_SW_Y1(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sw_y1"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@name": "SW_X",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Specifies the software major release version; possible values are from 1-9.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_VERSION_SW_X(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sw_x"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x5C",
+        "@width": "32",
+        "@name": "PRNG_DATOUT",
+        "@description": "PRNG SW Read Out",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_PRNG_DATOUT"
+          },
+          {
+            "@type": "id",
+            "@value": "css_prng_datout"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PRNG_DATOUT",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "32-bit wide pseudo-random number. Successive reads from this field will access successive words of pseudo random data from the ELS internal PRNG.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_PRNG_DATOUT_PRNG_DATOUT(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "prng_datout"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x60",
+        "@width": "32",
+        "@name": "CMDCRC_CTRL",
+        "@description": "CRC Configuration",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_CMDCRC_CTRL"
+          },
+          {
+            "@type": "id",
+            "@value": "css_cmdcrc_ctrl"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "CMDCRC_RST",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "CRC reset to initial valueCMDCRC_EN and CMDCRC_RST fields act independently. Both fields can be changed simultaneously via a single write to the register.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_CMDCRC_CTRL_CMDCRC_RST(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "cmdcrc_rst"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "CMDCRC_CTRL_CMDCRC_RST_exit",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "CMDCRC_CTRL_CMDCRC_RST_clr",
+                "@value": "0b1",
+                "@description": "Resets the CRC command to its default value"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "CMDCRC_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "CRC enable bit",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_CMDCRC_CTRL_CMDCRC_EN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "cmdcrc_en"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "CMDCRC_CTRL_CMDCRC_EN_exit",
+                "@value": "0b0",
+                "@description": "Disables the CRC command CRC. The CRC command will not be updated on completion of each ELS command."
+              },
+              {
+                "@name": "CMDCRC_CTRL_CMDCRC_EN_clr",
+                "@value": "0b1",
+                "@description": "Enables the CRC command. The CRC command will be updated on completion of each ELS command."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x64",
+        "@width": "32",
+        "@name": "CMDCRC",
+        "@description": "Command CRC Value",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_CMDCRC"
+          },
+          {
+            "@type": "id",
+            "@value": "css_cmdcrc"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "CMDCRC",
+          "@access": "RO",
+          "@reset_value": "0xA5A5A5A5",
+          "@description": "Indicates the current CRC value.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_CMDCRC_CMDCRC(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "cmdcrc"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x68",
+        "@width": "32",
+        "@name": "SESSION_ID",
+        "@description": "Session ID",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_SESSION_ID"
+          },
+          {
+            "@type": "id",
+            "@value": "css_session_id"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SESSION_ID",
+          "@access": "RW",
+          "@reset_value": "0xCE2C6AF1",
+          "@description": "Indicates the current value of the session ID.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_SESSION_ID_SESSION_ID(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "session_id"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x70",
+        "@width": "32",
+        "@name": "DMA_FIN_ADDR",
+        "@description": "Final DMA Address",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_DMA_FIN_ADDR"
+          },
+          {
+            "@type": "id",
+            "@value": "css_dma_fin_addr"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "DMA_FIN_ADDR",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Indicates the final address of system memory that was accessed by ELS during the last command.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_DMA_FIN_ADDR_DMA_FIN_ADDR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "dma_fin_addr"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x74",
+        "@width": "32",
+        "@name": "MASTER_ID",
+        "@description": "Master ID",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_MASTER_ID"
+          },
+          {
+            "@type": "id",
+            "@value": "css_master_id"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "5",
+          "@name": "MASTER_ID",
+          "@access": "RW",
+          "@reset_value": "0x1F",
+          "@description": "Sets the privileged master ID.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "S50_ELS_MASTER_ID_MASTER_ID(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "master_id"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "5",
+          "@width": "27",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x150",
+        "@width": "32",
+        "@name": "KS0",
+        "@description": "Status Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_KS0"
+          },
+          {
+            "@type": "id",
+            "@value": "ks0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "KS0_KSIZE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key size",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_KSIZE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_ksize"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "KS0_KS0_KSIZE_size128",
+                "@value": "0b00",
+                "@description": "128"
+              },
+              {
+                "@name": "KS0_KS0_KSIZE_size256",
+                "@value": "0b01",
+                "@description": "256"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "KS0_KACT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key is active",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_KACT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_kact"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "KS0_KBASE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "First slot in a multislot key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_KBASE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_kbase"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "KS0_FGP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature General Purpose",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_FGP(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_fgp"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "KS0_FRTN",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature Retention",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_FRTN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_frtn"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "KS0_FHWO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature Output",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_FHWO(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_fhwo"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "KS0_UKPUK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UKPUK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_ukpuk"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "KS0_UTECDH",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UTECDH(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_utecdh"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "KS0_UCMAC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UCMAC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_ucmac"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "KS0_UKSK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "KSK key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UKSK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uksk"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "KS0_URTF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Real Time Fingerprint key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_URTF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_urtf"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "KS0_UCKDF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Derivation key for CKDF command",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UCKDF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uckdf"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "KS0_UHKDF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Derivation key for HKDF command",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UHKDF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uhkdf"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "KS0_UECSG",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ecc signing key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UECSG(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uecsg"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "KS0_UECDH",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ecc diffie hellman key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UECDH(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uecdh"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "KS0_UAES",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Aes key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UAES(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uaes"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "KS0_UHMAC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hmac key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UHMAC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uhmac"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "KS0_UKWK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key wrapping key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UKWK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_ukwk"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "KS0_UKUOK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key unwrapping key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UKUOK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_ukuok"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "KS0_UTLSPMS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "TLS Pre Master Secret",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UTLSPMS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_utlspms"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "KS0_UTLSMS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "TLS Master Secret",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UTLSMS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_utlsms"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "KS0_UKGSRC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Supply KEYGEN source",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UKGSRC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_ukgsrc"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "KS0_UHWO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware out key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UHWO(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uhwo"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "KS0_UWRPOK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Wrap key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UWRPOK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uwrpok"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "KS0_UDUK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Device Unique Key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UDUK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_uduk"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "KS0_UPPROT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Priviledge level",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS0_KS0_UPPROT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks0_upprot"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x160",
+        "@width": "32",
+        "@name": "KS4",
+        "@description": "Status Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "ELS_KS4"
+          },
+          {
+            "@type": "id",
+            "@value": "ks4_upprot"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "KS4_KSIZE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key size",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_KSIZE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_ksize"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "KS4_KS4_KSIZE_size128",
+                "@value": "0b00",
+                "@description": "128"
+              },
+              {
+                "@name": "KS4_KS4_KSIZE_size256",
+                "@value": "0b01",
+                "@description": "256"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "KS4_KACT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key is active",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_KACT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_kact"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "KS4_KBASE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "First slot in a multislot key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_KBASE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_kbase"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "KS4_FGP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature General Purpose",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_FGP(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_fgp"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "KS4_FRTN",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature Retention",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_FRTN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_frtn"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "KS4_FHWO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware Feature Output",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_FHWO(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_fhwo"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "KS4_UKPUK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UKPUK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_ukpuk"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "KS4_UTECDH",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UTECDH(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_utecdh"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "KS4_UCMAC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CMAC key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UCMAC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_ucmac"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "KS4_UKSK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "KSK key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UKSK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uksk"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "KS4_URTF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Real Time Fingerprint key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_URTF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_urtf"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "KS4_UCKDF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Derivation key for CKDF command",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UCKDF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uckdf"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "KS4_UHKDF",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Derivation key for HKDF command",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UHKDF(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uhkdf"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "KS4_UECSG",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ecc signing key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UECSG(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uecsg"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "KS4_UECDH",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ecc diffie hellman key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UECDH(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uecdh"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "KS4_UAES",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Aes key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UAES(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uaes"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "KS4_UHMAC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hmac key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UHMAC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uhmac"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "KS4_UKWK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key wrapping key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UKWK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_ukwk"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "KS4_UKUOK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Key unwrapping key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UKUOK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_ukuok"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "KS4_UTLSPMS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "TLS Pre Master Secret",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UTLSPMS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_utlspms"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "KS4_UTLSMS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "TLS Master Secret",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UTLSMS(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_utlsms"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "KS4_UKGSRC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Supply KEYGEN source",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UKGSRC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_ukgsrc"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "KS4_UHWO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Hardware out key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UHWO(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uhwo"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "KS4_UWRPOK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Ok to wrap key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UWRPOK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uwrpok"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "KS4_UDUK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Device Unique Key",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UDUK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_uduk"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "KS4_UPPROT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Priviledge level",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "S50_ELS_KS4_KS4_UPPROT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ks4_upprot"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "16",
+        "@vals": "0x10 0"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x14 1"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x20 0"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x24 0"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x28 1"
+      },
+      {
+        "@rid": "32",
+        "@vals": "0x30 2"
+      },
+      {
+        "@rid": "36",
+        "@vals": "0x34 2"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x78 2"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x154 1"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x158 2"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x15C 3"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x164 5"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x168 6"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x16C 7"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x170 8"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x174 9"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x178 10"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x17C 11"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x180 12"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x184 13"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x188 14"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x18C 15"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x190 16"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x194 17"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x198 18"
+      },
+      {
+        "@rid": "340",
+        "@vals": "0x19C 19"
+      }
+    ]
+  }
+}

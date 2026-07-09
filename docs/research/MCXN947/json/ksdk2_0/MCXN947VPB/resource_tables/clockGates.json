@@ -1,0 +1,6819 @@
+{
+  "resource_table": {
+    "@_xmlns": {
+      "resource": "http://swtools.freescale.net/XSD/resource/1.0",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd",
+    "@id": "clockGates",
+    "user_types": {
+      "struct": [
+        {
+          "@id": "peripheral",
+          "@label": "Clock gate peripheral",
+          "string": [
+            {
+              "@id": "device",
+              "@label": "ID of the device"
+            },
+            {
+              "@id": "submodule_name",
+              "@label": "Name of the submodule of the device"
+            },
+            {
+              "@id": "submodule_index",
+              "@label": "Index of the submodule of the device"
+            }
+          ]
+        },
+        {
+          "@id": "clockGate",
+          "@label": "Clock gate",
+          "string": {
+            "@id": "name",
+            "@label": "Clock gate name"
+          },
+          "struct": {
+            "@id": "control",
+            "@label": "Clock gate control register",
+            "string": [
+              {
+                "@id": "peripheral",
+                "@label": "Clock gate control peripheral"
+              },
+              {
+                "@id": "register",
+                "@label": "Clock gate control register"
+              },
+              {
+                "@id": "bitfield",
+                "@label": "Clock gate control bitfield"
+              },
+              {
+                "@id": "enabled",
+                "@label": "Clock gate enabled value"
+              },
+              {
+                "@id": "disabled",
+                "@label": "Clock gate disabled value"
+              }
+            ]
+          },
+          "array": {
+            "@id": "peripherals",
+            "@label": "Clock gate peripherals",
+            "@type": "peripheral"
+          }
+        }
+      ]
+    },
+    "definition": {
+      "array": [
+        {
+          "@id": "cm33_core0",
+          "@label": "Clock gates list for cm33_core0",
+          "@type": "clockGate"
+        },
+        {
+          "@id": "cm33_core1",
+          "@label": "Clock gates list for cm33_core1",
+          "@type": "clockGate"
+        }
+      ]
+    },
+    "data": {
+      "array": [
+        {
+          "@name": "cm33_core0",
+          "struct": [
+            {
+              "@name": "0",
+              "setting": {
+                "@name": "name",
+                "@value": "SCT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SCT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SCT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "1",
+              "setting": {
+                "@name": "name",
+                "@value": "PLU0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PLU_LUT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PLU0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "2",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "3",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "4",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "5",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "6",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "7",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "8",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "9",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "10",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "11",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "12",
+              "setting": {
+                "@name": "name",
+                "@value": "INPUTMUX0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MUX"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "INPUTMUX0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "13",
+              "setting": {
+                "@name": "name",
+                "@value": "DMA0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DMA0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DMA0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "14",
+              "setting": {
+                "@name": "name",
+                "@value": "DMA1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DMA1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DMA1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "15",
+              "setting": {
+                "@name": "name",
+                "@value": "USBFS0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "USB0_FS"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "USBFS0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "16",
+              "setting": {
+                "@name": "name",
+                "@value": "uSDHC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "uSDHC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "USDHC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "17",
+              "setting": {
+                "@name": "name",
+                "@value": "QDC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "QDC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "QDC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "18",
+              "setting": {
+                "@name": "name",
+                "@value": "QDC1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "QDC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "QDC1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "19",
+              "setting": {
+                "@name": "name",
+                "@value": "DAC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DAC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DAC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "20",
+              "setting": {
+                "@name": "name",
+                "@value": "DAC1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DAC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DAC1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "21",
+              "setting": {
+                "@name": "name",
+                "@value": "EMVSIM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EVSIM0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EMVSIM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "22",
+              "setting": {
+                "@name": "name",
+                "@value": "EMVSIM1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EVSIM1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EMVSIM1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "23",
+              "setting": {
+                "@name": "name",
+                "@value": "EWM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EWM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EWM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "24",
+              "setting": {
+                "@name": "name",
+                "@value": "PWM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PWM0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PWM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "25",
+              "setting": {
+                "@name": "name",
+                "@value": "PWM1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PWM1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PWM1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "26",
+              "setting": {
+                "@name": "name",
+                "@value": "SAI0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SAI0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SAI0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "27",
+              "setting": {
+                "@name": "name",
+                "@value": "SAI1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SAI1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SAI1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "28",
+              "setting": {
+                "@name": "name",
+                "@value": "MICFIL0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MICFIL"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PDM"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "29",
+              "setting": {
+                "@name": "name",
+                "@value": "FLEXIO0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXIO"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "FLEXIO0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "30",
+              "setting": {
+                "@name": "name",
+                "@value": "ENET0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ENET"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ENET0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "31",
+              "setting": {
+                "@name": "name",
+                "@value": "CMP2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "CMP2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CMP2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "32",
+              "setting": {
+                "@name": "name",
+                "@value": "CAN0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXCAN0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CAN0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "33",
+              "setting": {
+                "@name": "name",
+                "@value": "CAN1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXCAN1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CAN1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "34",
+              "setting": {
+                "@name": "name",
+                "@value": "ADC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ADC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ADC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "35",
+              "setting": {
+                "@name": "name",
+                "@value": "ADC1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ADC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ADC1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "36",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "37",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "38",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "39",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "40",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "41",
+              "setting": {
+                "@name": "name",
+                "@value": "FLEXSPI0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXSPI"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "FLEXSPI0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "42",
+              "setting": {
+                "@name": "name",
+                "@value": "I3C0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "I3C0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "I3C0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "43",
+              "setting": {
+                "@name": "name",
+                "@value": "I3C1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "I3C1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "I3C1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "44",
+              "setting": {
+                "@name": "name",
+                "@value": "WWDT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "WWDT0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "WWDT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "45",
+              "setting": {
+                "@name": "name",
+                "@value": "WWDT1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "WWDT1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "WWDT1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "46",
+              "setting": {
+                "@name": "name",
+                "@value": "PKC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PKC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PKC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "47",
+              "setting": {
+                "@name": "name",
+                "@value": "MRT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MRT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "MRT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "48",
+              "setting": {
+                "@name": "name",
+                "@value": "MAILBOX0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MAILBOX"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "MAILBOX"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "49",
+              "setting": {
+                "@name": "name",
+                "@value": "PINT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PINT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PINT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "50",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "51",
+              "setting": {
+                "@name": "name",
+                "@value": "RTC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "RTC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "RTC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "52",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "53",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "54",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "55",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "56",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM5"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC5"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM5"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "57",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM6"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC6"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM6"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "58",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM7"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC7"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM7"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "59",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM8"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC8"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM8"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "60",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM9"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC9"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM9"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "61",
+              "setting": {
+                "@name": "name",
+                "@value": "PUF"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PUF"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PUF"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "62",
+              "setting": {
+                "@name": "name",
+                "@value": "UTICK0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "UTICK"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "UTICK0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "63",
+              "setting": {
+                "@name": "name",
+                "@value": "OSTIMER0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OSTIMER"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OSTIMER0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "64",
+              "setting": {
+                "@name": "name",
+                "@value": "POWERQUAD0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PQ"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "POWERQUAD"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "65",
+              "setting": {
+                "@name": "name",
+                "@value": "ELS"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ELS"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ELS"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "66",
+              "setting": {
+                "@name": "name",
+                "@value": "FREQME0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FREQME"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "FREQME0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "67",
+              "setting": {
+                "@name": "name",
+                "@value": "SEMA42_0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SEMA42"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SEMA42_0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "68",
+              "setting": {
+                "@name": "name",
+                "@value": "INTM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "INTM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "INTM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "69",
+              "setting": {
+                "@name": "name",
+                "@value": "ERM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ERM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ERM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "70",
+              "setting": {
+                "@name": "name",
+                "@value": "EIM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EIM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EIM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "71",
+              "setting": {
+                "@name": "name",
+                "@value": "TSI0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TSI"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "TSI0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "72",
+              "setting": {
+                "@name": "name",
+                "@value": "OPAMP2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OPAMP2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OPAMP2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "73",
+              "setting": {
+                "@name": "name",
+                "@value": "OPAMP1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OPAMP1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OPAMP1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "74",
+              "setting": {
+                "@name": "name",
+                "@value": "OPAMP0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OPAMP0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OPAMP0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "75",
+              "setting": {
+                "@name": "name",
+                "@value": "DAC2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DAC2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DAC2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "76",
+              "setting": {
+                "@name": "name",
+                "@value": "EVTG0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EVTG"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EVTG0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "77",
+              "setting": {
+                "@name": "name",
+                "@value": "SINC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SINC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SINC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "78",
+              "setting": {
+                "@name": "name",
+                "@value": "GDET0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GDET"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GDET0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "79",
+              "setting": {
+                "@name": "name",
+                "@value": "GDET1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GDET"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GDET1"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@name": "cm33_core1",
+          "struct": [
+            {
+              "@name": "0",
+              "setting": {
+                "@name": "name",
+                "@value": "SCT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SCT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SCT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "1",
+              "setting": {
+                "@name": "name",
+                "@value": "PLU0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PLU_LUT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PLU0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "2",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "3",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "4",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "5",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "6",
+              "setting": {
+                "@name": "name",
+                "@value": "PORT4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PORT4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PORT4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "7",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "8",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "9",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "10",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "11",
+              "setting": {
+                "@name": "name",
+                "@value": "GPIO4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GPIO4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GPIO4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "12",
+              "setting": {
+                "@name": "name",
+                "@value": "INPUTMUX0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MUX"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "INPUTMUX0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "13",
+              "setting": {
+                "@name": "name",
+                "@value": "DMA0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DMA0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DMA0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "14",
+              "setting": {
+                "@name": "name",
+                "@value": "DMA1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DMA1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DMA1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "15",
+              "setting": {
+                "@name": "name",
+                "@value": "USBFS0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "USB0_FS"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "USBFS0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "16",
+              "setting": {
+                "@name": "name",
+                "@value": "uSDHC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "uSDHC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "USDHC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "17",
+              "setting": {
+                "@name": "name",
+                "@value": "QDC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "QDC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "QDC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "18",
+              "setting": {
+                "@name": "name",
+                "@value": "QDC1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "QDC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "QDC1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "19",
+              "setting": {
+                "@name": "name",
+                "@value": "DAC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DAC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DAC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "20",
+              "setting": {
+                "@name": "name",
+                "@value": "DAC1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DAC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DAC1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "21",
+              "setting": {
+                "@name": "name",
+                "@value": "EMVSIM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EVSIM0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EMVSIM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "22",
+              "setting": {
+                "@name": "name",
+                "@value": "EMVSIM1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EVSIM1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EMVSIM1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "23",
+              "setting": {
+                "@name": "name",
+                "@value": "EWM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EWM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EWM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "24",
+              "setting": {
+                "@name": "name",
+                "@value": "PWM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PWM0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PWM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "25",
+              "setting": {
+                "@name": "name",
+                "@value": "PWM1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PWM1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PWM1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "26",
+              "setting": {
+                "@name": "name",
+                "@value": "SAI0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SAI0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SAI0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "27",
+              "setting": {
+                "@name": "name",
+                "@value": "SAI1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SAI1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SAI1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "28",
+              "setting": {
+                "@name": "name",
+                "@value": "MICFIL0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MICFIL"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PDM"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "29",
+              "setting": {
+                "@name": "name",
+                "@value": "FLEXIO0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXIO"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "FLEXIO0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "30",
+              "setting": {
+                "@name": "name",
+                "@value": "ENET0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ENET"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ENET0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "31",
+              "setting": {
+                "@name": "name",
+                "@value": "CMP2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "CMP2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CMP2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "32",
+              "setting": {
+                "@name": "name",
+                "@value": "CAN0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXCAN0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CAN0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "33",
+              "setting": {
+                "@name": "name",
+                "@value": "CAN1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXCAN1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CAN1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "34",
+              "setting": {
+                "@name": "name",
+                "@value": "ADC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ADC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ADC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "35",
+              "setting": {
+                "@name": "name",
+                "@value": "ADC1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ADC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ADC1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "36",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "37",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "38",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "39",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "40",
+              "setting": {
+                "@name": "name",
+                "@value": "CTIMER4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TIMER4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "CTIMER4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "41",
+              "setting": {
+                "@name": "name",
+                "@value": "FLEXSPI0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FLEXSPI"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "FLEXSPI0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "42",
+              "setting": {
+                "@name": "name",
+                "@value": "I3C0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "I3C0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "I3C0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "43",
+              "setting": {
+                "@name": "name",
+                "@value": "I3C1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "I3C1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "I3C1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "44",
+              "setting": {
+                "@name": "name",
+                "@value": "WWDT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "WWDT0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "WWDT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "45",
+              "setting": {
+                "@name": "name",
+                "@value": "WWDT1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "WWDT1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "WWDT1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "46",
+              "setting": {
+                "@name": "name",
+                "@value": "PKC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PKC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PKC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "47",
+              "setting": {
+                "@name": "name",
+                "@value": "MRT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MRT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "MRT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "48",
+              "setting": {
+                "@name": "name",
+                "@value": "MAILBOX0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "MAILBOX"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "MAILBOX"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "49",
+              "setting": {
+                "@name": "name",
+                "@value": "PINT0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL0"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PINT"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PINT0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "50",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "51",
+              "setting": {
+                "@name": "name",
+                "@value": "RTC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "RTC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "RTC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "52",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "53",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "54",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM3"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC3"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM3"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "55",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM4"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC4"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM4"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "56",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM5"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC5"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM5"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "57",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM6"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC6"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM6"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "58",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM7"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC7"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM7"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "59",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM8"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC8"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM8"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "60",
+              "setting": {
+                "@name": "name",
+                "@value": "LP_FLEXCOMM9"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FC9"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "LP_FLEXCOMM9"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "61",
+              "setting": {
+                "@name": "name",
+                "@value": "PUF"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PUF"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "PUF"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "62",
+              "setting": {
+                "@name": "name",
+                "@value": "UTICK0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "UTICK"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "UTICK0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "63",
+              "setting": {
+                "@name": "name",
+                "@value": "OSTIMER0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL1"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OSTIMER"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OSTIMER0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "64",
+              "setting": {
+                "@name": "name",
+                "@value": "POWERQUAD0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "PQ"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "POWERQUAD"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "65",
+              "setting": {
+                "@name": "name",
+                "@value": "ELS"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ELS"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ELS"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "66",
+              "setting": {
+                "@name": "name",
+                "@value": "FREQME0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "FREQME"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "FREQME0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "67",
+              "setting": {
+                "@name": "name",
+                "@value": "SEMA42_0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SEMA42"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SEMA42_0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "68",
+              "setting": {
+                "@name": "name",
+                "@value": "INTM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "INTM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "INTM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "69",
+              "setting": {
+                "@name": "name",
+                "@value": "ERM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "ERM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "ERM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "70",
+              "setting": {
+                "@name": "name",
+                "@value": "EIM0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EIM"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EIM0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "71",
+              "setting": {
+                "@name": "name",
+                "@value": "TSI0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "TSI"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "TSI0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "72",
+              "setting": {
+                "@name": "name",
+                "@value": "OPAMP2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OPAMP2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OPAMP2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "73",
+              "setting": {
+                "@name": "name",
+                "@value": "OPAMP1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OPAMP1"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OPAMP1"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "74",
+              "setting": {
+                "@name": "name",
+                "@value": "OPAMP0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "OPAMP0"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "OPAMP0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "75",
+              "setting": {
+                "@name": "name",
+                "@value": "DAC2"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "DAC2"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "DAC2"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "76",
+              "setting": {
+                "@name": "name",
+                "@value": "EVTG0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "EVTG"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "EVTG0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "77",
+              "setting": {
+                "@name": "name",
+                "@value": "SINC0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL3"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "SINC"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "SINC0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "78",
+              "setting": {
+                "@name": "name",
+                "@value": "GDET0"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GDET"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GDET0"
+                  }
+                }
+              }
+            },
+            {
+              "@name": "79",
+              "setting": {
+                "@name": "name",
+                "@value": "GDET1"
+              },
+              "struct": {
+                "@name": "control",
+                "setting": [
+                  {
+                    "@name": "peripheral",
+                    "@value": "SYSCON0"
+                  },
+                  {
+                    "@name": "register",
+                    "@value": "AHBCLKCTRL2"
+                  },
+                  {
+                    "@name": "bitfield",
+                    "@value": "GDET"
+                  },
+                  {
+                    "@name": "enabled",
+                    "@value": "1"
+                  },
+                  {
+                    "@name": "disabled",
+                    "@value": "0"
+                  }
+                ]
+              },
+              "array": {
+                "@name": "peripherals",
+                "struct": {
+                  "@name": "0",
+                  "setting": {
+                    "@name": "device",
+                    "@value": "GDET1"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

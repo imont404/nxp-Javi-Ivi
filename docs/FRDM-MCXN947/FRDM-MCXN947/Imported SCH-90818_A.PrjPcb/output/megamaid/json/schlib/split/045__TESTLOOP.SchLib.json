@@ -1,0 +1,144 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "TESTLOOP.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "TESTLOOP",
+        "Description": "TEST POINT PAD 30MIL DIA SMT, NO PART TO ORDER",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "TESTLOOP",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "Y6MNZ80X",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "TESTLOOP",
+            "Color": 128,
+            "AllPinCount": 1,
+            "ComponentDescription": "TEST POINT PAD 30MIL DIA SMT, NO PART TO ORDER",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGRR5mLgYvj2H8RhCcjMM2Q0ZGCuUathAAA9iQTk",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 2,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "EOBORWPR",
+            "IndexInSheet": 1,
+            "Location.X": 10,
+            "Location.Y": -5,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 5,
+            "SecondaryRadius": 5,
+            "IsSolid": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 3,
+            "OwnerPartId": 1,
+            "UniqueID": "PMUCHCDD",
+            "Location.X": 0,
+            "Location.Y": 2,
+            "Name": "Designator",
+            "Text": "TP?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 4
+          }
+        ]
+      }
+    ]
+  }
+}

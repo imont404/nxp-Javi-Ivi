@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="20" offset="{0}" width="32" name="RBAR_A{1}" description="MPU Region Base Address Register.">
+    <bit_field offset="0" width="1" name="XN" access="RW" reset_value="0" reset_mask="0" description="The XN bit is an Execute Never bit, that indicates whether the processor can execute instructions from the region.">
+      <bit_field_value name="RBAR_A{1}_XN_EXECUTE" value="0b0" description="Execution is only permitted if read permitted."/>
+      <bit_field_value name="RBAR_A{1}_XN_EXECUTE_NEVER" value="0b1" description="Execution is not permitted."/>
+    </bit_field>
+    <bit_field offset="1" width="2" name="AP" access="RW" reset_value="0" reset_mask="0" description="The AP[2:0] bits indicate the access and privilege properties of the region.">
+      <bit_field_value name="RBAR_A{1}_AP_PRIVILEGED_CODE" value="0b00" description="Read/write by privileged code only."/>
+      <bit_field_value name="RBAR_A{1}_AP_PRIVILEGED_ANY" value="0b01" description="Read/write by any privilege level."/>
+      <bit_field_value name="RBAR_A{1}_AP_PRIVILEGED_CODE_READ_ONLY" value="0b10" description="Read-only by privileged code only."/>
+      <bit_field_value name="RBAR_A{1}_AP_PRIVILEGED_ANY_READ_ONLY" value="0b11" description="Read-only by any privilege level."/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="SH" access="RW" reset_value="0" reset_mask="0" description="For Normal memory regions, the S bit indicates whether the region is shareable. For Strongly-ordered and Device memory, the S bit is ignored.">
+      <bit_field_value name="RBAR_A{1}_SH_NON_SHAREABLE" value="0b00" description="Non-shareable memory."/>
+      <bit_field_value name="RBAR_A{1}_SH_UNPREDICTABLE" value="0b01" description="Unpredictable."/>
+      <bit_field_value name="RBAR_A{1}_SH_OUTER_SHAREABLE" value="0b10" description="Outer shareable"/>
+      <bit_field_value name="RBAR_A{1}_SH_INNER_SHAREABLE" value="0b11" description="Inner Shareable."/>
+    </bit_field>
+    <bit_field offset="5" width="27" name="BASE" access="RW" reset_value="0" reset_mask="0" description="Contains bits[31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against."/>
+  </reg_template>
+  <reg_template rid="24" offset="{0}" width="32" name="RLAR_A{1}" description="MPU Region Limit Address Register.">
+    <bit_field offset="0" width="1" name="EN" access="RW" reset_value="0" reset_mask="0" description="Enables this region.">
+      <bit_field_value name="RLAR_A{1}_EN_DISABLED" value="0b0" description="Region is disabled."/>
+      <bit_field_value name="RLAR_A{1}_EN_ENABLED" value="0b1" description="Region is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="ATTRINDX" access="RW" reset_value="0" reset_mask="0" description="Attribute index. Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields."/>
+    <reserved_bit_field offset="4" width="1" reset_value="0" reset_mask="0"/>
+    <bit_field offset="5" width="27" name="LIMIT" access="RW" reset_value="0" reset_mask="0" description="Limit address. Contains bits[31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against."/>
+  </reg_template>
+  <reg_template rid="48" offset="{0}" width="32" name="MAIR{1}" description="MPU Memory Attribute Indirection Registers {1}.">
+    <bit_field offset="0" width="8" name="ATTR{2}" access="RW" reset_value="0" reset_mask="0" description="Memory attribute encoding for MPU regions with an AttrIndex of {2}."/>
+    <bit_field offset="8" width="8" name="ATTR{3}" access="RW" reset_value="0" reset_mask="0" description="Memory attribute encoding for MPU regions with an AttrIndex of {3}."/>
+    <bit_field offset="16" width="8" name="ATTR{4}" access="RW" reset_value="0" reset_mask="0" description="Memory attribute encoding for MPU regions with an AttrIndex of {4}."/>
+    <bit_field offset="24" width="8" name="ATTR{5}" access="RW" reset_value="0" reset_mask="0" description="Memory attribute encoding for MPU regions with an AttrIndex of {5}."/>
+  </reg_template>
+  <register offset="0" width="32" name="TYPE" description="The MPU Type Register indicates how many regions the MPU support. Software can use it to determine if the processor implements an MPU.">
+    <bit_field offset="0" width="1" name="SEPARATE" access="RO" reset_value="0" reset_mask="0" description="Indicates support for separate instruction and data address maps. RAZ. Armv8-M only supports a unified MPU"/>
+    <reserved_bit_field offset="1" width="7" reset_value="0" reset_mask="0"/>
+    <bit_field offset="8" width="8" name="DREGION" access="RO" reset_value="0" reset_mask="0" description="Number of regions supported by the MPU. If this field reads-as-zero the processor does not implement an MPU."/>
+    <reserved_bit_field offset="16" width="16" reset_value="0" reset_mask="0"/>
+  </register>
+  <register offset="0x4" width="32" name="CTRL" description="MPU Control Register.">
+    <bit_field offset="0" width="1" name="ENABLE" access="RW" reset_value="0" description="Enables the MPU.">
+      <bit_field_value name="CTRL_ENABLE_MPU_DISABLE" value="0b0" description="The MPU is disabled."/>
+      <bit_field_value name="CTRL_ENABLE_MPU_ENABLED" value="0b1" description="The MPU is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="HFNMIENA" access="RW" reset_value="0" description="Enables the operation of MPU during HardFault and NMI handlers">
+      <bit_field_value name="CTRL_HFNMIENA_DISABLE" value="0b0" description="MPU is disabled during HardFault and NMI handlers."/>
+      <bit_field_value name="CTRL_HFNMIENA_ENABLE" value="0b1" description="The MPU is enabled during HardFault and NMI handlers."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="PRIVDEFENA" access="RW" reset_value="0" description="">
+      <bit_field_value name="CTRL_PRIVDEFENA_ENABLE" value="0b0" description="Disables the default memory map. Any instruction or data access that does not access a defined region faults."/>
+      <bit_field_value name="CTRL_PRIVDEFENA_DISABLE" value="0b1" description="Enables the default memory map as a background region for privileged accesses."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="RNR" description="MPU Region Number Register.">
+    <bit_field offset="0" width="8" name="REGION" access="RW" reset_value="0" reset_mask="0" description="Indicates the memory region accessed by MPU_RBAR and MPU_RASR."/>
+    <reserved_bit_field offset="8" width="24" reset_value="0" reset_mask="0"/>
+  </register>
+  <register offset="0xC" width="32" name="RBAR" description="MPU Region Base Address Register.">
+    <bit_field offset="0" width="1" name="XN" access="RW" reset_value="0" reset_mask="0" description="The XN bit is an Execute Never bit, that indicates whether the processor can execute instructions from the region.">
+      <bit_field_value name="RBAR_XN_EXECUTE" value="0b0" description="Execution is only permitted if read permitted."/>
+      <bit_field_value name="RBAR_XN_EXECUTE_NEVER" value="0b1" description="Execution is not permitted."/>
+    </bit_field>
+    <bit_field offset="1" width="2" name="AP" access="RW" reset_value="0" reset_mask="0" description="The AP[2:0] bits indicate the access and privilege properties of the region.">
+      <bit_field_value name="RBAR_AP_PRIVILEGED_CODE" value="0b00" description="Read/write by privileged code only."/>
+      <bit_field_value name="RBAR_AP_PRIVILEGED_ANY" value="0b01" description="Read/write by any privilege level."/>
+      <bit_field_value name="RBAR_AP_PRIVILEGED_CODE_READ_ONLY" value="0b10" description="Read-only by privileged code only."/>
+      <bit_field_value name="RBAR_AP_PRIVILEGED_ANY_READ_ONLY" value="0b11" description="Read-only by any privilege level."/>
+    </bit_field>
+    <bit_field offset="3" width="2" name="SH" access="RW" reset_value="0" reset_mask="0" description="For Normal memory regions, the S bit indicates whether the region is shareable. For Strongly-ordered and Device memory, the S bit is ignored.">
+      <bit_field_value name="RBAR_SH_NON_SHAREABLE" value="0b00" description="Non-shareable memory."/>
+      <bit_field_value name="RBAR_SH_UNPREDICTABLE" value="0b01" description="Unpredictable."/>
+      <bit_field_value name="RBAR_SH_OUTER_SHAREABLE" value="0b10" description="Outer shareable"/>
+      <bit_field_value name="RBAR_SH_INNER_SHAREABLE" value="0b11" description="Inner Shareable."/>
+    </bit_field>
+    <bit_field offset="5" width="27" name="BASE" access="RW" reset_value="0" reset_mask="0" description="Contains bits[31:5] of the lower inclusive limit of the selected MPU memory region. This value is zero extended to provide the base address to be checked against."/>
+  </register>
+  <register offset="0x10" width="32" name="RLAR" description="MPU Region Limit Address Register.">
+    <bit_field offset="0" width="1" name="EN" access="RW" reset_value="0" reset_mask="0" description="Enables this region.">
+      <bit_field_value name="RLAR_EN_DISABLED" value="0b0" description="Region is disabled."/>
+      <bit_field_value name="RLAR_EN_ENABLED" value="0b1" description="Region is enabled."/>
+    </bit_field>
+    <bit_field offset="1" width="3" name="ATTRINDX" access="RW" reset_value="0" reset_mask="0" description="Attribute index. Associates a set of attributes in the MPU_MAIR0 and MPU_MAIR1 fields."/>
+    <reserved_bit_field offset="4" width="1" reset_value="0" reset_mask="0"/>
+    <bit_field offset="5" width="27" name="LIMIT" access="RW" reset_value="0" reset_mask="0" description="Limit address. Contains bits[31:5] of the upper inclusive limit of the selected MPU memory region. This value is postfixed with 0x1F to provide the limit address to be checked against."/>
+  </register>
+  <reg_instance rid="20" vals="0x14 1"/>
+  <reg_instance rid="24" vals="0x18 1"/>
+  <reg_instance rid="20" vals="0x1C 2"/>
+  <reg_instance rid="24" vals="0x20 2"/>
+  <reg_instance rid="20" vals="0x24 3"/>
+  <reg_instance rid="24" vals="0x28 3"/>
+  <reg_instance rid="48" vals="0x30 0 0 1 2 3"/>
+  <reg_instance rid="48" vals="0x3C 1 4 5 6 7"/>
+</regs:peripheral>

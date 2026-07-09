@@ -1,0 +1,5656 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "92",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "DMAREQ{1}",
+        "@description": "DMA Request {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DMAREQ{1}"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DEV_0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_0(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "DEV_1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_1(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "DEV_2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_2(x)"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "DEV_3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_3(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "DEV_4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_4(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "DEV_5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_5(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "DEV_6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_6(x)"
+            }
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "DEV_7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_7(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "DEV_8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_8(x)"
+            }
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "DEV_9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_9(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "DEV_10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_10(x)"
+            }
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "DEV_11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_11(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "DEV_12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_12(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "DEV_13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_13(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "DEV_14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_14(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "DEV_15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DEV_15(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DRL{1}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA Request Low {1}",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DRL{1}(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "DRQ{1}",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "DMA Request {1} State",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DMAREQ{1}_DRQ{1}(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "14",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@rid": "256",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAP{1}",
+        "@description": "Capture Value",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAP[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "CAPn_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CAP_CAPn_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "CAPn_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CAP_CAPn_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "257",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "MATCH{1}",
+        "@description": "Match Value",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MATCH[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "MATCHn_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_MATCH_MATCHn_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "MATCHn_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_MATCH_MATCHn_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "320",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FRACMAT{1}",
+        "@description": "Fractional Match",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FRACMAT[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "FRACMAT_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Fractional Match Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_FRACMAT_FRACMAT_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "FRACMAT_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Fractional Match High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_FRACMAT_FRACMAT_H(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "12",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "512",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAPCTRL{1}",
+        "@description": "Capture Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAPCTRL[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "CAPCONn_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture Control Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_SCTCAPCTRL_CAPCTRL_CAPCONn_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "CAPCONn_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture Control High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_SCTCAPCTRL_CAPCTRL_CAPCONn_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "513",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "MATCHREL{1}",
+        "@description": "Match Reload Value",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MATCHREL[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "RELOADn_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reload Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_MATCHREL_RELOADn_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "RELOADn_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reload High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_MATCHREL_RELOADn_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "576",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FRACMATREL{1}",
+        "@description": "Fractional Match Reload",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FRACMATREL[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "RELFRAC_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reload Fractional Match Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_FRACMATREL_RELFRAC_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "RELFRAC_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reload Fractional Match High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_FRACMATREL_RELFRAC_H(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "12",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "768",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "EV{1}_STATE",
+        "@description": "Event n State",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EV[{1}].STATE"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "STATEMSKn",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@reset_mask": "0xFFFF",
+          "@description": "Event State Mask",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SCT_EV_STATE_STATEMSKn(x)"
+          }
+        }
+      },
+      {
+        "@rid": "772",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "EV{1}_CTRL",
+        "@description": "Event n Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EV[{1}].CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "MATCHSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_MATCHSEL(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "HEVENT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "High Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_HEVENT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EV_HEVENT_L_COUNTER",
+                "@value": "0b0",
+                "@description": "Low counter (selects the L state and the L match register that the MATCHSEL field specifies)"
+              },
+              {
+                "@name": "EV_HEVENT_H_COUNTER",
+                "@value": "0b1",
+                "@description": "High counter (selects the H state and the H match register that the MATCHSEL field specifies)"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "OUTSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Input and Output Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_OUTSEL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EV_OUTSEL_INPUT",
+                "@value": "0b0",
+                "@description": "Inputs"
+              },
+              {
+                "@name": "EV_OUTSEL_OUTPUT",
+                "@value": "0b1",
+                "@description": "Outputs"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "4",
+            "@name": "IOSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Input or Output Signal Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_IOSEL(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "IOCOND",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Input or Output Condition",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_IOCOND(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EV_IOCOND_LOW",
+                "@value": "0b00",
+                "@description": "Low"
+              },
+              {
+                "@name": "EV_IOCOND_RISE",
+                "@value": "0b01",
+                "@description": "Rise"
+              },
+              {
+                "@name": "EV_IOCOND_FALL",
+                "@value": "0b10",
+                "@description": "Fall"
+              },
+              {
+                "@name": "EV_IOCOND_HIGH",
+                "@value": "0b11",
+                "@description": "High"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "COMBMODE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Combination Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_COMBMODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EV_COMBMODE_OR",
+                "@value": "0b00",
+                "@description": "OR (the event occurs when either the specified match or I/O condition occurs)"
+              },
+              {
+                "@name": "EV_COMBMODE_MATCH",
+                "@value": "0b01",
+                "@description": "MATCH (uses the specified match only)"
+              },
+              {
+                "@name": "EV_COMBMODE_IO",
+                "@value": "0b10",
+                "@description": "IO (uses the specified I/O condition only)"
+              },
+              {
+                "@name": "EV_COMBMODE_AND",
+                "@value": "0b11",
+                "@description": "AND (the event occurs when the specified match and I/O condition occur simultaneously)"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "STATELD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "State Load",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_STATELD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EV_STATELD_ADD",
+                "@value": "0b0",
+                "@description": "Value of STATEV added to that of STATE (the carry out is ignored)"
+              },
+              {
+                "@name": "EV_STATELD_LOAD",
+                "@value": "0b1",
+                "@description": "Value of STATEV loaded into that of STATE"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "5",
+            "@name": "STATEV",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "State Value",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_STATEV(x)"
+            }
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "MATCHMEM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Mem",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_MATCHMEM(x)"
+            }
+          },
+          {
+            "@offset": "21",
+            "@width": "2",
+            "@name": "DIRECTION",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Direction",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EV_CTRL_DIRECTION(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EV_DIRECTION_DIRECTION_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Direction independent (event triggered regardless of the count direction)"
+              },
+              {
+                "@name": "EV_DIRECTION_COUNTING_UP",
+                "@value": "0b01",
+                "@description": "Counting up (event triggered only during up-counting when CTRL[BIDIR] = 1)"
+              },
+              {
+                "@name": "EV_DIRECTION_COUNTING_DOWN",
+                "@value": "0b10",
+                "@description": "Counting down (event triggered only during down-counting when CTRL[BIDIR] = 1)"
+              },
+              {
+                "@name": "EV_DIRECTION_Reserved",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "23",
+          "@width": "9",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@rid": "1280",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "OUT{1}_SET",
+        "@description": "Output n Set",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OUT[{1}].SET"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "SET",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Set Output",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SCT_OUT_SET_SET(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@rid": "1284",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "OUT{1}_CLR",
+        "@description": "Output n Clear",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OUT[{1}].CLR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "CLR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Clear Output",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SCT_OUT_CLR_CLR(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "CONFIG",
+        "@description": "SCT Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CONFIG"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "UNIFY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SCT Operation",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_UNIFY(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFIG_UNIFY_DUAL_COUNTER",
+                "@value": "0b0",
+                "@description": "Dual counters, COUNTER_L and COUNTER_H"
+              },
+              {
+                "@name": "CONFIG_UNIFY_UNIFIED_COUNTER",
+                "@value": "0b1",
+                "@description": "Unified counter"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "2",
+            "@name": "CLKMODE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SCT Clock Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_CLKMODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFIG_CLKMODE_SYSTEM_CLOCK_MODE",
+                "@value": "0b00",
+                "@description": "System Clock mode"
+              },
+              {
+                "@name": "CONFIG_CLKMODE_SAMPLED_SYSTEM_CLOCK_MODE",
+                "@value": "0b01",
+                "@description": "Sampled System Clock mode"
+              },
+              {
+                "@name": "CONFIG_CLKMODE_SCT_INPUT_CLOCK_MODE",
+                "@value": "0b10",
+                "@description": "SCT Input Clock mode"
+              },
+              {
+                "@name": "CONFIG_CLKMODE_ASYNCHRONOUS_MODE",
+                "@value": "0b11",
+                "@description": "Asynchronous mode"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "4",
+            "@name": "CKSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SCT Clock Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_CKSEL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFIG_CKSEL_INPUT_0_RISING_EDGES",
+                "@value": "0b0000",
+                "@description": "Rising edges on input 0"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_0_FALLING_EDGES",
+                "@value": "0b0001",
+                "@description": "Falling edges on input 0"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_1_RISING_EDGES",
+                "@value": "0b0010",
+                "@description": "Rising edges on input 1"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_1_FALLING_EDGES",
+                "@value": "0b0011",
+                "@description": "Falling edges on input 1"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_2_RISING_EDGES",
+                "@value": "0b0100",
+                "@description": "Rising edges on input 2"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_2_FALLING_EDGES",
+                "@value": "0b0101",
+                "@description": "Falling edges on input 2"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_3_RISING_EDGES",
+                "@value": "0b0110",
+                "@description": "Rising edges on input 3"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_3_FALLING_EDGES",
+                "@value": "0b0111",
+                "@description": "Falling edges on input 3"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_4_RISING_EDGES",
+                "@value": "0b1000",
+                "@description": "Rising edges on input 4"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_4_FALLING_EDGES",
+                "@value": "0b1001",
+                "@description": "Falling edges on input 4"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_5_RISING_EDGES",
+                "@value": "0b1010",
+                "@description": "Rising edges on input 5"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_5_FALLING_EDGES",
+                "@value": "0b1011",
+                "@description": "Falling edges on input 5"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_6_RISING_EDGES",
+                "@value": "0b1100",
+                "@description": "Rising edges on input 6"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_6_FALLING_EDGES",
+                "@value": "0b1101",
+                "@description": "Falling edges on input 6"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_7_RISING_EDGES",
+                "@value": "0b1110",
+                "@description": "Rising edges on input 7"
+              },
+              {
+                "@name": "CONFIG_CKSEL_INPUT_7_FALLING_EDGES",
+                "@value": "0b1111",
+                "@description": "Falling edges on input 7"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "NORELOAD_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Reload Lower Match",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_NORELOAD_L(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFIG_NORELOAD_L_RELOAD",
+                "@value": "0b0",
+                "@description": "Reloaded"
+              },
+              {
+                "@name": "CONFIG_NORELOAD_L_NO_RELOAD",
+                "@value": "0b1",
+                "@description": "Not reloaded"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "NORELOAD_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Reload Higher Match",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_NORELOAD_H(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFIG_NORELOAD_H_RELOAD_H",
+                "@value": "0b0",
+                "@description": "Reloaded"
+              },
+              {
+                "@name": "CONFIG_NORELOAD_H_NO_RELOAD_H",
+                "@value": "0b1",
+                "@description": "Not reloaded"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "8",
+            "@name": "INSYNC",
+            "@access": "RW",
+            "@reset_value": "0xFF",
+            "@description": "Input Synchronization",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_INSYNC(x)"
+            }
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "AUTOLIMIT_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Auto Limit Lower",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_AUTOLIMIT_L(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFIG_AUTOLIMIT_L_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "CONFIG_AUTOLIMIT_L_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "AUTOLIMIT_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Auto Limit Higher",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFIG_AUTOLIMIT_H(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFIG_AUTOLIMIT_H_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "CONFIG_AUTOLIMIT_H_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "19",
+          "@width": "13",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "CTRL",
+        "@description": "SCT Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DOWN_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Down Counter Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_DOWN_L(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_DOWN_L_UP",
+                "@value": "0b0",
+                "@description": "Up"
+              },
+              {
+                "@name": "CTRL_DOWN_L_DOWN",
+                "@value": "0b1",
+                "@description": "Down"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "STOP_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Stop Counter Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_STOP_L(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_STOP_L_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CTRL_STOP_L_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "HALT_L",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Halt Counter Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_HALT_L(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_HALT_L_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CTRL_HALT_L_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "CLRCTR_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Clear Counter Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_CLRCTR_L(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "BIDIR_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Bidirectional Select Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_BIDIR_L(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_BIDIR_L_UP",
+                "@value": "0b0",
+                "@description": "Up"
+              },
+              {
+                "@name": "CTRL_BIDIR_L_UP_DOWN",
+                "@value": "0b1",
+                "@description": "Up-down"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "8",
+            "@name": "PRE_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Prescaler for Low Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_PRE_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "DOWN_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Down Counter High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_DOWN_H(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_DOWN_H_UP",
+                "@value": "0b0",
+                "@description": "Up"
+              },
+              {
+                "@name": "CTRL_DOWN_H_DOWN",
+                "@value": "0b1",
+                "@description": "Down"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "STOP_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Stop Counter High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_STOP_H(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_STOP_H_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CTRL_STOP_H_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "HALT_H",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Halt Counter High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_HALT_H(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_HALT_H_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "CTRL_HALT_H_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "CLRCTR_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Clear Counter High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_CLRCTR_H(x)"
+            }
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "BIDIR_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Bidirectional Select High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_BIDIR_H(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_BIDIR_H_UP",
+                "@value": "0b0",
+                "@description": "Up"
+              },
+              {
+                "@name": "CTRL_BIDIR_H_UP_DOWN",
+                "@value": "0b1",
+                "@description": "Up-down"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "8",
+            "@name": "PRE_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Prescaler for High Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CTRL_PRE_H(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "29",
+            "@width": "3",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "LIMIT",
+        "@description": "SCT Limit Event Select",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "LIMIT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "LIMMSK_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Limit Event Counter Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_LIMIT_LIMMSK_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "LIMMSK_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Limit Event Counter High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_LIMIT_LIMMSK_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "HALT",
+        "@description": "Halt Event Select",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HALT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "HALTMSK_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Halt Event Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_HALT_HALTMSK_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "HALTMSK_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Halt Event High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_HALT_HALTMSK_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "STOP",
+        "@description": "Stop Event Select",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STOP"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "STOPMSK_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Stop Event Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_STOP_STOPMSK_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "STOPMSK_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Stop Event High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_STOP_STOPMSK_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "START",
+        "@description": "Start Event Select",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "START"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "STARTMSK_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start Event Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_START_STARTMSK_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "STARTMSK_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start Event High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_START_STARTMSK_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "DITHER",
+        "@description": "Dither Condition",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DITHER"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "DITHER_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Dither Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DITHER_DITHER_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "DITHER_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Dither High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_DITHER_DITHER_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x40",
+        "@width": "32",
+        "@name": "COUNT",
+        "@description": "Counter Value",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "COUNT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "CTR_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Counter Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_COUNT_CTR_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "CTR_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Counter High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_COUNT_CTR_H(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x44",
+        "@width": "32",
+        "@name": "STATE",
+        "@description": "State Variable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STATE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "STATE_L",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "State Variable Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_STATE_STATE_L(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "STATE_H",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "State Variable High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_STATE_STATE_H(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "11",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "11",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x48",
+        "@width": "32",
+        "@name": "INPUT",
+        "@description": "Input State",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "INPUT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "AIN0",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 0 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN0(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "AIN1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 1 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN1(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "AIN2",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 2 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN2(x)"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "AIN3",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 3 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN3(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "AIN4",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 4 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN4(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "AIN5",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 5 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN5(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "AIN6",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 6 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN6(x)"
+            }
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "AIN7",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Input 7 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN7(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "AIN8",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 8 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN8(x)"
+            }
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "AIN9",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 9 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN9(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "AIN10",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 10 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN10(x)"
+            }
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "AIN11",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 11 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN11(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "AIN12",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 12 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN12(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "AIN13",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 13 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN13(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "AIN14",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 14 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN14(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "AIN15",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 15 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_AIN15(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "SIN0",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 0 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN0(x)"
+            }
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "SIN1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 1 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN1(x)"
+            }
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "SIN2",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 2 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN2(x)"
+            }
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "SIN3",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 3 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN3(x)"
+            }
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "SIN4",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 4 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN4(x)"
+            }
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "SIN5",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 5 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN5(x)"
+            }
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "SIN6",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 6 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN6(x)"
+            }
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "SIN7",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 7 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN7(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "SIN8",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 8 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN8(x)"
+            }
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "SIN9",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 9 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN9(x)"
+            }
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "SIN10",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 10 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN10(x)"
+            }
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "SIN11",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 11 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN11(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "SIN12",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 12 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN12(x)"
+            }
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "SIN13",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 13 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN13(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "SIN14",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 14 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN14(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "SIN15",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Input 15 state",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_INPUT_SIN15(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x4C",
+        "@width": "32",
+        "@name": "REGMODE",
+        "@description": "Match and Capture Register Mode",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "REGMODE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "REGMOD_L0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L0_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L0_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "REGMOD_L1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L1_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L1_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "REGMOD_L2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L2_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L2_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "REGMOD_L3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L3_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L3_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "REGMOD_L4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L4_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L4_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "REGMOD_L5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L5_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L5_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "REGMOD_L6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L6_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L6_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "REGMOD_L7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L7_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L7_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "REGMOD_L8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L8_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L8_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "REGMOD_L9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L9_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L9_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "REGMOD_L10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L10_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L10_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "REGMOD_L11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L11_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L11_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "REGMOD_L12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L12_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L12_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "REGMOD_L13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L13_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L13_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "REGMOD_L14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L14_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L14_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "REGMOD_L15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_L15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_L15_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_L15_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "REGMOD_H0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H0_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H0_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "REGMOD_H1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H1_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H1_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "REGMOD_H2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H2_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H2_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "REGMOD_H3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H3_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H3_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "REGMOD_H4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H4_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H4_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "REGMOD_H5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H5_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H5_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "REGMOD_H6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H6_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H6_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "REGMOD_H7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H7_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H7_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "REGMOD_H8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H8_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H8_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "REGMOD_H9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H9_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H9_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "REGMOD_H10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H10_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H10_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "REGMOD_H11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H11_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H11_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "REGMOD_H12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H12_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H12_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "REGMOD_H13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H13_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H13_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "REGMOD_H14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H14_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H14_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "REGMOD_H15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Register Mode High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_REGMODE_REGMOD_H15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "REGMODE_REGMOD_H15_MATCH",
+                "@value": "0b0",
+                "@description": "Match"
+              },
+              {
+                "@name": "REGMODE_REGMOD_H15_CAPTURE",
+                "@value": "0b1",
+                "@description": "Capture"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x50",
+        "@width": "32",
+        "@name": "OUTPUT",
+        "@description": "Output State",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OUTPUT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "OUT0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT0_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT0_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "OUT1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT1_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT1_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "OUT2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT2_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT2_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "OUT3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT3_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT3_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "OUT4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT4_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT4_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "OUT5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT5_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT5_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "OUT6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT6_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT6_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "OUT7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT7_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT7_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "OUT8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT8_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT8_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "OUT9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Low and High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUT_OUT9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUT_OUT9_LOW",
+                "@value": "0b0",
+                "@description": "Forces the corresponding output low"
+              },
+              {
+                "@name": "OUTPUT_OUT9_HIGH",
+                "@value": "0b1",
+                "@description": "Forces the corresponding output high"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "10",
+            "@width": "6",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x54",
+        "@width": "32",
+        "@name": "OUTPUTDIRCTRL",
+        "@description": "Output Counter Direction Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OUTPUTDIRCTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "SETCLR0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR0_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR0_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR0_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR0_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "SETCLR1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR1_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR1_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR1_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR1_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "SETCLR2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR2_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR2_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR2_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR2_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "SETCLR3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR3_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR3_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR3_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR3_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "SETCLR4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR4_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR4_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR4_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR4_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "SETCLR5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR5_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR5_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR5_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR5_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "SETCLR6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR6_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR6_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR6_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR6_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "SETCLR7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR7_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR7_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR7_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR7_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "SETCLR8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR8_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR8_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR8_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR8_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "SETCLR9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Set and Clear Operation on Output",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_OUTPUTDIRCTRL_SETCLR9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR9_INDEPENDENT",
+                "@value": "0b00",
+                "@description": "Not dependent on the direction of any counter"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR9_L_REVERSED",
+                "@value": "0b01",
+                "@description": "Reversed when counter L or the unified counter is counting down"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR9_H_REVERSED",
+                "@value": "0b10",
+                "@description": "Reversed when counter H is counting down (do not use this value when CONFIG[UNIFY] = 1)"
+              },
+              {
+                "@name": "OUTPUTDIRCTRL_SETCLR9_RESERVED",
+                "@value": "0b11",
+                "@description": "Reserved (do not program this value)"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "20",
+          "@width": "12",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x58",
+        "@width": "32",
+        "@name": "RES",
+        "@description": "Output Conflict Resolution",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "RES"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "O0RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O0RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O0RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O0RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O0RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O0RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "O1RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O1RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O1RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O1RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O1RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O1RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "O2RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O2RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O2RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O2RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O2RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O2RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "O3RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O3RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O3RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O3RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O3RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O3RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "O4RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O4RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O4RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O4RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O4RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O4RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "O5RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O5RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O5RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O5RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O5RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O5RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "O6RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O6RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O6RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O6RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O6RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O6RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "O7RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O7RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O7RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O7RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O7RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O7RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "O8RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O8RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O8RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O8RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O8RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O8RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "O9RES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Output Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_RES_O9RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RES_O9RES_NO_CHANGE",
+                "@value": "0b00",
+                "@description": "No change"
+              },
+              {
+                "@name": "RES_O9RES_SET",
+                "@value": "0b01",
+                "@description": "Set output (or clear, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O9RES_CLEAR",
+                "@value": "0b10",
+                "@description": "Clear output (or set, based on OUTPUTDIRCTRL[SETCLRn])"
+              },
+              {
+                "@name": "RES_O9RES_TOGGLE_OUTPUT",
+                "@value": "0b11",
+                "@description": "Toggle output"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "20",
+          "@width": "12",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xF0",
+        "@width": "32",
+        "@name": "EVEN",
+        "@description": "Event Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EVEN"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "IEN0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN0_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN0_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "IEN1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN1_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN1_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "IEN2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN2_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN2_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "IEN3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN3_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN3_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "IEN4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN4_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN4_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "IEN5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN5_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN5_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "IEN6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN6_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN6_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "IEN7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN7_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN7_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "IEN8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN8_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN8_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "IEN9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN9_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN9_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "IEN10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN10_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN10_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "IEN11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN11_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN11_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "IEN12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN12_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN12_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "IEN13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN13_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN13_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "IEN14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN14_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN14_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "IEN15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVEN_IEN15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVEN_IEN15_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "EVEN_IEN15_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0xF4",
+        "@width": "32",
+        "@name": "EVFLAG",
+        "@description": "Event Flag",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EVFLAG"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "FLAG0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG0_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG0_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "FLAG1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG1_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG1_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "FLAG2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG2_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG2_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "FLAG3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG3_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG3_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "FLAG4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG4_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG4_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "FLAG5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG5_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG5_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "FLAG6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG6_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG6_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "FLAG7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG7_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG7_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "FLAG8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG8_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG8_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "FLAG9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG9_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG9_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "FLAG10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG10_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG10_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "FLAG11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG11_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG11_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "FLAG12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG12_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG12_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "FLAG13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG13_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG13_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "FLAG14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG14_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG14_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "FLAG15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_EVFLAG_FLAG15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EVFLAG_FLAG15_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No flag"
+              },
+              {
+                "@name": "EVFLAG_FLAG15_FLAG",
+                "@value": "0b1",
+                "@description": "Event n flag"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0xF8",
+        "@width": "32",
+        "@name": "CONEN",
+        "@description": "Conflict Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CONEN"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "NCEN0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN0_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN0_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "NCEN1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN1_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN1_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "NCEN2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN2_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN2_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "NCEN3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN3_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN3_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "NCEN4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN4_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN4_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "NCEN5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN5_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN5_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "NCEN6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN6_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN6_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "NCEN7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN7_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN7_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "NCEN8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN8_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN8_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "NCEN9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event and Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONEN_NCEN9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONEN_NCEN9_NO_INTERRUPT",
+                "@value": "0b0",
+                "@description": "No interrupt"
+              },
+              {
+                "@name": "CONEN_NCEN9_INTERRUPT",
+                "@value": "0b1",
+                "@description": "Interrupt"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "10",
+          "@width": "22",
+          "@reset_value": "0",
+          "@reset_mask": "0x3F"
+        }
+      },
+      {
+        "@offset": "0xFC",
+        "@width": "32",
+        "@name": "CONFLAG",
+        "@description": "Conflict Flag",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CONFLAG"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "NCFLAG0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG0_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG0_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "NCFLAG1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG1_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG1_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "NCFLAG2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG2_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG2_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "NCFLAG3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG3_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG3_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "NCFLAG4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG4_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG4_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "NCFLAG5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG5_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG5_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "NCFLAG6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG6_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG6_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "NCFLAG7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG7_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG7_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "NCFLAG8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG8_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG8_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "NCFLAG9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "No Change Conflict Event Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_NCFLAG9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CONFLAG_NCFLAG9_NO_NC_CONFLICT",
+                "@value": "0b0",
+                "@description": "Did not occur"
+              },
+              {
+                "@name": "CONFLAG_NCFLAG9_NC_CONFLICT",
+                "@value": "0b1",
+                "@description": "Occurred"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "BUSERRL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Bus Error Low or Unified",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_BUSERRL(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "BUSERRH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Bus Error High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SCT_CONFLAG_BUSERRH(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "10",
+          "@width": "20",
+          "@reset_value": "0",
+          "@reset_mask": "0x3F"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "92",
+        "@vals": "0x5C 0"
+      },
+      {
+        "@rid": "92",
+        "@vals": "0x60 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x100 0"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x100 0"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x104 1"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x104 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x108 2"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x108 2"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x10C 3"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x10C 3"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x110 4"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x110 4"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x114 5"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x114 5"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x118 6"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x118 6"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x11C 7"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x11C 7"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x120 8"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x120 8"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x124 9"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x124 9"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x128 10"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x128 10"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x12C 11"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x12C 11"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x130 12"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x130 12"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x134 13"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x134 13"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x138 14"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x138 14"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x13C 15"
+      },
+      {
+        "@rid": "257",
+        "@vals": "0x13C 15"
+      },
+      {
+        "@rid": "320",
+        "@vals": "0x140 0"
+      },
+      {
+        "@rid": "320",
+        "@vals": "0x144 1"
+      },
+      {
+        "@rid": "320",
+        "@vals": "0x148 2"
+      },
+      {
+        "@rid": "320",
+        "@vals": "0x14C 3"
+      },
+      {
+        "@rid": "320",
+        "@vals": "0x150 4"
+      },
+      {
+        "@rid": "320",
+        "@vals": "0x154 5"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x200 0"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x200 0"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x204 1"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x204 1"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x208 2"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x208 2"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x20C 3"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x20C 3"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x210 4"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x210 4"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x214 5"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x214 5"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x218 6"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x218 6"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x21C 7"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x21C 7"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x220 8"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x220 8"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x224 9"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x224 9"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x228 10"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x228 10"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x22C 11"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x22C 11"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x230 12"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x230 12"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x234 13"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x234 13"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x238 14"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x238 14"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x23C 15"
+      },
+      {
+        "@rid": "513",
+        "@vals": "0x23C 15"
+      },
+      {
+        "@rid": "576",
+        "@vals": "0x240 0"
+      },
+      {
+        "@rid": "576",
+        "@vals": "0x244 1"
+      },
+      {
+        "@rid": "576",
+        "@vals": "0x248 2"
+      },
+      {
+        "@rid": "576",
+        "@vals": "0x24C 3"
+      },
+      {
+        "@rid": "576",
+        "@vals": "0x250 4"
+      },
+      {
+        "@rid": "576",
+        "@vals": "0x254 5"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x300 0"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x304 0"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x308 1"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x30C 1"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x310 2"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x314 2"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x318 3"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x31C 3"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x320 4"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x324 4"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x328 5"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x32C 5"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x330 6"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x334 6"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x338 7"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x33C 7"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x340 8"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x344 8"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x348 9"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x34C 9"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x350 10"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x354 10"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x358 11"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x35C 11"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x360 12"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x364 12"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x368 13"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x36C 13"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x370 14"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x374 14"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x378 15"
+      },
+      {
+        "@rid": "772",
+        "@vals": "0x37C 15"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x500 0"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x504 0"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x508 1"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x50C 1"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x510 2"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x514 2"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x518 3"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x51C 3"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x520 4"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x524 4"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x528 5"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x52C 5"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x530 6"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x534 6"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x538 7"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x53C 7"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x540 8"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x544 8"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x548 9"
+      },
+      {
+        "@rid": "1284",
+        "@vals": "0x54C 9"
+      }
+    ]
+  }
+}

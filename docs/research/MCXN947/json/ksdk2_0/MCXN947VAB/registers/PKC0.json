@@ -1,0 +1,1855 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "16",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "PKC_MODE{1}",
+        "@description": "Mode register, parameter set {1}",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_MODE{1}"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_mode{1}"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "MODE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calculation Mode / MC Start address",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_MODE{1}_MODE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "mode"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "20",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "PKC_XYPTR{1}",
+        "@description": "X+Y pointer register, parameter set {1}",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_XYPTR{1}"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_xyptr{1}"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "XPTR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start address of X operand in PKCRAM with byte granularity",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_XYPTR{1}_XPTR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "xptr"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "YPTR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start address of Y operand in PKCRAM with byte granularity",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_XYPTR{1}_YPTR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "yptr"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "PKC_STATUS",
+        "@description": "Status Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_STATUS"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_status"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ACTIV",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "PKC ACTIV",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_STATUS_ACTIV(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "activ"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "CARRY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Carry overflow flag",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_STATUS_CARRY(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "carry"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ZERO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Zero result flag",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_STATUS_ZERO(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "zero"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "GOANY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Combined GO status flag",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_STATUS_GOANY(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "goany"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "2",
+            "@name": "LOCKED",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Parameter set locked",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_STATUS_LOCKED(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "locked"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "7",
+            "@width": "25",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "PKC_CTRL",
+        "@description": "Control Register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_CTRL"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_ctrl"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "RESET",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "PKC reset control bit",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_RESET(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "reset"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "STOP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Freeze PKC calculation",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_STOP(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "stop"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "GOD1",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "Control bit to start direct operation using parameter set 1",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_GOD1(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "god1"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "GOD2",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "Control bit to start direct operation using parameter set 2",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_GOD2(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "god2"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "GOM1",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "Control bit to start MC pattern using parameter set 1",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_GOM1(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "gom1"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "GOM2",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "Control bit to start MC pattern using parameter set 2",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_GOM2(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "gom2"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "GOU",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "Control bit to start pipe operation",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_GOU(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "gou"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "GF2CONV",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Convert to GF2 calculation modes",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_GF2CONV(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "gf2conv"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "CLRCACHE",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "Clear universal pointer cache",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_CLRCACHE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "clrcache"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "CACHE_EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable universal pointer cache",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_CACHE_EN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "cache_en"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "REDMUL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reduced multiplier mode",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CTRL_REDMUL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "redmul"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "PKC_CTRL_REDMUL_fullsz",
+                "@value": "0b00",
+                "@description": "full size mode, 3 least significant bits of pointer and length are ignored, minimum supported length 0x0008"
+              },
+              {
+                "@name": "PKC_CTRL_REDMUL_VALUE_32bit",
+                "@value": "0b01",
+                "@description": "Reserved - Error Generated if selected"
+              },
+              {
+                "@name": "PKC_CTRL_REDMUL_VALUE_64bit",
+                "@value": "0b10",
+                "@description": "64-bit mode, 3 least significant bits of pointer and length are ignored, minimum supported length 0x0008"
+              },
+              {
+                "@name": "PKC_CTRL_REDMUL_VALUE_128bit",
+                "@value": "0b11",
+                "@description": "Reserved - Error Generated if selected"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "PKC_CFG",
+        "@description": "Configuration register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_CFG"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_cfg"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "IDLEOP",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Idle operation feature not available in this version (flag is don't care).",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_IDLEOP(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "idleop"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "RFU1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RFU",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_RFU1(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "rfu1"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "RFU2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RFU",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_RFU2(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "rfu2"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "CLKRND",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Clock randomization feature not available in this version (flag is don't care).",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_CLKRND(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "clkrnd"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "REDMULNOISE",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Noise in reduced multiplier mode feature not available in this version (flag is don't care).",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_REDMULNOISE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "redmulnoise"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "3",
+            "@name": "RNDDLY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Random delay feature not available in this version (flag is don't care).",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_RNDDLY(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "rnddly"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "SBXNOISE",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Noise feature not available in this version (flag is don't care).",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_SBXNOISE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sbxnoise"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "ALPNOISE",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Noise feature not available in this version (flag is don't care).",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_ALPNOISE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "alpnoise"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "FMULNOISE",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Noise feature not available in this version (flag is don't care).",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_CFG_FMULNOISE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "fmulnoise"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "11",
+          "@width": "21",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "PKC_ZRPTR1",
+        "@description": "Z+R pointer register, parameter set 1",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_ZRPTR1"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_zrptr1"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "ZPTR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start address of Z operand in PKCRAM with byte granularity or constant for calculation modes using CONST",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ZRPTR1_ZPTR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "zptr"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "RPTR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start address of R result in PKCRAM with byte granularity",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ZRPTR1_RPTR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "rptr"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x1C",
+        "@width": "32",
+        "@name": "PKC_LEN1",
+        "@description": "Length register, parameter set 1",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_LEN1"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_len1"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "LEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Operand length",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_LEN1_LEN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "len"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "MCLEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Loop counter for microcode pattern",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_LEN1_MCLEN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "mclen"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x28",
+        "@width": "32",
+        "@name": "PKC_ZRPTR2",
+        "@description": "Z+R pointer register, parameter set 2",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_ZRPTR2"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_zrptr2"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "ZPT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start address of Z operand in PKCRAM with byte granularity or constant for calculation modes using CONST",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ZRPTR2_ZPT(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "zptr"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "RPTR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start address of R result in PKCRAM with byte granularity",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ZRPTR2_RPTR(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "rptr"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x2C",
+        "@width": "32",
+        "@name": "PKC_LEN2",
+        "@description": "Length register, parameter set 2",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_LEN2"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_len2"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "LEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Operand length",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_LEN2_LEN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "len"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "MCLEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Loop counter for microcode pattern",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_LEN2_MCLEN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "lmcen"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x40",
+        "@width": "32",
+        "@name": "PKC_UPTR",
+        "@description": "Universal pointer FUP program",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_UPTR"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_uptr"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PTR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Pointer to start address of PKC FUP program",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_UPTR_PTR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "ptr"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x44",
+        "@width": "32",
+        "@name": "PKC_UPTRT",
+        "@description": "Universal pointer FUP table",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_UPTRT"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_uptrt"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PTR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Pointer to start address of PKC FUP table",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_UPTRT_PTR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "ptr"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x48",
+        "@width": "32",
+        "@name": "PKC_ULEN",
+        "@description": "Universal pointer length",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_ULEN"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_ulen"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "LEN",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Length of universal pointer calculation",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_ULEN_LEN(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "len"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x50",
+        "@width": "32",
+        "@name": "PKC_MCDATA",
+        "@description": "MC pattern data interface",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_MCDATA"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_mcdata"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "MCDATA",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Microcode read/write data",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_MCDATA_MCDATA(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "mcdata"
+            }
+          ]
+        }
+      },
+      {
+        "@offset": "0x60",
+        "@width": "32",
+        "@name": "PKC_VERSION",
+        "@description": "PKC version register",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_VERSION"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_version"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "MULSIZE",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Native multiplier size and operand granularity",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_MULSIZE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "mulsize"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "PKC_VERSION_MULSIZE_bit64",
+                "@value": "0b01",
+                "@description": "64-bit multiplier"
+              },
+              {
+                "@name": "PKC_VERSION_MULSIZE_bit128",
+                "@value": "0b10",
+                "@description": "128-bit multiplier"
+              },
+              {
+                "@name": "PKC_VERSION_MULSIZE_VALUE_128b",
+                "@value": "0b11",
+                "@description": "128-bit multiplier"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "MCAVAIL",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "MC feature (layer1 calculation) is available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_MCAVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "mcavail"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "UPAVAIL",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "UP feature (layer2 calculation) is available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_UPAVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "upavail"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "UPCACHEAVAIL",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "UP cache is available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_UPCACHEAVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "upcacheavail"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "GF2AVAIL",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "GF2 calculation modes are available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_GF2AVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "gf2avail"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "PARAMNUM",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Number of parameter sets for real calculation",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_PARAMNUM(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "paramnum"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "SBX0AVAIL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "SBX0 operation is available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_SBX0AVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sbx0avail"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "SBX1AVAIL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "SBX1 operation is available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_SBX1AVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sbx1avail"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "SBX2AVAIL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "SBX2 operation is available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_SBX2AVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sbx2avail"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "SBX3AVAIL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "SBX3 operation is available",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_SBX3AVAIL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "sbx3avail"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "8",
+            "@name": "MCRECONF_SIZE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Size of reconfigurable MC table in bytes.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_VERSION_MCRECONF_SIZE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "mcreconf_size"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "20",
+          "@width": "12",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFB0",
+        "@width": "32",
+        "@name": "PKC_SOFT_RST",
+        "@description": "Software reset",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_SOFT_RST"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_soft_rst"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "SOFT_RST",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Write 1 to reset module (0 has no effect). All running and pending PKC calculation are stopped. All PKC SFRs are reset except PKC_ACCESS_ERR.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_SOFT_RST_SOFT_RST(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "soft_rst"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFC0",
+        "@width": "32",
+        "@name": "PKC_ACCESS_ERR",
+        "@description": "Access Error",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_ACCESS_ERR"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_access_err"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "APB_NOTAV",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "APB Error",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_APB_NOTAV(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "apb_notav"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "APB_WRGMD",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "APB Error",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_APB_WRGMD(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "apb_wrgmd"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@name": "APB_MASTER",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "APB Master that triggered first APB error (APB_WRGMD or APB_NOTAV)",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_APB_MASTER(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "apb_master"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "AHB",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "AHB Error",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_AHB(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ahb"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "PKCC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Error in PKC coprocessor kernel",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_PKCC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "pkcc"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "FDET",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Error due to error detection circuitry",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_FDET(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "fdet"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "CTRL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Error in PKC software control",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_CTRL(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ctrl"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "UCRC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Error in layer2 CRC check.",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_ACCESS_ERR_UCRC(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "ucrc"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xFC4",
+        "@width": "32",
+        "@name": "PKC_ACCESS_ERR_CLR",
+        "@description": "Clear Access Error",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_ACCESS_ERR_CLR"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_access_err_clr"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "ERR_CLR",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Write 1 to reset PKC_ACCESS_ERR SFR.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_ACCESS_ERR_CLR_ERR_CLR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "err_clr"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFD8",
+        "@width": "32",
+        "@name": "PKC_INT_CLR_ENABLE",
+        "@description": "Interrupt enable clear",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_INT_CLR_ENABLE"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_int_clr_enable"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "EN_PDONE",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Write to clear PDONE interrupt enable flag (PKC_INT_ENABLE[EN_PDONE]=0).",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_INT_CLR_ENABLE_EN_PDONE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "en_pdone"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFDC",
+        "@width": "32",
+        "@name": "PKC_INT_SET_ENABLE",
+        "@description": "Interrupt enable set",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_INT_SET_ENABLE"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_int_set_enable"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "EN_PDONE",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Write to set PDONE interrupt enable flag (PKC_INT_ENABLE[EN_PDONE]=1).",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_INT_SET_ENABLE_EN_PDONE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "en_pdone"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFE0",
+        "@width": "32",
+        "@name": "PKC_INT_STATUS",
+        "@description": "Interrupt status",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_INT_STATUS"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_int_status"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "INT_PDONE",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "End-of-computation status flag",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_INT_STATUS_INT_PDONE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "int_pdone"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFE4",
+        "@width": "32",
+        "@name": "PKC_INT_ENABLE",
+        "@description": "Interrupt enable",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_INT_ENABLE"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_int_enable"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "EN_PDONE",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "PDONE interrupt enable flag",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_INT_ENABLE_EN_PDONE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "en_pdone"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFE8",
+        "@width": "32",
+        "@name": "PKC_INT_CLR_STATUS",
+        "@description": "Interrupt status clear",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_INT_CLR_STATUS"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_int_clr_status"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "INT_PDONE",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Write to clear End-of-computation status flag (PKC_INT_STATUS[INT_PDONE]=0).",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_INT_CLR_STATUS_INT_PDONE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "int_pdone"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFEC",
+        "@width": "32",
+        "@name": "PKC_INT_SET_STATUS",
+        "@description": "Interrupt status set",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_INT_SET_STATUS"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_int_set_status"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "INT_PDONE",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Write to set End-of-computation status flag (PKC_INT_STATUS[INT_PDONE]=1) to trigger a PKC interrupt via software, e.g. for debug purposes.",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "PKC_PKC_INT_SET_STATUS_INT_PDONE(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "int_pdone"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xFFC",
+        "@width": "32",
+        "@name": "PKC_MODULE_ID",
+        "@description": "Module ID",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PKC_MODULE_ID"
+          },
+          {
+            "@type": "id",
+            "@value": "pkc_module_id"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "SIZE",
+            "@access": "RO",
+            "@reset_value": "0x80",
+            "@description": "Address space of the IP",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_MODULE_ID_SIZE(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "size"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "MINOR_REV",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Minor revision",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_MODULE_ID_MINOR_REV(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "minor_rev"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "4",
+            "@name": "MAJOR_REV",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Major revision",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_MODULE_ID_MAJOR_REV(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "major_rev"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "ID",
+            "@access": "RO",
+            "@reset_value": "0xE103",
+            "@description": "Module ID",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "PKC_PKC_MODULE_ID_ID(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "id"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "16",
+        "@vals": "0x10 1"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x14 1"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x20 2"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x24 2"
+      }
+    ]
+  }
+}

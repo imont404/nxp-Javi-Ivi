@@ -1,0 +1,2578 @@
+
+===== [PDF page 706] =====
+Chapter 21
+CoolFlux BSP32 Subsystem
+21.1 Chip-specific CoolFlux BSP32 information
+Table 289. Reference links to related information
+Topic
+Related module
+Reference
+Full description
+CoolFlux BSP32
+CoolFlux BSP32
+System memory map
+Memory map
+Clocking
+Clock distribution
+Power management
+Power management
+Signal multiplexing
+Port control
+Signal multiplexing
+21.1.1 Module instances
+This device has one instance of the CoolFlux BSP32 module, BSP32_0.
+21.1.2 RAM
+CoolFlux program memory interface can access flash and FlexSPI also along with RAMX, RAMA ~ RAMH. CoolFlux X data 
+memory interface can also access mailbox and Powerquad RAM.
+21.1.3 Compiler options
+Due to long memory paths from data memory output directly to data memory address, the maximum frequency that can be 
+obtained is limited. The compiler should disable the sequence that consists of a data memory load to a pointer register, followed 
+in the next cycle by a memory access using that same pointer.
+21.2 Overview
+The CoolFlux BSP32 is a programmable digital signal processor, where BSP stands for Baseband Signal Processor and the 32 
+indicates that is has a 32-bit data path and 32-bit data memories. It is dual Harvard, dual multiplier processor based on the ultra-low 
+power CoolFlux architecture. It supports 16 and 32-bit scalar operations as well as complex and SIMD operations and data types. 
+CoolFlux BSP32 is fully programmable in C and comes with an optimizing compiler and tool suite.
+More information about the CoolFlux BSP32 can be received from the NXP CoolFlux team (coolflux.support@nxp.com). 
+Documentation on the tools (compiler, simulator, linker, ...) as well as documentation on the architecture and instruction set 
+architecture are available as well. Training on programming the CoolFlux BSP32 processor can also be requested using the same 
+channel and email address.
+This module has a dedicated clock and reset signal.
+21.2.1 Block diagram
+The following figure shows the block diagram of the CoolFlux BSP32 subsystem.
+NXP Semiconductors
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+706 / 3791
+
+===== [PDF page 707] =====
+Interrupt
+controller
+CoolFlux
+I/O Bus
+APB
+Cortex
+DAP
+Debug APB
+SWD
+Configuration 
+registers
+Cross break
+Debug_interface
+XMEM
+AHB-Lite
+AHB-Lite 
+master
+Address offsets
+•
+X-data memory
+•
+Inter-CPU Mailbox
+XMEM
+AHB-Lite
+AHB-Lite 
+master
+Address offsets
+•
+X-data memory
+•
+Inter-CPU Mailbox
+PMEM
+AHB-Lite
+AHB-Lite 
+master
+Address offset
+•
+Program memory
+PMEM
+AHB-Lite
+AHB-Lite 
+master
+Address offset
+•
+Program memory
+YMEM
+AHB-Lite
+AHB-Lite 
+master
+Address offset
+•
+Y-data memory
+YMEM
+AHB-Lite
+AHB-Lite 
+master
+Address offset
+•
+Y-data memory
+Interrupt_interface
+CTI_interface
+Figure 102. CoolFlux BSP32 block diagram
+21.2.2 Features
+• CoolFlux BSP32 32-bit processor, developed especially for audio, sensor or modem applications
+• AHB-Lite interface towards program memory
+• Two AHB-Lite interfaces towards on-chip data memory
+• Serial Wire Debug (shared with Cortex-M33 Control Domain CPU).
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+707 / 3791
+
+===== [PDF page 708] =====
+21.3 Functional description
+The CoolFlux BSP32 subsystem is built around the CoolFlux BSP32 processor as the main building blocks. This is a fully (C) 
+programmable architecture that is able to execute a wide range of different algorithms. All other modules within the subsystem 
+are meant to control this processor or to enable external communication towards the CoolFlux BSP32.
+The interrupt controller can be used to interrupt the CoolFlux BSP32 based upon external events. In the other direction, the 
+CoolFlux BSP32. also has the ability to send interrupts externally which allow inter-processor communication.
+A cross-break module is available which allows common debugging between the Cortex processor and CoolFlux BSP32. This 
+cross-break is able to transfer break events between both processors which allow a processor to (conditionally) enter debug mode 
+at the moment the other one does.
+A range of programmable registers (within the APB addressing space) is to configure and initialize the CoolFlux BSP32. This 
+includes setting memory offset registers and inter-processor communication registers as will be explained later in the register 
+definition chapter.
+21.3.1 Security
+CoolFlux BSP32 does not include any mechanism for supporting system security of the type implemented by the Cortex-M33.
+21.3.2 APB programming interface
+The CoolFlux BSP32 subsystem has an APB programming interface that is used to configure the subsystem. It is used to set the 
+memory offset registers, program the internal FIFO’s, set the boot address, and generate an interrupt towards CoolFlux BSP32. 
+Most of these registers must be set before the subsystem is pulled out of reset.
+21.3.3 Cross break
+The CoolFlux BSP32 subsystem contains a programmable cross break module that makes it possible to do co-debugging 
+between CoolFlux BSP32 and Cortex M33. It can, for instance, be used to stop one processor when the other one hits 
+a breakpoint.
+21.3.4 Inter-CPU communications
+CoolFlux BSP32 and CM33 can communicate with each other via various means. Shared memory that is accessible to both 
+processors makes it possible to work on shared buffers. The mailbox can be used to send messages from one processor to the 
+other. Finally, both processors can generate interrupts on the other one.
+21.3.5 Operations and modes
+The CoolFlux BSP32 is a programmable architecture that is initialized through a range of programmable registers in APB 
+addressing space. It always executes its program via program memory and accesses the data within X or Y memory space. Hence 
+it has no different operations or modes. 
+21.3.6 Clocking
+The CoolFlux BSP32 has a single clock input pin called "clk". Only the rising edge of this clock is used. Note that the APB 
+programming interface and the APB debug interface have their own APB clock signals, called "apb_pclk" and "apb_pclk_debug" 
+respectively, both asynchronous and active low.
+21.3.7 Reset
+The CoolFlux BSP32 is held in reset after a device reset. Before CoolFlux BSP32 begins execution, the Cortex-M33 must load 
+code into the memories accessible by the CoolFlux BSP32, configure CoolFlux BSP32 configuration registers (for instance, the 
+memory offset values), and release the CoolFlux BSP32 from reset. The reset input signal is called "reset" and is asynchronous, 
+active high. Note that the APB programming interface and the APB debug interface have their own APB reset signals, called 
+"apb_presetn" and "apb_presetn_debug" respectively, both asynchronous and active low.
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+708 / 3791
+
+===== [PDF page 709] =====
+21.3.8 Interrupts
+CoolFlux BSP32 has 32 external interrupt inputs. An internal interrupt controller maps these 32 interrupt sources to any of the 
+three CoolFlux interrupt routines. Each interrupt can be enabled or disabled individually and routed to any interrupt routine. The 
+interrupts are handled in software by the processor itself using edge detection. Whenever an interrupt is received on the CoolFlux 
+BSP32, the corresponding interrupt routine is executed.
+More explanation on the usage of interrupts can be found in the CoolFlux documentation that can be obtained from the CoolFlux 
+team (coolflux.support@nxp.com).
+The CoolFlux BSP32 subsystem can generate an external interrupt. This interrupt can be routed towards the Cortex M33 to 
+facilitate inter-processor communication.
+21.4 External signals
+This section explains the external signals. The CoolFlux BSP32 subsystem has the following interface groups
+External signals:
+• Clock, reset and test signals
+• APB programming interface
+• APB debug interface
+• Cross-trigger interface
+• Interrupt interface
+• Sleep mode indication
+• Program memory AHB-Lite interface
+• X-data memory AHB-Lite interface
+• Y-data memory AHB-Lite interface
+21.5 Initialization
+Before the CoolFlux BSP32 subsystem can be used, it must be initialized. This involves the following.
+Initialization:
+• The three memories (P,X,Y) must be loaded with the correct program and data
+• The four IVT registers (registers ivt0, ivt1, ivt2, ivt3) must be initialized
+• The APB configuration registers must be initialized (e.g. offset registers to be able to access the memories)
+• Clock must be enabled
+• Reset must be de-asserted
+From this moment onwards, the CoolFlux BSP32 will start executing the code as placed inside the program memory.
+21.6 Application information
+The CoolFlux BSP32 subsystem is built around the CoolFlux BSP32 processor. As this is a fully C-programmable processor, 
+it can be used to execute different sorts of applications. These can be audio application, baseband algorithms, ultra-wide band 
+applications. It is optimized to efficiently run integer, fix-point and complex data types in an ultra-low power manner.
+21.7 Physical memory map
+The general features of the CoolFlux BSP32 physical memory map are discussed in the following sections.
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+709 / 3791
+
+===== [PDF page 710] =====
+The CoolFlux BSP32 includes three AHB-Lite bus master interfaces. The priority of this and other AHB bus masters can be 
+adjusted to achieve system performance needed by an application by using the SYSCON[AHBMATPRIO] register.
+21.7.1 RAM
+The CoolFlux BSP32 AHB-Lite program memory interface can access the SRAM X memory as well as SRAM A … SRAM 
+H memory.
+The X and Y CoolFlux BSP32 AHB-Lite data memory interfaces can access the SRAM A … SRAM H memories. These data 
+memories also have access to the PowerQuad addressing space.
+21.7.2 AHB and APB peripherals
+The CoolFlux BSP32 processor access to peripherals is limited to the Inter-CPU mailbox attached to the AHB bus. This way, it 
+is possible to communicate through short messages and interrupts between the CoolFlux BSP32 and the Cortex M33. Refer to 
+the Inter-CPU Mailbox chapter for more information.
+21.8 CoolFlux BSP32 register descriptions
+Different registers to control the CoolFlux BSP32 subsystem. Before using the CoolFlux BSP32 subsystem it must be 
+initialized using the APB interface. Communication between the CoolFlux BSP32 subsystem and the Cortex subsystem also 
+uses this interface.
+21.8.1 CoolFluxBSP32_subsystem memory map
+BSP32_0 base address: 4003_2000h
+Offset
+Register
+Width
+(In bits)
+Access
+Reset value
+0h
+Offset address register for program memory (offset_pmem)
+32
+RW
+0000_0000h
+4h
+Offset address register for X-data memory (offset_xmem)
+32
+RW
+0000_0000h
+8h
+Offset address register for Y-data memory (offset_ymem)
+32
+RW
+0000_0000h
+Ch
+Offset address register for mailbox peripheral (offset_mailbox)
+32
+RW
+0000_0000h
+10h
+External interrupt register (interrupts_external)
+32
+W
+0000_0000h
+14h
+Interrupt status register (interrupts_status)
+32
+RW
+0000_0000h
+18h
+CoolFlux BSP32 gating override (cf_gating_override)
+32
+RW
+0000_0000h
+1Ch
+CoolFlux BSP32 IVT offset register (ivt_offset)
+32
+RW
+0000_0000h
+20h
+CoolFlux BSP32 sleep mode register (sleep_mode)
+32
+R
+0000_0000h
+24h
+CoolFlux BSP32 IVT register 0 content (ivt0)
+32
+RW
+0000_0008h
+28h
+CoolFlux BSP32 IVT register 1 content (ivt1)
+32
+RW
+0000_0009h
+2Ch
+CoolFlux BSP32 IVT register 2 content (ivt2)
+32
+RW
+0000_000Ah
+30h
+CoolFlux BSP32 IVT register 3 content (ivt3)
+32
+RW
+0000_000Bh
+34h
+CoolFlux BSP32 IVT disable register (ivt_disable)
+32
+RW
+0000_0000h
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+710 / 3791
+
+===== [PDF page 711] =====
+21.8.2 Offset address register for program memory (offset_pmem)
+Offset
+Register
+Offset
+offset_pmem
+0h
+Function
+Contains the upper 6 bits to generate the AHB-Lite address for program memory.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-6
+—
+Reserved
+5-0
+val
+Offset address register for program memory
+21.8.3 Offset address register for X-data memory (offset_xmem)
+Offset
+Register
+Offset
+offset_xmem
+4h
+Function
+Contains the upper 8 bits to generate the AHB-Lite address for X-data memory.
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+711 / 3791
+
+===== [PDF page 712] =====
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-8
+—
+Reserved
+7-0
+val
+Offset address register for X-data memory
+21.8.4 Offset address register for Y-data memory (offset_ymem)
+Offset
+Register
+Offset
+offset_ymem
+8h
+Function
+Contains the upper 8 bits to generate the AHB-Lite address for Y-data memory.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+712 / 3791
+
+===== [PDF page 713] =====
+Fields
+Field
+Function
+31-8
+—
+Reserved
+7-0
+val
+Offset address register for Y-data memory
+21.8.5 Offset address register for mailbox peripheral (offset_mailbox)
+Offset
+Register
+Offset
+offset_mailbox
+Ch
+Function
+The upper 256 addresses (addresses 16,776,960 to 16,777,215) of the X memory interface can be used to access the 
+Inter-CPU Mailbox peripheral. To access this peripheral, the 24-bit offset_mailbox register have to be set to 0x400B20 to 
+generate the AHB-Lite address for the Inter-CPU Mailbox peripheral.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-24
+—
+Reserved
+23-0
+val
+Offset address register for mailbox peripheral
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+713 / 3791
+
+===== [PDF page 714] =====
+21.8.6 External interrupt register (interrupts_external)
+Offset
+Register
+Offset
+interrupts_external
+10h
+Function
+Register to generate interrupts on the CoolFlux BSP32 from the Cortex side.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+0
+W
+val 
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+0
+W
+val 
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-0
+val
+External interrupt register
+21.8.7 Interrupt status register (interrupts_status)
+Offset
+Register
+Offset
+interrupts_status
+14h
+Function
+Register used to generate an interrupt from the CoolFlux BSP32 towards the Cortex subsystem. This register can be read and 
+cleared (not set) by the APB interface.
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+714 / 3791
+
+===== [PDF page 715] =====
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+val 
+W
+W1C
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-1
+—
+Reserved
+0
+val
+Interrupt status register
+21.8.8 CoolFlux BSP32 gating override (cf_gating_override)
+Offset
+Register
+Offset
+cf_gating_override
+18h
+Function
+By default, the clock towards the CoolFlux BSP32 is switched off when the processor enters sleep mode. This can be 
+overruled by setting this bit. When set, the clock towards the CoolFlux BSP32 keeps running when it enters sleep mode. This 
+will have a negative impact on power.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+715 / 3791
+
+===== [PDF page 716] =====
+Fields
+Field
+Function
+31-1
+—
+Reserved
+0
+val
+CoolFlux BSP32 gating override
+21.8.9 CoolFlux BSP32 IVT offset register (ivt_offset)
+Offset
+Register
+Offset
+ivt_offset
+1Ch
+Function
+The Interrupt Vector Table (IVT) of the CoolFlux BSP32 is used to determine the addresses of the reset vector and interrupt 
+vectors. By default, the IVT table starts from program memory address 0 from a CoolFlux point of view, which means that 
+the IVT start address is defined by the "offset address for program memory" register. The IVT offset register can be used 
+to re-locate the IVT table of the CoolFlux BSP32 program, thereby placing the IVT table in a different location in program 
+memory. For more information about the IVT table, please refer to the CoolFlux BSP32 C Programmer's manual that can be 
+obtained from the CoolFlux team (coolflux.support@nxp.com).
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-24
+—
+Reserved
+23-0
+val
+CoolFlux BSP32 IVT offset register
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+716 / 3791
+
+===== [PDF page 717] =====
+21.8.10 CoolFlux BSP32 sleep mode register (sleep_mode)
+Offset
+Register
+Offset
+sleep_mode
+20h
+Function
+Register indicating whether the CoolFlux BSP32 is in sleep mode (1) or not (0). The CoolFlux BSP32 will enter sleep mode 
+when the eop (End-Of-Program) instruction is executed and is thus fully under software control. It will exit from sleep mode in 
+case of an interrupt request, debug request or a full reset. Sleep mode is used in an application to save power while waiting on 
+a particular event (mostly an interrupt as mentioned above). In this sleep mode, power consumption is reduced as most of the 
+clocks will be switched off (automatically done in hardware).
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-1
+—
+Reserved
+0
+val
+CoolFlux BSP32 sleep mode register
+21.8.11 CoolFlux BSP32 IVT register 0 content (ivt0)
+Offset
+Register
+Offset
+ivt0
+24h
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+717 / 3791
+
+===== [PDF page 718] =====
+Function
+Content of IVT register 0 (reset vector). This needs to be written explicitly before the processor is pulled out of reset. The 
+content of this register is used as the target address of a "goto" instruction.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+0
+0
+0
+Fields
+Field
+Function
+31-24
+—
+Reserved
+23-0
+val
+CoolFlux BSP32 IVT register 0 content
+21.8.12 CoolFlux BSP32 IVT register 1 content (ivt1)
+Offset
+Register
+Offset
+ivt1
+28h
+Function
+Content of IVT register 1 (interrupt line 0 vector). This needs to be written explicitly before the processor is pulled out of reset. 
+The content of this register is used as the target address of a "goto" instruction.
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+718 / 3791
+
+===== [PDF page 719] =====
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+0
+0
+1
+Fields
+Field
+Function
+31-24
+—
+Reserved
+23-0
+val
+CoolFlux BSP32 IVT register 1 content
+21.8.13 CoolFlux BSP32 IVT register 2 content (ivt2)
+Offset
+Register
+Offset
+ivt2
+2Ch
+Function
+Content of IVT register 2 (interrupt line 1 vector). This needs to be written explicitly before the processor is pulled out of reset. 
+The content of this register is used as the target address of a "goto" instruction.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+0
+1
+0
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+719 / 3791
+
+===== [PDF page 720] =====
+Fields
+Field
+Function
+31-24
+—
+Reserved
+23-0
+val
+CoolFlux BSP32 IVT register 2 content
+21.8.14 CoolFlux BSP32 IVT register 3 content (ivt3)
+Offset
+Register
+Offset
+ivt3
+30h
+Function
+Content of IVT register 3 (interrupt line 2 vector). This needs to be written explicitly before the processor is pulled out of reset. 
+The content of this register is used as the target address of a "goto" instruction.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+0
+1
+1
+Fields
+Field
+Function
+31-24
+—
+Reserved
+23-0
+val
+CoolFlux BSP32 IVT register 3 content
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+720 / 3791
+
+===== [PDF page 721] =====
+21.8.15 CoolFlux BSP32 IVT disable register (ivt_disable)
+Offset
+Register
+Offset
+ivt_disable
+34h
+Function
+Before using the CoolFlux BSP32, the four IVT registers (registers ivt0, ivt1, ivt2, ivt3) must be initialized. These writes can be 
+omitted by writing to this register. In that case, the four IVT registers are not used and their data is read directly from program 
+memory instead. As this leads to longer timing paths, the maximum allowed frequency of the CoolFlux BSP32 is reduced. Its 
+usage was deprecated in newer version and therefore, writing a "1" to this register is strongly disadvised.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+val 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-1
+—
+Reserved
+0
+val
+CoolFlux BSP32 IVT disable register
+NXP Semiconductors
+CoolFlux BSP32 Subsystem
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+721 / 3791
+
+===== [PDF page 722] =====
+Chapter 22
+Inter-CPU Mailbox (MAILBOX)
+22.1 Chip-specific MAILBOX information
+Table 290. Reference links to related information
+Topic
+Related module
+Reference
+Full description
+MAILBOX
+MAILBOX
+System memory map
+Memory map
+Clocking
+Clock distribution
+Signal multiplexing
+Port control
+Signal multiplexing
+This block is a AHB slave peripheral with a single clock domain and reset. This device supports two mailboxes, where each 
+mailbox has three 32-bit registers. Each mailbox has one mutex register and one peripheral ID register. For each mailbox, the 
+corresponding interrupt line intr[i] is set if MBOX_REG[i] is not 0 and cleared if it is 0.
+22.1.1 Module instances
+This device has one instance of the Inter-CPU Mailbox module, MAILBOX0.
+22.2 Overview
+MAILBOX provides simple communication and resource allocation between CPUs by using two mechanisms:
+The first mechanism helps you send an interrupt, along with a simple message, to another CPU. To generate an interrupt 
+to another CPU, you can set any one of the interrupt flags (up to 32) by using Cortex-M33 (CPU0) Interrupt Set (IRQ0SET) 
+and Cortex-M33 (CPU1) Interrupt Set (IRQ1SET). The other CPU reads Cortex-M33 (CPU0) Interrupt Set (IRQ0SET) and 
+Cortex-M33 (CPU1) Interrupt Set (IRQ1SET) to determine the action it needs to perform. If more than one IRQn field is 1, the CPU 
+receiving the interrupts reads all of them. After completing the requested service or operation, the CPU that receives the interrupt 
+requests writes 1 to one or more fields in Cortex-M33 (CPU0) Interrupt Clear (IRQ0CLR) and Cortex-M33 (CPU1) Interrupt Clear 
+(IRQ1CLR) to clear them.
+To check whether the operation is complete, the CPU sending the request can check IRQn, or the CPU receiving the original 
+interrupt can use the same mechanism on the reverse to notify the requesting CPU.
+You can determine the use of each bit in Cortex-M33 (CPU0) Interrupt (IRQ0) and Cortex-M33 (CPU1) Interrupt (IRQ1) and also 
+provide additional information to each request bit. For example, both the CPUs can use predefined memory locations to hold 
+detailed information about the interrupt requests.
+The second mechanism is based on a single-bit resource allocation request. MUTEX[EX] defines the mutual exclusion request, 
+and reading it provides the current status of the resource. If the resource is available, it is reserved for the process that reads the 
+register. You define the resource control, and after getting access to the resource, you must write 1 to MUTEX[EX] to clear the 
+field after it has used the resource. For more information, see MUTEX[EX].
+NXP Semiconductors
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+722 / 3791
+
+===== [PDF page 723] =====
+22.2.1 Block diagram
+Q
+Data read from
+MUTEX register
+MUTEX
+read strobe
+MUTEX
+write strobe
+MUTEX
+write data
+clr
+D
+IRQn
+register
+Data from write to
+IRQnSET register
+Data from write to
+IRQn register
+Data from write to
+IRQnCLR register
+IRQn bit
+set inputs
+Data read from
+IRQ0CLR register
+IRQn bit
+data inputs
+IRQn bit
+clear inputs
+Mailbox
+interrupt to CPU
+Figure 103. Block diagram
+22.2.2 Features
+• Provides inter-processor communication, allowing multiple CPUs to share resources and communicate with each other in 
+a simple manner.
+• Enables each CPU to generate up to 32 user-defined interrupts.
+• Enables each CPU to claim a shared resource if the resource is available.
+22.3 Functional description
+22.3.1 Clocks
+SYSCON.AHBCLKCTRL0[MAILBOX] controls this module's bus clock.
+22.3.2 Reset
+SYSCON.PRESETCTRL0[MAILBOX_RST] resets this module.
+22.4 Signals
+This module has no configurable pins.
+22.5 Memory map and register definition
+This section includes this module's memory map and detailed descriptions of all registers.
+22.5.1 MAILBOX register descriptions
+22.5.1.1
+MAILBOX memory map
+MAILBOX0 base address: 400B_2000h
+NXP Semiconductors
+Inter-CPU Mailbox (MAILBOX)
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+723 / 3791
+
+===== [PDF page 724] =====
+Offset
+Register
+Width
+(In bits)
+Access
+Reset value
+0h
+Cortex-M33 (CPU0) Interrupt (IRQ0)
+32
+RW
+0000_0000h
+4h
+Cortex-M33 (CPU0) Interrupt Set (IRQ0SET)
+32
+W
+See section
+8h
+Cortex-M33 (CPU0) Interrupt Clear (IRQ0CLR)
+32
+W
+See section
+10h
+Cortex-M33 (CPU1) Interrupt (IRQ1)
+32
+RW
+0000_0000h
+14h
+Cortex-M33 (CPU1) Interrupt Set (IRQ1SET)
+32
+W
+See section
+18h
+Cortex-M33 (CPU1) Interrupt Clear (IRQ1CLR)
+32
+W
+See section
+F8h
+Mutual Exclusion (MUTEX)
+32
+RW
+0000_0001h
+22.5.1.2
+Cortex-M33 (CPU0) Interrupt (IRQ0)
+Offset
+Register
+Offset
+IRQ0
+0h
+Function
+Allows other CPUs to send interrupt requests to Cortex-M33 (CPU0).
+This register allows communication between CPUs. For example, a CPU can handle certain peripherals, along with signaling 
+another CPU, when data is available. Each bit of this register can be configured differently, based on your requirements.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+INTREQ 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+INTREQ 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Fields
+Field
+Function
+31-0
+INTREQ
+Interrupt Request
+Sends interrupt requests to the Cortex-M33 (CPU0) interrupt controller, if you write 1 to any of the bits.
+NXP Semiconductors
+Inter-CPU Mailbox (MAILBOX)
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+724 / 3791
+
+===== [PDF page 725] =====
+22.5.1.3
+Cortex-M33 (CPU0) Interrupt Set (IRQ0SET)
+Offset
+Register
+Offset
+IRQ0SET
+4h
+Function
+Generates interrupt requests for Cortex-M33 (CPU0).
+Writing 1 to any bit of this register writes 1 to the corresponding bit of Cortex-M33 (CPU0) Interrupt (IRQ0). You can generate more 
+than one interrupt by writing 1 to multiple bits of this register.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+W
+INTREQSET 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+W
+INTREQSET 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Fields
+Field
+Function
+31-0
+INTREQSET
+Interrupt Request Set 0
+Generates interrupt requests for Cortex-M33 (CPU0).
+22.5.1.4
+Cortex-M33 (CPU0) Interrupt Clear (IRQ0CLR)
+Offset
+Register
+Offset
+IRQ0CLR
+8h
+Function
+Clears interrupts for Cortex-M33 (CPU0) after the requested service or operation is complete. Writing 1 to any bit of this 
+register writes 0 to the corresponding bit of Cortex-M33 (CPU0) Interrupt (IRQ0).
+NXP Semiconductors
+Inter-CPU Mailbox (MAILBOX)
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+725 / 3791
+
+===== [PDF page 726] =====
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+W
+INTREQCLR 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+W
+INTREQCLR 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Fields
+Field
+Function
+31-0
+INTREQCLR
+Interrupt Request Clear 0
+Clears interrupt requests for Cortex-M33 (CPU0).
+22.5.1.5
+Cortex-M33 (CPU1) Interrupt (IRQ1)
+Offset
+Register
+Offset
+IRQ1
+10h
+Function
+Allows other CPUs to send interrupt requests to Cortex-M33 (CPU1).
+This register allows communication between CPUs. For example, a CPU can handle certain peripherals, along with signaling 
+another CPU, when data is available. Each bit of this register can be configured differently, based on your requirements.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+INTREQ 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+INTREQ 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+NXP Semiconductors
+Inter-CPU Mailbox (MAILBOX)
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+726 / 3791
+
+===== [PDF page 727] =====
+Fields
+Field
+Function
+31-0
+INTREQ
+Interrupt Request
+Sends interrupt requests to the Cortex-M33 (CPU1) interrupt controller, if you write 1 to any of the bits.
+22.5.1.6
+Cortex-M33 (CPU1) Interrupt Set (IRQ1SET)
+Offset
+Register
+Offset
+IRQ1SET
+14h
+Function
+Generates interrupt requests for Cortex-M33 (CPU1).
+Writing 1 to any bit of this register writes 1 to the corresponding bit of Cortex-M33 (CPU1) Interrupt (IRQ1). You can generate more 
+than one interrupt by writing 1 to multiple bits of this register.
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+W
+INTREQSET 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+W
+INTREQSET 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Fields
+Field
+Function
+31-0
+INTREQSET
+Interrupt Request Set 1
+Generates interrupt requests for Cortex-M33 (CPU1).
+22.5.1.7
+Cortex-M33 (CPU1) Interrupt Clear (IRQ1CLR)
+Offset
+Register
+Offset
+IRQ1CLR
+18h
+NXP Semiconductors
+Inter-CPU Mailbox (MAILBOX)
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+727 / 3791
+
+===== [PDF page 728] =====
+Function
+Clears interrupts for Cortex-M33 (CPU1) after the requested service or operation is complete. Writing 1 to any bit of this 
+register writes 0 to the corresponding bit of Cortex-M33 (CPU1) Interrupt (IRQ1).
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+W
+INTREQCLR 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+W
+INTREQCLR 
+Reset
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+u
+Fields
+Field
+Function
+31-0
+INTREQCLR
+Interrupt Request Clear 1
+Clears interrupt requests for Cortex-M33 (CPU1).
+22.5.1.8
+Mutual Exclusion (MUTEX)
+Offset
+Register
+Offset
+MUTEX
+F8h
+Function
+Provides an inter-processor communication handshake.
+This register provides a resource allocation handshake between two CPUs. To access a shared resource (possibly a resource 
+allocation table in memory), a CPU reads this register. If the CPU reads 1, it has control over the shared resource allocation. 
+After making the required changes, the CPU writes to the register. As a result, MUTEX[EX] becomes 1 again, making the shared 
+resource allocation available to another CPU. If the CPU reads 0, it must wait for MUTEX[EX] to become 1 before accessing the 
+shared resource allocation information.
+NXP Semiconductors
+Inter-CPU Mailbox (MAILBOX)
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+728 / 3791
+
+===== [PDF page 729] =====
+Diagram
+Bits
+31
+30
+29
+28
+27
+26
+25
+24
+23
+22
+21
+20
+19
+18
+17
+16
+R
+Reserved 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Bits
+15
+14
+13
+12
+11
+10
+9
+8
+7
+6
+5
+4
+3
+2
+1
+0
+R
+Reserved 
+EX 
+W
+Reset
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+Fields
+Field
+Function
+31-1
+—
+Reserved
+0
+EX
+Mutual Exclusion Request
+Provides resource allocation handshake between two CPUs. This field indicates the availability of a 
+shared resource. When read for any reason, the field returns the current value and becomes 0. The field 
+becomes 1 again following any write.
+0b - Resource unavailable
+1b - Resource available
+NXP Semiconductors
+Inter-CPU Mailbox (MAILBOX)
+MCX Nx4x Reference Manual, Rev. 5, 06/2024
+Reference Manual
+General Business Information
+729 / 3791

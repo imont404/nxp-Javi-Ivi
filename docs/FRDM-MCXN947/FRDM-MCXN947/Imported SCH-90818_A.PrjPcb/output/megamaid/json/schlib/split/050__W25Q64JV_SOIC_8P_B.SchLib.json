@@ -1,0 +1,188 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "W25Q64JV_SOIC_8P_B.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "W25Q64JV_SOIC_8P_B",
+        "Description": "IC MEM SERIAL FLASH DUAL/QUAD SPI 64MBIT 2.7-3.6V SOIC8",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "W25Q64JV_SOIC_8P_B",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "MGJPP5CH",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "W25Q64JV_SOIC_8P_B",
+            "Color": 128,
+            "AllPinCount": 8,
+            "ComponentDescription": "IC MEM SERIAL FLASH DUAL/QUAD SPI 64MBIT 2.7-3.6V SOIC8",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGS04gJSj/6DOGwu/vqe/oaMRgzMNWo1DABFNAUQ",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGSw4gJSy/6DOMzOPt6MZgzMNWo1DAAw5AQj",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGS04gJSb/6DOGwunvqe/gaMpgzMNWo1DABFxAUW",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 4,
+            "BinaryData": "eJxjYgACRgYIYGS04gJSN/6DOMye/kaMxgzMNWo1DAAz6gRD",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 5,
+            "BinaryData": "eJxjYgACRgYIYGS04gJS5/6DOMye/saM5gzMNWo1DAAzWwQ+",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 6,
+            "BinaryData": "eJxjYgACRgYIYGS35mIwYpj0H8RhdvdzYTRhYK5Rq2EAADQWBEY=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 7,
+            "BinaryData": "eJxjYgACRgYIYGSw4gJSu/6DOCzOMcExjIYMzDVqNQwAOVEEpw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 8,
+            "BinaryData": "eJxjYgACRgYIYGS35GIwgnKYw5ydGS0YmGvUahgAGP8Cug==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "UMTDRVAN",
+            "IndexInSheet": 8,
+            "Location.Y": -110,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 80,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "UniqueID": "RASLDBFV",
+            "Location.X": 10,
+            "Location.Y": 0,
+            "Name": "Designator",
+            "Text": "U?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 11
+          }
+        ]
+      }
+    ]
+  }
+}

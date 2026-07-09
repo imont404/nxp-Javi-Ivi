@@ -1,0 +1,568 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "256",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "EICHD{1}_WORD0",
+        "@description": "Error Injection Channel Descriptor {1}, Word0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EICHD{1}_WORD0"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "25",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "25",
+          "@width": "7",
+          "@name": "CHKBIT_MASK",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Checkbit Mask",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EIM_EICHD{1}_WORD0_CHKBIT_MASK(x)"
+          }
+        }
+      },
+      {
+        "@rid": "260",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "EICHD{1}_WORD1",
+        "@description": "Error Injection Channel Descriptor {1}, Word1",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EICHD{1}_WORD1"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "B0_3DATA_MASK",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Data Mask Bytes 0-3",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EIM_EICHD{1}_WORD1_B0_3DATA_MASK(x)"
+          }
+        }
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "EIMCR",
+        "@description": "Error Injection Module Configuration Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EIMCR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "GEIEN",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Global Error Injection Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EIM_EIMCR_GEIEN(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "EIMCR_GEIEN_DISABLE",
+              "@value": "0b0",
+              "@description": "Disabled"
+            },
+            {
+              "@name": "EIMCR_GEIEN_ENABLE",
+              "@value": "0b1",
+              "@description": "Enabled"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "EICHEN",
+        "@description": "Error Injection Channel Enable register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EICHEN"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "EICH8EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 8 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH8EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH8EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 8"
+              },
+              {
+                "@name": "EICHEN_EICH8EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 8"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "EICH7EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 7 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH7EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH7EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 7"
+              },
+              {
+                "@name": "EICHEN_EICH7EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 7"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "EICH6EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 6 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH6EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH6EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 6"
+              },
+              {
+                "@name": "EICHEN_EICH6EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 6"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "EICH5EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 5 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH5EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH5EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 5"
+              },
+              {
+                "@name": "EICHEN_EICH5EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 5"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "EICH4EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 4 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH4EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH4EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 4"
+              },
+              {
+                "@name": "EICHEN_EICH4EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 4"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "EICH3EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 3 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH3EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH3EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 3"
+              },
+              {
+                "@name": "EICHEN_EICH3EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 3"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "EICH2EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 2 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH2EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH2EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 2"
+              },
+              {
+                "@name": "EICHEN_EICH2EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 2"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "EICH1EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 1 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH1EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH1EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 1"
+              },
+              {
+                "@name": "EICHEN_EICH1EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 1"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "EICH0EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Injection Channel 0 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EIM_EICHEN_EICH0EN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "EICHEN_EICH0EN_DISABLE",
+                "@value": "0b0",
+                "@description": "Error injection is disabled on Error Injection Channel 0"
+              },
+              {
+                "@name": "EICHEN_EICH0EN_ENABLE",
+                "@value": "0b1",
+                "@description": "Error injection is enabled on Error Injection Channel 0"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x2C0",
+        "@width": "32",
+        "@name": "EICHD7_WORD0",
+        "@description": "Error Injection Channel Descriptor 7, Word0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EICHD7_WORD0"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "31",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "31",
+          "@width": "1",
+          "@name": "CHKBIT_MASK",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Checkbit Mask",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EIM_EICHD7_WORD0_CHKBIT_MASK(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x300",
+        "@width": "32",
+        "@name": "EICHD8_WORD0",
+        "@description": "Error Injection Channel Descriptor 8, Word0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EICHD8_WORD0"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "28",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "28",
+          "@width": "4",
+          "@name": "CHKBIT_MASK",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Checkbit Mask",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EIM_EICHD8_WORD0_CHKBIT_MASK(x)"
+          }
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "256",
+        "@vals": "0x100 0"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x104 0"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x140 1"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x144 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x180 2"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x184 2"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x1C0 3"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x1C4 3"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x200 4"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x204 4"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x240 5"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x244 5"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x280 6"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x284 6"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x2C4 7"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x304 8"
+      }
+    ]
+  }
+}

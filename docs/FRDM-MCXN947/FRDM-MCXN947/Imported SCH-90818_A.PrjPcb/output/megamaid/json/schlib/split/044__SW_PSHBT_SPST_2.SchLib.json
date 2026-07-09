@@ -1,0 +1,384 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "SW_PSHBT_SPST_2.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "SW_PSHBT_SPST_2",
+        "Description": "SW SP PB 50mA 16V SMT",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "SW_PSHBT_SPST_2",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "3GYBN2ON",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "SW_PSHBT_SPST_2",
+            "Color": 128,
+            "AllPinCount": 4,
+            "ComponentDescription": "SW SP PB 50mA 16V SMT",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGQx5GLggnEMGQ0ZmGvUahgADQYB0w==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGQx5GKwgXFMGE0YmGvUahgAELoCCw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGQx5mLgYnjzH8wxYjRiYK5Rq2EAACrxA8I=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 4,
+            "BinaryData": "eJxjYgACRgYIYGQx5mKwYXjzH8wxZjRmYK5Rq2EAAC6FA/Y=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 5,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WWYAMUYZ",
+            "IndexInSheet": 4,
+            "Location.X": 20,
+            "Location.Y": -4,
+            "Color": 16714496,
+            "Corner.X": 50,
+            "Corner.Y": -4,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 6,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "ANAXGFMP",
+            "IndexInSheet": 5,
+            "Location.X": 50,
+            "Location.Y": -4,
+            "Color": 16714496,
+            "Corner.X": 50,
+            "Corner.Y": -3,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 7,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "QVPLRVLG",
+            "IndexInSheet": 6,
+            "Location.X": 50,
+            "Location.Y": -3,
+            "Color": 16714496,
+            "Corner.X": 38,
+            "Corner.Y": -3,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 8,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WSLIAAZL",
+            "IndexInSheet": 7,
+            "Location.X": 38,
+            "Location.Y": -3,
+            "Color": 16714496,
+            "Corner.X": 38,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "KLOHXUTH",
+            "IndexInSheet": 8,
+            "Location.X": 38,
+            "Color": 16714496,
+            "Corner.X": 32,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "NLUUKERD",
+            "IndexInSheet": 9,
+            "Location.X": 32,
+            "Color": 16714496,
+            "Corner.X": 32,
+            "Corner.Y": -3,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "VHVNLXPA",
+            "IndexInSheet": 10,
+            "Location.X": 32,
+            "Location.Y": -3,
+            "Color": 16714496,
+            "Corner.X": 20,
+            "Corner.Y": -3,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 12,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LSDTIQYA",
+            "IndexInSheet": 11,
+            "Location.X": 20,
+            "Location.Y": -3,
+            "Color": 16714496,
+            "Corner.X": 20,
+            "Corner.Y": -4,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 13,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "NPNUQESV",
+            "IndexInSheet": 12,
+            "Location.X": 23,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 14,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "BHXGBRVR",
+            "IndexInSheet": 13,
+            "Location.X": 47,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 15,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "BIMTEMAM",
+            "IndexInSheet": 14,
+            "Location.X": 20,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 16,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WNWFRZZX",
+            "IndexInSheet": 15,
+            "Location.X": 10,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 17,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "MTGVRXMQ",
+            "IndexInSheet": 16,
+            "Location.X": 50,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "Corner.X": 60,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 18,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OALDAIZT",
+            "IndexInSheet": 17,
+            "Location.X": 60,
+            "Color": 16714496,
+            "Corner.X": 60,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 19,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WMSADFVB",
+            "IndexInSheet": 18,
+            "Location.X": 60,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 2,
+            "SecondaryRadius": 2,
+            "IsSolid": true
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 20,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OBXDIMEC",
+            "IndexInSheet": 19,
+            "Location.X": 10,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 2,
+            "SecondaryRadius": 2,
+            "IsSolid": true
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 21,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "IZTHKZZE",
+            "IndexInSheet": 20,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 70,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 22,
+            "OwnerPartId": 1,
+            "UniqueID": "FSNOGROG",
+            "Location.X": 20,
+            "Location.Y": -50,
+            "Name": "Designator",
+            "Text": "SW?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 23
+          }
+        ]
+      }
+    ]
+  }
+}

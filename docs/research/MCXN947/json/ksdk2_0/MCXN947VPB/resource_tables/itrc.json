@@ -1,0 +1,690 @@
+{
+  "resource_table": {
+    "@_xmlns": {
+      "resource": "http://swtools.freescale.net/XSD/resource/1.0",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@id": "itrc",
+    "@schemaLocation": "http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd",
+    "user_types": {
+      "struct": {
+        "@id": "inputSignals",
+        "@label": "Inpout signals",
+        "string": [
+          {
+            "@id": "label",
+            "@label": "On-chip tamper source label"
+          },
+          {
+            "@id": "id",
+            "@label": "On-chip tamper source ID"
+          },
+          {
+            "@id": "description",
+            "@label": "On-chip tamper source description"
+          }
+        ]
+      }
+    },
+    "definition": {
+      "array": {
+        "@id": "ITRC0",
+        "@label": "List of input signals for ITRC0",
+        "@type": "inputSignals"
+      }
+    },
+    "data": {
+      "array": {
+        "@name": "ITRC0",
+        "struct": [
+          {
+            "@name": "0",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "GDET0 and GDET1 interrupts"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In0"
+              },
+              {
+                "@name": "description",
+                "@value": "Glitch detector interrupts (GDET0 and GDET1)"
+              }
+            ]
+          },
+          {
+            "@name": "1",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "TDET tamper output"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In1"
+              },
+              {
+                "@name": "description",
+                "@value": "TDET tamper output TDET_SR[DTF]"
+              }
+            ]
+          },
+          {
+            "@name": "2",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "CDOG0 interrupt"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In2"
+              },
+              {
+                "@name": "description",
+                "@value": "Code Watchdog 0 interrupt (CDOG0_FLAGS)"
+              }
+            ]
+          },
+          {
+            "@name": "3",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_MAIN tamper output"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In3"
+              },
+              {
+                "@name": "description",
+                "@value": "VDD_MAIN volt tamper output (VDD_MAIN_STATUSA[VOLT_DET])"
+              }
+            ]
+          },
+          {
+            "@name": "4",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_CORE low voltage"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In4"
+              },
+              {
+                "@name": "description",
+                "@value": "SPC VDD_CORE low voltage detect (SPC_VD_STAT[COREVDD_LVDF])"
+              }
+            ]
+          },
+          {
+            "@name": "5",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "WWDT0 timer event"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In5"
+              },
+              {
+                "@name": "description",
+                "@value": "Watchdog 0 timer event (WWDT0_MOD[WDTOF])"
+              }
+            ]
+          },
+          {
+            "@name": "6",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "Flash ECC error"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In6"
+              },
+              {
+                "@name": "description",
+                "@value": "Flash ECC error (FMU_FSTAT[DFDIF])"
+              }
+            ]
+          },
+          {
+            "@name": "7",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "Secure violation interrupt"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In7"
+              },
+              {
+                "@name": "description",
+                "@value": "Secure violation interrupt (Memory Block Checker (MBC) interrupt or secure AHB (AHBSC) matrix violation)"
+              }
+            ]
+          },
+          {
+            "@name": "8",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "ELS error event"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In8"
+              },
+              {
+                "@name": "description",
+                "@value": "ELS reported error event (ELS_STATUS[ELS_ERR])"
+              }
+            ]
+          },
+          {
+            "@name": "9",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_CORE glitch"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In9"
+              },
+              {
+                "@name": "description",
+                "@value": "SPC VDD_CORE glitch detect (SPC_VDD_CORE_GLITCH_DETECT_SC[GLITCH_DETECT_FLAG])"
+              }
+            ]
+          },
+          {
+            "@name": "10",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "PKC error"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In10"
+              },
+              {
+                "@name": "description",
+                "@value": "Error flags from PKC module (PKC_ACCESS_ERR register)"
+              }
+            ]
+          },
+          {
+            "@name": "11",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "CDOG1 interrupt"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In11"
+              },
+              {
+                "@name": "description",
+                "@value": "Code Watchdog 1 interrupt (CDOG0_FLAGS)"
+              }
+            ]
+          },
+          {
+            "@name": "12",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "WWDT1 timer event"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In12"
+              },
+              {
+                "@name": "description",
+                "@value": "Watchdog 1 timer event (WWDT1_MOD[WDTOF])"
+              }
+            ]
+          },
+          {
+            "@name": "13",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "FREQME out of range"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In13"
+              },
+              {
+                "@name": "description",
+                "@value": "FREQME out of range status output (FREQME_CTRLSTAT[GT_MAX_STAT, LT_MIN_STAT])."
+              }
+            ]
+          },
+          {
+            "@name": "14",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "ITRC software event 0"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In14"
+              },
+              {
+                "@name": "description",
+                "@value": "ITRC software event 0 - this event is set by SW writing (any random value) to SW_EVENT0 register."
+              }
+            ]
+          },
+          {
+            "@name": "15",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "ITRC software event 1"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In15"
+              },
+              {
+                "@name": "description",
+                "@value": "ITRC software event 1 - this event is set by SW writing (any random value) to SW_EVENT1 register."
+              }
+            ]
+          },
+          {
+            "@name": "16",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_SYS low voltage"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In16"
+              },
+              {
+                "@name": "description",
+                "@value": "SPC VDD_SYS low voltage detect (SPC_VD_STAT[SYSVDD_LVDF])"
+              }
+            ]
+          },
+          {
+            "@name": "17",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_IO low voltage"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In17"
+              },
+              {
+                "@name": "description",
+                "@value": "SPC VDD_IO low voltage detect (SPC_VD_STAT[IOVDD_LVDF])"
+              }
+            ]
+          },
+          {
+            "@name": "18",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_MAIN light tamper"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In18"
+              },
+              {
+                "@name": "description",
+                "@value": "VDD_MAIN light tamper output (VBAT STATUS1[LIGHT_DET])"
+              }
+            ]
+          },
+          {
+            "@name": "19",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_MAIN temperature tamper"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In19"
+              },
+              {
+                "@name": "description",
+                "@value": "VDD_MAIN temperature tamper output (VBAT_STATUSA[TEMP_DET])"
+              }
+            ]
+          },
+          {
+            "@name": "20",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_MAIN clock tamper"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In20"
+              },
+              {
+                "@name": "description",
+                "@value": "VDD_MAIN clock tamper output (VBAT_STATUSA[CLOCK_DET])"
+              }
+            ]
+          },
+          {
+            "@name": "21",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "INTM error 0"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In21"
+              },
+              {
+                "@name": "description",
+                "@value": "INTM interrupt monitor error 0 (INTM_STATUSn[STATUS])"
+              }
+            ]
+          },
+          {
+            "@name": "22",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "INTM error 1"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In22"
+              },
+              {
+                "@name": "description",
+                "@value": "INTM interrupt monitor error 1 (INTM_STATUSn[STATUS])"
+              }
+            ]
+          },
+          {
+            "@name": "23",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "INTM error 2"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In23"
+              },
+              {
+                "@name": "description",
+                "@value": "INTM interrupt monitor error 2 (INTM_STATUSn[STATUS])"
+              }
+            ]
+          },
+          {
+            "@name": "24",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "INTM error 3"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In24"
+              },
+              {
+                "@name": "description",
+                "@value": "INTM interrupt monitor error 3 (INTM_STATUSn[STATUS])"
+              }
+            ]
+          },
+          {
+            "@name": "25",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 0"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In25"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 0 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "26",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 1"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In26"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 1 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "27",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 2"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In27"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 2 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "28",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 3"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In28"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 3 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "29",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 4"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In29"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 4 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "30",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 5"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In30"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 5 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "31",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 6"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In31"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 6 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "32",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "SoC trim 7"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In32"
+              },
+              {
+                "@name": "description",
+                "@value": "SOCTRIM 7 ECC error during SoC trim loading operation"
+              }
+            ]
+          },
+          {
+            "@name": "33",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "GDET0 & GDET1 SFR error"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In33"
+              },
+              {
+                "@name": "description",
+                "@value": "GDET0 & GDET1 SFR error that occurs when invalid address has been accessed in GDET0 and GDET1 block."
+              }
+            ]
+          },
+          {
+            "@name": "34",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_CORE high voltage"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In34"
+              },
+              {
+                "@name": "description",
+                "@value": "SPC VDD_CORE high voltage detect (SPC_VD_STAT[COREVDD_HVDF])"
+              }
+            ]
+          },
+          {
+            "@name": "35",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_SYS_HVD high voltage"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In35"
+              },
+              {
+                "@name": "description",
+                "@value": "SPC VDD_SYS_HVD high voltage detect (SPC_VD_STAT[SYSVDD_HVDF])"
+              }
+            ]
+          },
+          {
+            "@name": "36",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "VDD_IO high voltage"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In36"
+              },
+              {
+                "@name": "description",
+                "@value": "SPC VDD_IO high voltage detect (SPC_VD_STAT[IOVDD_HVDF])"
+              }
+            ]
+          },
+          {
+            "@name": "37",
+            "setting": [
+              {
+                "@name": "label",
+                "@value": "FLEXSPI GCM error"
+              },
+              {
+                "@name": "id",
+                "@value": "kITRC_In37"
+              },
+              {
+                "@name": "description",
+                "@value": "FLEXSPI GCM error (FLEXSPI_INTR[AHBGCMERR])"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

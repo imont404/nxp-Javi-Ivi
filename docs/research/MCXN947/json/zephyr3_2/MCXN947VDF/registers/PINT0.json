@@ -1,0 +1,1566 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "ISEL",
+        "@description": "Pin Interrupt Mode",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ISEL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "PMODE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Interrupt mode",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_ISEL_PMODE(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "ISEL_PMODE_ISEL_0",
+              "@value": "0b00000000",
+              "@description": "In bit n configures the interrupt to be edge-sensitive"
+            },
+            {
+              "@name": "ISEL_PMODE_ISEL_1",
+              "@value": "0b00000001",
+              "@description": "In bit n configures the interrupt to be level-sensitive"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "IENR",
+        "@description": "Pin Interrupt Level or Rising-Edge Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IENR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "ENRL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Enables Interrupt",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_IENR_ENRL(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "IENR_ENRL_ENRL_0",
+              "@value": "0b00000000",
+              "@description": "In bit n disables the corresponding interrupt"
+            },
+            {
+              "@name": "IENR_ENRL_ENRL_1",
+              "@value": "0b00000001",
+              "@description": "In bit n enables the corresponding interrupt"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "SIENR",
+        "@description": "Pin Interrupt Level or Rising-Edge Interrupt Set",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SIENR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SETENRL",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Configures IENR",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_SIENR_SETENRL(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "SIENR_SETENRL_SETENRL_0",
+              "@value": "0b00000000",
+              "@description": "No operation for interrupt n"
+            },
+            {
+              "@name": "SIENR_SETENRL_SETENRL_1",
+              "@value": "0b00000001",
+              "@description": "Enable rising edge or level interrupt for interrupt n"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "CIENR",
+        "@description": "Pin Interrupt Level (Rising-Edge Interrupt) Clear",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CIENR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "CENRL",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Clear bits in IENR",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_CIENR_CENRL(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "CIENR_CENRL_CENRL_0",
+              "@value": "0b00000000",
+              "@description": "No operation"
+            },
+            {
+              "@name": "CIENR_CENRL_CENRL_1",
+              "@value": "0b00000001",
+              "@description": "Disable rising edge or level interrupt"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "IENF",
+        "@description": "Pin Interrupt Active Level or Falling-Edge Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IENF"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "ENAF",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Enables Interrupt",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_IENF_ENAF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "IENF_ENAF_ENAF_0",
+              "@value": "0b00000000",
+              "@description": "Disable (set active interrupt level LOW)"
+            },
+            {
+              "@name": "IENF_ENAF_ENAF_1",
+              "@value": "0b00000001",
+              "@description": "Enable (set active interrupt level HIGH)"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "SIENF",
+        "@description": "Pin Interrupt Active Level or Falling-Edge Interrupt Set",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SIENF"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SETENAF",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Write 1 to this address to clear to disable interrupts. Bit a sets bit n in IENF.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_SIENF_SETENAF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "SIENF_SETENAF_SETENAF_0",
+              "@value": "0b00000000",
+              "@description": "Writes 0 to IENF."
+            },
+            {
+              "@name": "SIENF_SETENAF_SETENAF_1",
+              "@value": "0b00000001",
+              "@description": "Select HIGH-active interrupt or enable falling-edge interrupt"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "CIENF",
+        "@description": "Pin Interrupt Active Level or Falling-Edge Interrupt Clear",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CIENF"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "CENAF",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@reset_mask": "0",
+          "@description": "Writes 0 to IENF",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_CIENF_CENAF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "CIENF_CENAF_CENAF_0",
+              "@value": "0b00000000",
+              "@description": "No operation"
+            },
+            {
+              "@name": "CIENF_CENAF_CENAF_1",
+              "@value": "0b00000001",
+              "@description": "LOW-active interrupt selected or falling-edge interrupt disabled"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x1C",
+        "@width": "32",
+        "@name": "RISE",
+        "@description": "Pin Interrupt Rising Edge",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "RISE"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "RDET",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Rising-Edge Detect",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_RISE_RDET(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "RISE_RDET_RDET_0",
+              "@value": "0b00000000",
+              "@description": "Read 0- No rising edge (since Reset or you wrote a 1 to this field last time), Write 0- No operation"
+            },
+            {
+              "@name": "RISE_RDET_RDET_1",
+              "@value": "0b00000001",
+              "@description": "Read 1- Rising edge (since Reset or you wrote a 1 to this field last time), Write 1- Clear rising-edge detection for this pin"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x20",
+        "@width": "32",
+        "@name": "FALL",
+        "@description": "Pin Interrupt Falling Edge",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FALL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "FDET",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Falling-Edge Detect",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_FALL_FDET(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "FALL_FDET_FDET_0",
+              "@value": "0b00000000",
+              "@description": "Read 0- No falling edge (since Reset or you wrote a 1 to this field last time), Write 0- No operation"
+            },
+            {
+              "@name": "FALL_FDET_FDET_1",
+              "@value": "0b00000001",
+              "@description": "Read 1- Falling edge (since Reset or you wrote a 1 to this field last time), Write 1- Clear falling-edge detection for this bit"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x24",
+        "@width": "32",
+        "@name": "IST",
+        "@description": "Pin Interrupt Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IST"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "PSTAT",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Pin Interrupt Status",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "PINT_IST_PSTAT(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "IST_PSTAT_PSTAT_0",
+              "@value": "0b00000000",
+              "@description": "Read 0- Interrupt is not requested, Write 0- No operation"
+            },
+            {
+              "@name": "IST_PSTAT_PSTAT_1",
+              "@value": "0b00000001",
+              "@description": "Read 1- Interrupt is requested, Write 1 (edge-sensitive)- clear rising- and falling-edge detection for this pin, Write 1 (level-sensitive)- switch the active level for this pin in"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x28",
+        "@width": "32",
+        "@name": "PMCTRL",
+        "@description": "Pattern-Match Interrupt Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PMCTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "SEL_PMATCH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Specifies whether the pin interrupts are controlled by the pin interrupt function or by the pattern-match function. If this value is 0b, interrupts are driven in response to the standard pin interrupt function. If this value is 1b, interrupts are driven in response to pattern matches.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCTRL_SEL_PMATCH(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCTRL_SEL_PMATCH_PIN_INTERRUPT",
+                "@value": "0b0",
+                "@description": "Pin interrupt"
+              },
+              {
+                "@name": "PMCTRL_SEL_PMATCH_PATTERN_MATCH",
+                "@value": "0b1",
+                "@description": "Pattern match"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "ENA_RXEV",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enables the RXEV output to the CPU and/or to a GPIO output, when the specified Boolean expression evaluates to true. If this value is 0b, RXEV output to the CPU is disabled. If this value is 1b, RXEV output to the CPU is enabled.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCTRL_ENA_RXEV(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCTRL_ENA_RXEV_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "PMCTRL_ENA_RXEV_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "PMAT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Pattern Matches",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCTRL_PMAT(x)"
+            },
+            "bit_field_value": {
+              "@name": "PMCTRL_PMAT_PMAT_1",
+              "@value": "0b00000001",
+              "@description": "The corresponding product term is matched by the current state of the appropriate inputs"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "2",
+          "@width": "22",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x2C",
+        "@width": "32",
+        "@name": "PMSRC",
+        "@description": "Pattern-Match Interrupt Bit-Slice Source",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PMSRC"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        },
+        "bit_field": [
+          {
+            "@offset": "8",
+            "@width": "3",
+            "@name": "SRC0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC0_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC0_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC0_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC0_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC0_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC0_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC0_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC0_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "3",
+            "@name": "SRC1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC1_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC1_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC1_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC1_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC1_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC1_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC1_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC1_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "3",
+            "@name": "SRC2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC2_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC2_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC2_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC2_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC2_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC2_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC2_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC2_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "3",
+            "@name": "SRC3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC3_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC3_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC3_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC3_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC3_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC3_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC3_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC3_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "3",
+            "@name": "SRC4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 4",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC4_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC4_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC4_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC4_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC4_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC4_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC4_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC4_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "3",
+            "@name": "SRC5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 5",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC5_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC5_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC5_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC5_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC5_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC5_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC5_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC5_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "3",
+            "@name": "SRC6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 6",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC6_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC6_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC6_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC6_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC6_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC6_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC6_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC6_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "3",
+            "@name": "SRC7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Selects the input source for bit slice 7",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMSRC_SRC7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMSRC_SRC7_INPUT0",
+                "@value": "0b000",
+                "@description": "Input 0 (selects the pin identified in PINSEL0)"
+              },
+              {
+                "@name": "PMSRC_SRC7_INPUT1",
+                "@value": "0b001",
+                "@description": "Input 1 (selects the pin identified in PINSEL1)"
+              },
+              {
+                "@name": "PMSRC_SRC7_INPUT2",
+                "@value": "0b010",
+                "@description": "Input 2 (selects the pin identified in PINSEL2)"
+              },
+              {
+                "@name": "PMSRC_SRC7_INPUT3",
+                "@value": "0b011",
+                "@description": "Input 3 (selects the pin identified in PINSEL3)"
+              },
+              {
+                "@name": "PMSRC_SRC7_INPUT4",
+                "@value": "0b100",
+                "@description": "Input 4 (selects the pin identified in PINSEL4)"
+              },
+              {
+                "@name": "PMSRC_SRC7_INPUT5",
+                "@value": "0b101",
+                "@description": "Input 5 (selects the pin identified in PINSEL5)"
+              },
+              {
+                "@name": "PMSRC_SRC7_INPUT6",
+                "@value": "0b110",
+                "@description": "Input 6 (selects the pin identified in PINSEL6)"
+              },
+              {
+                "@name": "PMSRC_SRC7_INPUT7",
+                "@value": "0b111",
+                "@description": "Input 7 (selects the pin identified in PINSEL7)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x30",
+        "@width": "32",
+        "@name": "PMCFG",
+        "@description": "Pattern-Match Interrupt Bit Slice Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PMCFG"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "PROD_ENDPTS0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Determines whether slice 0 is an endpoint. Slice 0 is not an endpoint. Slice 0 is the endpoint of a product term (minterm). Pin interrupt 0 in the NVIC is raised if the minterm evaluates as true.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_PROD_ENDPTS0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_PROD_ENDPTS0_NO_EFFECT",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "PMCFG_PROD_ENDPTS0_ENDPOINT",
+                "@value": "0b1",
+                "@description": "Endpoint"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "PROD_ENDPTS1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Determines whether slice 1 is an endpoint. Slice 1 is not an endpoint. Slice 1 is the endpoint of a product term (minterm). Pin interrupt 1 in the NVIC is raised if the minterm evaluates as true.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_PROD_ENDPTS1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_PROD_ENDPTS1_NO_EFFECT",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "PMCFG_PROD_ENDPTS1_ENDPOINT",
+                "@value": "0b1",
+                "@description": "Endpoint"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "PROD_ENDPTS2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Determines whether slice 2 is an endpoint. Slice 2 is not an endpoint. Slice 2 is the endpoint of a product term (minterm). Pin interrupt 2 in the NVIC is raised if the minterm evaluates as true.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_PROD_ENDPTS2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_PROD_ENDPTS2_NO_EFFECT",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "PMCFG_PROD_ENDPTS2_ENDPOINT",
+                "@value": "0b1",
+                "@description": "Endpoint"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "PROD_ENDPTS3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Determines whether slice 3 is an endpoint. Slice 3 is not an endpoint. Slice 3 is the endpoint of a product term (minterm). Pin interrupt 3 in the NVIC is raised if the minterm evaluates as true.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_PROD_ENDPTS3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_PROD_ENDPTS3_NO_EFFECT",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "PMCFG_PROD_ENDPTS3_ENDPOINT",
+                "@value": "0b1",
+                "@description": "Endpoint"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "PROD_ENDPTS4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Determines whether slice 4 is an endpoint. Slice 4 is not an endpoint. Slice 4 is the endpoint of a product term (minterm). Pin interrupt 4 in the NVIC is raised if the minterm evaluates as true.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_PROD_ENDPTS4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_PROD_ENDPTS4_NO_EFFECT",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "PMCFG_PROD_ENDPTS4_ENDPOINT",
+                "@value": "0b1",
+                "@description": "Endpoint"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "PROD_ENDPTS5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Determines whether slice 5 is an endpoint. Slice 5 is not an endpoint. Slice 5 is the endpoint of a product term (minterm). Pin interrupt 5 in the NVIC is raised if the minterm evaluates as true.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_PROD_ENDPTS5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_PROD_ENDPTS5_NO_EFFECT",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "PMCFG_PROD_ENDPTS5_ENDPOINT",
+                "@value": "0b1",
+                "@description": "Endpoint"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "PROD_ENDPTS6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Determines whether slice 6 is an endpoint. Slice 6 is not an endpoint. Slice 6 is the endpoint of a product term (minterm). Pin interrupt 6 in the NVIC is raised if the minterm evaluates as true.",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_PROD_ENDPTS6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_PROD_ENDPTS6_NO_EFFECT",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "PMCFG_PROD_ENDPTS6_ENDPOINT",
+                "@value": "0b1",
+                "@description": "Endpoint"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "3",
+            "@name": "CFG0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG0_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG0_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG0_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG0_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG0_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG0_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG0_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG0_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "3",
+            "@name": "CFG1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG1_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG1_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG1_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG1_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG1_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG1_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG1_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG1_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "3",
+            "@name": "CFG2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG2_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG2_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG2_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG2_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG2_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG2_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG2_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG2_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "3",
+            "@name": "CFG3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG3_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG3_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG3_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG3_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG3_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG3_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG3_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG3_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "3",
+            "@name": "CFG4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG4_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG4_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG4_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG4_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG4_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG4_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG4_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG4_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "3",
+            "@name": "CFG5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG5_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG5_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG5_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG5_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG5_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG5_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG5_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG5_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "3",
+            "@name": "CFG6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG6_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG6_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG6_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG6_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG6_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG6_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG6_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG6_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "3",
+            "@name": "CFG7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Match Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "PINT_PMCFG_CFG7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMCFG_CFG7_CONSTANT_HIGH",
+                "@value": "0b000",
+                "@description": "Constant HIGH"
+              },
+              {
+                "@name": "PMCFG_CFG7_STICKY_RISING_EDGE",
+                "@value": "0b001",
+                "@description": "Sticky rising edge"
+              },
+              {
+                "@name": "PMCFG_CFG7_STICKY_FALLING_EDGE",
+                "@value": "0b010",
+                "@description": "Sticky falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG7_STICKY_RISING_FALLING_EDGE",
+                "@value": "0b011",
+                "@description": "Sticky rising or falling edge"
+              },
+              {
+                "@name": "PMCFG_CFG7_HIGH_LEVEL",
+                "@value": "0b100",
+                "@description": "High level"
+              },
+              {
+                "@name": "PMCFG_CFG7_LOW_LEVEL",
+                "@value": "0b101",
+                "@description": "Low level"
+              },
+              {
+                "@name": "PMCFG_CFG7_CONSTANT_ZERO",
+                "@value": "0b110",
+                "@description": "Constant 0"
+              },
+              {
+                "@name": "PMCFG_CFG7_EVENT",
+                "@value": "0b111",
+                "@description": "Event (Nonsticky rising or falling edge)"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "7",
+          "@width": "1",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      }
+    ]
+  }
+}

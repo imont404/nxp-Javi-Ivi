@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<part:part_number xmlns:part="http://swtools.freescale.net/XSD/part_number/4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/part_number/4.0 http://swtools.freescale.net/XSD/part_number/4.0/part_number.xsd" id="MCXN947VPB">
+  <db_link type="part_info" link="MCXN947VPB/part_info.xml" format_version="1.0" description="Part information about NDA, depreciation etc."/>
+  <db_link type="package" link="packages/HDQFP172.xml" format_version="1.0" description="HDQFP172 package definition"/>
+  <db_link type="registers" link="MCXN947VPB/registers/registers.xml" format_version="6.0" description="Register and clock gating definition, merged for all parts belonging to MCXN947"/>
+  <db_link type="peripherals_model" link="MCXN947VPB/peripherals_model_info.xml" format_version="12.0" description="List of configuration steps used by the pins model"/>
+  <db_link type="pins_model" link="MCXN947VPB/signal_configuration.xml" format_version="12.0" description="Pins model - pinout and muxing definition"/>
+  <db_link type="cores_info" link="common/cores_info.xml" format_version="1.0" description="Multi-cores information"/>
+</part:part_number>

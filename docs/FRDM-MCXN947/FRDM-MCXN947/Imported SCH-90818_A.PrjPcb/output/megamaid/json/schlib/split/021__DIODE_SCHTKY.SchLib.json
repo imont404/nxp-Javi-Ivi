@@ -1,0 +1,254 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "DIODE_SCHTKY.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "DIODE_SCHTKY",
+        "Description": "DIODE SCH 1A 30V MICROSMP SMT",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "DIODE_SCHTKY",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "B57Z6XE6",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "DIODE_SCHTKY",
+            "Color": 128,
+            "AllPinCount": 2,
+            "ComponentDescription": "DIODE SCH 1A 30V MICROSMP SMT",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJS3/6DOY6MjgzMNWo1DAAruAPf",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGQx4GKQY/j2H8xxZnRmYK5Rq2EAAC3KA/8=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 3,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "DTHOHUSC",
+            "IndexInSheet": 2,
+            "Location.X": 20,
+            "Location.Y": -3,
+            "Color": 13026246,
+            "Corner.X": 20,
+            "Corner.Y": -17,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 4,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "YICMPSBV",
+            "IndexInSheet": 3,
+            "Location.Y": -10,
+            "Color": 13026246,
+            "Corner.X": 10,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 5,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "TQSGKXMR",
+            "IndexInSheet": 4,
+            "Location.X": 20,
+            "Location.Y": -10,
+            "Color": 13026246,
+            "Corner.X": 30,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 6,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LQAYWBTF",
+            "IndexInSheet": 5,
+            "Location.X": 20,
+            "Location.Y": -3,
+            "Color": 13026246,
+            "Corner.X": 25,
+            "Corner.Y": -3,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 7,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OAPLIJCN",
+            "IndexInSheet": 6,
+            "Location.X": 20,
+            "Location.Y": -17,
+            "Color": 13026246,
+            "Corner.X": 15,
+            "Corner.Y": -17,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 8,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LJYXTSPM",
+            "IndexInSheet": 7,
+            "Color": 13026246,
+            "AreaColor": 16711680,
+            "LocationCount": 5,
+            "IsSolid": true,
+            "X1": 20,
+            "Y1": -10,
+            "X2": 20,
+            "Y2": -10,
+            "X3": 10,
+            "Y3": -17,
+            "X4": 10,
+            "Y4": -3,
+            "X5": 20,
+            "Y5": -10
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LLOCSSGG",
+            "IndexInSheet": 8,
+            "Location.X": 15,
+            "Location.Y": -17,
+            "Color": 13026246,
+            "Corner.X": 15,
+            "Corner.Y": -15,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "HPCQTUFX",
+            "IndexInSheet": 9,
+            "Location.X": 25,
+            "Location.Y": -3,
+            "Color": 13026246,
+            "Corner.X": 25,
+            "Corner.Y": -5,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "UniqueID": "FIVTAGLG",
+            "Location.X": -10,
+            "Location.Y": -30,
+            "Name": "Designator",
+            "Text": "D?",
+            "FontID": 1,
+            "Color": 13026246,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 12
+          }
+        ]
+      }
+    ]
+  }
+}

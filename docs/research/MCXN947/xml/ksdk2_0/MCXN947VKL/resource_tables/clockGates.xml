@@ -1,0 +1,2431 @@
+<?xml version="1.0"?>
+<resource:resource_table xmlns:resource="http://swtools.freescale.net/XSD/resource/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd" id="clockGates">
+  <user_types>
+    <struct id="peripheral" label="Clock gate peripheral">
+      <string id="device" label="ID of the device"/>
+      <string id="submodule_name" label="Name of the submodule of the device"/>
+      <string id="submodule_index" label="Index of the submodule of the device"/>
+    </struct>
+    <struct id="clockGate" label="Clock gate">
+      <string id="name" label="Clock gate name"/>
+      <struct id="control" label="Clock gate control register">
+        <string id="peripheral" label="Clock gate control peripheral"/>
+        <string id="register" label="Clock gate control register"/>
+        <string id="bitfield" label="Clock gate control bitfield"/>
+        <string id="enabled" label="Clock gate enabled value"/>
+        <string id="disabled" label="Clock gate disabled value"/>
+      </struct>
+      <array id="peripherals" label="Clock gate peripherals" type="peripheral"/>
+    </struct>
+  </user_types>
+  <definition>
+    <array id="cm33_core0" label="Clock gates list for cm33_core0" type="clockGate"/>
+    <array id="cm33_core1" label="Clock gates list for cm33_core1" type="clockGate"/>
+  </definition>
+  <data>
+    <array name="cm33_core0">
+      <struct name="0">
+        <setting name="name" value="SCT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="SCT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SCT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="1">
+        <setting name="name" value="PLU0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PLU_LUT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PLU0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="2">
+        <setting name="name" value="PORT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="3">
+        <setting name="name" value="PORT1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="4">
+        <setting name="name" value="PORT2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="5">
+        <setting name="name" value="PORT3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="6">
+        <setting name="name" value="PORT4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="7">
+        <setting name="name" value="GPIO0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="8">
+        <setting name="name" value="GPIO1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="9">
+        <setting name="name" value="GPIO2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="10">
+        <setting name="name" value="GPIO3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="11">
+        <setting name="name" value="GPIO4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="12">
+        <setting name="name" value="INPUTMUX0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="MUX"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="INPUTMUX0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="13">
+        <setting name="name" value="DMA0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="DMA0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DMA0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="14">
+        <setting name="name" value="DMA1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="DMA1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DMA1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="15">
+        <setting name="name" value="USBFS0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="USB0_FS"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="USBFS0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="16">
+        <setting name="name" value="uSDHC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="uSDHC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="USDHC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="17">
+        <setting name="name" value="QDC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="QDC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="QDC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="18">
+        <setting name="name" value="QDC1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="QDC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="QDC1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="19">
+        <setting name="name" value="DAC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="DAC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DAC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="20">
+        <setting name="name" value="DAC1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="DAC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DAC1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="21">
+        <setting name="name" value="EMVSIM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="EVSIM0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EMVSIM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="22">
+        <setting name="name" value="EMVSIM1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="EVSIM1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EMVSIM1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="23">
+        <setting name="name" value="EWM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="EWM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EWM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="24">
+        <setting name="name" value="PWM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="PWM0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PWM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="25">
+        <setting name="name" value="PWM1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="PWM1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PWM1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="26">
+        <setting name="name" value="SAI0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="SAI0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SAI0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="27">
+        <setting name="name" value="SAI1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="SAI1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SAI1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="28">
+        <setting name="name" value="MICFIL0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="MICFIL"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PDM"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="29">
+        <setting name="name" value="FLEXIO0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FLEXIO"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FLEXIO0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="30">
+        <setting name="name" value="ENET0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="ENET"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ENET0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="31">
+        <setting name="name" value="CMP2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="CMP2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CMP2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="32">
+        <setting name="name" value="CAN0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FLEXCAN0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CAN0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="33">
+        <setting name="name" value="CAN1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FLEXCAN1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CAN1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="34">
+        <setting name="name" value="ADC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="ADC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ADC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="35">
+        <setting name="name" value="ADC1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="ADC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ADC1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="36">
+        <setting name="name" value="CTIMER0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="TIMER0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="37">
+        <setting name="name" value="CTIMER1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="TIMER1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="38">
+        <setting name="name" value="CTIMER2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="TIMER2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="39">
+        <setting name="name" value="CTIMER3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="TIMER3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="40">
+        <setting name="name" value="CTIMER4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="TIMER4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="41">
+        <setting name="name" value="FLEXSPI0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="FLEXSPI"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FLEXSPI0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="42">
+        <setting name="name" value="I3C0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="I3C0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="I3C0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="43">
+        <setting name="name" value="I3C1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="I3C1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="I3C1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="44">
+        <setting name="name" value="WWDT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="WWDT0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="WWDT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="45">
+        <setting name="name" value="WWDT1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="WWDT1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="WWDT1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="46">
+        <setting name="name" value="PKC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PKC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PKC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="47">
+        <setting name="name" value="MRT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="MRT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="MRT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="48">
+        <setting name="name" value="MAILBOX0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="MAILBOX"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="MAILBOX"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="49">
+        <setting name="name" value="PINT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PINT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PINT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="50">
+        <setting name="name" value="LP_FLEXCOMM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="51">
+        <setting name="name" value="RTC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="RTC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="RTC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="52">
+        <setting name="name" value="LP_FLEXCOMM1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="53">
+        <setting name="name" value="LP_FLEXCOMM2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="54">
+        <setting name="name" value="LP_FLEXCOMM3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="55">
+        <setting name="name" value="LP_FLEXCOMM4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="56">
+        <setting name="name" value="LP_FLEXCOMM5"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC5"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM5"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="57">
+        <setting name="name" value="LP_FLEXCOMM6"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC6"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM6"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="58">
+        <setting name="name" value="LP_FLEXCOMM7"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC7"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM7"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="59">
+        <setting name="name" value="LP_FLEXCOMM8"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC8"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM8"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="60">
+        <setting name="name" value="LP_FLEXCOMM9"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC9"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM9"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="61">
+        <setting name="name" value="PUF"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PUF"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PUF"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="62">
+        <setting name="name" value="UTICK0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="UTICK"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="UTICK0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="63">
+        <setting name="name" value="OSTIMER0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="OSTIMER"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OSTIMER0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="64">
+        <setting name="name" value="POWERQUAD0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PQ"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="POWERQUAD"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="65">
+        <setting name="name" value="ELS"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="ELS"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ELS"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="66">
+        <setting name="name" value="FREQME0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FREQME"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FREQME0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="67">
+        <setting name="name" value="SEMA42_0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="SEMA42"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SEMA42_0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="68">
+        <setting name="name" value="INTM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="INTM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="INTM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="69">
+        <setting name="name" value="ERM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="ERM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ERM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="70">
+        <setting name="name" value="EIM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="EIM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EIM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="71">
+        <setting name="name" value="TSI0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="TSI"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="TSI0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="72">
+        <setting name="name" value="OPAMP2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="OPAMP2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OPAMP2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="73">
+        <setting name="name" value="OPAMP1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="OPAMP1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OPAMP1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="74">
+        <setting name="name" value="OPAMP0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="OPAMP0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OPAMP0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="75">
+        <setting name="name" value="DAC2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="DAC2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DAC2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="76">
+        <setting name="name" value="EVTG0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="EVTG"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EVTG0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="77">
+        <setting name="name" value="SINC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="SINC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SINC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="78">
+        <setting name="name" value="GDET0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="GDET"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GDET0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="79">
+        <setting name="name" value="GDET1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="GDET"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GDET1"/>
+          </struct>
+        </array>
+      </struct>
+    </array>
+    <array name="cm33_core1">
+      <struct name="0">
+        <setting name="name" value="SCT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="SCT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SCT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="1">
+        <setting name="name" value="PLU0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PLU_LUT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PLU0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="2">
+        <setting name="name" value="PORT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="3">
+        <setting name="name" value="PORT1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="4">
+        <setting name="name" value="PORT2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="5">
+        <setting name="name" value="PORT3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="6">
+        <setting name="name" value="PORT4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PORT4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PORT4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="7">
+        <setting name="name" value="GPIO0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="8">
+        <setting name="name" value="GPIO1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="9">
+        <setting name="name" value="GPIO2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="10">
+        <setting name="name" value="GPIO3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="11">
+        <setting name="name" value="GPIO4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="GPIO4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GPIO4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="12">
+        <setting name="name" value="INPUTMUX0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="MUX"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="INPUTMUX0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="13">
+        <setting name="name" value="DMA0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="DMA0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DMA0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="14">
+        <setting name="name" value="DMA1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="DMA1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DMA1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="15">
+        <setting name="name" value="USBFS0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="USB0_FS"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="USBFS0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="16">
+        <setting name="name" value="uSDHC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="uSDHC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="USDHC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="17">
+        <setting name="name" value="QDC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="QDC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="QDC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="18">
+        <setting name="name" value="QDC1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="QDC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="QDC1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="19">
+        <setting name="name" value="DAC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="DAC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DAC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="20">
+        <setting name="name" value="DAC1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="DAC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DAC1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="21">
+        <setting name="name" value="EMVSIM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="EVSIM0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EMVSIM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="22">
+        <setting name="name" value="EMVSIM1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="EVSIM1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EMVSIM1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="23">
+        <setting name="name" value="EWM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="EWM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EWM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="24">
+        <setting name="name" value="PWM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="PWM0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PWM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="25">
+        <setting name="name" value="PWM1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="PWM1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PWM1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="26">
+        <setting name="name" value="SAI0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="SAI0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SAI0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="27">
+        <setting name="name" value="SAI1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="SAI1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SAI1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="28">
+        <setting name="name" value="MICFIL0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="MICFIL"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PDM"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="29">
+        <setting name="name" value="FLEXIO0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FLEXIO"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FLEXIO0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="30">
+        <setting name="name" value="ENET0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="ENET"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ENET0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="31">
+        <setting name="name" value="CMP2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="CMP2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CMP2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="32">
+        <setting name="name" value="CAN0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FLEXCAN0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CAN0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="33">
+        <setting name="name" value="CAN1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FLEXCAN1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CAN1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="34">
+        <setting name="name" value="ADC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="ADC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ADC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="35">
+        <setting name="name" value="ADC1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="ADC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ADC1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="36">
+        <setting name="name" value="CTIMER0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="TIMER0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="37">
+        <setting name="name" value="CTIMER1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="TIMER1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="38">
+        <setting name="name" value="CTIMER2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="TIMER2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="39">
+        <setting name="name" value="CTIMER3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="TIMER3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="40">
+        <setting name="name" value="CTIMER4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="TIMER4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="CTIMER4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="41">
+        <setting name="name" value="FLEXSPI0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="FLEXSPI"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FLEXSPI0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="42">
+        <setting name="name" value="I3C0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="I3C0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="I3C0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="43">
+        <setting name="name" value="I3C1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="I3C1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="I3C1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="44">
+        <setting name="name" value="WWDT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="WWDT0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="WWDT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="45">
+        <setting name="name" value="WWDT1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="WWDT1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="WWDT1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="46">
+        <setting name="name" value="PKC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PKC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PKC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="47">
+        <setting name="name" value="MRT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="MRT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="MRT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="48">
+        <setting name="name" value="MAILBOX0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="MAILBOX"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="MAILBOX"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="49">
+        <setting name="name" value="PINT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL0"/>
+          <setting name="bitfield" value="PINT"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PINT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="50">
+        <setting name="name" value="LP_FLEXCOMM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="51">
+        <setting name="name" value="RTC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="RTC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="RTC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="52">
+        <setting name="name" value="LP_FLEXCOMM1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="53">
+        <setting name="name" value="LP_FLEXCOMM2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="54">
+        <setting name="name" value="LP_FLEXCOMM3"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC3"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM3"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="55">
+        <setting name="name" value="LP_FLEXCOMM4"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC4"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM4"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="56">
+        <setting name="name" value="LP_FLEXCOMM5"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC5"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM5"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="57">
+        <setting name="name" value="LP_FLEXCOMM6"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC6"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM6"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="58">
+        <setting name="name" value="LP_FLEXCOMM7"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC7"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM7"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="59">
+        <setting name="name" value="LP_FLEXCOMM8"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC8"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM8"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="60">
+        <setting name="name" value="LP_FLEXCOMM9"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="FC9"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="LP_FLEXCOMM9"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="61">
+        <setting name="name" value="PUF"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PUF"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PUF"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="62">
+        <setting name="name" value="UTICK0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="UTICK"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="UTICK0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="63">
+        <setting name="name" value="OSTIMER0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL1"/>
+          <setting name="bitfield" value="OSTIMER"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OSTIMER0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="64">
+        <setting name="name" value="POWERQUAD0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="PQ"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="POWERQUAD"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="65">
+        <setting name="name" value="ELS"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="ELS"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ELS"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="66">
+        <setting name="name" value="FREQME0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="FREQME"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FREQME0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="67">
+        <setting name="name" value="SEMA42_0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="SEMA42"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SEMA42_0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="68">
+        <setting name="name" value="INTM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="INTM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="INTM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="69">
+        <setting name="name" value="ERM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="ERM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="ERM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="70">
+        <setting name="name" value="EIM0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="EIM"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EIM0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="71">
+        <setting name="name" value="TSI0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="TSI"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="TSI0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="72">
+        <setting name="name" value="OPAMP2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="OPAMP2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OPAMP2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="73">
+        <setting name="name" value="OPAMP1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="OPAMP1"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OPAMP1"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="74">
+        <setting name="name" value="OPAMP0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="OPAMP0"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="OPAMP0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="75">
+        <setting name="name" value="DAC2"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="DAC2"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="DAC2"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="76">
+        <setting name="name" value="EVTG0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="EVTG"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="EVTG0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="77">
+        <setting name="name" value="SINC0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL3"/>
+          <setting name="bitfield" value="SINC"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SINC0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="78">
+        <setting name="name" value="GDET0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="GDET"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GDET0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="79">
+        <setting name="name" value="GDET1"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="AHBCLKCTRL2"/>
+          <setting name="bitfield" value="GDET"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="GDET1"/>
+          </struct>
+        </array>
+      </struct>
+    </array>
+  </data>
+</resource:resource_table>

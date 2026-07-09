@@ -1,0 +1,27 @@
+{
+  "processor": {
+    "@_xmlns": {
+      "part": "http://swtools.freescale.net/XSD/processor/2.0",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/processor/2.0 http://swtools.freescale.net/XSD/processor/2.0/processor.xsd",
+    "basic_facts": {
+      "@id": "MCXN947",
+      "@producer": "NXP",
+      "@family": "MCX",
+      "@series": "MCX MCXN",
+      "@default_part": "MCXN947VDF"
+    },
+    "target_products": {
+      "product": "MCUX"
+    },
+    "enabled_tools": {
+      "enabled_tool": [
+        "Pins",
+        "Clocks",
+        "Peripherals",
+        "TEE"
+      ]
+    }
+  }
+}

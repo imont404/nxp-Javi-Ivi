@@ -1,0 +1,230 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "EVTIMERL",
+        "@description": "EVTIMER Low",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EVTIMERL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "EVTIMER_COUNT_VALUE",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "EVTimer Count Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "OSTIMER_EVTIMERL_EVTIMER_COUNT_VALUE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "EVTIMERH",
+        "@description": "EVTIMER High",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EVTIMERH"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "10",
+          "@name": "EVTIMER_COUNT_VALUE",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "EVTimer Count Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "OSTIMER_EVTIMERH_EVTIMER_COUNT_VALUE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "10",
+          "@width": "22",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "CAPTURE_L",
+        "@description": "Local Capture Low for CPU",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAPTURE_L"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "CAPTURE_VALUE",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "EVTimer Capture Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "OSTIMER_CAPTURE_L_CAPTURE_VALUE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "CAPTURE_H",
+        "@description": "Local Capture High for CPU",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAPTURE_H"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "10",
+          "@name": "CAPTURE_VALUE",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "EVTimer Capture Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "OSTIMER_CAPTURE_H_CAPTURE_VALUE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "10",
+          "@width": "22",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "MATCH_L",
+        "@description": "Local Match Low for CPU",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MATCH_L"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "MATCH_VALUE",
+          "@access": "RW",
+          "@reset_value": "0xFFFFFFFF",
+          "@description": "EVTimer Match Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "OSTIMER_MATCH_L_MATCH_VALUE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "MATCH_H",
+        "@description": "Local Match High for CPU",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MATCH_H"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "10",
+          "@name": "MATCH_VALUE",
+          "@access": "RW",
+          "@reset_value": "0x3FF",
+          "@description": "EVTimer Match Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "OSTIMER_MATCH_H_MATCH_VALUE(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "10",
+          "@width": "22",
+          "@reset_value": "0x3FFFFF"
+        }
+      },
+      {
+        "@offset": "0x1C",
+        "@width": "32",
+        "@name": "OSEVENT_CTRL",
+        "@description": "OSTIMER Control for CPU",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OSEVENT_CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "OSTIMER_INTRFLAG",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Interrupt Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "OSTIMER_OSEVENT_CTRL_OSTIMER_INTRFLAG(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "OSTIMER_INTENA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Interrupt or Wake-Up Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "OSTIMER_OSEVENT_CTRL_OSTIMER_INTENA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OSEVENT_CTRL_OSTIMER_INTENA_INTERRUPTS_BLOCKED",
+                "@value": "0b0",
+                "@description": "Interrupts blocked"
+              },
+              {
+                "@name": "OSEVENT_CTRL_OSTIMER_INTENA_INTERRUPTS_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupts enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "MATCH_WR_RDY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "EVTimer Match Write Ready",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "OSTIMER_OSEVENT_CTRL_MATCH_WR_RDY(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "4",
+            "@width": "28",
+            "@reset_value": "0"
+          }
+        ]
+      }
+    ]
+  }
+}

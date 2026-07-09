@@ -1,0 +1,155 @@
+{
+  "schema": "altium_cruncher.design_review_manifest.a0",
+  "input": "SCH-90818_A.PrjPcb",
+  "design_json": "design/SCH-90818_A_design.json",
+  "document_jsons": [
+    {
+      "file": "json/schdoc/01 TITLE PAGE.SchDoc.json",
+      "source": "01 TITLE PAGE.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/02 BLOCK DIAGRAM.SchDoc.json",
+      "source": "02 BLOCK DIAGRAM.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/03 SOC_PORT0~2.SchDoc.json",
+      "source": "03 SOC_PORT0~2.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/04 SOC_PORT3~5.SchDoc.json",
+      "source": "04 SOC_PORT3~5.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/05 SOC_PWR.SchDoc.json",
+      "source": "05 SOC_PWR.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/06 USB & PWR.SchDoc.json",
+      "source": "06 USB & PWR.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/07 SD & QSPI & SENSOR.SchDoc.json",
+      "source": "07 SD & QSPI & SENSOR.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/08 CAN PHY & ETHERNET P.SchDoc.json",
+      "source": "08 CAN PHY & ETHERNET P.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/09 MCU_LINK_USB.SchDoc.json",
+      "source": "09 MCU_LINK_USB.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/10 MCU_LINK_DEBUG.SchDoc.json",
+      "source": "10 MCU_LINK_DEBUG.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/11 SWITCH & LED.SchDoc.json",
+      "source": "11 SWITCH & LED.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/12 HEADERS.SchDoc.json",
+      "source": "12 HEADERS.SchDoc",
+      "kind": "SchDoc"
+    },
+    {
+      "file": "json/schdoc/13 APPENDIX JUMPER_DNP.SchDoc.json",
+      "source": "13 APPENDIX JUMPER_DNP.SchDoc",
+      "kind": "SchDoc"
+    }
+  ],
+  "notes_json": "notes/SCH-90818_A_notes.jsonc",
+  "schematic_svgs": [
+    {
+      "file": "sch/01 TITLE PAGE.svg",
+      "source": "01 TITLE PAGE.SchDoc",
+      "page_number": 1,
+      "page_count": 13
+    },
+    {
+      "file": "sch/02 BLOCK DIAGRAM.svg",
+      "source": "02 BLOCK DIAGRAM.SchDoc",
+      "page_number": 2,
+      "page_count": 13
+    },
+    {
+      "file": "sch/03 SOC_PORT0~2.svg",
+      "source": "03 SOC_PORT0~2.SchDoc",
+      "page_number": 3,
+      "page_count": 13
+    },
+    {
+      "file": "sch/04 SOC_PORT3~5.svg",
+      "source": "04 SOC_PORT3~5.SchDoc",
+      "page_number": 4,
+      "page_count": 13
+    },
+    {
+      "file": "sch/05 SOC_PWR.svg",
+      "source": "05 SOC_PWR.SchDoc",
+      "page_number": 5,
+      "page_count": 13
+    },
+    {
+      "file": "sch/06 USB & PWR.svg",
+      "source": "06 USB & PWR.SchDoc",
+      "page_number": 6,
+      "page_count": 13
+    },
+    {
+      "file": "sch/07 SD & QSPI & SENSOR.svg",
+      "source": "07 SD & QSPI & SENSOR.SchDoc",
+      "page_number": 7,
+      "page_count": 13
+    },
+    {
+      "file": "sch/08 CAN PHY & ETHERNET P.svg",
+      "source": "08 CAN PHY & ETHERNET P.SchDoc",
+      "page_number": 8,
+      "page_count": 13
+    },
+    {
+      "file": "sch/09 MCU_LINK_USB.svg",
+      "source": "09 MCU_LINK_USB.SchDoc",
+      "page_number": 9,
+      "page_count": 13
+    },
+    {
+      "file": "sch/10 MCU_LINK_DEBUG.svg",
+      "source": "10 MCU_LINK_DEBUG.SchDoc",
+      "page_number": 10,
+      "page_count": 13
+    },
+    {
+      "file": "sch/11 SWITCH & LED.svg",
+      "source": "11 SWITCH & LED.SchDoc",
+      "page_number": 11,
+      "page_count": 13
+    },
+    {
+      "file": "sch/12 HEADERS.svg",
+      "source": "12 HEADERS.SchDoc",
+      "page_number": 12,
+      "page_count": 13
+    },
+    {
+      "file": "sch/13 APPENDIX JUMPER_DNP.svg",
+      "source": "13 APPENDIX JUMPER_DNP.SchDoc",
+      "page_number": 13,
+      "page_count": 13
+    }
+  ],
+  "pcb_svgs": [],
+  "readme": "README.md"
+}

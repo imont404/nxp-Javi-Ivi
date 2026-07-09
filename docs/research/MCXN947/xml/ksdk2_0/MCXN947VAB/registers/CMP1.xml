@@ -1,0 +1,455 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="VERID" description="Version ID">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0x1" description="Feature Specification Number">
+      <alias type="CMSIS" value="LPCMP_VERID_FEATURE(x)"/>
+      <bit_field_value name="VERID_FEATURE_ROUND_ROBIN" value="0b0000000000000001" description="Round robin feature"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0" description="Minor Version Number">
+      <alias type="CMSIS" value="LPCMP_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x1" description="Major Version Number">
+      <alias type="CMSIS" value="LPCMP_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="Parameter">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="4" name="DAC_RES" access="RO" reset_value="0x2" description="DAC Resolution">
+      <alias type="CMSIS" value="LPCMP_PARAM_DAC_RES(x)"/>
+      <alias type="id" value="PARAM"/>
+      <bit_field_value name="PARAM_DAC_RES_RESO_4" value="0b0000" description="4-bit DAC"/>
+      <bit_field_value name="PARAM_DAC_RES_RESO_6" value="0b0001" description="6-bit DAC"/>
+      <bit_field_value name="PARAM_DAC_RES_RESO_8" value="0b0010" description="8-bit DAC"/>
+      <bit_field_value name="PARAM_DAC_RES_RESO_10" value="0b0011" description="10-bit DAC"/>
+      <bit_field_value name="PARAM_DAC_RES_RESO_12" value="0b0100" description="12-bit DAC"/>
+      <bit_field_value name="PARAM_DAC_RES_RESO_14" value="0b0101" description="14-bit DAC"/>
+      <bit_field_value name="PARAM_DAC_RES_RESO_16" value="0b0110" description="16-bit DAC"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="28" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="CCR0" description="Comparator Control Register 0">
+    <alias type="CMSIS" value="CCR0"/>
+    <bit_field offset="0" width="1" name="CMP_EN" access="RW" reset_value="0" description="Comparator Enable">
+      <alias type="CMSIS" value="LPCMP_CCR0_CMP_EN(x)"/>
+      <bit_field_value name="CCR0_CMP_EN_DISABLE" value="0b0" description="Disable (The analog logic remains off and consumes no power.)"/>
+      <bit_field_value name="CCR0_CMP_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0x1"/>
+    <reserved_bit_field offset="2" width="30" reset_value="0"/>
+  </register>
+  <register offset="0xC" width="32" name="CCR1" description="Comparator Control Register 1">
+    <alias type="CMSIS" value="CCR1"/>
+    <bit_field offset="0" width="1" name="WINDOW_EN" access="RW" reset_value="0" description="Windowing Enable">
+      <alias type="CMSIS" value="LPCMP_CCR1_WINDOW_EN(x)"/>
+      <bit_field_value name="CCR1_WINDOW_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="CCR1_WINDOW_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SAMPLE_EN" access="RW" reset_value="0" description="Sampling Enable">
+      <alias type="CMSIS" value="LPCMP_CCR1_SAMPLE_EN(x)"/>
+      <bit_field_value name="CCR1_SAMPLE_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="CCR1_SAMPLE_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="DMA_EN" access="RW" reset_value="0" description="DMA Enable">
+      <alias type="CMSIS" value="LPCMP_CCR1_DMA_EN(x)"/>
+      <bit_field_value name="CCR1_DMA_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="CCR1_DMA_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="COUT_INV" access="RW" reset_value="0" description="Comparator Invert">
+      <alias type="CMSIS" value="LPCMP_CCR1_COUT_INV(x)"/>
+      <bit_field_value name="CCR1_COUT_INV_NO_INVERT" value="0b0" description="Do not invert"/>
+      <bit_field_value name="CCR1_COUT_INV_INVERT" value="0b1" description="Invert"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="COUT_SEL" access="RW" reset_value="0" description="Comparator Output Select">
+      <alias type="CMSIS" value="LPCMP_CCR1_COUT_SEL(x)"/>
+      <bit_field_value name="CCR1_COUT_SEL_COUT" value="0b0" description="Use COUT (filtered)"/>
+      <bit_field_value name="CCR1_COUT_SEL_COUTA" value="0b1" description="Use COUTA (unfiltered)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="COUT_PEN" access="RW" reset_value="0" description="Comparator Output Pin Enable">
+      <alias type="CMSIS" value="LPCMP_CCR1_COUT_PEN(x)"/>
+      <bit_field_value name="CCR1_COUT_PEN_UNAVAILABLE" value="0b0" description="Not available"/>
+      <bit_field_value name="CCR1_COUT_PEN_AVAILABLE" value="0b1" description="Available"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="COUTA_OWEN" access="RW" reset_value="0" description="COUTA_OW Enable">
+      <alias type="CMSIS" value="LPCMP_CCR1_COUTA_OWEN(x)"/>
+      <bit_field_value name="CCR1_COUTA_OWEN_SAMPLED" value="0b0" description="COUTA holds the last sampled value."/>
+      <bit_field_value name="CCR1_COUTA_OWEN_COUTA_OW" value="0b1" description="Enables the COUTA signal value to be defined by COUTA_OW."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="COUTA_OW" access="RW" reset_value="0" description="COUTA Output Level for Closed Window">
+      <alias type="CMSIS" value="LPCMP_CCR1_COUTA_OW(x)"/>
+      <bit_field_value name="CCR1_COUTA_OW_COUTA_0" value="0b0" description="COUTA is 0"/>
+      <bit_field_value name="CCR1_COUTA_OW_COUTA_1" value="0b1" description="COUTA is 1"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="WINDOW_INV" access="RW" reset_value="0" description="WINDOW/SAMPLE Signal Invert">
+      <alias type="CMSIS" value="LPCMP_CCR1_WINDOW_INV(x)"/>
+      <bit_field_value name="CCR1_WINDOW_INV_NO_INVERT" value="0b0" description="Do not invert"/>
+      <bit_field_value name="CCR1_WINDOW_INV_INVERT" value="0b1" description="Invert"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="WINDOW_CLS" access="RW" reset_value="0" description="COUT Event Window Close">
+      <alias type="CMSIS" value="LPCMP_CCR1_WINDOW_CLS(x)"/>
+      <bit_field_value name="CCR1_WINDOW_CLS_NO_CLOSE" value="0b0" description="COUT event cannot close the window"/>
+      <bit_field_value name="CCR1_WINDOW_CLS_CLOSE" value="0b1" description="COUT event can close the window"/>
+    </bit_field>
+    <bit_field offset="10" width="2" name="EVT_SEL" access="RW" reset_value="0" description="COUT Event Select">
+      <alias type="CMSIS" value="LPCMP_CCR1_EVT_SEL(x)"/>
+      <bit_field_value name="CCR1_EVT_SEL_RISING" value="0b00" description="Rising edge"/>
+      <bit_field_value name="CCR1_EVT_SEL_FALLING" value="0b01" description="Falling edge"/>
+      <bit_field_value name="CCR1_EVT_SEL_BOTH" value="0b1?" description="Both edges"/>
+    </bit_field>
+    <bit_field offset="12" width="2" name="FUNC_CLK_SEL" access="RW" reset_value="0" description="Functional Clock Source Select">
+      <alias type="CMSIS" value="LPCMP_CCR1_FUNC_CLK_SEL(x)"/>
+      <bit_field_value name="CCR1_FUNC_CLK_SEL_FUNC0" value="0b00" description="Select functional clock source 0"/>
+      <bit_field_value name="CCR1_FUNC_CLK_SEL_FUNC1" value="0b01" description="Select functional clock source 1"/>
+      <bit_field_value name="CCR1_FUNC_CLK_SEL_FUNC2" value="0b10" description="Select functional clock source 2"/>
+      <bit_field_value name="CCR1_FUNC_CLK_SEL_FUNC3" value="0b11" description="Select functional clock source 3"/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+    <bit_field offset="16" width="3" name="FILT_CNT" access="RW" reset_value="0" description="Filter Sample Count">
+      <alias type="CMSIS" value="LPCMP_CCR1_FILT_CNT(x)"/>
+      <bit_field_value name="CCR1_FILT_CNT_BYPASSED" value="0b000" description="Filter is bypassed: COUT = COUTA"/>
+      <bit_field_value name="CCR1_FILT_CNT_SAMPLE_1" value="0b001" description="1 consecutive sample (Comparator output is simply sampled.)"/>
+      <bit_field_value name="CCR1_FILT_CNT_SAMPLE_2" value="0b010" description="2 consecutive samples"/>
+      <bit_field_value name="CCR1_FILT_CNT_SAMPLE_3" value="0b011" description="3 consecutive samples"/>
+      <bit_field_value name="CCR1_FILT_CNT_SAMPLE_4" value="0b100" description="4 consecutive samples"/>
+      <bit_field_value name="CCR1_FILT_CNT_SAMPLE_5" value="0b101" description="5 consecutive samples"/>
+      <bit_field_value name="CCR1_FILT_CNT_SAMPLE_6" value="0b110" description="6 consecutive samples"/>
+      <bit_field_value name="CCR1_FILT_CNT_SAMPLE_7" value="0b111" description="7 consecutive samples"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="5" reset_value="0"/>
+    <bit_field offset="24" width="8" name="FILT_PER" access="RW" reset_value="0" description="Filter Sample Period">
+      <alias type="CMSIS" value="LPCMP_CCR1_FILT_PER(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="CCR2" description="Comparator Control Register 2">
+    <alias type="CMSIS" value="CCR2"/>
+    <bit_field offset="0" width="1" name="CMP_HPMD" access="RW" reset_value="0" description="CMP High Power Mode Select">
+      <alias type="CMSIS" value="LPCMP_CCR2_CMP_HPMD(x)"/>
+      <bit_field_value name="CCR2_CMP_HPMD_LOW" value="0b0" description="Low power (speed) comparison mode"/>
+      <bit_field_value name="CCR2_CMP_HPMD_HIGH" value="0b1" description="High power (speed) comparison mode"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CMP_NPMD" access="RW" reset_value="0" description="CMP Nano Power Mode Select">
+      <alias type="CMSIS" value="LPCMP_CCR2_CMP_NPMD(x)"/>
+      <bit_field_value name="CCR2_CMP_NPMD_NO_NANO" value="0b0" description="Disables CMP Nano power mode. CCR2[CMP_HPMD] determines the mode for the comparator."/>
+      <bit_field_value name="CCR2_CMP_NPMD_NANO" value="0b1" description="Enables CMP Nano power mode."/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="2" reset_value="0"/>
+    <bit_field offset="4" width="2" name="HYSTCTR" access="RW" reset_value="0" description="Comparator Hysteresis Control">
+      <alias type="CMSIS" value="LPCMP_CCR2_HYSTCTR(x)"/>
+      <bit_field_value name="CCR2_HYSTCTR_LEVEL_0" value="0b00" description="Level 0: Analog comparator hysteresis 0 mV."/>
+      <bit_field_value name="CCR2_HYSTCTR_LEVEL_1" value="0b01" description="Level 1: Analog comparator hysteresis 10 mV."/>
+      <bit_field_value name="CCR2_HYSTCTR_LEVEL_2" value="0b10" description="Level 2: Analog comparator hysteresis 20 mV."/>
+      <bit_field_value name="CCR2_HYSTCTR_LEVEL_3" value="0b11" description="Level 3: Analog comparator hysteresis 30 mV."/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="10" reset_value="0"/>
+    <bit_field offset="16" width="3" name="PSEL" access="RW" reset_value="0" description="Plus Input MUX Select">
+      <alias type="CMSIS" value="LPCMP_CCR2_PSEL(x)"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_0" value="0b000" description="Input 0p"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_1" value="0b001" description="Input 1p"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_2" value="0b010" description="Input 2p"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_3" value="0b011" description="Input 3p"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_4" value="0b100" description="Input 4p"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_5" value="0b101" description="Input 5p"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_6" value="0b110" description="Reserved"/>
+      <bit_field_value name="CCR2_PSEL_INPUT_7" value="0b111" description="Internal DAC output"/>
+    </bit_field>
+    <reserved_bit_field offset="19" width="1" reset_value="0"/>
+    <bit_field offset="20" width="3" name="MSEL" access="RW" reset_value="0" description="Minus Input MUX Select">
+      <alias type="CMSIS" value="LPCMP_CCR2_MSEL(x)"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_0" value="0b000" description="Input 0m"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_1" value="0b001" description="Input 1m"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_2" value="0b010" description="Input 2m"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_3" value="0b011" description="Input 3m"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_4" value="0b100" description="Input 4m"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_5" value="0b101" description="Input 5m"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_6" value="0b110" description="Reserved"/>
+      <bit_field_value name="CCR2_MSEL_INPUT_7" value="0b111" description="Internal DAC output"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="DCR" description="DAC Control">
+    <alias type="CMSIS" value="DCR"/>
+    <bit_field offset="0" width="1" name="DAC_EN" access="RW" reset_value="0" description="DAC Enable">
+      <alias type="CMSIS" value="LPCMP_DCR_DAC_EN(x)"/>
+      <bit_field_value name="DCR_DAC_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="DCR_DAC_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="DAC_HPMD" access="RW" reset_value="0" description="DAC High Power Mode">
+      <alias type="CMSIS" value="LPCMP_DCR_DAC_HPMD(x)"/>
+      <bit_field_value name="DCR_DAC_HPMD_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="DCR_DAC_HPMD_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <bit_field offset="8" width="1" name="VRSEL" access="RW" reset_value="0" description="DAC Reference High Voltage Source Select">
+      <alias type="CMSIS" value="LPCMP_DCR_VRSEL(x)"/>
+      <bit_field_value name="DCR_VRSEL_VREF0" value="0b0" description="VREFH0"/>
+      <bit_field_value name="DCR_VRSEL_VREF1" value="0b1" description="VREFH1"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <bit_field offset="16" width="8" name="DAC_DATA" access="RW" reset_value="0" description="DAC Output Voltage Select">
+      <alias type="CMSIS" value="LPCMP_DCR_DAC_DATA(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="24" width="8" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="IER" description="Interrupt Enable">
+    <alias type="CMSIS" value="IER"/>
+    <bit_field offset="0" width="1" name="CFR_IE" access="RW" reset_value="0" description="Comparator Flag Rising Interrupt Enable">
+      <alias type="CMSIS" value="LPCMP_IER_CFR_IE(x)"/>
+      <bit_field_value name="IER_CFR_IE_DISABLE" value="0b0" description="Disables the comparator flag rising interrupt."/>
+      <bit_field_value name="IER_CFR_IE_ENABLE" value="0b1" description="Enables the comparator flag rising interrupt when CFR is set."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CFF_IE" access="RW" reset_value="0" description="Comparator Flag Falling Interrupt Enable">
+      <alias type="CMSIS" value="LPCMP_IER_CFF_IE(x)"/>
+      <bit_field_value name="IER_CFF_IE_DISABLE" value="0b0" description="Disables the comparator flag falling interrupt."/>
+      <bit_field_value name="IER_CFF_IE_ENABLE" value="0b1" description="Enables the comparator flag falling interrupt when CFF is set."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="RRF_IE" access="RW" reset_value="0" description="Round-Robin Flag Interrupt Enable">
+      <alias type="CMSIS" value="LPCMP_IER_RRF_IE(x)"/>
+      <bit_field_value name="IER_RRF_IE_DISABLE" value="0b0" description="Disables the round-robin flag interrupt."/>
+      <bit_field_value name="IER_RRF_IE_ENABLE" value="0b1" description="Enables the round-robin flag interrupt when the comparison result changes for a given channel."/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x20" width="32" name="CSR" description="Comparator Status">
+    <alias type="CMSIS" value="CSR"/>
+    <bit_field offset="0" width="1" name="CFR" access="W1C" reset_value="0" description="Analog Comparator Flag Rising">
+      <alias type="CMSIS" value="LPCMP_CSR_CFR(x)"/>
+      <bit_field_value name="CSR_CFR_NOT_DETECTED" value="0b0" description="Not detected"/>
+      <bit_field_value name="CSR_CFR_DETECTED" value="0b1" description="Detected"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="CFF" access="W1C" reset_value="0" description="Analog Comparator Flag Falling">
+      <alias type="CMSIS" value="LPCMP_CSR_CFF(x)"/>
+      <bit_field_value name="CSR_CFF_NOT_DETECTED" value="0b0" description="Not detected"/>
+      <bit_field_value name="CSR_CFF_DETECTED" value="0b1" description="Detected"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="RRF" access="W1C" reset_value="0" description="Round-Robin Flag">
+      <alias type="CMSIS" value="LPCMP_CSR_RRF(x)"/>
+      <bit_field_value name="CSR_RRF_NOT_DETECTED" value="0b0" description="Not detected"/>
+      <bit_field_value name="CSR_RRF_DETECTED" value="0b1" description="Detected"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="5" reset_value="0"/>
+    <bit_field offset="8" width="1" name="COUT" access="RO" reset_value="0" description="Analog Comparator Output">
+      <alias type="CMSIS" value="LPCMP_CSR_COUT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="23" reset_value="0"/>
+  </register>
+  <register offset="0x24" width="32" name="RRCR0" description="Round Robin Control Register 0">
+    <alias type="CMSIS" value="RRCR0"/>
+    <bit_field offset="0" width="1" name="RR_EN" access="RW" reset_value="0" description="Round-Robin Enable">
+      <alias type="CMSIS" value="LPCMP_RRCR0_RR_EN(x)"/>
+      <bit_field_value name="RRCR0_RR_EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR0_RR_EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RR_TRG_SEL" access="RW" reset_value="0" description="Round-Robin Trigger Select">
+      <alias type="CMSIS" value="LPCMP_RRCR0_RR_TRG_SEL(x)"/>
+      <bit_field_value name="RRCR0_RR_TRG_SEL_ENABLE" value="0b0" description="External trigger"/>
+      <bit_field_value name="RRCR0_RR_TRG_SEL_DISABLE" value="0b1" description="Internal trigger"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="6" reset_value="0"/>
+    <bit_field offset="8" width="2" name="RR_NSAM" access="RW" reset_value="0" description="Number of Sample Clocks">
+      <alias type="CMSIS" value="LPCMP_RRCR0_RR_NSAM(x)"/>
+      <bit_field_value name="RRCR0_RR_NSAM_WAIT_0" value="0b00" description="0 clock"/>
+      <bit_field_value name="RRCR0_RR_NSAM_WAIT_1" value="0b01" description="1 clock"/>
+      <bit_field_value name="RRCR0_RR_NSAM_WAIT_2" value="0b10" description="2 clocks"/>
+      <bit_field_value name="RRCR0_RR_NSAM_WAIT_3" value="0b11" description="3 clocks"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="2" reset_value="0"/>
+    <bit_field offset="12" width="2" name="RR_CLK_SEL" access="RW" reset_value="0" description="Round Robin Clock Source Select">
+      <alias type="CMSIS" value="LPCMP_RRCR0_RR_CLK_SEL(x)"/>
+      <bit_field_value name="RRCR0_RR_CLK_SEL_RR0" value="0b00" description="Select Round Robin clock Source 0"/>
+      <bit_field_value name="RRCR0_RR_CLK_SEL_RR1" value="0b01" description="Select Round Robin clock Source 1"/>
+      <bit_field_value name="RRCR0_RR_CLK_SEL_RR2" value="0b10" description="Select Round Robin clock Source 2"/>
+      <bit_field_value name="RRCR0_RR_CLK_SEL_RR3" value="0b11" description="Select Round Robin clock Source 3"/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+    <bit_field offset="16" width="6" name="RR_INITMOD" access="RW" reset_value="0" description="Initialization Delay Modulus">
+      <alias type="CMSIS" value="LPCMP_RRCR0_RR_INITMOD(x)"/>
+      <bit_field_value name="RRCR0_RR_INITMOD_MOD_63" value="0b000000" description="63 cycles (same as 111111b)"/>
+      <bit_field_value name="RRCR0_RR_INITMOD_MOD_1_63" value="0b000001-0b111111" description="1 to 63 cycles"/>
+    </bit_field>
+    <reserved_bit_field offset="22" width="2" reset_value="0"/>
+    <bit_field offset="24" width="4" name="RR_SAMPLE_CNT" access="RW" reset_value="0" description="Number of Sample for One Channel">
+      <alias type="CMSIS" value="LPCMP_RRCR0_RR_SAMPLE_CNT(x)"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_0" value="0b0000" description="1 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_1" value="0b0001" description="2 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_2" value="0b0010" description="3 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_3" value="0b0011" description="4 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_4" value="0b0100" description="5 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_5" value="0b0101" description="6 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_6" value="0b0110" description="7 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_7" value="0b0111" description="8 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_8" value="0b1000" description="9 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_9" value="0b1001" description="10 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_10" value="0b1010" description="11 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_11" value="0b1011" description="12 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_12" value="0b1100" description="13 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_13" value="0b1101" description="14 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_14" value="0b1110" description="15 samples"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_CNT_SAMPLE_15" value="0b1111" description="16 samples"/>
+    </bit_field>
+    <bit_field offset="28" width="4" name="RR_SAMPLE_THRESHOLD" access="RW" reset_value="0" description="Sample Time Threshold">
+      <alias type="CMSIS" value="LPCMP_RRCR0_RR_SAMPLE_THRESHOLD(x)"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_0" value="0b0000" description="At least 1 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_1" value="0b0001" description="At least 2 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_2" value="0b0010" description="At least 3 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_3" value="0b0011" description="At least 4 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_4" value="0b0100" description="At least 5 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_5" value="0b0101" description="At least 6 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_6" value="0b0110" description="At least 7 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_7" value="0b0111" description="At least 8 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_8" value="0b1000" description="At least 9 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_9" value="0b1001" description="At least 10 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_10" value="0b1010" description="At least 11 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_11" value="0b1011" description="At least 12 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_12" value="0b1100" description="At least 13 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_13" value="0b1101" description="At least 14 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_14" value="0b1110" description="At least 15 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+      <bit_field_value name="RRCR0_RR_SAMPLE_THRESHOLD_SAMPLE_15" value="0b1111" description="At least 16 sampled &quot;1&quot;, the final result is &quot;1&quot;"/>
+    </bit_field>
+  </register>
+  <register offset="0x28" width="32" name="RRCR1" description="Round Robin Control Register 1">
+    <alias type="CMSIS" value="RRCR1"/>
+    <bit_field offset="0" width="1" name="RR_CH0EN" access="RW" reset_value="0" description="Channel 0 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH0EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH0EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH0EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RR_CH1EN" access="RW" reset_value="0" description="Channel 1 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH1EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH1EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH1EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="RR_CH2EN" access="RW" reset_value="0" description="Channel 2 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH2EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH2EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH2EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="RR_CH3EN" access="RW" reset_value="0" description="Channel 3 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH3EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH3EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH3EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="RR_CH4EN" access="RW" reset_value="0" description="Channel 4 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH4EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH4EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH4EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="RR_CH5EN" access="RW" reset_value="0" description="Channel 5 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH5EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH5EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH5EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="RR_CH6EN" access="RW" reset_value="0" description="Channel 6 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH6EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH6EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH6EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="RR_CH7EN" access="RW" reset_value="0" description="Channel 7 Input Enable in Trigger Mode">
+      <alias type="CMSIS" value="LPCMP_RRCR1_RR_CH7EN(x)"/>
+      <bit_field_value name="RRCR1_RR_CH7EN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RRCR1_RR_CH7EN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="8" reset_value="0"/>
+    <bit_field offset="16" width="1" name="FIXP" access="RW" reset_value="0" description="Fixed Port">
+      <alias type="CMSIS" value="LPCMP_RRCR1_FIXP(x)"/>
+      <bit_field_value name="RRCR1_FIXP_FIX_PLUS" value="0b0" description="Fix the plus port. Sweep only the inputs to the minus port."/>
+      <bit_field_value name="RRCR1_FIXP_FIX_MINUS" value="0b1" description="Fix the minus port. Sweep only the inputs to the plus port."/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="3" reset_value="0"/>
+    <bit_field offset="20" width="3" name="FIXCH" access="RW" reset_value="0" description="Fixed Channel Select">
+      <alias type="CMSIS" value="LPCMP_RRCR1_FIXCH(x)"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH0" value="0b000" description="Channel 0"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH1" value="0b001" description="Channel 1"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH2" value="0b010" description="Channel 2"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH3" value="0b011" description="Channel 3"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH4" value="0b100" description="Channel 4"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH5" value="0b101" description="Channel 5"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH6" value="0b110" description="Channel 6"/>
+      <bit_field_value name="RRCR1_FIXCH_FIX_CH7" value="0b111" description="Channel 7"/>
+    </bit_field>
+    <reserved_bit_field offset="23" width="9" reset_value="0"/>
+  </register>
+  <register offset="0x2C" width="32" name="RRCSR" description="Round Robin Control and Status">
+    <alias type="CMSIS" value="RRCSR"/>
+    <bit_field offset="0" width="1" name="RR_CH0OUT" access="RW" reset_value="0" description="Comparison Result for Channel 0">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH0OUT(x)"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RR_CH1OUT" access="RW" reset_value="0" description="Comparison Result for Channel 1">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH1OUT(x)"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="RR_CH2OUT" access="RW" reset_value="0" description="Comparison Result for Channel 2">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH2OUT(x)"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="RR_CH3OUT" access="RW" reset_value="0" description="Comparison Result for Channel 3">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH3OUT(x)"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="RR_CH4OUT" access="RW" reset_value="0" description="Comparison Result for Channel 4">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH4OUT(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="RR_CH5OUT" access="RW" reset_value="0" description="Comparison Result for Channel 5">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH5OUT(x)"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="RR_CH6OUT" access="RW" reset_value="0" description="Comparison Result for Channel 6">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH6OUT(x)"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="RR_CH7OUT" access="RW" reset_value="0" description="Comparison Result for Channel 7">
+      <alias type="CMSIS" value="LPCMP_RRCSR_RR_CH7OUT(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x30" width="32" name="RRSR" description="Round Robin Status">
+    <alias type="CMSIS" value="RRSR"/>
+    <bit_field offset="0" width="1" name="RR_CH0F" access="W1C" reset_value="0" description="Channel 0 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH0F(x)"/>
+      <bit_field_value name="RRSR_RR_CH0F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH0F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="RR_CH1F" access="W1C" reset_value="0" description="Channel 1 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH1F(x)"/>
+      <bit_field_value name="RRSR_RR_CH1F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH1F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="RR_CH2F" access="W1C" reset_value="0" description="Channel 2 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH2F(x)"/>
+      <bit_field_value name="RRSR_RR_CH2F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH2F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="RR_CH3F" access="W1C" reset_value="0" description="Channel 3 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH3F(x)"/>
+      <bit_field_value name="RRSR_RR_CH3F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH3F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="RR_CH4F" access="W1C" reset_value="0" description="Channel 4 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH4F(x)"/>
+      <bit_field_value name="RRSR_RR_CH4F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH4F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="RR_CH5F" access="W1C" reset_value="0" description="Channel 5 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH5F(x)"/>
+      <bit_field_value name="RRSR_RR_CH5F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH5F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="RR_CH6F" access="W1C" reset_value="0" description="Channel 6 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH6F(x)"/>
+      <bit_field_value name="RRSR_RR_CH6F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH6F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="RR_CH7F" access="W1C" reset_value="0" description="Channel 7 Input Changed Flag">
+      <alias type="CMSIS" value="LPCMP_RRSR_RR_CH7F(x)"/>
+      <bit_field_value name="RRSR_RR_CH7F_NOT_DIFFERENT" value="0b0" description="No different"/>
+      <bit_field_value name="RRSR_RR_CH7F_DIFFERENT" value="0b1" description="Different"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="24" reset_value="0"/>
+  </register>
+  <register offset="0x38" width="32" name="RRCR2" description="Round Robin Control Register 2">
+    <alias type="CMSIS" value="RRCR2"/>
+    <bit_field offset="0" width="28" name="RR_TIMER_RELOAD" access="RW" reset_value="0" description="Number of Sample Clocks">
+      <alias type="CMSIS" value="LPCMP_RRCR2_RR_TIMER_RELOAD(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="28" width="3" reset_value="0"/>
+    <bit_field offset="31" width="1" name="RR_TIMER_EN" access="RW" reset_value="0" description="Round-Robin Internal Timer Enable">
+      <alias type="CMSIS" value="LPCMP_RRCR2_RR_TIMER_EN(x)"/>
+      <bit_field_value name="RRCR2_RR_TIMER_EN_DISABLE" value="0b0" description="Disables"/>
+      <bit_field_value name="RRCR2_RR_TIMER_EN_ENABLE" value="0b1" description="Enables"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

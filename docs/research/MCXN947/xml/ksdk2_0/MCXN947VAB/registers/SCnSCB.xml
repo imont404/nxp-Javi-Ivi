@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <register offset="0xC" width="32" name="CPPWR" description="Coprocessor Power Control Register">
+    <bit_field offset="0" width="1" name="SU0" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 0.">
+      <bit_field_value name="CPPWR_SU0_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU0_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="SUS0" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 0.">
+      <bit_field_value name="CPPWR_SUS0_SECURE_AND_NON_SECURE" value="0b0" description="The SU0 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS0_SECURE_ONLY" value="0b1" description="The SU0 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="SU1" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 1.">
+      <bit_field_value name="CPPWR_SU1_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU1_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="SUS1" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 1.">
+      <bit_field_value name="CPPWR_SUS1_SECURE_AND_NON_SECURE" value="0b0" description="The SU1 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS1_SECURE_ONLY" value="0b1" description="The SU1 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="SU2" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 2.">
+      <bit_field_value name="CPPWR_SU2_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU2_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="SUS2" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 2.">
+      <bit_field_value name="CPPWR_SUS2_SECURE_AND_NON_SECURE" value="0b0" description="The SU2 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS2_SECURE_ONLY" value="0b1" description="The SU2 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="SU3" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 3.">
+      <bit_field_value name="CPPWR_SU3_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU3_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="SUS3" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 3.">
+      <bit_field_value name="CPPWR_SUS3_SECURE_AND_NON_SECURE" value="0b0" description="The SU3 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS3_SECURE_ONLY" value="0b1" description="The SU3 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="SU4" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 4.">
+      <bit_field_value name="CPPWR_SU4_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU4_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="SUS4" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 4.">
+      <bit_field_value name="CPPWR_SUS4_SECURE_AND_NON_SECURE" value="0b0" description="The SU4 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS4_SECURE_ONLY" value="0b1" description="The SU4 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="SU5" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 5.">
+      <bit_field_value name="CPPWR_SU5_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU5_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="SUS5" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 5.">
+      <bit_field_value name="CPPWR_SUS5_SECURE_AND_NON_SECURE" value="0b0" description="The SU5 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS5_SECURE_ONLY" value="0b1" description="The SU5 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="SU6" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 6.">
+      <bit_field_value name="CPPWR_SU6_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU6_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="13" width="1" name="SUS6" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 6.">
+      <bit_field_value name="CPPWR_SUS6_SECURE_AND_NON_SECURE" value="0b0" description="The SU6 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS6_SECURE_ONLY" value="0b1" description="The SU6 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="14" width="1" name="SU7" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 7.">
+      <bit_field_value name="CPPWR_SU7_UNKNOWN_NOT_PERMITTED" value="0b0" description="The coprocessor state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU7_UNKNOWN_PERMITTED" value="0b1" description="The coprocessor state is permitted to become UNKNOWN."/>
+    </bit_field>
+    <bit_field offset="15" width="1" name="SUS7" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 7.">
+      <bit_field_value name="CPPWR_SUS7_SECURE_AND_NON_SECURE" value="0b0" description="The SU7 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS7_SECURE_ONLY" value="0b1" description="The SU7 field is only accessible from the Secure state."/>
+    </bit_field>
+    <reserved_bit_field offset="16" width="4" reset_value="0" reset_mask="0"/>
+    <bit_field offset="20" width="1" name="SU10" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 10.">
+      <bit_field_value name="CPPWR_SU10_UNKNOWN_NOT_PERMITTED" value="0b0" description="The floating-point state is not permitted to become UNKNOWN."/>
+      <bit_field_value name="CPPWR_SU10_UNKNOWN_PERMITTED" value="0b1" description="The floating-point state is permitted to become UNKNOWN"/>
+    </bit_field>
+    <bit_field offset="21" width="1" name="SUS10" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 10.">
+      <bit_field_value name="CPPWR_SUS10_SECURE_AND_NON_SECURE" value="0b0" description="The SU10 field is accessible from both Security states."/>
+      <bit_field_value name="CPPWR_SUS10_SECURE_ONLY" value="0b1" description="The SU10 field is only accessible from the Secure state."/>
+    </bit_field>
+    <bit_field offset="22" width="1" name="SU11" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN 11."/>
+    <bit_field offset="23" width="1" name="SUS11" access="RW" reset_value="0" reset_mask="0" description="State UNKNOWN Secure only 11."/>
+    <reserved_bit_field offset="24" width="8" reset_value="0" reset_mask="0"/>
+  </register>
+</regs:peripheral>

@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="0" offset="{0}" width="8" name="GATE{1}" description="Gate">
+    <alias type="CMSIS" value="GATE{1}"/>
+    <bit_field offset="0" width="4" name="GTFSM" access="RW" reset_value="0" description="Gate Finite State Machine">
+      <alias type="CMSIS" value="SEMA42_GATE{1}_GTFSM(x)"/>
+      <bit_field_value name="GATE{1}_GTFSM_UNLOCKED" value="0b0000" description="The gate is unlocked (free)."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D0" value="0b0001" description="Domain 0 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D1" value="0b0010" description="Domain 1 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D2" value="0b0011" description="Domain 2 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D3" value="0b0100" description="Domain 3 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D4" value="0b0101" description="Domain 4 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D5" value="0b0110" description="Domain 5 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D6" value="0b0111" description="Domain 6 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D7" value="0b1000" description="Domain 7 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D8" value="0b1001" description="Domain 8 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D9" value="0b1010" description="Domain 9 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D10" value="0b1011" description="Domain 10 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D11" value="0b1100" description="Domain 11 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D12" value="0b1101" description="Domain 12 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D13" value="0b1110" description="Domain 13 locked the gate."/>
+      <bit_field_value name="GATE{1}_GTFSM_LOCKED_BY_D14" value="0b1111" description="Domain 14 locked the gate."/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+  </reg_template>
+  <reg_instance rid="0" vals="0 3"/>
+  <reg_instance rid="0" vals="0x1 2"/>
+  <reg_instance rid="0" vals="0x2 1"/>
+  <reg_instance rid="0" vals="0x3 0"/>
+  <reg_instance rid="0" vals="0x4 7"/>
+  <reg_instance rid="0" vals="0x5 6"/>
+  <reg_instance rid="0" vals="0x6 5"/>
+  <reg_instance rid="0" vals="0x7 4"/>
+  <reg_instance rid="0" vals="0x8 11"/>
+  <reg_instance rid="0" vals="0x9 10"/>
+  <reg_instance rid="0" vals="0xA 9"/>
+  <reg_instance rid="0" vals="0xB 8"/>
+  <reg_instance rid="0" vals="0xC 15"/>
+  <reg_instance rid="0" vals="0xD 14"/>
+  <reg_instance rid="0" vals="0xE 13"/>
+  <reg_instance rid="0" vals="0xF 12"/>
+  <register offset="0x42" width="16" name="RSTGT_R" description="Reset Gate Read">
+    <alias type="CMSIS" value="RSTGT_R"/>
+    <bit_field offset="0" width="8" name="RSTGTN" access="RO" reset_value="0" description="Reset Gate Number">
+      <alias type="CMSIS" value="SEMA42_RSTGT_R_RSTGTN(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="4" name="RSTGMS" access="RO" reset_value="0" description="Reset Gate Domain">
+      <alias type="CMSIS" value="SEMA42_RSTGT_R_RSTGMS(x)"/>
+    </bit_field>
+    <bit_field offset="12" width="2" name="RSTGSM" access="RO" reset_value="0" description="Reset Gate Finite State Machine">
+      <alias type="CMSIS" value="SEMA42_RSTGT_R_RSTGSM(x)"/>
+      <bit_field_value name="RSTGT_R_RSTGSM_IDLE" value="0b00" description="Idle, waiting for the first data pattern write."/>
+      <bit_field_value name="RSTGT_R_RSTGSM_WAITING" value="0b01" description="Waiting for the second data pattern write"/>
+      <bit_field_value name="RSTGT_R_RSTGSM_TWO_WRITE_DONE" value="0b10" description="The 2-write sequence has completed. Generate the specified gate reset(s). After the reset is performed, this machine returns to the idle (waiting for first data pattern write) state."/>
+      <bit_field_value name="RSTGT_R_RSTGSM_RESERVED" value="0b11" description="This state encoding is never used and therefore reserved."/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="2" reset_value="0"/>
+  </register>
+  <register offset="0x42" width="16" name="RSTGT_W" description="Reset Gate Write">
+    <alias type="CMSIS" value="RSTGT_W"/>
+    <bit_field offset="0" width="8" name="RSTGTN" access="WO" reset_value="0" reset_mask="0" description="Reset Gate Number">
+      <alias type="CMSIS" value="SEMA42_RSTGT_W_RSTGTN(x)"/>
+    </bit_field>
+    <bit_field offset="8" width="8" name="RSTGDP" access="WO" reset_value="0" reset_mask="0" description="Reset Gate Data Pattern">
+      <alias type="CMSIS" value="SEMA42_RSTGT_W_RSTGDP(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

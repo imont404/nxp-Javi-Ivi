@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource:resource_table id="tdet" xmlns:resource="http://swtools.freescale.net/XSD/resource/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd">
+  <user_types>
+    <struct id="onChipTampers" label="On-chip tamper sources">
+      <string id="label" label="On-chip tamper source label"/>
+      <string id="id" label="On-chip tamper source ID"/>
+      <string id="interruptId" label="On-chip tamper source interrupt ID"/>
+      <string id="genericId" label="On-chip tamper source interrupt generic ID"/>
+      <string id="interruptGenericId" label="On-chip tamper source interrupt generic ID"/>
+      <string id="description" label="On-chip tamper source description"/>
+    </struct>
+  </user_types>
+  <definition>
+    <array id="TDET0" label="List of on-chip tamper sources for TDET0" type="onChipTampers"/>
+  </definition>
+  <data>
+    <array name="TDET0">
+      <struct name="0">
+        <setting name="label" value="Clock monitor"/>
+        <setting name="id" value="kTDET_TamperClock"/>
+        <setting name="interruptId" value="kTDET_InterruptClockTamper"/>
+        <setting name="genericId" value="kTDET_TamperTIF0"/>
+        <setting name="interruptGenericId" value="kTDET_InterruptTIF0"/>
+        <setting name="description" value="Enables clock monitor tamper."/>
+      </struct>
+      <struct name="1">
+        <setting name="label" value="Configuration error"/>
+        <setting name="id" value="kTDET_TamperConfiguration"/>
+        <setting name="interruptId" value="kTDET_InterruptConfigurationTamper"/>
+        <setting name="genericId" value="kTDET_TamperTIF1"/>
+        <setting name="interruptGenericId" value="kTDET_InterruptTIF1"/>
+        <setting name="description" value="Enables configuration error tamper."/>
+      </struct>
+      <struct name="2">
+        <setting name="label" value="Voltage monitor"/>
+        <setting name="id" value="kTDET_TamperVoltage"/>
+        <setting name="interruptId" value="kTDET_InterruptVoltageTamper"/>
+        <setting name="genericId" value="kTDET_TamperTIF2"/>
+        <setting name="interruptGenericId" value="kTDET_InterruptTIF2"/>
+        <setting name="description" value="Enables voltage monitor tamper."/>
+      </struct>
+      <struct name="3">
+        <setting name="label" value="Temperature monitor"/>
+        <setting name="id" value="kTDET_TamperTemperature"/>
+        <setting name="interruptId" value="kTDET_InterruptTemperatureTamper"/>
+        <setting name="genericId" value="kTDET_TamperTIF3"/>
+        <setting name="interruptGenericId" value="kTDET_InterruptTIF3"/>
+        <setting name="description" value="Enables temperature monitor tamper."/>
+      </struct>
+      <struct name="4">
+        <setting name="label" value="RAM zeroize tamper"/>
+        <setting name="id" value="kTDET_TamperRamZeroize"/>
+        <setting name="interruptId" value="kTDET_InterruptRamZeroizeTamper"/>
+        <setting name="genericId" value="kTDET_TamperTIF4"/>
+        <setting name="interruptGenericId" value="kTDET_InterruptTIF4"/>
+        <setting name="description" value="Enables RAM zeroize tamper."/>
+      </struct>
+    </array>
+  </data>
+</resource:resource_table>

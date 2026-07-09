@@ -1,0 +1,4020 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "128",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "GPTIMER{1}LD",
+        "@description": "General Purpose Timer #{1} Load",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "GPTIMER{1}LD"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "24",
+          "@name": "GPTLD",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "General Purpose Timer Load Value",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_GPTIMER{1}LD_GPTLD(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "24",
+          "@width": "8",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "452",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "ENDPTCTRL{1}",
+        "@description": "Endpoint Control {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTCTRL[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "RXS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RX Endpoint Stall",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_RXS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_RXS_DISABLE",
+                "@value": "0b0",
+                "@description": "Endpoint OK"
+              },
+              {
+                "@name": "ENDPTCTRL_RXS_ENABLE",
+                "@value": "0b1",
+                "@description": "Endpoint stalled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "RXD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RX Endpoint Data Sink",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_RXD(x)"
+            },
+            "bit_field_value": {
+              "@name": "ENDPTCTRL_RXD_DISABLE",
+              "@value": "0b0",
+              "@description": "Dual Port Memory Buffer/DMA Engine"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "RXT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RX Endpoint Type",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_RXT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_RXT_CTL",
+                "@value": "0b00",
+                "@description": "Control"
+              },
+              {
+                "@name": "ENDPTCTRL_RXT_ISO",
+                "@value": "0b01",
+                "@description": "Isochronous"
+              },
+              {
+                "@name": "ENDPTCTRL_RXT_BLK",
+                "@value": "0b10",
+                "@description": "Bulk"
+              },
+              {
+                "@name": "ENDPTCTRL_RXT_IRQ",
+                "@value": "0b11",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "RXI",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RX Data Toggle Inhibit",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_RXI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_RXI_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "ENDPTCTRL_RXI_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "RXR",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "RX Data Toggle Reset (WS)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_RXR(x)"
+            },
+            "bit_field_value": {
+              "@name": "ENDPTCTRL_RXR_W_1",
+              "@value": "0b1",
+              "@description": "Reset PID sequence"
+            }
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "RXE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RX Endpoint Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_RXE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_RXE_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "ENDPTCTRL_RXE_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "TXS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "TX Endpoint Stall",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_TXS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_TXS_DISABLE",
+                "@value": "0b0",
+                "@description": "Endpoint OK"
+              },
+              {
+                "@name": "ENDPTCTRL_TXS_ENABLE",
+                "@value": "0b1",
+                "@description": "Endpoint stalled"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "TXD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "TX Endpoint Data Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_TXD(x)"
+            },
+            "bit_field_value": {
+              "@name": "ENDPTCTRL_TXD_DMA",
+              "@value": "0b0",
+              "@description": "Dual Port Memory Buffer/DMA Engine"
+            }
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "TXT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "TX Endpoint Type",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_TXT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_TXT_CTL",
+                "@value": "0b00",
+                "@description": "Control"
+              },
+              {
+                "@name": "ENDPTCTRL_TXT_ISO",
+                "@value": "0b01",
+                "@description": "Isochronous"
+              },
+              {
+                "@name": "ENDPTCTRL_TXT_BLK",
+                "@value": "0b10",
+                "@description": "Bulk"
+              },
+              {
+                "@name": "ENDPTCTRL_TXT_IRQ",
+                "@value": "0b11",
+                "@description": "Interrupt"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "TXI",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "TX Data Toggle Inhibit",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_TXI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_TXI_PID_EN",
+                "@value": "0b0",
+                "@description": "PID sequencing enabled"
+              },
+              {
+                "@name": "ENDPTCTRL_TXI_PID_DIS",
+                "@value": "0b1",
+                "@description": "PID sequencing disabled"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "TXR",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "TX Data Toggle Reset (WS)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_TXR(x)"
+            },
+            "bit_field_value": {
+              "@name": "ENDPTCTRL_TXR_W_1",
+              "@value": "0b1",
+              "@description": "Reset PID sequence"
+            }
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "TXE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "TX Endpoint Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL_TXE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL_TXE_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "ENDPTCTRL_TXE_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "ID",
+        "@description": "Identification",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ID"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "6",
+            "@name": "ID",
+            "@access": "RO",
+            "@reset_value": "0x5",
+            "@description": "Configuration Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ID_ID(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "6",
+            "@name": "NID",
+            "@access": "RO",
+            "@reset_value": "0x3A",
+            "@description": "Complement Version of ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ID_NID(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "REVISION",
+            "@access": "RO",
+            "@reset_value": "0xA1",
+            "@description": "Revision Number of the Controller Core",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ID_REVISION(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@reset_value": "0x3"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0xE4"
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "HWGENERAL",
+        "@description": "Hardware General",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HWGENERAL"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@reset_value": "0x5"
+          },
+          {
+            "@offset": "11",
+            "@width": "21",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "PHYW",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Data width of the transceiver connected to the controller core",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWGENERAL_PHYW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HWGENERAL_PHYW_DATA_BUS_8",
+                "@value": "0b00",
+                "@description": "8 bit wide data bus (Software non-programmable)"
+              },
+              {
+                "@name": "HWGENERAL_PHYW_DATA_BUS_16",
+                "@value": "0b01",
+                "@description": "16 bit wide data bus (Software non-programmable)"
+              },
+              {
+                "@name": "HWGENERAL_PHYW_SW_RST_8",
+                "@value": "0b10",
+                "@description": "Reset to 8 bit wide data bus (Software programmable)"
+              },
+              {
+                "@name": "HWGENERAL_PHYW_SW_RST_16",
+                "@value": "0b11",
+                "@description": "Reset to 16 bit wide data bus (Software programmable)"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "3",
+            "@name": "PHYM",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Transceiver Type",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWGENERAL_PHYM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HWGENERAL_PHYM_UTMI",
+                "@value": "0b000",
+                "@description": "UTMI/UMTI+"
+              },
+              {
+                "@name": "HWGENERAL_PHYM_ULPI_DDR",
+                "@value": "0b001",
+                "@description": "ULPI DDR"
+              },
+              {
+                "@name": "HWGENERAL_PHYM_ULPI",
+                "@value": "0b010",
+                "@description": "ULPI"
+              },
+              {
+                "@name": "HWGENERAL_PHYM_SERIAL",
+                "@value": "0b011",
+                "@description": "Serial Only"
+              },
+              {
+                "@name": "HWGENERAL_PHYM_SW_RST_UTMI",
+                "@value": "0b100",
+                "@description": "Software programmable - reset to UTMI/UTMI+"
+              },
+              {
+                "@name": "HWGENERAL_PHYM_SW_RST_ULPI_DDR",
+                "@value": "0b101",
+                "@description": "Software programmable - reset to ULPI DDR"
+              },
+              {
+                "@name": "HWGENERAL_PHYM_SW_RST_ULPI",
+                "@value": "0b110",
+                "@description": "Software programmable - reset to ULPI"
+              },
+              {
+                "@name": "HWGENERAL_PHYM_SW_RST_SERIAL",
+                "@value": "0b111",
+                "@description": "Software programmable - reset to Serial"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "2",
+            "@name": "SM",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Serial interface mode capability",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWGENERAL_SM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HWGENERAL_SM_SERIAL_ENGINE_NO",
+                "@value": "0b00",
+                "@description": "No Serial Engine, always use parallel signalling"
+              },
+              {
+                "@name": "HWGENERAL_SM_SERIAL_ENGINE_EN",
+                "@value": "0b01",
+                "@description": "Serial Engine present, always use serial signalling for FS/LS"
+              },
+              {
+                "@name": "HWGENERAL_SM_SW_RST_PARALLEL",
+                "@value": "0b10",
+                "@description": "Software programmable - Reset to use parallel signalling for FS/LS"
+              },
+              {
+                "@name": "HWGENERAL_SM_SW_RST_SERIAL_ENG",
+                "@value": "0b11",
+                "@description": "Software programmable - Reset to use serial signalling for FS/LS"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "HWHOST",
+        "@description": "Host Hardware Parameters",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HWHOST"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "HC",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Host Capable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWHOST_HC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HWHOST_HC_HOST_OP_DIS",
+                "@value": "0b0",
+                "@description": "Not supported"
+              },
+              {
+                "@name": "HWHOST_HC_HOST_OP_EN",
+                "@value": "0b1",
+                "@description": "Supported"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "3",
+            "@name": "NPORT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "The Number of downstream ports supported by the host controller is (NPORT+1)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWHOST_NPORT(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "28",
+          "@reset_value": "0x1002000"
+        }
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "HWDEVICE",
+        "@description": "Device Hardware Parameters",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HWDEVICE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DC",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Device Capable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWDEVICE_DC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HWDEVICE_DC_DEVICE_OP_DIS",
+                "@value": "0b0",
+                "@description": "Not supported"
+              },
+              {
+                "@name": "HWDEVICE_DC_DEVICE_OP_EN",
+                "@value": "0b1",
+                "@description": "Supported"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "5",
+            "@name": "DEVEP",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Device Endpoint Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWDEVICE_DEVEP(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "6",
+          "@width": "26",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "HWTXBUF",
+        "@description": "TX Buffer Hardware Parameters",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HWTXBUF"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "TXBURST",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Default burst size for memory to TX buffer transfer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWTXBUF_TXBURST(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "TXCHANADD",
+            "@access": "RO",
+            "@reset_value": "0x5",
+            "@description": "TX FIFO Buffer size is: (2^TXCHANADD) * 4 Bytes",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWTXBUF_TXCHANADD(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0x8"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0x80"
+          }
+        ]
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "HWRXBUF",
+        "@description": "RX Buffer Hardware Parameters",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HWRXBUF"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "RXBURST",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Default burst size for memory to RX buffer transfer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWRXBUF_RXBURST(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "RXADD",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Buffer total size for all receive endpoints is (2^RXADD)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HWRXBUF_RXADD(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x84",
+        "@width": "32",
+        "@name": "GPTIMER0CTRL",
+        "@description": "General Purpose Timer #0 Controller",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "GPTIMER0CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "24",
+            "@name": "GPTCNT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER0CTRL_GPTCNT(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "GPTMODE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER0CTRL_GPTMODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GPTIMER0CTRL_GPTMODE_ONE_SHOT",
+                "@value": "0b0",
+                "@description": "One Shot Mode"
+              },
+              {
+                "@name": "GPTIMER0CTRL_GPTMODE_REPEAT",
+                "@value": "0b1",
+                "@description": "Repeat Mode"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "GPTRST",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER0CTRL_GPTRST(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GPTIMER0CTRL_GPTRST_NO_ACTION",
+                "@value": "0b0",
+                "@description": "No action"
+              },
+              {
+                "@name": "GPTIMER0CTRL_GPTRST_LOAD_CNTR",
+                "@value": "0b1",
+                "@description": "Load counter value from GPTLD bits in n_GPTIMER0LD"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "GPTRUN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Run",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER0CTRL_GPTRUN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GPTIMER0CTRL_GPTRUN_STOP_CNTR",
+                "@value": "0b0",
+                "@description": "Stop counting"
+              },
+              {
+                "@name": "GPTIMER0CTRL_GPTRUN_RUN",
+                "@value": "0b1",
+                "@description": "Run"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "25",
+          "@width": "5",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x8C",
+        "@width": "32",
+        "@name": "GPTIMER1CTRL",
+        "@description": "General Purpose Timer #1 Controller",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "GPTIMER1CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "24",
+            "@name": "GPTCNT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER1CTRL_GPTCNT(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "GPTMODE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER1CTRL_GPTMODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GPTIMER1CTRL_GPTMODE_ONE_SHOT",
+                "@value": "0b0",
+                "@description": "One Shot Mode"
+              },
+              {
+                "@name": "GPTIMER1CTRL_GPTMODE_REPEAT",
+                "@value": "0b1",
+                "@description": "Repeat Mode"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "GPTRST",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER1CTRL_GPTRST(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GPTIMER1CTRL_GPTRST_NO_ACTION",
+                "@value": "0b0",
+                "@description": "No action"
+              },
+              {
+                "@name": "GPTIMER1CTRL_GPTRST_LOAD_CNTR",
+                "@value": "0b1",
+                "@description": "Load counter value from GPTLD bits in USB_n_GPTIMER0LD"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "GPTRUN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Run",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_GPTIMER1CTRL_GPTRUN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GPTIMER1CTRL_GPTRUN_STOP_CNTR",
+                "@value": "0b0",
+                "@description": "Stop counting"
+              },
+              {
+                "@name": "GPTIMER1CTRL_GPTRUN_RUN",
+                "@value": "0b1",
+                "@description": "Run"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "25",
+          "@width": "5",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x90",
+        "@width": "32",
+        "@name": "SBUSCFG",
+        "@description": "System Bus Config",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SBUSCFG"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "3",
+          "@name": "AHBBRST",
+          "@access": "RW",
+          "@reset_value": "0x2",
+          "@description": "AHB master interface Burst configuration",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_SBUSCFG_AHBBRST(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "SBUSCFG_AHBBRST_INCR_BURST",
+              "@value": "0b000",
+              "@description": "Incremental burst of unspecified length only"
+            },
+            {
+              "@name": "SBUSCFG_AHBBRST_INCR4_BURST",
+              "@value": "0b001",
+              "@description": "INCR4 burst, then single transfer"
+            },
+            {
+              "@name": "SBUSCFG_AHBBRST_INCR8_BURST",
+              "@value": "0b010",
+              "@description": "INCR8 burst, INCR4 burst, then single transfer"
+            },
+            {
+              "@name": "SBUSCFG_AHBBRST_INCR16_BURST",
+              "@value": "0b011",
+              "@description": "INCR16 burst, INCR8 burst, INCR4 burst, then single transfer"
+            },
+            {
+              "@name": "SBUSCFG_AHBBRST_RSVD",
+              "@value": "0b100",
+              "@description": "Reserved, don't use"
+            },
+            {
+              "@name": "SBUSCFG_AHBBRST_INCR4_UNSPEC",
+              "@value": "0b101",
+              "@description": "INCR4 burst, then incremental burst of unspecified length"
+            },
+            {
+              "@name": "SBUSCFG_AHBBRST_INCR8_4_UNSPEC",
+              "@value": "0b110",
+              "@description": "INCR8 burst, INCR4 burst, then incremental burst of unspecified length"
+            },
+            {
+              "@name": "SBUSCFG_AHBBRST_INCR16_8_4_UNSPEC",
+              "@value": "0b111",
+              "@description": "INCR16 burst, INCR8 burst, INCR4 burst, then incremental burst of unspecified length"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "3",
+          "@width": "29",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x100",
+        "@width": "8",
+        "@name": "CAPLENGTH",
+        "@description": "Capability Registers Length",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAPLENGTH"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "CAPLENGTH",
+          "@access": "RO",
+          "@reset_value": "0x40",
+          "@description": "These bits are used as an offset to add to register base to find the beginning of the Operational Register. Default value is '40h'.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_CAPLENGTH_CAPLENGTH(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x102",
+        "@width": "16",
+        "@name": "HCIVERSION",
+        "@description": "Host Controller Interface Version",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HCIVERSION"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "HCIVERSION",
+          "@access": "RO",
+          "@reset_value": "0x100",
+          "@description": "Host Controller Interface Version Number",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_HCIVERSION_HCIVERSION(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x104",
+        "@width": "32",
+        "@name": "HCSPARAMS",
+        "@description": "Host Controller Structural Parameters",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HCSPARAMS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "N_PORTS",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Number of Downstream Ports",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCSPARAMS_N_PORTS(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "PPC",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Port Power Control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCSPARAMS_PPC(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "4",
+            "@name": "N_PCC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Number of Ports per Companion Controller",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCSPARAMS_N_PCC(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "4",
+            "@name": "N_CC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Number of Companion Controller",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCSPARAMS_N_CC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "HCSPARAMS_N_CC_NO_COMP_CONTROLLER",
+                "@value": "0b0000",
+                "@description": "There is no internal Companion Controller and port-ownership hand-off is not supported"
+              },
+              {
+                "@name": "HCSPARAMS_N_CC_COMP_CONTROLLER",
+                "@value": "0b0001",
+                "@description": "There are internal companion controller(s) and port-ownership hand-offs is supported"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "PI",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Port Indicators (P INDICATOR)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCSPARAMS_PI(x)"
+            }
+          },
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@name": "N_PTT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Number of Ports per Transaction Translator",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCSPARAMS_N_PTT(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "N_TT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Number of Transaction Translators",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCSPARAMS_N_TT(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x108",
+        "@width": "32",
+        "@name": "HCCPARAMS",
+        "@description": "Host Controller Capability Parameters",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "HCCPARAMS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ADC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "64-bit Addressing Capability",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCCPARAMS_ADC(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "PFL",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Programmable Frame List Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCCPARAMS_PFL(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ASP",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Asynchronous Schedule Park Capability",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCCPARAMS_ASP(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@name": "IST",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Isochronous Scheduling Threshold",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCCPARAMS_IST(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "EECP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "EHCI Extended Capabilities Pointer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_HCCPARAMS_EECP(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x120",
+        "@width": "16",
+        "@name": "DCIVERSION",
+        "@description": "Device Controller Interface Version",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DCIVERSION"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "DCIVERSION",
+          "@access": "RO",
+          "@reset_value": "0x1",
+          "@description": "Device Controller Interface Version Number",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_DCIVERSION_DCIVERSION(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x124",
+        "@width": "32",
+        "@name": "DCCPARAMS",
+        "@description": "Device Controller Capability Parameters",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DCCPARAMS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "DEN",
+            "@access": "RO",
+            "@reset_value": "0x8",
+            "@description": "Device Endpoint Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_DCCPARAMS_DEN(x)"
+            }
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "DC",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Device Capable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_DCCPARAMS_DC(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "HC",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Host Capable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_DCCPARAMS_HC(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "9",
+            "@width": "23",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x140",
+        "@width": "32",
+        "@name": "USBCMD",
+        "@description": "USB Command",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "USBCMD"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "RS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Run/Stop",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_RS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBCMD_RS_DISABLE",
+                "@value": "0b0",
+                "@description": "Stop"
+              },
+              {
+                "@name": "USBCMD_RS_ENABLE",
+                "@value": "0b1",
+                "@description": "Run"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "RST",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Controller Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_RST(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "FS_1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Frame List Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_FS_1(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "PSE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Periodic Schedule Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_PSE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBCMD_PSE_DONT_PROCESS_PT",
+                "@value": "0b0",
+                "@description": "Do not process the Periodic Schedule"
+              },
+              {
+                "@name": "USBCMD_PSE_PROCESS_PT_PERIODICLISTBASE",
+                "@value": "0b1",
+                "@description": "Use the PERIODICLISTBASE register to access the Periodic Schedule"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "ASE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Asynchronous Schedule Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_ASE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBCMD_ASE_DONT_PROCESS_ASYNC",
+                "@value": "0b0",
+                "@description": "Do not process the Asynchronous Schedule"
+              },
+              {
+                "@name": "USBCMD_ASE_ACCESS_ASYNC",
+                "@value": "0b1",
+                "@description": "Use the ASYNCLISTADDR register to access the Asynchronous Schedule"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "IAA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Interrupt on Async Advance Doorbell",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_IAA(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "ASP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Asynchronous Schedule Park Mode Count",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_ASP(x)"
+            }
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "ASPE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Asynchronous Schedule Park Mode Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_ASPE(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "SUTW",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Setup TripWire [device mode only]",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_SUTW(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "ATDTW",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Add dTD TripWire[device mode only]",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_ATDTW(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "FS_2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Frame List Size [host mode only]",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_FS_2(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "ITC",
+            "@access": "RW",
+            "@reset_value": "0x8",
+            "@description": "Interrupt Threshold Control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBCMD_ITC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBCMD_ITC_IMMEDIATE",
+                "@value": "0b00000000",
+                "@description": "Immediate (no threshold)"
+              },
+              {
+                "@name": "USBCMD_ITC_MICROFRAME_1",
+                "@value": "0b00000001",
+                "@description": "1 micro-frame"
+              },
+              {
+                "@name": "USBCMD_ITC_MICROFRAME_2",
+                "@value": "0b00000010",
+                "@description": "2 micro-frames"
+              },
+              {
+                "@name": "USBCMD_ITC_MICROFRAME_4",
+                "@value": "0b00000100",
+                "@description": "4 micro-frames"
+              },
+              {
+                "@name": "USBCMD_ITC_MICROFRAME_8",
+                "@value": "0b00001000",
+                "@description": "8 micro-frames"
+              },
+              {
+                "@name": "USBCMD_ITC_MICROFRAME_16",
+                "@value": "0b00010000",
+                "@description": "16 micro-frames"
+              },
+              {
+                "@name": "USBCMD_ITC_MICROFRAME_32",
+                "@value": "0b00100000",
+                "@description": "32 micro-frames"
+              },
+              {
+                "@name": "USBCMD_ITC_MICROFRAME_64",
+                "@value": "0b01000000",
+                "@description": "64 micro-frames"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x144",
+        "@width": "32",
+        "@name": "USBSTS",
+        "@description": "USB Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "USBSTS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "UI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "USB Interrupt (USBINT)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_UI(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "UEI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "USB Error Interrupt (USBERRINT)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_UEI(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "PCI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Port Change Detect",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_PCI(x)"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "FRI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Frame List Rollover",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_FRI(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "SEI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "System Error",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_SEI(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "AAI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Interrupt on Async Advance",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_AAI(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "URI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "USB Reset Received",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_URI(x)"
+            }
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "SRI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "SOF Received",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_SRI(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "SLI",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "DCSuspend",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_SLI(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "ULPII",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "ULPI Interrupt",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_ULPII(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "HCH",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "HCHaIted",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_HCH(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "RCL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Reclamation",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_RCL(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "PS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Periodic Schedule Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_PS(x)"
+            }
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "AS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Asynchronous Schedule Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_AS(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "NAKI",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "NAK Interrupt Bit",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_NAKI(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "TI0",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Interrupt 0 (GPTINT0)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_TI0(x)"
+            }
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "TI1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer Interrupt 1 (GPTINT1)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBSTS_TI1(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "7",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "26",
+            "@width": "6",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x148",
+        "@width": "32",
+        "@name": "USBINTR",
+        "@description": "Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "USBINTR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "UE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "USB Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_UE(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "UEE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "USB Error Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_UEE(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "PCE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Port Change Detect Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_PCE(x)"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "FRE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Frame List Rollover Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_FRE(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "SEE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "System Error Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_SEE(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "AAE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Async Advance Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_AAE(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "URE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "USB Reset Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_URE(x)"
+            }
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "SRE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SOF Received Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_SRE(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "SLE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sleep Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_SLE(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "NAKE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "NAK Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_NAKE(x)"
+            }
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "UAIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "USB Host Asynchronous Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_UAIE(x)"
+            }
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "UPIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "USB Host Periodic Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_UPIE(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "TIE0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer #0 Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_TIE0(x)"
+            }
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "TIE1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "General Purpose Timer #1 Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBINTR_TIE1(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "26",
+            "@width": "6",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x14C",
+        "@width": "32",
+        "@name": "FRINDEX",
+        "@description": "USB Frame Index",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FRINDEX"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "14",
+          "@name": "FRINDEX",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Frame Index",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_FRINDEX_FRINDEX(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_1024",
+              "@value": "0b00000000000000",
+              "@description": "(1024) 12"
+            },
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_512",
+              "@value": "0b00000000000001",
+              "@description": "(512) 11"
+            },
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_256",
+              "@value": "0b00000000000010",
+              "@description": "(256) 10"
+            },
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_128",
+              "@value": "0b00000000000011",
+              "@description": "(128) 9"
+            },
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_64",
+              "@value": "0b00000000000100",
+              "@description": "(64) 8"
+            },
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_32",
+              "@value": "0b00000000000101",
+              "@description": "(32) 7"
+            },
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_16",
+              "@value": "0b00000000000110",
+              "@description": "(16) 6"
+            },
+            {
+              "@name": "FRINDEX_FRINDEX_FRINDEX_8",
+              "@value": "0b00000000000111",
+              "@description": "(8) 5"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "14",
+          "@width": "18",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x154",
+        "@width": "32",
+        "@name": "DEVICEADDR",
+        "@description": "Device Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DEVICEADDR"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "24",
+          "@reset_value": "0"
+        },
+        "bit_field": [
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "USBADRA",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Device Address Advance",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_DEVICEADDR_USBADRA(x)"
+            }
+          },
+          {
+            "@offset": "25",
+            "@width": "7",
+            "@name": "USBADR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Device Address",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_DEVICEADDR_USBADR(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x154",
+        "@width": "32",
+        "@name": "PERIODICLISTBASE",
+        "@description": "Frame List Base Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PERIODICLISTBASE"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@name": "BASEADR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Base Address (Low)",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_PERIODICLISTBASE_BASEADR(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x158",
+        "@width": "32",
+        "@name": "ASYNCLISTADDR",
+        "@description": "Next Asynch. Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ASYNCLISTADDR"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "5",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "5",
+          "@width": "27",
+          "@name": "ASYBASE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Link Pointer Low (LPL)",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_ASYNCLISTADDR_ASYBASE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x158",
+        "@width": "32",
+        "@name": "ENDPTLISTADDR",
+        "@description": "Endpoint List Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTLISTADDR"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "11",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "11",
+          "@width": "21",
+          "@name": "EPBASE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Endpoint List Pointer (Low)",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_ENDPTLISTADDR_EPBASE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x160",
+        "@width": "32",
+        "@name": "BURSTSIZE",
+        "@description": "Programmable Burst Size",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "BURSTSIZE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "RXPBURST",
+            "@access": "RW",
+            "@reset_value": "0x8",
+            "@description": "Programmable RX Burst Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_BURSTSIZE_RXPBURST(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "TXPBURST",
+            "@access": "RW",
+            "@reset_value": "0x8",
+            "@description": "Programmable TX Burst Size",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_BURSTSIZE_TXPBURST(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x164",
+        "@width": "32",
+        "@name": "TXFILLTUNING",
+        "@description": "TX FIFO Fill Tuning",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TXFILLTUNING"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "7",
+            "@name": "TXSCHOH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Scheduler Overhead",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_TXFILLTUNING_TXSCHOH(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "5",
+            "@name": "TXSCHHEALTH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Scheduler Health Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_TXFILLTUNING_TXSCHHEALTH(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "6",
+            "@name": "TXFIFOTHRES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "FIFO Burst Threshold",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_TXFILLTUNING_TXFIFOTHRES(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "22",
+            "@width": "10",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x178",
+        "@width": "32",
+        "@name": "ENDPTNAK",
+        "@description": "Endpoint NAK",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTNAK"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "EPRN",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "RX Endpoint NAK",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTNAK_EPRN(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "EPTN",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "TX Endpoint NAK",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTNAK_EPTN(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x17C",
+        "@width": "32",
+        "@name": "ENDPTNAKEN",
+        "@description": "Endpoint NAK Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTNAKEN"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "EPRNE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RX Endpoint NAK Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTNAKEN_EPRNE(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "EPTNE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "TX Endpoint NAK Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTNAKEN_EPTNE(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x180",
+        "@width": "32",
+        "@name": "CONFIGFLAG",
+        "@description": "Configure Flag",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CONFIGFLAG"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "CF",
+          "@access": "RO",
+          "@reset_value": "0x1",
+          "@description": "Configure Flag",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_CONFIGFLAG_CF(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "CONFIGFLAG_CF_PORT_ROUTING_CLASSIC_HOST",
+              "@value": "0b0",
+              "@description": "Port routing control logic default-routes each port to an implementation dependent classic host controller"
+            },
+            {
+              "@name": "CONFIGFLAG_CF_PORT_ROUTING_HOST",
+              "@value": "0b1",
+              "@description": "Port routing control logic default-routes all ports to this host controller"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x184",
+        "@width": "32",
+        "@name": "PORTSC1",
+        "@description": "Port Status & Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PORTSC1"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "CCS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Current Connect Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_CCS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_CCS_DISABLE",
+                "@value": "0b0",
+                "@description": "In Host mode: No device is present. In Device mode: Not attached"
+              },
+              {
+                "@name": "PORTSC1_CCS_ENABLE",
+                "@value": "0b1",
+                "@description": "In Host mode: Device is present on port. In Device mode: Attached"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "CSC",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Connect Status Change",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_CSC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_CSC_DISABLE",
+                "@value": "0b0",
+                "@description": "No change"
+              },
+              {
+                "@name": "PORTSC1_CSC_ENABLE",
+                "@value": "0b1",
+                "@description": "Change in current connect status"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "PE",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Port Enabled/Disabled",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PE_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PORTSC1_PE_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "PEC",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Port Enable/Disable Change",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PEC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PEC_DISABLE",
+                "@value": "0b0",
+                "@description": "No change"
+              },
+              {
+                "@name": "PORTSC1_PEC_ENABLE",
+                "@value": "0b1",
+                "@description": "Port enabled/disabled status has changed"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "OCA",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Over-Current Active",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_OCA(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_OCA_NO_OVERCURRENT",
+                "@value": "0b0",
+                "@description": "This port does not have an over-current condition"
+              },
+              {
+                "@name": "PORTSC1_OCA_OVERCURRENT",
+                "@value": "0b1",
+                "@description": "This port currently has an over-current condition"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "OCC",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Over-current Change",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_OCC(x)"
+            }
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "FPR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Force Port Resume",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_FPR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_FPR_DISABLE",
+                "@value": "0b0",
+                "@description": "No resume (K-state) detected/driven on port"
+              },
+              {
+                "@name": "PORTSC1_FPR_ENABLE",
+                "@value": "0b1",
+                "@description": "Resume detected/driven on port"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "SUSP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Suspend",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_SUSP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_SUSP_DISABLE",
+                "@value": "0b0",
+                "@description": "Port not in suspend state"
+              },
+              {
+                "@name": "PORTSC1_SUSP_ENABLE",
+                "@value": "0b1",
+                "@description": "Port in suspend state"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "PR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Port Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PR_DISABLE",
+                "@value": "0b0",
+                "@description": "Port is not in reset"
+              },
+              {
+                "@name": "PORTSC1_PR_ENABLE",
+                "@value": "0b1",
+                "@description": "Port is in reset"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "HSP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "High-Speed Port",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_HSP(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "LS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Line Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_LS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_LS_SE0",
+                "@value": "0b00",
+                "@description": "SE0"
+              },
+              {
+                "@name": "PORTSC1_LS_K_STATE",
+                "@value": "0b01",
+                "@description": "K-state"
+              },
+              {
+                "@name": "PORTSC1_LS_J_STATE",
+                "@value": "0b10",
+                "@description": "J-state"
+              },
+              {
+                "@name": "PORTSC1_LS_UNDEFINED",
+                "@value": "0b11",
+                "@description": "Undefined"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "PP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Port Power",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PP(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "PO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Port Owner",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PO(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "PIC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Port Indicator Control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PIC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PIC_PORT_INDICATOR_OFF",
+                "@value": "0b00",
+                "@description": "Port indicators are off"
+              },
+              {
+                "@name": "PORTSC1_PIC_PORT_IND_AMBER",
+                "@value": "0b01",
+                "@description": "Amber"
+              },
+              {
+                "@name": "PORTSC1_PIC_PORT_IND_GREEN",
+                "@value": "0b10",
+                "@description": "Green"
+              },
+              {
+                "@name": "PORTSC1_PIC_UNDEFINED",
+                "@value": "0b11",
+                "@description": "Undefined"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "PTC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Port Test Control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PTC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PTC_TST_MODE_DIS",
+                "@value": "0b0000",
+                "@description": "TEST_MODE_DISABLE"
+              },
+              {
+                "@name": "PORTSC1_PTC_J_STATE",
+                "@value": "0b0001",
+                "@description": "J_STATE"
+              },
+              {
+                "@name": "PORTSC1_PTC_K_STATE",
+                "@value": "0b0010",
+                "@description": "K_STATE"
+              },
+              {
+                "@name": "PORTSC1_PTC_SE0",
+                "@value": "0b0011",
+                "@description": "SE0 (host) / NAK (device)"
+              },
+              {
+                "@name": "PORTSC1_PTC_PCKT",
+                "@value": "0b0100",
+                "@description": "Packet"
+              },
+              {
+                "@name": "PORTSC1_PTC_HS",
+                "@value": "0b0101",
+                "@description": "FORCE_ENABLE_HS"
+              },
+              {
+                "@name": "PORTSC1_PTC_FS",
+                "@value": "0b0110",
+                "@description": "FORCE_ENABLE_FS"
+              },
+              {
+                "@name": "PORTSC1_PTC_LS",
+                "@value": "0b0111",
+                "@description": "FORCE_ENABLE_LS"
+              },
+              {
+                "@name": "PORTSC1_PTC_RSVD",
+                "@value": "0b1000-0b1111",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "WKCN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake on Connect Enable (WKCNNT_E)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_WKCN(x)"
+            }
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "WKDC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake on Disconnect Enable (WKDSCNNT_E)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_WKDC(x)"
+            }
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "WKOC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake on Over-current Enable (WKOC_E)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_WKOC(x)"
+            }
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "PHCD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "PHY Low Power Suspend - Clock Disable (PLPSCD)",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PHCD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PHCD_PHY_CLK_EN",
+                "@value": "0b0",
+                "@description": "Enable PHY clock"
+              },
+              {
+                "@name": "PORTSC1_PHCD_PHY_CLK_DIS",
+                "@value": "0b1",
+                "@description": "Disable PHY clock"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "PFSC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Port Force Full Speed Connect",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PFSC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PFSC_NORMAL",
+                "@value": "0b0",
+                "@description": "Normal operation"
+              },
+              {
+                "@name": "PORTSC1_PFSC_FULL_SPEED",
+                "@value": "0b1",
+                "@description": "Forced to full speed"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "PTS_2",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Parallel Transceiver Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PTS_2(x)"
+            }
+          },
+          {
+            "@offset": "26",
+            "@width": "2",
+            "@name": "PSPD",
+            "@access": "RW",
+            "@reset_value": "0x3",
+            "@description": "Port Speed",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PSPD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PSPD_FS",
+                "@value": "0b00",
+                "@description": "Full Speed"
+              },
+              {
+                "@name": "PORTSC1_PSPD_LS",
+                "@value": "0b01",
+                "@description": "Low Speed"
+              },
+              {
+                "@name": "PORTSC1_PSPD_HS",
+                "@value": "0b10",
+                "@description": "High Speed"
+              },
+              {
+                "@name": "PORTSC1_PSPD_UNDEFINED",
+                "@value": "0b11",
+                "@description": "Undefined"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "PTW",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Parallel Transceiver Width - Read/Write",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PTW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_PTW_UTMI_8",
+                "@value": "0b0",
+                "@description": "Select the 8-bit UTMI interface [60 MHz]"
+              },
+              {
+                "@name": "PORTSC1_PTW_UTMI_16",
+                "@value": "0b1",
+                "@description": "Select the 16-bit UTMI interface [30 MHz]"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "STS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Serial Transceiver Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_STS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PORTSC1_STS_DISABLE",
+                "@value": "0b0",
+                "@description": "Parallel Interface signals is selected"
+              },
+              {
+                "@name": "PORTSC1_STS_ENABLE",
+                "@value": "0b1",
+                "@description": "Serial Interface Engine is selected"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "PTS_1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Parallel Transceiver Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_PORTSC1_PTS_1(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x1A4",
+        "@width": "32",
+        "@name": "OTGSC",
+        "@description": "On-The-Go Status & Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OTGSC"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "VD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "VBUS Discharge",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_VD(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "VC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "VBUS Charge",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_VC(x)"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "OT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "OTG Termination",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_OT(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "DP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Data Pulsing",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_DP(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "IDPU",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "ID Pullup",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_IDPU(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OTGSC_IDPU_DISABLE",
+                "@value": "0b0",
+                "@description": "Off"
+              },
+              {
+                "@name": "OTGSC_IDPU_ENABLE",
+                "@value": "0b1",
+                "@description": "On"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "ID",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "USB ID",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_ID(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "OTGSC_ID_DISABLE",
+                "@value": "0b0",
+                "@description": "A device"
+              },
+              {
+                "@name": "OTGSC_ID_ENABLE",
+                "@value": "0b1",
+                "@description": "B device"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "AVV",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "A VBus Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_AVV(x)"
+            }
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "ASV",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "A Session Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_ASV(x)"
+            }
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "BSV",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "B Session Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_BSV(x)"
+            }
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "BSE",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "B Session End",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_BSE(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "TOG_1MS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "1 Millisecond Timer Toggle",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_TOG_1MS(x)"
+            }
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "DPS",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Data Bus Pulsing Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_DPS(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "IDIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "USB ID Interrupt Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_IDIS(x)"
+            }
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "AVVIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "A VBus Valid Interrupt Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_AVVIS(x)"
+            }
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "ASVIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "A Session Valid Interrupt Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_ASVIS(x)"
+            }
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "BSVIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "B Session Valid Interrupt Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_BSVIS(x)"
+            }
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "BSEIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "B Session End Interrupt Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_BSEIS(x)"
+            }
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "STATUS_1MS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "1 Millisecond Timer Interrupt Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_STATUS_1MS(x)"
+            }
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "DPIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Data Pulse Interrupt Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_DPIS(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "IDIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "USB ID Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_IDIE(x)"
+            }
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "AVVIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "A VBus Valid Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_AVVIE(x)"
+            }
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "ASVIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "A Session Valid Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_ASVIE(x)"
+            }
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "BSVIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "B Session Valid Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_BSVIE(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "BSEIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "B Session End Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_BSEIE(x)"
+            }
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "EN_1MS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "1 Millisecond Timer Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_EN_1MS(x)"
+            }
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DPIE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Data Pulse Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_OTGSC_DPIE(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1A8",
+        "@width": "32",
+        "@name": "USBMODE",
+        "@description": "USB Device Mode",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "USBMODE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "CM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Controller Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBMODE_CM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBMODE_CM_IDL",
+                "@value": "0b00",
+                "@description": "Idle [Default for combination host/device]"
+              },
+              {
+                "@name": "USBMODE_CM_RSVD",
+                "@value": "0b01",
+                "@description": "Reserved"
+              },
+              {
+                "@name": "USBMODE_CM_DEVICE_CONTR",
+                "@value": "0b10",
+                "@description": "Device Controller [Default for device only controller]"
+              },
+              {
+                "@name": "USBMODE_CM_HOST_CONTR",
+                "@value": "0b11",
+                "@description": "Host Controller [Default for host only controller]"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Endian Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBMODE_ES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBMODE_ES_LITTLE_ENDIAN",
+                "@value": "0b0",
+                "@description": "Little Endian"
+              },
+              {
+                "@name": "USBMODE_ES_BIG_ENDIAN",
+                "@value": "0b1",
+                "@description": "Big Endian"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "SLOM",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Setup Lockout Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBMODE_SLOM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBMODE_SLOM_LOCKOUT_ON",
+                "@value": "0b0",
+                "@description": "Setup Lockouts On (default);"
+              },
+              {
+                "@name": "USBMODE_SLOM_LOCKOUT_OFF",
+                "@value": "0b1",
+                "@description": "Setup Lockouts Off"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "SDIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Stream Disable Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_USBMODE_SDIS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "USBMODE_SDIS_DISABLE",
+                "@value": "0b0",
+                "@description": "Inactive"
+              },
+              {
+                "@name": "USBMODE_SDIS_ENABLE",
+                "@value": "0b1",
+                "@description": "Active"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "10",
+            "@reset_value": "0x280"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1AC",
+        "@width": "32",
+        "@name": "ENDPTSETUPSTAT",
+        "@description": "Endpoint Setup Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTSETUPSTAT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "ENDPTSETUPSTAT",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "Setup Endpoint Status",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "USBHS_ENDPTSETUPSTAT_ENDPTSETUPSTAT(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x1B0",
+        "@width": "32",
+        "@name": "ENDPTPRIME",
+        "@description": "Endpoint Prime",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTPRIME"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "PERB",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Prime Endpoint Receive Buffer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTPRIME_PERB(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "PETB",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Prime Endpoint Transmit Buffer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTPRIME_PETB(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1B4",
+        "@width": "32",
+        "@name": "ENDPTFLUSH",
+        "@description": "Endpoint Flush",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTFLUSH"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "FERB",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Flush Endpoint Receive Buffer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTFLUSH_FERB(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "FETB",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Flush Endpoint Transmit Buffer",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTFLUSH_FETB(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1B8",
+        "@width": "32",
+        "@name": "ENDPTSTAT",
+        "@description": "Endpoint Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTSTAT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "ERBR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Endpoint Receive Buffer Ready",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTSTAT_ERBR(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "ETBR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Endpoint Transmit Buffer Ready",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTSTAT_ETBR(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1BC",
+        "@width": "32",
+        "@name": "ENDPTCOMPLETE",
+        "@description": "Endpoint Complete",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTCOMPLETE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "ERCE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Endpoint Receive Complete Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCOMPLETE_ERCE(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "ETCE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Endpoint Transmit Complete Event",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCOMPLETE_ETCE(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1C0",
+        "@width": "32",
+        "@name": "ENDPTCTRL0",
+        "@description": "Endpoint Control 0",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ENDPTCTRL0"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "RXS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "RX Endpoint Stall",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL0_RXS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL0_RXS_DISABLE",
+                "@value": "0b0",
+                "@description": "Endpoint OK"
+              },
+              {
+                "@name": "ENDPTCTRL0_RXS_ENABLE",
+                "@value": "0b1",
+                "@description": "Endpoint stalled"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "RXT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "RX Endpoint Type",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL0_RXT(x)"
+            },
+            "bit_field_value": {
+              "@name": "ENDPTCTRL0_RXT_CTRL",
+              "@value": "0b00",
+              "@description": "Control"
+            }
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "RXE",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "RX Endpoint Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL0_RXE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL0_RXE_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "ENDPTCTRL0_RXE_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "TXS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "TX Endpoint Stall",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL0_TXS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL0_TXS_DISABLE",
+                "@value": "0b0",
+                "@description": "Endpoint OK"
+              },
+              {
+                "@name": "ENDPTCTRL0_TXS_ENABLE",
+                "@value": "0b1",
+                "@description": "Endpoint stalled"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "TXT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "TX Endpoint Type",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL0_TXT(x)"
+            },
+            "bit_field_value": {
+              "@name": "ENDPTCTRL0_TXT_CTRL",
+              "@value": "0b00",
+              "@description": "Control"
+            }
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "TXE",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "TX Endpoint Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "USBHS_ENDPTCTRL0_TXE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ENDPTCTRL0_TXE_DISABLE",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "ENDPTCTRL0_TXE_ENABLE",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "4",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@reset_value": "0"
+          }
+        ]
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "128",
+        "@vals": "0x80 0"
+      },
+      {
+        "@rid": "128",
+        "@vals": "0x88 1"
+      },
+      {
+        "@rid": "452",
+        "@vals": "0x1C4 1 0"
+      },
+      {
+        "@rid": "452",
+        "@vals": "0x1C8 2 1"
+      },
+      {
+        "@rid": "452",
+        "@vals": "0x1CC 3 2"
+      },
+      {
+        "@rid": "452",
+        "@vals": "0x1D0 4 3"
+      },
+      {
+        "@rid": "452",
+        "@vals": "0x1D4 5 4"
+      },
+      {
+        "@rid": "452",
+        "@vals": "0x1D8 6 5"
+      },
+      {
+        "@rid": "452",
+        "@vals": "0x1DC 7 6"
+      }
+    ]
+  }
+}

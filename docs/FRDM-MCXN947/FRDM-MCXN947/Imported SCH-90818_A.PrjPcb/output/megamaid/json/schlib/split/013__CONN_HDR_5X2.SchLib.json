@@ -1,0 +1,475 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "CONN_HDR_5X2.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "CONN_HDR_5X2",
+        "Description": "HDR 2X5 TH 50MIL CTR 167H AU 91L",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "CONN_HDR_5X2",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "4UYN5LIP",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "CONN_HDR_5X2",
+            "Color": 128,
+            "AllPinCount": 10,
+            "ComponentDescription": "HDR 2X5 TH 50MIL CTR 167H AU 91L",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGQxkgNS3/6DOEyOhoyGDMw1ajUMADEsBBU=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGQxkGOQY/j2H8RhcjJkNGJgrlGrYQAAM0sEMw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGQxkgNSb/6DOEyORozGDMw1ajUMADCZBA4=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 4,
+            "BinaryData": "eJxjYgACRgYIYGQxkGOQY3jzH8RhcjJiNGFgrlGrYQAAMrgELA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 5,
+            "BinaryData": "eJxjYgACRgYIYGQxkGOQY3j0H8RhcjJmNGNgrlGrYQAAMiUEJQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 6,
+            "BinaryData": "eJxjYgACRgYIYGQxkgNSj/6DOEyOxoymDMw1ajUMADAGBAc=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 7,
+            "BinaryData": "eJxjYgACRgYIYGQxkgNSN/6DOEyOJozmDMw1ajUMAC9zBAA=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 8,
+            "BinaryData": "eJxjYgACRgYIYGQxkGOQY7jxH8RhcjJhtGBgrlGrYQAAMZIEHg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 9,
+            "BinaryData": "eJxjYgACRgYIYGQxkgNS5/6DOEyOpoyWDMw1ajUMAC7gA/k=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 10,
+            "BinaryData": "eJxjYgACRgYIYGQxkGOQYzj3H8RhcjJlMjRgYK5Rq2EAADUGBD8=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "GMXIHTYJ",
+            "IndexInSheet": 10,
+            "Location.Y": -60,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 30,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 12,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "ZYQAGZNT",
+            "IndexInSheet": 11,
+            "Location.X": 10,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 13,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "DYKXEVSJ",
+            "IndexInSheet": 12,
+            "Location.X": 10,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 14,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "PXZATGIG",
+            "IndexInSheet": 13,
+            "Location.X": 20,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 15,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "CXNRJMUR",
+            "IndexInSheet": 14,
+            "Location.X": 20,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 16,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OYLUWRFZ",
+            "IndexInSheet": 15,
+            "Location.X": 7,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 17,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "NVEAFVOK",
+            "IndexInSheet": 16,
+            "Location.X": 7,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 18,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "UNSJTXPS",
+            "IndexInSheet": 17,
+            "Location.X": 23,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 19,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "PJYJLWKR",
+            "IndexInSheet": 18,
+            "Location.X": 23,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 20,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "DTIFKXNY",
+            "IndexInSheet": 19,
+            "Location.X": 10,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 21,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "SZNXBHBG",
+            "IndexInSheet": 20,
+            "Location.X": 20,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 22,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "ICWWTLXR",
+            "IndexInSheet": 21,
+            "Location.X": 23,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "Corner.Y": -30,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 23,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "JSEMTVOR",
+            "IndexInSheet": 22,
+            "Location.X": 7,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "Corner.Y": -30,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 24,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LMWMMIAW",
+            "IndexInSheet": 23,
+            "Location.X": 10,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 25,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "AUQUJRRH",
+            "IndexInSheet": 24,
+            "Location.X": 20,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 26,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "ISAJAOYS",
+            "IndexInSheet": 25,
+            "Location.X": 23,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "Corner.Y": -40,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 27,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "VRWRSAFW",
+            "IndexInSheet": 26,
+            "Location.X": 7,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "Corner.Y": -40,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 28,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LWMPLPTA",
+            "IndexInSheet": 27,
+            "Location.X": 10,
+            "Location.Y": -50,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 29,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "BZVYUCHR",
+            "IndexInSheet": 28,
+            "Location.X": 20,
+            "Location.Y": -50,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 30,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "BWEAVEQX",
+            "IndexInSheet": 29,
+            "Location.X": 23,
+            "Location.Y": -50,
+            "Color": 16714496,
+            "Corner.X": 30,
+            "Corner.Y": -50,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 31,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OEQVLJEZ",
+            "IndexInSheet": 30,
+            "Location.X": 7,
+            "Location.Y": -50,
+            "Color": 16714496,
+            "Corner.Y": -50,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 32,
+            "OwnerPartId": 1,
+            "UniqueID": "ZIIWOKDG",
+            "Location.X": 0,
+            "Location.Y": 4,
+            "Name": "Designator",
+            "Text": "J?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 33
+          }
+        ]
+      }
+    ]
+  }
+}

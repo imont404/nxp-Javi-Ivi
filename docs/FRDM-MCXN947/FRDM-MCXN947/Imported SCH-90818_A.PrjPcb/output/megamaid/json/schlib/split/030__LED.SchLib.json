@@ -1,0 +1,255 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "LED.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "LED",
+        "Description": "LED YEL-GRN SGL 25mA SMT 0402",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "LED",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "7TGIV05F",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "LED",
+            "Color": 128,
+            "AllPinCount": 2,
+            "ComponentDescription": "LED YEL-GRN SGL 25mA SMT 0402",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJS3/6DOKyOfv4uroyODMw1ajUMAEICBQk=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGQx4GLQYPj2H8Rhd3YM8fB3cWV0ZmCuUathAABSYgXE",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 3,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "CFQZGDEX",
+            "IndexInSheet": 2,
+            "Color": 8716164,
+            "AreaColor": 16711680,
+            "LocationCount": 4,
+            "IsSolid": true,
+            "X1": 10,
+            "X2": 10,
+            "Y2": -20,
+            "X3": 20,
+            "Y3": -10,
+            "X4": 10
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 4,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "RPDWVVOI",
+            "IndexInSheet": 3,
+            "Color": 8716164,
+            "AreaColor": 16711680,
+            "LocationCount": 4,
+            "IsSolid": true,
+            "X1": 26,
+            "X2": 30,
+            "X3": 30,
+            "Y3": -4,
+            "X4": 26
+          },
+          {
+            "ObjectType": "Polygon",
+            "ObjectIndex": 5,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "EFLUYZII",
+            "IndexInSheet": 4,
+            "Color": 8716164,
+            "AreaColor": 16711680,
+            "LocationCount": 4,
+            "IsSolid": true,
+            "X1": 38,
+            "X2": 34,
+            "X3": 38,
+            "Y3": -4,
+            "X4": 38
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 6,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WFJZQOXL",
+            "IndexInSheet": 5,
+            "Location.X": 20,
+            "Color": 8716164,
+            "Corner.X": 20,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 7,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "XCOUBAGD",
+            "IndexInSheet": 6,
+            "Location.Y": -10,
+            "Color": 8716164,
+            "Corner.X": 10,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 8,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WESUWMGP",
+            "IndexInSheet": 7,
+            "Location.X": 20,
+            "Location.Y": -10,
+            "Color": 8716164,
+            "Corner.X": 40,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "QTXMGGVD",
+            "IndexInSheet": 8,
+            "Location.X": 28,
+            "Location.Y": -2,
+            "Color": 8716164,
+            "Corner.X": 23,
+            "Corner.Y": -7,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "WHCAUFGD",
+            "IndexInSheet": 9,
+            "Location.X": 36,
+            "Location.Y": -2,
+            "Color": 8716164,
+            "Corner.X": 31,
+            "Corner.Y": -7,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "UniqueID": "QIFGVRMP",
+            "Location.X": 10,
+            "Location.Y": 6,
+            "Name": "Designator",
+            "Text": "D?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 12
+          }
+        ]
+      }
+    ]
+  }
+}

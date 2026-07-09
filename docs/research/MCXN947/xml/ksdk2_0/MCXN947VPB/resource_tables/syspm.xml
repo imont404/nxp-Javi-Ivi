@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource:resource_table xmlns:resource="http://swtools.freescale.net/XSD/resource/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd" id="syspm">
+  <user_types>
+    <struct id="event" label="Event selection">
+      <string id="sdk_id" label="Event ID in the SDK component enumeration"/>
+      <string id="label" label="Event label"/>
+      <string id="description" label="Event description"/>
+      <string id="value" label="Event code"/>
+    </struct>
+  </user_types>
+  <definition>
+    <struct id="CMX_PERFMON0" label="CMX_PERFMON0 event selection">
+      <array id="Event4" label="Event selection for LPCAC" type="event"/>
+    </struct>
+    <struct id="CMX_PERFMON1" label="CMX_PERFMON1 event selection">
+      <array id="Event3" label="Event selection for FLEXSPI" type="event"/>
+    </struct>
+  </definition>
+  <data>
+    <struct name="CMX_PERFMON1">
+      <array name="Event3">
+        <struct name="0">
+          <setting name="sdk_id" value="cac_if"/>
+          <setting name="label" value="Cached instruction fetches"/>
+          <setting name="description" value="Cached instruction fetches. Event encoding = 0x40."/>
+          <setting name="value" value="0b1000000"/>
+        </struct>
+        <struct name="1">
+          <setting name="sdk_id" value="cac_if_stalls"/>
+          <setting name="label" value="Stalled cached instruction fetches"/>
+          <setting name="description" value="Stalled cached instruction fetches. Event encoding = 0x44."/>
+          <setting name="value" value="0b1000100"/>
+        </struct>
+        <struct name="2">
+          <setting name="sdk_id" value="cac_opr"/>
+          <setting name="label" value="Cached operand reads"/>
+          <setting name="description" value="Cached operand reads.  Event encoding = 0x41."/>
+          <setting name="value" value="0b1000001"/>
+        </struct>
+        <struct name="3">
+          <setting name="sdk_id" value="cac_opr_stalls"/>
+          <setting name="label" value="Stalled cached operand reads"/>
+          <setting name="description" value="Stalled cached operand reads. Event encoding = 0x45."/>
+          <setting name="value" value="0b1000101"/>
+        </struct>
+        <struct name="4">
+          <setting name="sdk_id" value="cac_opw"/>
+          <setting name="label" value="Cached operand writes"/>
+          <setting name="description" value="Cached operand writes. Event encoding = 0x42."/>
+          <setting name="value" value="0b1000010"/>
+        </struct>
+        <struct name="5">
+          <setting name="sdk_id" value="cac_opw_stalls"/>
+          <setting name="label" value="Stalled cached operand writes"/>
+          <setting name="description" value="Stalled cached operand writes. Event encoding = 0x46."/>
+          <setting name="value" value="0b1000110"/>
+        </struct>
+        <struct name="6">
+          <setting name="sdk_id" value="cac_opx"/>
+          <setting name="label" value="Cached operand reads + writes"/>
+          <setting name="description" value="Cached operand reads + writes. Event encoding = 0x43."/>
+          <setting name="value" value="0b1000011"/>
+        </struct>
+        <struct name="7">
+          <setting name="sdk_id" value="cac_opx_stalls"/>
+          <setting name="label" value="Stalled cached operand reads + writes"/>
+          <setting name="description" value="Stalled cached operand reads + writes. Event encoding = 0x47."/>
+          <setting name="value" value="0b1000111"/>
+        </struct>
+        <struct name="8">
+          <setting name="sdk_id" value="cac_wt_opw"/>
+          <setting name="label" value="Cache writethrough operand writes"/>
+          <setting name="description" value="Cache writethrough operand writes. Event encoding = 0x48."/>
+          <setting name="value" value="0b1001000"/>
+        </struct>
+        <struct name="9">
+          <setting name="sdk_id" value="cac_wt_opw_stalls"/>
+          <setting name="label" value="Stalled writethrough operand writes"/>
+          <setting name="description" value="Stalled writethrough operand writes. Event encoding = 0x4C."/>
+          <setting name="value" value="0b1001100"/>
+        </struct>
+        <struct name="10">
+          <setting name="sdk_id" value="cac_if_miss"/>
+          <setting name="label" value="Number of times FlexSPI signalled miss"/>
+          <setting name="description" value="Number of times FlexSPI signalled miss. Event encoding = 0x50."/>
+          <setting name="value" value="0b1010000"/>
+        </struct>
+        <struct name="11">
+          <setting name="sdk_id" value="cac_opr_miss"/>
+          <setting name="label" value="Operand read miss"/>
+          <setting name="description" value="Operand read miss. Event encoding = 0x51."/>
+          <setting name="value" value="0b1010001"/>
+        </struct>
+        <struct name="12">
+          <setting name="sdk_id" value="cac_opw_miss"/>
+          <setting name="label" value="Operand write miss"/>
+          <setting name="description" value="Operand write miss. Event encoding = 0x52."/>
+          <setting name="value" value="0b1010010"/>
+        </struct>
+        <struct name="13">
+          <setting name="sdk_id" value="cac_opx_miss"/>
+          <setting name="label" value="Operand read + write miss"/>
+          <setting name="description" value="Operand read + write miss. Event encoding = 0x53."/>
+          <setting name="value" value="0b1010011"/>
+        </struct>
+        <struct name="14">
+          <setting name="sdk_id" value="cac_wb_push"/>
+          <setting name="label" value="Cache writeback line pushes"/>
+          <setting name="description" value="Cache writeback line pushes. Event encoding = 0x58."/>
+          <setting name="value" value="0b1011000"/>
+        </struct>
+      </array>
+    </struct>
+    <struct name="CMX_PERFMON0">
+      <array name="Event4">
+        <struct name="0">
+          <setting name="sdk_id" value="cac_if"/>
+          <setting name="label" value="Cached instruction fetches"/>
+          <setting name="description" value="Cached instruction fetches. Event encoding = 0x40."/>
+          <setting name="value" value="0b1000000"/>
+        </struct>
+        <struct name="1">
+          <setting name="sdk_id" value="cac_if_stalls"/>
+          <setting name="label" value="Stalled cached instruction fetches"/>
+          <setting name="description" value="Stalled cached instruction fetches. Event encoding = 0x44."/>
+          <setting name="value" value="0b1000100"/>
+        </struct>
+        <struct name="2">
+          <setting name="sdk_id" value="cac_opr"/>
+          <setting name="label" value="Cached operand reads"/>
+          <setting name="description" value="Cached operand reads. Event encoding = 0x41."/>
+          <setting name="value" value="0b1000001"/>
+        </struct>
+        <struct name="3">
+          <setting name="sdk_id" value="cac_opr_stalls"/>
+          <setting name="label" value="Stalled cached operand reads"/>
+          <setting name="description" value="Stalled cached operand reads. Event encoding = 0x45."/>
+          <setting name="value" value="0b1000101"/>
+        </struct>
+        <struct name="4">
+          <setting name="sdk_id" value="cac_opw"/>
+          <setting name="label" value="Cached operand writes"/>
+          <setting name="description" value="Cached operand writes. Event encoding = 0x42."/>
+          <setting name="value" value="0b1000010"/>
+        </struct>
+        <struct name="5">
+          <setting name="sdk_id" value="cac_opw_stalls"/>
+          <setting name="label" value="Stalled cached operand writes"/>
+          <setting name="description" value="Stalled cached operand writes. Event encoding = 0x46."/>
+          <setting name="value" value="0b1000110"/>
+        </struct>
+        <struct name="6">
+          <setting name="sdk_id" value="cac_opx"/>
+          <setting name="label" value="Cached operand reads + writes"/>
+          <setting name="description" value="Cached operand reads + writes. Event encoding = 0x43."/>
+          <setting name="value" value="0b1000011"/>
+        </struct>
+        <struct name="7">
+          <setting name="sdk_id" value="cac_opx_stalls"/>
+          <setting name="label" value="Stalled cached operand reads + writes"/>
+          <setting name="description" value="Stalled cached operand reads + writes. Event encoding = 0x47."/>
+          <setting name="value" value="0b1000111"/>
+        </struct>
+        <struct name="8">
+          <setting name="sdk_id" value="cac_wt_opw"/>
+          <setting name="label" value="Cache writethrough operand writes"/>
+          <setting name="description" value="Cache writethrough operand writes. Event encoding = 0x48."/>
+          <setting name="value" value="0b1001000"/>
+        </struct>
+        <struct name="9">
+          <setting name="sdk_id" value="cac_wt_opw_stalls"/>
+          <setting name="label" value="Stalled writethrough operand writes"/>
+          <setting name="description" value="Stalled writethrough operand writes. Event encoding = 0x4C."/>
+          <setting name="value" value="0b1001100"/>
+        </struct>
+        <struct name="10">
+          <setting name="sdk_id" value="cac_if_miss"/>
+          <setting name="label" value="Instruction fetch miss"/>
+          <setting name="description" value="Instruction fetch miss. Event encoding = 0x50."/>
+          <setting name="value" value="0b1010000"/>
+        </struct>
+        <struct name="11">
+          <setting name="sdk_id" value="cac_opr_miss"/>
+          <setting name="label" value="Operand read miss"/>
+          <setting name="description" value="Operand read miss. Event encoding = 0x51."/>
+          <setting name="value" value="0b1010001"/>
+        </struct>
+        <struct name="12">
+          <setting name="sdk_id" value="cac_opw_miss"/>
+          <setting name="label" value="Operand write miss"/>
+          <setting name="description" value="Operand write miss. Event encoding = 0x52."/>
+          <setting name="value" value="0b1010010"/>
+        </struct>
+        <struct name="13">
+          <setting name="sdk_id" value="cac_opx_miss"/>
+          <setting name="label" value="Operand read + write miss"/>
+          <setting name="description" value="Operand read + write miss. Event encoding = 0x53."/>
+          <setting name="value" value="0b1010011"/>
+        </struct>
+      </array>
+    </struct>
+  </data>
+</resource:resource_table>

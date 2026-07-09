@@ -1,0 +1,533 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": {
+      "@rid": "16",
+      "@offset": "{0}",
+      "@width": "32",
+      "@name": "CAP{1}",
+      "@description": "Capture",
+      "alias": {
+        "@type": "CMSIS",
+        "@value": "CAP[{1}]"
+      },
+      "bit_field": [
+        {
+          "@offset": "0",
+          "@width": "31",
+          "@name": "CAP_VALUE",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Captured Value for the Related Capture Event",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "UTICK_CAP_CAP_VALUE(x)"
+          }
+        },
+        {
+          "@offset": "31",
+          "@width": "1",
+          "@name": "VALID",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Captured Value Valid Flag",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "UTICK_CAP_VALID(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "CAP{1}_VALID_NOTVALID",
+              "@value": "0b0",
+              "@description": "Valid value not captured"
+            },
+            {
+              "@name": "CAP{1}_VALID_VALID",
+              "@value": "0b1",
+              "@description": "Valid value captured"
+            }
+          ]
+        }
+      ]
+    },
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "CTRL",
+        "@description": "Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "31",
+            "@name": "DELAYVAL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Tick Interval",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CTRL_DELAYVAL(x)"
+            },
+            "bit_field_value": {
+              "@name": "CTRL_DELAYVAL_0b0000000000000000000000000000000",
+              "@value": "0b0000000000000000000000000000000",
+              "@description": "Reserved value."
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "REPEAT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Repeat Delay",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CTRL_REPEAT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_REPEAT_DELAYONCE",
+                "@value": "0b0",
+                "@description": "One-time delay"
+              },
+              {
+                "@name": "CTRL_REPEAT_DELAYREPEATS",
+                "@value": "0b1",
+                "@description": "Delay repeats continuously"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "STAT",
+        "@description": "Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STAT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "INTR",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Interrupt Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_STAT_INTR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_INTR_NOPENDINGINTERRUPT",
+                "@value": "0b0",
+                "@description": "Not pending"
+              },
+              {
+                "@name": "STAT_INTR_PENDINGINTERRUPT",
+                "@value": "0b1",
+                "@description": "Pending"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "ACTIVE",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Timer Active Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_STAT_ACTIVE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_ACTIVE_TIMERISNOTACTIVE",
+                "@value": "0b0",
+                "@description": "Inactive (stopped)"
+              },
+              {
+                "@name": "STAT_ACTIVE_TIMERISACTIVE",
+                "@value": "0b1",
+                "@description": "Active"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      },
+      {
+        "@offset": "0x8",
+        "@width": "32",
+        "@name": "CFG",
+        "@description": "Capture Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CFG"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "CAPEN0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Capture 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPEN0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPEN0_CAPEN0ISDISABLED",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "CFG_CAPEN0_CAPEN0ISENABLED",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "CAPEN1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Capture 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPEN1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPEN1_CAPEN1ISDISABLED",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "CFG_CAPEN1_CAPEN1ISENABLED",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "CAPEN2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Capture 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPEN2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPEN2_CAPEN2ISDISABLED",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "CFG_CAPEN2_CAPEN2ISENABLED",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "CAPEN3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Capture 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPEN3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPEN3_CAPEN3ISDISABLED",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "CFG_CAPEN3_CAPEN3ISENABLED",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "CAPPOL0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture Polarity 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPPOL0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPPOL0_CAPPOL0POSEDGECAPTURE",
+                "@value": "0b0",
+                "@description": "Positive"
+              },
+              {
+                "@name": "CFG_CAPPOL0_CAPPOL0NEGEDGECAPTURE",
+                "@value": "0b1",
+                "@description": "Negative"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "CAPPOL1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture-Polarity 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPPOL1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPPOL1_CAPPOL1POSEDGECAPTURE",
+                "@value": "0b0",
+                "@description": "Positive"
+              },
+              {
+                "@name": "CFG_CAPPOL1_CAPPOL1NEGEDGECAPTURE",
+                "@value": "0b1",
+                "@description": "Negative"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "CAPPOL2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture Polarity 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPPOL2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPPOL2_CAPPOL2POSEDGECAPTURE",
+                "@value": "0b0",
+                "@description": "Positive"
+              },
+              {
+                "@name": "CFG_CAPPOL2_CAPPOL2NEGEDGECAPTURE",
+                "@value": "0b1",
+                "@description": "Negative"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "CAPPOL3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Capture Polarity 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CFG_CAPPOL3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_CAPPOL3_CAPPOL3POSEDGECAPTURE",
+                "@value": "0b0",
+                "@description": "Positive"
+              },
+              {
+                "@name": "CFG_CAPPOL3_CAPPOL3NEGEDGECAPTURE",
+                "@value": "0b1",
+                "@description": "Negative"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "20",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0xC",
+        "@width": "32",
+        "@name": "CAPCLR",
+        "@description": "Capture Clear",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAPCLR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "CAPCLR0",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Clear Capture 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CAPCLR_CAPCLR0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CAPCLR_CAPCLR0_CAPCLR0NOTHING",
+                "@value": "0b0",
+                "@description": "Does nothing"
+              },
+              {
+                "@name": "CAPCLR_CAPCLR0_CAPCLR0CLEARED",
+                "@value": "0b1",
+                "@description": "Clears the CAP0 register value"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "CAPCLR1",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Clear Capture 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CAPCLR_CAPCLR1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CAPCLR_CAPCLR1_CAPCLR1NOTHING",
+                "@value": "0b0",
+                "@description": "Does nothing"
+              },
+              {
+                "@name": "CAPCLR_CAPCLR1_CAPCLR1CLEARED",
+                "@value": "0b1",
+                "@description": "Clears the CAP1 register value"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "CAPCLR2",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Clear Capture 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CAPCLR_CAPCLR2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CAPCLR_CAPCLR2_CAPCLR2NOTHING",
+                "@value": "0b0",
+                "@description": "Does nothing"
+              },
+              {
+                "@name": "CAPCLR_CAPCLR2_CAPCLR2CLEARED",
+                "@value": "0b1",
+                "@description": "Clears the CAP2 register value"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "CAPCLR3",
+            "@access": "WO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Clear Capture 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "UTICK_CAPCLR_CAPCLR3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CAPCLR_CAPCLR3_CAPCLR3NOTHING",
+                "@value": "0b0",
+                "@description": "Does nothing"
+              },
+              {
+                "@name": "CAPCLR_CAPCLR3_CAPCLR3CLEARED",
+                "@value": "0b1",
+                "@description": "Clears the CAP3 register value"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "28",
+          "@reset_value": "0",
+          "@reset_mask": "0"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "16",
+        "@vals": "0x10 0"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x14 1"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x18 2"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x1C 3"
+      }
+    ]
+  }
+}

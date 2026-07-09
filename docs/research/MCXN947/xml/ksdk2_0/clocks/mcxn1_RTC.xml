@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<clocks:component xmlns:clocks="http://apif.freescale.net/schemas/clocks/1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://apif.freescale.net/schemas/clocks/1.2 http://apif.nxp.com/schemas/clocks/1.2/clocks.xsd" id="RTC">
+  <instance_header>
+    <instance_description>Clock model for the RTC module oscillator (parameterized, shared accross all LPC556x parts)</instance_description>
+  </instance_header>
+  <interface>
+    <input_clock_signal id="CLK16K0_toVBAT" name="CLK16K0_toVBAT"/>
+    <input_clock_signal id="XTAL32K0_toVBAT" name="XTAL32K0_toVBAT"/>
+    <output_clock_signal id="LP_OSC" name="LP_OSC clock"/>
+  </interface>
+  <implementation>
+    <clock_select id="RTCCLKSEL" name="RTC clock select" description="RTC clock source select ">
+      <value_map expr="RTC0::CTRL[CLK_SEL]">
+        <input ctrl_value="0" signal="CLK16K0_toVBAT"/>
+        <input ctrl_value="1" signal="XTAL32K0_toVBAT"/>
+      </value_map>
+      <enable power_modes="ACTIVE SLEEP DEEP_SLEEP"/>
+    </clock_select>
+    <map_output id="LP_OSC">
+      <input signal="RTCCLKSEL.clk"/>
+    </map_output>
+  </implementation>
+</clocks:component>

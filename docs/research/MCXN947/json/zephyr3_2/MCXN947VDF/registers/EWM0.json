@@ -1,0 +1,239 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "8",
+        "@name": "CTRL",
+        "@description": "Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "EWMEN",
+            "@access": "WONCE",
+            "@reset_value": "0",
+            "@description": "EWM Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EWM_CTRL_EWMEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_EWMEN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "CTRL_EWMEN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "ASSIN",
+            "@access": "WONCE",
+            "@reset_value": "0",
+            "@description": "Assertion State Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EWM_CTRL_ASSIN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_ASSIN_DISABLE",
+                "@value": "0b0",
+                "@description": "Logic 0"
+              },
+              {
+                "@name": "CTRL_ASSIN_ENABLE",
+                "@value": "0b1",
+                "@description": "Logic 1"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "INEN",
+            "@access": "WONCE",
+            "@reset_value": "0",
+            "@description": "Input Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EWM_CTRL_INEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_INEN_DISABLE",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "CTRL_INEN_ENABLE",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "INTEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "EWM_CTRL_INTEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_INTEN_ZERO",
+                "@value": "0b0",
+                "@description": "Deasserts interrupt requests"
+              },
+              {
+                "@name": "CTRL_INTEN_INT_REQ",
+                "@value": "0b1",
+                "@description": "Generates interrupt requests"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "4",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x1",
+        "@width": "8",
+        "@name": "SERV",
+        "@description": "Service",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SERV"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "SERVICE",
+          "@access": "WORZ",
+          "@reset_value": "0",
+          "@description": "Service",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EWM_SERV_SERVICE(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x2",
+        "@width": "8",
+        "@name": "CMPL",
+        "@description": "Compare Low",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CMPL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "COMPAREL",
+          "@access": "WONCE",
+          "@reset_value": "0",
+          "@description": "Compare Low",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EWM_CMPL_COMPAREL(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x3",
+        "@width": "8",
+        "@name": "CMPH",
+        "@description": "Compare High",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CMPH"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "COMPAREH",
+          "@access": "WONCE",
+          "@reset_value": "0xFF",
+          "@description": "Compare High",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EWM_CMPH_COMPAREH(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x4",
+        "@width": "8",
+        "@name": "CLKCTRL",
+        "@description": "Clock Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CLKCTRL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "2",
+          "@name": "CLKSEL",
+          "@access": "WONCE",
+          "@reset_value": "0",
+          "@description": "Clock Select",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EWM_CLKCTRL_CLKSEL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "2",
+          "@width": "6",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x5",
+        "@width": "8",
+        "@name": "CLKPRESCALER",
+        "@description": "Clock Prescaler",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CLKPRESCALER"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "CLK_DIV",
+          "@access": "WONCE",
+          "@reset_value": "0",
+          "@description": "Clock Divider",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "EWM_CLKPRESCALER_CLK_DIV(x)"
+          }
+        }
+      }
+    ]
+  }
+}

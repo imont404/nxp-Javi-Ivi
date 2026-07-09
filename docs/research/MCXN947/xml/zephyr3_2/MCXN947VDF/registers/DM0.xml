@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="CSW" description="Command and Status Word">
+    <alias type="CMSIS" value="CSW"/>
+    <bit_field offset="0" width="1" name="RESYNCH_REQ" access="RW" reset_value="0" description="Resynchronization Request">
+      <alias type="CMSIS" value="DM_CSW_RESYNCH_REQ(x)"/>
+      <bit_field_value name="CSW_RESYNCH_REQ_NO_REQUEST" value="0b0" description="No request"/>
+      <bit_field_value name="CSW_RESYNCH_REQ_REQUEST" value="0b1" description="Request for resynchronization"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="REQ_PENDING" access="RW" reset_value="0" description="Request Pending">
+      <alias type="CMSIS" value="DM_CSW_REQ_PENDING(x)"/>
+      <bit_field_value name="CSW_REQ_PENDING_NO_REQUEST_PENDING" value="0b0" description="No request pending"/>
+      <bit_field_value name="CSW_REQ_PENDING_REQUEST_PENDING" value="0b1" description="Request for resynchronization pending"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="DBG_OR_ERR" access="RW" reset_value="0" description="DBGMB Overrun Error">
+      <alias type="CMSIS" value="DM_CSW_DBG_OR_ERR(x)"/>
+      <bit_field_value name="CSW_DBG_OR_ERR_NO_OVERRUN_ERR" value="0b0" description="No DBGMB Overrun error"/>
+      <bit_field_value name="CSW_DBG_OR_ERR_OVERRUN_ERR" value="0b1" description="DBGMB overrun error. A DBGMB overrun occurred."/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="AHB_OR_ERR" access="RW" reset_value="0" description="AHB Overrun Error">
+      <alias type="CMSIS" value="DM_CSW_AHB_OR_ERR(x)"/>
+      <bit_field_value name="CSW_AHB_OR_ERR_NO_AHB_OVERRUN_ERR" value="0b0" description="No AHB Overrun Error"/>
+      <bit_field_value name="CSW_AHB_OR_ERR_AHB_OVERRUN_ERR" value="0b1" description="AHB Overrun Error. An AHB overrun occurred."/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="SOFT_RESET" access="RW" reset_value="0" description="Soft Reset">
+      <alias type="CMSIS" value="DM_CSW_SOFT_RESET(x)"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CHIP_RESET_REQ" access="RW" reset_value="0" description="Chip Reset Request">
+      <alias type="CMSIS" value="DM_CSW_CHIP_RESET_REQ(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="26" reset_value="0"/>
+  </register>
+  <register offset="0x4" width="32" name="REQUEST" description="Request Value">
+    <alias type="CMSIS" value="REQUEST"/>
+    <bit_field offset="0" width="32" name="REQUEST" access="RW" reset_value="0" description="Request Value">
+      <alias type="CMSIS" value="DM_REQUEST_REQUEST(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="RETURN" description="Return Value">
+    <alias type="CMSIS" value="RETURN"/>
+    <bit_field offset="0" width="32" name="RET" access="RW" reset_value="0" description="Return Value">
+      <alias type="CMSIS" value="DM_RETURN_RET(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0xFC" width="32" name="ID" description="Identification">
+    <alias type="CMSIS" value="ID"/>
+    <bit_field offset="0" width="32" name="ID" access="RO" reset_value="0x2A0000" description="Identification Value">
+      <alias type="CMSIS" value="DM_ID_ID(x)"/>
+    </bit_field>
+  </register>
+</regs:peripheral>

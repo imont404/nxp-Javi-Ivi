@@ -1,0 +1,1363 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "MCXN947VDFT_BGA_184P.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "MCXN947VDFT_BGA_184P",
+        "Description": "IC MCU LOW POWER 150MHz ARM Nirvana -- VFBGA184",
+        "PartCount": 8,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "MCXN947VDFT_BGA_184P",
+            "PartCount": 9,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "T6GHD1XV",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "MCXN947VDFT_BGA_184P",
+            "Color": 128,
+            "AllPinCount": 184,
+            "ComponentDescription": "IC MCU LOW POWER 150MHz ARM Nirvana -- VFBGA184",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSb/6DOLIBBvEG+iG+wfrB4S6e/vpuzobxAQb6ziHxnn4BBsyOhuYMzDVqNQwAPYwMIQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSj/6DOHIBBvGG+iHOPt76weEg0s3ZMD7AUN85JN7TL8CQ2dHQjIG5Rq2GAQBHqAxS",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSN/6DOAYBBvFG+iEu/vrB4f76bs6G8QFG+s4hBvG+jiEG+qEhns7e8c6OAQb6nsbOBvEBoUHMToZmDMw1ajUMAGO1ETs=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 4,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSKv9BHO8Ag3gjA/2QYE+DeGcPQ1N9Rxdng3hHQyN9NyAdYAKkDOMDDPSdQ+I9/YC0m49rhKe/QbyLib6nMVBFsIujfnhoqAFQ1oTJ2YKBuUathgEAO5UXIg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 5,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSUv9BHKcAg3gjQ/2QYE+DeGcPQzN9Rxdng3hHQ2N9NyAdYAqkDOMDDPWdQ+I9/YC0m49rhKe/QbyLqb6nMVBFsLMPk6MFA3ONWg0DAGjKFJQ=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 6,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSAv9BHM8Ag3gjI31HF2eDeEdDE31n3wDDeE8/I33XcF8DIEPfDSgRYAakDOMDjPSdQ4BiQNrNxzXC098g3sVM39MYpCI0iMnJgoG5Rq2GAQAM3xaz",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 7,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSbP9BHNcAg3gjY31HF2eDeEdDU31n3wCjeE8/I33XcF+DeP/QkPgkfTdnw/gAY33nEKAEkHbzcY3w9DeIdzHXDw8NNQAKmjI5mTMw16jVMAAAwn0WFg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 8,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSf/6BOHIBBvFGJvqOLs4G8U6GZvpuzobxAQb6ziEG8b6OIQZMTmYMzDVqNQwAMkILtw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 9,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSn/6BOHIBBvFGpvqOLs4G8U6G5vpuzobxAYb6ziEG8b6OIYZMjmYMzDVqNQwAMMgLsA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 10,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSL/6BOHIBBvFGZvqOLs4G8U6GFvpuzobxAUb6ziEG8b6OIUbMboYGDMw1ajUMADs+C9s=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 11,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNS9/6BOHIBBvFG5vqOLs4G8U6GlvpuzobxAcb6ziEG8b6OIcbMroYGDMw1ajUMADm9C9Q=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 12,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSV/6BOCoBBvFGFvqOLs4G8U5GBvpuzobxASZAygBEOYfEe/oFGDC5WjAw16jVMAAAfBENPQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 13,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSp/6BOCoBBvFGlvqOLs4G8U5GhvpuzobxAaZAygBEOYfEe/oFGDK5WTAw16jVMAAAeo8NOQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 14,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNS5/6DOOYBBvHG+s6+AYbxnn6G+iEunvpuzobxAUCxEIN4X8cQQ/3QEE9n73hnxwBDfY9goEqDeP/QEGYnQ1MG5hq1GgYA5fkTMQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 15,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSB/6BOCoBBvHGBvqOLs4G8U5GRvpuzobxAWZAygBEOYfEe/oFGDG5mjMw16jVMAAAd4YNKQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 16,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNS2/6BOGIBBvHGhvqOLs4G8U5GxvrOIfGefgHGTC7mDMw1ajUMAMztCXg=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 17,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSk/6DOGoBBvGW+o4uzgbxTpb6bkAqwFTfOSTe0y/AUN/NxzXC098g3sWQ2dHQiIG5Rq2GAQCjew38",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 18,
+            "BinaryData": "eJwli7ENhDAMAMPDHF9+awelQN+BARFBwBKOUnoRxmMvCOKa0xX3MZnCvBTV/5t1Xk8IozqQ3aPS1MCQAqpfYSRUxiyr7IAENbRSQxRPs1LLNUw7Bba6RQHu80TLDCnG58ays86Ux+8wN6z/G0Y=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 19,
+            "BinaryData": "eJwlikEOQEAMAJf1DkfXdoMDt6YIEdFExbGJd3iZz7FiLpNJJnWRxP0kWZtH3c8XvaDVoNuExmMD/bGgrbvaCQOjSYgKJjWwoi2kJew68WxMUoJ0ce5ICT2FyvmruNwLKisXDA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 20,
+            "BinaryData": "eJwliLkNgDAMAMMzByWtHYQo6JADIoKApYTai2QoNgQjrjndlUYpzE9Rj43qfr7YGGWAFD0KrRbBRw6nm+WAhVC4U1nhASiJPzTXSIE7Oa8E7AKKm9JkgfZNT0W2N1Vus3kBs7oYtg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 21,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSy/6DOKoBBvHm+s6+AUbxnn6G+m7OBvEBxvrOIUAekA4PDTUAiTM7GxozMNeo1TAAAJ8oDgQ=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 22,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSc/6DOGoBBvEW+o4uzgbxThb6bkAqwETfOSTe0y/AQN/NxzXC098g3sWA2dnQiIG5Rq2GAQClIg4D",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 23,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSHf9BHM0Ag3hDA31HF2eDeCcgww1IB5jpO4cYxPs6hgD5Pq4Rnv4G8S5GzE6GRgzMNWo1DADD5A5y",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 24,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSdf9BHN0Ag3hDQ31HF2eDeCcgwznEIN7XMcRQ383HNcLT3yDexVjfI9jZN8Ao3j80hBmohIG5Rq2GAQAJTw/V",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 25,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSJf9BHIsAg3hDI31HF2eDeCcgwy/MNz7E10DfzdkwPsAESBnEBxjoO4cYxPs6hhjpu/m4Rnj6G8S7mDC7GBoyMNeo1TAAAM5ZEow=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 26,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSWf9BHIsAg3hDY31HF2eDeCcgwy/MNz7E11DfzdkwPsAUSBnEBxjqO4cYxPs6hhjru/m4Rnj6G8S7mDK7GRoxMNeo1TAAAMyeEow=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 27,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSCf9BHKcAg3hDE31HF2eDeCcgwy/MNz7E10jfzdkwPsAMSBnEBxjpO4fEe/oB6dAQT2fveGfHAAN9Nx/XCE9/g3gXM2ZXQ0MG5hq1GgYApT0Vdg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 28,
+            "BinaryData": "eJxjYgACRgYIYGSxkgNSYf9BHOsAg3hDU31HF2eDeCcgwy/MNz7E11jfDcgPMNZ3Don39APSoSGezt7xzo4BhvpuPq4Rnv4G8S7mzO6GxgzMNWo1DAAPZxOi",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 29,
+            "BinaryData": "eJwli0EKwjAQRVPrOVy6nUkFEXdj0tKhqQ4moe4G79G72ym+zePD+wdnNO5Pc7yfTOm3j6+g+iuUzKhh9B4oBlS6wWAShFBQZyoItXCYNJB0MKT+wy/UiCBxtl+agC/W50hQRMd3nwWWWlH52bUPj65dz6vbANxqHfk=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 30,
+            "BinaryData": "eJwly7EOglAMheGL8ByMrm1lMLrVXgg3QGygJhqHvgjvrjX+y5cznEOKqvSvaq5tcPv8xlvR6Qy2FXQZ6QScBZ0vMARKIIa+sBE8rMjkwtrBMPfPckfPBJqXkI0RShePTWYw9XHtOb9qJkz1ftzTFx4NHBw=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 31,
+            "BinaryData": "eJwlizEOgzAMRUPpORi72k4XxGY5ICKRkgojuvki3L11xVu+nvT+LThNuGjuQ+fTf//yrmjUg24ZTWZ6AidBY0IYj4KWXzC51wiiaIU1wrSMn7yipQjzJsX/665Qk9eJlakVwtCejzP8AACEGUQ=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 32,
+            "BinaryData": "eJwlijEKhDAQRaO757C0dGaIjXZhVAxsNGhC7AY8h3fXyL7m8z6vVJlC/Sm+fZWnuV/ZPAp1EHaLwjO1YAZGMUQwJoeyxiAnTPnyGjigOBM0TL/xsCvKoGHe2Xl6O0gxothFl9ypz1Vf6gEUiRna",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 33,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OKOLOAUB",
+            "IndexInSheet": 32,
+            "Location.Y": -350,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 580,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 34,
+            "BinaryData": "eJwljD0OwjAMhUPhHIysdtQqQmzBpRCR0qhxRDefgq3nZgUH3vK9H+k1RtWYvza7017x/tTwSlYQOAcUuiH4nlC8dUBjQgkPneZw/ZmBWkkVnaQOiLVUZmKUqbCDIV6WMKH0R8g+WOFFzhTv8CylPjmIicdZ3yO3DTmzXQ+r+QLTCyRf",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 35,
+            "BinaryData": "eJwliT0OwjAMRkPgHIystgVVBVvkEIhEm4i4qJs3TtEjcwdwxVve9+Od4d2fze6yN32+a3lXUgJpGZXvBCEyaqAeeLAjjwjyzDcLBImPWledtHbAYqO5saCWSXpIj+ucC2o8QwuZVGZNDcbXoC0Wz53bLofF/QC68iBE",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 36,
+            "BinaryData": "eJwlTEsKwjAQjdFzuHQ7SdVS3Q2TSAM1HdoRipu5SPEQXlgT+jbvy7OmwJoNu8P9WOj7q+bDXr0DmZNT6v0NMJBXrNGEFDWgYAMPuihXuiq3QNLoE8XBTOI05VIMcUmj0+A7iO9eOY0t8PAqpYOYY5nJEicgzFUFEN6eLZ3Nfj2t5g/VeSYP",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 37,
+            "BinaryData": "eJwtjE0OwiAQhRE9h0u3wxQTo7vJgCmxtoRCbNzMRXoAF95ZIfo2L+8nn1ZVWv202V321V6fFt4RBRHyHIxw3xkgxyjUqkTsxVEmC1c+SrTAuZM7ZYSZs5Ew1mHwS5iMODyDf/YSw3SCOJQ6IvjR11tahIcbBFu5sSRgGlvpIMc//VFKoyFqZ9V2PazqCyKQKg8=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 38,
+            "BinaryData": "eJwljUEOwiAQRbF6DpduB7AL4w4HTIkIpAy2cTMXaTyPt1Sa/mTy/583yXSiqRObdofrsdnnt5ZvVqw0UPGScdAKjEXFZl2NBh1jeMAde859szNnCUian4Y0FCTJqVIjwc0+SbZagnsPnH26QA51pRpcdO1wnN0IaKJqyUItN8m5ujYh2CmyzUyu0PYeU3yxNWR6mGqV7KPSndViv5wW8Qd/dzK4",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 39,
+            "BinaryData": "eJwlTUsOgjAUrOg5XLp9vFYWsittlSbYNvRBiJuXeAaX3MTDagmzmcwvU4mCSuw4nNpzoc9vE9+EjAoo+5pNLyVoa5D1Zo3+wT4ouJsrp6aQ4oRgSPJTk4JsqOY4UUkGt/hYs5UI7tVz8vEGaZi2VIELrhTHxc5gdECmxcKUu7LtXBGd15nfTC7T/m1imNlq0k1lURzXyyr+6T0vDQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 40,
+            "BinaryData": "eJwljb0OwjAMhEPgORhZ89OoA1twghqpSqwmRVEX7zxDZ14bjHrLZ9+ddFKwpDh0utyvjPf3/3zQkHGq1aQJJjsoH8CQZ+sJjnBkDIRWQaOU0WhVoWk+OZ9jT0VTsFbFbSJMhWOcV07ZyZF7Sw9arfXBrUKt1y0uzFjbMQMlvyj45kcZnDjvt138AA47KJg=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 41,
+            "BinaryData": "eJwljUEOwjAMBEPhHRy5Om6KkLiFxKiRqiZqElpxMQ/pM/gvuOpebO9Yu40SNWrX4XQ/y/j8tuObkPEKJQfNrm87sN4hW7GeznAy4AqHMSFCdkXLKmCgJUTNvjVA755TiILTUIWKM5L8TYtHCEaiUp2g5ofmPBEPcc6JyHOhXPYqF8cXe1vsDeZatwY0DXXquF5W9Qd8ESyB",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 42,
+            "BinaryData": "eJwlTEsOwiAQRfQcLt0OQ7ELdwRoJGnKxII2buYCPULvXqfxbd43TyuBVn+cLo+r0Hs/zErI2IOPAdmLGMKdyQh1TA5C5TwRWphDNVxalcGYllwMR+sgfZ9MuUhPYztqiaYky9cSLeROPufo4dOakR90eujVebtt6gcq5iDM",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 43,
+            "BinaryData": "eJwlTEsKgzAQjbHn6LLbcRpDoTuZRBoIZqgRpJsBz+HddaRv8748axTW/NHc3nelfFxmYxR8wRAIZVAxkhdGJSfsgaqkidHBTLWTslQd5Lim0kl4eoi/j3Aq2nNerlqjKeryuwYHyennTNmOvWn3x25O4GQeDw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 44,
+            "BinaryData": "eJwlikEOAiEQBBF9h0evA7tIjDccQIksoGKy8TI/8AX7dx1jX6o71VJwpPhntTluGafPb7ybJn0A51GT4xLv4TYFwnylVBRE3FMbGCM1C9hHmlxX8MCu2FuIOcypKvKDhfC6UEtVG2j5ydZAKIF/WDOgK4r67OXZiPWyW8QXdTkheQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 45,
+            "BinaryData": "eJwli8EOgjAQRGv1Ozx6XVbSoN6aZdHGUgq0kXjZb/DOv2uJc5mZvBmtirT6a3e4HYtdvlv5RBS8gm0JxZbQTTz2LOSf4gJCR0ZiDZRq6W1CmClVBTTQeV7cUEl7boDfD4luQAPR50INcOCyo2kGsqGSaWnhlfP2RKPvRu3X06p+55gicA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 46,
+            "BinaryData": "eJwlijkOwjAQRY3hHJSUjO0siugs2wGLeFGYSBHNHII2d4eJ+M1/f5GCJcVfh9PtzHb97uFTNRkF1jtNlsElLmJuAOd4ZzAwuo5qy9ZS5R0bShYNvBwqKgsOME5hjUWRNwOE94NqLLqHOi373EPIgZ/JO3A2a8LVy2cnjttlEz8QEiLJ",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 47,
+            "BinaryData": "eJwlissOwiAURBH9DlfG7S1g09QdAapEHjctTRo390ea+OkKcTZnJnM4q+Hsn8Ppfq64fNv4oCApQFsjSNdiIkrySUGZ/YPyWiRMpifsK26EVSiKoi4KFlO6JowwBbf53JGVI7j3k9BnMQCGtd0DuOSqGa3PsGgvKJrwAqOToHmzPPTsuF939gPhbiZN",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 48,
+            "BinaryData": "eJxjYgACJgYIYGSxkgNSUv9BHL8Aw3gjI31HF2fDeEcgIyTI0z3e089Y383ZND7ADEiZxAcY6TuHAAUDDE30g51DDOL9Q0NM9N18XCM8/Q3iXYwN9F2jPOIDPP0NLZh8TBiYa9RqGACVCRhA",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 49,
+            "BinaryData": "eJxjYgACJgYIYGSxkgNSAv9BHLsAw3gjY31HF2fDeEcgw83ZJD7AWN85JN7TL8DQVD/YOcQg3j80xFTfzcc1wtPfIN7F2FDfNcojPsDT39CSydeEgblGrYYBABv1E84=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 50,
+            "BinaryData": "eJxjYgACJgYIYGSxkgNSbP9BHJMAw3hjA/2IEEcfEwtf/ZAgT/d4/9AQY33nkHhPvwBDM/1g5xADkJCFfrCjp0G8r7OPN5ObIQNzjVoNAwBuTBGV",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 51,
+            "BinaryData": "eJxjYgACJgYIYGSxkgNSf/6BOFoBhvHGhvquESGOPiYWvvohQZ7u8Z5+JvrOIUAqwNBcP9g5xCDePzTEksnNiIG5Rq2GAQD03Q+n",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 52,
+            "BinaryData": "eJwljUEOwjAQA0PhHRy57iZUCHFLNylEtElFtqi3lXhH/8H/+Agkwhd7LEtuVFGj/trsLvtin2+F96TFAOeAQjcD1hGK1WegcTISIgI/wlXSzAg9HWUyxVqZTkCsZbSlzsRYlifoB7+EhOI0go++tKMjyDZo4cUhkI1YE8y5Q0mdr2DZykvYZ67fWijFp9Bwb6hV2/Wwqh9lFy4L",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 53,
+            "BinaryData": "eJwli8EOwiAQRLH6HR69LhtMjN5woZbEUlKWtLf9kSb+pn+joHOZeZOZTlV16q/d4Xas9v40eCUUA5yDFhoMWEdaLF6BxqQlRASew0Omwgg9GUkGiFFGWzkTt8kF+qdfw6TFIYKPvrajCxNkG1Dm1WkgG3VLwEkGnm3MsJTyO3f3s9pvp019AUnJJwU=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 54,
+            "BinaryData": "eJwljkEOwiAQRWv1HC7dDiAmxh0CTYmlxTJo42Yu0vt4G6+kQ/ybPz/zMn/ahtU2f212lz3b51vDO0nSgDkIsr0G46wgowTYmASFUUE3+3v0ZIcbRwGdPVLSbCdKTKGkaFBBtihoKsjA4JcwCXJSgX/1lDiAHz3vcalnIJtQZyeh5GstcTQvLhL6jPUBSXYaH+QMGgHPUipybo1ututhbX6ITjKV",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 55,
+            "BinaryData": "eJwljUEOwiAQRbF6Dpduh5GwcUeBpsQWsExN42Yu0qN4HO+lEP/m5+X/5HWiphP/HE63c63Pt8E7I2ugEiTbUYNxVrK5Itg5Sw5RwbD4x+zZTveKCINVnHUtzbm+CHk2pKBYkpxWqofJbyFJdqjAv0bOISH46OtOm49QTFUtm0NYS98UrlFm8oWaHtmm+GRnyGDXK3HcL7v4AVOUL1k=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 56,
+            "BinaryData": "eJwlTUsOwiAQxeo5XLodQO3CHR3AEhtKZDSNm7lIL+JVvJwO8W3eLy+vU4JO/bHZXfZCn28z72K4B6pJM449OI+anbVA93TllC1EPHLphc5cLCBJKLYiaVEa4hSWNGv25gThNXJJs4WQg9S0eA3VJcP3hQecboAumxbDow5t7qXxKUamUKl9G8Y5P9k7crYbrNquh1X9AME7Low=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 57,
+            "BinaryData": "eJwlTUsOwiAUrNVzuHT7oKRpdIcPaokNkPLQxs27SC/jDbyhQpzNfDKTaZuCtvljd7gcC32+1byj5AEoOcE4DaANCtadAlrcjUOmDkbsOSpAYufjAAlJFCVhnO3qgmAje7CviaMLCuKcGec7WG9LjVYjIWkneVl5TIDaV2kgp2sZhlrQpJlsonotGYN/cM0UPHOuR+dWd81+O23ND3dgMUI=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 58,
+            "BinaryData": "eJwtjUEOwjAMBEPhHRy52mkLVNyiJFUjhdZqHFFx8Uf6C/7ANyEV7GXl3dW4UkWV+ml3uB2LvT/b8SItHXAKKHbQVzDOajElmY314gwbhN62QpudhVqwLGGkDpJllClzDX30S5hQnL6Afw5CYWqBYt5aBD/6MuTF1RCaAk/OANMf/cgZC04jROL7XF5Hbiqj1X49reoLjGIsPw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 59,
+            "BinaryData": "eJwljE0KwjAQhWP0HC7dTodYtO7iJKWB0A5mCsXNXKTexLtqSr/N4/3wrKlYs3M4Pc5Vvr/NfBi1AympURrwDj4Qqq/Jy1PU4MUj9HRV3qRVboFE08gdFJJGp1kc9DkuaWo04A3ie1BOUwuc561FiGOsQ1mCg+TqeaEMwvu1faI5rpfV/AHeRCYe",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 60,
+            "OwnerPartId": 2,
+            "IsNotAccesible": true,
+            "UniqueID": "HBTGHGQV",
+            "IndexInSheet": 62,
+            "Location.Y": -280,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 980,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 61,
+            "BinaryData": "eJwliTEOwjAMRUPLORhZ7QYVAVubpsSiUCuORMViiZUr9NysEMpbvt5/hcmU5s9qfdrkeX9+8mKrCCnSWelWQ++OynuQLjjUrgZxCXNA4Pu10mYH/eAnGnM7gH8EZRotLqcwobYqUukTpMkSJ23dcAG/pCipCNaU83Y2X5N5IkA=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 62,
+            "BinaryData": "eJwlTDsSgjAQjeA5LG03QRvtIJ/JjkAiG0e02UtYcmTvoCu+5s37VkpQqz822/NO6P35iVdu2ECZWuvZ9hcgF61mdwSyRTOOBvJ9MNwdIPR+xiTZCfwzcsbUmNWkjJo7dlcCwlHWgxxxuhUN1Eo0zRwI/FobU8HwqKJR9bJf1Bfm5yT5",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 63,
+            "BinaryData": "eJwli0EOwiAQRbH1HC7dDkMbY9whYJxYWlJIJG7+RXoKL6y1vs3P+8lr1Eqr/uz2l8M6789PkAxYU5mtC/C2WEPZFQ0Ze0rPyKiGbkOoMml4PlN43ZFk6nh7cxKN69adKMvoNKIbHj1lK4y5em5ip9rluKgvyqgd7w==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 64,
+            "BinaryData": "eJwli0EKwjAQRWPrOVy6nRlTEd2lScQBmwYzYHAzF+kBeuta69t83ofXmJXW/Nntb4d15uUnmk9KBPJyPmpw4iwUL6iczpDfA2m1cH/GyiNqoCvEz0Mzjxa3t2RG7bfuAoWTRx16lg6KY1KpgZrUmXY6TuYLyFsd8w==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 65,
+            "BinaryData": "eJwljEsOgkAQRBE8h0u33QyJie5gPmEin4k9E4ibTjiAJ+AaXtCLaCO16VS9rsozUZHtOhxvJzmf72beQbEC3d3HFMHpK4cKyLQa2ZRAOiILQAhTX3KtwHV29uMGEeyz5eBHtacUPHLDRMgLkB9koZdZBKoFxNlI4f+j6QWJGmTfWH7MxjvHC0dLEaaUJB7KS95WWbGe1+wHWsUuTA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 66,
+            "BinaryData": "eJwljEsOwjAMREPLOViyddKsYEc+VQNJG+FErdj4It1yR24DbhnJGnlm9BrBasVfh+P1xPb5bs87d6ShtxfKCtANVpKTgLZImmpRkOekyHTQR7+EiUulwL8GymHq9J5iDpIMoY0PwDAyIJlQmHHj/Lkwze+Tra9oJOXq+WJ080guUfFYmrsW7XpexQ9rYCmT",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 67,
+            "BinaryData": "eJwljFEOgjAQRKt4Dj/93W0lMfpX2hIaCmxsG4g/exFO4cG8klaYZLKZ2ck7iqJK7DqcHudyPt9/eJPiGlpzZ0KItjPIJvQQTUKeclJA8yBZS2iDW/yEbKUC9+qY/KTqrY3kkRu2OumC8GNBDIUhIeryeC5Wgts2+yLHBpmyKw4hE1vi5GKCOWdkP8rbsb+Kar2s4geqPS0F",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 68,
+            "BinaryData": "eJwlTDsSgjAQjeI5LG03gaHQjiSLZASTYZeBsdmLcAnv5L00wmved95RZRRqx+F0O2f6fP/mnUqpgcdwlzhxBa27SiqBfOe0uMEDOdZ7lebBiDXQ9riEqMWbCvDVSQqxrLeUUtBixTfcGKDwzBeDDZx1kwtevAHcNvtiIquFRpQ+zpQQvTASHx9GFetlVT+KQCzB",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 69,
+            "BinaryData": "eJwlTEsOgjAQRfAcLt1OqQ2J7kpbpKHAxLaRuJmLcBDP4uV0hLd537yyYFTFjsPxdmL6fP/mjZIaSA9/Jz8p6MyVUEG0vRFkLxBNEjTnpACfY01aQBfc4mcuawXu1RP6WTZbGtELasnqpCVEP/HDaMLAWnORFmrZgdtm+yjHVhBmP2J0gUUIGckiJRdTOciiWs9r8QPD0i8B",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 70,
+            "BinaryData": "eJwlTUsOgjAUrOA5XLp9bU1DdEcpyEsKbexDiZt3Ee7gVbyhFpjNZD6ZKURGKXYcjrdTpu9vFZ+ouQJ64J1xNNA1V44GkusbyU5DakhymMhAfA2KrYTOtzOGHCoD7bvniEFXm5siSrbsaqovkHDMC4NFyiN1DmjmLkG7lfbKlKxiShQ4er+esMNn4bUol/Mi/hxwLGI=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 71,
+            "BinaryData": "eJwljDEOwjAQBE3COyhp72wQRHTGNsqJOLFylrBoruQTeQ/fBBOmWe2uNI2qtOrPZnvZ1Xh/fuWVjHSQZ+uCeJstAvveofgzsMsoNBpIj6ilINyGUGiqnz5BePaSaDLdunIilOsqOALTWAXRDfcDsCUtuXhsolHtsl/UF9eYIDg=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 72,
+            "BinaryData": "eJwljEEOgjAQRSt4DpdupwNRg7vS1jCJhYZpYuNmll6Co3BXrPg2P///5FWqUKs/h+P9VGLdfuUTG+kgzcZ6cSYZBHaD1eKuwDZpobGF+AooGeHx9Jmm8uEN/HuQSFPT7StH0tLvggswjUUQekotsCGUOTtdBVT1cl7UF9TNIDY=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 73,
+            "OwnerPartId": 3,
+            "IsNotAccesible": true,
+            "UniqueID": "SGGJTQAI",
+            "IndexInSheet": 75,
+            "Location.Y": -140,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 880,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 74,
+            "BinaryData": "eJwljEsOgkAQREfhHC7ddgOJGHY6DNKJn5YZgnFTiQfwBJzbrbZam673Oqmls+Tun0XerOy83l94agWmNMgBcmbqfA2tyCcjLTak04mxM38MN7kw2i2Few+1/nNRxf6IkfEg7XA1AW/USqSk6KdBUqBpHNkWyzLbF7XL5vXsPkJ5I7s=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 75,
+            "BinaryData": "eJwliDEOwjAQBA3JOyhpzxYiEXTg2HAiIZfYCESzEj+gz5P5AxwwzWhmbpTS/JmV24Xq9f7GU1ZwlEc+gM+Ooq8gVlVDKvJZp7ia5NpZ7PW34ca9RbOhcD9CuHe/l4QtdkjJ4UESMeiA12o4URzD0AX49oT+km3h3doU03IyH500JHs=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 76,
+            "BinaryData": "eJwtjMEOgjAQRKvwHR69bgtGjbdKaWiEsNo1Ei/zI3yBR39Yl+hcJjP7ZtdGVZqfVuVpo/b+LOHFNZyl2OzBldoBvKNGHAYvlvgxWPiaYt9OabQI7kjtswOncRlpmzkpgeDFV5ST4k1/oey1lSnoh4irMn/gns8OkiXpEV3GMIaWhOFDuFVFdAdTzNvZfAEwgiq1",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 77,
+            "BinaryData": "eJwti0sOwjAQQwPtOViynYTwEezSphWR+hmaVK3Y+CI9AFtODFOBN5af7a0S5eqnTX7bib0+a3izhTFUl2ewFbuAT1Qmg9YlQzy1GoXwpppDr+HNlarnHRz69SQ0ctBw8C45SzHIPPQUncBh9pq4xkMm/36MhUGKKSDNaCKqjhLDeT9YmsZRvt3hmNXmrLJlv6gvbX0spQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 78,
+            "BinaryData": "eJwli8EOwiAQRNH2Ozx63QWbmvS2BaokthBBJV72M7w0/rqCzuXlTWa2oqQV/2zaYVfw/lR5hQNLBZM+cugK+gqdJM+UFITHLJkQpovNziMbhWCfZw7O11NpY3DIxIYSdRCpyDUbCbc4Sk4xOU6Z7UIjkNHI2i/33xabk+xFs+5X8QUQNiTe",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 79,
+            "BinaryData": "eJwli0EOgjAURKtwDpduf78ETNyVloYmIk1alLCZG7hyyc6D60ff5mVmMnsllOrPrrwcRK/PFt6xAlfk7RmxFjWbbGYMJlcUHwOj1eSv3RxGDXdi6pYeMYzbSdoUg4aBM9nUlIyEPDum6CELbNJ40pRaRk45yIY+LGSc1bDj7f77cdFzo4r1uKovAUkoww==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 80,
+            "BinaryData": "eJwljbEOgjAYhKvwHI6uf1sVjVtpITQi/LFFiMvtPgOzr60Fb7ncfZfcViTl4q9Nft0le3+X8OED1JFqewFLshG+44J4vCsYRXVbTb6XcFpT9WrAvl/GqQ3sJQyciaagYFJ4TChteyOukeBKaAilQgzRI05wTMZZCdt3zxVrGodBpkd9yhp1Ftm8n8UPnSgptA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 81,
+            "BinaryData": "eJwli00OwiAUhNH2HC7dviJparqjUFKiwougNm7Ge9i7K9VvM5m/rSjU4s+m7ndFXp/VvFlBtuTMESzJZPjAHfHjIjFIcudx9rGBPSganxPYx3Vc0sS+gYbVWXeUdDHXGS4RO5QKyZx8oFsaJHLKHnmGDaStaWBiuP9+qppkK6plv4gv1aMmwQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 82,
+            "BinaryData": "eJwlikEOgjAUBatwDpduP61oiLvSQqwCbWjFxs27gEfg7vqJs3gvk8xeMKX4syuvB77lu8knnCAv1JsGQZFJcFNoKLxGCa2oH7rsfAWraureNwTnOY5urGCGB0XtJFJGu8kztiwxecwZfeS1pK3h0k8LrE66Lu7yLIr1uIoflqEiXg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 83,
+            "BinaryData": "eJwli8sOgjAURKvwHS7d3haCr11pITQCbWwrxM18hFv+Xa/xLOaRzOwFU4o/u/J2YBs/v/IONdSZenNBqMkkuDlcKSyTQltRP3ar8xK2aqh7DQjO8zi6ScJ5itoppBV9pBxbjjF5PFYMkdWStkbC+PkJq5NuaMmZb3N1Ku6qEcV23MQXnMAkXg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 84,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNSTv9BHIcA43hDC303Z7P4ADN95xCjeF/HEAP9gHBfw/gIA303H9cIT3+DeBcjM33XKI/4AE9/oOpgR0/D+KCIeCdnH29mb0MzBuYatRoGAH6BFTU=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 85,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNSFv9BHLsA43hDS303Z/P4ADN95xCjeF/HEEP9gHBfw/gIQ303H9cIT3+DeBcjc33XKI/4AE9/oOpgR0/D+KCIeLdgZm9DcwbmGrUaBgBQgRSt",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 86,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNSj/6DOJYBxvFG+m7O5vEBBvrOISbxvo4hBvoB4b4G8REG+m4+rhGe/gbxLoYG+q5RHvEBnv5G+sGevobxAS7MLoamDMw1ajUMABfDE8g=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 87,
+            "BinaryData": "eJwli0sOgjAYhKtwDpcu/UsxQNzVFrSJpQ1thbiZG3gCLuJptcRvM5nXnmVK9mdXXg5ZTt/NfHwNwSlO5gaXIqdBdfDnLA08JxUFrIyC/GwryJqGR78Yx6FFR/3rDm9cvgdjObymIE2FuGhOfkDwBirkqQl4UwrXXIXoMC1bpNwI3UeSWnFk84SWUTY0p8RhRtEWtmpZsR5X9gPeHi8Q",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 88,
+            "BinaryData": "eJwli0sOgjAURauwDkfG6Wsh4mdWWpAmYCuvKHFyd+AK2IJr1hrP5OTm5K5FIhd/Vvl5k7T9/MY7lCgUxdFd4KeoqDVHhH1ShaDIxAKDjiWFx6BQl9T2zey8hC1O1Dw7BOfTnd0gMXIk1k5hnK2k0IKDg2EF6xgvmrhWiBx96uDb1PSmI22NhPHXO6yO+pD1qhLZslvEF6yDK78=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 89,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNSUv9BHP8A43gjI303Z4v4ADMgZRYfYKTvHBLv6RdgaKAfEO5rGB8BlPZxjfD0N4h3MTbQd43yiA/w9AdqCvb0NYgPc3Z29dMPdvQ0jA+KcDFk9jU0Y2CuUathAADU9Bj2",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 90,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNSAv9BHNsA43gjY303Z7P4AGN955B4T78AQ0P9gHBfw/gIoLiPa4Snv0G8i7GhvmuUR3yApz9QdbCjp2F8SISLIbOvoSkDc41aDQMAKlAT9g==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 91,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNSN/6DOFYBxvHG+m7O5vEBhvrOISbxvo4hhvoB4b4G8RGG+m4+rhGe/gbxLoaG+q5RHvEBnv7G+sGevobxQcEhzC6GZgzMNWo1DAAsixQr",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 92,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNS5/6DOFYBxvEm+m7O5vEBRvrOIfGefgGGFvoB4b4G8RFG+m4+rhGe/gbxLoZG+q5RHvEBnv4m+sGevobxzj7ezG6GJgzMNWo1DAArMhQQ",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 93,
+            "BinaryData": "eJxjYgACFgYIYGSxkgNSR/6DOJYBxvGm+m7O5vEBxvrOIfGefgGGlvoB4b4G8RHG+m4+rhGe/gbxLobG+q5RHvEBnv6m+sGevobxnv7M7oYmDMw1ajUMABRNE8o=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 94,
+            "BinaryData": "eJwljTEOwjAUQwPtORhZfwNVkdiin0RENE1KQkEsvgEn6M6duByk4MXyk2WvRVEt/lrVx02x92cJr7hHR9yfwzWT5Q5REucWXuUdxZtvoCTZ3txdaKBlS+ZxQnSh+8EUXSlAj4mS8xITsxkoKSfhyyZFi7F0wAlPshczeoPCUc4kKc0NOAzTgiotD6Kat7P4AgvIKrA=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 95,
+            "BinaryData": "eJwlijsOwjAQBQ3JOShp11ZCLKUz/ggrTrzIFiCavQVVDsUNYQOvGb3R7AWvFf/t2vHAeH+288KONAQ7EA4MTajA1p5mUzvA+yzprCAk/4hZklMn8M8LYcz6JwtGSYaKTROUyPHNWr9AMaznTWKgK0dcTHGBipSyceSXxqleNOtxFV8mDSVh",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 96,
+            "BinaryData": "eJwtjUsOgkAQREfhHC7ddvMJEnfDfOJElNYZAnHTFyEcx2tq+6lNpV5eUlslydUvm/y4k3q+PmOlilvwpmGqpQ5MCCZxuMqk6YKsS/C9m8OAbIsG3OPEFIb2CyMFEdjqpBFiEJssRC0wzdyZ/gzk+SbWX0nE2to7wjSOKB9llbmiVtmyX9QbXfEnOg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 97,
+            "BinaryData": "eJwtijsOwjAQBQ3JOShp1w4KUehMnBWWgCyxpUQ07xC0OQp3heUzzdM8zdoopfmxKg8bnefrIw/ZoSXu9pBap4FU1GXEq6pMF4tjRXzu5zhYBNdQfz9B4tB+zyTRwiP47B2lqPWYMiWvb57BiYRx0+hfZIEPYXQFu9oUy3Yxb7JzJFk=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 98,
+            "OwnerPartId": 4,
+            "IsNotAccesible": true,
+            "UniqueID": "ETXEGOXH",
+            "IndexInSheet": 100,
+            "Location.Y": -260,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 890,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 99,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNS3/6DOK4BJvEG+iFBnu7xnn5m+m7ORvEBBvrOIUBegKGZvmuUR3yAp7+RiX6ATyhQzEA/2NPP2SDe19nH21g/PDTUAChoaMEUYMjAXKNWwwAAJkcXMA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 100,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSb/6DOPoBJvGG+iFBnu7xnn7m+m7ORvEBhvrOIUBegKG5vmuUR3yAp7+RqX6ATyhQzJApwIiBuUathgEATlAREw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 101,
+            "BinaryData": "eJwljbEOwjAQQ0OB32BkvWtUGNjSpEgRTRold9DtfqQj38JvQiK8PNmy7E5VHdVfu8PtVPH5NvNOg/QalmRCQvExIRhnUcylsW/kMqI8Ry7iJoK71VJLlgYJhhDu87T6BcVphDSzLFzD4mPdCHZ+1KaJKHl1EChLIZNJRs7RR3gxt0uNHV3Vfjtv6gcRESiq",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 102,
+            "BinaryData": "eJwljEsOwjAMREOBa7Bk67gUgdjlQ5Gl5qPWkbrzBThCj8JdIRGzeZp50nSq5qj+2R0ep4rPt5V3HgQvkLIJWQvFjGC802KvjdjIM72qucPoeqm+LBaFPDgeJBhGGKfnSkmL7xHyVCSVOi4U602wxBqciVp49R3f1H47b+oHXCchSQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 103,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSk/6DOMoBJvGGJvrOISbxvo4hRvpuPq4Rnv4G8S5GRvoBPqHx/qEhRkx+FgzMNWo1DABw8g1N",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 104,
+            "BinaryData": "eJwljEEOwiAURLHqNVy6/VAwadxR0IYIlBTQ7v5B7AG8tfLjbCZvZjIdazqyv3aH66nZ50vwTgrFBeakQ+I41wLaGo5agKHARZWgLG6iSkHNo8DnWDNaN4EpCoMuEu7+trqZo+0lJF9pKyG72I6C8Q9iDkZHgctq4VUrHfeiKwPbb+eN/QDMbCZm",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 105,
+            "BinaryData": "eJwli8sOwiAQALHqb3j0uoCkMd62YA2Rx6aF2Nv2Qxp/XTHOZTKH6UTjKP7sDrdT0/vzi5UMqx4yYSTFPpEEdFYy9jBazaShzoPiXB5MrwlsuXDEImEM98VnyU4boFA512Jg9qmt0YanAotJcVlcN13Ffjtv4gvhPh5H",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 106,
+            "BinaryData": "eJwljEEOgjAQRSvqNVy6HQYEg7u2CJmE0glME3ZzCZbcXWt8m5/3F68wmav5c7q8bnn2z0+UH4pPiGwDo9LMCLb3pboWZKExPx0MvlKuIa0ONcqo0YOXWoMVhGF6bxRL7asGeEoakzSw0pwTwZFgsXTmfNwP8wW/ER31",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 107,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSWf9BHOUAk3hDC33nEON4X8cQI303H9cIT3+DeBcjM/0An9B4/9AQM2Y/QwMG5hq1GgYAdxsNWg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 108,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSCf9BnKgAk3hDS33/AEffAMN4/9AQfUcXZ4N4J0N9Z5CAp59JgH5IkKc7SMpU3znEON7XMcRY383HNcLT3yDexchcP8AnFCRrrh/s6QfU6uvs4w3iGzIHGRowMNeo1TAAAEoKHQE=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 109,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSj/6DOEUBJvFG+i6Ozgbx/qEh+o4uQIajCYg2BNHOvgEG8Z5+Jn4gliGcZQRhhQR5ugNZZvpuzkbxAUb6ziFAXoChkb5rlEd8gKe/kZl+gE8oUMxIP9jTD2iyr5NniDFTiCEDc41aDQMAVWUjNA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 110,
+            "BinaryData": "eJwliEEOgjAQAAvFb3D0usuGmIZbsxVToLCRxnjbj/TvWuNcJjOtqVzMn6ab+qrX5xeLjEoIh/gkpHEXBB94UH+D/IyPehzMTCojcCZNPiPM2/0dD9RADs64M2ribSWbBzS2XIv5AmygF7Q=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 111,
+            "BinaryData": "eJwliLsOgzAMAMOjv8HIamy1legWQkFGBCzw0M0/wr9DUG853eUu8XB/svJTJc3nHZM8jRBW8VHIeBEE3we07g268ZhOC0MgkxcEJYteEYb5++O1sZ5a2HkJjcWOlQpFdMVRH+4CaroXtw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 112,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSTv9BHKkAk3gjI33nEKN4X8cQI303H9cIT3+DeBdjA+YQQyMG5hq1GgYA9sEKeQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 113,
+            "BinaryData": "eJwljEEOgjAQRYvgNVyyHTpFY9yVQUgDpRMtCbvZegjurq28zctPXv5JJc7qoKgel6T7N48Pt4IGAlvPKGGNYHtqxOLh7m8tnQHKgVtahvhyY06vMBAK34AiirfRwDA/Nxca6Y2Gt1vSgad5yi2Wq0ZV7vWufsVoH/s=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 114,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSN/6DOAUBJvHG+i6Ozobx/qEh+o4uzgbxTiYg2hBEO/sGGMR7+pn6gViGcJYRhBUS5OkOZJnruzkbxQcY6zuHAHkBhsb6rlEe8QGe/kbm+gE+oUAxY/3w0FCQQYaWTKGGDMw1ajUMAAulIqs=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 115,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNS5/6DOEYBJvEm+m7ORvEBJvrOIfGefgGGJvquUR7xAZ7+Rhb6AT6hQDET/WBPP2eDeF9nH28TJl8zBuYatRoGAHoyEbY=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 116,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSR/6DOEYBJvGm+m7ORvEBpvrOIfGefgGGpvquUR7xAZ7+Rpb6AT6hQDFT/WBPP2eDeF8nzxATJl8LBuYatRoGAHijEbg=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 117,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSu/6DOAYBJvFm+iFBnu7x/qEhJvpuzkbxAWb6ziHxnn4Bhhb6rlEe8QGe/sYG+gE+ofHOPt5MfuYMzDVqNQwAWukRXA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 118,
+            "BinaryData": "eJxjYgACVgYIYGSxkgNSG/6DOOIBJvHm+s4h8Z5+AYaW+q5RHvEBnv7GhkwhJgzMNWo1DADh8Qon",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 119,
+            "OwnerPartId": 5,
+            "IsNotAccesible": true,
+            "UniqueID": "JZJTQHMH",
+            "IndexInSheet": 121,
+            "Location.Y": -220,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 780,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 120,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSb/6DONoBpvEG+q4RIY4+xkbe+o4uzobxThb6IUGe7vGefoYG+j4BIb5BBvGOPiFGzKGGZgzMNWo1DAANTw/q",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 121,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSj/6DOFoBpvGG+hEhjj7GRt76ji7OhvFOlvohQZ7u8f6hIWb6PgEhvkGG8Y4+IUbMoYbmDMw1ajUMAP+UD9Q=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 122,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSN/6DOLoBpvFG+o4uzobxToYG+mFOjiHx4Y7erqEB8Un6wQHO8T4BQa6B+iGOvgGuQQbMvoYGDMw1ajUMADoSEOU=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 123,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNS5/6DOFoBpvHG+o4uzobxToaG+iFBnu7xnn5AVlCIc7yzj7d/aIh+iKNvgGuQITNQmIG5Rq2GAQD34A+i",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 124,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSR/6DOJoBpvEm+o4uzobxToZG+iFBnu7x/qEh5vrBAc7xPgFBroH6IY6+Aa5BRsy+hkYMzDVqNQwA6vUPfw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 125,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSu/6DONoBpvGm+o4uzobxTobG+iFBnu7xnn6GBvo+ASG+QQbxjj4hRvohjr4BrkHGzN6GRgzMNWo1DAAA9A+p",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 126,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSG/6DONoBpvFm+o4uzobxToYm+iFBnu7x/qEhZvo+ASG+QYbxjj4hRvohjr4BrkEmzN6GxgzMNWo1DAAF7g/a",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 127,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSy/6DOPIBpvHm+o4uzobxToam+iFBnu7xnn6Ghvohjr4BrkGmzD6GxgzMNWo1DABFrQwy",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 128,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSc/6DOPIBpvEW+o4uzobxToZm+iFBnu7x/qEh5vohjr4BrkFmzD6GJgzMNWo1DABIZwxi",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 129,
+            "BinaryData": "eJxjYgACNgYIYGSxkgNSk/6DOKIBpvGW+o4uzobxTobm+iGOvgGuQebMvoYmDMw1ajUMAMqZCV8=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 130,
+            "OwnerPartId": 6,
+            "IsNotAccesible": true,
+            "UniqueID": "OKKMQAOF",
+            "IndexInSheet": 132,
+            "Location.Y": -130,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 290,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 131,
+            "BinaryData": "eJxjYgACdgYIYGSxkgNS3/6DBYNcg11D4pOY3IwZmGvUahgAXDkGQw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 132,
+            "BinaryData": "eJxjYgACdgYIYGSxkgNSj/6DOIKhwU4G8S6++uGhoQbxnn5GFswhhiYMzDVqNQwAtkgJAA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 133,
+            "BinaryData": "eJxjYgACdgYIYGSxkgNSN/6DOIKhwU4G8S4B+uGhoQbxnn5GlswhhqYMzDVqNQwAtUUI+w==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 134,
+            "BinaryData": "eJxjYgACdgYIYGSxkgNSR/6DBUODnQzjXXyZgwxNGJhr1GoYAFvdBhc=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 135,
+            "BinaryData": "eJxjYgACdgYIYGSxkgNSu/6DBUODnQzjXQKYgwyNGZhr1GoYAFsHBg8=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 136,
+            "BinaryData": "eJxjYgACdgYIYGSxkgNSy/6DBUODnQzjPV2YAwwNGZhr1GoYAFi/BfA=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 137,
+            "BinaryData": "eJxjYgACdgYIYGSxkgNSk/6DOJyhwU6G8WFOocHMoYYmDMw1ajUMAGd+Bpk=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 138,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYfz2H8ThdfRzjDfQd3RxNoh3NGAKMGZgrlGrYQAAhI0HaA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 139,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYXzzH8ThdfRzjDfUd3RxNoh3MmAKMmZgrlGrYQAAg5gHYg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 140,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYbzxH8ThdfRzjDfRd3RxNox3NGAKMWJgrlGrYQAAgZUHUg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 141,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYTz3H8ThdfRzjDfVd3RxNox3MmAKMWZgrlGrYQAAgJcHSw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 142,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYdz1H8SRc/RzjDfTd3F0Nor3Dw3Rd3RxNoh3NAbRhkCaKdSIgblGrYYBADJoC8U=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 143,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYZz0H8QRdPRzjDc00fcPcPQNMIj39PNjCjVjYK5Rq2EAAJ+zCG4=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 144,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYaz7D+IIOvo5xhta6PsHOPoGGMZ7+vkxhVowMNeo1TAAAJ2PCGE=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 145,
+            "BinaryData": "eJxjYgACdgYIYGSxkGNgYcz6D+IIOvo5xhsZ6fsHOPoGGMV7+vkxhxoaMDDXqNUwAACi6whz",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 146,
+            "OwnerPartId": 7,
+            "IsNotAccesible": true,
+            "UniqueID": "KRLXCAXI",
+            "IndexInSheet": 148,
+            "Location.Y": -170,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 260,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 147,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSG/6DBcNcXOIDjOMNmd0NDRmYa9RqGABhEQY8",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 148,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wLDrP4jDGhYcHG/O5GHKwFyjVsMAAF4CBkY=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 149,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSb/6DOKxhLi7xRkweZgzMNWo1DABLHgVo",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 150,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSj/6DOKxhLi7xxkweFgzMNWo1DABKZAVh",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 151,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wLDhP4jDGhYcHG/B5GHJwFyjVsMAAF1WBkE=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 152,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSy/6DBcNcXOIDjOONmD0MDRiYa9RqGABgJAYz",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 153,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSc/6DBcNcXOIDjOONmT0MjRiYa9RqGABfQwYs",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 154,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wLDsP4jDGhYcHG/J7GFozMBco1bDAABi1AZk",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 155,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wDDnP4jDFhYcHG9owORlwsBco1bDAABhywZU",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 156,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wDDpP4jDFhYcHG9oyORlwcBco1bDAABhFQZP",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 157,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wNDxH8RhCwsOjjc0YvYyNGBgrlGrYQAAZooGcA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 158,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wFD3H8RhCwsOjjc0ZvYyNGFgrlGrYQAAZcsGaw==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 159,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNS5/6DBcNcXOIDjOINmbwtGJhr1GoYAF3cBjI=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 160,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wFDyH8RhCwsOjjc0YfK2ZGCuUathAABergY2",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 161,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSWv9AHK4wF5d4Z/8g13hDZm9DAwbmGrUaBgBjqwZg",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 162,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSR/6DBcNcXOIDjOKNmHzMGZhr1GoYAFz3Bik=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 163,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSCv9AHK4wF5d4Z/8g13gjZh9DQwbmGrUaBgBiuAZZ",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 164,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSHf/BgmEuLvEBJvGGTH6mDMw1ajUMAFdnBe4=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 165,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wJD1H8RhCwsOjjc0ZfYzNGZgrlGrYQAAZDIGXA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 166,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSB/6BOAJhLi7xwZHB+mH+oSEgBrOfoQkDc41aDQMAsJwJJA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 167,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSdf/BgmEuLvEBJvFGTAEmDMw1ajUMAFaKBeY=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 168,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wGDxHywYFhwcH2ASb8gUYMbAXKNWwwAAafUGrQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 169,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wKD3HywYFhwcH2ASb8QUYM7AXKNWwwAAaRYGpQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 170,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wKDyHywYFhwcH2ASb8wUYMnAXKNWwwAAaD4Gng==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 171,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wJDwH8RhCwsOjjc0Yw4wNGJgrlGrYQAAY2IGVA==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 172,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wBD2H8RhCwsOjjc0Zw4wNGFgrlGrYQAAYpUGTQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 173,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wCDwHywYFhwc7+Ls4swcYGjGwFyjVsMAAGySBrE=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 174,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSTv9BHPYwF5d4Rz9HpiATBuYatRoGAEpiBWY=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 175,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSev9BHNawIFc3D6YgUwbmGrUaBgA8XAS/",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 176,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSUv9BHNawIFc3H6YgMwbmGrUaBgA65wSw",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 177,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSWf9BHPYwF5f40GAn5iBDIwbmGrUaBgBVAgXY",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 178,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSM/6BBcNcXOJdnF2cmYMMTRmYa9RqGABeygYt",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 179,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wODzH8RhCwsOjje0YA4xNGNgrlGrYQAAYewGSg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 180,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSYf9BHPYwF5d4J8cQ5hBDcwbmGrUaBgBSTgW4",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 181,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSf/6BOIqOfo7x5vphQa5unmDSX9/Rxdkg3tEcRBsCaaZQEwbmGrUaBgBqCgzu",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 182,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wPDtP4jDGhYcHG/I5GLGwFyjVsMAAGKZBnk=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 183,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wPDmP4jDGhYcHG/E5GLJwFyjVsMAAGHmBnM=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 184,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wPDoP4jDGhYcHG/M7GJoxMBco1bDAABnjwaV",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 185,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wHDjP4jDGhYcHG/C5GrKwFyjVsMAAGBCBl4=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 186,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wHDuP4jDGhYcHG/K7GpozMBco1bDAABl/QaF",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 187,
+            "BinaryData": "eJxjYgACDgYIYGSxkGP4wHDkP4jDGhYcHG/G5G7EwFyjVsMAAF6tBks=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 188,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNS3/6DOKxhLi7xhkzu5gzMNWo1DABL5QVx",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 189,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSVf9AHH4XZxfneJ8IfSjNHGBozsBco1bDAACVNQgc",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 190,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSV/6BONxhLi7xPi7+8cGRwcwBhqYMzDVqNQwAgTYHmQ==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 191,
+            "BinaryData": "eJxjYgACDgYIYGSxkgNSdv9AHJ4wF5d4Hxf/eGf/IFcmbzMG5hq1GgYAcD4G+A==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 192,
+            "OwnerPartId": 8,
+            "IsNotAccesible": true,
+            "UniqueID": "ZJOYHUUD",
+            "IndexInSheet": 194,
+            "Location.Y": -510,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 240,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 193,
+            "OwnerPartId": 8,
+            "UniqueID": "OHKCGSVV",
+            "Location.X": 7,
+            "Location.Y": 4,
+            "Name": "Designator",
+            "Text": "U?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 194
+          }
+        ]
+      }
+    ]
+  }
+}

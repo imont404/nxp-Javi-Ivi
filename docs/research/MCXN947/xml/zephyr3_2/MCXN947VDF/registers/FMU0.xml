@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="16" offset="{0}" width="32" name="FCCOB{1}" description="Flash Common Command Object Registers">
+    <alias type="CMSIS" value="FCCOB[{1}]"/>
+    <bit_field offset="0" width="32" name="CCOBn" access="RW" reset_value="0" description="CCOBn">
+      <alias type="CMSIS" value="FMU_FCCOB_CCOBn(x)"/>
+    </bit_field>
+  </reg_template>
+  <register offset="0" width="32" name="FSTAT" description="Flash Status Register">
+    <alias type="CMSIS" value="FSTAT"/>
+    <bit_field offset="0" width="1" name="FAIL" access="RO" reset_value="0" reset_mask="0" description="Command Fail Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_FAIL(x)"/>
+      <bit_field_value name="FSTAT_FAIL_fail0" value="0b0" description="Error not detected"/>
+      <bit_field_value name="FSTAT_FAIL_fail1" value="0b1" description="Error detected"/>
+    </bit_field>
+    <reserved_bit_field offset="1" width="1" reset_value="0"/>
+    <bit_field offset="2" width="1" name="CMDABT" access="W1C" reset_value="0" description="Command Abort Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_CMDABT(x)"/>
+      <bit_field_value name="FSTAT_CMDABT_cmdabt0" value="0b0" description="No command abort detected"/>
+      <bit_field_value name="FSTAT_CMDABT_cmdabt1" value="0b1" description="Command abort detected"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="1" reset_value="0"/>
+    <bit_field offset="4" width="1" name="PVIOL" access="W1C" reset_value="0" description="Command Protection Violation Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_PVIOL(x)"/>
+      <bit_field_value name="FSTAT_PVIOL_pviol0" value="0b0" description="No protection violation detected"/>
+      <bit_field_value name="FSTAT_PVIOL_pviol1" value="0b1" description="Protection violation detected"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="ACCERR" access="W1C" reset_value="0" description="Command Access Error Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_ACCERR(x)"/>
+      <bit_field_value name="FSTAT_ACCERR_accerr0" value="0b0" description="No access error detected"/>
+      <bit_field_value name="FSTAT_ACCERR_accerr1" value="0b1" description="Access error detected"/>
+    </bit_field>
+    <bit_field offset="6" width="1" name="CWSABT" access="W1C" reset_value="0" description="Command Write Sequence Abort Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_CWSABT(x)"/>
+      <bit_field_value name="FSTAT_CWSABT_cwsabt0" value="0b0" description="Command write sequence not aborted"/>
+      <bit_field_value name="FSTAT_CWSABT_cwsabt1" value="0b1" description="Command write sequence aborted"/>
+    </bit_field>
+    <bit_field offset="7" width="1" name="CCIF" access="W1C" reset_value="0x1" description="Command Complete Interrupt Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_CCIF(x)"/>
+      <bit_field_value name="FSTAT_CCIF_ccif0" value="0b0" description="Flash command, initialization, or power mode recovery in progress"/>
+      <bit_field_value name="FSTAT_CCIF_ccif1" value="0b1" description="Flash command, initialization, or power mode recovery has completed"/>
+    </bit_field>
+    <bit_field offset="8" width="2" name="CMDPRT" access="RO" reset_value="0" description="Command protection level">
+      <alias type="CMSIS" value="FMU_FSTAT_CMDPRT(x)"/>
+      <bit_field_value name="FSTAT_CMDPRT_cmdprt00" value="0b00" description="Secure, normal access"/>
+      <bit_field_value name="FSTAT_CMDPRT_cmdprt01" value="0b01" description="Secure, privileged access"/>
+      <bit_field_value name="FSTAT_CMDPRT_cmdprt10" value="0b10" description="Nonsecure, normal access"/>
+      <bit_field_value name="FSTAT_CMDPRT_cmdprt11" value="0b11" description="Nonsecure, privileged access"/>
+    </bit_field>
+    <reserved_bit_field offset="10" width="1" reset_value="0"/>
+    <bit_field offset="11" width="1" name="CMDP" access="RO" reset_value="0" description="Command protection status flag">
+      <alias type="CMSIS" value="FMU_FSTAT_CMDP(x)"/>
+      <bit_field_value name="FSTAT_CMDP_cmdp0" value="0b0" description="Command protection level and domain ID are stale"/>
+      <bit_field_value name="FSTAT_CMDP_cmdp1" value="0b1" description="Command protection level (CMDPRT) and domain ID (CMDDID) are set"/>
+    </bit_field>
+    <bit_field offset="12" width="4" name="CMDDID" access="RO" reset_value="0" description="Command domain ID">
+      <alias type="CMSIS" value="FMU_FSTAT_CMDDID(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="1" name="DFDIF" access="W1C" reset_value="0" description="Double Bit Fault Detect Interrupt Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_DFDIF(x)"/>
+      <bit_field_value name="FSTAT_DFDIF_dfdif0" value="0b0" description="Double bit fault not detected during a valid flash read access"/>
+      <bit_field_value name="FSTAT_DFDIF_dfdif1" value="0b1" description="Double bit fault detected (or FCTRL[FDFD] is set) during a valid flash read access"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="SALV_USED" access="RO" reset_value="0" description="Salvage Used for Erase operation">
+      <alias type="CMSIS" value="FMU_FSTAT_SALV_USED(x)"/>
+      <bit_field_value name="FSTAT_SALV_USED_salv_used0" value="0b0" description="Salvage not used during last operation"/>
+      <bit_field_value name="FSTAT_SALV_USED_salv_used1" value="0b1" description="Salvage used during the last erase operation"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="6" reset_value="0"/>
+    <bit_field offset="24" width="2" name="PEWEN" access="RO" reset_value="0" description="Program-Erase Write Enable Control">
+      <alias type="CMSIS" value="FMU_FSTAT_PEWEN(x)"/>
+      <bit_field_value name="FSTAT_PEWEN_pewen00" value="0b00" description="Writes are not enabled"/>
+      <bit_field_value name="FSTAT_PEWEN_pewen01" value="0b01" description="Writes are enabled for one flash or IFR phrase (phrase programming, sector erase)"/>
+      <bit_field_value name="FSTAT_PEWEN_pewen10" value="0b10" description="Writes are enabled for one flash or IFR page (page programming)"/>
+      <bit_field_value name="FSTAT_PEWEN_pewen11" value="0b11" description="Reserved"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="5" reset_value="0"/>
+    <bit_field offset="31" width="1" name="PERDY" access="W1C" reset_value="0" description="Program-Erase Ready Control/Status Flag">
+      <alias type="CMSIS" value="FMU_FSTAT_PERDY(x)"/>
+      <bit_field_value name="FSTAT_PERDY_perdy0" value="0b0" description="Program or sector erase command operation not stalled"/>
+      <bit_field_value name="FSTAT_PERDY_perdy1" value="0b1" description="Program or sector erase command operation ready to execute"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="FCNFG" description="Flash Configuration Register">
+    <alias type="CMSIS" value="FCNFG"/>
+    <reserved_bit_field offset="0" width="7" reset_value="0"/>
+    <bit_field offset="7" width="1" name="CCIE" access="RW" reset_value="0" description="Command Complete Interrupt Enable">
+      <alias type="CMSIS" value="FMU_FCNFG_CCIE(x)"/>
+      <bit_field_value name="FCNFG_CCIE_ccie0" value="0b0" description="Command complete interrupt disabled"/>
+      <bit_field_value name="FCNFG_CCIE_ccie1" value="0b1" description="Command complete interrupt enabled"/>
+    </bit_field>
+    <bit_field offset="8" width="1" name="ERSREQ" access="RO" reset_value="0" description="Mass Erase Request">
+      <alias type="CMSIS" value="FMU_FCNFG_ERSREQ(x)"/>
+      <bit_field_value name="FCNFG_ERSREQ_ersreq0" value="0b0" description="No request or request complete"/>
+      <bit_field_value name="FCNFG_ERSREQ_ersreq1" value="0b1" description="Request to run the Mass Erase operation"/>
+    </bit_field>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <bit_field offset="16" width="1" name="DFDIE" access="RW" reset_value="0" description="Double Bit Fault Detect Interrupt Enable">
+      <alias type="CMSIS" value="FMU_FCNFG_DFDIE(x)"/>
+      <bit_field_value name="FCNFG_DFDIE_dfdie0" value="0b0" description="Double bit fault detect interrupt disabled"/>
+      <bit_field_value name="FCNFG_DFDIE_dfdie1" value="0b1" description="Double bit fault detect interrupt enabled"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="7" reset_value="0"/>
+    <bit_field offset="24" width="4" name="ERSIEN0" access="RO" reset_value="0" reset_mask="0" description="Erase IFR Sector Enable - Block 0">
+      <alias type="CMSIS" value="FMU_FCNFG_ERSIEN0(x)"/>
+      <bit_field_value name="FCNFG_ERSIEN0_ersien00" value="0b0000" description="Block 0 IFR Sector X is protected from erase by ERSSCR command"/>
+      <bit_field_value name="FCNFG_ERSIEN0_ersien01" value="0b0001" description="Block 0 IFR Sector X is not protected from erase by ERSSCR command"/>
+    </bit_field>
+    <bit_field offset="28" width="4" name="ERSIEN1" access="RO" reset_value="0" reset_mask="0" description="Erase IFR Sector Enable - Block 1 (for dual block configs)">
+      <alias type="CMSIS" value="FMU_FCNFG_ERSIEN1(x)"/>
+      <bit_field_value name="FCNFG_ERSIEN1_ersien10" value="0b0000" description="Block 1 IFR Sector X is protected from erase by ERSSCR command"/>
+      <bit_field_value name="FCNFG_ERSIEN1_ersien11" value="0b0001" description="Block 1 IFR Sector X is not protected from erase by ERSSCR command"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="FCTRL" description="Flash Control Register">
+    <alias type="CMSIS" value="FCTRL"/>
+    <bit_field offset="0" width="4" name="RWSC" access="RW" reset_value="0" reset_mask="0" description="Read Wait-State Control">
+      <alias type="CMSIS" value="FMU_FCTRL_RWSC(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <reserved_bit_field offset="8" width="1" reset_value="0"/>
+    <reserved_bit_field offset="9" width="7" reset_value="0"/>
+    <bit_field offset="16" width="1" name="FDFD" access="RW" reset_value="0" description="Force Double Bit Fault Detect">
+      <alias type="CMSIS" value="FMU_FCTRL_FDFD(x)"/>
+      <bit_field_value name="FCTRL_FDFD_fdfd0" value="0b0" description="FSTAT[DFDIF] sets only if a double bit fault is detected during a valid flash read access from the platform flash controller"/>
+      <bit_field_value name="FCTRL_FDFD_fdfd1" value="0b1" description="FSTAT[DFDIF] sets during any valid flash read access from the platform flash controller. An interrupt request is generated if the DFDIE bit is set."/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="7" reset_value="0"/>
+    <bit_field offset="24" width="1" name="ABTREQ" access="ROWO" reset_value="0" description="Abort Request">
+      <alias type="CMSIS" value="FMU_FCTRL_ABTREQ(x)"/>
+      <bit_field_value name="FCTRL_ABTREQ_abtreq0" value="0b0" description="No request to abort a command write sequence"/>
+      <bit_field_value name="FCTRL_ABTREQ_abtreq1" value="0b1" description="Request to abort a command write sequence"/>
+    </bit_field>
+    <reserved_bit_field offset="25" width="7" reset_value="0"/>
+  </register>
+  <reg_instance rid="16" vals="0x10 0"/>
+  <reg_instance rid="16" vals="0x14 1"/>
+  <reg_instance rid="16" vals="0x18 2"/>
+  <reg_instance rid="16" vals="0x1C 3"/>
+  <reg_instance rid="16" vals="0x20 4"/>
+  <reg_instance rid="16" vals="0x24 5"/>
+  <reg_instance rid="16" vals="0x28 6"/>
+  <reg_instance rid="16" vals="0x2C 7"/>
+</regs:peripheral>

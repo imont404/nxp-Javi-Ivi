@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <register offset="0x14" width="32" name="REG0_TOP" description="Region 0 Top Boundary">
+    <alias type="CMSIS" value="REG0_TOP"/>
+    <reserved_bit_field offset="0" width="10" reset_value="0"/>
+    <bit_field offset="10" width="19" name="REG0_TOP" access="RW" reset_value="0x2AAAA" description="Upper Limit Of Region 0">
+      <alias type="CMSIS" value="CACHE64_POLSEL_REG0_TOP_REG0_TOP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="REG1_TOP" description="Region 1 Top Boundary">
+    <alias type="CMSIS" value="REG1_TOP"/>
+    <reserved_bit_field offset="0" width="10" reset_value="0"/>
+    <bit_field offset="10" width="19" name="REG1_TOP" access="RW" reset_value="0x55555" description="Upper Limit Of Region 1">
+      <alias type="CMSIS" value="CACHE64_POLSEL_REG1_TOP_REG1_TOP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="POLSEL" description="Policy Select">
+    <alias type="CMSIS" value="POLSEL"/>
+    <bit_field offset="0" width="2" name="REG0_POLICY" access="RW" reset_value="0" description="Policy Select For Region 0">
+      <alias type="CMSIS" value="CACHE64_POLSEL_POLSEL_REG0_POLICY(x)"/>
+      <bit_field_value name="POLSEL_REG0_POLICY_REG0_00" value="0b00" description="Noncacheable"/>
+      <bit_field_value name="POLSEL_REG0_POLICY_REG0_01" value="0b01" description="Write-through"/>
+      <bit_field_value name="POLSEL_REG0_POLICY_REG0_10" value="0b10" description="Write-back"/>
+      <bit_field_value name="POLSEL_REG0_POLICY_REG0_11" value="0b11" description="Invalid"/>
+    </bit_field>
+    <bit_field offset="2" width="2" name="REG1_POLICY" access="RW" reset_value="0" description="Policy Select For Region 1">
+      <alias type="CMSIS" value="CACHE64_POLSEL_POLSEL_REG1_POLICY(x)"/>
+      <bit_field_value name="POLSEL_REG1_POLICY_REG1_00" value="0b00" description="Noncacheable"/>
+      <bit_field_value name="POLSEL_REG1_POLICY_REG1_01" value="0b01" description="Write-through"/>
+      <bit_field_value name="POLSEL_REG1_POLICY_REG1_10" value="0b10" description="Write-back"/>
+      <bit_field_value name="POLSEL_REG1_POLICY_REG1_11" value="0b11" description="Invalid"/>
+    </bit_field>
+    <bit_field offset="4" width="2" name="REG2_POLICY" access="RW" reset_value="0" description="Policy Select For Region 2">
+      <alias type="CMSIS" value="CACHE64_POLSEL_POLSEL_REG2_POLICY(x)"/>
+      <bit_field_value name="POLSEL_REG2_POLICY_REG2_00" value="0b00" description="Noncacheable"/>
+      <bit_field_value name="POLSEL_REG2_POLICY_REG2_01" value="0b01" description="Write-through"/>
+      <bit_field_value name="POLSEL_REG2_POLICY_REG2_10" value="0b10" description="Write-back"/>
+      <bit_field_value name="POLSEL_REG2_POLICY_REG2_11" value="0b11" description="Invalid"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="26" reset_value="0"/>
+  </register>
+</regs:peripheral>

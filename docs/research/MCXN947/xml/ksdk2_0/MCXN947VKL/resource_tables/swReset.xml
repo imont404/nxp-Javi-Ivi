@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<resource:resource_table xmlns:resource="http://swtools.freescale.net/XSD/resource/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/resource/1.0 http://swtools.freescale.net/XSD/resource/1.0/resource.xsd" id="swReset">
+  <user_types>
+    <struct id="peripheral" label="SW reset peripheral">
+      <string id="device" label="ID of the device"/>
+      <string id="submodule_name" label="Name of the submodule of the device"/>
+      <string id="submodule_index" label="Index of the submodule of the device"/>
+    </struct>
+    <struct id="swReset" label="SW reset">
+      <string id="name" label="SW reset name"/>
+      <struct id="control" label="SW reset control register">
+        <string id="peripheral" label="SW reset control peripheral"/>
+        <string id="register" label="SW reset control register"/>
+        <string id="bitfield" label="SW reset control bitfield"/>
+        <string id="enabled" label="SW reset enabled value"/>
+        <string id="disabled" label="SW reset disabled value"/>
+      </struct>
+      <array id="peripherals" label="SW reset peripherals" type="peripheral"/>
+    </struct>
+  </user_types>
+  <definition>
+    <array id="cm33_core0" label="SW resets list for cm33_core0" type="swReset"/>
+    <array id="cm33_core1" label="SW resets list for cm33_core1" type="swReset"/>
+  </definition>
+  <data>
+    <array name="cm33_core0">
+      <struct name="0">
+        <setting name="name" value="SCT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="PRESETCTRL1"/>
+          <setting name="bitfield" value="SCT_RST"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SCT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="1">
+        <setting name="name" value="PLU0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="PRESETCTRL2"/>
+          <setting name="bitfield" value="PLU_RST"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PLU0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="2">
+        <setting name="name" value="FLEXIO0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="PRESETCTRL2"/>
+          <setting name="bitfield" value="FLEXIO_RST"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FLEXIO0"/>
+          </struct>
+        </array>
+      </struct>
+    </array>
+    <array name="cm33_core1">
+      <struct name="0">
+        <setting name="name" value="SCT0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="PRESETCTRL1"/>
+          <setting name="bitfield" value="SCT_RST"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="SCT0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="1">
+        <setting name="name" value="PLU0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="PRESETCTRL2"/>
+          <setting name="bitfield" value="PLU_RST"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="PLU0"/>
+          </struct>
+        </array>
+      </struct>
+      <struct name="2">
+        <setting name="name" value="FLEXIO0"/>
+        <struct name="control">
+          <setting name="peripheral" value="SYSCON0"/>
+          <setting name="register" value="PRESETCTRL2"/>
+          <setting name="bitfield" value="FLEXIO_RST"/>
+          <setting name="enabled" value="1"/>
+          <setting name="disabled" value="0"/>
+        </struct>
+        <array name="peripherals">
+          <struct name="0">
+            <setting name="device" value="FLEXIO0"/>
+          </struct>
+        </array>
+      </struct>
+    </array>
+  </data>
+</resource:resource_table>

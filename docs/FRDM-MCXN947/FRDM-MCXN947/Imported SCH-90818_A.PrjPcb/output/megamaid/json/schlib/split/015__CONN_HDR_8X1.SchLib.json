@@ -1,0 +1,404 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "CONN_HDR_8X1.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "CONN_HDR_8X1",
+        "Description": "CON 1X8 SKT TH 100MIL SP 344H AU 118L",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "CONN_HDR_8X1",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "ZKMDWK55",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "CONN_HDR_8X1",
+            "Color": 128,
+            "AllPinCount": 8,
+            "ComponentDescription": "CON 1X8 SKT TH 100MIL SP 344H AU 118L",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJS3/6DOYaMhgzMNWo1DAAquAO/",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSb/6DOUaMRgzMNWo1DAAqKAO3",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSj/6DOcaMxgzMNWo1DAApmAOv",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 4,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSN/6DOSaMJgzMNWo1DAApCAOn",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 5,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJS5/6DOaaMpgzMNWo1DAAoeAOf",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 6,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSR/6DOWaMZgzMNWo1DAAn6AOX",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 7,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSu/6DOeaM5gzMNWo1DAAnWAOP",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 8,
+            "BinaryData": "eJxjYgACRgYIYGQx4gJSG/6DORaMFgzMNWo1DAAmyAOH",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 9,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "IZEQFROY",
+            "IndexInSheet": 8,
+            "Location.X": 13,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 10,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "BNEVURZA",
+            "IndexInSheet": 9,
+            "Location.X": 13,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 11,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "UIKBIHNW",
+            "IndexInSheet": 10,
+            "Location.X": 13,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 12,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "BJIYFOZS",
+            "IndexInSheet": 11,
+            "Location.X": 13,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 13,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "ABAAJJZM",
+            "IndexInSheet": 12,
+            "Location.X": 13,
+            "Location.Y": -50,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 14,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "JFNHTAUK",
+            "IndexInSheet": 13,
+            "Location.X": 13,
+            "Location.Y": -60,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 15,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "MQXDRFIA",
+            "IndexInSheet": 14,
+            "Location.X": 13,
+            "Location.Y": -70,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Ellipse",
+            "ObjectIndex": 16,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "LIOVJPSN",
+            "IndexInSheet": 15,
+            "Location.X": 13,
+            "Location.Y": -80,
+            "Color": 16714496,
+            "AreaColor": 16711680,
+            "Radius": 3,
+            "SecondaryRadius": 3
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 17,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OLUSQZQL",
+            "IndexInSheet": 16,
+            "Location.Y": -10,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -10,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 18,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "IYSCUGCA",
+            "IndexInSheet": 17,
+            "Location.Y": -20,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -20,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 19,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "OYMPQVBU",
+            "IndexInSheet": 18,
+            "Location.Y": -30,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -30,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 20,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "SAOBUDDU",
+            "IndexInSheet": 19,
+            "Location.Y": -40,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -40,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 21,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "MZTIGCUN",
+            "IndexInSheet": 20,
+            "Location.Y": -50,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -50,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 22,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "ZMVSNGGF",
+            "IndexInSheet": 21,
+            "Location.Y": -60,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -60,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 23,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "FOHKDDXS",
+            "IndexInSheet": 22,
+            "Location.Y": -70,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -70,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Line",
+            "ObjectIndex": 24,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "JZAQKPRE",
+            "IndexInSheet": 23,
+            "Location.Y": -80,
+            "Color": 16714496,
+            "Corner.X": 10,
+            "Corner.Y": -80,
+            "LineWidth": 1
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 25,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "VXQVNUUM",
+            "IndexInSheet": 24,
+            "Location.Y": -90,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 20,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 26,
+            "OwnerPartId": 1,
+            "UniqueID": "BAYGBDCK",
+            "Location.X": 0,
+            "Location.Y": 5,
+            "Name": "Designator",
+            "Text": "J?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 27
+          }
+        ]
+      }
+    ]
+  }
+}

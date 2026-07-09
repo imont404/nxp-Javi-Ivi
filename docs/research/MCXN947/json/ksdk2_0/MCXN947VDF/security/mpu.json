@@ -1,0 +1,22 @@
+{
+  "mpu_model": {
+    "@_xmlns": {
+      "mpu_model": "http://swtools.freescale.net/XSD/mpu_model/1.0",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/mpu_model/1.0 http://swtools.freescale.net/XSD/mpu_model/1.0/mpu_model-14.xsd",
+    "@mpu_count": "2",
+    "regions": {
+      "@align": "32_bytes",
+      "@size_restrictions": "32_bytes_min",
+      "@regions_max": "8",
+      "@sub_regions_max": "0"
+    },
+    "attributes": {
+      "@configuration_type": "direct",
+      "@normal_memory": "cacheability shareability cache_write_policy allocation_hints transientness",
+      "@device_memory": "gathering reordering early_acknowledgement",
+      "@allocation_hints_enabled_for_write_trough": "false"
+    }
+  }
+}

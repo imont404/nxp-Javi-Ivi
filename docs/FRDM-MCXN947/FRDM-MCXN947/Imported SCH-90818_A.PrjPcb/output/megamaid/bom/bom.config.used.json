@@ -1,0 +1,104 @@
+{
+  "schema": "altium_cruncher.bom.config.a0",
+  "field_aliases": {
+    "description": [
+      "Description",
+      "Desc"
+    ],
+    "footprint": [
+      "Footprint",
+      "Pattern",
+      "Package"
+    ],
+    "jlcpcb_part_number": [
+      "JLCPCB Part #",
+      "JLCPCB Part Number",
+      "JLC Part #",
+      "JLC Part Number",
+      "LCSC Part #",
+      "LCSC Part Number",
+      "LCSC"
+    ],
+    "manufacturer": [
+      "Manufacturer",
+      "Mfr",
+      "MFG",
+      "Manufacturer Name",
+      "Mfr Name"
+    ],
+    "manufacturer_part_number": [
+      "Manufacturer Part Number",
+      "MPN",
+      "Mfr Part Number",
+      "Mfr PN",
+      "MFG PN",
+      "Part Number"
+    ],
+    "value": [
+      "Value",
+      "Comment"
+    ]
+  },
+  "variants": {
+    "mode": "all",
+    "names": [],
+    "include_base": true
+  },
+  "bom": {
+    "source_mode": "schematic",
+    "outputs": [
+      "raw-json",
+      "grouped-xlsx"
+    ],
+    "group_fields": [
+      "mfg",
+      "mpn",
+      "description"
+    ],
+    "output_fields": [
+      "mfg",
+      "mpn",
+      "description",
+      "quantity",
+      "designators"
+    ],
+    "include_dnp": true,
+    "split_dnp": true,
+    "dnp_placement": "inline",
+    "highlight_dnp_rows": true,
+    "prefix_order": [],
+    "pcb_line_item": {
+      "enabled": false,
+      "designator": "PCB",
+      "fields": {}
+    }
+  },
+  "pnp": {
+    "outputs": [
+      "json",
+      "csv"
+    ],
+    "output_fields": [
+      "designator",
+      "comment",
+      "layer",
+      "footprint",
+      "center_x",
+      "center_y",
+      "rotation",
+      "description"
+    ],
+    "units": "mm",
+    "position_mode": "altium-pick-place",
+    "exclude_no_bom": false,
+    "layer_order": [
+      "top",
+      "bottom"
+    ],
+    "prefix_order": []
+  },
+  "output": {
+    "dir_template": "{Command}",
+    "name_template": "{SourceStem}_{VariantName}{OutputKindSuffix}"
+  }
+}

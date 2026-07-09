@@ -1,0 +1,4279 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "VERID",
+        "@description": "Version ID",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "VERID"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "FEATURE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Feature Specification Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_VERID_FEATURE(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "MINOR",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Minor Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_VERID_MINOR(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "MAJOR",
+            "@access": "RO",
+            "@reset_value": "0x3",
+            "@description": "Major Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_VERID_MAJOR(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "CKCTRL",
+        "@description": "Clock Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CKCTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "CKMODE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Clocking Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_CKCTRL_CKMODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CKCTRL_CKMODE_CKMODE0000",
+                "@value": "0b0000",
+                "@description": "No clock gating"
+              },
+              {
+                "@name": "CKCTRL_CKMODE_CKMODE0001",
+                "@value": "0b0001",
+                "@description": "Core clock is gated"
+              },
+              {
+                "@name": "CKCTRL_CKMODE_CKMODE1111",
+                "@value": "0b1111",
+                "@description": "Core, platform, and peripheral clocks are gated, and core enters Low-Power mode."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "LOCK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Lock",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_CKCTRL_LOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CKCTRL_LOCK_DISABLED",
+                "@value": "0b0",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "CKCTRL_LOCK_ENABLED",
+                "@value": "0b1",
+                "@description": "Blocked"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "27",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "CKSTAT",
+        "@description": "Clock Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CKSTAT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "CKMODE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Low Power Status",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_CKSTAT_CKMODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CKSTAT_CKMODE_CKMODE0000",
+                "@value": "0b0000",
+                "@description": "Core clock not gated"
+              },
+              {
+                "@name": "CKSTAT_CKMODE_CKMODE0001",
+                "@value": "0b0001",
+                "@description": "Core clock was gated"
+              },
+              {
+                "@name": "CKSTAT_CKMODE_CKMODE1111",
+                "@value": "0b1111",
+                "@description": "Core, platform, and peripheral clocks were gated, and power domain entered Low-Power mode"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "WAKEUP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Wake-up Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_CKSTAT_WAKEUP(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "VALID",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Clock Status Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_CKSTAT_VALID(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CKSTAT_VALID_DISABLED",
+                "@value": "0b0",
+                "@description": "Core clock not gated"
+              },
+              {
+                "@name": "CKSTAT_VALID_ENABLED",
+                "@value": "0b1",
+                "@description": "Core clock was gated due to Low-Power mode entry"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "15",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "PMPROT",
+        "@description": "Power Mode Protection",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PMPROT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "LPMODE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Low-Power Mode",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_PMPROT_LPMODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMPROT_LPMODE_DISABLED",
+                "@value": "0b0000",
+                "@description": "Not allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN",
+                "@value": "0b0001",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN1",
+                "@value": "0b0010",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN2",
+                "@value": "0b0011",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN3",
+                "@value": "0b0100",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN4",
+                "@value": "0b0101",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN5",
+                "@value": "0b0110",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN6",
+                "@value": "0b0111",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN7",
+                "@value": "0b1000",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN8",
+                "@value": "0b1001",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN9",
+                "@value": "0b1010",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN10",
+                "@value": "0b1011",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN11",
+                "@value": "0b1100",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN12",
+                "@value": "0b1101",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN13",
+                "@value": "0b1110",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LPMODE_EN14",
+                "@value": "0b1111",
+                "@description": "Allowed"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "LOCK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Lock Register",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_PMPROT_LOCK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMPROT_LOCK_DISABLED",
+                "@value": "0b0",
+                "@description": "Allowed"
+              },
+              {
+                "@name": "PMPROT_LOCK_ENABLED",
+                "@value": "0b1",
+                "@description": "Blocked"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "27",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x1C",
+        "@width": "32",
+        "@name": "GPMCTRL",
+        "@description": "Global Power Mode Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "GPMCTRL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "4",
+          "@name": "LPMODE",
+          "@access": "WORZ",
+          "@reset_value": "0",
+          "@description": "Low-Power Mode",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_GPMCTRL_LPMODE(x)"
+          }
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "27",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x20",
+        "@width": "32",
+        "@name": "PMCTRLMAIN",
+        "@description": "Power Mode Control",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PMCTRL[0]"
+          },
+          {
+            "@type": "id",
+            "@value": "PMCTRL0"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "4",
+          "@name": "LPMODE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Low-Power Mode",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_PMCTRL_LPMODE(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCTRLMAIN_LPMODE_LPMODE0000",
+              "@value": "0b0000",
+              "@description": "Active/Sleep"
+            },
+            {
+              "@name": "PMCTRLMAIN_LPMODE_LPMODE0001",
+              "@value": "0b0001",
+              "@description": "Deep Sleep"
+            },
+            {
+              "@name": "PMCTRLMAIN_LPMODE_LPMODE0011",
+              "@value": "0b0011",
+              "@description": "Power Down"
+            },
+            {
+              "@name": "PMCTRLMAIN_LPMODE_LPMODE0111",
+              "@value": "0b0111",
+              "@description": "Reserved"
+            },
+            {
+              "@name": "PMCTRLMAIN_LPMODE_LPMODE1111",
+              "@value": "0b1111",
+              "@description": "Deep-Power Down"
+            }
+          ]
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "26",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x24",
+        "@width": "32",
+        "@name": "PMCTRLWAKE",
+        "@description": "Power Mode Control",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "PMCTRL[1]"
+          },
+          {
+            "@type": "id",
+            "@value": "PMCTRL1"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "4",
+          "@name": "LPMODE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Low-Power Mode",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_PMCTRL_LPMODE(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCTRLWAKE_LPMODE_LPMODE0000",
+              "@value": "0b0000",
+              "@description": "Active/Sleep"
+            },
+            {
+              "@name": "PMCTRLWAKE_LPMODE_LPMODE0001",
+              "@value": "0b0001",
+              "@description": "Deep Sleep"
+            },
+            {
+              "@name": "PMCTRLWAKE_LPMODE_LPMODE0011",
+              "@value": "0b0011",
+              "@description": "Power Down"
+            },
+            {
+              "@name": "PMCTRLWAKE_LPMODE_LPMODE0111",
+              "@value": "0b0111",
+              "@description": "Reserved"
+            },
+            {
+              "@name": "PMCTRLWAKE_LPMODE_LPMODE1111",
+              "@value": "0b1111",
+              "@description": "Deep-Power Down"
+            }
+          ]
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "26",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x80",
+        "@width": "32",
+        "@name": "SRS",
+        "@description": "System Reset Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SRS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "WAKEUP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Wake-up Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_WAKEUP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_WAKEUP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_WAKEUP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "POR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Power-on Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_POR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_POR_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_POR_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "VD",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Voltage Detect Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_VD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_VD_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_VD_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "WARM",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Warm Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_WARM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_WARM_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_WARM_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "FATAL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Fatal Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_FATAL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_FATAL_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset was not generated"
+              },
+              {
+                "@name": "SRS_FATAL_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset was generated"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "PIN",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Pin Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_PIN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_PIN_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset was not generated"
+              },
+              {
+                "@name": "SRS_PIN_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset was generated"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "DAP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Debug Access Port Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_DAP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_DAP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset was not generated"
+              },
+              {
+                "@name": "SRS_DAP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset was generated"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "RSTACK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Reset Timeout",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_RSTACK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_RSTACK_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_RSTACK_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "LPACK",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Low Power Acknowledge Timeout Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_LPACK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_LPACK_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_LPACK_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "SCG",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "System Clock Generation Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_SCG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_SCG_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SRS_SCG_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "WWDT0",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Windowed Watchdog 0 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_WWDT0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_WWDT0_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SRS_WWDT0_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "SW",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Software Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_SW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_SW_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_SW_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "LOCKUP",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Lockup Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_LOCKUP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_LOCKUP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_LOCKUP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "CPU1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "CPU1 System Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_CPU1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_CPU1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_CPU1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "VBAT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "VBAT System Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_VBAT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_VBAT_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_VBAT_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "WWDT1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Windowed Watchdog 1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_WWDT1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_WWDT1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SRS_WWDT1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "CDOG0",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Code Watchdog 0 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_CDOG0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_CDOG0_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SRS_CDOG0_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "CDOG1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Code Watchdog 1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_CDOG1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_CDOG1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SRS_CDOG1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "JTAG",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "JTAG System Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_JTAG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_JTAG_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_JTAG_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "SECVIO",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Security Violation Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_SECVIO(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_SECVIO_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_SECVIO_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "TAMPER",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@reset_mask": "0",
+            "@description": "Tamper Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRS_TAMPER(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRS_TAMPER_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SRS_TAMPER_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "5",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@reset_value": "0",
+            "@reset_mask": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x84",
+        "@width": "32",
+        "@name": "RPC",
+        "@description": "Reset Pin Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "RPC"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "FILTCFG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Reset Filter Configuration",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_RPC_FILTCFG(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "FILTEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_RPC_FILTEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RPC_FILTEN_DISABLED",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "RPC_FILTEN_ENABLED",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "LPFEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Low-Power Filter Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_RPC_LPFEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RPC_LPFEN_DISABLED",
+                "@value": "0b0",
+                "@description": "Disables"
+              },
+              {
+                "@name": "RPC_LPFEN_ENABLED",
+                "@value": "0b1",
+                "@description": "Enables"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "22",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x88",
+        "@width": "32",
+        "@name": "SSRS",
+        "@description": "Sticky System Reset Status",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SSRS"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "WAKEUP",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_WAKEUP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_WAKEUP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_WAKEUP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "POR",
+            "@access": "W1C",
+            "@reset_value": "0x1",
+            "@description": "Power-on Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_POR(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_POR_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_POR_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "VD",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Voltage Detect Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_VD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_VD_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_VD_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "WARM",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Warm Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_WARM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_WARM_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_WARM_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "FATAL",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Fatal Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_FATAL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_FATAL_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset was not generated"
+              },
+              {
+                "@name": "SSRS_FATAL_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset was generated"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "PIN",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Pin Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_PIN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_PIN_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_PIN_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "DAP",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "DAP Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_DAP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_DAP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_DAP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "RSTACK",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Reset Timeout",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_RSTACK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_RSTACK_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_RSTACK_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "LPACK",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Low Power Acknowledge Timeout Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_LPACK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_LPACK_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_LPACK_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "SCG",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "System Clock Generation Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_SCG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_SCG_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SSRS_SCG_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "WWDT0",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Windowed Watchdog 0 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_WWDT0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_WWDT0_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SSRS_WWDT0_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "SW",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Software Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_SW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_SW_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_SW_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "LOCKUP",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Lockup Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_LOCKUP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_LOCKUP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_LOCKUP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "CPU1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "CPU1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_CPU1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_CPU1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated from CPU1 reset source."
+              },
+              {
+                "@name": "SSRS_CPU1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated from CPU1 reset source."
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "VBAT",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "VBAT System Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_VBAT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_VBAT_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_VBAT_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "WWDT1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Windowed Watchdog 1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_WWDT1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_WWDT1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SSRS_WWDT1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "CDOG0",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 0 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_CDOG0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_CDOG0_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SSRS_CDOG0_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "CDOG1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_CDOG1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_CDOG1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset is not generated"
+              },
+              {
+                "@name": "SSRS_CDOG1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset is generated"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "JTAG",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "JTAG System Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_JTAG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_JTAG_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_JTAG_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "SECVIO",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Security Violation Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_SECVIO(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_SECVIO_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_SECVIO_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "TAMPER",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Tamper Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SSRS_TAMPER(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SSRS_TAMPER_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset not generated"
+              },
+              {
+                "@name": "SSRS_TAMPER_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset generated"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x8C",
+        "@width": "32",
+        "@name": "SRIE",
+        "@description": "System Reset Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SRIE"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "PIN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Pin Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_PIN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_PIN_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_PIN_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "DAP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DAP Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_DAP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_DAP_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_DAP_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "LPACK",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Low Power Acknowledge Timeout Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_LPACK(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_LPACK_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_LPACK_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "SCG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "System Clock Generation Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_SCG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_SCG_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_SCG_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "WWDT0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Windowed Watchdog 0 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_WWDT0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_WWDT0_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_WWDT0_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "SW",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Software Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_SW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_SW_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_SW_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "LOCKUP",
+            "@access": "RW",
+            "@reset_value": "0x1",
+            "@description": "Lockup Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_LOCKUP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_LOCKUP_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_LOCKUP_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "CPU1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "CPU1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_CPU1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_CPU1_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_CPU1_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "VBAT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "VBAT System Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_VBAT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_VBAT_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_VBAT_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "WWDT1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Windowed Watchdog 1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_WWDT1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_WWDT1_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_WWDT1_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "CDOG0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 0 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_CDOG0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_CDOG0_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_CDOG0_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "CDOG1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIE_CDOG1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIE_CDOG1_DISABLED",
+                "@value": "0b0",
+                "@description": "Interrupt disabled"
+              },
+              {
+                "@name": "SRIE_CDOG1_ENABLED",
+                "@value": "0b1",
+                "@description": "Interrupt enabled"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x90",
+        "@width": "32",
+        "@name": "SRIF",
+        "@description": "System Reset Interrupt Flag",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SRIF"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "PIN",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Pin Reset",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "CMC_SRIF_PIN(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "PINF"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "SRIF_PIN_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_PIN_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "DAP",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "DAP Reset",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "CMC_SRIF_DAP(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "DAPF"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "SRIF_DAP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_DAP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "LPACK",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Low Power Acknowledge Timeout Reset",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "CMC_SRIF_LPACK(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "LPACKF"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "SRIF_LPACK_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_LPACK_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "WWDT0",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Windowed Watchdog 0 Reset",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "CMC_SRIF_WWDT0(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "WWDTF0"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "SRIF_WWDT0_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_WWDT0_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "SW",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Software Reset",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "CMC_SRIF_SW(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "SWF"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "SRIF_SW_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_SW_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "LOCKUP",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Lockup Reset",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "CMC_SRIF_LOCKUP(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "LOCKUPF"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "SRIF_LOCKUP_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_LOCKUP_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "CPU1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "CPU1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIF_CPU1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIF_CPU1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_CPU1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "VBAT",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "VBAT System Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIF_VBAT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIF_VBAT_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_VBAT_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "WWDT1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Windowed Watchdog 1 Reset",
+            "alias": [
+              {
+                "@type": "CMSIS",
+                "@value": "CMC_SRIF_WWDT1(x)"
+              },
+              {
+                "@type": "id",
+                "@value": "WWDTF1"
+              }
+            ],
+            "bit_field_value": [
+              {
+                "@name": "SRIF_WWDT1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_WWDT1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "CDOG0",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 0 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIF_CDOG0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIF_CDOG0_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_CDOG0_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "CDOG1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Code Watchdog 1 Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRIF_CDOG1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRIF_CDOG1_DISABLED",
+                "@value": "0b0",
+                "@description": "Reset source not pending"
+              },
+              {
+                "@name": "SRIF_CDOG1_ENABLED",
+                "@value": "0b1",
+                "@description": "Reset source pending"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x9C",
+        "@width": "32",
+        "@name": "RSTCNT",
+        "@description": "Reset Count Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "RSTCNT"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "COUNT",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Count",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_RSTCNT_COUNT(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "8",
+          "@width": "24",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xA0",
+        "@width": "32",
+        "@name": "MR0",
+        "@description": "Mode",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MR[0]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "ISPMODE_n",
+          "@access": "W1C",
+          "@reset_value": "0",
+          "@description": "In System Programming Mode",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_MR_ISPMODE_n(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xB0",
+        "@width": "32",
+        "@name": "FM0",
+        "@description": "Force Mode",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FM[0]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "FORCECFG",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Boot Configuration",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_FM_FORCECFG(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "FM0_FORCECFG_DISABLED",
+              "@value": "0b0",
+              "@description": "No effect"
+            },
+            {
+              "@name": "FM0_FORCECFG_ENABLED",
+              "@value": "0b1",
+              "@description": "Asserts"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0xC0",
+        "@width": "32",
+        "@name": "SRAMDIS0",
+        "@description": "SRAM Disable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SRAMDIS[0]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "DIS0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS0_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS0_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "DIS1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS1_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS1_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "DIS2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS2_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS2_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "DIS3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS3_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS3_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "DIS4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS4_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS4_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "DIS5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS5_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS5_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "DIS6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS6_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS6_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "DIS7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS7_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS7_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "DIS8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS8_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS8_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "DIS9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS9_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS9_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "DIS10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS10_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS10_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "DIS11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS11_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS11_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "DIS12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS12_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS12_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "DIS13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS13_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS13_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "DIS14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS14_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS14_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "DIS15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS15_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS15_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "DIS16",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS16(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS16_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS16_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "DIS17",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS17(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS17_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS17_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "DIS18",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS18(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS18_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS18_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "DIS19",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS19(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS19_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS19_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "DIS20",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS20(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS20_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS20_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "DIS21",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS21(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS21_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS21_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "DIS22",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS22(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS22_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS22_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "DIS23",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS23(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS23_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS23_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "DIS24",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS24(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS24_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS24_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "DIS25",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS25(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS25_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS25_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "DIS26",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS26(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS26_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS26_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "DIS27",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS27(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS27_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS27_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "DIS28",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS28(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS28_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS28_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "DIS29",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS29(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS29_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS29_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "DIS30",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS30(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS30_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS30_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "DIS31",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMDIS_DIS31(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMDIS0_DIS31_ENABLED",
+                "@value": "0b0",
+                "@description": "Enables"
+              },
+              {
+                "@name": "SRAMDIS0_DIS31_DISABLED",
+                "@value": "0b1",
+                "@description": "Disables"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0xD0",
+        "@width": "32",
+        "@name": "SRAMRET0",
+        "@description": "SRAM Retention",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SRAMRET[0]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "RET0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET0_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET0_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "RET1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET1_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET1_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "RET2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET2_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET2_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "RET3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET3_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET3_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "RET4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET4_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET4_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "RET5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET5_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET5_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "RET6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET6_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET6_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "RET7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET7_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET7_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "RET8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET8_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET8_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "RET9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET9_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET9_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "RET10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET10_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET10_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "RET11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET11_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET11_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "RET12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET12_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET12_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "RET13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET13_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET13_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "RET14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET14_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET14_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "RET15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET15_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET15_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "RET16",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET16(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET16_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET16_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "RET17",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET17(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET17_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET17_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "RET18",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET18(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET18_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET18_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "RET19",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET19(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET19_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET19_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "RET20",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET20(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET20_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET20_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "RET21",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET21(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET21_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET21_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "RET22",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET22(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET22_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET22_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "RET23",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET23(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET23_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET23_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "RET24",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET24(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET24_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET24_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "RET25",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET25(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET25_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET25_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "RET26",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET26(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET26_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET26_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "RET27",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET27(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET27_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET27_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "RET28",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET28(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET28_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET28_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "RET29",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET29(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET29_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET29_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "RET30",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET30(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET30_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET30_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "RET31",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SRAM Retention",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_SRAMRET_RET31(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SRAMRET0_RET31_POWEREDOFF",
+                "@value": "0b0",
+                "@description": "Retains"
+              },
+              {
+                "@name": "SRAMRET0_RET31_RETAINED",
+                "@value": "0b1",
+                "@description": "Powers off"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0xE0",
+        "@width": "32",
+        "@name": "FLASHCR",
+        "@description": "Flash Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FLASHCR"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "FLASHDIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Flash Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_FLASHCR_FLASHDIS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLASHCR_FLASHDIS_DISABLED",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "FLASHCR_FLASHDIS_ENABLED",
+                "@value": "0b1",
+                "@description": "Flash memory is disabled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "FLASHDOZE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Flash Doze",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "CMC_FLASHCR_FLASHDOZE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FLASHCR_FLASHDOZE_DISABLED",
+                "@value": "0b0",
+                "@description": "No effect"
+              },
+              {
+                "@name": "FLASHCR_FLASHDOZE_ENABLED",
+                "@value": "0b1",
+                "@description": "Flash memory is disabled when core is sleeping (CKMODE > 0)"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "3",
+            "@width": "29",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x100",
+        "@width": "32",
+        "@name": "BSR",
+        "@description": "BootROM Status Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "BSR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "STAT",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Provides status information written by the BootROM.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_BSR_STAT(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x10C",
+        "@width": "32",
+        "@name": "BLR",
+        "@description": "BootROM Lock Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "BLR"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "3",
+          "@name": "LOCK",
+          "@access": "RW",
+          "@reset_value": "0x2",
+          "@description": "Lock",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_BLR_LOCK(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "BLR_LOCK_LOCK010",
+              "@value": "0b010",
+              "@description": "BootROM Status and Lock Registers can be written"
+            },
+            {
+              "@name": "BLR_LOCK_LOCK101",
+              "@value": "0b101",
+              "@description": "BootROM Status and Lock Registers cannot be written"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "3",
+          "@width": "29",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x110",
+        "@width": "32",
+        "@name": "CORECTL",
+        "@description": "Core Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CORECTL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "NPIE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Non-maskable Pin Interrupt Enable",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_CORECTL_NPIE(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "CORECTL_NPIE_DISABLED",
+              "@value": "0b0",
+              "@description": "Disables"
+            },
+            {
+              "@name": "CORECTL_NPIE_ENABLED",
+              "@value": "0b1",
+              "@description": "Enables"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x120",
+        "@width": "32",
+        "@name": "DBGCTL",
+        "@description": "Debug Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DBGCTL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "SOD",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Sleep Or Debug",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "CMC_DBGCTL_SOD(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "DBGCTL_SOD_DISABLED",
+              "@value": "0b0",
+              "@description": "Remains enabled"
+            },
+            {
+              "@name": "DBGCTL_SOD_ENABLED",
+              "@value": "0b1",
+              "@description": "Disabled"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      }
+    ]
+  }
+}

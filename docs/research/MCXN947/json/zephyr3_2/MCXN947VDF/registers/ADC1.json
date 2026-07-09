@@ -1,0 +1,3687 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "160",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "TCTRL{1}",
+        "@description": "Trigger Control Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TCTRL[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "HTEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TCTRL_HTEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TCTRL{1}_HTEN_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "TCTRL{1}_HTEN_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "FIFO_SEL_A",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SAR Result Destination for Channel A",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TCTRL_FIFO_SEL_A(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TCTRL{1}_FIFO_SEL_A_STORE_TO_FIFO0",
+                "@value": "0b0",
+                "@description": "FIFO 0"
+              },
+              {
+                "@name": "TCTRL{1}_FIFO_SEL_A_STORE_TO_FIFO1",
+                "@value": "0b1",
+                "@description": "FIFO 1"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "FIFO_SEL_B",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "SAR Result Destination for Channel B",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TCTRL_FIFO_SEL_B(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TCTRL{1}_FIFO_SEL_B_STORE_TO_FIFO0",
+                "@value": "0b0",
+                "@description": "FIFO 0"
+              },
+              {
+                "@name": "TCTRL{1}_FIFO_SEL_B_STORE_TO_FIFO1",
+                "@value": "0b1",
+                "@description": "FIFO 1"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "TPRI",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Priority Setting",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TCTRL_TPRI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TCTRL{1}_TPRI_HIGHEST_PRIORITY",
+                "@value": "0b00",
+                "@description": "Highest priority, Level 1"
+              },
+              {
+                "@name": "TCTRL{1}_TPRI_CORRESPONDING_LOWER_PRIORITY",
+                "@value": "0b01-0b10",
+                "@description": "Set to corresponding priority level."
+              },
+              {
+                "@name": "TCTRL{1}_TPRI_LOWEST_PRIORITY",
+                "@value": "0b11",
+                "@description": "Lowest priority, Level 4"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "RSYNC",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Resync",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TCTRL_RSYNC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TCTRL{1}_RSYNC_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "TCTRL{1}_RSYNC_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "TDLY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Delay Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TCTRL_TDLY(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "TCMD",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Command Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TCTRL_TCMD(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TCTRL{1}_TCMD_NOT_VALID",
+                "@value": "0b0000",
+                "@description": "Not a valid selection from the command buffer. Trigger event is ignored."
+              },
+              {
+                "@name": "TCTRL{1}_TCMD_EXECUTE_CMD1",
+                "@value": "0b0001",
+                "@description": "CMD1"
+              },
+              {
+                "@name": "TCTRL{1}_TCMD_EXECUTE_CORRESPONDING_CMD",
+                "@value": "0b0010-0b1110",
+                "@description": "Corresponding CMD is executed"
+              },
+              {
+                "@name": "TCTRL{1}_TCMD_EXECUTE_CMD15",
+                "@value": "0b1111",
+                "@description": "CMD15"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "5",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "224",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "FCTRL{1}",
+        "@description": "FIFO Control Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FCTRL[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "FCOUNT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Result FIFO Counter",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_FCTRL_FCOUNT(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "FWMARK",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Watermark Level Selection",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_FCTRL_FWMARK(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "11",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "240",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "GCC{1}",
+        "@description": "Gain Calibration Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "GCC[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "GAIN_CAL",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Gain Calibration Value",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_GCC_GAIN_CAL(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "RDY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Gain Calibration Value Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_GCC_RDY(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GCC{1}_RDY_GAIN_CAL_NOT_VALID",
+                "@value": "0b0",
+                "@description": "Invalid"
+              },
+              {
+                "@name": "GCC{1}_RDY_HARDWARE_CAL_ROUTINE_COMPLETED",
+                "@value": "0b1",
+                "@description": "Valid"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "25",
+            "@width": "7",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "248",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "GCR{1}",
+        "@description": "Gain Calculation Result",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "GCR[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "GCALR",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Gain Calculation Result",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_GCR_GCALR(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "RDY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Gain Calculation Ready",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_GCR_RDY(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "GCR{1}_RDY_NOT_VALID",
+                "@value": "0b0",
+                "@description": "Invalid"
+              },
+              {
+                "@name": "GCR{1}_RDY_VALID",
+                "@value": "0b1",
+                "@description": "Valid"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "25",
+            "@width": "7",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "256",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CMDL{1}",
+        "@description": "Command Low Buffer Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CMD[{2}].CMDL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "ADCH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Input Channel Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDL_ADCH(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_ADCH_SELECT_CH0",
+                "@value": "0b00000",
+                "@description": "CH0A or CH0B or CH0A/CH0B pair."
+              },
+              {
+                "@name": "CMD_ADCH_SELECT_CH1",
+                "@value": "0b00001",
+                "@description": "CH1A or CH1B or CH1A/CH1B pair."
+              },
+              {
+                "@name": "CMD_ADCH_SELECT_CH2",
+                "@value": "0b00010",
+                "@description": "CH2A or CH2B or CH2A/CH2B pair."
+              },
+              {
+                "@name": "CMD_ADCH_SELECT_CH3",
+                "@value": "0b00011",
+                "@description": "CH3A or CH3B or CH3A/CH3B pair."
+              },
+              {
+                "@name": "CMD_ADCH_SELECT_CORRESPONDING_CHANNEL",
+                "@value": "0b00100-0b11101",
+                "@description": "Select corresponding channel CHnA or CHnB or CHnA/CHnB pair."
+              },
+              {
+                "@name": "CMD_ADCH_SELECT_CH30",
+                "@value": "0b11110",
+                "@description": "CH30A or CH30B or CH30A/CH30B pair."
+              },
+              {
+                "@name": "CMD_ADCH_SELECT_CH31",
+                "@value": "0b11111",
+                "@description": "CH31A or CH31B or CH31A/CH31B pair."
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "2",
+            "@name": "CTYPE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Conversion Type",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDL_CTYPE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_CTYPE_SINGLE_ENDED_A_SIDE_CHANNEL",
+                "@value": "0b00",
+                "@description": "Single-Ended mode. Only A-side channel is converted."
+              },
+              {
+                "@name": "CMD_CTYPE_SINGLE_ENDED_B_SIDE_CHANNEL",
+                "@value": "0b01",
+                "@description": "Single-Ended mode. Only B-side channel is converted."
+              },
+              {
+                "@name": "CMD_CTYPE_DIFFERENTIAL_A_MINUS_B",
+                "@value": "0b10",
+                "@description": "Differential mode. A-B."
+              },
+              {
+                "@name": "CMD_CTYPE_DUAL_A_AND_B",
+                "@value": "0b11",
+                "@description": "Dual-Single-Ended mode. Both A-side and B-side channels are converted independently."
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "MODE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Select Resolution of Conversions",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDL_MODE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_MODE_DATA_12_BITS",
+                "@value": "0b0",
+                "@description": "Standard resolution. Single-ended 12-bit conversion; differential 13-bit conversion with 2's complement output."
+              },
+              {
+                "@name": "CMD_MODE_DATA_16_BITS",
+                "@value": "0b1",
+                "@description": "High resolution. Single-ended 16-bit conversion; differential 16-bit conversion with 2's complement output."
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "ALTB_ADCH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Alternate Channel B Input Channel Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDL_ALTB_ADCH(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_ALTB_ADCH_SELECT_CH0B",
+                "@value": "0b00000",
+                "@description": "Select CH0B"
+              },
+              {
+                "@name": "CMD_ALTB_ADCH_SELECT_CH1B",
+                "@value": "0b00001",
+                "@description": "Select CH1B"
+              },
+              {
+                "@name": "CMD_ALTB_ADCH_SELECT_CH2B",
+                "@value": "0b00010",
+                "@description": "Select CH2B"
+              },
+              {
+                "@name": "CMD_ALTB_ADCH_SELECT_CH3B",
+                "@value": "0b00011",
+                "@description": "Select CH3B"
+              },
+              {
+                "@name": "CMD_ALTB_ADCH_SELECT_CORRESPONDING_CHnB",
+                "@value": "0b00100-0b11101",
+                "@description": "Select corresponding channel CHnB"
+              },
+              {
+                "@name": "CMD_ALTB_ADCH_SELECT_CH30B",
+                "@value": "0b11110",
+                "@description": "Select CH30B"
+              },
+              {
+                "@name": "CMD_ALTB_ADCH_SELECT_CH31B",
+                "@value": "0b11111",
+                "@description": "Select CH31B"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "ALTBEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Alternate Channel B Select Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDL_ALTBEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_ALTBEN_DISABLED",
+                "@value": "0b0",
+                "@description": "ALTBEN_ADCH disabled. Channel-A and Channel-B inputs are selected based on ADCH settings."
+              },
+              {
+                "@name": "CMD_ALTBEN_ENABLED",
+                "@value": "0b1",
+                "@description": "ALTBEN_ADCH enabled. Channel-A inputs are selected by ADCH setting and Channel-B inputs are selected by ALTB_ADCH setting."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "22",
+            "@width": "10",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "260",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CMDH{1}",
+        "@description": "Command High Buffer Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CMD[{2}].CMDH"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "CMPEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Compare Function Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDH_CMPEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_CMPEN_DISABLED_ALWAYS_STORE_RESULT",
+                "@value": "0b00",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CMD_CMPEN_0b01",
+                "@value": "0b01",
+                "@description": "Reserved value."
+              },
+              {
+                "@name": "CMD_CMPEN_COMPARE_RESULT_STORE_IF_TRUE",
+                "@value": "0b10",
+                "@description": "Enabled. Store on true."
+              },
+              {
+                "@name": "CMD_CMPEN_COMPARE_RESULT_KEEP_CONVERTING_UNTIL_TRUE_STORE_IF_TRUE",
+                "@value": "0b11",
+                "@description": "Enabled. Repeat channel acquisition (sample, convert, and compare) until true."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "WAIT_TRIG",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wait for Trigger Assertion Before Execution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDH_WAIT_TRIG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_WAIT_TRIG_DISABLED",
+                "@value": "0b0",
+                "@description": "Command executes automatically."
+              },
+              {
+                "@name": "CMD_WAIT_TRIG_ENABLED",
+                "@value": "0b1",
+                "@description": "Active trigger must be asserted again before executing this command."
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "LWI",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Loop with Increment",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDH_LWI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_LWI_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CMD_LWI_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "3",
+            "@name": "STS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sample Time Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDH_STS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_STS_SAMPLE_3p5",
+                "@value": "0b000",
+                "@description": "Minimum sample time of 3.5 ADCK cycles."
+              },
+              {
+                "@name": "CMD_STS_SAMPLE_5p5",
+                "@value": "0b001",
+                "@description": "5.5 ADCK cycles"
+              },
+              {
+                "@name": "CMD_STS_SAMPLE_7p5",
+                "@value": "0b010",
+                "@description": "7.5 ADCK cycles"
+              },
+              {
+                "@name": "CMD_STS_SAMPLE_11p5",
+                "@value": "0b011",
+                "@description": "11.5 ADCK cycles"
+              },
+              {
+                "@name": "CMD_STS_SAMPLE_19p5",
+                "@value": "0b100",
+                "@description": "19.5 ADCK cycles"
+              },
+              {
+                "@name": "CMD_STS_SAMPLE_35p5",
+                "@value": "0b101",
+                "@description": "35.5 ADCK cycles"
+              },
+              {
+                "@name": "CMD_STS_SAMPLE_67p5",
+                "@value": "0b110",
+                "@description": "67.5 ADCK cycles"
+              },
+              {
+                "@name": "CMD_STS_SAMPLE_131p5",
+                "@value": "0b111",
+                "@description": "131.5 ADCK cycles"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "4",
+            "@name": "AVGS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Hardware Average Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDH_AVGS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_AVGS_NO_AVERAGE",
+                "@value": "0b0000",
+                "@description": "Single conversion"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_2",
+                "@value": "0b0001",
+                "@description": "2"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_4",
+                "@value": "0b0010",
+                "@description": "4"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_8",
+                "@value": "0b0011",
+                "@description": "8"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_16",
+                "@value": "0b0100",
+                "@description": "16"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_32",
+                "@value": "0b0101",
+                "@description": "32"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_64",
+                "@value": "0b0110",
+                "@description": "64"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_128",
+                "@value": "0b0111",
+                "@description": "128"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_256",
+                "@value": "0b1000",
+                "@description": "256"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_512",
+                "@value": "0b1001",
+                "@description": "512"
+              },
+              {
+                "@name": "CMD_AVGS_AVERAGE_1024",
+                "@value": "0b1010",
+                "@description": "1024"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "LOOP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Loop Count Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDH_LOOP(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_LOOP_CMD_EXEC_1x",
+                "@value": "0b0000",
+                "@description": "Looping not enabled. Command executes one time."
+              },
+              {
+                "@name": "CMD_LOOP_CMD_EXEC_2x",
+                "@value": "0b0001",
+                "@description": "Loop one time. Command executes two times."
+              },
+              {
+                "@name": "CMD_LOOP_CMD_EXEC_3x",
+                "@value": "0b0010",
+                "@description": "Loop two times. Command executes three times."
+              },
+              {
+                "@name": "CMD_LOOP_CMD_EXECUTES_CORRESPONDING_TIMES",
+                "@value": "0b0011-0b1110",
+                "@description": "Loop corresponding number of times. Command executes LOOP + 1 times."
+              },
+              {
+                "@name": "CMD_LOOP_CMD_EXEC_15x",
+                "@value": "0b1111",
+                "@description": "Loop 15 times. Command executes 16 times."
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "NEXT",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Next Command Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CMDH_NEXT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CMD_NEXT_NO_NEXT_CMD_TERMINATE_ON_FINISH",
+                "@value": "0b0000",
+                "@description": "No next command defined. Terminate conversions at completion of current command. If lower priority trigger pending, begin command associated with lower priority trigger."
+              },
+              {
+                "@name": "CMD_NEXT_DO_CMD1_NEXT",
+                "@value": "0b0001",
+                "@description": "CMD1"
+              },
+              {
+                "@name": "CMD_NEXT_DO_CORRESPONDING_CMD_NEXT",
+                "@value": "0b0010-0b1110",
+                "@description": "Select corresponding CMD command buffer register as next command"
+              },
+              {
+                "@name": "CMD_NEXT_DO_CMD15_NEXT",
+                "@value": "0b1111",
+                "@description": "CMD15"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "3",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "512",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CV{1}",
+        "@description": "Compare Value Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CV[{2}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "CVL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Compare Value Low",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CV_CVL(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "CVH",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Compare Value High",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CV_CVH(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@rid": "768",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "RESFIFO{1}",
+        "@description": "Data Result FIFO Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "RESFIFO[{1}]"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "D",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Data Result",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_RESFIFO_D(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "TSRC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Trigger Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_RESFIFO_TSRC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RESFIFO{1}_TSRC_TRIGGER_0",
+                "@value": "0b00",
+                "@description": "Trigger source 0"
+              },
+              {
+                "@name": "RESFIFO{1}_TSRC_TRIGGER_1",
+                "@value": "0b01",
+                "@description": "Trigger source 1"
+              },
+              {
+                "@name": "RESFIFO{1}_TSRC_TRIGGER_2",
+                "@value": "0b10",
+                "@description": "Trigger source 2"
+              },
+              {
+                "@name": "RESFIFO{1}_TSRC_TRIGGER_3",
+                "@value": "0b11",
+                "@description": "Trigger source 3"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "4",
+            "@name": "LOOPCNT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Loop Count Value",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_RESFIFO_LOOPCNT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RESFIFO{1}_LOOPCNT_RESULT_1",
+                "@value": "0b0000",
+                "@description": "Result is from initial conversion in command."
+              },
+              {
+                "@name": "RESFIFO{1}_LOOPCNT_RESULT_2",
+                "@value": "0b0001",
+                "@description": "Result is from second conversion in command."
+              },
+              {
+                "@name": "RESFIFO{1}_LOOPCNT_CORRESPONDING_RESULT",
+                "@value": "0b0010-0b1110",
+                "@description": "Result is from (LOOPCNT + 1) conversion in command."
+              },
+              {
+                "@name": "RESFIFO{1}_LOOPCNT_RESULT_16",
+                "@value": "0b1111",
+                "@description": "Result is from 16th conversion in command."
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "CMDSRC",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Command Buffer Source",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_RESFIFO_CMDSRC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RESFIFO{1}_CMDSRC_NOT_VALID",
+                "@value": "0b0000",
+                "@description": "Not a valid value CMDSRC value for a data word in RESFIFO. 0h is only found in the initial FIFO state, prior to the storage of an ADC conversion result into a RESFIFO buffer."
+              },
+              {
+                "@name": "RESFIFO{1}_CMDSRC_CMD1",
+                "@value": "0b0001",
+                "@description": "CMD1"
+              },
+              {
+                "@name": "RESFIFO{1}_CMDSRC_CORRESPONDING_CMD",
+                "@value": "0b0010-0b1110",
+                "@description": "Corresponding command buffer used as control settings for this conversion."
+              },
+              {
+                "@name": "RESFIFO{1}_CMDSRC_CMD15",
+                "@value": "0b1111",
+                "@description": "CMD15"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "VALID",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "FIFO Entry is Valid",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_RESFIFO_VALID(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "RESFIFO{1}_VALID_NOT_VALID",
+                "@value": "0b0",
+                "@description": "FIFO is empty. Discard any read from RESFIFO."
+              },
+              {
+                "@name": "RESFIFO{1}_VALID_VALID",
+                "@value": "0b1",
+                "@description": "FIFO contains data. FIFO record read from RESFIFO is valid."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "3",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@rid": "1024",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GAR{1}",
+        "@description": "Calibration General A-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GAR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "11",
+          "@name": "CAL_GAR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General A Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GAR_CAL_GAR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "11",
+          "@width": "21",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1032",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GAR{1}",
+        "@description": "Calibration General A-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GAR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "13",
+          "@name": "CAL_GAR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General A Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GAR_CAL_GAR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "13",
+          "@width": "19",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1040",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GAR{1}",
+        "@description": "Calibration General A-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GAR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "14",
+          "@name": "CAL_GAR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General A Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GAR_CAL_GAR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "14",
+          "@width": "18",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1056",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GAR{1}",
+        "@description": "Calibration General A-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GAR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "15",
+          "@name": "CAL_GAR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General A Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GAR_CAL_GAR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "15",
+          "@width": "17",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1088",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GAR{1}",
+        "@description": "Calibration General A-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GAR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "CAL_GAR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General A Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GAR_CAL_GAR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1280",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GBR{1}",
+        "@description": "Calibration General B-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GBR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "11",
+          "@name": "CAL_GBR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General B Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GBR_CAL_GBR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "11",
+          "@width": "21",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1288",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GBR{1}",
+        "@description": "Calibration General B-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GBR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "13",
+          "@name": "CAL_GBR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General B Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GBR_CAL_GBR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "13",
+          "@width": "19",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1296",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GBR{1}",
+        "@description": "Calibration General B-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GBR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "14",
+          "@name": "CAL_GBR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General B Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GBR_CAL_GBR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "14",
+          "@width": "18",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1312",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GBR{1}",
+        "@description": "Calibration General B-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GBR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "15",
+          "@name": "CAL_GBR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General B Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GBR_CAL_GBR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "15",
+          "@width": "17",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "1344",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "CAL_GBR{1}",
+        "@description": "Calibration General B-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GBR[{1}]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "16",
+          "@name": "CAL_GBR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General B Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GBR_CAL_GBR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "VERID",
+        "@description": "Version ID Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "VERID"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "RES",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Resolution",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_RES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_RES_MAX_13_bit",
+                "@value": "0b0",
+                "@description": "Up to 13-bit differential or 12-bit single-ended resolution supported."
+              },
+              {
+                "@name": "VERID_RES_MAX_16_bit",
+                "@value": "0b1",
+                "@description": "Up to 16-bit differential or 16-bit single-ended resolution supported. CMDLn[MODE] available for selecting the resolution of conversions for the associated command."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "DIFFEN",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Differential Supported",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_DIFFEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_DIFFEN_DIFFERENTIAL_NOT_SUPPORTED",
+                "@value": "0b0",
+                "@description": "Not supported"
+              },
+              {
+                "@name": "VERID_DIFFEN_DIFFERENTIAL_SUPPORTED",
+                "@value": "0b1",
+                "@description": "Supported. CMDLn[CTYPE] controls fields implemented."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "MVI",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Multiple Vref Implemented",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_MVI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_MVI_MULTIPLE_REF_NOT_SUPPORTED",
+                "@value": "0b0",
+                "@description": "Single VREFH input supported."
+              },
+              {
+                "@name": "VERID_MVI_MULTIPLE_REF_SUPPORTED",
+                "@value": "0b1",
+                "@description": "Multiple VREFH inputs supported."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "3",
+            "@name": "CSW",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Channel Scale Width",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_CSW(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_CSW_CSCALE_NOT_SUPPORTED",
+                "@value": "0b000",
+                "@description": "Not supported."
+              },
+              {
+                "@name": "VERID_CSW_BIT_WIDTH_1",
+                "@value": "0b001",
+                "@description": "Supported with one-bit CSCALE control field."
+              },
+              {
+                "@name": "VERID_CSW_BIT_WIDTH_6",
+                "@value": "0b110",
+                "@description": "Supported with six-bit CSCALE control field."
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "VR1RNGI",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Voltage Reference 1 Range Control Bit Implemented",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_VR1RNGI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_VR1RNGI_REF1_FIXED_VOLTAGE_RANGE",
+                "@value": "0b0",
+                "@description": "Range control not required."
+              },
+              {
+                "@name": "VERID_VR1RNGI_REF1_SELECTABLE_VOLTAGE_RANGE",
+                "@value": "0b1",
+                "@description": "Range control required."
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "IADCKI",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Internal ADC Clock Implemented",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_IADCKI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_IADCKI_INTERNAL_CLK_NOT_AVAILABLE",
+                "@value": "0b0",
+                "@description": "Not implemented"
+              },
+              {
+                "@name": "VERID_IADCKI_INTERNAL_CLK_AVAILABLE",
+                "@value": "0b1",
+                "@description": "Implemented"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "CALOFSI",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Calibration Function Implemented",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_CALOFSI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_CALOFSI_CAL_FUNCTION_NOT_AVAILABLE",
+                "@value": "0b0",
+                "@description": "Not implemented"
+              },
+              {
+                "@name": "VERID_CALOFSI_CAL_FUNCTION_AVAILABLE",
+                "@value": "0b1",
+                "@description": "Implemented"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "NUM_SEC",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Number of Single-Ended Outputs Supported",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_NUM_SEC(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_NUM_SEC_SINGLE_CONVERTOR",
+                "@value": "0b0",
+                "@description": "One"
+              },
+              {
+                "@name": "VERID_NUM_SEC_DUAL_CONVERTOR",
+                "@value": "0b1",
+                "@description": "Two"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "3",
+            "@name": "NUM_FIFO",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Number of FIFOs",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_NUM_FIFO(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_NUM_FIFO_NO_FIFO_IMPLEMENTED",
+                "@value": "0b000",
+                "@description": "N/A"
+              },
+              {
+                "@name": "VERID_NUM_FIFO_CNT_1",
+                "@value": "0b001",
+                "@description": "One"
+              },
+              {
+                "@name": "VERID_NUM_FIFO_CNT_2",
+                "@value": "0b010",
+                "@description": "Two"
+              },
+              {
+                "@name": "VERID_NUM_FIFO_CNT_3",
+                "@value": "0b011",
+                "@description": "Three"
+              },
+              {
+                "@name": "VERID_NUM_FIFO_CNT_4",
+                "@value": "0b100",
+                "@description": "Four"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "MINOR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Minor Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_MINOR(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "MAJOR",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Major Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_VERID_MAJOR(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "PARAM",
+        "@description": "Parameter Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PARAM"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "TRIG_NUM",
+            "@access": "RO",
+            "@reset_value": "0x4",
+            "@description": "Trigger Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_PARAM_TRIG_NUM(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "FIFOSIZE",
+            "@access": "RO",
+            "@reset_value": "0x10",
+            "@description": "Result FIFO Depth",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_PARAM_FIFOSIZE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PARAM_FIFOSIZE_ENTRIES_2",
+                "@value": "0b00000001",
+                "@description": "2"
+              },
+              {
+                "@name": "PARAM_FIFOSIZE_ENTRIES_4",
+                "@value": "0b00000100",
+                "@description": "4"
+              },
+              {
+                "@name": "PARAM_FIFOSIZE_ENTRIES_8",
+                "@value": "0b00001000",
+                "@description": "8"
+              },
+              {
+                "@name": "PARAM_FIFOSIZE_ENTRIES_16",
+                "@value": "0b00010000",
+                "@description": "16"
+              },
+              {
+                "@name": "PARAM_FIFOSIZE_ENTRIES_32",
+                "@value": "0b00100000",
+                "@description": "32"
+              },
+              {
+                "@name": "PARAM_FIFOSIZE_ENTRIES_64",
+                "@value": "0b01000000",
+                "@description": "64"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "CV_NUM",
+            "@access": "RO",
+            "@reset_value": "0xF",
+            "@description": "Compare Value Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_PARAM_CV_NUM(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "CMD_NUM",
+            "@access": "RO",
+            "@reset_value": "0xF",
+            "@description": "Command Buffer Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_PARAM_CMD_NUM(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x10",
+        "@width": "32",
+        "@name": "CTRL",
+        "@description": "Control Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "ADCEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "ADC Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_ADCEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_ADCEN_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "CTRL_ADCEN_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "RST",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Software Reset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_RST(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_RST_RELEASED_FROM_RESET",
+                "@value": "0b0",
+                "@description": "ADC logic is not reset."
+              },
+              {
+                "@name": "CTRL_RST_HELD_IN_RESET",
+                "@value": "0b1",
+                "@description": "ADC logic is reset."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "DOZEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Doze Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_DOZEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_DOZEN_ENABLED",
+                "@value": "0b0",
+                "@description": "ADC is enabled in low-power mode."
+              },
+              {
+                "@name": "CTRL_DOZEN_DISABLED",
+                "@value": "0b1",
+                "@description": "ADC is disabled in low-power mode."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "CAL_REQ",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Auto-Calibration Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_CAL_REQ(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_CAL_REQ_NO_CALIBRATION_REQUEST",
+                "@value": "0b0",
+                "@description": "No request made."
+              },
+              {
+                "@name": "CTRL_CAL_REQ_CALIBRATION_REQUEST_PENDING",
+                "@value": "0b1",
+                "@description": "Request has been made."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "CALOFS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Offset Calibration Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_CALOFS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_CALOFS_NO_ACTIVE_OFFSET_CALIBRATION_REQUEST",
+                "@value": "0b0",
+                "@description": "Calibration function disabled"
+              },
+              {
+                "@name": "CTRL_CALOFS_OFFSET_CALIBRATION_REQUEST_PENDING",
+                "@value": "0b1",
+                "@description": "Request for offset calibration function"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "RSTFIFO0",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Reset FIFO 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_RSTFIFO0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_RSTFIFO0_NO_ACTION",
+                "@value": "0b0",
+                "@description": "No effect."
+              },
+              {
+                "@name": "CTRL_RSTFIFO0_TRIGGER_RESET",
+                "@value": "0b1",
+                "@description": "FIFO 0 is reset."
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "RSTFIFO1",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Reset FIFO 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_RSTFIFO1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_RSTFIFO1_NO_ACTION",
+                "@value": "0b0",
+                "@description": "No effect."
+              },
+              {
+                "@name": "CTRL_RSTFIFO1_TRIGGER_RESET",
+                "@value": "0b1",
+                "@description": "FIFO 1 is reset."
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "CAL_AVGS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Auto-Calibration Averages",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CTRL_CAL_AVGS(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CTRL_CAL_AVGS_NO_AVERAGE",
+                "@value": "0b0000",
+                "@description": "Single conversion."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_2",
+                "@value": "0b0001",
+                "@description": "2 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_4",
+                "@value": "0b0010",
+                "@description": "4 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_8",
+                "@value": "0b0011",
+                "@description": "8 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_16",
+                "@value": "0b0100",
+                "@description": "16 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_32",
+                "@value": "0b0101",
+                "@description": "32 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_64",
+                "@value": "0b0110",
+                "@description": "64 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_128",
+                "@value": "0b0111",
+                "@description": "128 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_256",
+                "@value": "0b1000",
+                "@description": "256 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_512",
+                "@value": "0b1001",
+                "@description": "512 conversions averaged."
+              },
+              {
+                "@name": "CTRL_CAL_AVGS_AVERAGE_1024",
+                "@value": "0b1010",
+                "@description": "1024 conversions averaged."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "3",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "6",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x14",
+        "@width": "32",
+        "@name": "STAT",
+        "@description": "Status Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "STAT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "RDY0",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Result FIFO 0 Ready Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_RDY0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_RDY0_BELOW_THRESHOLD",
+                "@value": "0b0",
+                "@description": "Not above watermark"
+              },
+              {
+                "@name": "STAT_RDY0_ABOVE_THRESHOLD",
+                "@value": "0b1",
+                "@description": "Above watermark"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "FOF0",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Result FIFO 0 Overflow Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_FOF0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_FOF0_NO_OVERFLOW",
+                "@value": "0b0",
+                "@description": "No result FIFO 0 overflow has occurred since the last time that the flag was cleared."
+              },
+              {
+                "@name": "STAT_FOF0_OVERFLOW_DETECTED",
+                "@value": "0b1",
+                "@description": "At least one result FIFO 0 overflow has occurred since the last time that the flag was cleared."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "RDY1",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Result FIFO1 Ready Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_RDY1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_RDY1_BELOW_THRESHOLD",
+                "@value": "0b0",
+                "@description": "Not above watermark"
+              },
+              {
+                "@name": "STAT_RDY1_ABOVE_THRESHOLD",
+                "@value": "0b1",
+                "@description": "Above watermark"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "FOF1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Result FIFO1 Overflow Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_FOF1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_FOF1_NO_OVERFLOW",
+                "@value": "0b0",
+                "@description": "No result FIFO1 overflow has occurred since the last time that the flag was cleared."
+              },
+              {
+                "@name": "STAT_FOF1_OVERFLOW_DETECTED",
+                "@value": "0b1",
+                "@description": "At least one result FIFO1 overflow has occurred since the last time that the flag was cleared."
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "TEXC_INT",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Interrupt Flag For High-Priority Trigger Exception",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_TEXC_INT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_TEXC_INT_NO_EXCEPTION",
+                "@value": "0b0",
+                "@description": "No trigger exceptions have occurred."
+              },
+              {
+                "@name": "STAT_TEXC_INT_EXCEPTION_DETECTED",
+                "@value": "0b1",
+                "@description": "A trigger exception has occurred and is pending acknowledgment."
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "TCOMP_INT",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Interrupt Flag For Trigger Completion",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_TCOMP_INT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_TCOMP_INT_FLAG_CLEAR",
+                "@value": "0b0",
+                "@description": "Either IE[TCOMP_IE] = 0, or no trigger sequences have run to completion."
+              },
+              {
+                "@name": "STAT_TCOMP_INT_COMPLETION_DETECTED",
+                "@value": "0b1",
+                "@description": "Trigger sequence has been completed and all data is stored in the associated FIFO."
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "CAL_RDY",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Calibration Ready",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_CAL_RDY(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_CAL_RDY_NOT_SET",
+                "@value": "0b0",
+                "@description": "Calibration is incomplete or has not been run."
+              },
+              {
+                "@name": "STAT_CAL_RDY_HARDWARE_CAL_STEP_COMPLETED",
+                "@value": "0b1",
+                "@description": "ADC is calibrated."
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "ADC_ACTIVE",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "ADC Active",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_ADC_ACTIVE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_ADC_ACTIVE_NOT_ACTIVE",
+                "@value": "0b0",
+                "@description": "ADC is idle. There are no pending triggers to service and no active commands are being processed."
+              },
+              {
+                "@name": "STAT_ADC_ACTIVE_BUSY",
+                "@value": "0b1",
+                "@description": "ADC is processing a conversion, running through the power-up delay, or servicing a trigger."
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "TRGACT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Trigger Active",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_TRGACT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_TRGACT_TRIG_0",
+                "@value": "0b00",
+                "@description": "Command (sequence) associated with Trigger 0 currently being executed."
+              },
+              {
+                "@name": "STAT_TRGACT_TRIG_1",
+                "@value": "0b01",
+                "@description": "Command (sequence) associated with Trigger 1 currently being executed."
+              },
+              {
+                "@name": "STAT_TRGACT_TRIG_2",
+                "@value": "0b10",
+                "@description": "Command (sequence) associated with Trigger 2 currently being executed."
+              },
+              {
+                "@name": "STAT_TRGACT_TRIG_3",
+                "@value": "0b11",
+                "@description": "Command (sequence) associated with Trigger 3 currently being executed."
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@name": "CMDACT",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Command Active",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_STAT_CMDACT(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "STAT_CMDACT_NO_COMMAND_ACTIVE",
+                "@value": "0b0000",
+                "@description": "No command currently in progress."
+              },
+              {
+                "@name": "STAT_CMDACT_COMMAND_1",
+                "@value": "0b0001",
+                "@description": "Command 1 currently being executed."
+              },
+              {
+                "@name": "STAT_CMDACT_COMMAND_2",
+                "@value": "0b0010",
+                "@description": "Command 2 currently being executed."
+              },
+              {
+                "@name": "STAT_CMDACT_COMMAND_x",
+                "@value": "0b0011-0b1111",
+                "@description": "Associated command number currently being executed."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "6",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "4",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "IE",
+        "@description": "Interrupt Enable Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "IE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "FWMIE0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "FIFO 0 Watermark Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_IE_FWMIE0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IE_FWMIE0_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "IE_FWMIE0_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "FOFIE0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Result FIFO 0 Overflow Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_IE_FOFIE0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IE_FOFIE0_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "IE_FOFIE0_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "FWMIE1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "FIFO1 Watermark Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_IE_FWMIE1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IE_FWMIE1_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "IE_FWMIE1_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "FOFIE1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Result FIFO1 Overflow Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_IE_FOFIE1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IE_FOFIE1_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "IE_FOFIE1_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "TEXC_IE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Exception Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_IE_TEXC_IE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IE_TEXC_IE_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "IE_TEXC_IE_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "TCOMP_IE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Completion Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_IE_TCOMP_IE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "IE_TCOMP_IE_DISABLED",
+                "@value": "0b0000",
+                "@description": "All disabled"
+              },
+              {
+                "@name": "IE_TCOMP_IE_TRIGGER_0_COMPLETE_ENABLED",
+                "@value": "0b0001",
+                "@description": "Trigger completion interrupts are enabled for trigger source 0 only."
+              },
+              {
+                "@name": "IE_TCOMP_IE_TRIGGER_1_COMPLETE_ENABLED",
+                "@value": "0b0010",
+                "@description": "Trigger completion interrupts are enabled for trigger source 1 only."
+              },
+              {
+                "@name": "IE_TCOMP_IE_TRIGGER_x_COMPLETE_ENABLED",
+                "@value": "0b0011-0b1110",
+                "@description": "Associated trigger completion interrupts are enabled."
+              },
+              {
+                "@name": "IE_TCOMP_IE_ALL_TRIGGER_COMPLETES_ENABLED",
+                "@value": "0b1111",
+                "@description": "All enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "9",
+            "@width": "7",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1C",
+        "@width": "32",
+        "@name": "DE",
+        "@description": "DMA Enable Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "FWMDE0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "FIFO 0 Watermark DMA Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_DE_FWMDE0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_FWMDE0_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "DE_FWMDE0_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "FWMDE1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "FIFO1 Watermark DMA Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_DE_FWMDE1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_FWMDE1_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "DE_FWMDE1_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x20",
+        "@width": "32",
+        "@name": "CFG",
+        "@description": "Configuration Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CFG"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "TPRICTRL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "ADC Trigger Priority Control",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_TPRICTRL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_TPRICTRL_ABORT_CURRENT_ON_PRIORITY",
+                "@value": "0b00",
+                "@description": "Current conversion is aborted and the new command specified by the trigger is started."
+              },
+              {
+                "@name": "CFG_TPRICTRL_FINISH_CURRENT_ON_PRIORITY",
+                "@value": "0b01",
+                "@description": "Current command is stopped after completing the current conversion. If averaging is enabled, the averaging loop is completed. CMDHn[LOOP] is ignored and the higher-priority trigger is serviced."
+              },
+              {
+                "@name": "CFG_TPRICTRL_FINISH_SEQUENCE_ON_PRIORITY",
+                "@value": "0b10",
+                "@description": "Current command is completed (averaging, looping, compare) before servicing the higher-priority trigger."
+              },
+              {
+                "@name": "CFG_TPRICTRL_0b11",
+                "@value": "0b11",
+                "@description": "Reserved value."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "PWRSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Power Configuration Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_PWRSEL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_PWRSEL_LOWEST",
+                "@value": "0b0?",
+                "@description": "Low power"
+              },
+              {
+                "@name": "CFG_PWRSEL_HIGHEST",
+                "@value": "0b1?",
+                "@description": "High power"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "REFSEL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Voltage Reference Selection",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_REFSEL(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_REFSEL_OPTION_1",
+                "@value": "0b00",
+                "@description": "Option 1"
+              },
+              {
+                "@name": "CFG_REFSEL_OPTION_2",
+                "@value": "0b01",
+                "@description": "Option 2"
+              },
+              {
+                "@name": "CFG_REFSEL_OPTION_3",
+                "@value": "0b10",
+                "@description": "Option 3"
+              },
+              {
+                "@name": "CFG_REFSEL_0b11",
+                "@value": "0b11",
+                "@description": "Reserved value."
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "TRES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Resume Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_TRES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_TRES_DISABLED",
+                "@value": "0b0",
+                "@description": "Not automatically resumed or restarted"
+              },
+              {
+                "@name": "CFG_TRES_ENABLED",
+                "@value": "0b1",
+                "@description": "Automatically resumed or restarted"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "TCMDRES",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trigger Command Resume",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_TCMDRES(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_TCMDRES_DISABLED",
+                "@value": "0b0",
+                "@description": "Trigger sequence automatically restarted."
+              },
+              {
+                "@name": "CFG_TCMDRES_ENABLED",
+                "@value": "0b1",
+                "@description": "Trigger sequence resumed from the command that was executed prior to the exception."
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "HPT_EXDI",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "High-Priority Trigger Exception Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_HPT_EXDI(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_HPT_EXDI_ENABLED",
+                "@value": "0b0",
+                "@description": "Enabled"
+              },
+              {
+                "@name": "CFG_HPT_EXDI_DISABLED",
+                "@value": "0b1",
+                "@description": "Disabled"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "PUDLY",
+            "@access": "RW",
+            "@reset_value": "0x80",
+            "@description": "Power-up Delay",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_PUDLY(x)"
+            }
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "PWREN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "ADC Analog Pre-Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_CFG_PWREN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "CFG_PWREN_NOT_PRE_ENABLED",
+                "@value": "0b0",
+                "@description": "ADC analog circuits are only enabled while conversions are active. Analog startup delays affect performance."
+              },
+              {
+                "@name": "CFG_PWREN_PRE_ENABLED",
+                "@value": "0b1",
+                "@description": "ADC analog circuits are pre-enabled and ready to execute conversions without startup delays, at the cost of higher DC current consumption. A single power-up delay (CFG[PUDLY]) is executed immediately once PWREN is set. No detected triggers begin ADC operation until the power-up delay time has passed. After this initial delay expires, the analog circuits remain pre-enabled, and no additional delays are executed."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "4",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x24",
+        "@width": "32",
+        "@name": "PAUSE",
+        "@description": "Pause Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PAUSE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "9",
+            "@name": "PAUSEDLY",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Pause Delay",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_PAUSE_PAUSEDLY(x)"
+            }
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "PAUSEEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Pause Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_PAUSE_PAUSEEN(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PAUSE_PAUSEEN_DISABLED",
+                "@value": "0b0",
+                "@description": "Disabled"
+              },
+              {
+                "@name": "PAUSE_PAUSEEN_ENABLED",
+                "@value": "0b1",
+                "@description": "Enabled"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "9",
+          "@width": "22",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x34",
+        "@width": "32",
+        "@name": "SWTRIG",
+        "@description": "Software Trigger Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SWTRIG"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "SWT0",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Software Trigger 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_SWTRIG_SWT0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SWTRIG_SWT0_NO_TRIGGER",
+                "@value": "0b0",
+                "@description": "No trigger 0 event generated."
+              },
+              {
+                "@name": "SWTRIG_SWT0_INITIATE_TRIGGER_0",
+                "@value": "0b1",
+                "@description": "Trigger 0 event generated."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "SWT1",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Software Trigger 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_SWTRIG_SWT1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SWTRIG_SWT1_NO_TRIGGER",
+                "@value": "0b0",
+                "@description": "No trigger 1 event generated."
+              },
+              {
+                "@name": "SWTRIG_SWT1_INITIATE_TRIGGER_1",
+                "@value": "0b1",
+                "@description": "Trigger 1 event generated."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "SWT2",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Software Trigger 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_SWTRIG_SWT2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SWTRIG_SWT2_NO_TRIGGER",
+                "@value": "0b0",
+                "@description": "No trigger 2 event generated."
+              },
+              {
+                "@name": "SWTRIG_SWT2_INITIATE_TRIGGER_2",
+                "@value": "0b1",
+                "@description": "Trigger 2 event generated."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "SWT3",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Software Trigger 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_SWTRIG_SWT3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "SWTRIG_SWT3_NO_TRIGGER",
+                "@value": "0b0",
+                "@description": "No trigger 3 event generated."
+              },
+              {
+                "@name": "SWTRIG_SWT3_INITIATE_TRIGGER_3",
+                "@value": "0b1",
+                "@description": "Trigger 3 event generated."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "28",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x38",
+        "@width": "32",
+        "@name": "TSTAT",
+        "@description": "Trigger Status Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "TSTAT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "4",
+            "@name": "TEXC_NUM",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Trigger Exception Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TSTAT_TEXC_NUM(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TSTAT_TEXC_NUM_NO_EXCEPTIONS",
+                "@value": "0b0000",
+                "@description": "No triggers have been interrupted by a high-priority exception."
+              },
+              {
+                "@name": "TSTAT_TEXC_NUM_BIT0_MEANS_TRIGGER_0_INTERRUPTED",
+                "@value": "0b0001",
+                "@description": "Trigger 0 has been interrupted by a high-priority exception."
+              },
+              {
+                "@name": "TSTAT_TEXC_NUM_BIT1_MEANS_TRIGGER_1_INTERRUPTED",
+                "@value": "0b0010",
+                "@description": "Trigger 1 has been interrupted by a high-priority exception."
+              },
+              {
+                "@name": "TSTAT_TEXC_NUM_SET_BITS_INDICATE_TRIGGER_x_INTERRUPTED",
+                "@value": "0b0011-0b1110",
+                "@description": "Associated trigger sequence has interrupted by a high-priority exception."
+              },
+              {
+                "@name": "TSTAT_TEXC_NUM_ALL_BITS_SET_INDICATE_ALL_TRIGGERS_INTERRUPTED",
+                "@value": "0b1111",
+                "@description": "Every trigger sequence has been interrupted by a high-priority exception."
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "4",
+            "@name": "TCOMP_FLAG",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Trigger Completion Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_TSTAT_TCOMP_FLAG(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "TSTAT_TCOMP_FLAG_NO_TRIGGER",
+                "@value": "0b0000",
+                "@description": "No triggers have been completed. Trigger completion interrupts are disabled."
+              },
+              {
+                "@name": "TSTAT_TCOMP_FLAG_BIT0_MEANS_TRIGGER_0_COMPLETED",
+                "@value": "0b0001",
+                "@description": "Trigger 0 has been completed and trigger 0 has enabled completion interrupts."
+              },
+              {
+                "@name": "TSTAT_TCOMP_FLAG_BIT1_MEANS_TRIGGER_1_COMPLETED",
+                "@value": "0b0010",
+                "@description": "Trigger 1 has been completed and trigger 1 has enabled completion interrupts."
+              },
+              {
+                "@name": "TSTAT_TCOMP_FLAG_SET_BITS_INDICATE_TRIGGER_x_COMPLETED",
+                "@value": "0b0011-0b1110",
+                "@description": "Associated trigger sequence has completed and has enabled completion interrupts."
+              },
+              {
+                "@name": "TSTAT_TCOMP_FLAG_ALL_BITS_SET_INDICATE_ALL_TRIGGERS_COMPLETED",
+                "@value": "0b1111",
+                "@description": "Every trigger sequence has been completed and every trigger has enabled completion interrupts."
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "4",
+            "@width": "12",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "12",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x40",
+        "@width": "32",
+        "@name": "OFSTRIM",
+        "@description": "Offset Trim Register",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "OFSTRIM"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "OFSTRIM_A",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trim for Offset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_OFSTRIM_OFSTRIM_A(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "5",
+            "@name": "OFSTRIM_B",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Trim for Offset",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "ADC_OFSTRIM_OFSTRIM_B(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "5",
+            "@width": "11",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "11",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x404",
+        "@width": "32",
+        "@name": "CAL_GAR1",
+        "@description": "Calibration General A-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GAR[1]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@name": "CAL_GAR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General A Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GAR_CAL_GAR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x504",
+        "@width": "32",
+        "@name": "CAL_GBR1",
+        "@description": "Calibration General B-Side Registers",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CAL_GBR[1]"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "12",
+          "@name": "CAL_GBR_VAL",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Calibration General B Side Register Element",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "ADC_CAL_GBR_CAL_GBR_VAL(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "12",
+          "@width": "20",
+          "@reset_value": "0"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "160",
+        "@vals": "0xA0 0"
+      },
+      {
+        "@rid": "160",
+        "@vals": "0xA4 1"
+      },
+      {
+        "@rid": "160",
+        "@vals": "0xA8 2"
+      },
+      {
+        "@rid": "160",
+        "@vals": "0xAC 3"
+      },
+      {
+        "@rid": "224",
+        "@vals": "0xE0 0"
+      },
+      {
+        "@rid": "224",
+        "@vals": "0xE4 1"
+      },
+      {
+        "@rid": "240",
+        "@vals": "0xF0 0"
+      },
+      {
+        "@rid": "240",
+        "@vals": "0xF4 1"
+      },
+      {
+        "@rid": "248",
+        "@vals": "0xF8 0"
+      },
+      {
+        "@rid": "248",
+        "@vals": "0xFC 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x100 1 0"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x104 1 0"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x108 2 1"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x10C 2 1"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x110 3 2"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x114 3 2"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x118 4 3"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x11C 4 3"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x120 5 4"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x124 5 4"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x128 6 5"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x12C 6 5"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x130 7 6"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x134 7 6"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x138 8 7"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x13C 8 7"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x140 9 8"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x144 9 8"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x148 10 9"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x14C 10 9"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x150 11 10"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x154 11 10"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x158 12 11"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x15C 12 11"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x160 13 12"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x164 13 12"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x168 14 13"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x16C 14 13"
+      },
+      {
+        "@rid": "256",
+        "@vals": "0x170 15 14"
+      },
+      {
+        "@rid": "260",
+        "@vals": "0x174 15 14"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x200 1 0"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x204 2 1"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x208 3 2"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x20C 4 3"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x210 5 4"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x214 6 5"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x218 7 6"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x21C 8 7"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x220 9 8"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x224 10 9"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x228 11 10"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x22C 12 11"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x230 13 12"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x234 14 13"
+      },
+      {
+        "@rid": "512",
+        "@vals": "0x238 15 14"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x300 0"
+      },
+      {
+        "@rid": "768",
+        "@vals": "0x304 1"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x400 0"
+      },
+      {
+        "@rid": "1032",
+        "@vals": "0x408 2"
+      },
+      {
+        "@rid": "1032",
+        "@vals": "0x40C 3"
+      },
+      {
+        "@rid": "1040",
+        "@vals": "0x410 4"
+      },
+      {
+        "@rid": "1040",
+        "@vals": "0x414 5"
+      },
+      {
+        "@rid": "1040",
+        "@vals": "0x418 6"
+      },
+      {
+        "@rid": "1040",
+        "@vals": "0x41C 7"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x420 8"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x424 9"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x428 10"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x42C 11"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x430 12"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x434 13"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x438 14"
+      },
+      {
+        "@rid": "1056",
+        "@vals": "0x43C 15"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x440 16"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x444 17"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x448 18"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x44C 19"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x450 20"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x454 21"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x458 22"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x45C 23"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x460 24"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x464 25"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x468 26"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x46C 27"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x470 28"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x474 29"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x478 30"
+      },
+      {
+        "@rid": "1088",
+        "@vals": "0x47C 31"
+      },
+      {
+        "@rid": "1024",
+        "@vals": "0x480 32"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x500 0"
+      },
+      {
+        "@rid": "1288",
+        "@vals": "0x508 2"
+      },
+      {
+        "@rid": "1288",
+        "@vals": "0x50C 3"
+      },
+      {
+        "@rid": "1296",
+        "@vals": "0x510 4"
+      },
+      {
+        "@rid": "1296",
+        "@vals": "0x514 5"
+      },
+      {
+        "@rid": "1296",
+        "@vals": "0x518 6"
+      },
+      {
+        "@rid": "1296",
+        "@vals": "0x51C 7"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x520 8"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x524 9"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x528 10"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x52C 11"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x530 12"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x534 13"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x538 14"
+      },
+      {
+        "@rid": "1312",
+        "@vals": "0x53C 15"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x540 16"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x544 17"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x548 18"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x54C 19"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x550 20"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x554 21"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x558 22"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x55C 23"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x560 24"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x564 25"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x568 26"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x56C 27"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x570 28"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x574 29"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x578 30"
+      },
+      {
+        "@rid": "1344",
+        "@vals": "0x57C 31"
+      },
+      {
+        "@rid": "1280",
+        "@vals": "0x580 32"
+      }
+    ]
+  }
+}

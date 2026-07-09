@@ -1,0 +1,329 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "24",
+        "@offset": "{0}",
+        "@width": "8",
+        "@name": "PMECTR{1}_HI",
+        "@description": "Performance Monitor Event Counter",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PMCR[0].PMECTR[{2}].HI"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "8",
+          "@name": "ECTR",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Event Counter",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "SYSPM_HI_ECTR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "bit_PMECTR"
+            }
+          ]
+        }
+      },
+      {
+        "@rid": "28",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "PMECTR{1}_LO",
+        "@description": "Performance Monitor Event Counter",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PMCR[0].PMECTR[{2}].LO"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "ECTR",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Event Counter",
+          "alias": [
+            {
+              "@type": "CMSIS",
+              "@value": "SYSPM_LO_ECTR(x)"
+            },
+            {
+              "@type": "id",
+              "@value": "bit_PMECTR"
+            }
+          ]
+        }
+      }
+    ],
+    "register": {
+      "@offset": "0",
+      "@width": "32",
+      "@name": "PMCR",
+      "@description": "Performance Monitor Control",
+      "alias": {
+        "@type": "CMSIS",
+        "@value": "PMCR[0].PMCR"
+      },
+      "bit_field": [
+        {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "MENB",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Module Is Enabled",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_MENB(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCR_MENB_DISABLED",
+              "@value": "0b0",
+              "@description": "Disabled"
+            },
+            {
+              "@name": "PMCR_MENB_ENABLED",
+              "@value": "0b1",
+              "@description": "Enabled"
+            }
+          ]
+        },
+        {
+          "@offset": "1",
+          "@width": "3",
+          "@name": "SSC",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Start and Stop Control",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_SSC(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCR_SSC_IDLE",
+              "@value": "0b000",
+              "@description": "Idle or no-op"
+            },
+            {
+              "@name": "PMCR_SSC_LSTOP",
+              "@value": "0b001",
+              "@description": "Local stop"
+            },
+            {
+              "@name": "PMCR_SSC_LSTART",
+              "@value": "0b010 0b011",
+              "@description": "Local start"
+            },
+            {
+              "@name": "PMCR_SSC_0b100",
+              "@value": "0b100",
+              "@description": "Reserved value."
+            },
+            {
+              "@name": "PMCR_SSC_0b101",
+              "@value": "0b101",
+              "@description": "Reserved value."
+            },
+            {
+              "@name": "PMCR_SSC_0b110",
+              "@value": "0b110 0b111",
+              "@description": "Reserved value."
+            }
+          ]
+        },
+        {
+          "@offset": "4",
+          "@width": "2",
+          "@name": "CMODE",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Count Mode",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_CMODE(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCR_CMODE_USER_AND_PRIV",
+              "@value": "0b00",
+              "@description": "Counted in both User and Privileged modes"
+            },
+            {
+              "@name": "PMCR_CMODE_0b01",
+              "@value": "0b01",
+              "@description": "Reserved value."
+            },
+            {
+              "@name": "PMCR_CMODE_USER_ONLY",
+              "@value": "0b10",
+              "@description": "Counted only in User mode"
+            },
+            {
+              "@name": "PMCR_CMODE_PRIV_ONLY",
+              "@value": "0b11",
+              "@description": "Counted only in Privileged mode"
+            }
+          ]
+        },
+        {
+          "@offset": "8",
+          "@width": "1",
+          "@name": "RECTR1",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Reset Event Counter 1",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_RECTR1(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCR_RECTR1_RUN",
+              "@value": "0b0",
+              "@description": "Run normally"
+            },
+            {
+              "@name": "PMCR_RECTR1_RESET",
+              "@value": "0b1",
+              "@description": "Reset"
+            }
+          ]
+        },
+        {
+          "@offset": "9",
+          "@width": "1",
+          "@name": "RECTR2",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Reset Event Counter 2",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_RECTR2(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCR_RECTR2_RUN",
+              "@value": "0b0",
+              "@description": "Run normally"
+            },
+            {
+              "@name": "PMCR_RECTR2_RESET",
+              "@value": "0b1",
+              "@description": "Reset"
+            }
+          ]
+        },
+        {
+          "@offset": "10",
+          "@width": "1",
+          "@name": "RECTR3",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Reset Event Counter 3",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_RECTR3(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "PMCR_RECTR3_RUN",
+              "@value": "0b0",
+              "@description": "Run normally"
+            },
+            {
+              "@name": "PMCR_RECTR3_RESET",
+              "@value": "0b1",
+              "@description": "Reset"
+            }
+          ]
+        },
+        {
+          "@offset": "11",
+          "@width": "7",
+          "@name": "SELEVT1",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Select Event 1",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_SELEVT1(x)"
+          }
+        },
+        {
+          "@offset": "18",
+          "@width": "7",
+          "@name": "SELEVT2",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Select Event 2",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_SELEVT2(x)"
+          }
+        },
+        {
+          "@offset": "25",
+          "@width": "7",
+          "@name": "SELEVT3",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Select Event 3",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SYSPM_PMCR_SELEVT3(x)"
+          }
+        }
+      ],
+      "reserved_bit_field": [
+        {
+          "@offset": "6",
+          "@width": "1",
+          "@reset_value": "0"
+        },
+        {
+          "@offset": "7",
+          "@width": "1",
+          "@reset_value": "0"
+        }
+      ]
+    },
+    "reg_instance": [
+      {
+        "@rid": "24",
+        "@vals": "0x18 1 0"
+      },
+      {
+        "@rid": "28",
+        "@vals": "0x1C 1 0"
+      },
+      {
+        "@rid": "24",
+        "@vals": "0x20 2 1"
+      },
+      {
+        "@rid": "28",
+        "@vals": "0x24 2 1"
+      },
+      {
+        "@rid": "24",
+        "@vals": "0x28 3 2"
+      },
+      {
+        "@rid": "28",
+        "@vals": "0x2C 3 2"
+      }
+    ]
+  }
+}

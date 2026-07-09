@@ -1,0 +1,3860 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "8",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "PE{1}",
+        "@description": "Pin Enable {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PE{1}"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "WUPE{2}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{2}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{2}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{2}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{2}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{2}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "WUPE{3}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{3}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{3}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{3}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{3}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{3}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "WUPE{4}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{4}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{4}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{4}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{4}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{4}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "WUPE{5}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{5}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{5}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{5}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{5}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{5}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "WUPE{6}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{6}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{6}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{6}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{6}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{6}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "WUPE{7}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{7}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{7}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{7}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{7}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{7}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "WUPE{8}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{8}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{8}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{8}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{8}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{8}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "WUPE{9}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{9}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{9}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{9}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{9}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{9}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "WUPE{10}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{10}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{10}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{10}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{10}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{10}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "WUPE{11}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{11}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{11}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{11}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{11}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{11}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "2",
+            "@name": "WUPE{12}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{12}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{12}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{12}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{12}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{12}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "2",
+            "@name": "WUPE{13}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{13}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{13}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{13}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{13}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{13}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "2",
+            "@name": "WUPE{14}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{14}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{14}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{14}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{14}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{14}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "2",
+            "@name": "WUPE{15}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{15}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{15}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{15}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{15}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{15}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "2",
+            "@name": "WUPE{16}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{16}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{16}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{16}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{16}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{16}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "WUPE{17}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Enable for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PE{1}_WUPE{17}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PE{1}_WUPE{17}_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "PE{1}_WUPE{17}_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (detect on rising edge or high level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{17}_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (detect on falling edge or low level)"
+              },
+              {
+                "@name": "PE{1}_WUPE{17}_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (detect on any edge)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@rid": "56",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "PDC{1}",
+        "@description": "Pin DMA/Trigger Configuration {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PDC{1}"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "WUPDC{2}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{2}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{2}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{2}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{2}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{2}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "WUPDC{3}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{3}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{3}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{3}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{3}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{3}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "2",
+            "@name": "WUPDC{4}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{4}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{4}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{4}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{4}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{4}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "2",
+            "@name": "WUPDC{5}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{5}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{5}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{5}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{5}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{5}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "2",
+            "@name": "WUPDC{6}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{6}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{6}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{6}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{6}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{6}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "2",
+            "@name": "WUPDC{7}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{7}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{7}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{7}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{7}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{7}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "2",
+            "@name": "WUPDC{8}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{8}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{8}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{8}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{8}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{8}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "2",
+            "@name": "WUPDC{9}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{9}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{9}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{9}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{9}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{9}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "2",
+            "@name": "WUPDC{10}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{10}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{10}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{10}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{10}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{10}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "2",
+            "@name": "WUPDC{11}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{11}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{11}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{11}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{11}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{11}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "2",
+            "@name": "WUPDC{12}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{12}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{12}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{12}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{12}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{12}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "2",
+            "@name": "WUPDC{13}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{13}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{13}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{13}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{13}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{13}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "2",
+            "@name": "WUPDC{14}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{14}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{14}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{14}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{14}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{14}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "2",
+            "@name": "WUPDC{15}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{15}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{15}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{15}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{15}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{15}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "2",
+            "@name": "WUPDC{16}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{16}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{16}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{16}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{16}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{16}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "2",
+            "@name": "WUPDC{17}",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PDC{1}_WUPDC{17}(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PDC{1}_WUPDC{17}_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{17}_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{17}_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "PDC{1}_WUPDC{17}_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "VERID",
+        "@description": "Version ID",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "VERID"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "16",
+            "@name": "FEATURE",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Feature Specification Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_VERID_FEATURE(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "VERID_FEATURE_STANDARD",
+                "@value": "0b0000000000000000",
+                "@description": "Standard features implemented"
+              },
+              {
+                "@name": "VERID_FEATURE_FILT_ALL_PWR",
+                "@value": "0b0000000000000001",
+                "@description": "Support for DMA/Trigger generation from wake-up pins and filters enabled. Support for external pin/filter detection during all power modes enabled."
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "MINOR",
+            "@access": "RO",
+            "@reset_value": "0",
+            "@description": "Minor Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_VERID_MINOR(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "MAJOR",
+            "@access": "RO",
+            "@reset_value": "0x1",
+            "@description": "Major Version Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_VERID_MAJOR(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "PARAM",
+        "@description": "Parameter",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PARAM"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "FILTERS",
+            "@access": "RO",
+            "@reset_value": "0x2",
+            "@description": "Filter Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PARAM_FILTERS(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "DMAS",
+            "@access": "RO",
+            "@reset_value": "0x20",
+            "@description": "DMA Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PARAM_DMAS(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "MODULES",
+            "@access": "RO",
+            "@reset_value": "0x20",
+            "@description": "Module Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PARAM_MODULES(x)"
+            }
+          },
+          {
+            "@offset": "24",
+            "@width": "8",
+            "@name": "PINS",
+            "@access": "RO",
+            "@reset_value": "0x20",
+            "@description": "Pin Number",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PARAM_PINS(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x18",
+        "@width": "32",
+        "@name": "ME",
+        "@description": "Module Interrupt Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ME"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "WUME0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME0_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME0_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "WUME1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME1_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME1_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "WUME2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME2_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME2_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "WUME3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME3_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME3_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "WUME4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 4",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME4_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME4_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "WUME5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 5",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME5_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME5_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "WUME6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 6",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME6_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME6_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "WUME7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 7",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME7_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME7_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "WUME8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 8",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME8_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME8_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "WUME9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Module Interrupt Wake-up Enable for Module 9",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_ME_WUME9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "ME_WUME9_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "ME_WUME9_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x1C",
+        "@width": "32",
+        "@name": "DE",
+        "@description": "Module DMA/Trigger Enable",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "DE"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "WUDE0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 0",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE0_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE0_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "WUDE1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 1",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE1_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE1_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "WUDE2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 2",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE2_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE2_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "WUDE3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 3",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE3_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE3_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "WUDE4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 4",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE4_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE4_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "WUDE5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 5",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE5_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE5_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "WUDE6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 6",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE6_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE6_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "WUDE7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 7",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE7_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE7_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "WUDE8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 8",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE8_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE8_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "WUDE9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "DMA/Trigger Wake-up Enable for Module 9",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_DE_WUDE9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "DE_WUDE9_DISABLE",
+                "@value": "0b0",
+                "@description": "Disable"
+              },
+              {
+                "@name": "DE_WUDE9_ENABLE",
+                "@value": "0b1",
+                "@description": "Enable"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": [
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@reset_value": "0"
+          }
+        ]
+      },
+      {
+        "@offset": "0x20",
+        "@width": "32",
+        "@name": "PF",
+        "@description": "Pin Flag",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PF"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "WUF0",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF0_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF0_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "WUF1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF1_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF1_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "WUF2",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF2_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF2_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "WUF3",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF3_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF3_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "WUF4",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF4_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF4_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "WUF5",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF5_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF5_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "WUF6",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF6_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF6_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "WUF7",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF7_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF7_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "WUF8",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF8_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF8_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "WUF9",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF9_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF9_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "WUF10",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF10_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF10_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "WUF11",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF11_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF11_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "WUF12",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF12_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF12_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "WUF13",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF13_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF13_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "WUF14",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF14_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF14_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "WUF15",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF15_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF15_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "WUF16",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF16(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF16_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF16_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "WUF17",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF17(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF17_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF17_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "WUF18",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF18(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF18_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF18_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "WUF19",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF19(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF19_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF19_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "WUF20",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF20(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF20_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF20_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "WUF21",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF21(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF21_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF21_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "WUF22",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF22(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF22_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF22_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "WUF23",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF23(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF23_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF23_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "WUF24",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF24(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF24_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF24_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "WUF25",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF25(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF25_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF25_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "WUF26",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF26(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF26_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF26_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "WUF27",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF27(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF27_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF27_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "WUF28",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF28(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF28_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF28_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "WUF29",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF29(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF29_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF29_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "WUF30",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF30(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF30_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF30_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "WUF31",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Wake-up Flag for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PF_WUF31(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PF_WUF31_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "PF_WUF31_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x30",
+        "@width": "32",
+        "@name": "FILT",
+        "@description": "Pin Filter",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FILT"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "5",
+            "@name": "FILTSEL1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter 1 Pin Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FILT_FILTSEL1(x)"
+            }
+          },
+          {
+            "@offset": "5",
+            "@width": "2",
+            "@name": "FILTE1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter 1 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FILT_FILTE1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FILT_FILTE1_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "FILT_FILTE1_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (Detect on rising edge or high level)"
+              },
+              {
+                "@name": "FILT_FILTE1_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (Detect on falling edge or low level)"
+              },
+              {
+                "@name": "FILT_FILTE1_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (Detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "FILTF1",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Filter 1 Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FILT_FILTF1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FILT_FILTF1_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "FILT_FILTF1_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "5",
+            "@name": "FILTSEL2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter 2 Pin Select",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FILT_FILTSEL2(x)"
+            }
+          },
+          {
+            "@offset": "13",
+            "@width": "2",
+            "@name": "FILTE2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter 2 Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FILT_FILTE2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FILT_FILTE2_DISABLE",
+                "@value": "0b00",
+                "@description": "Disable"
+              },
+              {
+                "@name": "FILT_FILTE2_EN_RISE_HI",
+                "@value": "0b01",
+                "@description": "Enable (Detect on rising edge or high level)"
+              },
+              {
+                "@name": "FILT_FILTE2_EN_FALL_LO",
+                "@value": "0b10",
+                "@description": "Enable (Detect on falling edge or low level)"
+              },
+              {
+                "@name": "FILT_FILTE2_EN_ANY",
+                "@value": "0b11",
+                "@description": "Enable (Detect on any edge)"
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "FILTF2",
+            "@access": "W1C",
+            "@reset_value": "0",
+            "@description": "Filter 2 Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FILT_FILTF2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FILT_FILTF2_NO_FLAG",
+                "@value": "0b0",
+                "@description": "No"
+              },
+              {
+                "@name": "FILT_FILTF2_FLAG",
+                "@value": "0b1",
+                "@description": "Yes"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "16",
+          "@width": "16",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x48",
+        "@width": "32",
+        "@name": "FDC",
+        "@description": "Pin Filter DMA/Trigger Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FDC"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "FILTC1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter Configuration for FILTn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FDC_FILTC1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FDC_FILTC1_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "FDC_FILTC1_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "FDC_FILTC1_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "FDC_FILTC1_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "2",
+            "@name": "FILTC2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter Configuration for FILTn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FDC_FILTC2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FDC_FILTC2_INTERRUPT",
+                "@value": "0b00",
+                "@description": "Interrupt"
+              },
+              {
+                "@name": "FDC_FILTC2_DMA_REQ",
+                "@value": "0b01",
+                "@description": "DMA request"
+              },
+              {
+                "@name": "FDC_FILTC2_TRIGGER",
+                "@value": "0b10",
+                "@description": "Trigger event"
+              },
+              {
+                "@name": "FDC_FILTC2_RES",
+                "@value": "0b11",
+                "@description": "Reserved"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "4",
+          "@width": "28",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x50",
+        "@width": "32",
+        "@name": "PMC",
+        "@description": "Pin Mode Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PMC"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "WUPMC0",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC0(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC0_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC0_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "WUPMC1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC1_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC1_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "WUPMC2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC2_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC2_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "WUPMC3",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC3(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC3_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC3_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "WUPMC4",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC4(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC4_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC4_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "5",
+            "@width": "1",
+            "@name": "WUPMC5",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC5(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC5_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC5_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "6",
+            "@width": "1",
+            "@name": "WUPMC6",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC6(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC6_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC6_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "7",
+            "@width": "1",
+            "@name": "WUPMC7",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC7(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC7_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC7_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "WUPMC8",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC8(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC8_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC8_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "WUPMC9",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC9(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC9_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC9_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "10",
+            "@width": "1",
+            "@name": "WUPMC10",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC10(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC10_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC10_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "11",
+            "@width": "1",
+            "@name": "WUPMC11",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC11(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC11_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC11_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "12",
+            "@width": "1",
+            "@name": "WUPMC12",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC12(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC12_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC12_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "13",
+            "@width": "1",
+            "@name": "WUPMC13",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC13(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC13_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC13_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "14",
+            "@width": "1",
+            "@name": "WUPMC14",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC14(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC14_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC14_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "15",
+            "@width": "1",
+            "@name": "WUPMC15",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC15(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC15_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC15_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "16",
+            "@width": "1",
+            "@name": "WUPMC16",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC16(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC16_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC16_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "17",
+            "@width": "1",
+            "@name": "WUPMC17",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC17(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC17_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC17_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "18",
+            "@width": "1",
+            "@name": "WUPMC18",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC18(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC18_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC18_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "19",
+            "@width": "1",
+            "@name": "WUPMC19",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC19(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC19_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC19_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "20",
+            "@width": "1",
+            "@name": "WUPMC20",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC20(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC20_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC20_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "21",
+            "@width": "1",
+            "@name": "WUPMC21",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC21(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC21_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC21_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "22",
+            "@width": "1",
+            "@name": "WUPMC22",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC22(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC22_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC22_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "23",
+            "@width": "1",
+            "@name": "WUPMC23",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC23(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC23_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC23_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "24",
+            "@width": "1",
+            "@name": "WUPMC24",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC24(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC24_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC24_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "25",
+            "@width": "1",
+            "@name": "WUPMC25",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC25(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC25_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC25_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "26",
+            "@width": "1",
+            "@name": "WUPMC26",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC26(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC26_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC26_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "27",
+            "@width": "1",
+            "@name": "WUPMC27",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC27(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC27_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC27_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "28",
+            "@width": "1",
+            "@name": "WUPMC28",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC28(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC28_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC28_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "29",
+            "@width": "1",
+            "@name": "WUPMC29",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC29(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC29_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC29_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "30",
+            "@width": "1",
+            "@name": "WUPMC30",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC30(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC30_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC30_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          },
+          {
+            "@offset": "31",
+            "@width": "1",
+            "@name": "WUPMC31",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Wake-up Pin Mode Configuration for WUU_Pn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_PMC_WUPMC31(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "PMC_WUPMC31_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during a low-leakage mode. You can modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              },
+              {
+                "@name": "PMC_WUPMC31_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes. Do not modify the corresponding fields within Pin Enable (PEn) or Pin DMA/Trigger Configuration (PDCn)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@offset": "0x58",
+        "@width": "32",
+        "@name": "FMC",
+        "@description": "Pin Filter Mode Configuration",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "FMC"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "FILTM1",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter Mode for FILTn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FMC_FILTM1(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FMC_FILTM1_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during Power Down/Deep Power Down mode"
+              },
+              {
+                "@name": "FMC_FILTM1_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes"
+              }
+            ]
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "FILTM2",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Filter Mode for FILTn",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "WUU_FMC_FILTM2(x)"
+            },
+            "bit_field_value": [
+              {
+                "@name": "FMC_FILTM2_LOW_PWR_ONLY",
+                "@value": "0b0",
+                "@description": "Active only during Power Down/Deep Power Down mode"
+              },
+              {
+                "@name": "FMC_FILTM2_ANY_PWR",
+                "@value": "0b1",
+                "@description": "Active during all power modes"
+              }
+            ]
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@reset_value": "0"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "8",
+        "@vals": "0x8 1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0xC 2 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x38 1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15"
+      },
+      {
+        "@rid": "56",
+        "@vals": "0x3C 2 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31"
+      }
+    ]
+  }
+}

@@ -1,0 +1,2850 @@
+{
+  "component": {
+    "@_xmlns": {
+      "clocks": "http://apif.freescale.net/schemas/clocks/1.2",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://apif.freescale.net/schemas/clocks/1.2 http://apif.nxp.com/schemas/clocks/1.2/clocks.xsd",
+    "@id": "module_clocks",
+    "interface": {
+      "input_clock_signal": [
+        {
+          "@id": "ADC0_clock",
+          "@name": "ADC0CLK",
+          "@group": "peripheral",
+          "@description": "ADC0 clock"
+        },
+        {
+          "@id": "ADC1_clock",
+          "@name": "ADC1CLK",
+          "@group": "peripheral",
+          "@description": "ADC1 clock"
+        },
+        {
+          "@id": "CLK16K0_toVBAT_clock",
+          "@name": "CLK16K_0",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CLK16K1_toVSYS_clock",
+          "@name": "CLK16K_1",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CLK16K2_toWAKE_clock",
+          "@name": "CLK16K_2",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CLK16K3_toMAIN_clock",
+          "@name": "CLK16K_3",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CLKOUT_clock",
+          "@name": "CLKOUT",
+          "@group": "peripheral",
+          "@description": "CLKOUT clock"
+        },
+        {
+          "@id": "CLK_144M_clock",
+          "@name": "CLK_144M_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CLK_1M_clock",
+          "@name": "CLK_1M_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CLK_48M_clock",
+          "@name": "CLK_48M_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CLK_IN_clock",
+          "@name": "CLK_IN_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "CMP0FDIV_clock",
+          "@name": "CMP0FDIV_clock",
+          "@group": "peripheral",
+          "@description": "CMP0 Function div clock"
+        },
+        {
+          "@id": "CMP0RRDIV_clock",
+          "@name": "CMP0RRDIV_clock",
+          "@group": "peripheral",
+          "@description": "CMP0 Round Robin div clock"
+        },
+        {
+          "@id": "CMP1FDIV_clock",
+          "@name": "CMP1FDIV_clock",
+          "@group": "peripheral",
+          "@description": "CMP1 Function div clock"
+        },
+        {
+          "@id": "CMP1RRDIV_clock",
+          "@name": "CMP1RRDIV_clock",
+          "@group": "peripheral",
+          "@description": "CMP1 Round Robin div clock"
+        },
+        {
+          "@id": "CMP2FDIV_clock",
+          "@name": "CMP2FDIV_clock",
+          "@group": "peripheral",
+          "@description": "CMP2 Function div clock"
+        },
+        {
+          "@id": "CMP2RRDIV_clock",
+          "@name": "CMP2RRDIV_clock",
+          "@group": "peripheral",
+          "@description": "CMP2 Round Robin div clock"
+        },
+        {
+          "@id": "CTIMER0_clock",
+          "@name": "CTIMER0CLK",
+          "@group": "peripheral",
+          "@description": "CTIMER0 clock"
+        },
+        {
+          "@id": "CTIMER1_clock",
+          "@name": "CTIMER1CLK",
+          "@group": "peripheral",
+          "@description": "CTIMER1 clock"
+        },
+        {
+          "@id": "CTIMER2_clock",
+          "@name": "CTIMER2CLK",
+          "@group": "peripheral",
+          "@description": "CTIMER2 clock"
+        },
+        {
+          "@id": "CTIMER3_clock",
+          "@name": "CTIMER3CLK",
+          "@group": "peripheral",
+          "@description": "CTIMER3 clock"
+        },
+        {
+          "@id": "CTIMER4_clock",
+          "@name": "CTIMER4CLK",
+          "@group": "peripheral",
+          "@description": "CTIMER4 clock"
+        },
+        {
+          "@id": "DAC0_clock",
+          "@name": "DAC0CLK",
+          "@group": "peripheral",
+          "@description": "DAC0 clock"
+        },
+        {
+          "@id": "DAC1_clock",
+          "@name": "DAC1CLK",
+          "@group": "peripheral",
+          "@description": "DAC1 clock"
+        },
+        {
+          "@id": "DAC2_clock",
+          "@name": "DAC2CLK",
+          "@group": "peripheral",
+          "@description": "DAC2 clock"
+        },
+        {
+          "@id": "EMVSIM0_clock",
+          "@name": "EMVSIM0CLK",
+          "@group": "peripheral",
+          "@description": "EMVSIM0 clock"
+        },
+        {
+          "@id": "EMVSIM1_clock",
+          "@name": "EMVSIM1CLK",
+          "@group": "peripheral",
+          "@description": "EMVSIM1 clock"
+        },
+        {
+          "@id": "ENETPTPREFCLK_clock",
+          "@name": "ENETPTPREFCLK",
+          "@group": "peripheral",
+          "@description": "Ethernet PTP REF Function Clock"
+        },
+        {
+          "@id": "ENETRMII_clock",
+          "@name": "ENETRMIICLK",
+          "@group": "peripheral",
+          "@description": "ENET RMII clock"
+        },
+        {
+          "@id": "EWM_clock",
+          "@name": "EWM_clock",
+          "@group": "peripheral",
+          "@description": "EWM0 clock"
+        },
+        {
+          "@id": "FLEXCAN0_clock",
+          "@name": "FLEXCAN0CLK",
+          "@group": "peripheral",
+          "@description": "FlexCAN0 clock"
+        },
+        {
+          "@id": "FLEXCAN1_clock",
+          "@name": "FLEXCAN1CLK",
+          "@group": "peripheral",
+          "@description": "FlexCAN1 clock"
+        },
+        {
+          "@id": "FLEXCOMM0_clock",
+          "@name": "FLEXCOMM0CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM0 clock"
+        },
+        {
+          "@id": "FLEXCOMM1_clock",
+          "@name": "FLEXCOMM1CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM1 clock"
+        },
+        {
+          "@id": "FLEXCOMM2_clock",
+          "@name": "FLEXCOMM2CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM2 clock"
+        },
+        {
+          "@id": "FLEXCOMM3_clock",
+          "@name": "FLEXCOMM3CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM3 clock"
+        },
+        {
+          "@id": "FLEXCOMM4_clock",
+          "@name": "FLEXCOMM4CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM4 clock"
+        },
+        {
+          "@id": "FLEXCOMM5_clock",
+          "@name": "FLEXCOMM5CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM5 clock"
+        },
+        {
+          "@id": "FLEXCOMM6_clock",
+          "@name": "FLEXCOMM6CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM6 clock"
+        },
+        {
+          "@id": "FLEXCOMM7_clock",
+          "@name": "FLEXCOMM7CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM7 clock"
+        },
+        {
+          "@id": "FLEXCOMM8_clock",
+          "@name": "FLEXCOMM8CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM8 clock"
+        },
+        {
+          "@id": "FLEXCOMM9_clock",
+          "@name": "FLEXCOMM9CLK",
+          "@group": "peripheral",
+          "@description": "FLEXCOMM9 clock"
+        },
+        {
+          "@id": "FLEXIO_clock",
+          "@name": "FLEXIOCLK",
+          "@group": "peripheral",
+          "@description": "FlexIO clock"
+        },
+        {
+          "@id": "FLEXSPI_clock",
+          "@name": "FLEXSPICLK",
+          "@group": "peripheral",
+          "@description": "FLEXSPI clock"
+        },
+        {
+          "@id": "FREQME_reference_clock",
+          "@name": "FREQME reference clock",
+          "@group": "peripheral",
+          "@description": "FREQME reference clock"
+        },
+        {
+          "@id": "FREQME_target_clock",
+          "@name": "FREQME target clock",
+          "@group": "peripheral",
+          "@description": "FREQME target clock"
+        },
+        {
+          "@id": "FRO_12M_clock",
+          "@name": "FRO_12M_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "FRO_HF_DIV_clock",
+          "@name": "FRO_HF_DIV_clock",
+          "@group": "peripheral",
+          "@description": "FRO_HF_DIV clock"
+        },
+        {
+          "@id": "FRO_HF_clock",
+          "@name": "FRO_HF_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "I3C0_FCLK_clock",
+          "@name": "I3C0FCLK",
+          "@group": "peripheral",
+          "@description": "I3C0 Functional clock"
+        },
+        {
+          "@id": "I3C0_SLOW_TC_clock",
+          "@name": "I3C0FCLKSTC",
+          "@group": "peripheral",
+          "@description": "I3C0 FCLK_STC clock"
+        },
+        {
+          "@id": "I3C0_SLOW_clock",
+          "@name": "I3C0FCLKS",
+          "@group": "peripheral",
+          "@description": "I3C0 FCLK slow clock"
+        },
+        {
+          "@id": "I3C1_FCLK_clock",
+          "@name": "I3C1FCLK",
+          "@group": "peripheral",
+          "@description": "I3C1 Functional clock"
+        },
+        {
+          "@id": "I3C1_SLOW_TC_clock",
+          "@name": "I3C1FCLKSTC",
+          "@group": "peripheral",
+          "@description": "I3C1 FCLK_STC clock"
+        },
+        {
+          "@id": "I3C1_SLOW_clock",
+          "@name": "I3C1FCLKS",
+          "@group": "peripheral",
+          "@description": "I3C1 FCLK slow clock"
+        },
+        {
+          "@id": "LP_OSC_clock",
+          "@name": "LP_OSC",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "MAIN_clock",
+          "@name": "MAIN_clock",
+          "@group": "system",
+          "@description": "MAIN clock"
+        },
+        {
+          "@id": "MICFILFCLK_clock",
+          "@name": "MICFILFCLK",
+          "@group": "peripheral",
+          "@description": "MICFILFCLK clock"
+        },
+        {
+          "@id": "OSTIMER_clock",
+          "@name": "OSTIMERCLK",
+          "@group": "peripheral",
+          "@description": "OSTIMER clock"
+        },
+        {
+          "@id": "PLL0_CLK_clock",
+          "@name": "PLL0_CLK_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "PLL1_CLK_clock",
+          "@name": "PLL1_CLK_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "PLL_DIV_clock",
+          "@name": "PLL_DIV_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "PLUCLKIN_clock",
+          "@name": "PLUCLKIN clock",
+          "@group": "peripheral",
+          "@description": "PLUCLKIN clock"
+        },
+        {
+          "@id": "PLU_GLITCH_12MHz_clock",
+          "@name": "PLU GLITCH 12MHz clock",
+          "@group": "peripheral",
+          "@description": "PLU GLITCH 12MHz clock"
+        },
+        {
+          "@id": "PLU_GLITCH_1MHz_clock",
+          "@name": "PLU GLITCH 1MHz clock",
+          "@group": "peripheral",
+          "@description": "PLU GLITCH 1MHz clock"
+        },
+        {
+          "@id": "SAI0_clock",
+          "@name": "SAI0CLK",
+          "@group": "peripheral",
+          "@description": "SAI0 Functional clock"
+        },
+        {
+          "@id": "SAI1_clock",
+          "@name": "SAI1CLK",
+          "@group": "peripheral",
+          "@description": "SAI1 Functional clock"
+        },
+        {
+          "@id": "SCG.FIRC_TRIM_clock",
+          "@name": "FIRC_TRIM_clock",
+          "@group": "peripheral",
+          "@description": "FIRC external reference clock for autotrimming"
+        },
+        {
+          "@id": "SCG.SIRC_TRIM_clock",
+          "@name": "SIRC_TRIM_clock",
+          "@group": "peripheral",
+          "@description": "SIRC external reference clock for autotrimming"
+        },
+        {
+          "@id": "SCT_clock",
+          "@name": "SCTCLK",
+          "@group": "peripheral",
+          "@description": "SCT clock"
+        },
+        {
+          "@id": "SINCFILT_clock",
+          "@name": "SINCFILTCLK",
+          "@group": "peripheral",
+          "@description": "SINC Filter clock"
+        },
+        {
+          "@id": "SYSTICK0_clock",
+          "@name": "SYSTICK0_CLK",
+          "@group": "peripheral",
+          "@description": "SYSTICK0_CLK"
+        },
+        {
+          "@id": "SYSTICK1_clock",
+          "@name": "SYSTICK1_CLK",
+          "@group": "peripheral",
+          "@description": "SYSTICK1_CLK"
+        },
+        {
+          "@id": "Slow_clock",
+          "@name": "Slow_clock",
+          "@group": "system",
+          "@description": "Slow_clock"
+        },
+        {
+          "@id": "System_clock",
+          "@name": "System_clock",
+          "@group": "system",
+          "@description": "SYSTEM clock"
+        },
+        {
+          "@id": "TRACE_clock",
+          "@name": "TRACECLK",
+          "@group": "peripheral",
+          "@description": "Trace clock"
+        },
+        {
+          "@id": "TSI_clock",
+          "@name": "TSICLK",
+          "@group": "peripheral",
+          "@description": "TSI clock"
+        },
+        {
+          "@id": "USB_HSPLL_clock",
+          "@name": "USB_HSPLL_clock",
+          "@group": "peripheral",
+          "@description": "USB_HSPLL clock"
+        },
+        {
+          "@id": "USB_PLL_clock",
+          "@name": "USB_PLL_clock",
+          "@group": "peripheral",
+          "@description": "USB_PLL clock"
+        },
+        {
+          "@id": "USB_clock",
+          "@name": "USBCLK",
+          "@group": "peripheral",
+          "@description": "USB clock"
+        },
+        {
+          "@id": "UTICK_clock",
+          "@name": "UTICK clock",
+          "@group": "peripheral",
+          "@description": "UTICK clock"
+        },
+        {
+          "@id": "WDT0_clock",
+          "@name": "WDT0CLK",
+          "@group": "peripheral",
+          "@description": "WDT0 clock"
+        },
+        {
+          "@id": "WDT1_clock",
+          "@name": "WDT1CLK",
+          "@group": "peripheral",
+          "@description": "WDT1 clock"
+        },
+        {
+          "@id": "XTAL32K0_toVBAT_clock",
+          "@name": "XTAL32K_0",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "XTAL32K1_toVSYS_clock",
+          "@name": "XTAL32K_1",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "XTAL32K2_toWAKE_clock",
+          "@name": "XTAL32K_2",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "XTAL32K3_toMAIN_clock",
+          "@name": "XTAL32K_3",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "gdet_clock",
+          "@name": "gdet_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "pll1_clk0_clock",
+          "@name": "pll1_clk0",
+          "@group": "peripheral",
+          "@description": "PLL1_clk0 clock"
+        },
+        {
+          "@id": "pll1_clk1_clock",
+          "@name": "pll1_clk1",
+          "@group": "peripheral",
+          "@description": "PLL1_clk1 clock"
+        },
+        {
+          "@id": "trng_clock",
+          "@name": "trng_clock",
+          "@group": "peripheral",
+          "@description": ""
+        },
+        {
+          "@id": "uSDHC_clock",
+          "@name": "uSDHCCLK",
+          "@group": "peripheral",
+          "@description": "uSDHC clock"
+        }
+      ]
+    },
+    "implementation": {
+      "peripheral_component": [
+        {
+          "@id": "ADC0",
+          "@component": "LPADC",
+          "@name": "ADC0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "AsynchronousFunctionClock",
+              "@signal": "ADC0_clock",
+              "@description": "Asynchronous Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "ADC1",
+          "@component": "LPADC",
+          "@name": "ADC1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "AsynchronousFunctionClock",
+              "@signal": "ADC1_clock",
+              "@description": "Asynchronous Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "CACHE64_CTRL0",
+          "@component": "CACHE64_CTRL",
+          "@name": "CACHE64_CTRL0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "BusInterfaceClock"
+          }
+        },
+        {
+          "@id": "CACHE64_POLSEL0",
+          "@component": "CACHE64_POLSEL",
+          "@name": "CACHE64_POLSEL0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "BusInterfaceClock"
+          }
+        },
+        {
+          "@id": "CAN0",
+          "@component": "FLEXCAN",
+          "@name": "CAN0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "OscillatorClock",
+              "@signal": "FLEXCAN0_clock",
+              "@description": "Oscillator Clock"
+            }
+          ]
+        },
+        {
+          "@id": "CAN1",
+          "@component": "FLEXCAN",
+          "@name": "CAN1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "OscillatorClock",
+              "@signal": "FLEXCAN1_clock",
+              "@description": "Oscillator Clock"
+            }
+          ]
+        },
+        {
+          "@id": "CMC0",
+          "@component": "CMC",
+          "@name": "CMC0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "Slow_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "CMP0",
+          "@component": "LPCMP",
+          "@name": "CMP0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "Slow_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClockMux_b01",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "CMP FunctionClockMux_b01"
+            },
+            {
+              "@id": "FunctionClockMux_b10",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "CMP FunctionClockMux_b10"
+            },
+            {
+              "@id": "FunctionClockMux_b11",
+              "@signal": "CMP0FDIV_clock",
+              "@description": "CMP FunctionClockMux_b11"
+            },
+            {
+              "@id": "RoundRobinClockMux_b01",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "CMP RoundRobinClockMux_b01"
+            },
+            {
+              "@id": "RoundRobinClockMux_b10",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "CMP RoundRobinClockMux_b10"
+            },
+            {
+              "@id": "RoundRobinClockMux_b11",
+              "@signal": "CMP0RRDIV_clock",
+              "@description": "CMP RoundRobinClockMux_b11"
+            }
+          ]
+        },
+        {
+          "@id": "CMP1",
+          "@component": "LPCMP",
+          "@name": "CMP1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "Slow_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClockMux_b01",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "CMP FunctionClockMux_b01"
+            },
+            {
+              "@id": "FunctionClockMux_b10",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "CMP FunctionClockMux_b10"
+            },
+            {
+              "@id": "FunctionClockMux_b11",
+              "@signal": "CMP1FDIV_clock",
+              "@description": "CMP FunctionClockMux_b11"
+            },
+            {
+              "@id": "RoundRobinClockMux_b01",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "CMP RoundRobinClockMux_b01"
+            },
+            {
+              "@id": "RoundRobinClockMux_b10",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "CMP RoundRobinClockMux_b10"
+            },
+            {
+              "@id": "RoundRobinClockMux_b11",
+              "@signal": "CMP1RRDIV_clock",
+              "@description": "CMP RoundRobinClockMux_b11"
+            }
+          ]
+        },
+        {
+          "@id": "CMP2",
+          "@component": "LPCMP",
+          "@name": "CMP2",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClockMux_b01",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "CMP FunctionClockMux_b01"
+            },
+            {
+              "@id": "FunctionClockMux_b10",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "CMP FunctionClockMux_b10"
+            },
+            {
+              "@id": "FunctionClockMux_b11",
+              "@signal": "CMP2FDIV_clock",
+              "@description": "CMP FunctionClockMux_b11"
+            },
+            {
+              "@id": "RoundRobinClockMux_b01",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "CMP RoundRobinClockMux_b01"
+            },
+            {
+              "@id": "RoundRobinClockMux_b10",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "CMP RoundRobinClockMux_b10"
+            },
+            {
+              "@id": "RoundRobinClockMux_b11",
+              "@signal": "CMP2RRDIV_clock",
+              "@description": "CMP RoundRobinClockMux_b11"
+            }
+          ]
+        },
+        {
+          "@id": "CMX_PERFMON0",
+          "@component": "SYSPM",
+          "@name": "CMX_PERFMON0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "CMX_PERFMON1",
+          "@component": "SYSPM",
+          "@name": "CMX_PERFMON1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "CTIMER0",
+          "@component": "CTIMER",
+          "@name": "CTIMER0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "CTIMER0_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "CTIMER1",
+          "@component": "CTIMER",
+          "@name": "CTIMER1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "CTIMER1_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "CTIMER2",
+          "@component": "CTIMER",
+          "@name": "CTIMER2",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "CTIMER2_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "CTIMER3",
+          "@component": "CTIMER",
+          "@name": "CTIMER3",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "CTIMER3_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "CTIMER4",
+          "@component": "CTIMER",
+          "@name": "CTIMER4",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "CTIMER4_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "DAC0",
+          "@component": "LPDAC",
+          "@name": "DAC0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "DAC0_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "DAC1",
+          "@component": "LPDAC",
+          "@name": "DAC1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "DAC1_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "DAC2",
+          "@component": "HPDAC",
+          "@name": "DAC2",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "DAC2_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "DMA0",
+          "@component": "EDMA",
+          "@name": "DMA0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "DMA1",
+          "@component": "EDMA",
+          "@name": "DMA1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "EMVSIM0",
+          "@component": "EMVSIM",
+          "@name": "EMVSIM0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "ProtocolClock",
+              "@signal": "EMVSIM0_clock",
+              "@description": "Protocol Clock"
+            }
+          ]
+        },
+        {
+          "@id": "EMVSIM1",
+          "@component": "EMVSIM",
+          "@name": "EMVSIM1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "ProtocolClock",
+              "@signal": "EMVSIM1_clock",
+              "@description": "Protocol Clock"
+            }
+          ]
+        },
+        {
+          "@id": "ENET0",
+          "@component": "MCX_ENET",
+          "@name": "ENET0",
+          "input_signal": [
+            {
+              "@id": "GlobalClock",
+              "@signal": "System_clock",
+              "@description": "System (global) clock"
+            },
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "TimestampClock",
+              "@signal": "ENETPTPREFCLK_clock",
+              "@description": "Timestamp (PTP) clock (IEEE 1588 timer)"
+            },
+            {
+              "@id": "EnetRefClock",
+              "@signal": "ENETRMII_clock",
+              "@description": "Reference clock"
+            }
+          ],
+          "pin_signal": [
+            {
+              "@id": "EnetTxClock",
+              "@signal": "enet_txclk",
+              "@description": "Tx Clock",
+              "pins_tool_ref": {
+                "@signal_id": "TX_CLK",
+                "@signal_unified_id": "enet_txclk",
+                "@description": "TX_CLK - Transmit clock"
+              }
+            },
+            {
+              "@id": "EnetRxClock",
+              "@signal": "enet_rxclk",
+              "@description": "Rx Clock",
+              "pins_tool_ref": {
+                "@signal_id": "RX_CLK",
+                "@signal_unified_id": "enet_rxclk",
+                "@description": "RX_CLK - Receive clock"
+              }
+            }
+          ]
+        },
+        {
+          "@id": "EVTG0",
+          "@component": "EVTG",
+          "@name": "EVTG0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "EWM0",
+          "@component": "EWM",
+          "@name": "EWM0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPO",
+              "@signal": "EWM_clock",
+              "@description": "LPO Clock"
+            },
+            {
+              "@id": "EwmFunctionClock",
+              "@signal": "EWM_clock",
+              "@description": "Ewm Function Clock"
+            }
+          ],
+          "no_signal": [
+            {
+              "@id": "LPO1",
+              "@description": "LPO 1 Clock"
+            },
+            {
+              "@id": "LPO2",
+              "@description": "LPO 2 Clock"
+            },
+            {
+              "@id": "LPO3",
+              "@description": "LPO 3 Clock"
+            }
+          ]
+        },
+        {
+          "@id": "FLEXIO0",
+          "@component": "FLEXIO",
+          "@name": "FLEXIO0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FlexIoClock",
+              "@signal": "FLEXIO_clock",
+              "@description": "FlexIO Clock"
+            }
+          ]
+        },
+        {
+          "@id": "FLEXSPI0",
+          "@component": "FLEXSPI",
+          "@name": "FLEXSPI0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FlexSpiClock",
+              "@signal": "FLEXSPI_clock",
+              "@description": "FlexSPI Clock"
+            },
+            {
+              "@id": "AHBClock",
+              "@signal": "System_clock",
+              "@description": "AHB Clock"
+            }
+          ]
+        },
+        {
+          "@id": "FREQME0",
+          "@component": "FREQME",
+          "@name": "FREQME0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "ReferenceClock",
+              "@signal": "FREQME_reference_clock",
+              "@description": "FREQME reference clock"
+            },
+            {
+              "@id": "TargetClock",
+              "@signal": "FREQME_target_clock",
+              "@description": "FREQME target clock"
+            }
+          ]
+        },
+        {
+          "@id": "GDET0",
+          "@component": "GDET",
+          "@name": "GDET0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "gdet_clock",
+              "@description": "GDET Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "GDET1",
+          "@component": "GDET",
+          "@name": "GDET1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "gdet_clock",
+              "@description": "GDET Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "GPIO0",
+          "@component": "GPIO",
+          "@name": "GPIO0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO0_ALIAS1",
+          "@component": "GPIO",
+          "@name": "GPIO0_ALIAS1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO1",
+          "@component": "GPIO",
+          "@name": "GPIO1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO1_ALIAS1",
+          "@component": "GPIO",
+          "@name": "GPIO1_ALIAS1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO2",
+          "@component": "GPIO",
+          "@name": "GPIO2",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO2_ALIAS1",
+          "@component": "GPIO",
+          "@name": "GPIO2_ALIAS1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO3",
+          "@component": "GPIO",
+          "@name": "GPIO3",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO3_ALIAS1",
+          "@component": "GPIO",
+          "@name": "GPIO3_ALIAS1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO4",
+          "@component": "GPIO",
+          "@name": "GPIO4",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO4_ALIAS1",
+          "@component": "GPIO",
+          "@name": "GPIO4_ALIAS1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO5",
+          "@component": "GPIO",
+          "@name": "GPIO5",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "Slow_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "GPIO5_ALIAS1",
+          "@component": "GPIO",
+          "@name": "GPIO5_ALIAS1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "I3C0",
+          "@component": "I3C",
+          "@name": "I3C0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "I3C0_FCLK_clock",
+              "@description": "I3C Function Clock"
+            },
+            {
+              "@id": "SlowTCClock",
+              "@signal": "I3C0_SLOW_TC_clock",
+              "@description": "I3C SLOW_TC Clock"
+            },
+            {
+              "@id": "SlowClock",
+              "@signal": "I3C0_SLOW_clock",
+              "@description": "I3C Slow Clock"
+            }
+          ]
+        },
+        {
+          "@id": "I3C1",
+          "@component": "I3C",
+          "@name": "I3C1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "I3C1_FCLK_clock",
+              "@description": "I3C Function Clock"
+            },
+            {
+              "@id": "SlowTCClock",
+              "@signal": "I3C1_SLOW_TC_clock",
+              "@description": "I3C SLOW_TC Clock"
+            },
+            {
+              "@id": "SlowClock",
+              "@signal": "I3C1_SLOW_clock",
+              "@description": "I3C Slow Clock"
+            }
+          ]
+        },
+        {
+          "@id": "INTM0",
+          "@component": "INTM",
+          "@name": "INTM0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "LPI2C0",
+          "@component": "LPI2C",
+          "@name": "LPI2C0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM0_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C1",
+          "@component": "LPI2C",
+          "@name": "LPI2C1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM1_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C2",
+          "@component": "LPI2C",
+          "@name": "LPI2C2",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM2_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C3",
+          "@component": "LPI2C",
+          "@name": "LPI2C3",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM3_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C4",
+          "@component": "LPI2C",
+          "@name": "LPI2C4",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM4_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C5",
+          "@component": "LPI2C",
+          "@name": "LPI2C5",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM5_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C6",
+          "@component": "LPI2C",
+          "@name": "LPI2C6",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM6_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C7",
+          "@component": "LPI2C",
+          "@name": "LPI2C7",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM7_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C8",
+          "@component": "LPI2C",
+          "@name": "LPI2C8",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM8_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPI2C9",
+          "@component": "LPI2C",
+          "@name": "LPI2C9",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "Lpi2cClock",
+              "@signal": "FLEXCOMM9_clock",
+              "@description": "LPI2C Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI0",
+          "@component": "LPSPI",
+          "@name": "LPSPI0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM0_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI1",
+          "@component": "LPSPI",
+          "@name": "LPSPI1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM1_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI2",
+          "@component": "LPSPI",
+          "@name": "LPSPI2",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM2_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI3",
+          "@component": "LPSPI",
+          "@name": "LPSPI3",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM3_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI4",
+          "@component": "LPSPI",
+          "@name": "LPSPI4",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM4_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI5",
+          "@component": "LPSPI",
+          "@name": "LPSPI5",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM5_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI6",
+          "@component": "LPSPI",
+          "@name": "LPSPI6",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM6_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI7",
+          "@component": "LPSPI",
+          "@name": "LPSPI7",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM7_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI8",
+          "@component": "LPSPI",
+          "@name": "LPSPI8",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM8_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPSPI9",
+          "@component": "LPSPI",
+          "@name": "LPSPI9",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpspiClock",
+              "@signal": "FLEXCOMM9_clock",
+              "@description": "LPSPI Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPTMR0",
+          "@component": "LPTMR",
+          "@name": "LPTMR0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "Slow_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock0",
+              "@signal": "FRO_12M_clock",
+              "@description": "Prescaler/glitch filter clock 0"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock1",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "Prescaler/glitch filter clock 1"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock2",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "Prescaler/glitch filter clock 2"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock3",
+              "@signal": "CLK_IN_clock",
+              "@description": "Prescaler/glitch filter clock 3"
+            }
+          ]
+        },
+        {
+          "@id": "LPTMR1",
+          "@component": "LPTMR",
+          "@name": "LPTMR1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "Slow_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock0",
+              "@signal": "FRO_12M_clock",
+              "@description": "Prescaler/glitch filter clock 0"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock1",
+              "@signal": "CLK16K1_toVSYS_clock",
+              "@description": "Prescaler/glitch filter clock 1"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock2",
+              "@signal": "XTAL32K1_toVSYS_clock",
+              "@description": "Prescaler/glitch filter clock 2"
+            },
+            {
+              "@id": "PrescalerGlitchFilterClock3",
+              "@signal": "CLK_IN_clock",
+              "@description": "Prescaler/glitch filter clock 3"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART0",
+          "@component": "LPUART",
+          "@name": "LPUART0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM0_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART1",
+          "@component": "LPUART",
+          "@name": "LPUART1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM1_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART2",
+          "@component": "LPUART",
+          "@name": "LPUART2",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM2_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART3",
+          "@component": "LPUART",
+          "@name": "LPUART3",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM3_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART4",
+          "@component": "LPUART",
+          "@name": "LPUART4",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM4_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART5",
+          "@component": "LPUART",
+          "@name": "LPUART5",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM5_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART6",
+          "@component": "LPUART",
+          "@name": "LPUART6",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM6_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART7",
+          "@component": "LPUART",
+          "@name": "LPUART7",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM7_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART8",
+          "@component": "LPUART",
+          "@name": "LPUART8",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM8_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LPUART9",
+          "@component": "LPUART",
+          "@name": "LPUART9",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LpuartClock",
+              "@signal": "FLEXCOMM9_clock",
+              "@description": "LPUART Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM0",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM0_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM1",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM1_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM2",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM2",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM2_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM3",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM3",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM3_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM4",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM4",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM4_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM5",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM5",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM5_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM6",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM6",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM6_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM7",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM7",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM7_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM8",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM8",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM8_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "LP_FLEXCOMM9",
+          "@component": "LP_FLEXCOMM",
+          "@name": "LP_FLEXCOMM9",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPFLEXCOMMFunctionClock",
+              "@signal": "FLEXCOMM9_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "MAILBOX",
+          "@component": "MAILBOX",
+          "@name": "MAILBOX",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "MRT0",
+          "@component": "MRT",
+          "@name": "MRT0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "OSTIMER0",
+          "@component": "OSTIMER",
+          "@name": "OSTIMER0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "OSTIMER_clock",
+              "@description": "OSTIMER Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "PDM",
+          "@component": "PDM",
+          "@name": "PDM",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "PdmClock",
+              "@signal": "MICFILFCLK_clock",
+              "@description": "MIC Clock"
+            }
+          ]
+        },
+        {
+          "@id": "PLU0",
+          "@component": "PLU",
+          "@name": "PLU0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "PLUCLKIN_clock",
+              "@description": "PLU Function Clock"
+            },
+            {
+              "@id": "GlitchFunctionClock0",
+              "@signal": "PLU_GLITCH_1MHz_clock",
+              "@description": "PLU Glitch Filter Clock 1MHz"
+            },
+            {
+              "@id": "GlitchFunctionClock1",
+              "@signal": "PLU_GLITCH_12MHz_clock",
+              "@description": "PLU Glitch Filter Clock 12MHz"
+            }
+          ]
+        },
+        {
+          "@id": "PORT0",
+          "@component": "PORT",
+          "@name": "PORT0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PORT1",
+          "@component": "PORT",
+          "@name": "PORT1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PORT2",
+          "@component": "PORT",
+          "@name": "PORT2",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PORT3",
+          "@component": "PORT",
+          "@name": "PORT3",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PORT4",
+          "@component": "PORT",
+          "@name": "PORT4",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PORT5",
+          "@component": "PORT",
+          "@name": "PORT5",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "Slow_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "POWERQUAD",
+          "@component": "POWERQUAD",
+          "@name": "POWERQUAD",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PUF",
+          "@component": "PUF",
+          "@name": "PUF",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PUF_ALIAS1",
+          "@component": "PUF",
+          "@name": "PUF_ALIAS1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PUF_ALIAS2",
+          "@component": "PUF",
+          "@name": "PUF_ALIAS2",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PUF_ALIAS3",
+          "@component": "PUF",
+          "@name": "PUF_ALIAS3",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "PWM0",
+          "@component": "PWM",
+          "@name": "PWM0",
+          "input_signal": {
+            "@id": "BusInterfaceClock_b00",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          },
+          "pin_signal": {
+            "@id": "ExternalClock_b01",
+            "@signal": "pwm_ext_clk",
+            "@description": "External Clock",
+            "pins_tool_ref": {
+              "@signal_id": "EXT_CLK",
+              "@signal_unified_id": "pwm_ext_clk",
+              "@description": "External clock input"
+            }
+          },
+          "peripheral_signal": {
+            "@id": "AUXClock_b10",
+            "@description": "AUX Clock (from submodule 0)"
+          }
+        },
+        {
+          "@id": "PWM1",
+          "@component": "PWM",
+          "@name": "PWM1",
+          "input_signal": {
+            "@id": "BusInterfaceClock_b00",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          },
+          "pin_signal": {
+            "@id": "ExternalClock_b01",
+            "@signal": "pwm_ext_clk",
+            "@description": "External Clock",
+            "pins_tool_ref": {
+              "@signal_id": "EXT_CLK",
+              "@signal_unified_id": "pwm_ext_clk",
+              "@description": "External clock input"
+            }
+          },
+          "peripheral_signal": {
+            "@id": "AUXClock_b10",
+            "@description": "AUX Clock (from submodule 0)"
+          }
+        },
+        {
+          "@id": "QDC0",
+          "@component": "QDC",
+          "@name": "QDC0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "QDC1",
+          "@component": "QDC",
+          "@name": "QDC1",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "System_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "RTC0",
+          "@component": "RTC",
+          "@name": "RTC0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "Slow_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "ReferenceClock",
+              "@signal": "LP_OSC_clock",
+              "@description": "Reference Clock"
+            }
+          ]
+        },
+        {
+          "@id": "SAI0",
+          "@component": "SAI",
+          "@name": "SAI0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "MCLK0",
+              "@signal": "System_clock",
+              "@description": "Master Clock 0"
+            },
+            {
+              "@id": "MCLK1",
+              "@signal": "SAI0_clock",
+              "@description": "Master Clock 1"
+            }
+          ],
+          "no_signal": [
+            {
+              "@id": "MCLK_input_0",
+              "@description": "Master Clock Input 0"
+            },
+            {
+              "@id": "MCLK_input_1",
+              "@description": "Master Clock Input 1"
+            },
+            {
+              "@id": "MCLK_input_2",
+              "@description": "Master Clock Input 2"
+            },
+            {
+              "@id": "MCLK_input_3",
+              "@description": "Master Clock Input 3"
+            },
+            {
+              "@id": "MCLK2",
+              "@description": "Master Clock 2"
+            },
+            {
+              "@id": "MCLK3",
+              "@description": "Master Clock 3"
+            }
+          ]
+        },
+        {
+          "@id": "SAI1",
+          "@component": "SAI",
+          "@name": "SAI1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "MCLK0",
+              "@signal": "System_clock",
+              "@description": "Master Clock 0"
+            },
+            {
+              "@id": "MCLK1",
+              "@signal": "SAI1_clock",
+              "@description": "Master Clock 1"
+            }
+          ],
+          "no_signal": [
+            {
+              "@id": "MCLK_input_0",
+              "@description": "Master Clock Input 0"
+            },
+            {
+              "@id": "MCLK_input_1",
+              "@description": "Master Clock Input 1"
+            },
+            {
+              "@id": "MCLK_input_2",
+              "@description": "Master Clock Input 2"
+            },
+            {
+              "@id": "MCLK_input_3",
+              "@description": "Master Clock Input 3"
+            },
+            {
+              "@id": "MCLK2",
+              "@description": "Master Clock 2"
+            },
+            {
+              "@id": "MCLK3",
+              "@description": "Master Clock 3"
+            }
+          ]
+        },
+        {
+          "@id": "SCT0",
+          "@component": "SCT",
+          "@name": "SCT0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "SynchronousFunctionClock",
+              "@signal": "System_clock",
+              "@description": "Synchronous Function Clock"
+            },
+            {
+              "@id": "AsynchronousFunctionClock7",
+              "@signal": "SCT_clock",
+              "@description": "Asynchronous Function Clock 7"
+            }
+          ],
+          "pin_signal": [
+            {
+              "@id": "AsynchronousFunctionClock0",
+              "@signal": "in",
+              "@channel": "0",
+              "@description": "Asynchronous Function Clock 0",
+              "pins_tool_ref": {
+                "@signal_id": "IN",
+                "@signal_unified_id": "in",
+                "@channel_id": "0",
+                "@channel_unified_id": "0",
+                "@description": "Inputs"
+              }
+            },
+            {
+              "@id": "AsynchronousFunctionClock1",
+              "@signal": "in",
+              "@channel": "1",
+              "@description": "Asynchronous Function Clock 1",
+              "pins_tool_ref": {
+                "@signal_id": "IN",
+                "@signal_unified_id": "in",
+                "@channel_id": "1",
+                "@channel_unified_id": "1",
+                "@description": "Inputs"
+              }
+            },
+            {
+              "@id": "AsynchronousFunctionClock2",
+              "@signal": "in",
+              "@channel": "2",
+              "@description": "Asynchronous Function Clock 2",
+              "pins_tool_ref": {
+                "@signal_id": "IN",
+                "@signal_unified_id": "in",
+                "@channel_id": "2",
+                "@channel_unified_id": "2",
+                "@description": "Inputs"
+              }
+            },
+            {
+              "@id": "AsynchronousFunctionClock3",
+              "@signal": "in",
+              "@channel": "3",
+              "@description": "Asynchronous Function Clock 3",
+              "pins_tool_ref": {
+                "@signal_id": "IN",
+                "@signal_unified_id": "in",
+                "@channel_id": "3",
+                "@channel_unified_id": "3",
+                "@description": "Inputs"
+              }
+            },
+            {
+              "@id": "AsynchronousFunctionClock4",
+              "@signal": "in",
+              "@channel": "4",
+              "@description": "Asynchronous Function Clock 4",
+              "pins_tool_ref": {
+                "@signal_id": "IN",
+                "@signal_unified_id": "in",
+                "@channel_id": "4",
+                "@channel_unified_id": "4",
+                "@description": "Inputs"
+              }
+            },
+            {
+              "@id": "AsynchronousFunctionClock5",
+              "@signal": "in",
+              "@channel": "5",
+              "@description": "Asynchronous Function Clock 5",
+              "pins_tool_ref": {
+                "@signal_id": "IN",
+                "@signal_unified_id": "in",
+                "@channel_id": "5",
+                "@channel_unified_id": "5",
+                "@description": "Inputs"
+              }
+            },
+            {
+              "@id": "AsynchronousFunctionClock6",
+              "@signal": "in",
+              "@channel": "6",
+              "@description": "Asynchronous Function Clock 6",
+              "pins_tool_ref": {
+                "@signal_id": "IN",
+                "@signal_unified_id": "in",
+                "@channel_id": "6",
+                "@channel_unified_id": "6",
+                "@description": "Inputs"
+              }
+            }
+          ]
+        },
+        {
+          "@id": "SINC0",
+          "@component": "SINC",
+          "@name": "SINC0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "SINCFILT_clock",
+              "@description": "SINC Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "SPC0",
+          "@component": "SPC",
+          "@name": "SPC0",
+          "input_signal": {
+            "@id": "BusInterfaceClock",
+            "@signal": "Slow_clock",
+            "@description": "Bus Interface Clock"
+          }
+        },
+        {
+          "@id": "SWD",
+          "@component": "SWD",
+          "@name": "SWD",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "TRACE_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "SysTick0",
+          "@component": "SysTick",
+          "@name": "SysTick0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "ProcessorClock",
+              "@signal": "System_clock",
+              "@description": "Processor Clock"
+            },
+            {
+              "@id": "SystickClock",
+              "@signal": "SYSTICK0_clock",
+              "@description": "Systick Clock"
+            }
+          ]
+        },
+        {
+          "@id": "SysTick1",
+          "@component": "SysTick",
+          "@name": "SysTick1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "ProcessorClock",
+              "@signal": "System_clock",
+              "@description": "Processor Clock"
+            },
+            {
+              "@id": "SystickClock",
+              "@signal": "SYSTICK1_clock",
+              "@description": "Systick Clock"
+            }
+          ]
+        },
+        {
+          "@id": "TDET0",
+          "@component": "DIGTMP",
+          "@name": "TDET0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "Slow_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "LP_OSC_clock",
+              "@description": "Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "TSI0",
+          "@component": "TSI",
+          "@name": "TSI0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "Slow_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "TSI_clock",
+              "@description": "TSI Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "USBFS0",
+          "@component": "USB",
+          "@name": "USBFS0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "USB_clock",
+              "@description": "USB Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "USBHS1_PHY_DCD",
+          "@component": "USBHSDCD",
+          "@name": "USBHS1_PHY_DCD",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "USB_HSPLL_clock",
+              "@description": "USBHS Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "USDHC0",
+          "@component": "USDHC",
+          "@name": "USDHC0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "UsdhcClock",
+              "@signal": "uSDHC_clock",
+              "@description": "uSDHC Clock"
+            }
+          ]
+        },
+        {
+          "@id": "UTICK0",
+          "@component": "UTICK",
+          "@name": "UTICK0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "UTICK_clock",
+              "@description": "uTick Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "WUU0",
+          "@component": "WUU",
+          "@name": "WUU0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "LPO",
+              "@signal": "LP_OSC_clock",
+              "@description": "LPO"
+            }
+          ]
+        },
+        {
+          "@id": "WWDT0",
+          "@component": "WWDT",
+          "@name": "WWDT0",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "WDT0_clock",
+              "@description": "WDT Function Clock"
+            }
+          ]
+        },
+        {
+          "@id": "WWDT1",
+          "@component": "WWDT",
+          "@name": "WWDT1",
+          "input_signal": [
+            {
+              "@id": "BusInterfaceClock",
+              "@signal": "System_clock",
+              "@description": "Bus Interface Clock"
+            },
+            {
+              "@id": "FunctionClock",
+              "@signal": "WDT1_clock",
+              "@description": "WDT Function Clock"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,411 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "register": [
+      {
+        "@offset": "0x20",
+        "@width": "32",
+        "@name": "BOOTADR",
+        "@description": "Boot Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "BOOTADR"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "2",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@name": "ADDR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "32-bit boot address, the boot address should be 4-byte aligned.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SMARTDMA_BOOTADR_ADDR(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x24",
+        "@width": "32",
+        "@name": "CTRL",
+        "@description": "Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "CTRL"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "1",
+            "@name": "START",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Start Bit Ignition",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_CTRL_START(x)"
+            }
+          },
+          {
+            "@offset": "1",
+            "@width": "1",
+            "@name": "EXF",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "External Flag",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_CTRL_EXF(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "1",
+            "@name": "ERRDIS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Error Disable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_CTRL_ERRDIS(x)"
+            }
+          },
+          {
+            "@offset": "3",
+            "@width": "1",
+            "@name": "BUFEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Buffer Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_CTRL_BUFEN(x)"
+            }
+          },
+          {
+            "@offset": "4",
+            "@width": "1",
+            "@name": "SYNCEN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Sync Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_CTRL_SYNCEN(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "16",
+            "@name": "WKEY",
+            "@access": "WORZ",
+            "@reset_value": "0",
+            "@description": "Write Key",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_CTRL_WKEY(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "5",
+          "@width": "11",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x28",
+        "@width": "32",
+        "@name": "PC",
+        "@description": "Program Counter",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PC"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "PC",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Program Counter",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SMARTDMA_PC_PC(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x2C",
+        "@width": "32",
+        "@name": "SP",
+        "@description": "Stack Pointer",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "SP"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "SP",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Stack Pointer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SMARTDMA_SP_SP(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x30",
+        "@width": "32",
+        "@name": "BREAK_ADDR",
+        "@description": "Breakpoint Address",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "BREAK_ADDR"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "2",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@name": "ADDR",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "32-bit address to swap to EZHB_BREAK_VECT location",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SMARTDMA_BREAK_ADDR_ADDR(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x34",
+        "@width": "32",
+        "@name": "BREAK_VECT",
+        "@description": "Breakpoint Vector",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "BREAK_VECT"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "2",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@name": "VEC",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Vector address of user debug routine.",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SMARTDMA_BREAK_VECT_VEC(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x38",
+        "@width": "32",
+        "@name": "EMER_VECT",
+        "@description": "Emergency Vector",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EMER_VECT"
+        },
+        "reserved_bit_field": {
+          "@offset": "0",
+          "@width": "2",
+          "@reset_value": "0"
+        },
+        "bit_field": {
+          "@offset": "2",
+          "@width": "30",
+          "@name": "VEC",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Vector address of emergency code routine",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SMARTDMA_EMER_VECT_VEC(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x3C",
+        "@width": "32",
+        "@name": "EMER_SEL",
+        "@description": "Emergency Select",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EMER_SEL"
+        },
+        "reserved_bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@reset_value": "0"
+          },
+          {
+            "@offset": "10",
+            "@width": "22",
+            "@reset_value": "0"
+          }
+        ],
+        "bit_field": [
+          {
+            "@offset": "8",
+            "@width": "1",
+            "@name": "EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Emergency code routine",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_EMER_SEL_EN(x)"
+            }
+          },
+          {
+            "@offset": "9",
+            "@width": "1",
+            "@name": "RQ",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Software emergency request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_EMER_SEL_RQ(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x40",
+        "@width": "32",
+        "@name": "ARM2EZH",
+        "@description": "ARM to EZH Interrupt Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "ARM2EZH"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "2",
+            "@name": "IE",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Interrupt Enable",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_ARM2EZH_IE(x)"
+            }
+          },
+          {
+            "@offset": "2",
+            "@width": "30",
+            "@name": "GP",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "General purpose register bits",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_ARM2EZH_GP(x)"
+            }
+          }
+        ]
+      },
+      {
+        "@offset": "0x44",
+        "@width": "32",
+        "@name": "EZH2ARM",
+        "@description": "EZH to ARM Trigger",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "EZH2ARM"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "32",
+          "@name": "GP",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "General purpose register bits Writing to EZH2ARM triggers the ARM interrupt when ARM2EZH [1:0] == 2h",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "SMARTDMA_EZH2ARM_GP(x)"
+          }
+        }
+      },
+      {
+        "@offset": "0x48",
+        "@width": "32",
+        "@name": "PENDTRAP",
+        "@description": "Pending Trap Control",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "PENDTRAP"
+        },
+        "bit_field": [
+          {
+            "@offset": "0",
+            "@width": "8",
+            "@name": "STATUS",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Status Flag or Pending Trap Request",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_PENDTRAP_STATUS(x)"
+            }
+          },
+          {
+            "@offset": "8",
+            "@width": "8",
+            "@name": "POL",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Polarity",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_PENDTRAP_POL(x)"
+            }
+          },
+          {
+            "@offset": "16",
+            "@width": "8",
+            "@name": "EN",
+            "@access": "RW",
+            "@reset_value": "0",
+            "@description": "Enable Pending Trap",
+            "alias": {
+              "@type": "CMSIS",
+              "@value": "SMARTDMA_PENDTRAP_EN(x)"
+            }
+          }
+        ],
+        "reserved_bit_field": {
+          "@offset": "24",
+          "@width": "8",
+          "@reset_value": "0"
+        }
+      }
+    ]
+  }
+}

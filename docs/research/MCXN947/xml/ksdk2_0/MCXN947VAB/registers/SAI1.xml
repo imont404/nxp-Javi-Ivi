@@ -1,0 +1,651 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <reg_template rid="32" offset="{0}" width="32" name="TDR{1}" description="Transmit Data">
+    <alias type="CMSIS" value="TDR[{1}]"/>
+    <bit_field offset="0" width="32" name="TDR" access="WORZ" reset_value="0" description="Transmit Data">
+      <alias type="CMSIS" value="I2S_TDR_TDR(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="64" offset="{0}" width="32" name="TFR{1}" description="Transmit FIFO">
+    <alias type="CMSIS" value="TFR[{1}]"/>
+    <bit_field offset="0" width="4" name="RFP" access="RO" reset_value="0" description="Read FIFO Pointer">
+      <alias type="CMSIS" value="I2S_TFR_RFP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="12" reset_value="0"/>
+    <bit_field offset="16" width="4" name="WFP" access="RO" reset_value="0" description="Write FIFO Pointer">
+      <alias type="CMSIS" value="I2S_TFR_WFP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="11" reset_value="0"/>
+    <bit_field offset="31" width="1" name="WCP" access="RO" reset_value="0" description="Write Channel Pointer">
+      <alias type="CMSIS" value="I2S_TFR_WCP(x)"/>
+      <bit_field_value name="TFR{1}_WCP_DISABLE" value="0b0" description="No effect"/>
+      <bit_field_value name="TFR{1}_WCP_ENABLE" value="0b1" description="Next FIFO to be written"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="160" offset="{0}" width="32" name="RDR{1}" description="Receive Data">
+    <alias type="CMSIS" value="RDR[{1}]"/>
+    <bit_field offset="0" width="32" name="RDR" access="RO" reset_value="0" description="Receive Data">
+      <alias type="CMSIS" value="I2S_RDR_RDR(x)"/>
+    </bit_field>
+  </reg_template>
+  <reg_template rid="192" offset="{0}" width="32" name="RFR{1}" description="Receive FIFO">
+    <alias type="CMSIS" value="RFR[{1}]"/>
+    <bit_field offset="0" width="4" name="RFP" access="RO" reset_value="0" description="Read FIFO Pointer">
+      <alias type="CMSIS" value="I2S_RFR_RFP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="11" reset_value="0"/>
+    <bit_field offset="15" width="1" name="RCP" access="RO" reset_value="0" description="Read Channel Pointer">
+      <alias type="CMSIS" value="I2S_RFR_RCP(x)"/>
+      <bit_field_value name="RFR{1}_RCP_DISABLE" value="0b0" description="No effect"/>
+      <bit_field_value name="RFR{1}_RCP_ENABLE" value="0b1" description="Next FIFO to be read"/>
+    </bit_field>
+    <bit_field offset="16" width="4" name="WFP" access="RO" reset_value="0" description="Write FIFO Pointer">
+      <alias type="CMSIS" value="I2S_RFR_WFP(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </reg_template>
+  <register offset="0" width="32" name="VERID" description="Version ID">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0" description="Feature Specification Number">
+      <alias type="CMSIS" value="I2S_VERID_FEATURE(x)"/>
+      <bit_field_value name="VERID_FEATURE_STD" value="0b0000000000000000" description="Standard feature set"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0x2" description="Minor Version Number">
+      <alias type="CMSIS" value="I2S_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x3" description="Major Version Number">
+      <alias type="CMSIS" value="I2S_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x4" width="32" name="PARAM" description="Parameter">
+    <alias type="CMSIS" value="PARAM"/>
+    <bit_field offset="0" width="4" name="DATALINE" access="RO" reset_value="0x2" description="Number of Data Lines">
+      <alias type="CMSIS" value="I2S_PARAM_DATALINE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0"/>
+    <bit_field offset="8" width="4" name="FIFO" access="RO" reset_value="0x3" description="FIFO Size">
+      <alias type="CMSIS" value="I2S_PARAM_FIFO(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="4" name="FRAME" access="RO" reset_value="0x5" description="Frame Size">
+      <alias type="CMSIS" value="I2S_PARAM_FRAME(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="20" width="12" reset_value="0"/>
+  </register>
+  <register offset="0x8" width="32" name="TCSR" description="Transmit Control">
+    <alias type="CMSIS" value="TCSR"/>
+    <bit_field offset="0" width="1" name="FRDE" access="RW" reset_value="0" description="FIFO Request DMA Enable">
+      <alias type="CMSIS" value="I2S_TCSR_FRDE(x)"/>
+      <bit_field_value name="TCSR_FRDE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_FRDE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FWDE" access="RW" reset_value="0" description="FIFO Warning DMA Enable">
+      <alias type="CMSIS" value="I2S_TCSR_FWDE(x)"/>
+      <bit_field_value name="TCSR_FWDE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_FWDE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="3" reset_value="0"/>
+    <reserved_bit_field offset="5" width="3" reset_value="0"/>
+    <bit_field offset="8" width="1" name="FRIE" access="RW" reset_value="0" description="FIFO Request Interrupt Enable">
+      <alias type="CMSIS" value="I2S_TCSR_FRIE(x)"/>
+      <bit_field_value name="TCSR_FRIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_FRIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="FWIE" access="RW" reset_value="0" description="FIFO Warning Interrupt Enable">
+      <alias type="CMSIS" value="I2S_TCSR_FWIE(x)"/>
+      <bit_field_value name="TCSR_FWIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_FWIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="FEIE" access="RW" reset_value="0" description="FIFO Error Interrupt Enable">
+      <alias type="CMSIS" value="I2S_TCSR_FEIE(x)"/>
+      <bit_field_value name="TCSR_FEIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_FEIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="SEIE" access="RW" reset_value="0" description="Sync Error Interrupt Enable">
+      <alias type="CMSIS" value="I2S_TCSR_SEIE(x)"/>
+      <bit_field_value name="TCSR_SEIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_SEIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="WSIE" access="RW" reset_value="0" description="Word Start Interrupt Enable">
+      <alias type="CMSIS" value="I2S_TCSR_WSIE(x)"/>
+      <bit_field_value name="TCSR_WSIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_WSIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="3" reset_value="0"/>
+    <bit_field offset="16" width="1" name="FRF" access="RO" reset_value="0" description="FIFO Request Flag">
+      <alias type="CMSIS" value="I2S_TCSR_FRF(x)"/>
+      <bit_field_value name="TCSR_FRF_NO_FLAG" value="0b0" description="Watermark not reached"/>
+      <bit_field_value name="TCSR_FRF_FLAG" value="0b1" description="Watermark reached"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="FWF" access="RO" reset_value="0" description="FIFO Warning Flag">
+      <alias type="CMSIS" value="I2S_TCSR_FWF(x)"/>
+      <bit_field_value name="TCSR_FWF_DISABLE" value="0b0" description="Not empty"/>
+      <bit_field_value name="TCSR_FWF_ENABLE" value="0b1" description="Empty"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="FEF" access="W1C" reset_value="0" description="FIFO Error Flag">
+      <alias type="CMSIS" value="I2S_TCSR_FEF(x)"/>
+      <bit_field_value name="TCSR_FEF_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="TCSR_FEF_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="SEF" access="W1C" reset_value="0" description="Sync Error Flag">
+      <alias type="CMSIS" value="I2S_TCSR_SEF(x)"/>
+      <bit_field_value name="TCSR_SEF_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="TCSR_SEF_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="WSF" access="W1C" reset_value="0" description="Word Start Flag">
+      <alias type="CMSIS" value="I2S_TCSR_WSF(x)"/>
+      <bit_field_value name="TCSR_WSF_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="TCSR_WSF_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="1" name="SR" access="RW" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="I2S_TCSR_SR(x)"/>
+      <bit_field_value name="TCSR_SR_DISABLE" value="0b0" description="No effect"/>
+      <bit_field_value name="TCSR_SR_ENABLE" value="0b1" description="Software reset"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="FR" access="WORZ" reset_value="0" description="FIFO Reset">
+      <alias type="CMSIS" value="I2S_TCSR_FR(x)"/>
+      <bit_field_value name="TCSR_FR_NO_EFFECT" value="0b0" description="No effect"/>
+      <bit_field_value name="TCSR_FR_RESET" value="0b1" description="FIFO reset"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="2" reset_value="0"/>
+    <bit_field offset="28" width="1" name="BCE" access="RW" reset_value="0" description="Bit Clock Enable">
+      <alias type="CMSIS" value="I2S_TCSR_BCE(x)"/>
+      <bit_field_value name="TCSR_BCE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_BCE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="DBGE" access="RW" reset_value="0" description="Debug Enable">
+      <alias type="CMSIS" value="I2S_TCSR_DBGE(x)"/>
+      <bit_field_value name="TCSR_DBGE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_DBGE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="STOPE" access="RW" reset_value="0" description="Stop Enable">
+      <alias type="CMSIS" value="I2S_TCSR_STOPE(x)"/>
+      <bit_field_value name="TCSR_STOPE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_STOPE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="TE" access="RW" reset_value="0" description="Transmitter Enable">
+      <alias type="CMSIS" value="I2S_TCSR_TE(x)"/>
+      <bit_field_value name="TCSR_TE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCSR_TE_ENABLE" value="0b1" description="Enable (or transmitter has been disabled and has not yet reached the end of the frame)"/>
+    </bit_field>
+  </register>
+  <register offset="0xC" width="32" name="TCR1" description="Transmit Configuration 1">
+    <alias type="CMSIS" value="TCR1"/>
+    <bit_field offset="0" width="3" name="TFW" access="RW" reset_value="0" description="Transmit FIFO Watermark">
+      <alias type="CMSIS" value="I2S_TCR1_TFW(x)"/>
+      <bit_field_value name="TCR1_TFW_MIN" value="0b000" description="1"/>
+      <bit_field_value name="TCR1_TFW_TWO" value="0b001" description="2"/>
+      <bit_field_value name="TCR1_TFW_WATERMARK_VALUE" value="0b010-0b110" description="(TFW +1)"/>
+      <bit_field_value name="TCR1_TFW_MAX" value="0b111" description="8"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x10" width="32" name="TCR2" description="Transmit Configuration 2">
+    <alias type="CMSIS" value="TCR2"/>
+    <bit_field offset="0" width="8" name="DIV" access="RW" reset_value="0" description="Bit Clock Divide">
+      <alias type="CMSIS" value="I2S_TCR2_DIV(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="15" reset_value="0"/>
+    <bit_field offset="23" width="1" name="BYP" access="RW" reset_value="0" description="Bit Clock Bypass">
+      <alias type="CMSIS" value="I2S_TCR2_BYP(x)"/>
+      <bit_field_value name="TCR2_BYP_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCR2_BYP_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="BCD" access="RW" reset_value="0" description="Bit Clock Direction">
+      <alias type="CMSIS" value="I2S_TCR2_BCD(x)"/>
+      <bit_field_value name="TCR2_BCD_EXT_IN_TARGET" value="0b0" description="Generate externally in Target mode"/>
+      <bit_field_value name="TCR2_BCD_INT_IN_CONTROLLER" value="0b1" description="Generate internally in Controller mode"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="BCP" access="RW" reset_value="0" description="Bit Clock Polarity">
+      <alias type="CMSIS" value="I2S_TCR2_BCP(x)"/>
+      <bit_field_value name="TCR2_BCP_ACTIVE_HIGH" value="0b0" description="Active high"/>
+      <bit_field_value name="TCR2_BCP_ACTIVE_LOW" value="0b1" description="Active low"/>
+    </bit_field>
+    <bit_field offset="26" width="2" name="MSEL" access="RW" reset_value="0" description="MCLK Select">
+      <alias type="CMSIS" value="I2S_TCR2_MSEL(x)"/>
+      <bit_field_value name="TCR2_MSEL_BUS_CLOCK" value="0b00" description="Bus clock"/>
+      <bit_field_value name="TCR2_MSEL_MCLK1" value="0b01" description="Controller clock (MCLK) option 1"/>
+      <bit_field_value name="TCR2_MSEL_MCLK2" value="0b10" description="Controller clock (MCLK) option 2"/>
+      <bit_field_value name="TCR2_MSEL_MCLK3" value="0b11" description="Controller clock (MCLK) option 3"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="BCI" access="RW" reset_value="0" description="Bit Clock Input">
+      <alias type="CMSIS" value="I2S_TCR2_BCI(x)"/>
+      <bit_field_value name="TCR2_BCI_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="TCR2_BCI_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="BCS" access="RW" reset_value="0" description="Bit Clock Swap">
+      <alias type="CMSIS" value="I2S_TCR2_BCS(x)"/>
+      <bit_field_value name="TCR2_BCS_DISABLE" value="0b0" description="Use the normal bit clock source"/>
+      <bit_field_value name="TCR2_BCS_ENABLE" value="0b1" description="Swap the bit clock source"/>
+    </bit_field>
+    <bit_field offset="30" width="2" name="SYNC" access="RW" reset_value="0" description="Synchronous Mode">
+      <alias type="CMSIS" value="I2S_TCR2_SYNC(x)"/>
+      <bit_field_value name="TCR2_SYNC_ASYNC" value="0b00" description="Asynchronous mode"/>
+      <bit_field_value name="TCR2_SYNC_SYNC_W_RX" value="0b01" description="Synchronous with receiver"/>
+      <bit_field_value name="TCR2_SYNC_SYNC_W_TX" value="0b10" description="Synchronous with another SAI transmitter"/>
+      <bit_field_value name="TCR2_SYNC_SYNC_W_ANOTHER_SAI_RX" value="0b11" description="Synchronous with another SAI receiver"/>
+    </bit_field>
+  </register>
+  <register offset="0x14" width="32" name="TCR3" description="Transmit Configuration 3">
+    <alias type="CMSIS" value="TCR3"/>
+    <bit_field offset="0" width="5" name="WDFL" access="RW" reset_value="0" description="Word Flag Configuration">
+      <alias type="CMSIS" value="I2S_TCR3_WDFL(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="11" reset_value="0"/>
+    <bit_field offset="16" width="2" name="TCE" access="RW" reset_value="0" description="Transmit Channel Enable">
+      <alias type="CMSIS" value="I2S_TCR3_TCE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="6" reset_value="0"/>
+    <bit_field offset="24" width="2" name="CFR" access="WORZ" reset_value="0" description="Channel FIFO Reset">
+      <alias type="CMSIS" value="I2S_TCR3_CFR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x18" width="32" name="TCR4" description="Transmit Configuration 4">
+    <alias type="CMSIS" value="TCR4"/>
+    <bit_field offset="0" width="1" name="FSD" access="RW" reset_value="0" description="Frame Sync Direction">
+      <alias type="CMSIS" value="I2S_TCR4_FSD(x)"/>
+      <bit_field_value name="TCR4_FSD_EXT_IN_TARGET_MODE" value="0b0" description="Generated externally in Target mode"/>
+      <bit_field_value name="TCR4_FSD_INT_IN_CONTROLLER_MODE" value="0b1" description="Generated internally in Controller mode"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FSP" access="RW" reset_value="0" description="Frame Sync Polarity">
+      <alias type="CMSIS" value="I2S_TCR4_FSP(x)"/>
+      <bit_field_value name="TCR4_FSP_ACTIVE_HIGH" value="0b0" description="Active high"/>
+      <bit_field_value name="TCR4_FSP_ACTIVE_LOW" value="0b1" description="Active low"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ONDEM" access="RW" reset_value="0" description="On-Demand Mode">
+      <alias type="CMSIS" value="I2S_TCR4_ONDEM(x)"/>
+      <bit_field_value name="TCR4_ONDEM_CONTINUOUS_FRAME_SYNC" value="0b0" description="Generated continuously"/>
+      <bit_field_value name="TCR4_ONDEM_ON_DEMAND_FRAME_SYNC" value="0b1" description="Generated after the FIFO warning flag is cleared"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FSE" access="RW" reset_value="0" description="Frame Sync Early">
+      <alias type="CMSIS" value="I2S_TCR4_FSE(x)"/>
+      <bit_field_value name="TCR4_FSE_DISABLE" value="0b0" description="First bit of the frame"/>
+      <bit_field_value name="TCR4_FSE_ENABLE" value="0b1" description="One bit before the first bit of the frame"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MF" access="RW" reset_value="0" description="MSB First">
+      <alias type="CMSIS" value="I2S_TCR4_MF(x)"/>
+      <bit_field_value name="TCR4_MF_DISABLE" value="0b0" description="LSB"/>
+      <bit_field_value name="TCR4_MF_ENABLE" value="0b1" description="MSB"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="CHMOD" access="RW" reset_value="0" description="Channel Mode">
+      <alias type="CMSIS" value="I2S_TCR4_CHMOD(x)"/>
+      <bit_field_value name="TCR4_CHMOD_TDM_MODE" value="0b0" description="TDM mode"/>
+      <bit_field_value name="TCR4_CHMOD_OUTPUT_MODE" value="0b1" description="Output mode"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="5" name="SYWD" access="RW" reset_value="0" description="Sync Width">
+      <alias type="CMSIS" value="I2S_TCR4_SYWD(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="3" reset_value="0"/>
+    <bit_field offset="16" width="5" name="FRSZ" access="RW" reset_value="0" description="Frame Size">
+      <alias type="CMSIS" value="I2S_TCR4_FRSZ(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="2" name="FPACK" access="RW" reset_value="0" description="FIFO Packing Mode">
+      <alias type="CMSIS" value="I2S_TCR4_FPACK(x)"/>
+      <bit_field_value name="TCR4_FPACK_DISABLED" value="0b00" description="Disable FIFO packing"/>
+      <bit_field_value name="TCR4_FPACK_RESERVED" value="0b01" description="Reserved"/>
+      <bit_field_value name="TCR4_FPACK_EIGHT_BIT_FIFO_PACKING" value="0b10" description="Enable 8-bit FIFO packing"/>
+      <bit_field_value name="TCR4_FPACK_SIXTEEN_BIT_FIFO_PACKING" value="0b11" description="Enable 16-bit FIFO packing"/>
+    </bit_field>
+    <bit_field offset="26" width="2" name="FCOMB" access="RW" reset_value="0" description="FIFO Combine Mode">
+      <alias type="CMSIS" value="I2S_TCR4_FCOMB(x)"/>
+      <bit_field_value name="TCR4_FCOMB_DISABLED" value="0b00" description="Disable"/>
+      <bit_field_value name="TCR4_FCOMB_ENABLED_ON_FIFO_READS" value="0b01" description="Enable on FIFO reads (from transmit shift registers)"/>
+      <bit_field_value name="TCR4_FCOMB_ENABLED_ON_FIFO_WRITES" value="0b10" description="Enable on FIFO writes (by software)"/>
+      <bit_field_value name="TCR4_FCOMB_ENABLED_ON_FIFO_READS_WRITES" value="0b11" description="Enable on FIFO reads (from transmit shift registers) and writes (by software)"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="FCONT" access="RW" reset_value="0" description="FIFO Continue on Error">
+      <alias type="CMSIS" value="I2S_TCR4_FCONT(x)"/>
+      <bit_field_value name="TCR4_FCONT_DISABLE" value="0b0" description="Continue from the start of the next frame"/>
+      <bit_field_value name="TCR4_FCONT_ENABLE" value="0b1" description="Continue from the same word that caused the FIFO error"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0x1C" width="32" name="TCR5" description="Transmit Configuration 5">
+    <alias type="CMSIS" value="TCR5"/>
+    <reserved_bit_field offset="0" width="8" reset_value="0"/>
+    <bit_field offset="8" width="5" name="FBT" access="RW" reset_value="0" description="First Bit Shifted">
+      <alias type="CMSIS" value="I2S_TCR5_FBT(x)"/>
+      <bit_field_value name="TCR5_FBT_INDEX0" value="0b00000" description="0"/>
+      <bit_field_value name="TCR5_FBT_INDEX" value="0b00001-0b11110" description="FBT"/>
+      <bit_field_value name="TCR5_FBT_INDEX31" value="0b11111" description="31"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="3" reset_value="0"/>
+    <bit_field offset="16" width="5" name="W0W" access="RW" reset_value="0" description="Word 0 Width">
+      <alias type="CMSIS" value="I2S_TCR5_W0W(x)"/>
+      <bit_field_value name="TCR5_W0W_EIGHT" value="0b00111" description="8"/>
+      <bit_field_value name="TCR5_W0W_NINE" value="0b01000" description="9"/>
+      <bit_field_value name="TCR5_W0W_TEN_THIRTYONE" value="0b01001-0b11110" description="(W0W value + 1)"/>
+      <bit_field_value name="TCR5_W0W_MAX" value="0b11111" description="32"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="5" name="WNW" access="RW" reset_value="0" description="Word N Width">
+      <alias type="CMSIS" value="I2S_TCR5_WNW(x)"/>
+      <bit_field_value name="TCR5_WNW_EIGHT" value="0b00111" description="8"/>
+      <bit_field_value name="TCR5_WNW_NINE" value="0b01000" description="9"/>
+      <bit_field_value name="TCR5_WNW_TEN_THIRTYONE" value="0b01001-0b11110" description="(WNW value + 1)"/>
+      <bit_field_value name="TCR5_WNW_MAX" value="0b11111" description="32"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <reg_instance rid="32" vals="0x20 0"/>
+  <reg_instance rid="32" vals="0x24 1"/>
+  <reg_instance rid="64" vals="0x40 0"/>
+  <reg_instance rid="64" vals="0x44 1"/>
+  <register offset="0x60" width="32" name="TMR" description="Transmit Mask">
+    <alias type="CMSIS" value="TMR"/>
+    <bit_field_array offset="0" width="32" item_width="1" name="TWM" access="RW" reset_value="0" description="Transmit Word Mask">
+      <alias type="CMSIS" value="I2S_TMR_TWM(x)"/>
+      <bit_field_value name="TMR_TWM_WORD_N_ENABLED" value="0b0" description="Enable"/>
+      <bit_field_value name="TMR_TWM_WORD_N_MASKED" value="0b1" description="Mask"/>
+    </bit_field_array>
+  </register>
+  <register offset="0x88" width="32" name="RCSR" description="Receive Control">
+    <alias type="CMSIS" value="RCSR"/>
+    <bit_field offset="0" width="1" name="FRDE" access="RW" reset_value="0" description="FIFO Request DMA Enable">
+      <alias type="CMSIS" value="I2S_RCSR_FRDE(x)"/>
+      <bit_field_value name="RCSR_FRDE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_FRDE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FWDE" access="RW" reset_value="0" description="FIFO Warning DMA Enable">
+      <alias type="CMSIS" value="I2S_RCSR_FWDE(x)"/>
+      <bit_field_value name="RCSR_FWDE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_FWDE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="2" width="3" reset_value="0"/>
+    <reserved_bit_field offset="5" width="3" reset_value="0"/>
+    <bit_field offset="8" width="1" name="FRIE" access="RW" reset_value="0" description="FIFO Request Interrupt Enable">
+      <alias type="CMSIS" value="I2S_RCSR_FRIE(x)"/>
+      <bit_field_value name="RCSR_FRIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_FRIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="9" width="1" name="FWIE" access="RW" reset_value="0" description="FIFO Warning Interrupt Enable">
+      <alias type="CMSIS" value="I2S_RCSR_FWIE(x)"/>
+      <bit_field_value name="RCSR_FWIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_FWIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="10" width="1" name="FEIE" access="RW" reset_value="0" description="FIFO Error Interrupt Enable">
+      <alias type="CMSIS" value="I2S_RCSR_FEIE(x)"/>
+      <bit_field_value name="RCSR_FEIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_FEIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="11" width="1" name="SEIE" access="RW" reset_value="0" description="Sync Error Interrupt Enable">
+      <alias type="CMSIS" value="I2S_RCSR_SEIE(x)"/>
+      <bit_field_value name="RCSR_SEIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_SEIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="12" width="1" name="WSIE" access="RW" reset_value="0" description="Word Start Interrupt Enable">
+      <alias type="CMSIS" value="I2S_RCSR_WSIE(x)"/>
+      <bit_field_value name="RCSR_WSIE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_WSIE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="3" reset_value="0"/>
+    <bit_field offset="16" width="1" name="FRF" access="RO" reset_value="0" description="FIFO Request Flag">
+      <alias type="CMSIS" value="I2S_RCSR_FRF(x)"/>
+      <bit_field_value name="RCSR_FRF_BELOW_WATERMARK" value="0b0" description="Watermark not reached"/>
+      <bit_field_value name="RCSR_FRF_WATERMARK_REACHED" value="0b1" description="Watermark reached"/>
+    </bit_field>
+    <bit_field offset="17" width="1" name="FWF" access="RO" reset_value="0" description="FIFO Warning Flag">
+      <alias type="CMSIS" value="I2S_RCSR_FWF(x)"/>
+      <bit_field_value name="RCSR_FWF_NOT_FULL" value="0b0" description="Not full"/>
+      <bit_field_value name="RCSR_FWF_FULL" value="0b1" description="Full"/>
+    </bit_field>
+    <bit_field offset="18" width="1" name="FEF" access="W1C" reset_value="0" description="FIFO Error Flag">
+      <alias type="CMSIS" value="I2S_RCSR_FEF(x)"/>
+      <bit_field_value name="RCSR_FEF_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="RCSR_FEF_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="19" width="1" name="SEF" access="W1C" reset_value="0" description="Sync Error Flag">
+      <alias type="CMSIS" value="I2S_RCSR_SEF(x)"/>
+      <bit_field_value name="RCSR_SEF_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="RCSR_SEF_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <bit_field offset="20" width="1" name="WSF" access="W1C" reset_value="0" description="Word Start Flag">
+      <alias type="CMSIS" value="I2S_RCSR_WSF(x)"/>
+      <bit_field_value name="RCSR_WSF_NO_EFF" value="0b0" description="No effect"/>
+      <bit_field_value name="RCSR_WSF_CLEAR_FLAG" value="0b1" description="Clear the flag"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="1" name="SR" access="RW" reset_value="0" description="Software Reset">
+      <alias type="CMSIS" value="I2S_RCSR_SR(x)"/>
+      <bit_field_value name="RCSR_SR_NO_EFFECT" value="0b0" description="No effect"/>
+      <bit_field_value name="RCSR_SR_SW_RESET" value="0b1" description="Software reset"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="FR" access="WORZ" reset_value="0" description="FIFO Reset">
+      <alias type="CMSIS" value="I2S_RCSR_FR(x)"/>
+      <bit_field_value name="RCSR_FR_NO_EFFECT" value="0b0" description="No effect"/>
+      <bit_field_value name="RCSR_FR_FIFO_RESET" value="0b1" description="Reset"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="2" reset_value="0"/>
+    <bit_field offset="28" width="1" name="BCE" access="RW" reset_value="0" description="Bit Clock Enable">
+      <alias type="CMSIS" value="I2S_RCSR_BCE(x)"/>
+      <bit_field_value name="RCSR_BCE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_BCE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="DBGE" access="RW" reset_value="0" description="Debug Enable">
+      <alias type="CMSIS" value="I2S_RCSR_DBGE(x)"/>
+      <bit_field_value name="RCSR_DBGE_DISABLE" value="0b0" description="Disable after completing the current frame"/>
+      <bit_field_value name="RCSR_DBGE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="30" width="1" name="STOPE" access="RW" reset_value="0" description="Stop Enable">
+      <alias type="CMSIS" value="I2S_RCSR_STOPE(x)"/>
+      <bit_field_value name="RCSR_STOPE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_STOPE_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="31" width="1" name="RE" access="RW" reset_value="0" description="Receiver Enable">
+      <alias type="CMSIS" value="I2S_RCSR_RE(x)"/>
+      <bit_field_value name="RCSR_RE_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCSR_RE_ENABLE" value="0b1" description="Enable (or receiver disabled and not yet reached end of frame)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8C" width="32" name="RCR1" description="Receive Configuration 1">
+    <alias type="CMSIS" value="RCR1"/>
+    <bit_field offset="0" width="3" name="RFW" access="RW" reset_value="0" description="Receive FIFO Watermark">
+      <alias type="CMSIS" value="I2S_RCR1_RFW(x)"/>
+      <bit_field_value name="RCR1_RFW_MIN" value="0b000" description="1"/>
+      <bit_field_value name="RCR1_RFW_TWO" value="0b001" description="2"/>
+      <bit_field_value name="RCR1_RFW_WATERMARK" value="0b010-0b110" description="(RFW value + 1)"/>
+      <bit_field_value name="RCR1_RFW_MAX" value="0b111" description="8"/>
+    </bit_field>
+    <reserved_bit_field offset="3" width="29" reset_value="0"/>
+  </register>
+  <register offset="0x90" width="32" name="RCR2" description="Receive Configuration 2">
+    <alias type="CMSIS" value="RCR2"/>
+    <bit_field offset="0" width="8" name="DIV" access="RW" reset_value="0" description="Bit Clock Divide">
+      <alias type="CMSIS" value="I2S_RCR2_DIV(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="15" reset_value="0"/>
+    <bit_field offset="23" width="1" name="BYP" access="RW" reset_value="0" description="Bit Clock Bypass">
+      <alias type="CMSIS" value="I2S_RCR2_BYP(x)"/>
+      <bit_field_value name="RCR2_BYP_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="RCR2_BYP_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="24" width="1" name="BCD" access="RW" reset_value="0" description="Bit Clock Direction">
+      <alias type="CMSIS" value="I2S_RCR2_BCD(x)"/>
+      <bit_field_value name="RCR2_BCD_EXT_TARGET_MODE" value="0b0" description="Generated externally in Target mode"/>
+      <bit_field_value name="RCR2_BCD_INT_CONTROLLER_MODE" value="0b1" description="Generated internally in Controller mode"/>
+    </bit_field>
+    <bit_field offset="25" width="1" name="BCP" access="RW" reset_value="0" description="Bit Clock Polarity">
+      <alias type="CMSIS" value="I2S_RCR2_BCP(x)"/>
+      <bit_field_value name="RCR2_BCP_ACTIVE_HIGH" value="0b0" description="Active high"/>
+      <bit_field_value name="RCR2_BCP_ACTIVE_LOW" value="0b1" description="Active low"/>
+    </bit_field>
+    <bit_field offset="26" width="2" name="MSEL" access="RW" reset_value="0" description="MCLK Select">
+      <alias type="CMSIS" value="I2S_RCR2_MSEL(x)"/>
+      <bit_field_value name="RCR2_MSEL_BUS_CLOCK" value="0b00" description="Bus clock"/>
+      <bit_field_value name="RCR2_MSEL_MCLK1" value="0b01" description="Controller clock (MCLK) option 1"/>
+      <bit_field_value name="RCR2_MSEL_MCLK2" value="0b10" description="Controller clock (MCLK) option 2"/>
+      <bit_field_value name="RCR2_MSEL_MCLK3" value="0b11" description="Controller clock (MCLK) option 3"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="BCI" access="RW" reset_value="0" description="Bit Clock Input">
+      <alias type="CMSIS" value="I2S_RCR2_BCI(x)"/>
+      <bit_field_value name="RCR2_BCI_NO_EFFECT" value="0b0" description="Disable"/>
+      <bit_field_value name="RCR2_BCI_CLOCKED_AS_IF_EXT_GENERATED" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="29" width="1" name="BCS" access="RW" reset_value="0" description="Bit Clock Swap">
+      <alias type="CMSIS" value="I2S_RCR2_BCS(x)"/>
+      <bit_field_value name="RCR2_BCS_NORMAL" value="0b0" description="Use the normal bit clock source"/>
+      <bit_field_value name="RCR2_BCS_SWAP_BIT_CLK_SOURCE" value="0b1" description="Swap the bit clock source"/>
+    </bit_field>
+    <bit_field offset="30" width="2" name="SYNC" access="RW" reset_value="0" description="Synchronous Mode">
+      <alias type="CMSIS" value="I2S_RCR2_SYNC(x)"/>
+      <bit_field_value name="RCR2_SYNC_Async" value="0b00" description="Asynchronous mode"/>
+      <bit_field_value name="RCR2_SYNC_SYNC_W_TX" value="0b01" description="Synchronous with transmitter"/>
+      <bit_field_value name="RCR2_SYNC_SYNC_W_ANOTHER_SAI_RX" value="0b10" description="Synchronous with another SAI receiver"/>
+      <bit_field_value name="RCR2_SYNC_SYNC_W_ANOTHER_SAI_TX" value="0b11" description="Synchronous with another SAI transmitter"/>
+    </bit_field>
+  </register>
+  <register offset="0x94" width="32" name="RCR3" description="Receive Configuration 3">
+    <alias type="CMSIS" value="RCR3"/>
+    <bit_field offset="0" width="5" name="WDFL" access="RW" reset_value="0" description="Word Flag Configuration">
+      <alias type="CMSIS" value="I2S_RCR3_WDFL(x)"/>
+      <bit_field_value name="RCR3_WDFL_WORD_1" value="0b00000" description="Word 1"/>
+      <bit_field_value name="RCR3_WDFL_WORD_2" value="0b00001" description="Word 2"/>
+      <bit_field_value name="RCR3_WDFL_WORD_N" value="0b00010-0b11110" description="Word (WDFL value + 1)"/>
+      <bit_field_value name="RCR3_WDFL_WORD_MAX" value="0b11111" description="Word 32"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="11" reset_value="0"/>
+    <bit_field offset="16" width="2" name="RCE" access="RW" reset_value="0" description="Receive Channel Enable">
+      <alias type="CMSIS" value="I2S_RCR3_RCE(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="18" width="6" reset_value="0"/>
+    <bit_field offset="24" width="2" name="CFR" access="WORZ" reset_value="0" description="Channel FIFO Reset">
+      <alias type="CMSIS" value="I2S_RCR3_CFR(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="6" reset_value="0"/>
+  </register>
+  <register offset="0x98" width="32" name="RCR4" description="Receive Configuration 4">
+    <alias type="CMSIS" value="RCR4"/>
+    <bit_field offset="0" width="1" name="FSD" access="RW" reset_value="0" description="Frame Sync Direction">
+      <alias type="CMSIS" value="I2S_RCR4_FSD(x)"/>
+      <bit_field_value name="RCR4_FSD_EXT_TARGET_MODE" value="0b0" description="Generated externally in Target mode"/>
+      <bit_field_value name="RCR4_FSD_INT_CONTROLLER_MODE" value="0b1" description="Generated internally in Controller mode"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="FSP" access="RW" reset_value="0" description="Frame Sync Polarity">
+      <alias type="CMSIS" value="I2S_RCR4_FSP(x)"/>
+      <bit_field_value name="RCR4_FSP_ACTIVE_HIGH" value="0b0" description="Active high"/>
+      <bit_field_value name="RCR4_FSP_ACTIVE_LOW" value="0b1" description="Active low"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="ONDEM" access="RW" reset_value="0" description="On-Demand Mode">
+      <alias type="CMSIS" value="I2S_RCR4_ONDEM(x)"/>
+      <bit_field_value name="RCR4_ONDEM_DISABLE" value="0b0" description="Generated continuously"/>
+      <bit_field_value name="RCR4_ONDEM_ENABLE" value="0b1" description="Generated when the FIFO warning flag is 0"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="FSE" access="RW" reset_value="0" description="Frame Sync Early">
+      <alias type="CMSIS" value="I2S_RCR4_FSE(x)"/>
+      <bit_field_value name="RCR4_FSE_DISABLE" value="0b0" description="First bit of the frame"/>
+      <bit_field_value name="RCR4_FSE_ENABLE" value="0b1" description="One bit before the first bit of the frame"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="MF" access="RW" reset_value="0" description="MSB First">
+      <alias type="CMSIS" value="I2S_RCR4_MF(x)"/>
+      <bit_field_value name="RCR4_MF_DISABLE" value="0b0" description="LSB"/>
+      <bit_field_value name="RCR4_MF_ENABLE" value="0b1" description="MSB"/>
+    </bit_field>
+    <reserved_bit_field offset="5" width="1" reset_value="0"/>
+    <reserved_bit_field offset="6" width="2" reset_value="0"/>
+    <bit_field offset="8" width="5" name="SYWD" access="RW" reset_value="0" description="Sync Width">
+      <alias type="CMSIS" value="I2S_RCR4_SYWD(x)"/>
+      <bit_field_value name="RCR4_SYWD_MIN" value="0b00000" description="1"/>
+      <bit_field_value name="RCR4_SYWD_TWO_CLOCKS" value="0b00001" description="2"/>
+      <bit_field_value name="RCR4_SYWD_N_CLOCKS" value="0b00010-0b11110" description="(SYWD value + 1)"/>
+      <bit_field_value name="RCR4_SYWD_THIRTYTWO_CLOCKS" value="0b11111" description="32"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="3" reset_value="0"/>
+    <bit_field offset="16" width="5" name="FRSZ" access="RW" reset_value="0" description="Frame Size">
+      <alias type="CMSIS" value="I2S_RCR4_FRSZ(x)"/>
+      <bit_field_value name="RCR4_FRSZ_ONE_WORD" value="0b00000" description="1"/>
+      <bit_field_value name="RCR4_FRSZ_TWO_WORDS" value="0b00001" description="2"/>
+      <bit_field_value name="RCR4_FRSZ_N_WORDS" value="0b00010-0b11110" description="(FRSZ value + 1)"/>
+      <bit_field_value name="RCR4_FRSZ_MAX_WORDS" value="0b11111" description="32"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="2" name="FPACK" access="RW" reset_value="0" description="FIFO Packing Mode">
+      <alias type="CMSIS" value="I2S_RCR4_FPACK(x)"/>
+      <bit_field_value name="RCR4_FPACK_DISABLED" value="0b00" description="Disable"/>
+      <bit_field_value name="RCR4_FPACK_RESERVED" value="0b01" description="Reserved"/>
+      <bit_field_value name="RCR4_FPACK_EIGHT_BIT_PACKING" value="0b10" description="Enable 8-bit FIFO packing"/>
+      <bit_field_value name="RCR4_FPACK_SIXTEEN_BIT_PACKING" value="0b11" description="Enable 16-bit FIFO packing"/>
+    </bit_field>
+    <bit_field offset="26" width="2" name="FCOMB" access="RW" reset_value="0" description="FIFO Combine Mode">
+      <alias type="CMSIS" value="I2S_RCR4_FCOMB(x)"/>
+      <bit_field_value name="RCR4_FCOMB_DISABLED" value="0b00" description="Disable"/>
+      <bit_field_value name="RCR4_FCOMB_ENA_ON_FIFO_WRITES" value="0b01" description="Enable on FIFO writes (from receive shift registers)"/>
+      <bit_field_value name="RCR4_FCOMB_ENA_ON_FIFO_READS" value="0b10" description="Enable on FIFO reads (by software)"/>
+      <bit_field_value name="RCR4_FCOMB_ENA_ON_FIFO_WRITES_READS" value="0b11" description="Enable on FIFO writes (from receive shift registers) and reads (by software)"/>
+    </bit_field>
+    <bit_field offset="28" width="1" name="FCONT" access="RW" reset_value="0" description="FIFO Continue on Error">
+      <alias type="CMSIS" value="I2S_RCR4_FCONT(x)"/>
+      <bit_field_value name="RCR4_FCONT_DISABLE" value="0b0" description="From the start of the next frame after the FIFO error flag is cleared"/>
+      <bit_field_value name="RCR4_FCONT_ENABLE" value="0b1" description="From the same word that caused the FIFO error to become 1 after the FIFO warning flag is cleared"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <register offset="0x9C" width="32" name="RCR5" description="Receive Configuration 5">
+    <alias type="CMSIS" value="RCR5"/>
+    <reserved_bit_field offset="0" width="8" reset_value="0"/>
+    <bit_field offset="8" width="5" name="FBT" access="RW" reset_value="0" description="First Bit Shifted">
+      <alias type="CMSIS" value="I2S_RCR5_FBT(x)"/>
+      <bit_field_value name="RCR5_FBT_INDEX0" value="0b00000" description="0"/>
+      <bit_field_value name="RCR5_FBT_INDEX" value="0b00001-0b11110" description="FBT value"/>
+      <bit_field_value name="RCR5_FBT_INDEX31" value="0b11111" description="31"/>
+    </bit_field>
+    <reserved_bit_field offset="13" width="3" reset_value="0"/>
+    <bit_field offset="16" width="5" name="W0W" access="RW" reset_value="0" description="Word 0 Width">
+      <alias type="CMSIS" value="I2S_RCR5_W0W(x)"/>
+      <bit_field_value name="RCR5_W0W_MIN" value="0b00000" description="1"/>
+      <bit_field_value name="RCR5_W0W_TWO" value="0b00001" description="2"/>
+      <bit_field_value name="RCR5_W0W_THREE_THIRTYONE" value="0b00010-0b11110" description="(W0W value + 1)"/>
+      <bit_field_value name="RCR5_W0W_MAX" value="0b11111" description="32"/>
+    </bit_field>
+    <reserved_bit_field offset="21" width="3" reset_value="0"/>
+    <bit_field offset="24" width="5" name="WNW" access="RW" reset_value="0" description="Word N Width">
+      <alias type="CMSIS" value="I2S_RCR5_WNW(x)"/>
+      <bit_field_value name="RCR5_WNW_EIGHT" value="0b00111" description="8"/>
+      <bit_field_value name="RCR5_WNW_NINE" value="0b01000" description="9"/>
+      <bit_field_value name="RCR5_WNW_TEN_THIRTYONE" value="0b01001-0b11110" description="(WNW value + 1)"/>
+      <bit_field_value name="RCR5_WNW_MAX" value="0b11111" description="32"/>
+    </bit_field>
+    <reserved_bit_field offset="29" width="3" reset_value="0"/>
+  </register>
+  <reg_instance rid="160" vals="0xA0 0"/>
+  <reg_instance rid="160" vals="0xA4 1"/>
+  <reg_instance rid="192" vals="0xC0 0"/>
+  <reg_instance rid="192" vals="0xC4 1"/>
+  <register offset="0xE0" width="32" name="RMR" description="Receive Mask">
+    <alias type="CMSIS" value="RMR"/>
+    <bit_field_array offset="0" width="32" item_width="1" name="RWM" access="RW" reset_value="0" description="Receive Word Mask">
+      <alias type="CMSIS" value="I2S_RMR_RWM(x)"/>
+      <bit_field_value name="RMR_RWM_WORD_N_ENABLED" value="0b0" description="Enable"/>
+      <bit_field_value name="RMR_RWM_WORD_N_MASKED" value="0b1" description="Mask"/>
+    </bit_field_array>
+  </register>
+  <register offset="0x100" width="32" name="MCR" description="MCLK Control">
+    <alias type="CMSIS" value="MCR"/>
+    <bit_field offset="0" width="8" name="DIV" access="RW" reset_value="0" description="MCLK Post Divide">
+      <alias type="CMSIS" value="I2S_MCR_DIV(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="8" width="15" reset_value="0"/>
+    <bit_field offset="23" width="1" name="DIVEN" access="RW" reset_value="0" description="MCLK Post Divide Enable">
+      <alias type="CMSIS" value="I2S_MCR_DIVEN(x)"/>
+      <bit_field_value name="MCR_DIVEN_DISABLE" value="0b0" description="Disable"/>
+      <bit_field_value name="MCR_DIVEN_ENABLE" value="0b1" description="Enable"/>
+    </bit_field>
+    <bit_field offset="24" width="2" name="MSEL" access="RW" reset_value="0" description="MCLK Select">
+      <alias type="CMSIS" value="I2S_MCR_MSEL(x)"/>
+      <bit_field_value name="MCR_MSEL_MCLK1" value="0b00" description="Controller clock (MCLK) option 1"/>
+      <bit_field_value name="MCR_MSEL_RESERVED" value="0b01" description="Reserved"/>
+      <bit_field_value name="MCR_MSEL_MCLK2" value="0b10" description="Controller clock (MCLK) option 2"/>
+      <bit_field_value name="MCR_MSEL_MCLK3" value="0b11" description="Controller clock (MCLK) option 3"/>
+    </bit_field>
+    <reserved_bit_field offset="26" width="4" reset_value="0"/>
+    <bit_field offset="30" width="1" name="MOE" access="RW" reset_value="0" description="MCLK Output Enable">
+      <alias type="CMSIS" value="I2S_MCR_MOE(x)"/>
+      <bit_field_value name="MCR_MOE_INPUT" value="0b0" description="Input"/>
+      <bit_field_value name="MCR_MOE_OUTPUT" value="0b1" description="Output"/>
+    </bit_field>
+    <reserved_bit_field offset="31" width="1" reset_value="0"/>
+  </register>
+</regs:peripheral>

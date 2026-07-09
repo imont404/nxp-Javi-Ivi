@@ -1,0 +1,212 @@
+{
+  "schema": "altium_cruncher.json_dump.a0",
+  "kind": "SchLib",
+  "document": {
+    "format": "altium_monkey.schlib.interop.a0",
+    "Header": {
+      "Filename": "NX5P3090UK_WLCSP12.SchLib",
+      "SymbolCount": 1,
+      "FontCount": 11,
+      "Fonts": [
+        {
+          "FontID": 1,
+          "FontName": "Times New Roman",
+          "FontSize": 10
+        },
+        {
+          "FontID": 2,
+          "FontName": "Arial",
+          "FontSize": 11,
+          "Bold": true
+        },
+        {
+          "FontID": 3,
+          "FontName": "Arial",
+          "FontSize": 8
+        },
+        {
+          "FontID": 4,
+          "FontName": "Arial",
+          "FontSize": 3
+        },
+        {
+          "FontID": 5,
+          "FontName": "Arial",
+          "FontSize": 4
+        },
+        {
+          "FontID": 6,
+          "FontName": "Arial",
+          "FontSize": 6,
+          "Bold": true
+        },
+        {
+          "FontID": 7,
+          "FontName": "Arial",
+          "FontSize": 5,
+          "Bold": true
+        },
+        {
+          "FontID": 8,
+          "FontName": "Arial",
+          "FontSize": 9
+        },
+        {
+          "FontID": 9,
+          "FontName": "Courier New",
+          "FontSize": 33,
+          "Bold": true
+        },
+        {
+          "FontID": 10,
+          "FontName": "Courier New",
+          "FontSize": 8
+        },
+        {
+          "FontID": 11,
+          "FontName": "Courier New",
+          "FontSize": 11,
+          "Bold": true
+        }
+      ]
+    },
+    "Symbols": [
+      {
+        "Name": "NX5P3090UK_WLCSP12",
+        "Description": "IC USB PD TYPE C CURRENT LIMITED PWR SW 2.5-5.5V WLCSP12",
+        "PartCount": 1,
+        "Objects": [
+          {
+            "ObjectType": "Component",
+            "ObjectIndex": 0,
+            "LibReference": "NX5P3090UK_WLCSP12",
+            "PartCount": 2,
+            "DisplayModeCount": 1,
+            "IndexInSheet": -1,
+            "OwnerPartId": -1,
+            "CurrentPartId": 1,
+            "UniqueID": "Q9A7UDJJ",
+            "AreaColor": 11599871,
+            "PartIDLocked": true,
+            "NotUseDBTableName": true,
+            "DesignItemId": "NX5P3090UK_WLCSP12",
+            "Color": 128,
+            "AllPinCount": 12,
+            "ComponentDescription": "IC USB PD TYPE C CURRENT LIMITED PWR SW 2.5-5.5V WLCSP12",
+            "ComponentKind": 0,
+            "SourceLibraryName": "*",
+            "LibraryPath": "*",
+            "TargetFileName": "*"
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 1,
+            "BinaryData": "eJxjYgACRgYIYGSwkgNSu/6DOEyufkyOhgzMNWo1DAAzbgRA",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 2,
+            "BinaryData": "eJxjYgACRgYIYGS2kgNS5/6DOFxuMY4xoTE+MSExTI5GDMw1ajUMAHBYBxU=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 3,
+            "BinaryData": "eJxjYgACRgYIYGSxkGNIYTj3H8Rh8fTx9GVyNGZgrlGrYQAASY0FVg==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 4,
+            "BinaryData": "eJxjYgACRgYIYGSwkgNS3/6DOKxhnn4hhkxOhgzMNWo1DABKawVf",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 5,
+            "BinaryData": "eJxjYgACRgYIYGSwkgNSb/6DOKxhnn4hRkxORgzMNWo1DABJqgVX",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 6,
+            "BinaryData": "eJxjYgACRgYIYGS3lmPQYFj2H8RhcfdzMWRyMmZgrlGrYQAAQJUE2A==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 7,
+            "BinaryData": "eJxjYgACRgYIYGSwkgNSj/6DOKxhnn4hxkzOhgzMNWo1DABI4wVO",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 8,
+            "BinaryData": "eJxjYgACRgYIYGSxkGNIYfj2H8RhDXMKDTZkcjZiYK5Rq2EAAFOcBcY=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 9,
+            "BinaryData": "eJxjYgACRgYIYGS3lmMwYlj2H8RhcfdzMWJyNmZgrlGrYQAAQYME5A==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 10,
+            "BinaryData": "eJxjYgACRgYIYGSxkGNIYXjzH8RhDXMKDTZicjFkYK5Rq2EAAFLVBb0=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 11,
+            "BinaryData": "eJxjYgACRgYIYGSxkGNIYXj0H8RhDXMKDTZmcjFiYK5Rq2EAAFIUBbU=",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Pin",
+            "ObjectIndex": 12,
+            "BinaryData": "eJxjYgACRgYIYGS3lmOwYVj2H8RhcfdzMWZyMWZgrlGrYQAAQnEE8A==",
+            "_binary_record_type": 2
+          },
+          {
+            "ObjectType": "Rectangle",
+            "ObjectIndex": 13,
+            "OwnerPartId": 1,
+            "IsNotAccesible": true,
+            "UniqueID": "CHHAIAYW",
+            "IndexInSheet": 12,
+            "Location.Y": -90,
+            "Color": 16714496,
+            "AreaColor": 11599871,
+            "Location.X": 0,
+            "Corner.X": 100,
+            "Corner.Y": 0,
+            "LineWidth": 1,
+            "IsSolid": true,
+            "Transparent": true
+          },
+          {
+            "ObjectType": "Designator",
+            "ObjectIndex": 14,
+            "OwnerPartId": 1,
+            "UniqueID": "MJGZELQP",
+            "Location.X": 17,
+            "Location.Y": 4,
+            "Name": "Designator",
+            "Text": "U?",
+            "FontID": 1,
+            "Color": 8388608,
+            "ReadOnlyState": 1,
+            "OverrideNotAutoPosition": true
+          },
+          {
+            "ObjectType": "Implementation List",
+            "ObjectIndex": 15
+          }
+        ]
+      }
+    ]
+  }
+}

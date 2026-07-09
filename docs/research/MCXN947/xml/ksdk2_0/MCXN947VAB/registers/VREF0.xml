@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<regs:peripheral xmlns:regs="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd">
+  <register offset="0" width="32" name="VERID" description="Version ID">
+    <alias type="CMSIS" value="VERID"/>
+    <bit_field offset="0" width="16" name="FEATURE" access="RO" reset_value="0" description="Feature Specification Number">
+      <alias type="CMSIS" value="VREF_VERID_FEATURE(x)"/>
+    </bit_field>
+    <bit_field offset="16" width="8" name="MINOR" access="RO" reset_value="0" description="Minor Version Number">
+      <alias type="CMSIS" value="VREF_VERID_MINOR(x)"/>
+    </bit_field>
+    <bit_field offset="24" width="8" name="MAJOR" access="RO" reset_value="0x1" description="Major Version Number">
+      <alias type="CMSIS" value="VREF_VERID_MAJOR(x)"/>
+    </bit_field>
+  </register>
+  <register offset="0x8" width="32" name="CSR" description="Control and Status">
+    <alias type="CMSIS" value="CSR"/>
+    <bit_field offset="0" width="1" name="HCBGEN" access="RW" reset_value="0" description="HC Bandgap Enabled">
+      <alias type="CMSIS" value="VREF_CSR_HCBGEN(x)"/>
+      <bit_field_value name="CSR_HCBGEN_DIS" value="0b0" description="Disables"/>
+      <bit_field_value name="CSR_HCBGEN_ENA" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="1" width="1" name="LPBGEN" access="RW" reset_value="0" description="Low-Power Bandgap Enable">
+      <alias type="CMSIS" value="VREF_CSR_LPBGEN(x)"/>
+      <bit_field_value name="CSR_LPBGEN_DIS" value="0b0" description="Disables"/>
+      <bit_field_value name="CSR_LPBGEN_ENA" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="2" width="1" name="LPBG_BUF_EN" access="RW" reset_value="0" description="Low-Power Bandgap Buffer Enable">
+      <alias type="CMSIS" value="VREF_CSR_LPBG_BUF_EN(x)"/>
+      <bit_field_value name="CSR_LPBG_BUF_EN_DIS" value="0b0" description="Disables"/>
+      <bit_field_value name="CSR_LPBG_BUF_EN_ENA" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="3" width="1" name="CHOPEN" access="RW" reset_value="0" description="Chop Oscillator Enable">
+      <alias type="CMSIS" value="VREF_CSR_CHOPEN(x)"/>
+      <bit_field_value name="CSR_CHOPEN_DIS" value="0b0" description="Disables"/>
+      <bit_field_value name="CSR_CHOPEN_ENA" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="4" width="1" name="ICOMPEN" access="RW" reset_value="0" description="Current Compensation Enable">
+      <alias type="CMSIS" value="VREF_CSR_ICOMPEN(x)"/>
+      <bit_field_value name="CSR_ICOMPEN_DIS" value="0b0" description="Disables"/>
+      <bit_field_value name="CSR_ICOMPEN_ENA" value="0b1" description="Enables"/>
+    </bit_field>
+    <bit_field offset="5" width="1" name="REGEN" access="RW" reset_value="0" description="Regulator Enable">
+      <alias type="CMSIS" value="VREF_CSR_REGEN(x)"/>
+      <bit_field_value name="CSR_REGEN_DIS" value="0b0" description="Disables"/>
+      <bit_field_value name="CSR_REGEN_ENA" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="6" width="5" reset_value="0"/>
+    <bit_field offset="11" width="1" name="HI_PWR_LV" access="RW" reset_value="0" description="High-Power Level">
+      <alias type="CMSIS" value="VREF_CSR_HI_PWR_LV(x)"/>
+      <bit_field_value name="CSR_HI_PWR_LV_LOW" value="0b0" description="Low-power"/>
+      <bit_field_value name="CSR_HI_PWR_LV_HIGH" value="0b1" description="High-power"/>
+    </bit_field>
+    <reserved_bit_field offset="12" width="4" reset_value="0"/>
+    <bit_field offset="16" width="1" name="BUF21EN" access="RW" reset_value="0" description="Internal Buffer21 Enable">
+      <alias type="CMSIS" value="VREF_CSR_BUF21EN(x)"/>
+      <alias type="id" value="VREF2P1EN"/>
+      <bit_field_value name="CSR_BUF21EN_DIS" value="0b0" description="Disables"/>
+      <bit_field_value name="CSR_BUF21EN_ENA" value="0b1" description="Enables"/>
+    </bit_field>
+    <reserved_bit_field offset="17" width="14" reset_value="0"/>
+    <bit_field offset="31" width="1" name="VREFST" access="RO" reset_value="0" description="Internal HC Voltage Reference Stable">
+      <alias type="CMSIS" value="VREF_CSR_VREFST(x)"/>
+      <bit_field_value name="CSR_VREFST_DIS_NOTSTABLE" value="0b0" description="Disabled and unstable"/>
+      <bit_field_value name="CSR_VREFST_STABLE" value="0b1" description="Stable"/>
+    </bit_field>
+  </register>
+  <register offset="0x10" width="32" name="UTRIM" description="User Trim">
+    <alias type="CMSIS" value="UTRIM"/>
+    <bit_field offset="0" width="4" name="TRIM2V1" access="RW" reset_value="0" reset_mask="0" description="VREF 2.1 V Trim">
+      <alias type="CMSIS" value="VREF_UTRIM_TRIM2V1(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="4" width="4" reset_value="0" reset_mask="0"/>
+    <bit_field offset="8" width="6" name="VREFTRIM" access="RW" reset_value="0" reset_mask="0" description="VREF Trim">
+      <alias type="CMSIS" value="VREF_UTRIM_VREFTRIM(x)"/>
+    </bit_field>
+    <reserved_bit_field offset="14" width="18" reset_value="0" reset_mask="0"/>
+  </register>
+</regs:peripheral>

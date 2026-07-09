@@ -1,0 +1,275 @@
+{
+  "peripheral": {
+    "@_xmlns": {
+      "regs": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+      "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+    },
+    "@schemaLocation": "http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd http://swtools.freescale.net/XSD/registers/6.0/regsPeripheral.xsd",
+    "reg_template": [
+      {
+        "@rid": "8",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "INTM_IRQSEL{1}",
+        "@description": "Interrupt Request Select for Monitor {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MON[{1}].INTM_IRQSEL"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "10",
+          "@name": "IRQ",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Interrupt Request",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "INTM_MON_INTM_IRQSEL_IRQ(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "10",
+          "@width": "22",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "12",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "INTM_LATENCY{1}",
+        "@description": "Interrupt Latency for Monitor {1}",
+        "alias": [
+          {
+            "@type": "CMSIS",
+            "@value": "MON[{1}].INTM_LATENCY"
+          },
+          {
+            "@type": "id",
+            "@value": "INTM_LAT{1}R"
+          }
+        ],
+        "bit_field": {
+          "@offset": "0",
+          "@width": "24",
+          "@name": "LAT",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Latency",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "INTM_MON_INTM_LATENCY_LAT(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "24",
+          "@width": "8",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "16",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "INTM_TIMER{1}",
+        "@description": "Timer for Monitor {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MON[{1}].INTM_TIMER"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "24",
+          "@name": "TIMER",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Timer",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "INTM_MON_INTM_TIMER_TIMER(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "24",
+          "@width": "8",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@rid": "20",
+        "@offset": "{0}",
+        "@width": "32",
+        "@name": "INTM_STATUS{1}",
+        "@description": "Status for Monitor {1}",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "MON[{1}].INTM_STATUS"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "STATUS",
+          "@access": "RO",
+          "@reset_value": "0",
+          "@description": "Monitor status",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "INTM_MON_INTM_STATUS_STATUS(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "INTM_STATUS{1}_STATUS_ST02",
+              "@value": "0b0",
+              "@description": "Did not exceed"
+            },
+            {
+              "@name": "INTM_STATUS{1}_STATUS_ST01",
+              "@value": "0b1",
+              "@description": "Exceeded"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      }
+    ],
+    "register": [
+      {
+        "@offset": "0",
+        "@width": "32",
+        "@name": "INTM_MM",
+        "@description": "Monitor Mode",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "INTM_MM"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "1",
+          "@name": "MM",
+          "@access": "RW",
+          "@reset_value": "0",
+          "@description": "Monitor Mode",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "INTM_INTM_MM_MM(x)"
+          },
+          "bit_field_value": [
+            {
+              "@name": "INTM_MM_MM_disable",
+              "@value": "0b0",
+              "@description": "Disable"
+            },
+            {
+              "@name": "INTM_MM_MM_enable",
+              "@value": "0b1",
+              "@description": "Enable"
+            }
+          ]
+        },
+        "reserved_bit_field": {
+          "@offset": "1",
+          "@width": "31",
+          "@reset_value": "0"
+        }
+      },
+      {
+        "@offset": "0x4",
+        "@width": "32",
+        "@name": "INTM_IACK",
+        "@description": "Interrupt Acknowledge",
+        "alias": {
+          "@type": "CMSIS",
+          "@value": "INTM_IACK"
+        },
+        "bit_field": {
+          "@offset": "0",
+          "@width": "10",
+          "@name": "IRQ",
+          "@access": "WO",
+          "@reset_value": "0",
+          "@description": "Interrupt Request",
+          "alias": {
+            "@type": "CMSIS",
+            "@value": "INTM_INTM_IACK_IRQ(x)"
+          }
+        },
+        "reserved_bit_field": {
+          "@offset": "10",
+          "@width": "22",
+          "@reset_value": "0"
+        }
+      }
+    ],
+    "reg_instance": [
+      {
+        "@rid": "8",
+        "@vals": "0x8 0"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0xC 0"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x10 0"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x14 0"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x18 1"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x1C 1"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x20 1"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x24 1"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x28 2"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x2C 2"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x30 2"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x34 2"
+      },
+      {
+        "@rid": "8",
+        "@vals": "0x38 3"
+      },
+      {
+        "@rid": "12",
+        "@vals": "0x3C 3"
+      },
+      {
+        "@rid": "16",
+        "@vals": "0x40 3"
+      },
+      {
+        "@rid": "20",
+        "@vals": "0x44 3"
+      }
+    ]
+  }
+}
