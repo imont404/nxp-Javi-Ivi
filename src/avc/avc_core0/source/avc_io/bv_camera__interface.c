@@ -6,6 +6,8 @@
 #include "fsl_lpflexcomm.h"
 #include "fsl_smartdma.h"
 #include "fsl_inputmux.h"
+#include "fsl_gpio.h"
+#include "fsl_port.h"
 #include "board.h"
 #include "bunny_build.h"
 #include "cr_section_macros.h"
@@ -244,25 +246,14 @@ camera_device_handle_t handle =
 
 };
 
-void avc_camera__init()
+static void camera__configure_xclk(void)
 {
-
-	DEBUG("Build EZH Camera application\r\n");
-
-	uint32_t words_assembled = bunny_build((uint32_t* )&ezh_binary[0],
-							   sizeof(ezh_binary),
-							   EZH_Camera_320240_Whole_Buf);
-
-	DEBUG(VT100_YELLOW"%d "VT100_DEFAULT" 32bit words assembled (%d bytes) \r\n"VT100_DEFAULT,words_assembled, words_assembled<<2);
-
-
 #if CONFIG__CAMERA_SELECT == CAMERA__OV7670
     CLOCK_AttachClk(kFRO12M_to_CLKOUT);
     CLOCK_SetClkDiv(kCLOCK_DivClkOut, 1U);
 #else
 
-    /*6MHz For OV5640*/
-
+    /* 6MHz for the current 320x200 OV5640 configuration. */
     CLOCK_AttachClk(kMAIN_CLK_to_CLKOUT);
 
     uint32_t res = CONFIG__CAMERA_RESOLUTION;
@@ -287,17 +278,21 @@ void avc_camera__init()
 	break;
     }
 
-
 #endif
+}
 
+static void camera__configure_i2c(void)
+{
     CLOCK_AttachClk(kFRO12M_to_FLEXCOMM7);
     CLOCK_EnableClock(kCLOCK_LPFlexComm7);
     CLOCK_EnableClock(kCLOCK_LPI2c7);
     CLOCK_SetClkDiv(kCLOCK_DivFlexcom7Clk, 1u);
 
     camera__i2c_init();
+}
 
-
+static void camera__init_sensor(void)
+{
 #if (CONFIG__CAMERA_SELECT == CAMERA__OV7670)
 
 
@@ -345,6 +340,61 @@ void avc_camera__init()
 #endif
 
     CAMERA_DEVICE_Init(&handle, &camconfig);
+}
+
+static void camera__configure_flexio_diag_inputs(void)
+{
+    CLOCK_EnableClock(kCLOCK_Gpio4);
+    CLOCK_EnableClock(kCLOCK_Port4);
+
+    const gpio_pin_config_t input_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+
+    GPIO_PinInit(GPIO4, 20U, &input_config);
+    GPIO_PinInit(GPIO4, 21U, &input_config);
+    GPIO_PinInit(GPIO4, 22U, &input_config);
+
+    const port_pin_config_t port4_camera_input = {
+        .pullSelect = kPORT_PullDisable,
+        .pullValueSelect = kPORT_LowPullResistor,
+        .slewRate = kPORT_FastSlewRate,
+        .passiveFilterEnable = kPORT_PassiveFilterDisable,
+        .openDrainEnable = kPORT_OpenDrainDisable,
+        .driveStrength = kPORT_LowDriveStrength,
+        .mux = kPORT_MuxAlt0,
+        .inputBuffer = kPORT_InputBufferEnable,
+        .invertInput = kPORT_InputNormal,
+        .lockRegister = kPORT_UnlockRegister
+    };
+
+    PORT_SetPinConfig(PORT4, 20U, &port4_camera_input);
+    PORT_SetPinConfig(PORT4, 21U, &port4_camera_input);
+    PORT_SetPinConfig(PORT4, 22U, &port4_camera_input);
+
+    DEBUG("FlexIO camera diag inputs configured: PCLK=P4_20 HSYNC/HREF=P4_21 VSYNC=P4_22\r\n");
+    DEBUG("FlexIO camera diag levels: pclk=%u hsync=%u vsync=%u\r\n",
+          GPIO_PinRead(GPIO4, 20U),
+          GPIO_PinRead(GPIO4, 21U),
+          GPIO_PinRead(GPIO4, 22U));
+}
+
+static void avc_camera__init_smartdma_ezh(void)
+{
+
+	DEBUG("Camera capture backend: SMARTDMA_EZH\r\n");
+	DEBUG("Build EZH Camera application\r\n");
+
+	uint32_t words_assembled = bunny_build((uint32_t* )&ezh_binary[0],
+							   sizeof(ezh_binary),
+							   EZH_Camera_320240_Whole_Buf);
+
+	DEBUG(VT100_YELLOW"%d "VT100_DEFAULT" 32bit words assembled (%d bytes) \r\n"VT100_DEFAULT,words_assembled, words_assembled<<2);
+
+    camera__configure_xclk();
+    camera__configure_i2c();
+    camera__init_sensor();
 
     INPUTMUX_Init(INPUTMUX0);
 
@@ -397,6 +447,31 @@ void avc_camera__init()
 
     DEBUG("EZH interface configured\r\n");
 
+}
+
+static void avc_camera__init_flexio_diag(void)
+{
+    DEBUG("Camera capture backend: FLEXIO_DIAG\r\n");
+
+    camera__configure_xclk();
+    camera__configure_i2c();
+    camera__init_sensor();
+    camera__configure_flexio_diag_inputs();
+
+    DEBUG("SmartDMA/EZH camera capture disabled for FlexIO diagnostic wiring test\r\n");
+}
+
+void avc_camera__init(void)
+{
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
+    avc_camera__init_smartdma_ezh();
+#elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_DIAG
+    avc_camera__init_flexio_diag();
+#elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
+#error CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA is not implemented yet.
+#else
+#error Invalid CONFIG__CAMERA_CAPTURE_BACKEND.
+#endif
 }
 
 

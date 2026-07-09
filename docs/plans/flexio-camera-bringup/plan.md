@@ -208,6 +208,11 @@ byte sampling from PCLK, then introduce eDMA and frame-buffer integration.
 - Emit compact RTT status lines so tests can run without a debugger UI.
 - Use this phase to answer whether VSYNC/HSYNC need to be FlexIO timer inputs
   or can remain GPIO/PINT instrumentation/control signals.
+- Pre-wiring checkpoint: firmware now has an explicit
+  `CONFIG__CAMERA_CAPTURE_BACKEND` selector with SmartDMA/EZH as the default and
+  a dormant `FLEXIO_DIAG` backend that can configure `P4_20`, `P4_21`, and
+  `P4_22` as diagnostic GPIO inputs. The default CMake image was built, flashed,
+  and RTT-verified before wiring changes.
 
 ### flexio-low-rate-capture
 
