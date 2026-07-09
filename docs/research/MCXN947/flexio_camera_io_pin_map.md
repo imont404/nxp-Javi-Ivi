@@ -66,17 +66,17 @@ index is `20` for the eight camera data bits on `FLEXIO0_D20..D27`. Keep
 PCLK, HSYNC/HREF, and VSYNC available to FlexIO only if hardware timing or
 gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 
-## Current Sync-Only Test State
+## Current Incremental Data-Bus Test State
 
-The noisy partial data-bus pass was backed out to a sync-only test state. The
-sync lines remain fitted as `PCLK -> P4_20`, `HSYNC/HREF -> P4_21`, and
-`VSYNC -> P4_22`. All camera data lines are disconnected from the new Port 4
-FlexIO data-bus wiring:
+The sync-only baseline recovered after moving VSYNC physically farther away
+from the other camera signals. The current incremental test keeps that VSYNC
+separation and restores only camera `D0` and `D1` to the new Port 4 FlexIO
+data-bus wiring:
 
 | Camera data signal | Current test MCU pin | Status |
 | --- | --- | --- |
-| D0 | `P4_12` / `FLEXIO0_D20` | Disconnected for current test |
-| D1 | `P4_13` / `FLEXIO0_D21` | Disconnected for current test |
+| D0 | `P4_12` / `FLEXIO0_D20` | Attached for current test |
+| D1 | `P4_13` / `FLEXIO0_D21` | Attached for current test |
 | D2-D7 | `P4_14..P4_19` / `FLEXIO0_D22..D27` | Disconnected for current test |
 
 Data-line termination remains deferred. The existing low-value
@@ -100,3 +100,4 @@ termination/pulldown treatment remains on the sync lines.
 | 2026-07-09 14:53 EDT | Disconnected all data lines from the Port 4 FlexIO data-bus wiring. | Ready to rerun sync-only diagnostic with PCLK/HSYNC/VSYNC still fitted. |
 | 2026-07-09 14:54 EDT | Reran sync-only RTT diagnostic with all data lines disconnected. | VSYNC improved but is still noisy at about 318-366 extra edges/sec, so the remaining issue is in the sync/VSYNC path. |
 | 2026-07-09 14:55 EDT | Rerouted VSYNC farther away from other camera signals and reran sync-only RTT diagnostic. | Sync recovered: VSYNC 30-31 edges/sec, HSYNC about 6040 edges/sec, `p4_lines=200`, and `p4_vs_off=0`. |
+| 2026-07-09 14:57 EDT | Restored D0/D1 while keeping VSYNC physically separated. | Ready to rerun sync diagnostic before restoring more data lines. |
