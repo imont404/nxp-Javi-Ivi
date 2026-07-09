@@ -76,6 +76,9 @@ Thumbs.db
 #build folders
 build/
 
+# MCUXpresso headless workspaces
+.mcux_workspace*/
+
 
 !JsonExSerializer.dll
 !lib_eGFX_Tools.dll

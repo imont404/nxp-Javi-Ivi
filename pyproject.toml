@@ -1,0 +1,28 @@
+[project]
+name = "avc"
+version = "0.0.0"
+description = "FRDM-MCXN947 AVC firmware project."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+
+[dependency-groups]
+dev = [
+    "wn-dev-std==2026.7.2",
+]
+
+[tool.uv]
+package = false
+
+[tool.wn_dev_std]
+profile = "zephyr-firmware"
+distribution = "none"
+languages = ["c", "asm", "powershell", "markdown"]
+strict = false
+artifact_policy = "custom"
+
+[tool.wn_dev_std.documentation.plans]
+roots = ["docs/plans"]
+ignore = [
+    "docs/examples",
+    "docs/research",
+]
