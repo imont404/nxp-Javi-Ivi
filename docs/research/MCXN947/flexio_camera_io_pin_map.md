@@ -66,17 +66,17 @@ index is `20` for the eight camera data bits on `FLEXIO0_D20..D27`. Keep
 PCLK, HSYNC/HREF, and VSYNC available to FlexIO only if hardware timing or
 gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 
-## Current Incremental Data-Bus Test State
+## Current Sync-Only Test State
 
-The noisy full data-bus pass was backed out for a smaller test. The sync lines
-were refitted as `PCLK -> P4_20`, `HSYNC/HREF -> P4_21`, and `VSYNC -> P4_22`.
-All data lines were disconnected, then only camera `D0` and `D1` were attached
-to their planned FlexIO pins:
+The noisy partial data-bus pass was backed out to a sync-only test state. The
+sync lines remain fitted as `PCLK -> P4_20`, `HSYNC/HREF -> P4_21`, and
+`VSYNC -> P4_22`. All camera data lines are disconnected from the new Port 4
+FlexIO data-bus wiring:
 
 | Camera data signal | Current test MCU pin | Status |
 | --- | --- | --- |
-| D0 | `P4_12` / `FLEXIO0_D20` | Attached for current test |
-| D1 | `P4_13` / `FLEXIO0_D21` | Attached for current test |
+| D0 | `P4_12` / `FLEXIO0_D20` | Disconnected for current test |
+| D1 | `P4_13` / `FLEXIO0_D21` | Disconnected for current test |
 | D2-D7 | `P4_14..P4_19` / `FLEXIO0_D22..D27` | Disconnected for current test |
 
 Data-line termination remains deferred. The existing low-value
@@ -97,3 +97,4 @@ termination/pulldown treatment remains on the sync lines.
 | 2026-07-09 13:57 EDT | Backed out full data-bus wiring, refitted sync, and attached only D0/D1. | Ready to rerun sync diagnostic before adding more data wires. |
 | 2026-07-09 14:50 EDT | Reran RTT with SEGGER J-Link V9.54 after V9.40 path disappeared. | Probe connected, but VSYNC was extremely noisy at about 3100-3300 extra edges/sec after the first interval, with `p4_vs_off=1`. |
 | 2026-07-09 14:52 EDT | Reflashed current CMake image with J-Link V9.54 and reran RTT. | Flash matched existing image; VSYNC still shows about 3000-3335 extra edges/sec, `p4_vs_off=1`, while HSYNC/PCLK remain active. |
+| 2026-07-09 14:53 EDT | Disconnected all data lines from the Port 4 FlexIO data-bus wiring. | Ready to rerun sync-only diagnostic with PCLK/HSYNC/VSYNC still fitted. |
