@@ -66,13 +66,21 @@ index is `20` for the eight camera data bits on `FLEXIO0_D20..D27`. Keep
 PCLK, HSYNC/HREF, and VSYNC available to FlexIO only if hardware timing or
 gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 
-## Pending Hardware Handoff
+## Current Incremental Data-Bus Test State
 
-The first data-bus wiring pass will route camera `D0..D7` to `P4_12..P4_19`
-without added terminators. The existing low-value termination/pulldown treatment
-will remain on the sync lines. Add data-line termination later only if the
-captured image shows symptoms such as random pixel noise, bit sparkle, or
-edge-correlated artifacts.
+The noisy full data-bus pass was backed out for a smaller test. The sync lines
+were refitted as `PCLK -> P4_20`, `HSYNC/HREF -> P4_21`, and `VSYNC -> P4_22`.
+All data lines were disconnected, then only camera `D0` and `D1` were attached
+to their planned FlexIO pins:
+
+| Camera data signal | Current test MCU pin | Status |
+| --- | --- | --- |
+| D0 | `P4_12` / `FLEXIO0_D20` | Attached for current test |
+| D1 | `P4_13` / `FLEXIO0_D21` | Attached for current test |
+| D2-D7 | `P4_14..P4_19` / `FLEXIO0_D22..D27` | Disconnected for current test |
+
+Data-line termination remains deferred. The existing low-value
+termination/pulldown treatment remains on the sync lines.
 
 ## Change History
 
@@ -86,3 +94,4 @@ edge-correlated artifacts.
 | 2026-07-09 11:57 EDT | Planned first data-bus wiring pass without data-line terminators. | Use visual/capture quality to decide whether data-line termination is needed later. |
 | 2026-07-09 12:07 EDT | Ran first RTT sync check after data-bus wiring. | HSYNC and PCLK remain active, but VSYNC now reports about 59-79 edges/sec with unstable `p4_lines`, so inspect `P4_22`/VSYNC wiring before data-bit sampling. |
 | 2026-07-09 12:09 EDT | Re-ran RTT sync check after wiring re-check request. | VSYNC is worse: first interval exceeded the 120 edges/sec guard, `p4_vs_off=1`, and `p4_lines` remains unstable. |
+| 2026-07-09 13:57 EDT | Backed out full data-bus wiring, refitted sync, and attached only D0/D1. | Ready to rerun sync diagnostic before adding more data wires. |
