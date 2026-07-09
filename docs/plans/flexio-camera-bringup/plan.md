@@ -235,6 +235,13 @@ for FlexIO work.
 - Use the tracked Port 4 map: data `D0..D7` planned for `P4_12..P4_19`
   (`FLEXIO0_D20..D27`), PCLK on `P4_20`, HSYNC/HREF on `P4_21`, VSYNC on
   `P4_22`, and `P4_23` spare.
+- Add a sync-qualified synthetic-frame backend before first byte capture. It
+  should use the current GPIO IRQ sync instrumentation to accept plausible
+  VSYNC/HSYNC timing and feed deterministic RGB565 test frames through the
+  existing `avc__next_frame()` and LCD path with no data lines required.
+- Keep SysTick available as a future timing source, but do not take ownership
+  of `SysTick_Handler` until the existing `e_tick` delay/timing behavior is
+  reviewed.
 - Prove PCLK-synchronous byte capture into a small buffer before full-frame DMA.
 - Validate byte order and pixel packing against known color bars or stable test
   scenes.
