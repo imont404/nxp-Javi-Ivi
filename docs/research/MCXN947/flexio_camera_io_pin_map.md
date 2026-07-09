@@ -96,3 +96,4 @@ termination/pulldown treatment remains on the sync lines.
 | 2026-07-09 12:09 EDT | Re-ran RTT sync check after wiring re-check request. | VSYNC is worse: first interval exceeded the 120 edges/sec guard, `p4_vs_off=1`, and `p4_lines` remains unstable. |
 | 2026-07-09 13:57 EDT | Backed out full data-bus wiring, refitted sync, and attached only D0/D1. | Ready to rerun sync diagnostic before adding more data wires. |
 | 2026-07-09 14:50 EDT | Reran RTT with SEGGER J-Link V9.54 after V9.40 path disappeared. | Probe connected, but VSYNC was extremely noisy at about 3100-3300 extra edges/sec after the first interval, with `p4_vs_off=1`. |
+| 2026-07-09 14:52 EDT | Reflashed current CMake image with J-Link V9.54 and reran RTT. | Flash matched existing image; VSYNC still shows about 3000-3335 extra edges/sec, `p4_vs_off=1`, while HSYNC/PCLK remain active. |
