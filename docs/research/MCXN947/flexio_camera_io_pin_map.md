@@ -101,3 +101,4 @@ termination/pulldown treatment remains on the sync lines.
 | 2026-07-09 14:54 EDT | Reran sync-only RTT diagnostic with all data lines disconnected. | VSYNC improved but is still noisy at about 318-366 extra edges/sec, so the remaining issue is in the sync/VSYNC path. |
 | 2026-07-09 14:55 EDT | Rerouted VSYNC farther away from other camera signals and reran sync-only RTT diagnostic. | Sync recovered: VSYNC 30-31 edges/sec, HSYNC about 6040 edges/sec, `p4_lines=200`, and `p4_vs_off=0`. |
 | 2026-07-09 14:57 EDT | Restored D0/D1 while keeping VSYNC physically separated. | Ready to rerun sync diagnostic before restoring more data lines. |
+| 2026-07-09 14:59 EDT | Reran RTT with D0/D1 restored. | VSYNC stayed below the guard but rose to about 35-43 edges/sec, with occasional `p4_lines` dips to 149 and 188. |
