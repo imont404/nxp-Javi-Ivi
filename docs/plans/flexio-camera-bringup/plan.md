@@ -7,12 +7,12 @@ created = "2026-07-09"
 [[steps]]
 id = "tooling-flash-rtt"
 title = "Establish reliable headless build, flash, and RTT observation"
-status = "active"
+status = "done"
 
 [[steps]]
 id = "reference-extraction"
 title = "Extract and index MCXN947 reference material needed for FlexIO camera work"
-status = "pending"
+status = "active"
 depends_on = ["tooling-flash-rtt"]
 
 [[steps]]
@@ -60,7 +60,7 @@ depends_on = ["lcd-integration"]
 [[exit_criteria]]
 id = "flash-rtt-ready"
 title = "FRDM-MCXN947 can be built, flashed, reset, and observed from scripts"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "pins-selected"

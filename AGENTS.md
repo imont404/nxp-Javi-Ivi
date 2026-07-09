@@ -37,6 +37,8 @@ Use the root build wrapper for MCUXpresso headless builds:
 ```powershell
 .\build.ps1
 .\build.ps1 -Clean -ResetWorkspace
+.\flash.ps1
+.\rtt.ps1 -Seconds 10
 ```
 
 The wrapper defaults to
@@ -44,6 +46,12 @@ The wrapper defaults to
 `src\avc\avc_core0`, and builds `avc_core0/Debug` in a generated headless
 workspace. Generated `.mcux_workspace*` folders are local build state and should
 not be committed.
+
+The flash and RTT wrappers default to SEGGER J-Link V9.40, device
+`MCXN947_M33_0`, SWD at 4 MHz, and the onboard J-Link MCU-Link serial observed
+on the FRDM-MCXN947 debug USB port. `rtt.ps1` derives `_SEGGER_RTT` from the
+current AXF with `arm-none-eabi-nm`, then passes the address to
+`JLinkRTTLogger`.
 
 If a headless build reports undefined references to `bq__*`, `SEGGER_RTT_*`,
 `FONT_*`, or `bunny_build*`, rerun with `-ResetWorkspace`. That failure means
