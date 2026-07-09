@@ -1,0 +1,38 @@
+{
+  "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing",
+  "embedded_images": [],
+  "end_page": 315,
+  "match_reasons": [
+    "chapter"
+  ],
+  "number": 12,
+  "rendered_pages": [
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0285.png",
+      "matched_term": "pinout",
+      "page": 285
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0286.png",
+      "matched_term": "signal multiplex",
+      "page": 286
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0287.png",
+      "matched_term": "signal multiplex",
+      "page": 287
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0288.png",
+      "matched_term": "signal multiplex",
+      "page": 288
+    }
+  ],
+  "start_page": 285,
+  "title": "Signal Multiplexing",
+  "toc_level": 1
+}

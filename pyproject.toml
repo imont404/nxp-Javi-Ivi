@@ -8,6 +8,7 @@ requires-python = ">=3.12,<3.13"
 [dependency-groups]
 dev = [
     "pylink-square>=2.0.0",
+    "pymupdf>=1.28.0",
     "wn-dev-std==2026.7.2",
 ]
 

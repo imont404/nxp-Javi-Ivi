@@ -1,0 +1,1102 @@
+{
+  "all_chapters": [
+    {
+      "end_page": 19,
+      "number": 1,
+      "start_page": 17,
+      "title": "About This Manual",
+      "toc_level": 1
+    },
+    {
+      "end_page": 36,
+      "number": 2,
+      "start_page": 20,
+      "title": "Introduction",
+      "toc_level": 1
+    },
+    {
+      "end_page": 45,
+      "number": 3,
+      "start_page": 37,
+      "title": "Core Overview",
+      "toc_level": 1
+    },
+    {
+      "end_page": 62,
+      "number": 4,
+      "start_page": 46,
+      "title": "Memory",
+      "toc_level": 2
+    },
+    {
+      "end_page": 67,
+      "number": 5,
+      "start_page": 63,
+      "title": "Low-Power Cache Controller (LPCAC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 83,
+      "number": 6,
+      "start_page": 68,
+      "title": "CACHE64 Controller (CACHE64_CTRL)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 90,
+      "number": 7,
+      "start_page": 84,
+      "title": "CACHE64 Policy Select (CACHE64_POLSEL)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 123,
+      "number": 8,
+      "start_page": 91,
+      "title": "Flash Memory Module (FMU)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 127,
+      "number": 9,
+      "start_page": 124,
+      "title": "Flash Controller (FMC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 275,
+      "number": 10,
+      "start_page": 128,
+      "title": "FlexSPI",
+      "toc_level": 2
+    },
+    {
+      "end_page": 284,
+      "number": 11,
+      "start_page": 276,
+      "title": "Performance Monitor (CMX_PERFMON)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 315,
+      "number": 12,
+      "start_page": 285,
+      "title": "Signal Multiplexing",
+      "toc_level": 1
+    },
+    {
+      "end_page": 374,
+      "number": 13,
+      "start_page": 316,
+      "title": "ROM API",
+      "toc_level": 2
+    },
+    {
+      "end_page": 424,
+      "number": 14,
+      "start_page": 375,
+      "title": "In-System Programming (ISP)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 468,
+      "number": 15,
+      "start_page": 425,
+      "title": "Boot ROM",
+      "toc_level": 2
+    },
+    {
+      "end_page": 476,
+      "number": 16,
+      "start_page": 469,
+      "title": "Debug",
+      "toc_level": 1
+    },
+    {
+      "end_page": 637,
+      "number": 17,
+      "start_page": 477,
+      "title": "System Controller (SYSCON)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 693,
+      "number": 18,
+      "start_page": 638,
+      "title": "PowerQuad DSP Coprocessor and Accelerator (PowerQuad)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 699,
+      "number": 19,
+      "start_page": 694,
+      "title": "SmartDMA Controller",
+      "toc_level": 2
+    },
+    {
+      "end_page": 705,
+      "number": 20,
+      "start_page": 700,
+      "title": "Neural Processing Unit (NPU)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 721,
+      "number": 21,
+      "start_page": 706,
+      "title": "CoolFlux BSP32 Subsystem",
+      "toc_level": 2
+    },
+    {
+      "end_page": 729,
+      "number": 22,
+      "start_page": 722,
+      "title": "Inter-CPU Mailbox (MAILBOX)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 829,
+      "number": 23,
+      "start_page": 730,
+      "title": "Enhanced Direct Memory Access (eDMA) Controller",
+      "toc_level": 2
+    },
+    {
+      "end_page": 879,
+      "number": 24,
+      "start_page": 830,
+      "title": "Wakeup Unit (WUU)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 901,
+      "number": 25,
+      "start_page": 880,
+      "title": "Event Generator (EVTG)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1122,
+      "number": 26,
+      "start_page": 902,
+      "title": "Input Multiplexing (INPUTMUX)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1124,
+      "number": 27,
+      "start_page": 1123,
+      "title": "Semaphores2 (SEMA42)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1131,
+      "number": 16,
+      "start_page": 1125,
+      "title": "Hardware-enforced gates",
+      "toc_level": 4
+    },
+    {
+      "end_page": 1140,
+      "number": 28,
+      "start_page": 1132,
+      "title": "Interrupt Monitor (INTM)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1156,
+      "number": 29,
+      "start_page": 1141,
+      "title": "Error Injection Module (EIM)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1177,
+      "number": 30,
+      "start_page": 1157,
+      "title": "Error Recording Module (ERM)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1190,
+      "number": 31,
+      "start_page": 1178,
+      "title": "Programmable Logic Unit (PLU)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1196,
+      "number": 32,
+      "start_page": 1191,
+      "title": "Reset",
+      "toc_level": 1
+    },
+    {
+      "end_page": 1215,
+      "number": 33,
+      "start_page": 1197,
+      "title": "Clocking",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1307,
+      "number": 34,
+      "start_page": 1216,
+      "title": "System Clock Generator (SCG)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1323,
+      "number": 35,
+      "start_page": 1308,
+      "title": "Power Management",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1369,
+      "number": 36,
+      "start_page": 1324,
+      "title": "VBAT",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1423,
+      "number": 37,
+      "start_page": 1370,
+      "title": "System Power Control (SPC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1466,
+      "number": 38,
+      "start_page": 1424,
+      "title": "Core Mode Controller (CMC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1470,
+      "number": 39,
+      "start_page": 1467,
+      "title": "Security overview",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1481,
+      "number": 40,
+      "start_page": 1471,
+      "title": "Cyclic Redundancy Check (CRC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1549,
+      "number": 41,
+      "start_page": 1482,
+      "title": "Analog-to-Digital Converter (ADC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1570,
+      "number": 42,
+      "start_page": 1550,
+      "title": "12-bit Digital-to-Analog Converter (DAC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1590,
+      "number": 43,
+      "start_page": 1571,
+      "title": "14-bit Digital-to-Analog Converter (DAC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1631,
+      "number": 44,
+      "start_page": 1591,
+      "title": "Low-Power Comparator (CMP)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1641,
+      "number": 45,
+      "start_page": 1632,
+      "title": "Voltage Reference (VREF)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1654,
+      "number": 46,
+      "start_page": 1642,
+      "title": "Operational Amplifier (OPAMP)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1765,
+      "number": 47,
+      "start_page": 1655,
+      "title": "SINC Filter",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1792,
+      "number": 48,
+      "start_page": 1766,
+      "title": "Standard Counter/Timers (CTIMER)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1853,
+      "number": 49,
+      "start_page": 1793,
+      "title": "SCTIMER",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1865,
+      "number": 50,
+      "start_page": 1854,
+      "title": "Multi-Rate Timer (MRT)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1878,
+      "number": 51,
+      "start_page": 1866,
+      "title": "Windowed Watchdog Timer (WWDT)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1887,
+      "number": 52,
+      "start_page": 1879,
+      "title": "Micro-Tick Timer (UTICK)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 1897,
+      "number": 53,
+      "start_page": 1888,
+      "title": "OS Event Timer (OSTIMER)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2058,
+      "number": 54,
+      "start_page": 1898,
+      "title": "Enhanced Flex Pulse Width Modulator (PWM)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2100,
+      "number": 55,
+      "start_page": 2059,
+      "title": "Quadrature Decoder (QDC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2107,
+      "number": 56,
+      "start_page": 2101,
+      "title": "Real-Time Clock Subsystem (RTC_SUBSYSTEM)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2136,
+      "number": 57,
+      "start_page": 2108,
+      "title": "Real-Time Clock (RTC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2147,
+      "number": 58,
+      "start_page": 2137,
+      "title": "Frequency Measurement (FREQME)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2159,
+      "number": 59,
+      "start_page": 2148,
+      "title": "Low-Power Timer (LPTMR)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2171,
+      "number": 60,
+      "start_page": 2160,
+      "title": "External Watchdog Monitor (EWM)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2246,
+      "number": 61,
+      "start_page": 2172,
+      "title": "USB Full-Speed Host and Device Controller (USBFS)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2307,
+      "number": 62,
+      "start_page": 2247,
+      "title": "Universal Serial Bus 2.0 High-Speed Integrated PHY (USBHS_PHY)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2334,
+      "number": 63,
+      "start_page": 2308,
+      "title": "USB Device Charger Detection Module (USBDCD)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2461,
+      "number": 64,
+      "start_page": 2335,
+      "title": "Universal Serial Bus High-Speed Controller (USBHS)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2579,
+      "number": 65,
+      "start_page": 2462,
+      "title": "Ultra Secured Digital Host Controller (uSDHC)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2776,
+      "number": 66,
+      "start_page": 2580,
+      "title": "Low-Power Flexible Communications Interface (LP_FLEXCOMM)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2826,
+      "number": 67,
+      "start_page": 2777,
+      "title": "Synchronous Audio Interface (SAI)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 2976,
+      "number": 68,
+      "start_page": 2827,
+      "title": "Flexible Controller Area Network (FlexCAN)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3027,
+      "number": 69,
+      "start_page": 2977,
+      "title": "EMVSIM",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3316,
+      "number": 70,
+      "start_page": 3028,
+      "title": "Ethernet QoS (ENET)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3399,
+      "number": 71,
+      "start_page": 3317,
+      "title": "Flexible Input/Output (FlexIO)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3520,
+      "number": 72,
+      "start_page": 3400,
+      "title": "Improved Inter-Integrated Circuit (I3C)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3547,
+      "number": 73,
+      "start_page": 3521,
+      "title": "General Purpose Input/Output (GPIO)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3569,
+      "number": 74,
+      "start_page": 3548,
+      "title": "Pin Interrupt and Pattern Match (PINT)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3696,
+      "number": 75,
+      "start_page": 3570,
+      "title": "Port Control (PORT)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3725,
+      "number": 76,
+      "start_page": 3697,
+      "title": "PDM Microphone Interface (MICFIL)",
+      "toc_level": 2
+    },
+    {
+      "end_page": 3791,
+      "number": 77,
+      "start_page": 3726,
+      "title": "Touch Sensing Input (TSI)",
+      "toc_level": 2
+    }
+  ],
+  "default_chapters": [
+    2,
+    4,
+    12,
+    17,
+    19,
+    23,
+    26,
+    33,
+    34,
+    71,
+    73,
+    74,
+    75
+  ],
+  "options": {
+    "all": false,
+    "chapters": [
+      2,
+      4,
+      12,
+      17,
+      19,
+      23,
+      26,
+      33,
+      34,
+      71,
+      73,
+      74,
+      75
+    ],
+    "keywords": [],
+    "max_embedded_images": 20,
+    "max_rendered_pages": 4,
+    "min_image_dimension": 96,
+    "render_dpi": 120,
+    "render_terms": [
+      "block diagram",
+      "timing diagram",
+      "pinout",
+      "pin function",
+      "signal multiplex",
+      "dma request",
+      "request source",
+      "trigger input",
+      "trigger output",
+      "clock control",
+      "shifter",
+      "timer"
+    ]
+  },
+  "page_count": 3791,
+  "selected_chapters": [
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction",
+      "embedded_images": [],
+      "end_page": 36,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 2,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0020.png",
+          "matched_term": "timer",
+          "page": 20
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0021.png",
+          "matched_term": "block diagram",
+          "page": 21
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0022.png",
+          "matched_term": "block diagram",
+          "page": 22
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0023.png",
+          "matched_term": "block diagram",
+          "page": 23
+        }
+      ],
+      "start_page": 20,
+      "title": "Introduction",
+      "toc_level": 1
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/04_memory",
+      "embedded_images": [],
+      "end_page": 62,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 4,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/04_memory/rendered_pages/page_0048.png",
+          "matched_term": "timer",
+          "page": 48
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/04_memory/rendered_pages/page_0049.png",
+          "matched_term": "block diagram",
+          "page": 49
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/04_memory/rendered_pages/page_0052.png",
+          "matched_term": "block diagram",
+          "page": 52
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/04_memory/rendered_pages/page_0055.png",
+          "matched_term": "timer",
+          "page": 55
+        }
+      ],
+      "start_page": 46,
+      "title": "Memory",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing",
+      "embedded_images": [],
+      "end_page": 315,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 12,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0285.png",
+          "matched_term": "pinout",
+          "page": 285
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0286.png",
+          "matched_term": "signal multiplex",
+          "page": 286
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0287.png",
+          "matched_term": "signal multiplex",
+          "page": 287
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/12_signal-multiplexing/rendered_pages/page_0288.png",
+          "matched_term": "signal multiplex",
+          "page": 288
+        }
+      ],
+      "start_page": 285,
+      "title": "Signal Multiplexing",
+      "toc_level": 1
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon",
+      "embedded_images": [],
+      "end_page": 637,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 17,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0477.png",
+          "matched_term": "signal multiplex",
+          "page": 477
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0478.png",
+          "matched_term": "pinout",
+          "page": 478
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0479.png",
+          "matched_term": "clock control",
+          "page": 479
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0480.png",
+          "matched_term": "timer",
+          "page": 480
+        }
+      ],
+      "start_page": 477,
+      "title": "System Controller (SYSCON)",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/19_smartdma-controller",
+      "embedded_images": [],
+      "end_page": 699,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 19,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/19_smartdma-controller/rendered_pages/page_0694.png",
+          "matched_term": "signal multiplex",
+          "page": 694
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/19_smartdma-controller/rendered_pages/page_0695.png",
+          "matched_term": "timer",
+          "page": 695
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/19_smartdma-controller/rendered_pages/page_0696.png",
+          "matched_term": "timer",
+          "page": 696
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/19_smartdma-controller/rendered_pages/page_0697.png",
+          "matched_term": "block diagram",
+          "page": 697
+        }
+      ],
+      "start_page": 694,
+      "title": "SmartDMA Controller",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller",
+      "embedded_images": [],
+      "end_page": 829,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 23,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0730.png",
+          "matched_term": "signal multiplex",
+          "page": 730
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0731.png",
+          "matched_term": "timer",
+          "page": 731
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0732.png",
+          "matched_term": "dma request",
+          "page": 732
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0734.png",
+          "matched_term": "timer",
+          "page": 734
+        }
+      ],
+      "start_page": 730,
+      "title": "Enhanced Direct Memory Access (eDMA) Controller",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/26_input-multiplexing-inputmux",
+      "embedded_images": [],
+      "end_page": 1122,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 26,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/26_input-multiplexing-inputmux/rendered_pages/page_0902.png",
+          "matched_term": "block diagram",
+          "page": 902
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/26_input-multiplexing-inputmux/rendered_pages/page_0903.png",
+          "matched_term": "timer",
+          "page": 903
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/26_input-multiplexing-inputmux/rendered_pages/page_0904.png",
+          "matched_term": "timer",
+          "page": 904
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/26_input-multiplexing-inputmux/rendered_pages/page_0905.png",
+          "matched_term": "trigger input",
+          "page": 905
+        }
+      ],
+      "start_page": 902,
+      "title": "Input Multiplexing (INPUTMUX)",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking",
+      "embedded_images": [],
+      "end_page": 1215,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 33,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1198.png",
+          "matched_term": "timer",
+          "page": 1198
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1200.png",
+          "matched_term": "timer",
+          "page": 1200
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1206.png",
+          "matched_term": "timer",
+          "page": 1206
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1207.png",
+          "matched_term": "timer",
+          "page": 1207
+        }
+      ],
+      "start_page": 1197,
+      "title": "Clocking",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/34_system-clock-generator-scg",
+      "embedded_images": [
+        {
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/34_system-clock-generator-scg/embedded_images/page_1230_image_01_xref_586193.png",
+          "height": 457,
+          "page": 1230,
+          "width": 1260,
+          "xref": 586193
+        }
+      ],
+      "end_page": 1307,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 34,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/34_system-clock-generator-scg/rendered_pages/page_1216.png",
+          "matched_term": "signal multiplex",
+          "page": 1216
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/34_system-clock-generator-scg/rendered_pages/page_1218.png",
+          "matched_term": "block diagram",
+          "page": 1218
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/34_system-clock-generator-scg/rendered_pages/page_1219.png",
+          "matched_term": "clock control",
+          "page": 1219
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/34_system-clock-generator-scg/rendered_pages/page_1224.png",
+          "matched_term": "block diagram",
+          "page": 1224
+        }
+      ],
+      "start_page": 1216,
+      "title": "System Clock Generator (SCG)",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/71_flexible-input-output-flexio",
+      "embedded_images": [],
+      "end_page": 3399,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 71,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/71_flexible-input-output-flexio/rendered_pages/page_3317.png",
+          "matched_term": "pin function",
+          "page": 3317
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/71_flexible-input-output-flexio/rendered_pages/page_3318.png",
+          "matched_term": "pin function",
+          "page": 3318
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/71_flexible-input-output-flexio/rendered_pages/page_3321.png",
+          "matched_term": "block diagram",
+          "page": 3321
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/71_flexible-input-output-flexio/rendered_pages/page_3322.png",
+          "matched_term": "block diagram",
+          "page": 3322
+        }
+      ],
+      "start_page": 3317,
+      "title": "Flexible Input/Output (FlexIO)",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/73_general-purpose-input-output-gpio",
+      "embedded_images": [],
+      "end_page": 3547,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 73,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/73_general-purpose-input-output-gpio/rendered_pages/page_3521.png",
+          "matched_term": "signal multiplex",
+          "page": 3521
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/73_general-purpose-input-output-gpio/rendered_pages/page_3522.png",
+          "matched_term": "block diagram",
+          "page": 3522
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/73_general-purpose-input-output-gpio/rendered_pages/page_3523.png",
+          "matched_term": "dma request",
+          "page": 3523
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/73_general-purpose-input-output-gpio/rendered_pages/page_3524.png",
+          "matched_term": "dma request",
+          "page": 3524
+        }
+      ],
+      "start_page": 3521,
+      "title": "General Purpose Input/Output (GPIO)",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/74_pin-interrupt-and-pattern-match-pint",
+      "embedded_images": [],
+      "end_page": 3569,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 74,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/74_pin-interrupt-and-pattern-match-pint/rendered_pages/page_3548.png",
+          "matched_term": "signal multiplex",
+          "page": 3548
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/74_pin-interrupt-and-pattern-match-pint/rendered_pages/page_3549.png",
+          "matched_term": "block diagram",
+          "page": 3549
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/74_pin-interrupt-and-pattern-match-pint/rendered_pages/page_3550.png",
+          "matched_term": "pin function",
+          "page": 3550
+        }
+      ],
+      "start_page": 3548,
+      "title": "Pin Interrupt and Pattern Match (PINT)",
+      "toc_level": 2
+    },
+    {
+      "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/75_port-control-port",
+      "embedded_images": [],
+      "end_page": 3696,
+      "match_reasons": [
+        "chapter"
+      ],
+      "number": 75,
+      "rendered_pages": [
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/75_port-control-port/rendered_pages/page_3570.png",
+          "matched_term": "signal multiplex",
+          "page": 3570
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/75_port-control-port/rendered_pages/page_3571.png",
+          "matched_term": "block diagram",
+          "page": 3571
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/75_port-control-port/rendered_pages/page_3572.png",
+          "matched_term": "dma request",
+          "page": 3572
+        },
+        {
+          "dpi": 120,
+          "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/75_port-control-port/rendered_pages/page_3573.png",
+          "matched_term": "pin function",
+          "page": 3573
+        }
+      ],
+      "start_page": 3570,
+      "title": "Port Control (PORT)",
+      "toc_level": 2
+    }
+  ],
+  "source_pdf": "docs/mcxn947/MCXNx4xRM.pdf"
+}

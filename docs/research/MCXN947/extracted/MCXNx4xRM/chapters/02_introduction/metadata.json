@@ -1,0 +1,38 @@
+{
+  "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction",
+  "embedded_images": [],
+  "end_page": 36,
+  "match_reasons": [
+    "chapter"
+  ],
+  "number": 2,
+  "rendered_pages": [
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0020.png",
+      "matched_term": "timer",
+      "page": 20
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0021.png",
+      "matched_term": "block diagram",
+      "page": 21
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0022.png",
+      "matched_term": "block diagram",
+      "page": 22
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/02_introduction/rendered_pages/page_0023.png",
+      "matched_term": "block diagram",
+      "page": 23
+    }
+  ],
+  "start_page": 20,
+  "title": "Introduction",
+  "toc_level": 1
+}

@@ -1,0 +1,38 @@
+{
+  "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller",
+  "embedded_images": [],
+  "end_page": 829,
+  "match_reasons": [
+    "chapter"
+  ],
+  "number": 23,
+  "rendered_pages": [
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0730.png",
+      "matched_term": "signal multiplex",
+      "page": 730
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0731.png",
+      "matched_term": "timer",
+      "page": 731
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0732.png",
+      "matched_term": "dma request",
+      "page": 732
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/23_enhanced-direct-memory-access-edma-controller/rendered_pages/page_0734.png",
+      "matched_term": "timer",
+      "page": 734
+    }
+  ],
+  "start_page": 730,
+  "title": "Enhanced Direct Memory Access (eDMA) Controller",
+  "toc_level": 2
+}

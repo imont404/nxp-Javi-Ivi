@@ -1,0 +1,38 @@
+{
+  "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon",
+  "embedded_images": [],
+  "end_page": 637,
+  "match_reasons": [
+    "chapter"
+  ],
+  "number": 17,
+  "rendered_pages": [
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0477.png",
+      "matched_term": "signal multiplex",
+      "page": 477
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0478.png",
+      "matched_term": "pinout",
+      "page": 478
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0479.png",
+      "matched_term": "clock control",
+      "page": 479
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/rendered_pages/page_0480.png",
+      "matched_term": "timer",
+      "page": 480
+    }
+  ],
+  "start_page": 477,
+  "title": "System Controller (SYSCON)",
+  "toc_level": 2
+}

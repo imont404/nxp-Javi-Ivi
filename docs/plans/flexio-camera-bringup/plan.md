@@ -12,13 +12,13 @@ status = "done"
 [[steps]]
 id = "reference-extraction"
 title = "Extract and index MCXN947 reference material needed for FlexIO camera work"
-status = "active"
+status = "done"
 depends_on = ["tooling-flash-rtt"]
 
 [[steps]]
 id = "pinmux-strategy"
 title = "Choose candidate FlexIO camera pins and document wiring constraints"
-status = "pending"
+status = "active"
 depends_on = ["reference-extraction"]
 
 [[steps]]
@@ -117,6 +117,9 @@ known-good loop for build, flash, reset, and RTT observation.
 - NXP mux dump: `docs/research/MCXN947/json`
 - Reference manuals: `docs/mcxn947/MCXNx4xRM.pdf`,
   `docs/mcxn947/MCXNx4xDS.pdf`
+- Extracted reference chapters:
+  `docs/research/MCXN947/extracted/MCXNx4xRM`
+- Reference extraction script: `scripts/tools/extract_mcxn_reference.py`
 - FlexIO examples:
   `docs/examples/frdmmcxn947/flexio_mculcd_edma_transfer_cm33_core0`
   and `docs/research/an-flexio_camera_rt1010`
@@ -152,6 +155,9 @@ byte sampling from PCLK, then introduce eDMA and frame-buffer integration.
   clocks, SmartDMA/EZH, and memory/bus behavior.
 - If image extraction is practical, include relevant block diagrams and timing
   diagrams beside the chapter text.
+- Completed with `scripts/tools/extract_mcxn_reference.py`. The generated
+  `docs/research/MCXN947/extracted/MCXNx4xRM` bundle includes chapter text,
+  per-chapter metadata, rendered key pages, and available embedded images.
 
 ### pinmux-strategy
 

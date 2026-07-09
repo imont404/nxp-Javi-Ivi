@@ -1,0 +1,38 @@
+{
+  "directory": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking",
+  "embedded_images": [],
+  "end_page": 1215,
+  "match_reasons": [
+    "chapter"
+  ],
+  "number": 33,
+  "rendered_pages": [
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1198.png",
+      "matched_term": "timer",
+      "page": 1198
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1200.png",
+      "matched_term": "timer",
+      "page": 1200
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1206.png",
+      "matched_term": "timer",
+      "page": 1206
+    },
+    {
+      "dpi": 120,
+      "file": "docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/rendered_pages/page_1207.png",
+      "matched_term": "timer",
+      "page": 1207
+    }
+  ],
+  "start_page": 1197,
+  "title": "Clocking",
+  "toc_level": 2
+}
