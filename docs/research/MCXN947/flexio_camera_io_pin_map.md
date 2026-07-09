@@ -66,6 +66,14 @@ index is `20` for the eight camera data bits on `FLEXIO0_D20..D27`. Keep
 PCLK, HSYNC/HREF, and VSYNC available to FlexIO only if hardware timing or
 gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 
+## Pending Hardware Handoff
+
+The first data-bus wiring pass will route camera `D0..D7` to `P4_12..P4_19`
+without added terminators. The existing low-value termination/pulldown treatment
+will remain on the sync lines. Add data-line termination later only if the
+captured image shows symptoms such as random pixel noise, bit sparkle, or
+edge-correlated artifacts.
+
 ## Change History
 
 | Date/time | Change | Result |
@@ -75,3 +83,4 @@ gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 | 2026-07-09 11:44 EDT | Shortened Port 4 sync jumpers and added 330 ohm pulldown/termination to VSYNC. | P4 sync wiring now matches termination treatment across the three new signals. |
 | 2026-07-09 11:48 EDT | Flashed guarded VSYNC IRQ diagnostic. | HSYNC about 6040 edges/sec, VSYNC about 30-31 edges/sec, `p4_lines=200`, PCLK flag present. |
 | 2026-07-09 11:52 EDT | Confirmed active OV5640 geometry is 320x200. | `p4_lines=200` is consistent with firmware and LCD layout. |
+| 2026-07-09 11:57 EDT | Planned first data-bus wiring pass without data-line terminators. | Use visual/capture quality to decide whether data-line termination is needed later. |
