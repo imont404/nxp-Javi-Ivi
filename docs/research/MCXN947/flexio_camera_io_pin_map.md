@@ -99,3 +99,4 @@ termination/pulldown treatment remains on the sync lines.
 | 2026-07-09 14:52 EDT | Reflashed current CMake image with J-Link V9.54 and reran RTT. | Flash matched existing image; VSYNC still shows about 3000-3335 extra edges/sec, `p4_vs_off=1`, while HSYNC/PCLK remain active. |
 | 2026-07-09 14:53 EDT | Disconnected all data lines from the Port 4 FlexIO data-bus wiring. | Ready to rerun sync-only diagnostic with PCLK/HSYNC/VSYNC still fitted. |
 | 2026-07-09 14:54 EDT | Reran sync-only RTT diagnostic with all data lines disconnected. | VSYNC improved but is still noisy at about 318-366 extra edges/sec, so the remaining issue is in the sync/VSYNC path. |
+| 2026-07-09 14:55 EDT | Rerouted VSYNC farther away from other camera signals and reran sync-only RTT diagnostic. | Sync recovered: VSYNC 30-31 edges/sec, HSYNC about 6040 edges/sec, `p4_lines=200`, and `p4_vs_off=0`. |
