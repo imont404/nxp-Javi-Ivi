@@ -107,6 +107,10 @@ known-good loop for build, flash, reset, and RTT observation.
 - Current pin mux and clocks: `src/avc/avc_core0/board/pin_mux.c`,
   `src/avc/avc_core0/board/clock_config.c`
 - Headless build wrapper: `build.ps1`
+- CMake build wrapper and static linker scripts: `build_cmake.ps1`,
+  `src/avc/avc_core0/link`
+- Flash and RTT wrappers: `flash.ps1`, `rtt.ps1`,
+  `scripts/tools/rtt_monitor.py`
 - Flashing reference: `D:\projects\Gen2BLEController-main\w71_cruise_ble\flash.ps1`
 - Board pin workbook:
   `docs/FRDM-MCXN947/FRDM-MCXN947/FRDM-MCXN947 board pin assignment.xlsx`

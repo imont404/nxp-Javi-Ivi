@@ -32,7 +32,22 @@ research files are durable/reference material during the current migration.
 
 ## Build
 
-Use the root build wrapper for MCUXpresso headless builds:
+Use the root CMake wrapper for normal scripted builds:
+
+```powershell
+.\build_cmake.ps1
+.\flash.ps1 -CMake
+.\rtt.ps1 -CMake -Reset -Seconds 10
+```
+
+The CMake flow is adapted from the W71 project. It generates
+`src\avc\avc_core0\cmake\mcuxpresso_debug.cmake` from MCUXpresso metadata and
+the current generated Debug makefiles, then builds with Ninja and MCUXpresso's
+Arm GCC. The linker scripts are copied into `src\avc\avc_core0\link` so the
+scripted build does not depend on MCUXpresso regenerating files under `Debug`.
+
+Use the MCUXpresso headless wrapper as the fallback and to refresh generated
+makefiles after project setting changes:
 
 ```powershell
 .\build.ps1
@@ -41,7 +56,7 @@ Use the root build wrapper for MCUXpresso headless builds:
 .\rtt.ps1 -Seconds 10
 ```
 
-The wrapper defaults to
+The MCUXpresso wrapper defaults to
 `C:\nxp\MCUXpressoIDE_25.6.136\ide\mcuxpressoidec.exe`, imports
 `src\avc\avc_core0`, and builds `avc_core0/Debug` in a generated headless
 workspace. Generated `.mcux_workspace*` folders are local build state and should
@@ -49,8 +64,10 @@ not be committed.
 
 The flash and RTT wrappers default to SEGGER J-Link V9.40, device
 `MCXN947_M33_0`, SWD at 4 MHz, and the onboard J-Link MCU-Link serial observed
-on the FRDM-MCXN947 debug USB port. `rtt.ps1` derives `_SEGGER_RTT` from the
-current AXF with `arm-none-eabi-nm`, then passes the address to
+on the FRDM-MCXN947 debug USB port. `rtt.ps1` defaults to a PyLink monitor
+under `scripts\tools\rtt_monitor.py`; it derives `_SEGGER_RTT` from the current
+AXF with `arm-none-eabi-nm`, starts RTT at that address, and can reset the
+target with `-Reset`. Use `-Backend Logger` to fall back to SEGGER
 `JLinkRTTLogger`.
 
 If a headless build reports undefined references to `bq__*`, `SEGGER_RTT_*`,

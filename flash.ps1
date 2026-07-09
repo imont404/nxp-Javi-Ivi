@@ -1,5 +1,8 @@
 param(
     [switch]$NoReset,
+    [switch]$CMake,
+    [ValidateSet("Debug")]
+    [string]$Configuration = "Debug",
     [string]$File,
     [string]$JLinkPath = "C:\Program Files\SEGGER\JLink_V940\JLink.exe",
     [string]$Device = "MCXN947_M33_0",
@@ -10,7 +13,9 @@ param(
 $ErrorActionPreference = "Stop"
 
 $projectDir = $PSScriptRoot
-$defaultAxf = Join-Path $projectDir "src\avc\avc_core0\Debug\avc_core0.axf"
+$mcuxAxf = Join-Path $projectDir "src\avc\avc_core0\$Configuration\avc_core0.axf"
+$cmakeAxf = Join-Path $projectDir "build\cmake\avc_core0-$Configuration\avc_core0.axf"
+$defaultAxf = if ($CMake) { $cmakeAxf } else { $mcuxAxf }
 $axfFile = if ($File) { $File } else { $defaultAxf }
 
 if (-not (Test-Path -LiteralPath $JLinkPath)) {

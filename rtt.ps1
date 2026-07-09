@@ -1,8 +1,16 @@
 param(
     [int]$Seconds = 0,
     [switch]$NoTail,
+    [switch]$CMake,
+    [switch]$Reset,
+    [ValidateSet("Debug")]
+    [string]$Configuration = "Debug",
     [string]$File,
     [string]$OutFile,
+    [ValidateSet("PyLink", "Logger")]
+    [string]$Backend = "PyLink",
+    [string]$UvPath = "uv",
+    [string]$JLinkDllPath = "C:\Program Files\SEGGER\JLink_V940\JLink_x64.dll",
     [string]$JLinkRTTLoggerPath = "C:\Program Files\SEGGER\JLink_V940\JLinkRTTLogger.exe",
     [string]$NmPath = "C:\nxp\MCUXpressoIDE_25.6.136\ide\plugins\com.nxp.mcuxpresso.tools.win32_25.6.0.202501151204\tools\bin\arm-none-eabi-nm.exe",
     [string]$Device = "MCXN947_M33_0",
@@ -15,12 +23,10 @@ param(
 $ErrorActionPreference = "Stop"
 
 $projectDir = $PSScriptRoot
-$defaultAxf = Join-Path $projectDir "src\avc\avc_core0\Debug\avc_core0.axf"
+$mcuxAxf = Join-Path $projectDir "src\avc\avc_core0\$Configuration\avc_core0.axf"
+$cmakeAxf = Join-Path $projectDir "build\cmake\avc_core0-$Configuration\avc_core0.axf"
+$defaultAxf = if ($CMake) { $cmakeAxf } else { $mcuxAxf }
 $axfFile = if ($File) { $File } else { $defaultAxf }
-
-if (-not (Test-Path -LiteralPath $JLinkRTTLoggerPath)) {
-    throw "J-Link RTT Logger not found: $JLinkRTTLoggerPath"
-}
 
 if (-not (Test-Path -LiteralPath $NmPath)) {
     throw "arm-none-eabi-nm not found: $NmPath"
@@ -28,6 +34,62 @@ if (-not (Test-Path -LiteralPath $NmPath)) {
 
 if (-not (Test-Path -LiteralPath $axfFile)) {
     throw "Firmware not found: $axfFile. Build first with .\build.ps1"
+}
+
+if ($Backend -eq "PyLink") {
+    $monitor = Join-Path $projectDir "scripts\tools\rtt_monitor.py"
+    if (-not (Test-Path -LiteralPath $monitor)) {
+        throw "PyLink RTT monitor not found: $monitor"
+    }
+    if (-not (Test-Path -LiteralPath $JLinkDllPath)) {
+        throw "J-Link DLL not found: $JLinkDllPath"
+    }
+    if (-not (Get-Command $UvPath -ErrorAction SilentlyContinue)) {
+        throw "uv not found. Install uv or pass -UvPath."
+    }
+
+    $args = @(
+        "run",
+        "python",
+        $monitor,
+        "--file", $axfFile,
+        "--nm", $NmPath,
+        "--dll", $JLinkDllPath,
+        "--device", $Device,
+        "--serial", $UsbSerial,
+        "--speed", "$SpeedKHz",
+        "--channel", "$Channel"
+    )
+
+    if ($Seconds -gt 0) {
+        $args += @("--timeout", "$Seconds")
+    }
+    if ($NoTail) {
+        $args += "--once"
+    }
+    if ($Reset) {
+        $args += "--reset"
+    }
+
+    $previousUvLinkMode = $env:UV_LINK_MODE
+    if ([string]::IsNullOrWhiteSpace($env:UV_LINK_MODE)) {
+        $env:UV_LINK_MODE = "copy"
+    }
+
+    try {
+        & $UvPath @args
+        exit $LASTEXITCODE
+    } finally {
+        if ($null -eq $previousUvLinkMode) {
+            Remove-Item Env:\UV_LINK_MODE -ErrorAction SilentlyContinue
+        } else {
+            $env:UV_LINK_MODE = $previousUvLinkMode
+        }
+    }
+}
+
+if (-not (Test-Path -LiteralPath $JLinkRTTLoggerPath)) {
+    throw "J-Link RTT Logger not found: $JLinkRTTLoggerPath"
 }
 
 $symbolLine = & $NmPath -n $axfFile | Select-String -Pattern "^\s*([0-9A-Fa-f]+)\s+\w\s+_SEGGER_RTT\s*$" | Select-Object -First 1

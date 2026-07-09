@@ -38,6 +38,7 @@ dist/
 *.dat
 *.pyc
 __pycache__/
+.venv/
 # Log files
 *.log
 
