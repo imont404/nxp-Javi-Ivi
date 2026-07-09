@@ -30,13 +30,13 @@ depends_on = ["pinmux-strategy"]
 [[steps]]
 id = "signal-instrumentation"
 title = "Add non-invasive camera signal instrumentation for XCLK, PCLK, VSYNC, and HSYNC"
-status = "active"
+status = "done"
 depends_on = ["implementation-strategy"]
 
 [[steps]]
 id = "flexio-low-rate-capture"
 title = "Prove low-rate FlexIO capture of camera data bytes"
-status = "pending"
+status = "active"
 depends_on = ["signal-instrumentation"]
 
 [[steps]]
@@ -75,7 +75,7 @@ status = "met"
 [[exit_criteria]]
 id = "signal-counts"
 title = "Instrumented firmware reports plausible VSYNC, HSYNC, and PCLK behavior over RTT"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "image-path"
@@ -128,6 +128,8 @@ known-good loop for build, flash, reset, and RTT observation.
   and `docs/research/an-flexio_camera_rt1010`
 - FlexIO camera implementation strategy:
   `docs/research/MCXN947/flexio_camera_implementation_strategy.md`
+- Operational I/O tracking:
+  `docs/research/MCXN947/flexio_camera_io_pin_map.md`
 
 ## Working Strategy
 
@@ -140,6 +142,13 @@ module's returned PCLK and sync signals into candidate pins, then count edges
 and line/frame events. Use GPIO/PINT interrupts for VSYNC and HSYNC unless the
 FlexIO design needs those signals as timer/shifter gates. Use FlexIO first for
 byte sampling from PCLK, then introduce eDMA and frame-buffer integration.
+
+The active AVC camera configuration is OV5640 RGB565 at `320x200`, not full
+QVGA `320x240`. The LCD path uses a `320x40` overlay band above a `320x200`
+camera view, so the validated `p4_lines=200` RTT diagnostic matches the active
+frame geometry. Track all wiring, mux, electrical, and diagnostic pin changes
+in `docs/research/MCXN947/flexio_camera_io_pin_map.md` before relying on them
+for FlexIO work.
 
 ## Step Notes
 
@@ -213,10 +222,19 @@ byte sampling from PCLK, then introduce eDMA and frame-buffer integration.
   a dormant `FLEXIO_DIAG` backend that can configure `P4_20`, `P4_21`, and
   `P4_22` as diagnostic GPIO inputs. The default CMake image was built, flashed,
   and RTT-verified before wiring changes.
+- Completed with guarded Port 4 sync diagnostics. `P4_21` HSYNC/HREF counts
+  about 6040 rising edges/sec, `P4_22` VSYNC counts about 30 to 31 rising
+  edges/sec, `P4_20` PCLK edge activity is present, and `p4_lines=200` matches
+  the active `320x200` OV5640 configuration. The `P4_22` VSYNC guard did not
+  trip after shortening the jumper and adding the 330 ohm pulldown/termination.
 
 ### flexio-low-rate-capture
 
-- Start at the lowest usable camera pixel clock and resolution.
+- Start from the current `320x200` OV5640 mode unless a lower-rate mode is
+  needed for first byte-capture debugging.
+- Use the tracked Port 4 map: data `D0..D7` planned for `P4_12..P4_19`
+  (`FLEXIO0_D20..D27`), PCLK on `P4_20`, HSYNC/HREF on `P4_21`, VSYNC on
+  `P4_22`, and `P4_23` spare.
 - Prove PCLK-synchronous byte capture into a small buffer before full-frame DMA.
 - Validate byte order and pixel packing against known color bars or stable test
   scenes.
