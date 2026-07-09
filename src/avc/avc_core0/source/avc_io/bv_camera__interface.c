@@ -38,12 +38,17 @@
 #define CAMERA_REF_VSYNC_MASK (1UL << CAMERA_REF_VSYNC_PIN)
 #define CAMERA_REF_IRQ_MASK (CAMERA_REF_HSYNC_MASK | CAMERA_REF_VSYNC_MASK)
 
+#define CAMERA_FRAME_PIXELS (FSL_VIDEO_EXTRACT_WIDTH(CONFIG__CAMERA_RESOLUTION) * \
+                             FSL_VIDEO_EXTRACT_HEIGHT(CONFIG__CAMERA_RESOLUTION))
+#define CAMERA_FRAME_BUFFER_COUNT (2U)
+#define CAMERA_PIPELINE_DIAG_LINE_MARGIN (20U)
+#define CAMERA_PIPELINE_DIAG_LINES_MIN (CONFIG__CAMERA_RESOLUTION_Y - CAMERA_PIPELINE_DIAG_LINE_MARGIN)
+#define CAMERA_PIPELINE_DIAG_LINES_MAX (CONFIG__CAMERA_RESOLUTION_Y + CAMERA_PIPELINE_DIAG_LINE_MARGIN)
+
 
 __BSS(SRAM_H) volatile uint32_t ezh_binary[512];
 
-__BSS(FRAME_BUFFERS) uint16_t g_camera_buffer[FSL_VIDEO_EXTRACT_WIDTH(CONFIG__CAMERA_RESOLUTION) *
-											  FSL_VIDEO_EXTRACT_HEIGHT(CONFIG__CAMERA_RESOLUTION) *
-											  2];
+__BSS(FRAME_BUFFERS) uint16_t g_camera_buffer[CAMERA_FRAME_PIXELS * CAMERA_FRAME_BUFFER_COUNT];
 
 
 
@@ -69,9 +74,17 @@ static volatile uint32_t g_camera_ref_vsync_count;
 static volatile uint32_t g_camera_ref_lines_last_frame;
 static volatile uint32_t g_camera_ref_hsync_at_last_vsync;
 static volatile uint32_t g_camera_ref_irq_unexpected_count;
+static volatile uint32_t g_camera_pipeline_diag_frame_count;
+static volatile uint32_t g_camera_pipeline_diag_rejected_vsync_count;
+static volatile uint32_t g_camera_pipeline_diag_next_buffer;
 
 //This needs to be global
 smartdma_camera_param_t smartdmaParam;
+
+static uint16_t *camera__frame_buffer(uint32_t buffer_index)
+{
+    return &g_camera_buffer[(buffer_index & 0x01U) * CAMERA_FRAME_PIXELS];
+}
 
 
 void  EZH_Camera_320240_Whole_Buf(void)
@@ -247,9 +260,9 @@ static void ezh_camera_callback(void *param)
 			uint16_t * buf;
 
 			if(next_buffer==0)
-				buf = &g_camera_buffer[0];
+				buf = camera__frame_buffer(0U);
 			else
-				buf = &g_camera_buffer[sizeof(g_camera_buffer)/4];
+				buf = camera__frame_buffer(1U);
 
 			smartdmaParam.p_buffer = (uint32_t *)buf;
 
@@ -474,6 +487,80 @@ static void camera__configure_reference_diag_inputs(void)
     DEBUG("Reference camera diag inputs: PCLK=P0_5 HSYNC/HREF=P0_11 VSYNC=P0_4\r\n");
 }
 
+static uint16_t camera__rgb565(uint8_t red, uint8_t green, uint8_t blue)
+{
+    return (uint16_t)(((uint16_t)(red & 0xF8U) << 8U) |
+                      ((uint16_t)(green & 0xFCU) << 3U) |
+                      ((uint16_t)(blue & 0xF8U) >> 3U));
+}
+
+static uint16_t camera__pipeline_diag_color_bar(uint32_t bar)
+{
+    switch (bar & 0x07U)
+    {
+    default:
+    case 0U:
+        return camera__rgb565(255U, 255U, 255U);
+    case 1U:
+        return camera__rgb565(255U, 255U, 0U);
+    case 2U:
+        return camera__rgb565(0U, 255U, 255U);
+    case 3U:
+        return camera__rgb565(0U, 255U, 0U);
+    case 4U:
+        return camera__rgb565(255U, 0U, 255U);
+    case 5U:
+        return camera__rgb565(255U, 0U, 0U);
+    case 6U:
+        return camera__rgb565(0U, 0U, 255U);
+    case 7U:
+        return camera__rgb565(24U, 24U, 24U);
+    }
+}
+
+static void camera__fill_pipeline_diag_buffers(void)
+{
+    uint16_t *bars = camera__frame_buffer(0U);
+    uint16_t *gradient = camera__frame_buffer(1U);
+
+    for (uint32_t y = 0; y < CONFIG__CAMERA_RESOLUTION_Y; y++)
+    {
+        for (uint32_t x = 0; x < CONFIG__CAMERA_RESOLUTION_X; x++)
+        {
+            uint32_t pixel = (y * CONFIG__CAMERA_RESOLUTION_X) + x;
+            uint32_t bar = (x * 8U) / CONFIG__CAMERA_RESOLUTION_X;
+            uint32_t checker = ((x / 16U) ^ (y / 16U)) & 0x01U;
+            uint8_t red = (uint8_t)((x * 255U) / (CONFIG__CAMERA_RESOLUTION_X - 1U));
+            uint8_t green = (uint8_t)((y * 255U) / (CONFIG__CAMERA_RESOLUTION_Y - 1U));
+            uint8_t blue = (uint8_t)(checker != 0U ? 255U : 40U);
+
+            bars[pixel] = camera__pipeline_diag_color_bar(bar);
+            gradient[pixel] = camera__rgb565(red, green, blue);
+        }
+    }
+}
+
+static void camera__pipeline_diag_on_vsync(uint32_t lines)
+{
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_PIPELINE_DIAG
+    if ((lines >= CAMERA_PIPELINE_DIAG_LINES_MIN) && (lines <= CAMERA_PIPELINE_DIAG_LINES_MAX))
+    {
+        uint32_t buffer_index = g_camera_pipeline_diag_next_buffer;
+
+        g_camera_pipeline_diag_next_buffer = (buffer_index + 1U) & 0x01U;
+        g_camera_pipeline_diag_frame_count++;
+
+        avc__next_frame(camera__frame_buffer(buffer_index));
+    }
+    else
+    {
+        g_camera_pipeline_diag_rejected_vsync_count++;
+    }
+#else
+    (void)lines;
+#endif
+}
+
 void GPIO40_IRQHandler(void)
 {
 #if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
@@ -492,10 +579,12 @@ void GPIO40_IRQHandler(void)
     if ((status & CAMERA_DIAG_VSYNC_MASK) != 0UL)
     {
         uint32_t hsync_count = g_camera_diag_hsync_count;
+        uint32_t lines = hsync_count - g_camera_diag_hsync_at_last_vsync;
 
         g_camera_diag_vsync_count++;
-        g_camera_diag_lines_last_frame = hsync_count - g_camera_diag_hsync_at_last_vsync;
+        g_camera_diag_lines_last_frame = lines;
         g_camera_diag_hsync_at_last_vsync = hsync_count;
+        camera__pipeline_diag_on_vsync(lines);
     }
 
     if ((status & CAMERA_DIAG_IRQ_MASK) == 0UL)
@@ -548,6 +637,49 @@ static uint32_t camera__diag_take_gpio_flag(GPIO_Type *base, uint32_t pin)
     }
 
     return was_set;
+}
+
+void avc_camera__service(void)
+{
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_PIPELINE_DIAG
+    static uint32_t last_frame_report;
+    static uint32_t last_vsync_report;
+    uint32_t frame_count = g_camera_pipeline_diag_frame_count;
+    uint32_t vsync_count = g_camera_diag_vsync_count;
+    uint32_t frame_delta = frame_count - last_frame_report;
+    uint32_t vsync_delta = vsync_count - last_vsync_report;
+    uint32_t should_report = 0U;
+
+    if (frame_delta >= 30U)
+    {
+        should_report = 1U;
+    }
+    else if ((frame_delta == 0U) && (vsync_delta >= 300U))
+    {
+        should_report = 1U;
+    }
+
+    if (should_report != 0U)
+    {
+        uint32_t p4_pclk_seen = camera__diag_take_gpio_flag(GPIO4, CAMERA_DIAG_PCLK_PIN);
+
+        DEBUG("cam_pipe frames=%u(+%u) reject=%u p4_vs=%u(+%u) p4_hs=%u p4_lines=%u p4_pclk=%u next_buf=%u line_win=%u-%u\r\n",
+              frame_count,
+              frame_delta,
+              g_camera_pipeline_diag_rejected_vsync_count,
+              vsync_count,
+              vsync_delta,
+              g_camera_diag_hsync_count,
+              g_camera_diag_lines_last_frame,
+              p4_pclk_seen,
+              g_camera_pipeline_diag_next_buffer,
+              CAMERA_PIPELINE_DIAG_LINES_MIN,
+              CAMERA_PIPELINE_DIAG_LINES_MAX);
+
+        last_frame_report = frame_count;
+        last_vsync_report = vsync_count;
+    }
+#endif
 }
 
 static void camera__run_flexio_diag_loop(void)
@@ -703,12 +835,38 @@ static void avc_camera__init_flexio_diag(void)
     camera__run_flexio_diag_loop();
 }
 
+static void avc_camera__init_flexio_pipeline_diag(void)
+{
+    DEBUG("Camera capture backend: FLEXIO_PIPELINE_DIAG\r\n");
+
+    g_camera_pipeline_diag_frame_count = 0U;
+    g_camera_pipeline_diag_rejected_vsync_count = 0U;
+    g_camera_pipeline_diag_next_buffer = 0U;
+
+    camera__fill_pipeline_diag_buffers();
+    camera__configure_xclk();
+    camera__configure_i2c();
+    camera__init_sensor();
+    camera__configure_flexio_diag_inputs();
+    camera__configure_reference_diag_inputs();
+
+    DEBUG("SmartDMA/EZH camera capture disabled for FlexIO pipeline diagnostic\r\n");
+    DEBUG("FlexIO pipeline diagnostic emits synthetic RGB565 frames on plausible VSYNC/HSYNC timing\r\n");
+    DEBUG("FlexIO pipeline diagnostic line window: %u-%u HSYNC edges per VSYNC for active %ux%u mode\r\n",
+          CAMERA_PIPELINE_DIAG_LINES_MIN,
+          CAMERA_PIPELINE_DIAG_LINES_MAX,
+          CONFIG__CAMERA_RESOLUTION_X,
+          CONFIG__CAMERA_RESOLUTION_Y);
+}
+
 void avc_camera__init(void)
 {
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
     avc_camera__init_smartdma_ezh();
 #elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_DIAG
     avc_camera__init_flexio_diag();
+#elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_PIPELINE_DIAG
+    avc_camera__init_flexio_pipeline_diag();
 #elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
 #error CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA is not implemented yet.
 #else

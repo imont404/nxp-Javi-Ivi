@@ -26,6 +26,7 @@
 #define BOARD_INITCAMERAPINS_CAM_PDWN_PIN_MASK (1U << 18U)      /*!<@brief PORT pin mask */
 
 void avc_camera__init();
+void avc_camera__service();
 void avc__next_frame(uint16_t *buffer);
 
 #endif

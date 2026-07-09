@@ -95,6 +95,7 @@ int main(void)
 
     while (1)
     {
+        avc_camera__service();
 
         bat = avc__read_battery_voltage();
         //Alpha, beta and gamma will be -1.0f to 1.0f
