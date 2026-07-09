@@ -85,3 +85,4 @@ edge-correlated artifacts.
 | 2026-07-09 11:52 EDT | Confirmed active OV5640 geometry is 320x200. | `p4_lines=200` is consistent with firmware and LCD layout. |
 | 2026-07-09 11:57 EDT | Planned first data-bus wiring pass without data-line terminators. | Use visual/capture quality to decide whether data-line termination is needed later. |
 | 2026-07-09 12:07 EDT | Ran first RTT sync check after data-bus wiring. | HSYNC and PCLK remain active, but VSYNC now reports about 59-79 edges/sec with unstable `p4_lines`, so inspect `P4_22`/VSYNC wiring before data-bit sampling. |
+| 2026-07-09 12:09 EDT | Re-ran RTT sync check after wiring re-check request. | VSYNC is worse: first interval exceeded the 120 edges/sec guard, `p4_vs_off=1`, and `p4_lines` remains unstable. |
