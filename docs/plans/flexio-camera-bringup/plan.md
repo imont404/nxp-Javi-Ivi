@@ -246,6 +246,11 @@ for FlexIO work.
 - Keep SysTick available as a future timing source, but do not take ownership
   of `SysTick_Handler` until the existing `e_tick` delay/timing behavior is
   reviewed.
+- Move next to real data movement rather than spending more time on synthetic
+  image generation. With data lines disconnected and pulled down, the first
+  FlexIO/eDMA capture should produce a reliable black frame. If needed, tie one
+  data pin high manually to prove bit position and RGB565 packing before
+  restoring real camera data wiring.
 - Prove PCLK-synchronous byte capture into a small buffer before full-frame DMA.
 - Validate byte order and pixel packing against known color bars or stable test
   scenes.
