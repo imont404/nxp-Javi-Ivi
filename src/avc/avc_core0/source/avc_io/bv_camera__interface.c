@@ -8,6 +8,7 @@
 #include "fsl_inputmux.h"
 #include "fsl_gpio.h"
 #include "fsl_port.h"
+#include "fsl_edma.h"
 #include "board.h"
 #include "bunny_build.h"
 #include "cr_section_macros.h"
@@ -40,15 +41,31 @@
 
 #define CAMERA_FRAME_PIXELS (FSL_VIDEO_EXTRACT_WIDTH(CONFIG__CAMERA_RESOLUTION) * \
                              FSL_VIDEO_EXTRACT_HEIGHT(CONFIG__CAMERA_RESOLUTION))
+#define CAMERA_FRAME_BYTES (CAMERA_FRAME_PIXELS * sizeof(uint16_t))
 #define CAMERA_FRAME_BUFFER_COUNT (2U)
 #define CAMERA_PIPELINE_DIAG_LINE_MARGIN (20U)
 #define CAMERA_PIPELINE_DIAG_LINES_MIN (CONFIG__CAMERA_RESOLUTION_Y - CAMERA_PIPELINE_DIAG_LINE_MARGIN)
 #define CAMERA_PIPELINE_DIAG_LINES_MAX (CONFIG__CAMERA_RESOLUTION_Y + CAMERA_PIPELINE_DIAG_LINE_MARGIN)
+#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (12U)
+#define CAMERA_FLEXIO_DATA_PIN_START (20U)
+#define CAMERA_FLEXIO_PCLK_PIN (28U)
+#define CAMERA_FLEXIO_HREF_PIN (29U)
+#define CAMERA_FLEXIO_SHIFTER_START (0U)
+#define CAMERA_FLEXIO_SHIFTER_COUNT (8U)
+#define CAMERA_FLEXIO_TIMER (0U)
+#define CAMERA_FLEXIO_EDMA_CHANNEL (0U)
+#define CAMERA_FLEXIO_EDMA_REQUEST (kDma1RequestMuxFlexIO0ShiftRegister0Request)
+#define CAMERA_FLEXIO_DMA_MINOR_BYTES (CAMERA_FLEXIO_SHIFTER_COUNT * sizeof(uint32_t))
+#define CAMERA_FLEXIO_SAMPLE_WORDS (64U)
+#define CAMERA_FLEXIO_BUSY_VSYNC_TIMEOUT (3U)
+#define CAMERA_FLEXIO_SHIFT_MASK (((1UL << CAMERA_FLEXIO_SHIFTER_COUNT) - 1UL) << CAMERA_FLEXIO_SHIFTER_START)
+#define CAMERA_FLEXIO_TIMER_MASK (1UL << CAMERA_FLEXIO_TIMER)
 
 
 __BSS(SRAM_H) volatile uint32_t ezh_binary[512];
 
-__BSS(FRAME_BUFFERS) uint16_t g_camera_buffer[CAMERA_FRAME_PIXELS * CAMERA_FRAME_BUFFER_COUNT];
+SDK_ALIGN(__BSS(FRAME_BUFFERS) uint16_t g_camera_buffer[CAMERA_FRAME_PIXELS * CAMERA_FRAME_BUFFER_COUNT],
+          CAMERA_FLEXIO_DMA_MINOR_BYTES);
 
 
 
@@ -77,6 +94,19 @@ static volatile uint32_t g_camera_ref_irq_unexpected_count;
 static volatile uint32_t g_camera_pipeline_diag_frame_count;
 static volatile uint32_t g_camera_pipeline_diag_rejected_vsync_count;
 static volatile uint32_t g_camera_pipeline_diag_next_buffer;
+static edma_handle_t g_camera_flexio_edma_handle;
+static volatile uint32_t g_camera_flexio_edma_started_count;
+static volatile uint32_t g_camera_flexio_edma_done_count;
+static volatile uint32_t g_camera_flexio_edma_busy_vsync_count;
+static volatile uint32_t g_camera_flexio_edma_timeout_count;
+static volatile uint32_t g_camera_flexio_edma_submit_error_count;
+static volatile uint32_t g_camera_flexio_edma_callback_error_count;
+static volatile uint32_t g_camera_flexio_edma_active_buffer;
+static volatile uint32_t g_camera_flexio_edma_next_buffer;
+static volatile uint32_t g_camera_flexio_edma_busy;
+static volatile uint32_t g_camera_flexio_edma_busy_vsyncs;
+static volatile uint32_t g_camera_flexio_edma_last_sample_nonzero;
+static volatile uint16_t g_camera_flexio_edma_last_first_words[4];
 
 //This needs to be global
 smartdma_camera_param_t smartdmaParam;
@@ -487,6 +517,281 @@ static void camera__configure_reference_diag_inputs(void)
     DEBUG("Reference camera diag inputs: PCLK=P0_5 HSYNC/HREF=P0_11 VSYNC=P0_4\r\n");
 }
 
+static uint32_t camera__flexio_timer_trigger_sel_pininput(uint32_t pin)
+{
+    return pin << 1U;
+}
+
+static void camera__configure_flexio_edma_pins(void)
+{
+    CLOCK_EnableClock(kCLOCK_Gpio4);
+    CLOCK_EnableClock(kCLOCK_Port4);
+
+    const port_pin_config_t flexio_input_config = {
+        .pullSelect = kPORT_PullDisable,
+        .pullValueSelect = kPORT_LowPullResistor,
+        .slewRate = kPORT_FastSlewRate,
+        .passiveFilterEnable = kPORT_PassiveFilterDisable,
+        .openDrainEnable = kPORT_OpenDrainDisable,
+        .driveStrength = kPORT_LowDriveStrength,
+        .mux = kPORT_MuxAlt6,
+        .inputBuffer = kPORT_InputBufferEnable,
+        .invertInput = kPORT_InputNormal,
+        .lockRegister = kPORT_UnlockRegister
+    };
+
+    const port_pin_config_t vsync_gpio_config = {
+        .pullSelect = kPORT_PullDown,
+        .pullValueSelect = kPORT_LowPullResistor,
+        .slewRate = kPORT_FastSlewRate,
+        .passiveFilterEnable = kPORT_PassiveFilterEnable,
+        .openDrainEnable = kPORT_OpenDrainDisable,
+        .driveStrength = kPORT_LowDriveStrength,
+        .mux = kPORT_MuxAlt0,
+        .inputBuffer = kPORT_InputBufferEnable,
+        .invertInput = kPORT_InputNormal,
+        .lockRegister = kPORT_UnlockRegister
+    };
+
+    for (uint32_t pin = CAMERA_FLEXIO_DATA_GPIO_START_PIN; pin <= CAMERA_DIAG_HSYNC_PIN; pin++)
+    {
+        PORT_SetPinConfig(PORT4, pin, &flexio_input_config);
+    }
+
+    const gpio_pin_config_t input_config = {
+        .pinDirection = kGPIO_DigitalInput,
+        .outputLogic = 0U
+    };
+
+    GPIO_PinInit(GPIO4, CAMERA_DIAG_VSYNC_PIN, &input_config);
+    PORT_SetPinConfig(PORT4, CAMERA_DIAG_VSYNC_PIN, &vsync_gpio_config);
+
+    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_HSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
+    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
+
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+    GPIO_SetPinInterruptChannel(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptOutput0);
+    GPIO_GpioClearInterruptChannelFlags(GPIO4, CAMERA_DIAG_IRQ_MASK, 0U);
+#else
+    GPIO_GpioClearInterruptFlags(GPIO4, CAMERA_DIAG_IRQ_MASK);
+#endif
+
+    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptRisingEdge);
+
+    NVIC_ClearPendingIRQ(GPIO40_IRQn);
+    NVIC_SetPriority(GPIO40_IRQn, 4);
+    EnableIRQ(GPIO40_IRQn);
+
+    DEBUG("FlexIO camera eDMA pins: D0-D7=P4_12..P4_19/FLEXIO0_D20..D27 PCLK=P4_20/FLEXIO0_D28 HREF=P4_21/FLEXIO0_D29 VSYNC=P4_22/GPIO IRQ\r\n");
+}
+
+static void camera__configure_flexio_camera(void)
+{
+    CLOCK_SetClkDiv(kCLOCK_DivFlexioClk, 1U);
+    CLOCK_AttachClk(kPLL0_to_FLEXIO);
+    CLOCK_EnableClock(kCLOCK_Flexio);
+
+    FLEXIO0->CTRL |= FLEXIO_CTRL_SWRST_MASK;
+    FLEXIO0->CTRL = 0U;
+
+    FLEXIO0->SHIFTSIEN = 0U;
+    FLEXIO0->SHIFTSDEN = 0U;
+    FLEXIO0->SHIFTSTAT = CAMERA_FLEXIO_SHIFT_MASK;
+    FLEXIO0->SHIFTERR = CAMERA_FLEXIO_SHIFT_MASK;
+    FLEXIO0->TIMSTAT = CAMERA_FLEXIO_TIMER_MASK;
+
+    for (uint32_t shifter = CAMERA_FLEXIO_SHIFTER_START;
+         shifter < (CAMERA_FLEXIO_SHIFTER_START + CAMERA_FLEXIO_SHIFTER_COUNT);
+         shifter++)
+    {
+        uint32_t input_source = (shifter == (CAMERA_FLEXIO_SHIFTER_START + CAMERA_FLEXIO_SHIFTER_COUNT - 1U)) ? 0U : 1U;
+
+        FLEXIO0->SHIFTCFG[shifter] =
+            FLEXIO_SHIFTCFG_INSRC(input_source) |
+            FLEXIO_SHIFTCFG_PWIDTH(7U) |
+            FLEXIO_SHIFTCFG_SSTOP(0U) |
+            FLEXIO_SHIFTCFG_SSTART(0U);
+
+        FLEXIO0->SHIFTCTL[shifter] =
+            FLEXIO_SHIFTCTL_TIMSEL(CAMERA_FLEXIO_TIMER) |
+            FLEXIO_SHIFTCTL_TIMPOL(0U) |
+            FLEXIO_SHIFTCTL_PINCFG(0U) |
+            FLEXIO_SHIFTCTL_PINSEL(CAMERA_FLEXIO_DATA_PIN_START) |
+            FLEXIO_SHIFTCTL_PINPOL(0U) |
+            FLEXIO_SHIFTCTL_SMOD(1U);
+    }
+
+    FLEXIO0->TIMCFG[CAMERA_FLEXIO_TIMER] =
+        FLEXIO_TIMCFG_TIMOUT(1U) |
+        FLEXIO_TIMCFG_TIMDEC(2U) |
+        FLEXIO_TIMCFG_TIMRST(6U) |
+        FLEXIO_TIMCFG_TIMDIS(6U) |
+        FLEXIO_TIMCFG_TIMENA(6U) |
+        FLEXIO_TIMCFG_TSTOP(0U) |
+        FLEXIO_TIMCFG_TSTART(0U);
+
+    FLEXIO0->TIMCMP[CAMERA_FLEXIO_TIMER] = FLEXIO_TIMCMP_CMP((8U * CAMERA_FLEXIO_SHIFTER_COUNT) - 1U);
+
+    FLEXIO0->TIMCTL[CAMERA_FLEXIO_TIMER] =
+        FLEXIO_TIMCTL_TRGSEL(camera__flexio_timer_trigger_sel_pininput(CAMERA_FLEXIO_HREF_PIN)) |
+        FLEXIO_TIMCTL_TRGPOL(0U) |
+        FLEXIO_TIMCTL_TRGSRC(1U) |
+        FLEXIO_TIMCTL_PINCFG(0U) |
+        FLEXIO_TIMCTL_PINSEL(CAMERA_FLEXIO_PCLK_PIN) |
+        FLEXIO_TIMCTL_PINPOL(0U) |
+        FLEXIO_TIMCTL_TIMOD(3U);
+
+    FLEXIO0->CTRL = FLEXIO_CTRL_DBGE(1U) | FLEXIO_CTRL_FLEXEN(1U);
+
+    DEBUG("FlexIO camera engine: flexio_clk=%uHz shifter=%u count=%u timer=%u dma_minor=%u frame_bytes=%u\r\n",
+          CLOCK_GetFlexioClkFreq(),
+          CAMERA_FLEXIO_SHIFTER_START,
+          CAMERA_FLEXIO_SHIFTER_COUNT,
+          CAMERA_FLEXIO_TIMER,
+          CAMERA_FLEXIO_DMA_MINOR_BYTES,
+          CAMERA_FRAME_BYTES);
+}
+
+static void camera__flexio_edma_callback(edma_handle_t *handle, void *userData, bool transferDone, uint32_t tcds)
+{
+    (void)handle;
+    (void)userData;
+    (void)tcds;
+
+    FLEXIO0->SHIFTSDEN &= ~CAMERA_FLEXIO_SHIFT_MASK;
+    EDMA_StopTransfer(&g_camera_flexio_edma_handle);
+
+    if (transferDone)
+    {
+        uint32_t buffer_index = g_camera_flexio_edma_active_buffer;
+        uint16_t *buffer = camera__frame_buffer(buffer_index);
+        uint32_t nonzero = 0U;
+
+        for (uint32_t i = 0U; (i < CAMERA_FLEXIO_SAMPLE_WORDS) && (i < CAMERA_FRAME_PIXELS); i++)
+        {
+            if (buffer[i] != 0U)
+            {
+                nonzero++;
+            }
+        }
+
+        for (uint32_t i = 0U; i < 4U; i++)
+        {
+            g_camera_flexio_edma_last_first_words[i] = buffer[i];
+        }
+
+        g_camera_flexio_edma_last_sample_nonzero = nonzero;
+        g_camera_flexio_edma_done_count++;
+        g_camera_flexio_edma_busy = 0U;
+        g_camera_flexio_edma_busy_vsyncs = 0U;
+
+        avc__next_frame(buffer);
+    }
+    else
+    {
+        g_camera_flexio_edma_callback_error_count++;
+        g_camera_flexio_edma_busy = 0U;
+    }
+}
+
+static void camera__flexio_edma_abort_active(void)
+{
+    FLEXIO0->SHIFTSDEN &= ~CAMERA_FLEXIO_SHIFT_MASK;
+    EDMA_AbortTransfer(&g_camera_flexio_edma_handle);
+    g_camera_flexio_edma_busy = 0U;
+    g_camera_flexio_edma_busy_vsyncs = 0U;
+}
+
+static void camera__flexio_edma_start_frame(void)
+{
+    edma_transfer_config_t transfer_config;
+    uint32_t buffer_index = g_camera_flexio_edma_next_buffer;
+    uint16_t *buffer = camera__frame_buffer(buffer_index);
+
+    g_camera_flexio_edma_next_buffer = (buffer_index + 1U) & 0x01U;
+    g_camera_flexio_edma_active_buffer = buffer_index;
+
+    FLEXIO0->SHIFTSDEN &= ~CAMERA_FLEXIO_SHIFT_MASK;
+    FLEXIO0->SHIFTSTAT = CAMERA_FLEXIO_SHIFT_MASK;
+    FLEXIO0->SHIFTERR = CAMERA_FLEXIO_SHIFT_MASK;
+    FLEXIO0->TIMSTAT = CAMERA_FLEXIO_TIMER_MASK;
+
+    EDMA_PrepareTransfer(&transfer_config,
+                         (void *)&FLEXIO0->SHIFTBUF[CAMERA_FLEXIO_SHIFTER_START],
+                         CAMERA_FLEXIO_DMA_MINOR_BYTES,
+                         (void *)buffer,
+                         CAMERA_FLEXIO_DMA_MINOR_BYTES,
+                         CAMERA_FLEXIO_DMA_MINOR_BYTES,
+                         CAMERA_FRAME_BYTES,
+                         kEDMA_PeripheralToMemory);
+
+    status_t status = EDMA_SubmitTransfer(&g_camera_flexio_edma_handle, &transfer_config);
+
+    if (status == kStatus_Success)
+    {
+        g_camera_flexio_edma_started_count++;
+        g_camera_flexio_edma_busy = 1U;
+        g_camera_flexio_edma_busy_vsyncs = 0U;
+
+        EDMA_StartTransfer(&g_camera_flexio_edma_handle);
+        FLEXIO0->SHIFTSDEN |= (1UL << CAMERA_FLEXIO_SHIFTER_START);
+    }
+    else
+    {
+        g_camera_flexio_edma_submit_error_count++;
+        g_camera_flexio_edma_busy = 0U;
+    }
+}
+
+static void camera__flexio_edma_on_vsync(void)
+{
+    if (g_camera_flexio_edma_busy != 0U)
+    {
+        g_camera_flexio_edma_busy_vsync_count++;
+        g_camera_flexio_edma_busy_vsyncs++;
+
+        if (g_camera_flexio_edma_busy_vsyncs >= CAMERA_FLEXIO_BUSY_VSYNC_TIMEOUT)
+        {
+            g_camera_flexio_edma_timeout_count++;
+            camera__flexio_edma_abort_active();
+        }
+
+        return;
+    }
+
+    camera__flexio_edma_start_frame();
+}
+
+static void camera__configure_flexio_edma(void)
+{
+    edma_config_t edma_config;
+
+    EDMA_GetDefaultConfig(&edma_config);
+    edma_config.enableDebugMode = true;
+    EDMA_Init(DMA1, &edma_config);
+    EDMA_CreateHandle(&g_camera_flexio_edma_handle, DMA1, CAMERA_FLEXIO_EDMA_CHANNEL);
+    EDMA_SetChannelMux(DMA1, CAMERA_FLEXIO_EDMA_CHANNEL, CAMERA_FLEXIO_EDMA_REQUEST);
+    EDMA_SetCallback(&g_camera_flexio_edma_handle, camera__flexio_edma_callback, NULL);
+
+    memset((void *)g_camera_buffer, 0xA5, sizeof(g_camera_buffer));
+
+    g_camera_flexio_edma_started_count = 0U;
+    g_camera_flexio_edma_done_count = 0U;
+    g_camera_flexio_edma_busy_vsync_count = 0U;
+    g_camera_flexio_edma_timeout_count = 0U;
+    g_camera_flexio_edma_submit_error_count = 0U;
+    g_camera_flexio_edma_callback_error_count = 0U;
+    g_camera_flexio_edma_active_buffer = 0U;
+    g_camera_flexio_edma_next_buffer = 0U;
+    g_camera_flexio_edma_busy = 0U;
+    g_camera_flexio_edma_busy_vsyncs = 0U;
+    g_camera_flexio_edma_last_sample_nonzero = CAMERA_FLEXIO_SAMPLE_WORDS;
+
+    DEBUG("FlexIO camera eDMA: DMA1 channel %u request %u, buffers prefilled with 0xA5 before first real capture\r\n",
+          CAMERA_FLEXIO_EDMA_CHANNEL,
+          CAMERA_FLEXIO_EDMA_REQUEST);
+}
+
 static uint16_t camera__rgb565(uint8_t red, uint8_t green, uint8_t blue)
 {
     return (uint16_t)(((uint16_t)(red & 0xF8U) << 8U) |
@@ -613,6 +918,13 @@ void GPIO40_IRQHandler(void)
     GPIO_GpioClearInterruptFlags(GPIO4, status & CAMERA_DIAG_IRQ_MASK);
 #endif
 
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
+    if ((status & CAMERA_DIAG_VSYNC_MASK) != 0UL)
+    {
+        g_camera_diag_vsync_count++;
+        camera__flexio_edma_on_vsync();
+    }
+#else
     if ((status & CAMERA_DIAG_HSYNC_MASK) != 0UL)
     {
         g_camera_diag_hsync_count++;
@@ -628,6 +940,7 @@ void GPIO40_IRQHandler(void)
         g_camera_diag_hsync_at_last_vsync = hsync_count;
         camera__pipeline_diag_on_vsync(lines);
     }
+#endif
 
     if ((status & CAMERA_DIAG_IRQ_MASK) == 0UL)
     {
@@ -719,6 +1032,61 @@ void avc_camera__service(void)
               CAMERA_PIPELINE_DIAG_LINES_MAX);
 
         last_frame_report = frame_count;
+        last_vsync_report = vsync_count;
+    }
+#elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
+    static uint32_t last_done_report;
+    static uint32_t last_vsync_report;
+    uint32_t done_count = g_camera_flexio_edma_done_count;
+    uint32_t vsync_count = g_camera_diag_vsync_count;
+    uint32_t done_delta = done_count - last_done_report;
+    uint32_t vsync_delta = vsync_count - last_vsync_report;
+    uint32_t should_report = 0U;
+
+    if (done_delta >= 30U)
+    {
+        should_report = 1U;
+    }
+    else if ((done_delta == 0U) && (vsync_delta >= 30U))
+    {
+        should_report = 1U;
+    }
+    else if ((g_camera_flexio_edma_timeout_count != 0U) && (vsync_delta >= 30U))
+    {
+        should_report = 1U;
+    }
+
+    if (should_report != 0U)
+    {
+        uint32_t remaining = 0U;
+
+        if (g_camera_flexio_edma_busy != 0U)
+        {
+            remaining = EDMA_GetRemainingMajorLoopCount(DMA1, CAMERA_FLEXIO_EDMA_CHANNEL);
+        }
+
+        DEBUG("cam_dma done=%u(+%u) start=%u p4_vs=%u(+%u) busy=%u busy_vs=%u timeout=%u submit_err=%u cb_err=%u sample_nz=%u first=%04x,%04x,%04x,%04x rem=%u shiftstat=%02x shifterr=%02x timstat=%02x\r\n",
+              done_count,
+              done_delta,
+              g_camera_flexio_edma_started_count,
+              vsync_count,
+              vsync_delta,
+              g_camera_flexio_edma_busy,
+              g_camera_flexio_edma_busy_vsync_count,
+              g_camera_flexio_edma_timeout_count,
+              g_camera_flexio_edma_submit_error_count,
+              g_camera_flexio_edma_callback_error_count,
+              g_camera_flexio_edma_last_sample_nonzero,
+              g_camera_flexio_edma_last_first_words[0],
+              g_camera_flexio_edma_last_first_words[1],
+              g_camera_flexio_edma_last_first_words[2],
+              g_camera_flexio_edma_last_first_words[3],
+              remaining,
+              FLEXIO0->SHIFTSTAT,
+              FLEXIO0->SHIFTERR,
+              FLEXIO0->TIMSTAT);
+
+        last_done_report = done_count;
         last_vsync_report = vsync_count;
     }
 #endif
@@ -901,6 +1269,24 @@ static void avc_camera__init_flexio_pipeline_diag(void)
           CONFIG__CAMERA_RESOLUTION_Y);
 }
 
+static void avc_camera__init_flexio_edma(void)
+{
+    DEBUG("Camera capture backend: FLEXIO_EDMA\r\n");
+
+    camera__configure_xclk();
+    camera__configure_i2c();
+    camera__init_sensor();
+    camera__configure_flexio_camera();
+    camera__configure_flexio_edma();
+    camera__configure_flexio_edma_pins();
+
+    DEBUG("SmartDMA/EZH camera capture disabled for FlexIO eDMA test\r\n");
+    DEBUG("FlexIO eDMA captures one %ux%u RGB565 frame per VSYNC into ping-pong frame buffers\r\n",
+          CONFIG__CAMERA_RESOLUTION_X,
+          CONFIG__CAMERA_RESOLUTION_Y);
+    DEBUG("With D0-D7 held low, expected captured pixels are 0x0000 black; first RTT sample_nz should trend to 0\r\n");
+}
+
 void avc_camera__init(void)
 {
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
@@ -910,7 +1296,7 @@ void avc_camera__init(void)
 #elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_PIPELINE_DIAG
     avc_camera__init_flexio_pipeline_diag();
 #elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
-#error CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA is not implemented yet.
+    avc_camera__init_flexio_edma();
 #else
 #error Invalid CONFIG__CAMERA_CAPTURE_BACKEND.
 #endif

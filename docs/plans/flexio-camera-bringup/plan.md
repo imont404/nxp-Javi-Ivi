@@ -36,13 +36,13 @@ depends_on = ["implementation-strategy"]
 [[steps]]
 id = "flexio-low-rate-capture"
 title = "Prove low-rate FlexIO capture of camera data bytes"
-status = "active"
+status = "done"
 depends_on = ["signal-instrumentation"]
 
 [[steps]]
 id = "flexio-frame-buffer"
 title = "Capture usable image data into an AVC frame buffer"
-status = "pending"
+status = "active"
 depends_on = ["flexio-low-rate-capture"]
 
 [[steps]]
@@ -251,9 +251,16 @@ for FlexIO work.
   FlexIO/eDMA capture should produce a reliable black frame. If needed, tie one
   data pin high manually to prove bit position and RGB565 packing before
   restoring real camera data wiring.
-- Prove PCLK-synchronous byte capture into a small buffer before full-frame DMA.
-- Validate byte order and pixel packing against known color bars or stable test
-  scenes.
+- Completed the first real data-movement proof with `FLEXIO_EDMA` as the active
+  backend. The firmware configures `P4_12..P4_19` as FlexIO data
+  `D20..D27`, uses `P4_20/FLEXIO0_D28` as PCLK, uses
+  `P4_21/FLEXIO0_D29` as HREF gating, and keeps `P4_22` as the GPIO VSYNC
+  start trigger.
+- RTT after flashing reported `cam_dma done` increasing by 30 frames/sec,
+  no submit errors, no callback errors, no timeouts, and pulled-low sample data
+  `first=0000,0000,0000,0000 sample_nz=0`.
+- Byte order and pixel packing still need validation with at least one tied-high
+  data bit or real camera data wiring.
 
 ### flexio-frame-buffer
 
@@ -262,6 +269,11 @@ for FlexIO work.
   pressure issues.
 - Keep memory placement explicit because current frame buffers already consume a
   large fraction of `FRAME_BUFFERS`.
+- First implementation uses DMA1 channel 0, FlexIO shifter 0 request 61, and
+  32-byte minor transfers from `SHIFTBUF0` into the existing 32-byte-aligned
+  ping-pong camera frame buffers.
+- Current proof is a pulled-low black frame. Next validation is a controlled
+  nonzero data bit, then restoring real camera D0-D7 to `P4_12..P4_19`.
 
 ### lcd-integration
 

@@ -13,7 +13,7 @@ or diagnostic role changes.
 | Active camera view | 320x200 | `CONFIG__CAMERA_RESOLUTION` |
 | Frame rate target | 30 fps | OV5640 init config |
 | Display layout | 320x40 overlay plus 320x200 camera view | Existing LCD path |
-| Current backend | `FLEXIO_DIAG` | Diagnostic build on board |
+| Current backend | `FLEXIO_EDMA` | Active build on board |
 
 The display is 320x240, but the active camera image is 320x200. The current
 RTT diagnostic reports `p4_lines=200`, which matches this active image height.
@@ -27,17 +27,17 @@ RTT diagnostic reports `p4_lines=200`, which matches this active image height.
 | XCLK/CLKIN | `P2_2` | CLKOUT | Existing wiring unchanged | Keep |
 | RESET | `P1_19` | GPIO output | Existing wiring unchanged | Keep |
 | PWDN | `P1_18` | GPIO output | Existing wiring unchanged | Keep |
-| PCLK | `P4_20` | GPIO flag now; `FLEXIO0_D28` candidate | Shortened jumper with 330 ohm pulldown/termination | Validated edge activity |
-| HSYNC/HREF | `P4_21` | GPIO IRQ now; `FLEXIO0_D29` candidate | Shortened jumper with 330 ohm pulldown/termination | Validated about 6040 edges/sec |
-| VSYNC | `P4_22` | GPIO IRQ now; `FLEXIO0_D30` candidate | Shortened jumper with 330 ohm pulldown/termination | Validated about 30-31 edges/sec |
-| D0 | `P1_4` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_12` |
-| D1 | `P1_5` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_13` |
-| D2 | `P1_6` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_14` |
-| D3 | `P1_7` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_15` |
-| D4 | `P3_4` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_16` |
-| D5 | `P3_5` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_17` |
-| D6 | `P1_10` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_18` |
-| D7 | `P1_11` | Existing SmartDMA/EZH data wiring | Existing wiring unchanged | Planned move to `P4_19` |
+| PCLK | `P4_20` | `FLEXIO0_D28` timer clock | Shortened jumper with 330 ohm pulldown/termination | FlexIO/eDMA capture clocking |
+| HSYNC/HREF | `P4_21` | `FLEXIO0_D29` HREF gate | Shortened jumper with 330 ohm pulldown/termination | FlexIO/eDMA capture gating |
+| VSYNC | `P4_22` | GPIO IRQ frame-start trigger | Shortened jumper with 330 ohm pulldown/termination | Validated about 30 frames/sec |
+| D0 | `P4_12` | `FLEXIO0_D20` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D1 | `P4_13` | `FLEXIO0_D21` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D2 | `P4_14` | `FLEXIO0_D22` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D3 | `P4_15` | `FLEXIO0_D23` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D4 | `P4_16` | `FLEXIO0_D24` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D5 | `P4_17` | `FLEXIO0_D25` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D6 | `P4_18` | `FLEXIO0_D26` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D7 | `P4_19` | `FLEXIO0_D27` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
 | Spare/debug | `P4_23` | `FLEXIO0_D31` candidate | Unused | Keep available |
 
 The original sync pins `P0_5` PCLK, `P0_11` HSYNC/HREF, and `P0_4` VSYNC are
@@ -68,19 +68,19 @@ gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 
 ## Current Incremental Data-Bus Test State
 
-The sync-only baseline recovered after moving VSYNC physically farther away
-from the other camera signals. The current incremental test keeps that VSYNC
-separation and restores only camera `D0` and `D1` to the new Port 4 FlexIO
-data-bus wiring:
+The current incremental test has the camera data lines disconnected from the
+Port 4 FlexIO data-bus wiring while the data inputs are held low with external
+pulldown/termination. This is intentional: with live PCLK/HREF/VSYNC and all
+data bits low, the first real FlexIO/eDMA capture should produce a black RGB565
+frame.
 
 | Camera data signal | Current test MCU pin | Status |
 | --- | --- | --- |
-| D0 | `P4_12` / `FLEXIO0_D20` | Attached for current test |
-| D1 | `P4_13` / `FLEXIO0_D21` | Attached for current test |
-| D2-D7 | `P4_14..P4_19` / `FLEXIO0_D22..D27` | Disconnected for current test |
+| D0-D7 | `P4_12..P4_19` / `FLEXIO0_D20..D27` | Camera data disconnected; external pulldown/termination fitted |
 
-Data-line termination remains deferred. The existing low-value
-termination/pulldown treatment remains on the sync lines.
+RTT confirms the current pulled-low data-bus proof: `cam_dma done` advances at
+30 frames/sec, `submit_err=0`, `cb_err=0`, `timeout=0`,
+`first=0000,0000,0000,0000`, and `sample_nz=0`.
 
 ## Change History
 
@@ -102,3 +102,4 @@ termination/pulldown treatment remains on the sync lines.
 | 2026-07-09 14:55 EDT | Rerouted VSYNC farther away from other camera signals and reran sync-only RTT diagnostic. | Sync recovered: VSYNC 30-31 edges/sec, HSYNC about 6040 edges/sec, `p4_lines=200`, and `p4_vs_off=0`. |
 | 2026-07-09 14:57 EDT | Restored D0/D1 while keeping VSYNC physically separated. | Ready to rerun sync diagnostic before restoring more data lines. |
 | 2026-07-09 14:59 EDT | Reran RTT with D0/D1 restored. | VSYNC stayed below the guard but rose to about 35-43 edges/sec, with occasional `p4_lines` dips to 149 and 188. |
+| 2026-07-10 15:31 EDT | Switched active firmware to `FLEXIO_EDMA` and tested with D0-D7 disconnected/pulled low. | Full-frame DMA completes at 30 frames/sec with black samples: `done` +30/sec, `first=0000,0000,0000,0000`, `sample_nz=0`, no submit/callback errors, no timeouts. |
