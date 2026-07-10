@@ -66,6 +66,28 @@ index is `20` for the eight camera data bits on `FLEXIO0_D20..D27`. Keep
 PCLK, HSYNC/HREF, and VSYNC available to FlexIO only if hardware timing or
 gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 
+## Rev B Shield Notes
+
+The current Port 4 camera map is a validation setup for deciding whether the
+FlexIO camera interface is viable before making the Rev B FRDM shield for the
+NXP Cup car. Do not treat every current fly-wire choice as final shield routing.
+
+The main open pin-routing question is VSYNC timing. `P4_22` is working well as a
+GPIO IRQ frame-start trigger and can also be `FLEXIO0_D30`, but its CTIMER
+function is `CT2_MAT2` match output, not a CTIMER capture input. If the Rev B
+design needs hardware-latched frame timestamps, consider routing VSYNC to a pin
+that can also expose a true CTIMER capture or trigger-capable input, such as
+the candidate `FLEXIO0_D30` alternatives noted in the MCXN947 pin data. If CPU
+ISR timestamping is sufficient, keep the current `P4_22` approach and sample a
+free-running CTIMER counter at the start of the GPIO IRQ.
+
+There is also an exact-pin future option for lower-jitter timestamps without
+moving VSYNC: GPIO4 exposes pin event DMA request sources. A later firmware
+revision could configure a `P4_22` rising-edge GPIO event to DMA-copy a
+free-running CTIMER count into memory. Treat this as a second-stage optimization
+only; the initial cleanup should use the simpler GPIO ISR timestamp because the
+camera frame-DMA setup still needs CPU-side buffer/health management.
+
 ## Current Incremental Data-Bus Test State
 
 The current incremental test has all camera data lines attached to the Port 4
@@ -103,3 +125,4 @@ not increase during the post-wiring RTT stability sample.
 | 2026-07-09 14:59 EDT | Reran RTT with D0/D1 restored. | VSYNC stayed below the guard but rose to about 35-43 edges/sec, with occasional `p4_lines` dips to 149 and 188. |
 | 2026-07-10 15:31 EDT | Switched active firmware to `FLEXIO_EDMA` and tested with D0-D7 disconnected/pulled low. | Full-frame DMA completes at 30 frames/sec with black samples: `done` +30/sec, `first=0000,0000,0000,0000`, `sample_nz=0`, no submit/callback errors, no timeouts. |
 | 2026-07-10 17:16 EDT | Attached all camera D0-D7 lines to `P4_12..P4_19`. | LCD shows a mostly good live image with visible color changes as each wire was added. RTT shows live nonzero data and stable 30 frame/sec DMA completions; possible adjacent data-bit swaps remain to verify. |
+| 2026-07-10 18:33 EDT | Added Rev B shield routing note for VSYNC timing. | Current `P4_22` wiring remains valid for bring-up, but final shield routing may change if hardware CTIMER capture or GPIO event-DMA timestamping is needed. |

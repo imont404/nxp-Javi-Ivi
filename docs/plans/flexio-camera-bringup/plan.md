@@ -335,6 +335,19 @@ for FlexIO work.
   OSTIMER has counter, capture, and match registers for CPU/timer use, but the
   current local material does not show it accepting the VSYNC pin as an external
   capture input.
+- Treat the current `P4_22` VSYNC route as bring-up validation wiring, not a
+  final Rev B shield commitment. `P4_22` exposes `GPIO4_22`, `CT2_MAT2` match
+  output, and `FLEXIO0_D30`; it is not a direct CTIMER capture input. For the
+  Rev B shield, consider moving VSYNC to a pin that can provide both
+  `FLEXIO0_D30` and a true CTIMER capture or trigger-capable input if
+  hardware-latched frame timestamps become valuable. Otherwise, keep the simpler
+  GPIO IRQ plus free-running CTIMER timestamp approach.
+- Also keep the exact-pin GPIO event-DMA option in mind for `P4_22`. MCXN947
+  exposes GPIO4 pin event DMA request sources, so a later optimization could
+  use a `P4_22` rising-edge GPIO event to DMA-copy a free-running CTIMER count
+  into a timestamp buffer. That would reduce timestamp jitter without changing
+  the VSYNC pin, but it is a second-stage optimization because it does not by
+  itself replace the current CPU-side frame-DMA setup and guard logic.
 - Do not reuse the current DWT cycle counter for camera timing without
   refactoring ownership. `main.c` resets `DWT->CYCCNT` in `avc__next_frame()`
   to drive the existing CPU overlay measurement.
