@@ -239,6 +239,10 @@ for FlexIO work.
   should use the current GPIO IRQ sync instrumentation to accept plausible
   VSYNC/HSYNC timing and feed deterministic RGB565 test frames through the
   existing `avc__next_frame()` and LCD path with no data lines required.
+- RTT-verified the `FLEXIO_PIPELINE_DIAG` backend after flashing on
+  2026-07-10. It accepts frames at 30/sec with `p4_lines=200`, PCLK activity
+  present, and only one rejected startup VSYNC. LCD visual confirmation remains
+  the next check.
 - Keep SysTick available as a future timing source, but do not take ownership
   of `SysTick_Handler` until the existing `e_tick` delay/timing behavior is
   reviewed.
