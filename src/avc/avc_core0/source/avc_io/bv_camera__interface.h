@@ -27,6 +27,7 @@
 
 void avc_camera__init();
 void avc_camera__service();
+void avc_camera__prepare_frame(uint16_t *buffer);
 void avc__next_frame(uint16_t *buffer);
 
 #endif

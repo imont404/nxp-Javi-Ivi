@@ -58,9 +58,6 @@ void avc__next_frame(uint16_t *buf)
 
 	raw_camera_frame = buf;
 
-	//Update the image_plane structure for visualizing on the LCD;
-	camera_view.Data = (uint8_t *)buf;
-
 	frame_timer = CYCLE_COUNTER;
 
 	//Reset the CPU Cycle counter to measure the next frame
@@ -107,6 +104,9 @@ int main(void)
             if(next_frame_ready)
             {
             	next_frame_ready=false;
+				uint16_t *frame = raw_camera_frame;
+				camera_view.Data = (uint8_t *)frame;
+				avc_camera__prepare_frame(frame);
 
             	   if(button__up(&center_btn))
             	   {
@@ -176,7 +176,7 @@ int main(void)
 
 					uint32_t line = line_to_process;
 
-					avc__convert_rgb565_to_hsl_struct(&raw_camera_frame[line*CONFIG__CAMERA_RESOLUTION_X],
+					avc__convert_rgb565_to_hsl_struct(&frame[line*CONFIG__CAMERA_RESOLUTION_X],
 													   line_hsl,
 													   CONFIG__CAMERA_RESOLUTION_X);
 

@@ -518,10 +518,9 @@ static uint16_t camera__pipeline_diag_color_bar(uint32_t bar)
     }
 }
 
-static void camera__fill_pipeline_diag_buffers(void)
+static void camera__fill_pipeline_diag_buffer(uint32_t buffer_index)
 {
-    uint16_t *bars = camera__frame_buffer(0U);
-    uint16_t *gradient = camera__frame_buffer(1U);
+    uint16_t *frame = camera__frame_buffer(buffer_index);
 
     for (uint32_t y = 0; y < CONFIG__CAMERA_RESOLUTION_Y; y++)
     {
@@ -534,10 +533,53 @@ static void camera__fill_pipeline_diag_buffers(void)
             uint8_t green = (uint8_t)((y * 255U) / (CONFIG__CAMERA_RESOLUTION_Y - 1U));
             uint8_t blue = (uint8_t)(checker != 0U ? 255U : 40U);
 
-            bars[pixel] = camera__pipeline_diag_color_bar(bar);
-            gradient[pixel] = camera__rgb565(red, green, blue);
+            if ((buffer_index & 0x01U) == 0U)
+            {
+                frame[pixel] = camera__pipeline_diag_color_bar(bar);
+            }
+            else
+            {
+                frame[pixel] = camera__rgb565(red, green, blue);
+            }
         }
     }
+}
+
+static void camera__fill_pipeline_diag_buffers(void)
+{
+    camera__fill_pipeline_diag_buffer(0U);
+    camera__fill_pipeline_diag_buffer(1U);
+}
+
+static uint32_t camera__pipeline_diag_buffer_index(uint16_t *buffer, uint32_t *buffer_index)
+{
+    if (buffer == camera__frame_buffer(0U))
+    {
+        *buffer_index = 0U;
+        return 1U;
+    }
+
+    if (buffer == camera__frame_buffer(1U))
+    {
+        *buffer_index = 1U;
+        return 1U;
+    }
+
+    return 0U;
+}
+
+void avc_camera__prepare_frame(uint16_t *buffer)
+{
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_PIPELINE_DIAG
+    uint32_t buffer_index;
+
+    if (camera__pipeline_diag_buffer_index(buffer, &buffer_index) != 0U)
+    {
+        camera__fill_pipeline_diag_buffer(buffer_index);
+    }
+#else
+    (void)buffer;
+#endif
 }
 
 static void camera__pipeline_diag_on_vsync(uint32_t lines)
