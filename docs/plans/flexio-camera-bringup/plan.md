@@ -274,6 +274,11 @@ for FlexIO work.
   ping-pong camera frame buffers.
 - Current proof is a pulled-low black frame. Next validation is a controlled
   nonzero data bit, then restoring real camera D0-D7 to `P4_12..P4_19`.
+- Current pause point: do not reconnect the full data bus yet. Choose the next
+  validation deliberately: either a single controlled high bit with its
+  pulldown removed/overridden, a small D0/D1 real-data subset, or a firmware
+  diagnostic that records sampled words before the LCD/line-processing path
+  modifies the frame.
 
 ### lcd-integration
 
