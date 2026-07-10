@@ -52,10 +52,16 @@ status = "active"
 depends_on = ["flexio-frame-buffer"]
 
 [[steps]]
+id = "capture-instrumentation-cleanup"
+title = "Clean up FlexIO capture diagnostics, timing counters, and FIFO evidence"
+status = "pending"
+depends_on = ["lcd-integration"]
+
+[[steps]]
 id = "comparison-signoff"
 title = "Compare FlexIO capture against the current SmartDMA/EZH path"
 status = "pending"
-depends_on = ["lcd-integration"]
+depends_on = ["capture-instrumentation-cleanup"]
 
 [[exit_criteria]]
 id = "flash-rtt-ready"
@@ -83,6 +89,11 @@ title = "FlexIO capture produces frame-buffer data that can be displayed or insp
 status = "met"
 
 [[exit_criteria]]
+id = "capture-diagnostics"
+title = "FlexIO timing and FIFO diagnostics distinguish FPS, VSYNC timing, DMA health, and overrun state"
+status = "pending"
+
+[[exit_criteria]]
 id = "comparison"
 title = "FlexIO feasibility is decided against the existing SmartDMA/EZH approach"
 status = "pending"
@@ -106,6 +117,12 @@ known-good loop for build, flash, reset, and RTT observation.
 - Current app frame consumer: `src/avc/avc_core0/source/main.c`
 - Current pin mux and clocks: `src/avc/avc_core0/board/pin_mux.c`,
   `src/avc/avc_core0/board/clock_config.c`
+- Existing millisecond tick: `src/common/e/src/e_tick.c`,
+  `src/common/e/src/port/nxp__mcxn/e_port__nxp__mcxn.h`
+- OSTIMER and timer references:
+  `docs/research/MCXN947/extracted/MCXNx4xRM/chapters/33_clocking/text.md`,
+  `docs/research/MCXN947/extracted/MCXNx4xRM/chapters/17_system-controller-syscon/text.md`,
+  `docs/examples/frdmmcxn947/flexio_mculcd_edma_transfer_cm33_core0/device/periph/PERI_OSTIMER.h`
 - Headless build wrapper: `build.ps1`
 - CMake build wrapper and static linker scripts: `build_cmake.ps1`,
   `src/avc/avc_core0/link`
@@ -294,6 +311,41 @@ for FlexIO work.
   checking whether the current color/image artifacts are wiring swaps or signal
   integrity, and deciding whether more raw-frame diagnostics are needed before
   locking the FlexIO path down.
+
+### capture-instrumentation-cleanup
+
+- Keep the existing `e_tick` module as the owner of `SysTick_Handler`.
+  `CONFIG__E_TICK_PERIOD__MS` is already `1`, so use `e_tick__get_ms()` or
+  `e_tick__delta()` for report-window timing instead of installing another
+  SysTick handler.
+- Rework `cam_dma` reporting so lifetime counters and report-window deltas are
+  distinct. Track at least VSYNC seen, DMA starts, DMA completions, busy VSYNC
+  events, consecutive busy VSYNCs, timeouts, submit errors, callback errors,
+  `SHIFTERR`, `SHIFTSTAT`, and remaining major loops.
+- Compute displayed/report FPS from completed-frame deltas divided by elapsed
+  milliseconds. The current report threshold of 30 completed frames is useful
+  for rate limiting, but it should not be treated as a measured frame rate.
+- Use the 1 ms tick for stable one-second FPS and health summaries. For
+  sub-millisecond VSYNC period or DMA-latency measurements, evaluate OSTIMER as
+  the preferred free-running software timestamp source. The reference material
+  describes it as a 42-bit Gray-code OS Event Timer with selectable
+  `clk_16k[2]`, `xtal32k[2]`, or `clk_1m` input; `clk_1m` would give 1 us
+  timestamp ticks with long rollover.
+- Use CTIMER capture through INPUTMUX only if hardware edge latching is needed.
+  OSTIMER has counter, capture, and match registers for CPU/timer use, but the
+  current local material does not show it accepting the VSYNC pin as an external
+  capture input.
+- Do not reuse the current DWT cycle counter for camera timing without
+  refactoring ownership. `main.c` resets `DWT->CYCCNT` in `avc__next_frame()`
+  to drive the existing CPU overlay measurement.
+- Record the current FlexIO FIFO depth explicitly. MCXN947 FlexIO exposes eight
+  shifter buffers, this backend uses all eight as an 8-bit camera FIFO, and the
+  DMA minor loop drains `8 shifters * 4 bytes = 32 bytes` from `SHIFTBUF0`.
+  There is no deeper FlexIO FIFO in the current configuration.
+- Treat any nonzero `SHIFTERR` bit during receive as a likely overflow or
+  start/stop-bit error. Current live-image RTT samples reported no increasing
+  submit/callback errors, but the instrumentation should retain `SHIFTERR`
+  history instead of only printing the instantaneous register value.
 
 ### comparison-signoff
 
