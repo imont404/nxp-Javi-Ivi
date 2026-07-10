@@ -15,6 +15,7 @@
 #include "pin_mux.h"
 #include "bv_camera__interface.h"
 #include "avc__master_config.h"
+#include "e_tick.h"
 
 #define EZH_STACK_SIZE 64   /* stack size for EZH, see smart_dma driver recommendation */
 
@@ -60,6 +61,12 @@
 #define CAMERA_FLEXIO_BUSY_VSYNC_TIMEOUT (3U)
 #define CAMERA_FLEXIO_SHIFT_MASK (((1UL << CAMERA_FLEXIO_SHIFTER_COUNT) - 1UL) << CAMERA_FLEXIO_SHIFTER_START)
 #define CAMERA_FLEXIO_TIMER_MASK (1UL << CAMERA_FLEXIO_TIMER)
+#define CAMERA_TIMING_SOURCE_NAME "OSTIMER0"
+#define CAMERA_TIMING_CLK_ATTACH kCLK_1M_to_OSTIMER
+#define CAMERA_TIMING_CLK_GATE kCLOCK_OsTimer
+#define CAMERA_TIMING_TICKS_PER_SECOND (1000000U)
+#define CAMERA_TIMING_MIN_INIT (0xFFFFFFFFU)
+#define CAMERA_TIMING_OSTIMER_HIGH_MASK OSTIMER_EVTIMERH_EVTIMER_COUNT_VALUE_MASK
 
 
 __BSS(SRAM_H) volatile uint32_t ezh_binary[512];
@@ -107,6 +114,20 @@ static volatile uint32_t g_camera_flexio_edma_busy;
 static volatile uint32_t g_camera_flexio_edma_busy_vsyncs;
 static volatile uint32_t g_camera_flexio_edma_last_sample_nonzero;
 static volatile uint16_t g_camera_flexio_edma_last_first_words[4];
+static volatile uint32_t g_camera_timing_clock_hz;
+static volatile uint32_t g_camera_timing_last_vsync_tick;
+static volatile uint32_t g_camera_timing_have_vsync_tick;
+static volatile uint32_t g_camera_timing_last_vsync_period_ticks;
+static volatile uint32_t g_camera_timing_min_vsync_period_ticks;
+static volatile uint32_t g_camera_timing_max_vsync_period_ticks;
+static volatile uint32_t g_camera_timing_vsync_period_sample_count;
+static volatile uint32_t g_camera_timing_active_frame_vsync_tick;
+static volatile uint32_t g_camera_timing_last_dma_arm_ticks;
+static volatile uint32_t g_camera_timing_min_dma_arm_ticks;
+static volatile uint32_t g_camera_timing_max_dma_arm_ticks;
+static volatile uint32_t g_camera_timing_last_dma_frame_ticks;
+static volatile uint32_t g_camera_timing_min_dma_frame_ticks;
+static volatile uint32_t g_camera_timing_max_dma_frame_ticks;
 
 //This needs to be global
 smartdma_camera_param_t smartdmaParam;
@@ -652,6 +673,145 @@ static void camera__configure_flexio_camera(void)
           CAMERA_FRAME_BYTES);
 }
 
+static uint64_t camera__timing_gray_to_binary(uint64_t gray)
+{
+    gray ^= gray >> 1U;
+    gray ^= gray >> 2U;
+    gray ^= gray >> 4U;
+    gray ^= gray >> 8U;
+    gray ^= gray >> 16U;
+    gray ^= gray >> 32U;
+
+    return gray;
+}
+
+static uint32_t camera__timing_read_ticks(void)
+{
+    uint32_t high_before;
+    uint32_t high_after;
+    uint32_t low;
+    uint64_t gray;
+    uint64_t binary;
+
+    do
+    {
+        high_before = OSTIMER0->EVTIMERH & CAMERA_TIMING_OSTIMER_HIGH_MASK;
+        low = OSTIMER0->EVTIMERL;
+        high_after = OSTIMER0->EVTIMERH & CAMERA_TIMING_OSTIMER_HIGH_MASK;
+    } while (high_before != high_after);
+
+    gray = ((uint64_t)high_after << 32U) | low;
+    binary = camera__timing_gray_to_binary(gray);
+
+    return (uint32_t)binary;
+}
+
+static void camera__timing_update_min_max(volatile uint32_t *min_ticks,
+                                          volatile uint32_t *max_ticks,
+                                          uint32_t ticks)
+{
+    if (ticks < *min_ticks)
+    {
+        *min_ticks = ticks;
+    }
+
+    if (ticks > *max_ticks)
+    {
+        *max_ticks = ticks;
+    }
+}
+
+static uint32_t camera__timing_ticks_to_us(uint32_t ticks)
+{
+    uint32_t hz = g_camera_timing_clock_hz;
+
+    if (hz == 0U)
+    {
+        return 0U;
+    }
+
+    if (hz == CAMERA_TIMING_TICKS_PER_SECOND)
+    {
+        return ticks;
+    }
+
+    return (uint32_t)((((uint64_t)ticks * 1000000ULL) + (hz / 2U)) / hz);
+}
+
+static uint32_t camera__timing_fps_x100(uint32_t frames, uint32_t elapsed_ticks)
+{
+    uint32_t hz = g_camera_timing_clock_hz;
+
+    if ((hz == 0U) || (elapsed_ticks == 0U))
+    {
+        return 0U;
+    }
+
+    return (uint32_t)((((uint64_t)frames * 100ULL * hz) + (elapsed_ticks / 2U)) / elapsed_ticks);
+}
+
+static void camera__timing_on_vsync(uint32_t vsync_tick)
+{
+    if (g_camera_timing_have_vsync_tick != 0U)
+    {
+        uint32_t period_ticks = vsync_tick - g_camera_timing_last_vsync_tick;
+
+        g_camera_timing_last_vsync_period_ticks = period_ticks;
+        camera__timing_update_min_max(&g_camera_timing_min_vsync_period_ticks,
+                                      &g_camera_timing_max_vsync_period_ticks,
+                                      period_ticks);
+        g_camera_timing_vsync_period_sample_count++;
+    }
+
+    g_camera_timing_last_vsync_tick = vsync_tick;
+    g_camera_timing_have_vsync_tick = 1U;
+}
+
+static void camera__timing_on_dma_armed(uint32_t vsync_tick)
+{
+    uint32_t arm_ticks = camera__timing_read_ticks() - vsync_tick;
+
+    g_camera_timing_last_dma_arm_ticks = arm_ticks;
+    camera__timing_update_min_max(&g_camera_timing_min_dma_arm_ticks,
+                                  &g_camera_timing_max_dma_arm_ticks,
+                                  arm_ticks);
+}
+
+static void camera__timing_on_dma_done(void)
+{
+    uint32_t frame_ticks = camera__timing_read_ticks() - g_camera_timing_active_frame_vsync_tick;
+
+    g_camera_timing_last_dma_frame_ticks = frame_ticks;
+    camera__timing_update_min_max(&g_camera_timing_min_dma_frame_ticks,
+                                  &g_camera_timing_max_dma_frame_ticks,
+                                  frame_ticks);
+}
+
+static void camera__configure_frame_timing(void)
+{
+    CLOCK_AttachClk(CAMERA_TIMING_CLK_ATTACH);
+    CLOCK_EnableClock(CAMERA_TIMING_CLK_GATE);
+
+    g_camera_timing_clock_hz = CLOCK_GetOstimerClkFreq();
+    g_camera_timing_last_vsync_tick = 0U;
+    g_camera_timing_have_vsync_tick = 0U;
+    g_camera_timing_last_vsync_period_ticks = 0U;
+    g_camera_timing_min_vsync_period_ticks = CAMERA_TIMING_MIN_INIT;
+    g_camera_timing_max_vsync_period_ticks = 0U;
+    g_camera_timing_vsync_period_sample_count = 0U;
+    g_camera_timing_active_frame_vsync_tick = 0U;
+    g_camera_timing_last_dma_arm_ticks = 0U;
+    g_camera_timing_min_dma_arm_ticks = CAMERA_TIMING_MIN_INIT;
+    g_camera_timing_max_dma_arm_ticks = 0U;
+    g_camera_timing_last_dma_frame_ticks = 0U;
+    g_camera_timing_min_dma_frame_ticks = CAMERA_TIMING_MIN_INIT;
+    g_camera_timing_max_dma_frame_ticks = 0U;
+
+    DEBUG("FlexIO camera timing: %s free-running at %uHz for VSYNC/DMA timestamps\r\n",
+          CAMERA_TIMING_SOURCE_NAME,
+          g_camera_timing_clock_hz);
+}
+
 static void camera__flexio_edma_callback(edma_handle_t *handle, void *userData, bool transferDone, uint32_t tcds)
 {
     (void)handle;
@@ -684,6 +844,7 @@ static void camera__flexio_edma_callback(edma_handle_t *handle, void *userData, 
         g_camera_flexio_edma_done_count++;
         g_camera_flexio_edma_busy = 0U;
         g_camera_flexio_edma_busy_vsyncs = 0U;
+        camera__timing_on_dma_done();
 
         avc__next_frame(buffer);
     }
@@ -702,7 +863,7 @@ static void camera__flexio_edma_abort_active(void)
     g_camera_flexio_edma_busy_vsyncs = 0U;
 }
 
-static void camera__flexio_edma_start_frame(void)
+static void camera__flexio_edma_start_frame(uint32_t vsync_tick)
 {
     edma_transfer_config_t transfer_config;
     uint32_t buffer_index = g_camera_flexio_edma_next_buffer;
@@ -732,9 +893,11 @@ static void camera__flexio_edma_start_frame(void)
         g_camera_flexio_edma_started_count++;
         g_camera_flexio_edma_busy = 1U;
         g_camera_flexio_edma_busy_vsyncs = 0U;
+        g_camera_timing_active_frame_vsync_tick = vsync_tick;
 
         EDMA_StartTransfer(&g_camera_flexio_edma_handle);
         FLEXIO0->SHIFTSDEN |= (1UL << CAMERA_FLEXIO_SHIFTER_START);
+        camera__timing_on_dma_armed(vsync_tick);
     }
     else
     {
@@ -743,7 +906,7 @@ static void camera__flexio_edma_start_frame(void)
     }
 }
 
-static void camera__flexio_edma_on_vsync(void)
+static void camera__flexio_edma_on_vsync(uint32_t vsync_tick)
 {
     if (g_camera_flexio_edma_busy != 0U)
     {
@@ -759,7 +922,7 @@ static void camera__flexio_edma_on_vsync(void)
         return;
     }
 
-    camera__flexio_edma_start_frame();
+    camera__flexio_edma_start_frame(vsync_tick);
 }
 
 static void camera__configure_flexio_edma(void)
@@ -921,8 +1084,11 @@ void GPIO40_IRQHandler(void)
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
     if ((status & CAMERA_DIAG_VSYNC_MASK) != 0UL)
     {
+        uint32_t irq_tick = camera__timing_read_ticks();
+
         g_camera_diag_vsync_count++;
-        camera__flexio_edma_on_vsync();
+        camera__timing_on_vsync(irq_tick);
+        camera__flexio_edma_on_vsync(irq_tick);
     }
 #else
     if ((status & CAMERA_DIAG_HSYNC_MASK) != 0UL)
@@ -1036,14 +1202,52 @@ void avc_camera__service(void)
     }
 #elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
     static uint32_t last_done_report;
+    static uint32_t last_started_report;
     static uint32_t last_vsync_report;
+    static uint32_t last_busy_vsync_report;
+    static uint32_t last_timeout_report;
+    static uint32_t last_submit_error_report;
+    static uint32_t last_callback_error_report;
+    static uint32_t last_report_tick;
+    static uint32_t last_report_ms;
     uint32_t done_count = g_camera_flexio_edma_done_count;
+    uint32_t started_count = g_camera_flexio_edma_started_count;
     uint32_t vsync_count = g_camera_diag_vsync_count;
+    uint32_t busy_vsync_count = g_camera_flexio_edma_busy_vsync_count;
+    uint32_t timeout_count = g_camera_flexio_edma_timeout_count;
+    uint32_t submit_error_count = g_camera_flexio_edma_submit_error_count;
+    uint32_t callback_error_count = g_camera_flexio_edma_callback_error_count;
     uint32_t done_delta = done_count - last_done_report;
+    uint32_t started_delta = started_count - last_started_report;
     uint32_t vsync_delta = vsync_count - last_vsync_report;
+    uint32_t busy_vsync_delta = busy_vsync_count - last_busy_vsync_report;
+    uint32_t timeout_delta = timeout_count - last_timeout_report;
+    uint32_t submit_error_delta = submit_error_count - last_submit_error_report;
+    uint32_t callback_error_delta = callback_error_count - last_callback_error_report;
+    uint32_t now_tick = camera__timing_read_ticks();
+    uint32_t now_ms = e_tick__get_ms();
+    uint32_t elapsed_ticks;
+    uint32_t elapsed_ms;
     uint32_t should_report = 0U;
 
-    if (done_delta >= 30U)
+    if (last_report_tick == 0U)
+    {
+        last_report_tick = now_tick;
+    }
+
+    if (last_report_ms == 0U)
+    {
+        last_report_ms = now_ms;
+    }
+
+    elapsed_ticks = now_tick - last_report_tick;
+    elapsed_ms = now_ms - last_report_ms;
+
+    if (elapsed_ms >= 1000U)
+    {
+        should_report = 1U;
+    }
+    else if (done_delta >= 30U)
     {
         should_report = 1U;
     }
@@ -1059,23 +1263,55 @@ void avc_camera__service(void)
     if (should_report != 0U)
     {
         uint32_t remaining = 0U;
+        uint32_t fps_x100 = camera__timing_fps_x100(done_delta, elapsed_ticks);
+        uint32_t elapsed_us = camera__timing_ticks_to_us(elapsed_ticks);
+        uint32_t vsync_last_us = camera__timing_ticks_to_us(g_camera_timing_last_vsync_period_ticks);
+        uint32_t vsync_min_us = (g_camera_timing_vsync_period_sample_count == 0U) ? 0U :
+            camera__timing_ticks_to_us(g_camera_timing_min_vsync_period_ticks);
+        uint32_t vsync_max_us = camera__timing_ticks_to_us(g_camera_timing_max_vsync_period_ticks);
+        uint32_t dma_arm_us = camera__timing_ticks_to_us(g_camera_timing_last_dma_arm_ticks);
+        uint32_t dma_arm_min_us = (g_camera_timing_min_dma_arm_ticks == CAMERA_TIMING_MIN_INIT) ? 0U :
+            camera__timing_ticks_to_us(g_camera_timing_min_dma_arm_ticks);
+        uint32_t dma_arm_max_us = camera__timing_ticks_to_us(g_camera_timing_max_dma_arm_ticks);
+        uint32_t dma_frame_us = camera__timing_ticks_to_us(g_camera_timing_last_dma_frame_ticks);
+        uint32_t dma_frame_min_us = (g_camera_timing_min_dma_frame_ticks == CAMERA_TIMING_MIN_INIT) ? 0U :
+            camera__timing_ticks_to_us(g_camera_timing_min_dma_frame_ticks);
+        uint32_t dma_frame_max_us = camera__timing_ticks_to_us(g_camera_timing_max_dma_frame_ticks);
 
         if (g_camera_flexio_edma_busy != 0U)
         {
             remaining = EDMA_GetRemainingMajorLoopCount(DMA1, CAMERA_FLEXIO_EDMA_CHANNEL);
         }
 
-        DEBUG("cam_dma done=%u(+%u) start=%u p4_vs=%u(+%u) busy=%u busy_vs=%u timeout=%u submit_err=%u cb_err=%u sample_nz=%u first=%04x,%04x,%04x,%04x rem=%u shiftstat=%02x shifterr=%02x timstat=%02x\r\n",
+        DEBUG("cam_dma t_ms=%u t_us=%u fps=%u.%02u done=%u(+%u) start=%u(+%u) p4_vs=%u(+%u) vs_us=%u/%u/%u arm_us=%u/%u/%u frame_us=%u/%u/%u busy=%u busy_vs=%u(+%u) timeout=%u(+%u) submit_err=%u(+%u) cb_err=%u(+%u) sample_nz=%u first=%04x,%04x,%04x,%04x rem=%u shiftstat=%02x shifterr=%02x timstat=%02x\r\n",
+              elapsed_ms,
+              elapsed_us,
+              fps_x100 / 100U,
+              fps_x100 % 100U,
               done_count,
               done_delta,
-              g_camera_flexio_edma_started_count,
+              started_count,
+              started_delta,
               vsync_count,
               vsync_delta,
+              vsync_last_us,
+              vsync_min_us,
+              vsync_max_us,
+              dma_arm_us,
+              dma_arm_min_us,
+              dma_arm_max_us,
+              dma_frame_us,
+              dma_frame_min_us,
+              dma_frame_max_us,
               g_camera_flexio_edma_busy,
-              g_camera_flexio_edma_busy_vsync_count,
-              g_camera_flexio_edma_timeout_count,
-              g_camera_flexio_edma_submit_error_count,
-              g_camera_flexio_edma_callback_error_count,
+              busy_vsync_count,
+              busy_vsync_delta,
+              timeout_count,
+              timeout_delta,
+              submit_error_count,
+              submit_error_delta,
+              callback_error_count,
+              callback_error_delta,
               g_camera_flexio_edma_last_sample_nonzero,
               g_camera_flexio_edma_last_first_words[0],
               g_camera_flexio_edma_last_first_words[1],
@@ -1087,7 +1323,14 @@ void avc_camera__service(void)
               FLEXIO0->TIMSTAT);
 
         last_done_report = done_count;
+        last_started_report = started_count;
         last_vsync_report = vsync_count;
+        last_busy_vsync_report = busy_vsync_count;
+        last_timeout_report = timeout_count;
+        last_submit_error_report = submit_error_count;
+        last_callback_error_report = callback_error_count;
+        last_report_tick = now_tick;
+        last_report_ms = now_ms;
     }
 #endif
 }
@@ -1278,6 +1521,7 @@ static void avc_camera__init_flexio_edma(void)
     camera__init_sensor();
     camera__configure_flexio_camera();
     camera__configure_flexio_edma();
+    camera__configure_frame_timing();
     camera__configure_flexio_edma_pins();
 
     DEBUG("SmartDMA/EZH camera capture disabled for FlexIO eDMA test\r\n");

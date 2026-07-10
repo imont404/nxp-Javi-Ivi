@@ -330,18 +330,24 @@ for FlexIO work.
   the preferred free-running software timestamp source. The reference material
   describes it as a 42-bit Gray-code OS Event Timer with selectable
   `clk_16k[2]`, `xtal32k[2]`, or `clk_1m` input; `clk_1m` would give 1 us
-  timestamp ticks with long rollover.
+  timestamp ticks with long rollover. The active camera timing instrumentation
+  now uses `OSTIMER0` at 1 MHz, converts the 42-bit Gray-code counter to binary,
+  and uses the low 32 bits for VSYNC/DMA deltas.
 - Use CTIMER capture through INPUTMUX only if hardware edge latching is needed.
   OSTIMER has counter, capture, and match registers for CPU/timer use, but the
   current local material does not show it accepting the VSYNC pin as an external
   capture input.
+- CTIMER is not the active software timestamp source. Direct CTIMER3 and
+  CTIMER2 bring-up attempts reached the camera timing init, but stalled in the
+  SDK `CTIMER_Init()` reset path before the init function returned. `CTIMER0`
+  remains owned by the ADC trigger path.
 - Treat the current `P4_22` VSYNC route as bring-up validation wiring, not a
   final Rev B shield commitment. `P4_22` exposes `GPIO4_22`, `CT2_MAT2` match
   output, and `FLEXIO0_D30`; it is not a direct CTIMER capture input. For the
   Rev B shield, consider moving VSYNC to a pin that can provide both
   `FLEXIO0_D30` and a true CTIMER capture or trigger-capable input if
   hardware-latched frame timestamps become valuable. Otherwise, keep the simpler
-  GPIO IRQ plus free-running CTIMER timestamp approach.
+  GPIO IRQ plus free-running software timestamp approach.
 - Also keep the exact-pin GPIO event-DMA option in mind for `P4_22`. MCXN947
   exposes GPIO4 pin event DMA request sources, so a later optimization could
   use a `P4_22` rising-edge GPIO event to DMA-copy a free-running CTIMER count
