@@ -1,7 +1,7 @@
 +++
 type = "plan"
 id = "flexio-camera-bringup"
-status = "active"
+status = "pending"
 created = "2026-07-09"
 
 [[steps]]
@@ -48,7 +48,7 @@ depends_on = ["flexio-low-rate-capture"]
 [[steps]]
 id = "lcd-integration"
 title = "Route FlexIO-captured frames through the existing LCD and line-processing path"
-status = "active"
+status = "pending"
 depends_on = ["flexio-frame-buffer"]
 
 [[steps]]
@@ -372,6 +372,16 @@ for FlexIO work.
   rate, and code complexity against the SmartDMA/EZH path.
 - Decide whether FlexIO becomes the primary path, remains an experiment, or is
   deferred in favor of EZH.
+
+## Parking Checkpoint
+
+The plan is parked as of 2026-07-10 after proving a fundamentally working
+FlexIO/eDMA live-image path and adding OSTIMER-based timing instrumentation.
+The latest measured steady frame rate is about `23.39 fps` with a VSYNC period
+around `42.75 ms`, matching earlier measurements and confirming that additional
+work is needed to reach the desired `30 fps` goal. Resume from
+`lcd-integration` and `capture-instrumentation-cleanup` when this work becomes
+active again.
 
 ## Open Questions
 
