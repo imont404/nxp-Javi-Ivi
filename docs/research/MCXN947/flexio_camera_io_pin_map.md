@@ -30,14 +30,14 @@ RTT diagnostic reports `p4_lines=200`, which matches this active image height.
 | PCLK | `P4_20` | `FLEXIO0_D28` timer clock | Shortened jumper with 330 ohm pulldown/termination | FlexIO/eDMA capture clocking |
 | HSYNC/HREF | `P4_21` | `FLEXIO0_D29` HREF gate | Shortened jumper with 330 ohm pulldown/termination | FlexIO/eDMA capture gating |
 | VSYNC | `P4_22` | GPIO IRQ frame-start trigger | Shortened jumper with 330 ohm pulldown/termination | Validated about 30 frames/sec |
-| D0 | `P4_12` | `FLEXIO0_D20` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
-| D1 | `P4_13` | `FLEXIO0_D21` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
-| D2 | `P4_14` | `FLEXIO0_D22` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
-| D3 | `P4_15` | `FLEXIO0_D23` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
-| D4 | `P4_16` | `FLEXIO0_D24` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
-| D5 | `P4_17` | `FLEXIO0_D25` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
-| D6 | `P4_18` | `FLEXIO0_D26` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
-| D7 | `P4_19` | `FLEXIO0_D27` | Camera data disconnected; pulldown termination fitted for black-frame test | eDMA reads `0x0000` sample data |
+| D0 | `P4_12` | `FLEXIO0_D20` | Camera data attached | Live image data present; ordering under review |
+| D1 | `P4_13` | `FLEXIO0_D21` | Camera data attached | Live image data present; ordering under review |
+| D2 | `P4_14` | `FLEXIO0_D22` | Camera data attached | Live image data present; ordering under review |
+| D3 | `P4_15` | `FLEXIO0_D23` | Camera data attached | Live image data present; ordering under review |
+| D4 | `P4_16` | `FLEXIO0_D24` | Camera data attached | Live image data present; ordering under review |
+| D5 | `P4_17` | `FLEXIO0_D25` | Camera data attached | Live image data present; ordering under review |
+| D6 | `P4_18` | `FLEXIO0_D26` | Camera data attached | Live image data present; ordering under review |
+| D7 | `P4_19` | `FLEXIO0_D27` | Camera data attached | Live image data present; ordering under review |
 | Spare/debug | `P4_23` | `FLEXIO0_D31` candidate | Unused | Keep available |
 
 The original sync pins `P0_5` PCLK, `P0_11` HSYNC/HREF, and `P0_4` VSYNC are
@@ -68,19 +68,18 @@ gating requires it; otherwise they can remain GPIO diagnostic/control inputs.
 
 ## Current Incremental Data-Bus Test State
 
-The current incremental test has the camera data lines disconnected from the
-Port 4 FlexIO data-bus wiring while the data inputs are held low with external
-pulldown/termination. This is intentional: with live PCLK/HREF/VSYNC and all
-data bits low, the first real FlexIO/eDMA capture should produce a black RGB565
-frame.
+The current incremental test has all camera data lines attached to the Port 4
+FlexIO data-bus wiring. The image is visible and generally good. There may be
+one or more adjacent data-bit swaps, so data-bit ordering is still under review.
 
 | Camera data signal | Current test MCU pin | Status |
 | --- | --- | --- |
-| D0-D7 | `P4_12..P4_19` / `FLEXIO0_D20..D27` | Camera data disconnected; external pulldown/termination fitted |
+| D0-D7 | `P4_12..P4_19` / `FLEXIO0_D20..D27` | Camera data attached; possible adjacent pair swap to verify |
 
-RTT confirms the current pulled-low data-bus proof: `cam_dma done` advances at
-30 frames/sec, `submit_err=0`, `cb_err=0`, `timeout=0`,
-`first=0000,0000,0000,0000`, and `sample_nz=0`.
+RTT confirms live nonzero data after wiring: `cam_dma done` advances at
+30 frames/sec, `sample_nz=64`, `submit_err=0`, and `cb_err=0`. A few timeout
+counters accumulated during the incremental live-wiring period, but they did
+not increase during the post-wiring RTT stability sample.
 
 ## Change History
 
@@ -103,3 +102,4 @@ RTT confirms the current pulled-low data-bus proof: `cam_dma done` advances at
 | 2026-07-09 14:57 EDT | Restored D0/D1 while keeping VSYNC physically separated. | Ready to rerun sync diagnostic before restoring more data lines. |
 | 2026-07-09 14:59 EDT | Reran RTT with D0/D1 restored. | VSYNC stayed below the guard but rose to about 35-43 edges/sec, with occasional `p4_lines` dips to 149 and 188. |
 | 2026-07-10 15:31 EDT | Switched active firmware to `FLEXIO_EDMA` and tested with D0-D7 disconnected/pulled low. | Full-frame DMA completes at 30 frames/sec with black samples: `done` +30/sec, `first=0000,0000,0000,0000`, `sample_nz=0`, no submit/callback errors, no timeouts. |
+| 2026-07-10 17:16 EDT | Attached all camera D0-D7 lines to `P4_12..P4_19`. | LCD shows a mostly good live image with visible color changes as each wire was added. RTT shows live nonzero data and stable 30 frame/sec DMA completions; possible adjacent data-bit swaps remain to verify. |

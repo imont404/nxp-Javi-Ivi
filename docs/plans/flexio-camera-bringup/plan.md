@@ -42,13 +42,13 @@ depends_on = ["signal-instrumentation"]
 [[steps]]
 id = "flexio-frame-buffer"
 title = "Capture usable image data into an AVC frame buffer"
-status = "active"
+status = "done"
 depends_on = ["flexio-low-rate-capture"]
 
 [[steps]]
 id = "lcd-integration"
 title = "Route FlexIO-captured frames through the existing LCD and line-processing path"
-status = "pending"
+status = "active"
 depends_on = ["flexio-frame-buffer"]
 
 [[steps]]
@@ -80,7 +80,7 @@ status = "met"
 [[exit_criteria]]
 id = "image-path"
 title = "FlexIO capture produces frame-buffer data that can be displayed or inspected"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "comparison"
@@ -279,6 +279,10 @@ for FlexIO work.
   pulldown removed/overridden, a small D0/D1 real-data subset, or a firmware
   diagnostic that records sampled words before the LCD/line-processing path
   modifies the frame.
+- Full data wiring was then completed and produced a fundamentally working live
+  image on the LCD. RTT showed 30 frame/sec DMA completions with nonzero sample
+  data and no submit/callback errors. Possible adjacent data-bit swaps remain to
+  verify.
 
 ### lcd-integration
 
@@ -286,6 +290,10 @@ for FlexIO work.
 - Reuse the existing LCD output path to inspect capture quality.
 - Keep line-processing behavior available so AVC logic can run on the captured
   frame.
+- Active integration validation now focuses on confirming data-bit/byte order,
+  checking whether the current color/image artifacts are wiring swaps or signal
+  integrity, and deciding whether more raw-frame diagnostics are needed before
+  locking the FlexIO path down.
 
 ### comparison-signoff
 
