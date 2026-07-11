@@ -328,6 +328,9 @@ The likely first questions are:
 - CMake verification passed for the committed default configuration and for a
   separate ER-TFT020-7 display-test build using
   `-DCONFIG__DISPLAY_PANEL=2 -DCONFIG__DISPLAY_TEST_MODE=1`.
+- The ER-TFT020-7 display-test image was flashed on 2026-07-11 using the
+  separate CMake test build artifact. The next bench step is to probe the
+  existing LCD SPI pins, power down, and jumper the ER-TFT020-7 breakout.
 
 ### spi-validation
 
@@ -360,11 +363,10 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Confirm the SPI wiring map and backlight/power details before moving wires.
-2. Build the test image with
-   `CONFIG__DISPLAY_PANEL=DISPLAY_PANEL_ER_TFT020_7` and
-   `CONFIG__DISPLAY_TEST_MODE=1`.
-3. Flash and verify the moving RGB565 color-bar/border/diagonal pattern on the
+1. Probe the existing LCD SPI pins with the flashed ER-TFT020-7 display-test
+   image running.
+2. Power down and wire the ER-TFT020-7 breakout after the SPI pins look sane.
+3. Power up and verify the moving RGB565 color-bar/border/diagonal pattern on the
    ER-TFT020-7 before enabling live AVC frames.
 4. Confirm RTT shows `display_test frame=N` while the pattern is updating.
 5. Disable `CONFIG__DISPLAY_TEST_MODE` and validate the normal AVC frame path
