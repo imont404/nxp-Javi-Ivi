@@ -318,6 +318,16 @@ The likely first questions are:
   frame transfer code.
 - CMake verification passed for the default old panel and for a separate
   alternate-panel build using `-DCONFIG__DISPLAY_PANEL=2`.
+- A guarded display-test mode is now available with
+  `CONFIG__DISPLAY_TEST_MODE = 1`. It defaults off and, when enabled, runs
+  before camera, FlexIO, ADC, motor, and servo init so the SPI display path can
+  be tested alone.
+- The display-test mode uses the selected `CONFIG__DISPLAY_PANEL`, draws a
+  chunked full-screen RGB565 color-bar pattern with border/diagonal references,
+  shifts the bars once per second, and emits RTT `display_test frame=` messages.
+- CMake verification passed for the committed default configuration and for a
+  separate ER-TFT020-7 display-test build using
+  `-DCONFIG__DISPLAY_PANEL=2 -DCONFIG__DISPLAY_TEST_MODE=1`.
 
 ### spi-validation
 
@@ -350,12 +360,16 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Inspect `ER-TFT020-7_Interfacing.pdf` and the `4SPI` example for IM strap
-   requirements, command sequence, and signal naming.
-2. Confirm the SPI wiring map and backlight/power details before moving wires.
-3. Add a small guarded SPI display-test mode using the current ST7789 driver.
-4. Flash and verify a synthetic RGB565 pattern before enabling live AVC frames.
-5. Leave EZH/bunny work parked until the SPI proof is complete and the proper
+1. Confirm the SPI wiring map and backlight/power details before moving wires.
+2. Build the test image with
+   `CONFIG__DISPLAY_PANEL=DISPLAY_PANEL_ER_TFT020_7` and
+   `CONFIG__DISPLAY_TEST_MODE=1`.
+3. Flash and verify the moving RGB565 color-bar/border/diagonal pattern on the
+   ER-TFT020-7 before enabling live AVC frames.
+4. Confirm RTT shows `display_test frame=N` while the pattern is updating.
+5. Disable `CONFIG__DISPLAY_TEST_MODE` and validate the normal AVC frame path
+   on the ER-TFT020-7 once the synthetic pattern is correct.
+6. Leave EZH/bunny work parked until the SPI proof is complete and the proper
    project-specific EZH/bunny references are supplied.
 
 ## Open Questions

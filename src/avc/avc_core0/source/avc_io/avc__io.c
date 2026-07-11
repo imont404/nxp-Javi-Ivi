@@ -18,6 +18,94 @@ button_t left_btn, right_btn, center_btn;
 
 void avc_io__uart_init();
 
+#if CONFIG__DISPLAY_TEST_MODE
+static uint16_t display_test_rows[eGFX_PHYSICAL_SCREEN_SIZE_X * 16U];
+
+static uint16_t avc__display_test_color(uint32_t x, uint32_t y, uint32_t phase)
+{
+    static const uint16_t bars[] = {
+        0xF800, /* red */
+        0x07E0, /* green */
+        0x001F, /* blue */
+        0xFFFF, /* white */
+        0x0000, /* black */
+        0xFFE0, /* yellow */
+        0xF81F, /* magenta */
+        0x07FF  /* cyan */
+    };
+
+    if ((x == 0U) || (x == (eGFX_PHYSICAL_SCREEN_SIZE_X - 1U)) ||
+        (y == 0U) || (y == (eGFX_PHYSICAL_SCREEN_SIZE_Y - 1U)))
+    {
+        return 0xFFFF;
+    }
+
+    if ((x == y) || (x == ((eGFX_PHYSICAL_SCREEN_SIZE_Y - 1U) - y)))
+    {
+        return 0x0000;
+    }
+
+    uint32_t bar = ((x * 8U) / eGFX_PHYSICAL_SCREEN_SIZE_X + phase) & 0x07U;
+    uint16_t color = bars[bar];
+
+    if ((y & 0x20U) != 0U)
+    {
+        color ^= 0xFFFFU;
+    }
+
+    return color;
+}
+
+static void avc__display_test_draw(uint32_t phase)
+{
+    const uint32_t rows_per_chunk = 16U;
+
+    for (uint32_t y0 = 0U; y0 < eGFX_PHYSICAL_SCREEN_SIZE_Y; y0 += rows_per_chunk)
+    {
+        uint32_t rows = eGFX_PHYSICAL_SCREEN_SIZE_Y - y0;
+        if (rows > rows_per_chunk)
+        {
+            rows = rows_per_chunk;
+        }
+
+        for (uint32_t y = 0U; y < rows; y++)
+        {
+            for (uint32_t x = 0U; x < eGFX_PHYSICAL_SCREEN_SIZE_X; x++)
+            {
+                display_test_rows[(y * eGFX_PHYSICAL_SCREEN_SIZE_X) + x] =
+                    avc__display_test_color(x, y0 + y, phase);
+            }
+        }
+
+        eGFX_DumpRaw((uint8_t *)display_test_rows,
+                     rows * eGFX_PHYSICAL_SCREEN_SIZE_X * sizeof(display_test_rows[0]),
+                     0,
+                     eGFX_PHYSICAL_SCREEN_SIZE_X - 1U,
+                     y0,
+                     y0 + rows - 1U);
+    }
+}
+
+static void avc__display_test_mode_run(void)
+{
+    uint32_t phase = 0U;
+
+    (void)DEBUG("Display test mode active: panel=%u test=%u te=%u\r\n",
+                CONFIG__DISPLAY_PANEL,
+                CONFIG__DISPLAY_TEST_MODE,
+                CONFIG__DISPLAY_TE_ENABLE);
+
+    eGFX_InitDriver(0);
+
+    while (1)
+    {
+        avc__display_test_draw(phase++);
+        (void)DEBUG("display_test frame=%u\r\n", phase);
+        e_tick__delay_ms(1000);
+    }
+}
+#endif
+
 
 void LP_FLEXCOMM4_IRQHandler(void)
 {
@@ -117,6 +205,9 @@ void avc__init()
 	NVIC_EnableIRQ(MAILBOX_IRQn);
 
 
+#if CONFIG__DISPLAY_TEST_MODE
+    avc__display_test_mode_run();
+#endif
 
     avc_camera__init();
     eGFX_InitDriver(0);

@@ -46,6 +46,10 @@
 #define CONFIG__DISPLAY_TE_ENABLE				(0)
 #endif
 
+#ifndef CONFIG__DISPLAY_TEST_MODE
+#define CONFIG__DISPLAY_TEST_MODE				(0)
+#endif
+
 
 //#define CONFIG__OV7670_IS_160x120 (1)           // This only applies to the OV7670
 
