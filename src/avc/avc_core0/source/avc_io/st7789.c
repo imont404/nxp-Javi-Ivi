@@ -8,6 +8,216 @@
 const unsigned char zifu[];
 const unsigned int pic[];
 
+static void ST7789_ResetPanel(void)
+{
+	LCD_RES__SET;
+	delayms(1);
+	LCD_RES__CLR;
+	delayms(10);
+	LCD_RES__SET;
+	delayms(120);
+}
+
+static uint8_t ST7789_GetMadctl(void)
+{
+#if defined(CONFIG_DISPLAY_ORIENTATION) && (CONFIG_DISPLAY_ORIENTATION == PORTRAIT)
+	return 0x00;
+#elif defined(CONFIG_DISPLAY_ORIENTATION) && (CONFIG_DISPLAY_ORIENTATION == LANDSCAPE)
+	return 0x60;
+#else
+	#error Invalid CONFIG_DISPLAY_ORIENTATION.
+#endif
+}
+
+static void ST7789_WriteCommonFormat(void)
+{
+	Write_Cmd(0x36);
+	Write_Cmd_Data(ST7789_GetMadctl());
+
+#if defined(CONFIG_DISPLAY_ENDIANESS) && (CONFIG_DISPLAY_ENDIANESS == LITTLE_ENDIAN)
+	Write_Cmd(0xB0);
+	Write_Cmd_Data(0x00);
+	Write_Cmd_Data(0x08);
+#elif defined(CONFIG_DISPLAY_ENDIANESS) && (CONFIG_DISPLAY_ENDIANESS == BIG_ENDIAN)
+	/* Use controller default byte order. */
+#else
+	#error Invalid CONFIG_DISPLAY_ENDIANESS.
+#endif
+
+	Write_Cmd(0x3A);
+	Write_Cmd_Data(0x05);
+}
+
+static void ST7789_WriteTeConfig(void)
+{
+#if CONFIG__DISPLAY_TE_ENABLE
+	Write_Cmd(0x35);
+	Write_Cmd_Data(0x00);
+#else
+	Write_Cmd(0x34);
+#endif
+}
+
+static void ST7789_Initial_ER_TFT020_3(void)
+{
+	ST7789_ResetPanel();
+	ST7789_WriteCommonFormat();
+
+	Write_Cmd(0xB2);
+	Write_Cmd_Data(0x0C);
+	Write_Cmd_Data(0x0C);
+	Write_Cmd_Data(0x00);
+	Write_Cmd_Data(0x33);
+	Write_Cmd_Data(0x33);
+
+	Write_Cmd(0xB7);
+	Write_Cmd_Data(0x44);
+
+	Write_Cmd(0xBB);
+	Write_Cmd_Data(0x24);
+
+	Write_Cmd(0xC0);
+	Write_Cmd_Data(0x2C);
+
+	Write_Cmd(0xC2);
+	Write_Cmd_Data(0x01);
+
+	Write_Cmd(0xC3);
+	Write_Cmd_Data(0x13);
+
+	Write_Cmd(0xC4);
+	Write_Cmd_Data(0x20);
+
+	Write_Cmd(0xC6);
+	Write_Cmd_Data(0x0F);
+
+	Write_Cmd(0xD0);
+	Write_Cmd_Data(0xA4);
+	Write_Cmd_Data(0xA1);
+
+	Write_Cmd(0xD6);
+	Write_Cmd_Data(0xA1);
+
+	Write_Cmd(0xE0);
+	Write_Cmd_Data(0xF0);
+	Write_Cmd_Data(0x00);
+	Write_Cmd_Data(0x04);
+	Write_Cmd_Data(0x04);
+	Write_Cmd_Data(0x04);
+	Write_Cmd_Data(0x05);
+	Write_Cmd_Data(0x29);
+	Write_Cmd_Data(0x33);
+	Write_Cmd_Data(0x3E);
+	Write_Cmd_Data(0x38);
+	Write_Cmd_Data(0x12);
+	Write_Cmd_Data(0x12);
+	Write_Cmd_Data(0x28);
+	Write_Cmd_Data(0x30);
+
+	Write_Cmd(0xE1);
+	Write_Cmd_Data(0xF0);
+	Write_Cmd_Data(0x07);
+	Write_Cmd_Data(0x0A);
+	Write_Cmd_Data(0x0D);
+	Write_Cmd_Data(0x0B);
+	Write_Cmd_Data(0x07);
+	Write_Cmd_Data(0x28);
+	Write_Cmd_Data(0x33);
+	Write_Cmd_Data(0x3E);
+	Write_Cmd_Data(0x36);
+	Write_Cmd_Data(0x14);
+	Write_Cmd_Data(0x14);
+	Write_Cmd_Data(0x29);
+	Write_Cmd_Data(0x32);
+
+	Write_Cmd(0x21);
+	Write_Cmd(0x11);
+	delayms(120);
+
+	Write_Cmd(0x29);
+}
+
+static void ST7789_Initial_ER_TFT020_7(void)
+{
+	ST7789_ResetPanel();
+
+	Write_Cmd(0x11);
+	delayms(120);
+
+	Write_Cmd(0xB2);
+	Write_Cmd_Data(0x0C);
+	Write_Cmd_Data(0x0C);
+	Write_Cmd_Data(0x00);
+	Write_Cmd_Data(0x33);
+	Write_Cmd_Data(0x33);
+
+	ST7789_WriteTeConfig();
+	ST7789_WriteCommonFormat();
+
+	Write_Cmd(0xB7);
+	Write_Cmd_Data(0x06);
+
+	Write_Cmd(0xBB);
+	Write_Cmd_Data(0x1A);
+
+	Write_Cmd(0xC0);
+	Write_Cmd_Data(0x2C);
+
+	Write_Cmd(0xC2);
+	Write_Cmd_Data(0x01);
+
+	Write_Cmd(0xC3);
+	Write_Cmd_Data(0x05);
+
+	Write_Cmd(0xC6);
+	Write_Cmd_Data(0x0F);
+
+	Write_Cmd(0xD0);
+	Write_Cmd_Data(0xA7);
+
+	Write_Cmd(0xD0);
+	Write_Cmd_Data(0xA4);
+	Write_Cmd_Data(0xA1);
+
+	Write_Cmd(0xD6);
+	Write_Cmd_Data(0xA1);
+
+	Write_Cmd(0xE0);
+	Write_Cmd_Data(0x0F);
+	Write_Cmd_Data(0x12);
+	Write_Cmd_Data(0x14);
+	Write_Cmd_Data(0x08);
+	Write_Cmd_Data(0x06);
+	Write_Cmd_Data(0x23);
+	Write_Cmd_Data(0x2F);
+	Write_Cmd_Data(0x44);
+	Write_Cmd_Data(0x45);
+	Write_Cmd_Data(0x2A);
+	Write_Cmd_Data(0x16);
+	Write_Cmd_Data(0x16);
+	Write_Cmd_Data(0x25);
+	Write_Cmd_Data(0x28);
+
+	Write_Cmd(0xE1);
+	Write_Cmd_Data(0x0F);
+	Write_Cmd_Data(0x0F);
+	Write_Cmd_Data(0x12);
+	Write_Cmd_Data(0x06);
+	Write_Cmd_Data(0x04);
+	Write_Cmd_Data(0x00);
+	Write_Cmd_Data(0x2E);
+	Write_Cmd_Data(0x43);
+	Write_Cmd_Data(0x44);
+	Write_Cmd_Data(0x3B);
+	Write_Cmd_Data(0x18);
+	Write_Cmd_Data(0x19);
+	Write_Cmd_Data(0x26);
+	Write_Cmd_Data(0x29);
+
+	Write_Cmd(0x21);
+	Write_Cmd(0x29);
+}
+
 //===============================================================
 // all display one colour
 void ClearScreen(unsigned int bColor)
@@ -259,106 +469,13 @@ void ST7789_Initial(void)
 
 {	 
 
-//-----------------------------------ST7789V reset sequence------------------------------------// 
-	LCD_RES__SET; 
-	delayms(1); //Delay 1ms 
-	LCD_RES__CLR; 
-	delayms(10); //Delay 10ms 
-	LCD_RES__SET; 
-	delayms(120); //Delay 120ms 
-
-
-#if defined(CONFIG_DISPLAY_ORIENTATION) && (CONFIG_DISPLAY_ORIENTATION == PORTRAIT)
- 	Write_Cmd(0x36); 
-	Write_Cmd_Data(0x00); 
-#elif defined(CONFIG_DISPLAY_ORIENTATION) && (CONFIG_DISPLAY_ORIENTATION == LANDSCAPE)
- 	Write_Cmd(0x36); 
-	Write_Cmd_Data(0b001100000); 
+#if CONFIG__DISPLAY_PANEL == DISPLAY_PANEL_ER_TFT020_3
+	ST7789_Initial_ER_TFT020_3();
+#elif CONFIG__DISPLAY_PANEL == DISPLAY_PANEL_ER_TFT020_7
+	ST7789_Initial_ER_TFT020_7();
+#else
+	#error Invalid CONFIG__DISPLAY_PANEL.
 #endif
-
-
-#if defined(CONFIG_DISPLAY_ENDIANESS) && (CONFIG_DISPLAY_ENDIANESS == LITTLE_ENDIAN)
-	Write_Cmd(0xB0);
-	Write_Cmd_Data(0);
-	Write_Cmd_Data(8);
-#endif
-
-    Write_Cmd(0x3A);
-	Write_Cmd_Data(0x05);
-
- 	Write_Cmd(0xB2);
-	Write_Cmd_Data(0x0C);
-	Write_Cmd_Data(0x0C);
-	Write_Cmd_Data(0x00);
-	Write_Cmd_Data(0x33);
-	Write_Cmd_Data(0x33); 
-
- 	Write_Cmd(0xB7); 
-	Write_Cmd_Data(0x44);  
-
- 	Write_Cmd(0xBB);
-	Write_Cmd_Data(0x24);
-
- 	Write_Cmd(0xC0);
-	Write_Cmd_Data(0x2C);
-
- 	Write_Cmd(0xC2);
-	Write_Cmd_Data(0x01);
-
- 	Write_Cmd(0xC3);
-	Write_Cmd_Data(0x13);   
-
- 	Write_Cmd(0xC4);
-	Write_Cmd_Data(0x20);  
-
- 	Write_Cmd(0xC6); 
-	Write_Cmd_Data(0x0F);    
-
- 	Write_Cmd(0xD0); 
-	Write_Cmd_Data(0xA4);
-	Write_Cmd_Data(0xA1);
-
-  	Write_Cmd(0xD6); 
-	Write_Cmd_Data(0xA1);
-
- 	Write_Cmd(0xE0);
-	Write_Cmd_Data(0xF0);
-	Write_Cmd_Data(0x00);
-	Write_Cmd_Data(0x04);
-	Write_Cmd_Data(0x04);
-	Write_Cmd_Data(0x04);
-	Write_Cmd_Data(0x05);
-	Write_Cmd_Data(0x29);
-	Write_Cmd_Data(0x33);
-	Write_Cmd_Data(0x3E);
-	Write_Cmd_Data(0x38);
-	Write_Cmd_Data(0x12);
-	Write_Cmd_Data(0x12);
-	Write_Cmd_Data(0x28);
-	Write_Cmd_Data(0x30);
-
- 	Write_Cmd(0xE1);
-	Write_Cmd_Data(0xF0);
-	Write_Cmd_Data(0x07);
-	Write_Cmd_Data(0x0A);
-	Write_Cmd_Data(0x0D);
-	Write_Cmd_Data(0x0B);
-	Write_Cmd_Data(0x07);
-	Write_Cmd_Data(0x28);
-	Write_Cmd_Data(0x33);
-	Write_Cmd_Data(0x3E);
-	Write_Cmd_Data(0x36);
-	Write_Cmd_Data(0x14);
-	Write_Cmd_Data(0x14);
-	Write_Cmd_Data(0x29);
-	Write_Cmd_Data(0x32);
-
-  	Write_Cmd(0x21); 
- 	Write_Cmd(0x11); 	
-	delayms(120); 
-
-	Write_Cmd(0x29);
-
 }
 
 void ST7789__display_img(uint8_t * image_buff)

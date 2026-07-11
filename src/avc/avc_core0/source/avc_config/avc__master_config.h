@@ -30,6 +30,22 @@
 
 #define CONFIG__CAMERA_RESOLUTION				FSL_VIDEO_RESOLUTION(320, 200)
 
+/*
+ * LCD panel selection. Both supported panels use the same AVC LCD SPI pins.
+ * Change CONFIG__DISPLAY_PANEL to DISPLAY_PANEL_ER_TFT020_7 for the alternate
+ * BuyDisplay 2.0 inch 240x320 ST7789 panel.
+ */
+#define DISPLAY_PANEL_ER_TFT020_3				1
+#define DISPLAY_PANEL_ER_TFT020_7				2
+
+#ifndef CONFIG__DISPLAY_PANEL
+#define CONFIG__DISPLAY_PANEL					(DISPLAY_PANEL_ER_TFT020_3)
+#endif
+
+#ifndef CONFIG__DISPLAY_TE_ENABLE
+#define CONFIG__DISPLAY_TE_ENABLE				(0)
+#endif
+
 
 //#define CONFIG__OV7670_IS_160x120 (1)           // This only applies to the OV7670
 

@@ -12,13 +12,13 @@ status = "done"
 [[steps]]
 id = "spi-pin-strategy"
 title = "Map ER-TFT020-7 4-wire SPI mode onto the existing AVC LCD pins"
-status = "pending"
+status = "done"
 depends_on = ["collateral-intake"]
 
 [[steps]]
 id = "spi-bringup"
 title = "Bring up the ER-TFT020-7 through the current ST7789 SPI display path"
-status = "pending"
+status = "active"
 depends_on = ["spi-pin-strategy"]
 
 [[steps]]
@@ -58,7 +58,7 @@ status = "met"
 [[exit_criteria]]
 id = "spi-pin-plan"
 title = "SPI wiring, IM strap state, power, reset, backlight, and unused pins are documented before wiring"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "spi-display-proof"
@@ -294,6 +294,14 @@ The likely first questions are:
   intended LCD power/backlight enable.
 - Pick a temporary MCXN947 input for TE that does not disturb the current camera
   FlexIO wiring.
+- Completed the firmware-side pin strategy: the ER-TFT020-7 path deliberately
+  reuses the existing LCD SPI, D/C, and reset pins. No pin mux or board I/O
+  changes were made for this driver step.
+- The current old display remains the default firmware panel:
+  `CONFIG__DISPLAY_PANEL = DISPLAY_PANEL_ER_TFT020_3`.
+- The alternate panel is selected with:
+  `CONFIG__DISPLAY_PANEL = DISPLAY_PANEL_ER_TFT020_7`.
+- TE defaults disabled in firmware with `CONFIG__DISPLAY_TE_ENABLE = 0`.
 
 ### spi-bringup
 
@@ -302,6 +310,14 @@ The likely first questions are:
   parameters needed for the ER-TFT020-7 panel geometry.
 - Use a deterministic RGB565 fill/pattern before routing live camera data.
 - Keep all wiring observations in this plan log before each commit.
+- First firmware slice is in place. `st7789.c` now dispatches the ST7789 init
+  sequence based on `CONFIG__DISPLAY_PANEL`, with separate command tables for
+  the old ER-TFT020-3 path and the alternate ER-TFT020-7 path.
+- Both panel selections share the same LPSPI1 transfer path, GPIO D/C pin, GPIO
+  reset pin, orientation helper, RGB565 pixel format, and existing AVC/eGFX
+  frame transfer code.
+- CMake verification passed for the default old panel and for a separate
+  alternate-panel build using `-DCONFIG__DISPLAY_PANEL=2`.
 
 ### spi-validation
 

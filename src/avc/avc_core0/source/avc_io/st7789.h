@@ -2,14 +2,21 @@
 #define ST7789_H_
 
 #include "stdint.h"
+#include "avc__master_config.h"
 
 #define PORTRAIT 1
 #define LANDSCAPE 2
+
+#ifndef CONFIG_DISPLAY_ORIENTATION
 #define CONFIG_DISPLAY_ORIENTATION	LANDSCAPE	
+#endif
 
 #define LITTLE_ENDIAN   1
 #define BIG_ENDIAN      2
+
+#ifndef CONFIG_DISPLAY_ENDIANESS
 #define CONFIG_DISPLAY_ENDIANESS    LITTLE_ENDIAN
+#endif
 
 #define LCD_RS__SET		GPIO_PinWrite(GPIO0,26,1)
 #define LCD_RS__CLR		GPIO_PinWrite(GPIO0,26,0)
