@@ -10,13 +10,24 @@ display for the AVC FRDM-MCXN947 project.
 
 Automated downloads from `buydisplay.com` were attempted on 2026-07-10 and were
 blocked by Cloudflare/HTTP 403 responses. The exact URLs are recorded in
-`source_manifest.md` so the files can be added manually or through a later
-working fetch path.
+`source_manifest.md`.
 
-Current local file:
+The core product-page files were later downloaded through a browser to
+`C:\Users\EliHughes\Downloads`, copied into `downloads`, and the tutorial ZIP
+was extracted into `extracted`.
 
-- `downloads/ST7789vw_existing_local_copy.pdf` copied from the existing repo
-  file `docs/lcd/ST7789vw.pdf`.
+Current local files:
+
+- `downloads/ER-TFT020-7_Datasheet.pdf`
+- `downloads/ST7789.pdf`
+- `downloads/DS-CST816S_DS_V1.3.pdf`
+- `downloads/ER-CON22HT-1.pdf`
+- `downloads/ER-TFT020-7_8051_Tutorial.zip`
+- `downloads/ST7789vw_existing_local_copy.pdf`, copied from the existing repo
+  file `docs/lcd/ST7789vw.pdf` before the fresh download was available.
+- `extracted/ER-TFT020-7_8051_Tutorial`, extracted from the 8051 tutorial ZIP.
+- `extracted/ER-TFT020-7_8051_Tutorial/ER-TFT020-7_Interfacing_page1.png`,
+  a rendered view of the one-page interfacing schematic for quick inspection.
 
 ## Datasheet Snapshot
 
@@ -114,11 +125,57 @@ Tentative SPI reuse map for planning:
 This map is not yet a wiring instruction. Confirm the FRDM/shield header route,
 the existing display cable/adapter, and the ER-TFT020-7 IM strap state first.
 
+## Downloaded Example Findings
+
+The extracted 8051 tutorial includes separate projects:
+
+- `ER-TFT020-7_3SPI`
+- `ER-TFT020-7_4SPI`
+- `ER-TFT020-7_8BIT`
+- `ER-TFT020-7_Interfacing.pdf`
+
+The `4SPI` example confirms the expected four display control signals in the
+driver code:
+
+- `CS`: chip select, active low.
+- `RS`: data/command select, high for data and low for command.
+- `SCK`: serial clock.
+- `SDI`: serial data.
+- `RES`: reset.
+
+The `ER-TFT020-7_Interfacing.pdf` schematic confirms the reference 4-wire SPI
+strap and signal map:
+
+| ER-TFT020-7 signal | 4-wire SPI reference connection |
+| --- | --- |
+| `IM2` | `VDD3.3V` |
+| `IM1` | `VDD3.3V` |
+| `IM0` | `GND` |
+| `D7..D0` | Tied low in the reference schematic |
+| `/RD` | Tied low in the reference schematic |
+| `/WR(DC)` | Data/command select |
+| `DC(SCL)` | Serial clock |
+| `CS` | Active-low chip select |
+| `SDA` | Serial data input/output |
+| `RST` | Reset |
+| `TE` | Left available as tearing-effect output |
+
+The `4SPI` reference init sequence uses `0x35` with parameter `0x00`, so the
+vendor example enables TE by default. It also uses `0x36 = 0x00`,
+`0x3A = 0x05`, and `0x21` before `0x29`.
+
+The `8BIT` example is important for the later EZH path: it labels the interface
+as `8080-8BIT`, uses an `_WR` write strobe, exposes `_RD`, and writes command
+or data bytes on an 8-bit data bus. The interfacing schematic labels this as
+`8080 Series I`. That conflicts with the module datasheet's `6800 8-bit
+Parallel` wording, so the parallel bus should be treated as likely 8080-style
+until final shield routing.
+
 ## Initial Test Strategy
 
 1. Confirm the exact module and adapter hardware, including touch/no-touch and
    backlight wiring.
-2. Resolve IM2..IM0 straps for 4-wire SPI.
+2. Use `IM2=VDD`, `IM1=VDD`, and `IM0=GND` for 4-wire SPI.
 3. Wire only power, backlight, reset, CS, clock, data, D/C, and ground for the
    first SPI test. Leave D0..D7 and TE disconnected unless needed.
 4. Add a guarded firmware test mode that drives a known RGB565 pattern through

@@ -53,7 +53,7 @@ status = "met"
 [[exit_criteria]]
 id = "collateral-local"
 title = "Required PDFs and demo code are available locally or their download blocker is resolved"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "spi-pin-plan"
@@ -132,15 +132,25 @@ display updates or correlate display timing with camera VSYNC.
 
 The source catalog exists in `docs/research/ER-TFT020-7/source_manifest.md`.
 Automated shell downloads from `buydisplay.com` were blocked by the site's
-Cloudflare challenge on 2026-07-10. The research folder records the exact
-source URLs and includes a local copy of the existing ST7789 datasheet copied
-from `docs/lcd/ST7789vw.pdf` as
-`docs/research/ER-TFT020-7/downloads/ST7789vw_existing_local_copy.pdf`.
+Cloudflare challenge on 2026-07-10, but the core collateral was later downloaded
+through a browser and copied into `docs/research/ER-TFT020-7/downloads`.
 
-This means the plan can proceed with initial firmware strategy, but the display
-datasheet, connector PDF, touch PDF, demo ZIP, and dev-board schematics still
-need to be downloaded manually through a browser or through a later working
-fetch path before the wiring plan is treated as final.
+Local core collateral now includes:
+
+- `ER-TFT020-7_Datasheet.pdf`
+- `ST7789.pdf`
+- `DS-CST816S_DS_V1.3.pdf`
+- `ER-CON22HT-1.pdf`
+- `ER-TFT020-7_8051_Tutorial.zip`
+
+The tutorial ZIP is extracted under
+`docs/research/ER-TFT020-7/extracted/ER-TFT020-7_8051_Tutorial`. The older
+`ST7789vw_existing_local_copy.pdf` remains as a reference copy from the repo's
+pre-existing `docs/lcd/ST7789vw.pdf`.
+
+The dev-board user guide and schematics are still useful supplementary material
+for the later parallel/EZH work, but they are no longer blocking the first SPI
+bringup.
 
 ## Working Strategy
 
@@ -182,6 +192,12 @@ FPC pins 7..14 (`D7..D0`) are not part of the serial data path. The backlight is
 specified as a separate `A/K` pair and should be current-limited according to
 the module data.
 
+The downloaded `ER-TFT020-7_Interfacing.pdf` reference schematic gives a more
+specific 4-wire SPI setup for first bringup: `IM2=VDD`, `IM1=VDD`, `IM0=GND`,
+FPC pins `D7..D0` tied low, FPC pin 15 `/RD` tied low in the serial reference,
+FPC pin 16 `/WR(DC)` used as D/C, FPC pin 17 `DC(SCL)` used as SCK, FPC pin 18
+as active-low CS, and FPC pin 21 as serial data.
+
 ### Phase 2: SPI validation with AVC data
 
 After basic color bars work, use the existing eGFX display path and camera view
@@ -202,6 +218,18 @@ datasheet and 8051 dev-board guide both describe the exposed interface as
 8080-series and serial interface tables, while the module-level collateral
 appears to use 6800 wording. Resolve this before assigning Rev B pins or
 writing a new EZH/bunny build.
+
+The downloaded 8051 tutorial adds an important data point: its `ER-TFT020-7_8BIT`
+example labels the display interface as `8080-8BIT` and the code drives an
+8080-style `_WR` strobe with `_RD` available. Treat the module datasheet's
+`6800 8-bit Parallel` wording as suspect until the interfacing PDF or schematic
+is checked directly.
+
+The interfacing schematic confirms the parallel reference is `8080 Series I`.
+
+This phase is intentionally deferred. Do not spend implementation time on the
+EZH/bunny display writer until the SPI path is proven and the project-specific
+EZH/bunny build references are available.
 
 The parallel phase should use the demo ZIP, dev-board user guide, and schematic
 to determine:
@@ -241,16 +269,29 @@ The likely first questions are:
 - Recorded the automated-download blocker in the plan log and source manifest.
 - Copied the existing local ST7789 datasheet into the research downloads folder
   as a temporary local reference.
+- Imported the browser-downloaded core collateral from
+  `C:\Users\EliHughes\Downloads`, including the module datasheet, ST7789
+  datasheet, touch-controller datasheet, connector drawing, and 8051 tutorial
+  ZIP.
+- Extracted the 8051 tutorial. It contains `3SPI`, `4SPI`, and `8BIT` Keil C51
+  projects plus `ER-TFT020-7_Interfacing.pdf`.
+- Rendered the one-page interfacing schematic as
+  `docs/research/ER-TFT020-7/extracted/ER-TFT020-7_8051_Tutorial/ER-TFT020-7_Interfacing_page1.png`
+  for quick visual inspection.
+- The schematic confirms the first SPI target strap state:
+  `IM2=VDD`, `IM1=VDD`, `IM0=GND`.
 
 ### spi-pin-strategy
 
 - Confirm the current FRDM/shield LCD header pinout against the ER-TFT020-7 FPC
   and any adapter board before wiring.
-- Resolve IM2..IM0 strap state for 4-wire SPI. The ST7789 4-wire serial table
-  uses an `IM[3:0]` state; the module exposes only IM2..IM0, so the hidden or
-  fixed IM3 state must be understood from the module or demo collateral.
-- Confirm `RD` inactive level, backlight current limiting, and whether `PIO1_12`
-  is already the intended LCD power/backlight enable.
+- Use the vendor interfacing schematic's 4-wire SPI strap state:
+  `IM2=VDD`, `IM1=VDD`, `IM0=GND`.
+- Confirm whether tying `/RD` low as shown in the vendor serial reference is
+  required, harmless, or simply a schematic convention before final shield
+  routing.
+- Confirm backlight current limiting and whether `PIO1_12` is already the
+  intended LCD power/backlight enable.
 - Pick a temporary MCXN947 input for TE that does not disturb the current camera
   FlexIO wiring.
 
@@ -275,6 +316,8 @@ The likely first questions are:
 
 - Do not start bunny/EZH implementation until the module-level bus timing is
   verified.
+- Project-specific EZH/bunny build documentation will be supplied when this
+  phase becomes active; keep the current work focused on SPI bringup.
 - Prefer the simplest write-only bus first: D0..D7, write strobe, D/C, CS,
   reset, backlight, and optional TE. Keep readback as a second-stage feature
   unless it is needed for panel identification.
@@ -291,13 +334,13 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Get the blocked BuyDisplay files into `docs/research/ER-TFT020-7/downloads`
-   through a browser or another non-interactive fetch path.
-2. Extract the 8051 demo ZIP and inspect the interface-mode straps, command
-   sequence, and schematic pin naming.
-3. Confirm the SPI wiring map and backlight/power details before moving wires.
-4. Add a small guarded SPI display-test mode using the current ST7789 driver.
-5. Flash and verify a synthetic RGB565 pattern before enabling live AVC frames.
+1. Inspect `ER-TFT020-7_Interfacing.pdf` and the `4SPI` example for IM strap
+   requirements, command sequence, and signal naming.
+2. Confirm the SPI wiring map and backlight/power details before moving wires.
+3. Add a small guarded SPI display-test mode using the current ST7789 driver.
+4. Flash and verify a synthetic RGB565 pattern before enabling live AVC frames.
+5. Leave EZH/bunny work parked until the SPI proof is complete and the proper
+   project-specific EZH/bunny references are supplied.
 
 ## Open Questions
 
