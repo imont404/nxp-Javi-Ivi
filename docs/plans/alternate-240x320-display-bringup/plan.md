@@ -249,6 +249,10 @@ to determine:
   optional TE on Rev B.
 - Whether the EZH program should generate GPIO strobes directly, use a timer or
   DMA assist, or remain unnecessary if SPI is already adequate.
+- Before the EZH implementation, make a CM33 C bit-bang proof on the same
+  proposed 8080 bus pins. This validates the panel straps, `RD`/`CS`
+  treatment, `RS` polarity, `WR` polarity, byte order, and wiring while keeping
+  EZH timing/tooling out of the first electrical test.
 
 ### Phase 4: TE timing evaluation
 
@@ -409,6 +413,25 @@ The likely first questions are:
   reference for the bounded EZH proof: command writes set `RS=0`, data writes
   set `RS=1`, both write one byte to the data bus before pulsing `_WR`, and
   RGB565 pixel data is sent high byte first then low byte.
+- The first I/O map is recorded in
+  `docs/research/ER-TFT020-7/parallel_ezh_io_map.md`. D0-D7 should reuse the
+  original shared camera/LCD shield nets on `SMARTDMA_PIO0..7`:
+  `P1_4`, `P1_5`, `P1_6`, `P1_7`, `P3_4`, `P3_5`, `P1_10`, and `P1_11`.
+  These are distinct from the current FlexIO camera validation wiring on
+  `P4_12..P4_19`.
+- Tentative control reuse is `WR=P0_4`, `RS=P0_11`, and `RST=P1_19`.
+  `P1_19` is already the shared camera reset / LCD D15 net and has
+  `SMARTDMA_PIO15` available. The old sync-net labels need one confirmation
+  before Rev B routing: the netlist says `P0_11` is old HSYNC and `P0_4` is old
+  VSYNC, while the latest proposed text used the opposite names for the
+  pin-exact `WR`/`RS` assignment. Also decide whether to use existing
+  design-file LCD controls `P2_0/EZH_LCD_WR`, `P1_22/EZH_LCD_DC`, and
+  `P4_4/EZH_LCD_CS` as alternatives or keep them out of this scoped proof.
+- The next implementation slice should be a CM33 C bit-bang display proof, not
+  the EZH port yet. Use the same candidate pins and the vendor 8-bit write
+  order, draw a known RGB565 pattern, and scope the control/data lines. Once
+  that works, port the known-good byte-write sequence into a bounded
+  EZH/bunny program with explicit `WR` pacing and `EZH2ARM` completion.
 
 ### te-sync-evaluation
 
@@ -420,12 +443,17 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Map candidate MCXN947 SmartDMA PIO pins for the ER-TFT020-7 parallel bus.
-2. Implement the smallest LCD EZH command proof with conservative `WR` pacing:
+1. Resolve the `P0_4`/`P0_11` `WR`/`RS` assignment and choose the `CS`/`RD`
+   treatment before wiring.
+2. Implement a CM33 C bit-bang 8080 proof using the candidate bus pins:
+   initialize the panel, write a fixed RGB565 test pattern, and scope `WR`,
+   `RS`, `CS`, and at least one data line.
+3. Port the known-good byte-write sequence to the smallest LCD EZH command
+   proof with conservative `WR` pacing:
    write one command/data burst, signal completion through `EZH2ARM`, and
    stop/hold.
-3. Scope `WR`, `RS`, `CS`, and at least one data line before raising the write
-   rate.
+4. Raise the parallel write rate only after the scoped CM33 and EZH waveforms
+   satisfy the ST7789 timing margins.
 
 ## Open Questions
 

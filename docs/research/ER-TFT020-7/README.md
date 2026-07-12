@@ -25,6 +25,8 @@ Current local files:
 - `downloads/ER-TFT020-7_8051_Tutorial.zip`
 - `downloads/ST7789vw_existing_local_copy.pdf`, copied from the existing repo
   file `docs/lcd/ST7789vw.pdf` before the fresh download was available.
+- `parallel_ezh_io_map.md`, the working parallel LCD I/O mapping for the
+  FRDM-MCXN947 AVC proof.
 - `extracted/ER-TFT020-7_8051_Tutorial`, extracted from the 8051 tutorial ZIP.
 - `extracted/ER-TFT020-7_8051_Tutorial/ER-TFT020-7_Interfacing_page1.png`,
   a rendered view of the one-page interfacing schematic for quick inspection.
@@ -201,6 +203,8 @@ scope before increasing the write rate.
 7. After SPI is stable, wire TE to a spare input and timestamp it.
 8. Use the demo ZIP and schematics to decide whether the parallel path is 6800,
    8080, or a naming mismatch before assigning EZH pins.
+9. Validate the proposed 8080 bus first with a CM33 C bit-bang test pattern,
+   then port the known-good byte-write sequence to EZH/bunny_build.
 
 ## Risks
 
