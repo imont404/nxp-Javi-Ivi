@@ -21,42 +21,22 @@ void avc_io__uart_init();
 #if CONFIG__DISPLAY_TEST_MODE
 static uint16_t display_test_rows[eGFX_PHYSICAL_SCREEN_SIZE_X * 16U];
 
-static uint16_t avc__display_test_color(uint32_t x, uint32_t y, uint32_t phase)
+static uint16_t avc__display_test_color(uint32_t x)
 {
-    static const uint16_t bars[] = {
-        0xF800, /* red */
-        0x07E0, /* green */
-        0x001F, /* blue */
-        0xFFFF, /* white */
-        0x0000, /* black */
-        0xFFE0, /* yellow */
-        0xF81F, /* magenta */
-        0x07FF  /* cyan */
-    };
+    uint32_t band = (x * 3U) / eGFX_PHYSICAL_SCREEN_SIZE_X;
 
-    if ((x == 0U) || (x == (eGFX_PHYSICAL_SCREEN_SIZE_X - 1U)) ||
-        (y == 0U) || (y == (eGFX_PHYSICAL_SCREEN_SIZE_Y - 1U)))
+    switch (band)
     {
-        return 0xFFFF;
+        case 0:
+            return 0xF800; /* red */
+        case 1:
+            return 0x07E0; /* green */
+        default:
+            return 0x001F; /* blue */
     }
-
-    if ((x == y) || (x == ((eGFX_PHYSICAL_SCREEN_SIZE_Y - 1U) - y)))
-    {
-        return 0x0000;
-    }
-
-    uint32_t bar = ((x * 8U) / eGFX_PHYSICAL_SCREEN_SIZE_X + phase) & 0x07U;
-    uint16_t color = bars[bar];
-
-    if ((y & 0x20U) != 0U)
-    {
-        color ^= 0xFFFFU;
-    }
-
-    return color;
 }
 
-static void avc__display_test_draw(uint32_t phase)
+static void avc__display_test_draw(void)
 {
     const uint32_t rows_per_chunk = 16U;
 
@@ -73,7 +53,7 @@ static void avc__display_test_draw(uint32_t phase)
             for (uint32_t x = 0U; x < eGFX_PHYSICAL_SCREEN_SIZE_X; x++)
             {
                 display_test_rows[(y * eGFX_PHYSICAL_SCREEN_SIZE_X) + x] =
-                    avc__display_test_color(x, y0 + y, phase);
+                    avc__display_test_color(x);
             }
         }
 
@@ -99,7 +79,8 @@ static void avc__display_test_mode_run(void)
 
     while (1)
     {
-        avc__display_test_draw(phase++);
+        avc__display_test_draw();
+        phase++;
         (void)DEBUG("display_test frame=%u\r\n", phase);
         e_tick__delay_ms(1000);
     }

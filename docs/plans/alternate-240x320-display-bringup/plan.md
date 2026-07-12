@@ -18,13 +18,13 @@ depends_on = ["collateral-intake"]
 [[steps]]
 id = "spi-bringup"
 title = "Bring up the ER-TFT020-7 through the current ST7789 SPI display path"
-status = "active"
+status = "done"
 depends_on = ["spi-pin-strategy"]
 
 [[steps]]
 id = "spi-validation"
 title = "Validate orientation, color order, update rate, and camera/display fit in SPI mode"
-status = "pending"
+status = "active"
 depends_on = ["spi-bringup"]
 
 [[steps]]
@@ -63,7 +63,7 @@ status = "met"
 [[exit_criteria]]
 id = "spi-display-proof"
 title = "ER-TFT020-7 shows a known RGB565 test image using the current AVC SPI display path"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "avc-frame-fit"
@@ -331,6 +331,12 @@ The likely first questions are:
 - The ER-TFT020-7 display-test image was flashed on 2026-07-11 using the
   separate CMake test build artifact. The next bench step is to probe the
   existing LCD SPI pins, power down, and jumper the ER-TFT020-7 breakout.
+- The display is active on the ER-TFT020-7 after correcting the IM pin wiring
+  interpretation. On 2026-07-12 the display-test image was simplified to three
+  fixed RGB bands and reflashed for color/order validation.
+- Bench validation confirmed the three-band test image appears red, green, and
+  blue from left to right in physical landscape orientation. This satisfies the
+  first SPI display proof.
 
 ### spi-validation
 
@@ -363,15 +369,12 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Probe the existing LCD SPI pins with the flashed ER-TFT020-7 display-test
-   image running.
-2. Power down and wire the ER-TFT020-7 breakout after the SPI pins look sane.
-3. Power up and verify the moving RGB565 color-bar/border/diagonal pattern on the
-   ER-TFT020-7 before enabling live AVC frames.
-4. Confirm RTT shows `display_test frame=N` while the pattern is updating.
-5. Disable `CONFIG__DISPLAY_TEST_MODE` and validate the normal AVC frame path
+1. Disable `CONFIG__DISPLAY_TEST_MODE` and validate the normal AVC frame path
    on the ER-TFT020-7 once the synthetic pattern is correct.
-6. Leave EZH/bunny work parked until the SPI proof is complete and the proper
+2. Check the current 320x200 camera view plus the 320x40 overlay/header region
+   on the ER-TFT020-7.
+3. Check frame pacing and visible tearing in SPI mode.
+4. Leave EZH/bunny work parked until the SPI validation is complete and the proper
    project-specific EZH/bunny references are supplied.
 
 ## Open Questions
