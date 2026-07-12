@@ -171,6 +171,22 @@ or data bytes on an 8-bit data bus. The interfacing schematic labels this as
 Parallel` wording, so the parallel bus should be treated as likely 8080-style
 until final shield routing.
 
+The useful 8-bit write sequence from `ER-TFT020-7_8BIT/7789.h` is:
+
+- Command byte: `RS=0`, `CS=0`, data bus = command, `_WR=0`, `_WR=1`, `CS=1`.
+- Parameter/data byte: `RS=1`, `CS=0`, data bus = byte, `_WR=0`, `_WR=1`,
+  `CS=1`.
+- RGB565 pixel word: send the high byte first, then the low byte, with one
+  `_WR` pulse per byte.
+
+For the ST7789 8080 parallel bus, the controller datasheet gives a 66 ns
+minimum write cycle, 15 ns minimum `WRX` high and low pulse widths, and 10 ns
+data setup/hold. EZH at 150 MHz executes one instruction about every 6.67 ns,
+so an EZH GPIO bit-bang loop must include explicit pacing before we trust it on
+the panel. The first proof should use conservative padding or
+`E_HEART_RYTHM_IMM` plus `E_WAIT_FOR_BEAT()` and then verify the waveform on a
+scope before increasing the write rate.
+
 ## Initial Test Strategy
 
 1. Confirm the exact module and adapter hardware, including touch/no-touch and

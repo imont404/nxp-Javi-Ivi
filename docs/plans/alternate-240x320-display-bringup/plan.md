@@ -241,6 +241,9 @@ to determine:
   FPC pin 17 is `RS`: it is used as serial clock in SPI mode, but in parallel
   mode it is the display data/command select. It should be treated as a
   required control signal for the 8080/EZH writer.
+- Use the BuyDisplay `ER-TFT020-7_8BIT` sample as the first transaction model:
+  put the byte on D0..D7, set `RS` low for command or high for data, assert
+  `CS`, pulse `_WR` low then high, and deassert `CS` when the burst is done.
 - Whether readback is needed or whether `RD` can remain tied inactive.
 - Which MCXN947 pins should carry D0..D7, WR/E, D/C, CS, reset, backlight, and
   optional TE on Rev B.
@@ -395,6 +398,17 @@ The likely first questions are:
   select. For the bounded EZH command proof, either EZH must drive this line
   directly, or ARM must set it around separate command/data EZH bursts with a
   strict ownership rule.
+- The first EZH 8080 writer must be explicitly paced. The ST7789 8080 timing
+  table gives a 66 ns minimum write cycle, 15 ns minimum `WRX` high/low pulse
+  widths, and 10 ns data setup/hold. At a 150 MHz EZH instruction rate, one
+  instruction is about 6.67 ns, so a tight GPIO-write sequence can violate the
+  controller timing. Use conservative instruction-counted padding or the
+  `E_HEART_RYTHM_IMM` plus `E_WAIT_FOR_BEAT()` mechanism for the first scoped
+  proof, then tighten only after the `WR` waveform is measured.
+- The BuyDisplay `8BIT` sample's write routines are the direct behavioral
+  reference for the bounded EZH proof: command writes set `RS=0`, data writes
+  set `RS=1`, both write one byte to the data bus before pulsing `_WR`, and
+  RGB565 pixel data is sent high byte first then low byte.
 
 ### te-sync-evaluation
 
@@ -407,8 +421,11 @@ The likely first questions are:
 ## Immediate Next Steps
 
 1. Map candidate MCXN947 SmartDMA PIO pins for the ER-TFT020-7 parallel bus.
-2. Implement the smallest LCD EZH command proof: write one command/data burst,
-   signal completion through `EZH2ARM`, and stop/hold.
+2. Implement the smallest LCD EZH command proof with conservative `WR` pacing:
+   write one command/data burst, signal completion through `EZH2ARM`, and
+   stop/hold.
+3. Scope `WR`, `RS`, `CS`, and at least one data line before raising the write
+   rate.
 
 ## Open Questions
 
