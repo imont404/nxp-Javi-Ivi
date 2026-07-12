@@ -120,135 +120,148 @@ def find_tool(config: ET.Element, name: str) -> ET.Element:
     raise SystemExit(f"tool not found in .cproject configuration {config.get('name')}: {name}")
 
 
-def source_roots(config: ET.Element) -> list[str]:
+def source_roots(config: ET.Element) -> list[tuple[str, list[str]]]:
     entries = config.find("sourceEntries")
     if entries is None:
         return []
-    roots: list[str] = []
+    roots: list[tuple[str, list[str]]] = []
     for entry in entries.findall("entry"):
         if entry.get("kind") == "sourcePath":
             name = entry.get("name")
             if name:
-                roots.append(name.replace("\\", "/"))
+                exclusions = [
+                    item.strip().replace("\\", "/")
+                    for item in entry.get("excluding", "").split("|")
+                    if item.strip()
+                ]
+                roots.append((name.replace("\\", "/"), exclusions))
     return roots
 
 
-def included_makefiles(debug_dir: Path) -> list[Path]:
-    top_makefile = debug_dir / "makefile"
-    if not top_makefile.exists():
-        return sorted(debug_dir.rglob("subdir.mk"))
+def resource_is_under(resource: str, root: str) -> bool:
+    return resource == root or resource.startswith(root + "/")
 
-    makefiles: list[Path] = []
-    for raw_line in top_makefile.read_text(encoding="utf-8", errors="replace").splitlines():
-        line = raw_line.strip()
-        if not line.startswith("-include ") or not line.endswith("/subdir.mk"):
+
+def resource_is_excluded(resource: str, root: str, exclusions: list[str]) -> bool:
+    if not resource_is_under(resource, root):
+        return True
+
+    relative = resource[len(root) :].lstrip("/")
+    for exclusion in exclusions:
+        if relative == exclusion or relative.startswith(exclusion + "/"):
+            return True
+    return False
+
+
+def resolve_project_location_uri(location_uri: str, project_dir: Path) -> Path | None:
+    if not location_uri or location_uri.startswith("virtual:"):
+        return None
+
+    location_uri = html.unescape(location_uri.strip()).replace("\\", "/")
+
+    parent_match = re.match(r"^PARENT-(\d+)-PROJECT_LOC(?:/(.*))?$", location_uri)
+    if parent_match:
+        base = project_dir
+        for _ in range(int(parent_match.group(1))):
+            base = base.parent
+        rest = parent_match.group(2) or ""
+        return (base / rest).resolve()
+
+    if location_uri.startswith("PROJECT_LOC/"):
+        return (project_dir / location_uri.removeprefix("PROJECT_LOC/")).resolve()
+
+    if is_windows_absolute(location_uri) or location_uri.startswith("/"):
+        return Path(location_uri).resolve()
+
+    return (project_dir / location_uri).resolve()
+
+
+def linked_resources(project_dir: Path) -> dict[str, tuple[int, Path | None]]:
+    project_file = project_dir / ".project"
+    if not project_file.exists():
+        return {}
+
+    links: dict[str, tuple[int, Path | None]] = {}
+    tree = ET.parse(project_file)
+    for link in tree.findall(".//linkedResources/link"):
+        name = link.findtext("name", "").replace("\\", "/")
+        type_text = link.findtext("type", "")
+        location_uri = link.findtext("locationURI", "")
+        if not name or not type_text:
             continue
-        rel = line.removeprefix("-include ").strip()
-        makefiles.append(debug_dir / rel)
-    return makefiles
+        links[name] = (int(type_text), resolve_project_location_uri(location_uri, project_dir))
+
+    return links
 
 
-def source_list_from_makefile(makefile: Path) -> tuple[list[str], list[str]]:
-    variables = {"C_SRCS": [], "S_UPPER_SRCS": [], "S_SRCS": [], "ASM_SRCS": []}
-    active: str | None = None
-    for raw_line in makefile.read_text(encoding="utf-8", errors="replace").splitlines():
-        line = raw_line.strip()
-        match = re.match(r"^(C_SRCS|S_UPPER_SRCS|S_SRCS|ASM_SRCS) \+=", line)
-        if match:
-            active = match.group(1)
-            continue
-        if active is None:
-            continue
-        if not line:
-            active = None
-            continue
-        item = line.rstrip("\\").strip().replace("\\", "/")
-        if item:
-            variables[active].append(item)
-
-    c_sources = variables["C_SRCS"]
-    asm_sources = variables["S_UPPER_SRCS"] + variables["S_SRCS"] + variables["ASM_SRCS"]
-    return c_sources, asm_sources
+def source_file_kind(path: Path) -> str | None:
+    suffix = path.suffix.lower()
+    if suffix == ".c":
+        return "c"
+    if suffix in (".s", ".asm") or path.suffix == ".S":
+        return "asm"
+    return None
 
 
-def extract_source_flags(command: str) -> list[str]:
-    flags: list[str] = []
-    for match in re.finditer(r"(?<!\S)(-O[0-3gs]|-flto|-ffat-lto-objects)(?!\S)", command):
-        flag = match.group(1)
-        if flag not in flags:
-            flags.append(flag)
-    return flags
+def iter_source_files(base: Path) -> list[Path]:
+    sources: list[Path] = []
+    for pattern in ("*.c", "*.S", "*.s", "*.asm"):
+        sources.extend(Path(source).resolve() for source in glob.glob(str(base / "**" / pattern), recursive=True))
+    return sorted(sources, key=lambda path: path.as_posix().lower())
 
 
-def source_flags_from_makefile(makefile: Path, c_sources: list[str]) -> dict[str, list[str]]:
-    default_flags: list[str] = []
-    specific_flags: dict[str, list[str]] = {}
-    current_rule_source: str | None = None
-
-    for raw_line in makefile.read_text(encoding="utf-8", errors="replace").splitlines():
-        if raw_line and not raw_line[0].isspace() and ":" in raw_line:
-            deps = raw_line.split(":", 1)[1].strip().split()
-            current_rule_source = None
-            for dep in deps:
-                dep = dep.replace("\\", "/")
-                if dep.endswith(".c") or "%.c" in dep:
-                    current_rule_source = dep
-                    break
-            continue
-
-        line = raw_line.strip()
-        if not line.startswith("arm-none-eabi-gcc"):
-            continue
-
-        flags = extract_source_flags(line)
-        if not current_rule_source:
-            continue
-        if "%" in current_rule_source:
-            default_flags = flags
-        else:
-            specific_flags[current_rule_source] = flags
-
-    result: dict[str, list[str]] = {}
-    for source in c_sources:
-        result[source] = specific_flags.get(source, default_flags)
-    return result
-
-
-def parse_makefile_sources(
-    project_dir: Path, config_name: str
-) -> tuple[list[str], list[str], list[str], dict[str, list[str]]]:
-    debug_dir = project_dir / config_name
-    if not debug_dir.exists():
-        return [], [], [], {}
-
-    all_c_sources: list[str] = []
-    all_asm_sources: list[str] = []
-    ordered_sources: list[str] = []
-    source_flags: dict[str, list[str]] = {}
-
-    for makefile in included_makefiles(debug_dir):
-        if not makefile.exists():
-            continue
-        c_sources, asm_sources = source_list_from_makefile(makefile)
-        all_c_sources.extend(c_sources)
-        all_asm_sources.extend(asm_sources)
-        ordered_sources.extend(c_sources + asm_sources)
-        source_flags.update(source_flags_from_makefile(makefile, c_sources))
-
-    return all_c_sources, all_asm_sources, ordered_sources, source_flags
-
-
-def glob_sources(project_dir: Path, roots: list[str]) -> tuple[list[str], list[str], list[str]]:
+def glob_sources(
+    project_dir: Path, roots: list[tuple[str, list[str]]]
+) -> tuple[list[str], list[str], list[str], dict[str, str]]:
     c_sources: list[str] = []
     asm_sources: list[str] = []
-    for root in roots:
+    ordered_sources: list[str] = []
+    source_resources: dict[str, str] = {}
+    seen: set[Path] = set()
+    links = linked_resources(project_dir)
+
+    def add_source(path: Path, resource: str) -> None:
+        path = path.resolve()
+        if path in seen:
+            return
+
+        kind = source_file_kind(path)
+        if kind is None:
+            return
+
+        source = str(path)
+        if kind == "c":
+            c_sources.append(source)
+        else:
+            asm_sources.append(source)
+        ordered_sources.append(source)
+        source_resources[source] = resource
+        seen.add(path)
+
+    for root, exclusions in roots:
         base = project_dir / root
-        for source in sorted(glob.glob(str(base / "**" / "*.c"), recursive=True)):
-            c_sources.append("../" + Path(source).relative_to(project_dir).as_posix())
-        for pattern in ("*.S", "*.s"):
-            for source in sorted(glob.glob(str(base / "**" / pattern), recursive=True)):
-                asm_sources.append("../" + Path(source).relative_to(project_dir).as_posix())
-    return c_sources, asm_sources, c_sources + asm_sources
+        if base.exists():
+            for source in iter_source_files(base):
+                resource = root + "/" + source.relative_to(base).as_posix()
+                if not resource_is_excluded(resource, root, exclusions):
+                    add_source(source, resource)
+
+        for resource, (resource_type, path) in sorted(links.items()):
+            if path is None or not resource_is_under(resource, root):
+                continue
+
+            if resource_type == 1:
+                if not resource_is_excluded(resource, root, exclusions):
+                    add_source(path, resource)
+                continue
+
+            if resource_type == 2 and path.exists():
+                for source in iter_source_files(path):
+                    child_resource = resource + "/" + source.relative_to(path).as_posix()
+                    if not resource_is_excluded(child_resource, root, exclusions):
+                        add_source(source, child_resource)
+
+    return c_sources, asm_sources, ordered_sources, source_resources
 
 
 def source_to_cmake(value: str, project_dir: Path) -> str:
@@ -295,6 +308,21 @@ def optimization_flags(value: str | None, config_name: str) -> list[str]:
     return []
 
 
+def explicit_optimization_flags(value: str | None) -> list[str]:
+    if value:
+        if value.endswith(".general"):
+            return ["-Og"]
+        if value.endswith(".none"):
+            return ["-O0"]
+        if value.endswith(".more"):
+            return ["-O2"]
+        if value.endswith(".most"):
+            return ["-O3"]
+        if value.endswith(".size"):
+            return ["-Os"]
+    return []
+
+
 def dialect_flags(value: str | None) -> list[str]:
     if value and "gnu99" in value:
         return ["-std=gnu99"]
@@ -326,6 +354,74 @@ def write_list(lines: list[str], name: str, items: list[str]) -> None:
         lines.append(f"    {cmake_quote(item)}")
     lines.append(")")
     lines.append("")
+
+
+def optional_tool(element: ET.Element, name: str) -> ET.Element | None:
+    for tool in element.findall(".//tool"):
+        if tool.get("name") == name:
+            return tool
+    return None
+
+
+def unique_flags(flags: list[str]) -> list[str]:
+    result: list[str] = []
+    for flag in flags:
+        if flag not in result:
+            result.append(flag)
+    return result
+
+
+def c_source_override_flags(tool: ET.Element | None) -> list[str]:
+    if tool is None:
+        return []
+
+    flags: list[str] = []
+    for superclass in (
+        "com.crt.advproject.gcc.exe.debug.option.optimization.level",
+        "com.crt.advproject.gcc.exe.release.option.optimization.level",
+    ):
+        flags.extend(explicit_optimization_flags(option_value(tool, superclass)))
+
+    lto_option = option_by_superclass(tool, "com.crt.advproject.gcc.lto")
+    if lto_option is not None and lto_option.get("value", "false").lower() == "true":
+        flags.extend(["-flto", "-ffat-lto-objects"])
+
+    return unique_flags(flags)
+
+
+def source_override_flags(
+    config: ET.Element, source_resources: dict[str, str]
+) -> dict[str, list[str]]:
+    file_flags: dict[str, list[str]] = {}
+    folder_flags: list[tuple[str, list[str]]] = []
+
+    for file_info in config.findall(".//fileInfo"):
+        resource = file_info.get("resourcePath", "").replace("\\", "/")
+        flags = c_source_override_flags(optional_tool(file_info, "MCU C Compiler"))
+        if resource and flags:
+            file_flags[resource] = flags
+
+    for folder_info in config.findall(".//folderInfo"):
+        resource = folder_info.get("resourcePath", "").replace("\\", "/")
+        flags = c_source_override_flags(optional_tool(folder_info, "MCU C Compiler"))
+        if resource and flags:
+            folder_flags.append((resource, flags))
+
+    result: dict[str, list[str]] = {}
+    for source, resource in source_resources.items():
+        if resource in file_flags:
+            result[source] = file_flags[resource]
+            continue
+
+        matches = [
+            (len(folder), flags)
+            for folder, flags in folder_flags
+            if resource_is_under(resource, folder)
+        ]
+        if matches:
+            result[source] = max(matches, key=lambda item: item[0])[1]
+
+    return result
 
 
 def source_option_code(
@@ -360,12 +456,9 @@ def main() -> int:
     link_tool = find_tool(config, "MCU Linker")
 
     roots = source_roots(config)
-    c_sources, asm_sources, ordered_sources, per_source_flags = parse_makefile_sources(project_dir, config_name)
-    source_mode = f"{config_name} generated makefiles"
-    if not c_sources and not asm_sources:
-        c_sources, asm_sources, ordered_sources = glob_sources(project_dir, roots)
-        per_source_flags = {}
-        source_mode = ".cproject source roots"
+    c_sources, asm_sources, ordered_sources, source_resources = glob_sources(project_dir, roots)
+    per_source_flags = source_override_flags(config, source_resources)
+    source_mode = ".cproject source roots + .project linked resources"
 
     c_defines = [normalize_define(value) for value in option_list(c_tool, "gnu.c.compiler.option.preprocessor.def.symbols")]
     include_dirs = [

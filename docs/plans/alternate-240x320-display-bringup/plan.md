@@ -376,6 +376,16 @@ The likely first questions are:
 - The gibbon PSRAM example demonstrates the bounded-command pattern we want for
   LCD work: build EZH programs into RAM, boot one command program at a time,
   write `EZH2ARM` to raise the ARM interrupt, then hold/stop the EZH.
+- On 2026-07-12 the AVC bunny_build copy was updated to the upstream
+  source-refactor layout while leaving the project-local
+  `source/avc_config/bunny_build__config.h` in control. The scripted CMake
+  source discovery was also changed to use durable `.cproject` source
+  roots/options plus `.project` linked resources, not generated `Debug`
+  makefiles. The generated `Debug` makefiles are transient MCUXpresso output and
+  must not be used as source-of-truth for scripted builds.
+- A clean CMake/Ninja rebuild passed after the bunny_build update. The build
+  compiled the split upstream files `bunny_build__instr.c` and
+  `bunny_build__psuedo_instr.c`.
 
 ### te-sync-evaluation
 
@@ -387,14 +397,8 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Update the AVC bunny_build vendored copy to the upstream source-refactor
-   layout, while preserving the AVC-specific config behavior.
-2. Regenerate or patch the MCUXpresso/CMake source lists so
-   `bunny_build__instr.c` and `bunny_build__psuedo_instr.c` are built.
-3. Build the current firmware with the updated bunny_build before adding any LCD
-   EZH program.
-4. Map candidate MCXN947 SmartDMA PIO pins for the ER-TFT020-7 parallel bus.
-5. Implement the smallest LCD EZH command proof: write one command/data burst,
+1. Map candidate MCXN947 SmartDMA PIO pins for the ER-TFT020-7 parallel bus.
+2. Implement the smallest LCD EZH command proof: write one command/data burst,
    signal completion through `EZH2ARM`, and stop/hold.
 
 ## Open Questions

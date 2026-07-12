@@ -41,10 +41,12 @@ Use the root CMake wrapper for normal scripted builds:
 ```
 
 The CMake flow is adapted from the W71 project. It generates
-`src\avc\avc_core0\cmake\mcuxpresso_debug.cmake` from MCUXpresso metadata and
-the current generated Debug makefiles, then builds with Ninja and MCUXpresso's
-Arm GCC. The linker scripts are copied into `src\avc\avc_core0\link` so the
-scripted build does not depend on MCUXpresso regenerating files under `Debug`.
+`src\avc\avc_core0\cmake\mcuxpresso_debug.cmake` from durable MCUXpresso
+project metadata: `.cproject` source roots/options plus `.project` linked
+resources. Do not read or depend on generated `Debug` makefiles for scripted
+build source lists; those files are transient and MCUXpresso recreates them.
+The linker scripts are copied into `src\avc\avc_core0\link` so the scripted
+build does not depend on MCUXpresso regenerating files under `Debug`.
 
 Use the MCUXpresso headless wrapper as the fallback and to refresh generated
 makefiles after project setting changes:

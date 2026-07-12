@@ -37,7 +37,7 @@ if (-not (Test-Path -LiteralPath $ProjectPath)) {
 }
 
 if (-not $SkipGenerate) {
-    Write-Host "Generating CMake settings from MCUXpresso $Configuration metadata..." -ForegroundColor Cyan
+    Write-Host "Generating CMake settings from MCUXpresso $Configuration project metadata..." -ForegroundColor Cyan
     Invoke-Checked {
         python $generator --project-dir $ProjectPath --config $Configuration --output $generatedInclude
     } "CMake settings generation"
