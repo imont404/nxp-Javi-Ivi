@@ -68,7 +68,7 @@ status = "met"
 [[exit_criteria]]
 id = "avc-frame-fit"
 title = "The current 320x240 LCD path and 320x200 camera view are validated on the alternate display"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "parallel-bus-decision"
@@ -346,6 +346,9 @@ The likely first questions are:
 - Check frame pacing and any visible tearing in SPI mode.
 - Decide whether SPI is good enough for the immediate race work or only a
   low-risk stepping stone to the parallel path.
+- On 2026-07-12 the normal AVC frame-path image was built and flashed with
+  `CONFIG__DISPLAY_PANEL=2` and no display-test define. Bench observation of
+  the normal AVC display path was successful.
 
 ### parallel-ezh-strategy
 
@@ -369,12 +372,10 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Disable `CONFIG__DISPLAY_TEST_MODE` and validate the normal AVC frame path
-   on the ER-TFT020-7 once the synthetic pattern is correct.
-2. Check the current 320x200 camera view plus the 320x40 overlay/header region
-   on the ER-TFT020-7.
-3. Check frame pacing and visible tearing in SPI mode.
-4. Leave EZH/bunny work parked until the SPI validation is complete and the proper
+1. Check frame pacing and visible tearing in SPI mode.
+2. Decide whether SPI is sufficient for the immediate race work or only the
+   proof step before the planned parallel/EZH path.
+3. Leave EZH/bunny work parked until the SPI validation is complete and the proper
    project-specific EZH/bunny references are supplied.
 
 ## Open Questions
