@@ -432,6 +432,21 @@ The likely first questions are:
   order, draw a known RGB565 pattern, and scope the control/data lines. Once
   that works, port the known-good byte-write sequence into a bounded
   EZH/bunny program with explicit `WR` pacing and `EZH2ARM` completion.
+- On 2026-07-12 the CM33 C bit-bang proof was added behind
+  `CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE`. It uses D0-D7 on
+  `P1_4`, `P1_5`, `P1_6`, `P1_7`, `P3_4`, `P3_5`, `P1_10`, and `P1_11`;
+  `WR=P0_4`; `RS=P0_11`; `CS=P4_4`; and `RST=P1_19`. `RD` is not MCU-driven
+  in this slice and should be held externally inactive, expected high for 8080
+  `RDX`.
+- The CM33 proof duplicates the BuyDisplay 8-bit write behavior: command
+  bytes with `RS=0`, data bytes with `RS=1`, one active-low `WR` pulse per
+  byte, and RGB565 pixel data high byte then low byte. It draws fixed red,
+  green, and blue vertical bands and emits `parallel_lcd frame=` RTT messages.
+- Verification passed for the default CMake build with the proof disabled and
+  for the separate test image in
+  `build/cmake/avc_core0-Debug-parallel-bitbang` using
+  `-DCONFIG__DISPLAY_PANEL=2 -DCONFIG__DISPLAY_TEST_MODE=1
+  -DCONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE=1`.
 
 ### te-sync-evaluation
 
@@ -443,16 +458,19 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Resolve the `P0_4`/`P0_11` `WR`/`RS` assignment and choose the `CS`/`RD`
-   treatment before wiring.
-2. Implement a CM33 C bit-bang 8080 proof using the candidate bus pins:
-   initialize the panel, write a fixed RGB565 test pattern, and scope `WR`,
-   `RS`, `CS`, and at least one data line.
-3. Port the known-good byte-write sequence to the smallest LCD EZH command
+1. Power down and wire the 8080 proof bus with `RD` held inactive high:
+   D0-D7 on the shared camera/LCD data pins, `WR=P0_4`, `RS=P0_11`,
+   `CS=P4_4`, and `RST=P1_19`.
+2. Flash `build/cmake/avc_core0-Debug-parallel-bitbang/avc_core0.axf`, then
+   scope `WR`, `RS`, `CS`, reset, and at least one data line before judging the
+   display image.
+3. Confirm the expected fixed red/green/blue vertical bands and log any
+   bit-order, byte-order, or control-polarity corrections.
+4. Port the known-good byte-write sequence to the smallest LCD EZH command
    proof with conservative `WR` pacing:
    write one command/data burst, signal completion through `EZH2ARM`, and
    stop/hold.
-4. Raise the parallel write rate only after the scoped CM33 and EZH waveforms
+5. Raise the parallel write rate only after the scoped CM33 and EZH waveforms
    satisfy the ST7789 timing margins.
 
 ## Open Questions

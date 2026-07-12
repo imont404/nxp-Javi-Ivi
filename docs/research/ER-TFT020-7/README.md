@@ -206,6 +206,13 @@ scope before increasing the write rate.
 9. Validate the proposed 8080 bus first with a CM33 C bit-bang test pattern,
    then port the known-good byte-write sequence to EZH/bunny_build.
 
+The CM33 8080 proof is implemented in
+`src/avc/avc_core0/source/avc_io/st7789_parallel_bitbang.c` and is enabled
+only by defining both `CONFIG__DISPLAY_TEST_MODE=1` and
+`CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE=1`. The initial control map is
+`WR=P0_4`, `RS=P0_11`, `CS=P4_4`, `RST=P1_19`, with `RD` externally held
+inactive high.
+
 ## Risks
 
 - The product title and datasheet disagree about 8080 vs 6800 parallel wording.

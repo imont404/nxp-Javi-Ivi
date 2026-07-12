@@ -1,5 +1,9 @@
 #include "avc__io.h"
 
+#if CONFIG__DISPLAY_TEST_MODE && CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
+#include "st7789_parallel_bitbang.h"
+#endif
+
 #ifndef CONFIG__AVC_UART_TX_Q_SIZE_BYTES
 	#define CONFIG__AVC_UART_TX_Q_SIZE_BYTES 2048
 #endif
@@ -18,7 +22,7 @@ button_t left_btn, right_btn, center_btn;
 
 void avc_io__uart_init();
 
-#if CONFIG__DISPLAY_TEST_MODE
+#if CONFIG__DISPLAY_TEST_MODE && !CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
 static uint16_t display_test_rows[eGFX_PHYSICAL_SCREEN_SIZE_X * 16U];
 
 static uint16_t avc__display_test_color(uint32_t x)
@@ -65,9 +69,19 @@ static void avc__display_test_draw(void)
                      y0 + rows - 1U);
     }
 }
+#endif
 
+#if CONFIG__DISPLAY_TEST_MODE
 static void avc__display_test_mode_run(void)
 {
+#if CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
+    (void)DEBUG("Display parallel bitbang test mode active: panel=%u wr_delay=%u frame_delay_ms=%u\r\n",
+                CONFIG__DISPLAY_PANEL,
+                CONFIG__DISPLAY_PARALLEL_BITBANG_WR_DELAY_CYCLES,
+                CONFIG__DISPLAY_PARALLEL_BITBANG_FRAME_DELAY_MS);
+
+    st7789_parallel_bitbang__run_test();
+#else
     uint32_t phase = 0U;
 
     (void)DEBUG("Display test mode active: panel=%u test=%u te=%u\r\n",
@@ -84,6 +98,7 @@ static void avc__display_test_mode_run(void)
         (void)DEBUG("display_test frame=%u\r\n", phase);
         e_tick__delay_ms(1000);
     }
+#endif
 }
 #endif
 

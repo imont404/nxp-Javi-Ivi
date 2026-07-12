@@ -56,6 +56,7 @@ User-proposed pin-exact control reuse:
 | --- | --- | --- | --- |
 | `WR` | old camera sync net | `P0_4` | Proposed |
 | `RS` / D-C | old camera sync net | `P0_11` | Proposed |
+| `CS` | design-file LCD chip select | `P4_4` | Selected for CM33 proof |
 | `RST` | old camera reset | `P1_19` | Confirmed shared camera/LCD net |
 
 Important conflict: the design-file netlist and current firmware name `P0_11`
@@ -87,6 +88,11 @@ The FRDM design-file netlist also contains older LCD-specific control names:
 These may be useful alternatives if the reused camera sync pins are awkward for
 EZH output timing or Rev B routing.
 
+For the CM33 bit-bang proof, `P4_4/EZH_LCD_CS` is selected as the active-low
+chip select because it is already an LCD-specific net and later maps cleanly to
+`SMARTDMA_PIO28`. No MCU `RD` pin is assigned for this proof; the display `RD`
+pin should be held externally inactive, expected high for 8080 `RDX`.
+
 ## Recommended Baby Step
 
 Implement the first 8080 write proof as CM33 C code that bit-bangs the same
@@ -95,14 +101,19 @@ will validate the panel mode straps, `RD`/`CS` treatment, `RS` polarity, `WR`
 polarity, byte order, and wiring before any EZH timing/tooling issues are
 introduced.
 
+The CM33 proof now exists in
+`src/avc/avc_core0/source/avc_io/st7789_parallel_bitbang.c` and is enabled
+only when both `CONFIG__DISPLAY_TEST_MODE=1` and
+`CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE=1`. It sends RGB565 high byte then
+low byte, matching the BuyDisplay 8-bit sample.
+
 After the C proof works and the `WR` waveform is scoped, port the same
 transaction order to a bounded EZH/bunny program: command/data bytes in,
 explicitly paced `WR` pulses out, `EZH2ARM` completion interrupt, then halt.
 
 ## Still Open
 
-- `CS`: assign a pin or decide to hold active for scoped test bursts.
-- `RD`: hold inactive for write-only operation, likely high for 8080 `RDX`.
+- `RD`: verify the external inactive-high treatment on the bench.
 - `TE`: optional timing/debug input after basic parallel writes work.
 - Backlight and panel power/enable: keep outside the first EZH proof unless a
   conflict is found.
