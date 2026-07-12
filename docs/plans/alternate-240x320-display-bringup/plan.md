@@ -24,13 +24,13 @@ depends_on = ["spi-pin-strategy"]
 [[steps]]
 id = "spi-validation"
 title = "Validate orientation, color order, update rate, and camera/display fit in SPI mode"
-status = "active"
+status = "done"
 depends_on = ["spi-bringup"]
 
 [[steps]]
 id = "parallel-ezh-strategy"
 title = "Define the parallel MCU bus and EZH/bunny-build transfer strategy"
-status = "pending"
+status = "active"
 depends_on = ["spi-validation"]
 
 [[steps]]
@@ -349,18 +349,33 @@ The likely first questions are:
 - On 2026-07-12 the normal AVC frame-path image was built and flashed with
   `CONFIG__DISPLAY_PANEL=2` and no display-test define. Bench observation of
   the normal AVC display path was successful.
+- The SPI path is validated enough to unlock the parallel/EZH phase. Detailed
+  SPI pacing/tearing observations remain useful comparison data but no longer
+  block the parallel strategy work.
 
 ### parallel-ezh-strategy
 
-- Do not start bunny/EZH implementation until the module-level bus timing is
-  verified.
-- Project-specific EZH/bunny build documentation will be supplied when this
-  phase becomes active; keep the current work focused on SPI bringup.
+- Parallel/EZH research is active as of 2026-07-12.
 - Prefer the simplest write-only bus first: D0..D7, write strobe, D/C, CS,
   reset, backlight, and optional TE. Keep readback as a second-stage feature
   unless it is needed for panel identification.
 - Compare available MCXN947 pin groups against camera pins already used for the
   FlexIO experiment and against Rev B shield routing constraints.
+- AVC's vendored `src/common/bunny_build` is not current with the upstream
+  `wavenumber-eng/bunny_build` `main` branch. The current upstream commit is
+  `9c5e8d6`, which matches both `C:\eli\bunny_build` and the gibbon module
+  copy under `D:\prj\teenage_engineering`.
+- Updating bunny_build is likely the first implementation step, but it is not a
+  blind copy. Upstream split instruction encoders out of `bunny_build.h` into
+  `bunny_build__instr.*` and `bunny_build__psuedo_instr.*`; the AVC MCUXpresso
+  and CMake source lists currently include only `bunny_build.c` and
+  `ezh_init.c`.
+- Upstream also added a generic `include/bunny_build__config.h`. AVC currently
+  relies on the project-specific config in `source/avc_config`, so the update
+  must avoid accidentally shadowing AVC's logging and target configuration.
+- The gibbon PSRAM example demonstrates the bounded-command pattern we want for
+  LCD work: build EZH programs into RAM, boot one command program at a time,
+  write `EZH2ARM` to raise the ARM interrupt, then hold/stop the EZH.
 
 ### te-sync-evaluation
 
@@ -372,11 +387,15 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Check frame pacing and visible tearing in SPI mode.
-2. Decide whether SPI is sufficient for the immediate race work or only the
-   proof step before the planned parallel/EZH path.
-3. Leave EZH/bunny work parked until the SPI validation is complete and the proper
-   project-specific EZH/bunny references are supplied.
+1. Update the AVC bunny_build vendored copy to the upstream source-refactor
+   layout, while preserving the AVC-specific config behavior.
+2. Regenerate or patch the MCUXpresso/CMake source lists so
+   `bunny_build__instr.c` and `bunny_build__psuedo_instr.c` are built.
+3. Build the current firmware with the updated bunny_build before adding any LCD
+   EZH program.
+4. Map candidate MCXN947 SmartDMA PIO pins for the ER-TFT020-7 parallel bus.
+5. Implement the smallest LCD EZH command proof: write one command/data burst,
+   signal completion through `EZH2ARM`, and stop/hold.
 
 ## Open Questions
 
@@ -387,3 +406,6 @@ The likely first questions are:
   mismatch between product title and datasheet?
 - Which existing shield pin drives LCD backlight or panel enable today?
 - Where should TE land for a clean Rev B route if it proves useful?
+- Should AVC keep using its project-local `bunny_build__config.h`, or should
+  that configuration move into the vendored bunny_build layout with explicit
+  AVC overrides?

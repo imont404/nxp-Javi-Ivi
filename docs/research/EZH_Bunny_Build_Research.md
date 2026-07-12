@@ -1,0 +1,94 @@
+# EZH / Bunny Build Research Notes
+
+Date: 2026-07-12
+
+## Local Sources
+
+- ISA: `C:\eli\ezh\docs\EZHandler Arch B PreRel0.6.docx`
+- Cookbook: `C:\eli\ezh\docs\EZH Cookbook 1.9.docx`
+- Upstream bunny_build clone: `C:\eli\bunny_build`
+- Gibbon bunny_build module:
+  `D:\prj\teenage_engineering\lpc55_gibbon-d\gibbon-d-test-fw-west\modules\bunny_build`
+- Gibbon EZH app example:
+  `D:\prj\teenage_engineering\lpc55_gibbon-d\gibbon-d-test-fw-west\app\src\ezh_app.cpp`
+
+## Bunny Build Currency Check
+
+The AVC copy under `src/common/bunny_build` is not current with upstream.
+
+The current fetched upstream `main` in `C:\eli\bunny_build` is:
+
+```text
+9c5e8d6 Merge pull request #7 from wavenumber-eng/source_refactor
+```
+
+The gibbon module copy is also at `9c5e8d6`.
+
+Against the upstream copy, AVC is missing these important source-refactor files:
+
+- `include/bunny_build__config.h`
+- `include/bunny_build__instr.h`
+- `include/bunny_build__psuedo_instr.h`
+- `include/ezh_arch.h`
+- `src/bunny_build__instr.c`
+- `src/bunny_build__instr.h`
+- `src/bunny_build__psuedo_instr.c`
+
+The files that matter most for the active firmware path are:
+
+- `include/bunny_build.h`
+- `include/bunny_build__targets.h`
+- `include/ezh_init.h`
+- `src/bunny_build.c`
+- `src/CMakeLists.txt`
+
+## Import Hazards
+
+The upstream update is not a safe blind copy.
+
+First, upstream adds `include/bunny_build__config.h`. AVC currently supplies
+the config from `src/avc/avc_core0/source/avc_config/bunny_build__config.h`.
+Because `bunny_build.h` includes `"bunny_build__config.h"`, placing the
+upstream generic config in `src/common/bunny_build/include` would make the
+generic file win before the AVC project include path is searched.
+
+Second, upstream declares `E_END()` in
+`include/bunny_build__psuedo_instr.h`, but the implementation currently defines
+`E__END()` in `src/bunny_build__psuedo_instr.c`. The gibbon example uses its
+own `E__END()` helper. The AVC import should fix this by providing a compatible
+alias or by correcting the declaration/implementation pair.
+
+Third, AVC's CMake flow is generated from MCUXpresso Debug makefiles. The
+current generated files include only:
+
+- `src/common/bunny_build/src/bunny_build.c`
+- `src/common/bunny_build/src/ezh_init.c`
+
+The upstream split requires these additional compiled sources:
+
+- `src/common/bunny_build/src/bunny_build__instr.c`
+- `src/common/bunny_build/src/bunny_build__psuedo_instr.c`
+
+## EZH Notes Relevant To LCD Work
+
+The cookbook describes the ARM/EZH completion interrupt path:
+
+- `EZHB_ARM2EZH[1:0] == 0b10` enables ARM interrupt generation when EZH writes
+  `EZH2ARM`.
+- AVC's existing camera path already uses this pattern by writing
+  `EZHB_ARM2EZH = param | 0x02`.
+- The gibbon PSRAM example uses a bounded command pattern: boot one EZH command
+  program, write `EZH2ARM` on completion, then stop the EZH in the ARM-side ISR.
+
+This is a better fit for the parallel LCD writer than the existing AVC camera
+EZH program, which sits in vectored hold states and runs as a continuous capture
+loop.
+
+## Recommended First Slice
+
+1. Update the vendored bunny_build source layout.
+2. Preserve or explicitly adapt the AVC-specific `bunny_build__config.h`.
+3. Add the new bunny_build source files to both scripted CMake and MCUXpresso
+   headless builds.
+4. Fix or alias `E_END` / `E__END`.
+5. Build the current firmware before adding an LCD EZH program.
