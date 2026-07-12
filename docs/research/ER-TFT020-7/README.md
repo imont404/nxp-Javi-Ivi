@@ -173,6 +173,14 @@ or data bytes on an 8-bit data bus. The interfacing schematic labels this as
 Parallel` wording, so the parallel bus should be treated as likely 8080-style
 until final shield routing.
 
+The same interfacing schematic shows the 8080 Series I mode straps as:
+
+| ER-TFT020-7 signal | 8080 Series I reference connection |
+| --- | --- |
+| `IM2` | `GND` |
+| `IM1` | `GND` |
+| `IM0` | `GND` |
+
 The useful 8-bit write sequence from `ER-TFT020-7_8BIT/7789.h` is:
 
 - Command byte: `RS=0`, `CS=0`, data bus = command, `_WR=0`, `_WR=1`, `CS=1`.

@@ -93,6 +93,17 @@ chip select because it is already an LCD-specific net and later maps cleanly to
 `SMARTDMA_PIO28`. No MCU `RD` pin is assigned for this proof; the display `RD`
 pin should be held externally inactive, expected high for 8080 `RDX`.
 
+## IM Straps
+
+The BuyDisplay interfacing schematic's 8080 Series I reference ties all three
+exposed mode pins low:
+
+| ER-TFT020-7 signal | 8080 Series I strap |
+| --- | --- |
+| `IM2` | `GND` |
+| `IM1` | `GND` |
+| `IM0` | `GND` |
+
 ## Recommended Baby Step
 
 Implement the first 8080 write proof as CM33 C code that bit-bangs the same
@@ -117,5 +128,5 @@ explicitly paced `WR` pulses out, `EZH2ARM` completion interrupt, then halt.
 - `TE`: optional timing/debug input after basic parallel writes work.
 - Backlight and panel power/enable: keep outside the first EZH proof unless a
   conflict is found.
-- IM straps: keep the verified module strap state for 8080 parallel mode before
-  connecting the bus.
+- IM straps: use `IM2=GND`, `IM1=GND`, and `IM0=GND` for the 8080 Series I
+  proof, then verify on the adapter before Rev B routing.

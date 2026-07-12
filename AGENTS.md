@@ -64,9 +64,11 @@ The MCUXpresso wrapper defaults to
 workspace. Generated `.mcux_workspace*` folders are local build state and should
 not be committed.
 
-The flash and RTT wrappers default to SEGGER J-Link V9.40, device
-`MCXN947_M33_0`, SWD at 4 MHz, and the onboard J-Link MCU-Link serial observed
-on the FRDM-MCXN947 debug USB port. `rtt.ps1` defaults to a PyLink monitor
+The flash and RTT wrappers default to SEGGER J-Link, device `MCXN947_M33_0`,
+SWD at 4 MHz, and the onboard J-Link MCU-Link serial observed on the
+FRDM-MCXN947 debug USB port. If the configured SEGGER path is missing, the
+wrappers auto-detect the newest installed `C:\Program Files\SEGGER\JLink_V*`
+tool path. `rtt.ps1` defaults to a PyLink monitor
 under `scripts\tools\rtt_monitor.py`; it derives `_SEGGER_RTT` from the current
 AXF with `arm-none-eabi-nm`, starts RTT at that address, and can reset the
 target with `-Reset`. Use `-Backend Logger` to fall back to SEGGER

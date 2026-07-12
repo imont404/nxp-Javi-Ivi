@@ -22,11 +22,41 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function Resolve-SeggerTool {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ConfiguredPath,
+        [Parameter(Mandatory = $true)]
+        [string]$ToolName
+    )
+
+    if (Test-Path -LiteralPath $ConfiguredPath) {
+        return $ConfiguredPath
+    }
+
+    $seggerRoot = "C:\Program Files\SEGGER"
+    if (Test-Path -LiteralPath $seggerRoot) {
+        $candidate = Get-ChildItem -LiteralPath $seggerRoot -Directory -Filter "JLink_V*" |
+            Sort-Object -Property Name -Descending |
+            ForEach-Object { Join-Path $_.FullName $ToolName } |
+            Where-Object { Test-Path -LiteralPath $_ } |
+            Select-Object -First 1
+
+        if ($candidate) {
+            return $candidate
+        }
+    }
+
+    return $ConfiguredPath
+}
+
 $projectDir = $PSScriptRoot
 $mcuxAxf = Join-Path $projectDir "src\avc\avc_core0\$Configuration\avc_core0.axf"
 $cmakeAxf = Join-Path $projectDir "build\cmake\avc_core0-$Configuration\avc_core0.axf"
 $defaultAxf = if ($CMake) { $cmakeAxf } else { $mcuxAxf }
 $axfFile = if ($File) { $File } else { $defaultAxf }
+$JLinkDllPath = Resolve-SeggerTool -ConfiguredPath $JLinkDllPath -ToolName "JLink_x64.dll"
+$JLinkRTTLoggerPath = Resolve-SeggerTool -ConfiguredPath $JLinkRTTLoggerPath -ToolName "JLinkRTTLogger.exe"
 
 if (-not (Test-Path -LiteralPath $NmPath)) {
     throw "arm-none-eabi-nm not found: $NmPath"

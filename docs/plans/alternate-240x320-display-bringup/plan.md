@@ -447,6 +447,9 @@ The likely first questions are:
   `build/cmake/avc_core0-Debug-parallel-bitbang` using
   `-DCONFIG__DISPLAY_PANEL=2 -DCONFIG__DISPLAY_TEST_MODE=1
   -DCONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE=1`.
+- On 2026-07-12 the parallel-bitbang image was flashed with SEGGER J-Link V9.54
+  and started. The BuyDisplay interfacing schematic shows the 8080 Series I IM
+  straps as `IM2=GND`, `IM1=GND`, and `IM0=GND`.
 
 ### te-sync-evaluation
 
@@ -458,19 +461,21 @@ The likely first questions are:
 
 ## Immediate Next Steps
 
-1. Power down and wire the 8080 proof bus with `RD` held inactive high:
+1. Power down and strap the display for 8080 Series I:
+   `IM2=GND`, `IM1=GND`, and `IM0=GND`.
+2. Wire the 8080 proof bus with `RD` held inactive high:
    D0-D7 on the shared camera/LCD data pins, `WR=P0_4`, `RS=P0_11`,
    `CS=P4_4`, and `RST=P1_19`.
-2. Flash `build/cmake/avc_core0-Debug-parallel-bitbang/avc_core0.axf`, then
+3. Flash `build/cmake/avc_core0-Debug-parallel-bitbang/avc_core0.axf`, then
    scope `WR`, `RS`, `CS`, reset, and at least one data line before judging the
    display image.
-3. Confirm the expected fixed red/green/blue vertical bands and log any
+4. Confirm the expected fixed red/green/blue vertical bands and log any
    bit-order, byte-order, or control-polarity corrections.
-4. Port the known-good byte-write sequence to the smallest LCD EZH command
+5. Port the known-good byte-write sequence to the smallest LCD EZH command
    proof with conservative `WR` pacing:
    write one command/data burst, signal completion through `EZH2ARM`, and
    stop/hold.
-5. Raise the parallel write rate only after the scoped CM33 and EZH waveforms
+6. Raise the parallel write rate only after the scoped CM33 and EZH waveforms
    satisfy the ST7789 timing margins.
 
 ## Open Questions
