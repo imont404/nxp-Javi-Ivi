@@ -237,6 +237,10 @@ to determine:
 - Which IM2..IM0 strap state the actual module expects.
 - Whether FPC pins 15..18 behave as 6800 `RD/WR/RS/CS`, 8080 `RDX/WRX/DCX/CSX`,
   or a BuyDisplay naming variant.
+- Do not carry the SPI-mode meaning of FPC pin 17 into the parallel pin map.
+  FPC pin 17 is `RS`: it is used as serial clock in SPI mode, but in parallel
+  mode it is the display data/command select. It should be treated as a
+  required control signal for the 8080/EZH writer.
 - Whether readback is needed or whether `RD` can remain tied inactive.
 - Which MCXN947 pins should carry D0..D7, WR/E, D/C, CS, reset, backlight, and
   optional TE on Rev B.
@@ -386,6 +390,11 @@ The likely first questions are:
 - A clean CMake/Ninja rebuild passed after the bunny_build update. The build
   compiled the split upstream files `bunny_build__instr.c` and
   `bunny_build__psuedo_instr.c`.
+- FPC pin 17 `RS` must be part of the parallel-control strategy. It is only the
+  serial clock in SPI mode; in parallel mode it is the display data/command
+  select. For the bounded EZH command proof, either EZH must drive this line
+  directly, or ARM must set it around separate command/data EZH bursts with a
+  strict ownership rule.
 
 ### te-sync-evaluation
 
