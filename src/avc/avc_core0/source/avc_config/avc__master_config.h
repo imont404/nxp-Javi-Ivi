@@ -35,6 +35,8 @@
  * - camera capture through the original SmartDMA/EZH path
  * - original ER-TFT020-3 LCD over the existing SPI display path
  * - alternate ER-TFT020-7 TE and parallel bit-bang experiments disabled
+ * - USB remote display stream disabled unless explicitly selected and retested
+ *   with the SPI LCD frame dump path active
  *
  * Both supported LCD panels use the same AVC LCD SPI pins in serial mode.
  * Change CONFIG__DISPLAY_PANEL to DISPLAY_PANEL_ER_TFT020_7 only for the
@@ -80,7 +82,7 @@
 #endif
 
 #ifndef CONFIG__USB_DEBUG_STREAM_ENABLE
-#define CONFIG__USB_DEBUG_STREAM_ENABLE			(1)
+#define CONFIG__USB_DEBUG_STREAM_ENABLE			(0)
 #endif
 
 
