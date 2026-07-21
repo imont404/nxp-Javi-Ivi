@@ -21,7 +21,7 @@
 #define CAMERA_CAPTURE_BACKEND_FLEXIO_PIPELINE_DIAG	4
 
 #ifndef CONFIG__CAMERA_CAPTURE_BACKEND
-#define CONFIG__CAMERA_CAPTURE_BACKEND			(CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA)
+#define CONFIG__CAMERA_CAPTURE_BACKEND			(CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH)
 #endif
 
 #define CONFIG__CAMERA_RESOLUTION_X				(320)
@@ -31,9 +31,14 @@
 #define CONFIG__CAMERA_RESOLUTION				FSL_VIDEO_RESOLUTION(320, 200)
 
 /*
- * LCD panel selection. Both supported panels use the same AVC LCD SPI pins.
- * Change CONFIG__DISPLAY_PANEL to DISPLAY_PANEL_ER_TFT020_7 for the alternate
- * BuyDisplay 2.0 inch 240x320 ST7789 panel.
+ * Rev A competition baseline:
+ * - camera capture through the original SmartDMA/EZH path
+ * - original ER-TFT020-3 LCD over the existing SPI display path
+ * - alternate ER-TFT020-7 TE and parallel bit-bang experiments disabled
+ *
+ * Both supported LCD panels use the same AVC LCD SPI pins in serial mode.
+ * Change CONFIG__DISPLAY_PANEL to DISPLAY_PANEL_ER_TFT020_7 only for the
+ * alternate BuyDisplay 2.0 inch 240x320 ST7789 panel.
  */
 #define DISPLAY_PANEL_ER_TFT020_3				1
 #define DISPLAY_PANEL_ER_TFT020_7				2
@@ -60,6 +65,18 @@
 
 #ifndef CONFIG__DISPLAY_PARALLEL_BITBANG_FRAME_DELAY_MS
 #define CONFIG__DISPLAY_PARALLEL_BITBANG_FRAME_DELAY_MS		(250U)
+#endif
+
+#if CONFIG__DISPLAY_PANEL != DISPLAY_PANEL_ER_TFT020_3 && CONFIG__DISPLAY_PANEL != DISPLAY_PANEL_ER_TFT020_7
+#error Invalid CONFIG__DISPLAY_PANEL.
+#endif
+
+#if CONFIG__DISPLAY_TE_ENABLE && CONFIG__DISPLAY_PANEL != DISPLAY_PANEL_ER_TFT020_7
+#error CONFIG__DISPLAY_TE_ENABLE is only valid for the alternate ER-TFT020-7 panel.
+#endif
+
+#if CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE && CONFIG__DISPLAY_PANEL != DISPLAY_PANEL_ER_TFT020_7
+#error CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE is only valid for the alternate ER-TFT020-7 panel.
 #endif
 
 #ifndef CONFIG__USB_DEBUG_STREAM_ENABLE

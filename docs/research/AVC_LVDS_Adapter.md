@@ -16,6 +16,7 @@ Date: 2026-06-16. Status: parts selected & JLCPCB stock confirmed; **cabling TBD
 
 ---
 
+
 ## 2. BOM (JLCPCB stock confirmed 2026-06-16)
 
 | Role | Part | JLCPCB # | LCSC | Pkg | Stock | Rate | Qty/board |
