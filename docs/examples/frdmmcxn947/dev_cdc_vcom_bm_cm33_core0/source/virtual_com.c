@@ -7,6 +7,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 /*${standard_header_anchor}*/
 #include "fsl_device_registers.h"
 #include "clock_config.h"
@@ -59,10 +60,27 @@ void BOARD_DbgConsole_Deinit(void);
 void BOARD_DbgConsole_Init(void);
 usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, void *param);
 usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *param);
+static void USB_CdcStreamFillPayload(uint32_t frameOffset, uint32_t payloadBytes);
+static void USB_CdcStreamHandleCommand(const uint8_t *data, uint32_t length);
+static void USB_CdcStreamService(void);
+static void USB_CdcStreamStop(void);
+static void USB_CdcStreamWriteLe16(uint8_t *buffer, uint32_t offset, uint16_t value);
+static void USB_CdcStreamWriteLe32(uint8_t *buffer, uint32_t offset, uint32_t value);
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
+#define STREAM_FRAME_WIDTH (320U)
+#define STREAM_FRAME_HEIGHT (200U)
+#define STREAM_FRAME_BYTES (STREAM_FRAME_WIDTH * STREAM_FRAME_HEIGHT * 2U)
+#define STREAM_TX_BYTES (16U * 1024U)
+#define STREAM_HEADER_BYTES (32U)
+#define STREAM_PAYLOAD_MAX_BYTES (STREAM_TX_BYTES - STREAM_HEADER_BYTES)
+#define STREAM_MAGIC (0x55435641U) /* "AVCU" little-endian */
+#define STREAM_VERSION (1U)
+#define STREAM_PACKET_FRAME_CHUNK (1U)
+#define STREAM_FLAG_FRAME_END (1U << 0U)
+
 extern usb_device_endpoint_struct_t g_UsbDeviceCdcVcomDicEndpoints[];
 extern usb_device_class_struct_t g_UsbDeviceCdcVcomConfig;
 /* Data structure of virtual com device */
@@ -95,8 +113,16 @@ USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) static usb_cdc_acm_info_t s_usbC
 /* Data buffer for receiving and sending*/
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) static uint8_t s_currRecvBuf[DATA_BUFF_SIZE];
 USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) static uint8_t s_currSendBuf[DATA_BUFF_SIZE];
+USB_DMA_NONINIT_DATA_ALIGN(USB_DATA_ALIGN_SIZE) static uint8_t s_streamTxBuf[STREAM_TX_BYTES];
 volatile static uint32_t s_recvSize = 0;
 volatile static uint32_t s_sendSize = 0;
+volatile static uint8_t s_streamEnabled = 0;
+volatile static uint8_t s_streamTxBusy  = 0;
+static uint32_t s_streamFrameId;
+static uint32_t s_streamChunkId;
+static uint32_t s_streamOffset;
+static uint32_t s_streamBusyCount;
+static uint32_t s_streamSendErrorCount;
 
 /* USB device class information */
 static usb_device_class_config_struct_t s_cdcAcmConfig[1] = {{
@@ -156,37 +182,21 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
     {
         case kUSB_DeviceCdcEventSendResponse:
         {
-            if ((epCbParam->length != 0) &&
-                (0U == (epCbParam->length % g_UsbDeviceCdcVcomDicEndpoints[0].maxPacketSize)))
+            if (epCbParam->buffer == s_streamTxBuf)
             {
-                /* If the last packet is the size of endpoint, then send also zero-ended packet,
-                 ** meaning that we want to inform the host that we do not have any additional
-                 ** data, so it can flush the output.
-                 */
-                error = USB_DeviceCdcAcmSend(handle, USB_CDC_VCOM_BULK_IN_ENDPOINT, NULL, 0);
+                s_streamTxBusy = 0U;
             }
-            else if ((1U == s_cdcVcom.attach) && (1U == s_cdcVcom.startTransactions))
-            {
-                if ((epCbParam->buffer != NULL) || ((epCbParam->buffer == NULL) && (epCbParam->length == 0)))
-                {
-                    /* User: add your own code for send complete event */
-                    /* In this case, the received data has been sent back to host, then now schedule buffer for next
-                       receiving event. Note that USB_DeviceCdcAcmRecv also can be called in
-                       kUSB_DeviceCdcEventRecvResponse as long as we make sure the received data can be handled properly
-                     */
-                    error = USB_DeviceCdcAcmRecv(handle, USB_CDC_VCOM_BULK_OUT_ENDPOINT, s_currRecvBuf,
-                                                 g_UsbDeviceCdcVcomDicEndpoints[1].maxPacketSize);
+
+            error = kStatus_USB_Success;
 #if defined(FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED) && (FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED > 0U) && \
     defined(USB_DEVICE_CONFIG_KEEP_ALIVE_MODE) && (USB_DEVICE_CONFIG_KEEP_ALIVE_MODE > 0U) &&             \
     defined(FSL_FEATURE_USB_KHCI_USB_RAM) && (FSL_FEATURE_USB_KHCI_USB_RAM > 0U)
-                    s_waitForDataReceive = 1;
-                    USB0->INTEN &= ~USB_INTEN_SOFTOKEN_MASK;
-#endif
-                }
-            }
-            else
+            if ((1U == s_cdcVcom.attach) && (1U == s_cdcVcom.startTransactions))
             {
+                s_waitForDataReceive = 1;
+                USB0->INTEN &= ~USB_INTEN_SOFTOKEN_MASK;
             }
+#endif
         }
         break;
         case kUSB_DeviceCdcEventRecvResponse:
@@ -368,7 +378,15 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
 
             if (1U == s_cdcVcom.attach)
             {
-                s_cdcVcom.startTransactions = 1;
+                if (acmInfo->dtePresent)
+                {
+                    s_cdcVcom.startTransactions = 1U;
+                }
+                else
+                {
+                    s_cdcVcom.startTransactions = 0U;
+                    USB_CdcStreamStop();
+                }
 #if defined(FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED) && (FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED > 0U) && \
     defined(USB_DEVICE_CONFIG_KEEP_ALIVE_MODE) && (USB_DEVICE_CONFIG_KEEP_ALIVE_MODE > 0U) &&             \
     defined(FSL_FEATURE_USB_KHCI_USB_RAM) && (FSL_FEATURE_USB_KHCI_USB_RAM > 0U)
@@ -412,7 +430,10 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
         case kUSB_DeviceEventBusReset:
         {
             s_cdcVcom.attach               = 0;
+            s_cdcVcom.startTransactions    = 0U;
             s_cdcVcom.currentConfiguration = 0U;
+            USB_CdcStreamStop();
+            s_streamTxBusy                 = 0U;
             error                          = kStatus_USB_Success;
 
 #if (defined(USB_DEVICE_CONFIG_LPCIP3511HS) && (USB_DEVICE_CONFIG_LPCIP3511HS > 0U))
@@ -450,7 +471,10 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
             if (0U == (*temp8))
             {
                 s_cdcVcom.attach               = 0;
+                s_cdcVcom.startTransactions    = 0U;
                 s_cdcVcom.currentConfiguration = 0U;
+                USB_CdcStreamStop();
+                s_streamTxBusy                 = 0U;
                 error                          = kStatus_USB_Success;
             }
             else if (USB_CDC_VCOM_CONFIGURE_INDEX == (*temp8))
@@ -552,6 +576,167 @@ static void CDC_VCOM_BMExitCritical(uint32_t sr)
     EnableGlobalIRQ(sr);
 }
 
+static uint8_t USB_CdcStreamUpper(uint8_t value)
+{
+    if ((value >= (uint8_t)'a') && (value <= (uint8_t)'z'))
+    {
+        return (uint8_t)(value - ((uint8_t)'a' - (uint8_t)'A'));
+    }
+    return value;
+}
+
+static uint8_t USB_CdcStreamCommandMatches(const uint8_t *data, uint32_t length, const char *command)
+{
+    uint32_t index = 0U;
+    uint32_t cmdIndex = 0U;
+
+    while ((index < length) && ((data[index] == (uint8_t)' ') || (data[index] == (uint8_t)'\r') ||
+                                (data[index] == (uint8_t)'\n') || (data[index] == (uint8_t)'\t')))
+    {
+        index++;
+    }
+
+    while ('\0' != command[cmdIndex])
+    {
+        if (index >= length)
+        {
+            return 0U;
+        }
+        if (USB_CdcStreamUpper(data[index]) != (uint8_t)command[cmdIndex])
+        {
+            return 0U;
+        }
+        index++;
+        cmdIndex++;
+    }
+
+    return 1U;
+}
+
+static void USB_CdcStreamWriteLe16(uint8_t *buffer, uint32_t offset, uint16_t value)
+{
+    buffer[offset]      = (uint8_t)(value & 0xFFU);
+    buffer[offset + 1U] = (uint8_t)((value >> 8U) & 0xFFU);
+}
+
+static void USB_CdcStreamWriteLe32(uint8_t *buffer, uint32_t offset, uint32_t value)
+{
+    buffer[offset]      = (uint8_t)(value & 0xFFU);
+    buffer[offset + 1U] = (uint8_t)((value >> 8U) & 0xFFU);
+    buffer[offset + 2U] = (uint8_t)((value >> 16U) & 0xFFU);
+    buffer[offset + 3U] = (uint8_t)((value >> 24U) & 0xFFU);
+}
+
+static void USB_CdcStreamFillPayload(uint32_t frameOffset, uint32_t payloadBytes)
+{
+    for (uint32_t i = 0U; i < payloadBytes; i += 2U)
+    {
+        uint32_t pixel = (frameOffset + i) / 2U;
+        uint32_t x     = pixel % STREAM_FRAME_WIDTH;
+        uint32_t y     = (pixel / STREAM_FRAME_WIDTH) % STREAM_FRAME_HEIGHT;
+        uint16_t r     = (uint16_t)((x * 31U) / (STREAM_FRAME_WIDTH - 1U));
+        uint16_t g     = (uint16_t)((y * 63U) / (STREAM_FRAME_HEIGHT - 1U));
+        uint16_t b     = (uint16_t)((((x + s_streamFrameId) % STREAM_FRAME_WIDTH) * 31U) /
+                                (STREAM_FRAME_WIDTH - 1U));
+        uint16_t rgb   = (uint16_t)((r << 11U) | (g << 5U) | b);
+
+        s_streamTxBuf[STREAM_HEADER_BYTES + i]      = (uint8_t)(rgb & 0xFFU);
+        s_streamTxBuf[STREAM_HEADER_BYTES + i + 1U] = (uint8_t)((rgb >> 8U) & 0xFFU);
+    }
+}
+
+static void USB_CdcStreamStop(void)
+{
+    s_streamEnabled = 0U;
+}
+
+static void USB_CdcStreamHandleCommand(const uint8_t *data, uint32_t length)
+{
+    if ((NULL == data) || (0U == length))
+    {
+        return;
+    }
+
+    if ((data[0] == (uint8_t)'0') || USB_CdcStreamCommandMatches(data, length, "STOP"))
+    {
+        USB_CdcStreamStop();
+        return;
+    }
+
+    if ((data[0] == (uint8_t)'1') || USB_CdcStreamCommandMatches(data, length, "START") ||
+        USB_CdcStreamCommandMatches(data, length, "GO"))
+    {
+        s_streamFrameId = 0U;
+        s_streamChunkId = 0U;
+        s_streamOffset  = 0U;
+        s_streamEnabled = 1U;
+    }
+}
+
+static void USB_CdcStreamService(void)
+{
+    uint32_t payloadBytes;
+    uint32_t remaining;
+    uint32_t flags = 0U;
+    usb_status_t error;
+
+    if ((0U == s_streamEnabled) || (0U == s_cdcVcom.attach) || (0U == s_cdcVcom.startTransactions))
+    {
+        return;
+    }
+
+    if (0U != s_streamTxBusy)
+    {
+        return;
+    }
+
+    remaining    = STREAM_FRAME_BYTES - s_streamOffset;
+    payloadBytes = (remaining > STREAM_PAYLOAD_MAX_BYTES) ? STREAM_PAYLOAD_MAX_BYTES : remaining;
+    if (payloadBytes == remaining)
+    {
+        flags = STREAM_FLAG_FRAME_END;
+    }
+
+    USB_CdcStreamFillPayload(s_streamOffset, payloadBytes);
+
+    USB_CdcStreamWriteLe32(s_streamTxBuf, 0U, STREAM_MAGIC);
+    s_streamTxBuf[4] = STREAM_VERSION;
+    s_streamTxBuf[5] = STREAM_PACKET_FRAME_CHUNK;
+    USB_CdcStreamWriteLe16(s_streamTxBuf, 6U, STREAM_HEADER_BYTES);
+    USB_CdcStreamWriteLe32(s_streamTxBuf, 8U, s_streamFrameId);
+    USB_CdcStreamWriteLe32(s_streamTxBuf, 12U, s_streamChunkId);
+    USB_CdcStreamWriteLe32(s_streamTxBuf, 16U, s_streamOffset);
+    USB_CdcStreamWriteLe32(s_streamTxBuf, 20U, payloadBytes);
+    USB_CdcStreamWriteLe32(s_streamTxBuf, 24U, STREAM_FRAME_BYTES);
+    USB_CdcStreamWriteLe32(s_streamTxBuf, 28U, flags);
+
+    error = USB_DeviceCdcAcmSend(s_cdcVcom.cdcAcmHandle, USB_CDC_VCOM_BULK_IN_ENDPOINT, s_streamTxBuf,
+                                 STREAM_HEADER_BYTES + payloadBytes);
+    if (kStatus_USB_Success == error)
+    {
+        s_streamTxBusy = 1U;
+        if (0U != (flags & STREAM_FLAG_FRAME_END))
+        {
+            s_streamFrameId++;
+            s_streamChunkId = 0U;
+            s_streamOffset  = 0U;
+        }
+        else
+        {
+            s_streamChunkId++;
+            s_streamOffset += payloadBytes;
+        }
+    }
+    else if (kStatus_USB_Busy == error)
+    {
+        s_streamBusyCount++;
+    }
+    else
+    {
+        s_streamSendErrorCount++;
+    }
+}
+
 /*!
  * @brief Application initialization function.
  *
@@ -599,6 +784,7 @@ static void APPTask(void)
 {
     usb_status_t error = kStatus_USB_Error;
     uint32_t usbOsaCurrentSr;
+    uint32_t recvSize = 0U;
 
     if ((1U == s_cdcVcom.attach) && (1U == s_cdcVcom.startTransactions))
     {
@@ -613,26 +799,22 @@ static void APPTask(void)
             CDC_VCOM_BMEnterCritical(&usbOsaCurrentSr);
             if ((0U != s_recvSize) && (USB_CANCELLED_TRANSFER_LENGTH != s_recvSize))
             {
-                /* Copy Buffer to Send Buff */
-                memcpy(s_currSendBuf, s_currRecvBuf, s_recvSize);
-                s_sendSize = s_recvSize;
+                recvSize = s_recvSize;
                 s_recvSize = 0;
             }
             CDC_VCOM_BMExitCritical(usbOsaCurrentSr);
-        }
 
-        if (0U != s_sendSize)
-        {
-            uint32_t size = s_sendSize;
-            s_sendSize    = 0;
+            USB_CdcStreamHandleCommand(s_currRecvBuf, recvSize);
 
-            error = USB_DeviceCdcAcmSend(s_cdcVcom.cdcAcmHandle, USB_CDC_VCOM_BULK_IN_ENDPOINT, s_currSendBuf, size);
-
+            error = USB_DeviceCdcAcmRecv(s_cdcVcom.cdcAcmHandle, USB_CDC_VCOM_BULK_OUT_ENDPOINT, s_currRecvBuf,
+                                         g_UsbDeviceCdcVcomDicEndpoints[1].maxPacketSize);
             if (error != kStatus_USB_Success)
             {
-                /* Failure to send Data Handling code here */
+                /* Failure to schedule host command receive. */
             }
         }
+
+        USB_CdcStreamService();
 #if defined(FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED) && (FSL_FEATURE_USB_KHCI_KEEP_ALIVE_ENABLED > 0U) && \
     defined(USB_DEVICE_CONFIG_KEEP_ALIVE_MODE) && (USB_DEVICE_CONFIG_KEEP_ALIVE_MODE > 0U) &&             \
     defined(FSL_FEATURE_USB_KHCI_USB_RAM) && (FSL_FEATURE_USB_KHCI_USB_RAM > 0U)

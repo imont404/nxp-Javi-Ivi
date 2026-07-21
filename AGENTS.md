@@ -9,8 +9,8 @@ linked shared source used by the MCUXpresso project.
 Use `uv` for Wavenumber dev-standard tooling:
 
 ```powershell
-uvx --from wn-dev-std==2026.7.2 dev-std --version
-uvx --from wn-dev-std==2026.7.2 dev-std audit . --scope docs.plans
+uvx --from wn-dev-std==2026.7.18 dev-std --version
+uvx --from wn-dev-std==2026.7.18 dev-std audit . --scope docs.plans
 ```
 
 The root `pyproject.toml` exists for tooling and dev-standard configuration.
@@ -21,10 +21,10 @@ This firmware repository is not packaged as a Python distribution.
 Use dev-std active plans under `docs/plans`:
 
 ```powershell
-uvx --from wn-dev-std==2026.7.2 dev-std plan list
-uvx --from wn-dev-std==2026.7.2 dev-std plan create <plan-id> --title "<title>"
-uvx --from wn-dev-std==2026.7.2 dev-std plan show <plan-id>
-uvx --from wn-dev-std==2026.7.2 dev-std log create <plan-id> <step-id> --body "<note>"
+uvx --from wn-dev-std==2026.7.18 dev-std plan list
+uvx --from wn-dev-std==2026.7.18 dev-std plan create <plan-id> --title "<title>"
+uvx --from wn-dev-std==2026.7.18 dev-std plan show <plan-id>
+uvx --from wn-dev-std==2026.7.18 dev-std log create <plan-id> <step-id> --body "<note>"
 ```
 
 Do not create new active plans in `docs/research` or `docs/examples`. Existing

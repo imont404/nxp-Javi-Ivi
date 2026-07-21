@@ -5,9 +5,9 @@ Active execution plans and attached work logs live under this folder.
 Use the `dev-std` plan commands from the repository root:
 
 ```powershell
-uvx --from wn-dev-std==2026.7.2 dev-std plan list
-uvx --from wn-dev-std==2026.7.2 dev-std plan create flexio-camera --title "FlexIO Camera Bringup"
-uvx --from wn-dev-std==2026.7.2 dev-std plan show flexio-camera
+uvx --from wn-dev-std==2026.7.18 dev-std plan list
+uvx --from wn-dev-std==2026.7.18 dev-std plan create flexio-camera --title "FlexIO Camera Bringup"
+uvx --from wn-dev-std==2026.7.18 dev-std plan show flexio-camera
 ```
 
 Reference material, imported SDK examples, and research notes stay outside this

@@ -45,6 +45,22 @@ title = "Decide whether the alternate display path belongs on the Rev B shield"
 status = "pending"
 depends_on = ["parallel-ezh-strategy", "te-sync-evaluation"]
 
+[[steps]]
+id = "design-doc-intent-audit"
+title = "Verify design docs match current user intent and implemented behavior before closeout"
+status = "pending"
+
+[[steps]]
+id = "test-runtime-impact-audit"
+title = "Review validation runtime impact and record any slower-lane decisions before closeout"
+status = "pending"
+
+[[steps]]
+id = "external-review"
+title = "Record independent review of the display bringup plan"
+status = "pending"
+depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
+
 [[exit_criteria]]
 id = "sources-cataloged"
 title = "BuyDisplay product, datasheet, controller, connector, and demo-code sources are cataloged"
@@ -83,6 +99,21 @@ status = "pending"
 [[exit_criteria]]
 id = "revb-display-decision"
 title = "Rev B shield display recommendation is recorded with pin, timing, and firmware tradeoffs"
+status = "pending"
+
+[[exit_criteria]]
+id = "design-doc-intent-audit"
+title = "Design docs match current user intent and implemented behavior"
+status = "pending"
+
+[[exit_criteria]]
+id = "test-runtime-impact-audit"
+title = "New tests are listed and runtime impact is reviewed"
+status = "pending"
+
+[[exit_criteria]]
+id = "external-review"
+title = "Independent review is recorded"
 status = "pending"
 +++
 

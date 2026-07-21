@@ -63,6 +63,22 @@ title = "Compare FlexIO capture against the current SmartDMA/EZH path"
 status = "pending"
 depends_on = ["capture-instrumentation-cleanup"]
 
+[[steps]]
+id = "design-doc-intent-audit"
+title = "Verify design docs match current user intent and implemented behavior before closeout"
+status = "pending"
+
+[[steps]]
+id = "test-runtime-impact-audit"
+title = "Review validation runtime impact and record any slower-lane decisions before closeout"
+status = "pending"
+
+[[steps]]
+id = "external-review"
+title = "Record independent review of the FlexIO camera plan"
+status = "pending"
+depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
+
 [[exit_criteria]]
 id = "flash-rtt-ready"
 title = "FRDM-MCXN947 can be built, flashed, reset, and observed from scripts"
@@ -96,6 +112,21 @@ status = "pending"
 [[exit_criteria]]
 id = "comparison"
 title = "FlexIO feasibility is decided against the existing SmartDMA/EZH approach"
+status = "pending"
+
+[[exit_criteria]]
+id = "design-doc-intent-audit"
+title = "Design docs match current user intent and implemented behavior"
+status = "pending"
+
+[[exit_criteria]]
+id = "test-runtime-impact-audit"
+title = "New tests are listed and runtime impact is reviewed"
+status = "pending"
+
+[[exit_criteria]]
+id = "external-review"
+title = "Independent review is recorded"
 status = "pending"
 +++
 

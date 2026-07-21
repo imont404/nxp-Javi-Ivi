@@ -4,6 +4,10 @@
 #include "st7789_parallel_bitbang.h"
 #endif
 
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+#include "avc_usb_debug_stream.h"
+#endif
+
 #ifndef CONFIG__AVC_UART_TX_Q_SIZE_BYTES
 	#define CONFIG__AVC_UART_TX_Q_SIZE_BYTES 2048
 #endif
@@ -191,6 +195,9 @@ void avc__init()
     /* Boot Secondary core application */
     (void)DEBUG("Starting Secondary core.\r\n");
 
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    avc_usb_debug_stream__init();
+#endif
 
 	#if defined(FSL_FEATURE_MAILBOX_SIDE_A)
 		NVIC_SetPriority(MAILBOX_IRQn, 5);

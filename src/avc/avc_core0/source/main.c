@@ -3,6 +3,10 @@
 #include "avc__io.h"
 #include "avc__line_processor.h"
 
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+#include "avc_usb_debug_stream.h"
+#endif
+
 
 volatile uint16_t bat;
 
@@ -93,6 +97,10 @@ int main(void)
     while (1)
     {
         avc_camera__service();
+
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+        avc_usb_debug_stream__service();
+#endif
 
         bat = avc__read_battery_voltage();
         //Alpha, beta and gamma will be -1.0f to 1.0f
@@ -228,6 +236,10 @@ int main(void)
 
 
             	avc__update_overlay();
+
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+				(void)avc_usb_debug_stream__publish_frame(frame);
+#endif
 
 
             	/*

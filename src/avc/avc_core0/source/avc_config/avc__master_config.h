@@ -62,6 +62,10 @@
 #define CONFIG__DISPLAY_PARALLEL_BITBANG_FRAME_DELAY_MS		(250U)
 #endif
 
+#ifndef CONFIG__USB_DEBUG_STREAM_ENABLE
+#define CONFIG__USB_DEBUG_STREAM_ENABLE			(1)
+#endif
+
 
 //#define CONFIG__OV7670_IS_160x120 (1)           // This only applies to the OV7670
 
