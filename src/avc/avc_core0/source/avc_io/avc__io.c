@@ -232,5 +232,13 @@ void avc__init()
     avc__motor_control_init();
     avc__servo_control_init();
 
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+    /*
+     * Normal build with encoders selected: camera and LCD are up, so wheel
+     * speed can be read alongside the vision loop and shown on the overlay.
+     * The separate diagnostic build above returns before this point.
+     */
+    avc__motor_encoder_qdc_init();
+#endif
 
 }

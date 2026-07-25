@@ -7,7 +7,7 @@
 #include "avc_usb_debug_stream.h"
 #endif
 
-#if CONFIG__MOTOR_ENCODER_DIAG_ENABLE
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
 #include "avc__motor_encoder_qdc.h"
 #endif
 
@@ -28,6 +28,41 @@ uint8_t pot_text[64];
 volatile bool next_frame_ready;
 
 float alpha, gamma, beta;
+
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+/*
+ * Wheel speed, sampled on a fixed interval rather than per frame so the rate is
+ * measured over a known window. Forward reads positive - see
+ * CONFIG__MOTOR_ENCODER_INVERT_M0/M1.
+ */
+#define AVC_ENCODER_SAMPLE_MS (100U)
+
+static avc_motor_encoder_sample_t encoder_samples[AVC_MOTOR_ENCODER_COUNT];
+static uint32_t encoder_sample_tick;
+
+static void avc__encoder_service(void)
+{
+    if (e_tick__timeout(&encoder_sample_tick, AVC_ENCODER_SAMPLE_MS))
+    {
+        avc__motor_encoder_qdc_sample(AVC_ENCODER_SAMPLE_MS, encoder_samples);
+    }
+}
+
+/* Wheel speed in RPM. Positive is forward. */
+float avc__wheel_rpm(avc_motor_encoder_id_t wheel)
+{
+    return (float)encoder_samples[wheel].rpm_milli / 1000.0f;
+}
+
+/* Wheel speed in metres per second at the contact patch. Positive is forward. */
+float avc__wheel_velocity_mps(avc_motor_encoder_id_t wheel)
+{
+    const float circumference_m =
+        3.14159265f * ((float)CONFIG__MOTOR_ENCODER_WHEEL_DIAMETER_MM / 1000.0f);
+
+    return (avc__wheel_rpm(wheel) / 60.0f) * circumference_m;
+}
+#endif
 
 eGFX_ImagePlane top_info;
 
@@ -83,6 +118,10 @@ int main(void)
     avc__motor_encoder_qdc_diag_run();
 #endif
 
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+    encoder_sample_tick = e_tick__get_ms();
+#endif
+
 	//Initialize the ARM CPU cycle counter for measuring performance
 
 
@@ -105,6 +144,10 @@ int main(void)
     while (1)
     {
         avc_camera__service();
+
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+        avc__encoder_service();
+#endif
 
 #if CONFIG__USB_DEBUG_STREAM_ENABLE
         avc_usb_debug_stream__service();
@@ -317,6 +360,30 @@ void avc__update_overlay()
    						pot_text,255,20,
 						&FONT_10_14_1BPP,
 						eGFX_COLOR_RGB888_TO_RGB565(0,0xFF,0));
+
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+   /*
+    * Wheel speed on the top row. Positive is forward.
+    * The two wheels do not match at equal drive - M1 runs several percent
+    * faster than M0 - so seeing both side by side is the point.
+    */
+   sprintf(pot_text, "L%+6.1f R%+6.1f rpm",
+           avc__wheel_rpm(AVC_MOTOR_ENCODER_M0),
+           avc__wheel_rpm(AVC_MOTOR_ENCODER_M1));
+
+   eGFX_DrawStringColored(&top_info,
+                          pot_text,0,2,
+                          &FONT_10_14_1BPP,
+                          eGFX_COLOR_RGB888_TO_RGB565(0xFF,0xFF,0));
+
+   sprintf(pot_text, "%+5.2f m/s",
+           avc__wheel_velocity_mps(AVC_MOTOR_ENCODER_M0));
+
+   eGFX_DrawStringColored(&top_info,
+                          pot_text,215,2,
+                          &FONT_10_14_1BPP,
+                          eGFX_COLOR_RGB888_TO_RGB565(0xFF,0xFF,0));
+#endif
 
 
    if(button__is_active(&left_btn))

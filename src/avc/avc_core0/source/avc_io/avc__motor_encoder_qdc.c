@@ -45,9 +45,14 @@ static void avc__qdc_zero(QDC_Type *base)
                             QDC_CTRL_SWIP_MASK);
 }
 
-static void avc__qdc_init_block(QDC_Type *base)
+static void avc__qdc_init_block(QDC_Type *base, bool invert)
 {
-    base->CTRL = 0U;
+    /*
+     * CTRL[REV] flips the counting direction in hardware, so forward motion
+     * reads positive and the position register counts up from zero rather than
+     * wrapping down through 0xFFFFFFFF. See CONFIG__MOTOR_ENCODER_INVERT_M0/M1.
+     */
+    base->CTRL = invert ? QDC_CTRL_REV(1U) : 0U;
     base->FILT = 0U;
     base->WTR = 0U;
     base->POSD = 0U;
@@ -107,13 +112,16 @@ void avc__motor_encoder_qdc_init(void)
     RESET_ReleasePeripheralReset(kQDC0_RST_SHIFT_RSTn);
     RESET_ReleasePeripheralReset(kQDC1_RST_SHIFT_RSTn);
 
-    avc__qdc_init_block(QDC0);
-    avc__qdc_init_block(QDC1);
+    avc__qdc_init_block(QDC0, CONFIG__MOTOR_ENCODER_INVERT_M0 != 0);
+    avc__qdc_init_block(QDC1, CONFIG__MOTOR_ENCODER_INVERT_M1 != 0);
 
     s_last_position[AVC_MOTOR_ENCODER_M0] = avc__qdc_read_position(QDC0);
     s_last_position[AVC_MOTOR_ENCODER_M1] = avc__qdc_read_position(QDC1);
 
     DEBUG("Motor encoder QDC route: J17/M0 P1_0/P1_1 -> QDC0, J11/M1 P1_22/P2_0 -> QDC1\r\n");
+    DEBUG("Motor encoder QDC polarity: invert m0=%u m1=%u (forward reads positive)\r\n",
+          (unsigned int)(CONFIG__MOTOR_ENCODER_INVERT_M0 != 0),
+          (unsigned int)(CONFIG__MOTOR_ENCODER_INVERT_M1 != 0));
 }
 
 void avc__motor_encoder_qdc_zero(void)

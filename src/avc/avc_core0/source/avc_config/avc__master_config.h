@@ -209,6 +209,29 @@
 #endif
 
 /*
+ * Encoder direction polarity, per motor.
+ *
+ * MEASURED 2026-07-25: with both QDC blocks in their default direction, driving
+ * the car FORWARD produces NEGATIVE counts. Position also counts down from zero
+ * and wraps to ~4.29 billion, which is both confusing and awkward for anything
+ * position-based.
+ *
+ * Setting these applies the QDC CTRL[REV] bit so forward motion counts up and
+ * reads positive. Fixing it in hardware rather than negating in software keeps
+ * the raw position register meaningful.
+ *
+ * Per-motor because a mirrored motor mounting is a normal thing to encounter;
+ * on this chassis both need inverting.
+ */
+#ifndef CONFIG__MOTOR_ENCODER_INVERT_M0
+#define CONFIG__MOTOR_ENCODER_INVERT_M0				(1)
+#endif
+
+#ifndef CONFIG__MOTOR_ENCODER_INVERT_M1
+#define CONFIG__MOTOR_ENCODER_INVERT_M1				(1)
+#endif
+
+/*
  * Wheel diameter, for converting encoder rate to ground speed.
  * 75 mm, equal to the chassis ground-to-top-plate height.
  * See docs/car_chassis/README.md.
