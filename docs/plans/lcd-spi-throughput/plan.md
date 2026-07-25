@@ -217,9 +217,22 @@ the observed figure. The clock tree and the measurement agree, so `confirm-spi-c
 is now about establishing the *ceiling*, not the current value.
 
 The lever for going faster is PLLCLKDIV. At divide-by-1 the source becomes
-150 MHz and SCK could reach 75 MHz. **PLLCLKDIV is not private to the LCD** -
-before changing it, find every peripheral hanging off it, because raising it
-changes their clocks too.
+150 MHz and SCK could reach 75 MHz.
+
+**Checked, and the news is good: PLLCLKDIV is effectively private to the LCD.**
+The plan previously flagged this as the main risk. A search of the tree for
+`kPLL_DIV_to_*` attachments returns exactly one hit -
+`eGFX_Driver_ER-TFT020-3.c:91`, the display driver itself. Nothing else consumes
+it, so changing `kCLOCK_DivPllClk` from 2 to 1 moves the LCD SPI clock and
+nothing else.
+
+That removes the coupling worry entirely and makes `raise-spi-clock` a much
+smaller change than it looked.
+
+FlexComm1's other selectable sources are all slower or unsuitable -
+`kFRO_HF_DIV` (FRO_HF is 48 MHz in this configuration), `kUSB_PLL`, `kFRO12M`,
+`kCLK_1M`, `kLPOSC`. PLL_DIV is the right source; it just needs a smaller
+divider.
 
 Two ceilings then apply, and both need looking up rather than assuming:
 
