@@ -7,7 +7,16 @@ available for Rev B, given four channels are committed to the H-bridges?
 **Answer: yes — `PWM1` submodule 3 is completely unused, and `P3_20/PWM1_A3` already
 reaches the shield on `J1.5` with nothing connected to it.**
 
-**Date:** 2026-07-25. Desk research against both netlists and the NXP signal data.
+**Date:** 2026-07-25. Desk research against both netlists and the NXP signal data,
+**then verified on hardware the same day.**
+
+> **Verified.** `P3_20/PWM1_A3` was driven from firmware and scoped at shield `J1.5`:
+> the expected 50 Hz servo waveform is present. The pin is confirmed usable as the Rev B
+> servo output — a fresh PWM submodule on an already-routed, previously unconnected shield
+> pin, with no board rework.
+>
+> Selectable in firmware via `CONFIG__SERVO_PWM_OUTPUT`; the Rev A pin remains the
+> default. See §7.
 
 ---
 
@@ -15,7 +24,7 @@ reaches the shield on `J1.5` with nothing connected to it.**
 
 | Option | Pin | Channel | Where | Verdict |
 |---|---|---|---|---|
-| **Recommended** | **`P3_20`** | **`PWM1_A3`** | shield `J1.5`, net `P3-20/SAI1_TXD0`, **unconnected** | **no rework, no conflict** |
+| **Recommended** | **`P3_20`** | **`PWM1_A3`** | shield `J1.5`, net `P3-20/SAI1_TXD0`, **unconnected** | **verified on hardware — no rework, no conflict** |
 | Alternate | `P2_1` | `PWM1_B3` | FRDM `J7.9` | free, but check shield header mapping |
 | Keep | `P2_3` | `PWM1_B2` | shield `J3.5` → `U10` | works today; nothing wrong with it |
 | Avoid | `P2_2` | `PWM1_A2` | shield `J3.7` → `U9` | the Rev A conflict |
@@ -140,10 +149,40 @@ complementary `A`/`B` pair. Worth knowing, not worth depending on.
 `P1_8`, `P1_9`, `P1_14`; this touches `P3_20`. They can be adopted independently or
 together.
 
-## 7. Open items
+## 7. Firmware support
 
-- Confirm on the physical board that shield `J1.5` is genuinely spare and mechanically
-  reachable for the servo connector's placement.
+`CONFIG__SERVO_PWM_OUTPUT` in `avc__master_config.h` selects the output. The Rev A pin is
+the default, so the competition image is unaffected.
+
+| Value | Submodule | Channel | Pin | Header |
+|---|---|---|---|---|
+| `SERVO_PWM_OUTPUT_P2_3_B2` *(default)* | 2 | B | `P2_3` | shield `J3.5` |
+| `SERVO_PWM_OUTPUT_P3_20_A3` | **3** | **A** | **`P3_20`** (alt5, ball M17) | **shield `J1.5`** |
+
+Only the submodule, channel, pin, and submodule clock differ — the 50 Hz center-aligned
+timing setup is shared, so the two cannot drift apart in behaviour.
+
+`avc__servo_control.c` muxes its own output pin rather than relying on `BOARD_InitPins`.
+The Rev A pin was already muxed there, but keeping the pin choice beside the servo setup
+means selecting a different output cannot leave a stale mux driving the old pin. Init also
+prints the active output, which is what tells you a build is driving the pin you are about
+to probe:
+
+```
+Servo PWM output: P3_20/PWM1_A3 (shield J1.5) at 50 Hz
+```
+
+Build the candidate with:
+
+```powershell
+.uild_cmake.ps1 -BuildDir "build\cmakevc_core0-ServoP3_20" `
+    -Define "CONFIG__SERVO_PWM_OUTPUT=SERVO_PWM_OUTPUT_P3_20_A3"
+```
+
+## 8. Open items
+
+- ~~Confirm `J1.5` carries the signal~~ — **done, scoped and confirmed.** Still worth
+  checking it is mechanically reachable for the servo connector's placement on a respin.
 - Decide whether `U9` is repurposed for `P3_20` or removed.
 - Confirm `P3_20` has no default pull or boot-strap behaviour that would glitch the servo
   at reset — a servo twitching on power-up is worth avoiding on a car that students
