@@ -17,18 +17,18 @@ status = "pending"
 [[steps]]
 id = "pin-group-selector"
 title = "Add a FlexIO pin-group selector that keeps the Port 4 group as default"
-status = "active"
+status = "done"
 
 [[steps]]
 id = "decouple-port-hardcoding"
 title = "Decouple the FlexIO pin setup from PORT4 and from single-port contiguity"
-status = "pending"
+status = "done"
 depends_on = ["pin-group-selector"]
 
 [[steps]]
 id = "port4-regression"
 title = "Prove the Port 4 FlexIO path still works after the refactor"
-status = "pending"
+status = "active"
 depends_on = ["decouple-port-hardcoding"]
 
 [[steps]]
@@ -93,7 +93,7 @@ status = "pending"
 [[exit_criteria]]
 id = "both-groups-selectable"
 title = "Port 4 and Port 1 FlexIO pin groups are both selectable by configuration, Port 4 remaining the default"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "jumpers-non-destructive"

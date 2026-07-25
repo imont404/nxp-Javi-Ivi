@@ -47,10 +47,79 @@
 #define CAMERA_PIPELINE_DIAG_LINE_MARGIN (20U)
 #define CAMERA_PIPELINE_DIAG_LINES_MIN (CONFIG__CAMERA_RESOLUTION_Y - CAMERA_PIPELINE_DIAG_LINE_MARGIN)
 #define CAMERA_PIPELINE_DIAG_LINES_MAX (CONFIG__CAMERA_RESOLUTION_Y + CAMERA_PIPELINE_DIAG_LINE_MARGIN)
-#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (12U)
-#define CAMERA_FLEXIO_DATA_PIN_START (20U)
-#define CAMERA_FLEXIO_PCLK_PIN (28U)
-#define CAMERA_FLEXIO_HREF_PIN (29U)
+/*
+ * FlexIO camera pin group.
+ *
+ * Everything below is expressed per group so the shifter, timer, and eDMA setup
+ * stays identical between them. See CONFIG__CAMERA_FLEXIO_PIN_GROUP in
+ * avc__master_config.h and docs/research/AVC_Camera_FlexIO_Pin_Migration.md.
+ *
+ * Naming: *_GPIO_PIN is a PORT/GPIO bit index, *_PIN (and *_PIN_START) is a
+ * FLEXIO0_Dnn index. That split already existed; it is now applied per signal
+ * because the PORT1 group does not keep data, PCLK, and HREF adjacent on one
+ * port the way the PORT4 group does.
+ */
+#if CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT1
+
+/* Rev A camera wiring plus three J9_EXT jumpers. */
+#define CAMERA_FLEXIO_DATA_PORT           PORT1
+#define CAMERA_FLEXIO_DATA_PORT_CLOCK     kCLOCK_Port1
+#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (4U)   /* P1_4  */
+#define CAMERA_FLEXIO_DATA_PIN_START      (12U)  /* FLEXIO0_D12 */
+
+#define CAMERA_FLEXIO_PCLK_PORT           PORT1
+#define CAMERA_FLEXIO_PCLK_PORT_CLOCK     kCLOCK_Port1
+#define CAMERA_FLEXIO_PCLK_GPIO_PIN       (14U)  /* P1_14 */
+#define CAMERA_FLEXIO_PCLK_PIN            (22U)  /* FLEXIO0_D22 */
+
+#define CAMERA_FLEXIO_HREF_PORT           PORT0
+#define CAMERA_FLEXIO_HREF_PORT_CLOCK     kCLOCK_Port0
+#define CAMERA_FLEXIO_HREF_GPIO           GPIO0
+#define CAMERA_FLEXIO_HREF_GPIO_PIN       (11U)  /* P0_11 */
+#define CAMERA_FLEXIO_HREF_PIN            (3U)   /* FLEXIO0_D3 */
+
+#define CAMERA_FLEXIO_VSYNC_PORT          PORT0
+#define CAMERA_FLEXIO_VSYNC_PORT_CLOCK    kCLOCK_Port0
+#define CAMERA_FLEXIO_VSYNC_GPIO          GPIO0
+#define CAMERA_FLEXIO_VSYNC_GPIO_CLOCK    kCLOCK_Gpio0
+#define CAMERA_FLEXIO_VSYNC_GPIO_PIN      (4U)   /* P0_4 */
+#define CAMERA_FLEXIO_VSYNC_IRQN          GPIO00_IRQn
+#define CAMERA_FLEXIO_PIN_GROUP_NAME \
+    "D0-D7=P1_4..P1_11/FLEXIO0_D12..D19 PCLK=P1_14/FLEXIO0_D22 HREF=P0_11/FLEXIO0_D3 VSYNC=P0_4/GPIO IRQ"
+
+#else /* CAMERA_FLEXIO_PIN_GROUP_PORT4 */
+
+/* Original proven group. Needs eleven fly-wires. */
+#define CAMERA_FLEXIO_DATA_PORT           PORT4
+#define CAMERA_FLEXIO_DATA_PORT_CLOCK     kCLOCK_Port4
+#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (12U)  /* P4_12 */
+#define CAMERA_FLEXIO_DATA_PIN_START      (20U)  /* FLEXIO0_D20 */
+
+#define CAMERA_FLEXIO_PCLK_PORT           PORT4
+#define CAMERA_FLEXIO_PCLK_PORT_CLOCK     kCLOCK_Port4
+#define CAMERA_FLEXIO_PCLK_GPIO_PIN       (20U)  /* P4_20 */
+#define CAMERA_FLEXIO_PCLK_PIN            (28U)  /* FLEXIO0_D28 */
+
+#define CAMERA_FLEXIO_HREF_PORT           PORT4
+#define CAMERA_FLEXIO_HREF_PORT_CLOCK     kCLOCK_Port4
+#define CAMERA_FLEXIO_HREF_GPIO           GPIO4
+#define CAMERA_FLEXIO_HREF_GPIO_PIN       (21U)  /* P4_21 */
+#define CAMERA_FLEXIO_HREF_PIN            (29U)  /* FLEXIO0_D29 */
+
+#define CAMERA_FLEXIO_VSYNC_PORT          PORT4
+#define CAMERA_FLEXIO_VSYNC_PORT_CLOCK    kCLOCK_Port4
+#define CAMERA_FLEXIO_VSYNC_GPIO          GPIO4
+#define CAMERA_FLEXIO_VSYNC_GPIO_CLOCK    kCLOCK_Gpio4
+#define CAMERA_FLEXIO_VSYNC_GPIO_PIN      (22U)  /* P4_22 */
+#define CAMERA_FLEXIO_VSYNC_IRQN          GPIO40_IRQn
+#define CAMERA_FLEXIO_PIN_GROUP_NAME \
+    "D0-D7=P4_12..P4_19/FLEXIO0_D20..D27 PCLK=P4_20/FLEXIO0_D28 HREF=P4_21/FLEXIO0_D29 VSYNC=P4_22/GPIO IRQ"
+
+#endif
+
+#define CAMERA_FLEXIO_DATA_WIDTH (8U)
+#define CAMERA_FLEXIO_VSYNC_MASK (1UL << CAMERA_FLEXIO_VSYNC_GPIO_PIN)
+
 #define CAMERA_FLEXIO_SHIFTER_START (0U)
 #define CAMERA_FLEXIO_SHIFTER_COUNT (8U)
 #define CAMERA_FLEXIO_TIMER (0U)
@@ -545,8 +614,11 @@ static uint32_t camera__flexio_timer_trigger_sel_pininput(uint32_t pin)
 
 static void camera__configure_flexio_edma_pins(void)
 {
-    CLOCK_EnableClock(kCLOCK_Gpio4);
-    CLOCK_EnableClock(kCLOCK_Port4);
+    CLOCK_EnableClock(CAMERA_FLEXIO_DATA_PORT_CLOCK);
+    CLOCK_EnableClock(CAMERA_FLEXIO_PCLK_PORT_CLOCK);
+    CLOCK_EnableClock(CAMERA_FLEXIO_HREF_PORT_CLOCK);
+    CLOCK_EnableClock(CAMERA_FLEXIO_VSYNC_PORT_CLOCK);
+    CLOCK_EnableClock(CAMERA_FLEXIO_VSYNC_GPIO_CLOCK);
 
     const port_pin_config_t flexio_input_config = {
         .pullSelect = kPORT_PullDisable,
@@ -574,36 +646,52 @@ static void camera__configure_flexio_edma_pins(void)
         .lockRegister = kPORT_UnlockRegister
     };
 
-    for (uint32_t pin = CAMERA_FLEXIO_DATA_GPIO_START_PIN; pin <= CAMERA_DIAG_HSYNC_PIN; pin++)
+    /*
+     * Data, PCLK, and HREF are configured separately rather than as one
+     * contiguous sweep. The PORT4 group happens to have all three adjacent on
+     * one port; the PORT1 group does not (data ends at P1_11, PCLK is P1_14,
+     * and HREF is on Port 0), so the sweep cannot be assumed.
+     */
+    for (uint32_t i = 0U; i < CAMERA_FLEXIO_DATA_WIDTH; i++)
     {
-        PORT_SetPinConfig(PORT4, pin, &flexio_input_config);
+        PORT_SetPinConfig(CAMERA_FLEXIO_DATA_PORT,
+                          CAMERA_FLEXIO_DATA_GPIO_START_PIN + i,
+                          &flexio_input_config);
     }
+
+    PORT_SetPinConfig(CAMERA_FLEXIO_PCLK_PORT, CAMERA_FLEXIO_PCLK_GPIO_PIN, &flexio_input_config);
+    PORT_SetPinConfig(CAMERA_FLEXIO_HREF_PORT, CAMERA_FLEXIO_HREF_GPIO_PIN, &flexio_input_config);
 
     const gpio_pin_config_t input_config = {
         .pinDirection = kGPIO_DigitalInput,
         .outputLogic = 0U
     };
 
-    GPIO_PinInit(GPIO4, CAMERA_DIAG_VSYNC_PIN, &input_config);
-    PORT_SetPinConfig(PORT4, CAMERA_DIAG_VSYNC_PIN, &vsync_gpio_config);
+    GPIO_PinInit(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN, &input_config);
+    PORT_SetPinConfig(CAMERA_FLEXIO_VSYNC_PORT, CAMERA_FLEXIO_VSYNC_GPIO_PIN, &vsync_gpio_config);
 
-    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_HSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
-    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
+    /* HREF belongs to FlexIO now, so make sure no GPIO interrupt is left armed on it. */
+    GPIO_SetPinInterruptConfig(CAMERA_FLEXIO_HREF_GPIO, CAMERA_FLEXIO_HREF_GPIO_PIN,
+                               kGPIO_InterruptStatusFlagDisabled);
+    GPIO_SetPinInterruptConfig(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN,
+                               kGPIO_InterruptStatusFlagDisabled);
 
 #if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
-    GPIO_SetPinInterruptChannel(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptOutput0);
-    GPIO_GpioClearInterruptChannelFlags(GPIO4, CAMERA_DIAG_IRQ_MASK, 0U);
+    GPIO_SetPinInterruptChannel(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN,
+                                kGPIO_InterruptOutput0);
+    GPIO_GpioClearInterruptChannelFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_MASK, 0U);
 #else
-    GPIO_GpioClearInterruptFlags(GPIO4, CAMERA_DIAG_IRQ_MASK);
+    GPIO_GpioClearInterruptFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_MASK);
 #endif
 
-    GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptRisingEdge);
+    GPIO_SetPinInterruptConfig(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN,
+                               kGPIO_InterruptRisingEdge);
 
-    NVIC_ClearPendingIRQ(GPIO40_IRQn);
-    NVIC_SetPriority(GPIO40_IRQn, 4);
-    EnableIRQ(GPIO40_IRQn);
+    NVIC_ClearPendingIRQ(CAMERA_FLEXIO_VSYNC_IRQN);
+    NVIC_SetPriority(CAMERA_FLEXIO_VSYNC_IRQN, 4);
+    EnableIRQ(CAMERA_FLEXIO_VSYNC_IRQN);
 
-    DEBUG("FlexIO camera eDMA pins: D0-D7=P4_12..P4_19/FLEXIO0_D20..D27 PCLK=P4_20/FLEXIO0_D28 HREF=P4_21/FLEXIO0_D29 VSYNC=P4_22/GPIO IRQ\r\n");
+    DEBUG("FlexIO camera eDMA pins: " CAMERA_FLEXIO_PIN_GROUP_NAME "\r\n");
 }
 
 static void camera__configure_flexio_camera(void)
@@ -1081,7 +1169,7 @@ void GPIO40_IRQHandler(void)
     GPIO_GpioClearInterruptFlags(GPIO4, status & CAMERA_DIAG_IRQ_MASK);
 #endif
 
-#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA &&     CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT4
     if ((status & CAMERA_DIAG_VSYNC_MASK) != 0UL)
     {
         uint32_t irq_tick = camera__timing_read_ticks();
@@ -1138,6 +1226,21 @@ void GPIO00_IRQHandler(void)
         g_camera_ref_vsync_count++;
         g_camera_ref_lines_last_frame = hsync_count - g_camera_ref_hsync_at_last_vsync;
         g_camera_ref_hsync_at_last_vsync = hsync_count;
+
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA &&     CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT1
+        /*
+         * The PORT1 group puts frame start on P0_4, which this handler already
+         * serviced as a reference counter. Promote it to driving capture.
+         * P0_11 is FlexIO HREF in this group, so g_camera_ref_hsync_count stops
+         * advancing and the lines-per-frame figure above reads zero.
+         */
+        {
+            uint32_t irq_tick = camera__timing_read_ticks();
+
+            camera__timing_on_vsync(irq_tick);
+            camera__flexio_edma_on_vsync(irq_tick);
+        }
+#endif
     }
 
     if ((status & CAMERA_REF_IRQ_MASK) == 0UL)

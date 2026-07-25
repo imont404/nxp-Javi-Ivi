@@ -24,6 +24,50 @@
 #define CONFIG__CAMERA_CAPTURE_BACKEND			(CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH)
 #endif
 
+/*
+ * FlexIO camera pin group.
+ *
+ * Selects which set of pins the FlexIO eDMA capture path drives. Only meaningful
+ * when CONFIG__CAMERA_CAPTURE_BACKEND selects a FlexIO backend.
+ *
+ * PORT4 is the original, proven group. It needs eleven fly-wires because Port 4
+ * is not where the Rev A camera is routed.
+ *
+ * PORT1 reuses the Rev A camera wiring and needs only three jumpers on J9_EXT:
+ *   J9_EXT.12 (P3_4 cam D4) -> J9_EXT.32 (P1_8)
+ *   J9_EXT.11 (P3_5 cam D5) -> J9_EXT.30 (P1_9)
+ *   J9_EXT.15 (P0_5 PCLK)   -> J9_EXT.2  (P1_14)
+ * After those jumpers P1_4..P1_11 is contiguous FLEXIO0_D12..D19 and contiguous
+ * SMARTDMA_PIO0..PIO7, so EZH versus FlexIO becomes alt7 versus alt6 on one
+ * harness. See docs/research/AVC_Camera_FlexIO_Pin_Migration.md.
+ *
+ *                    | PORT4 group          | PORT1 group
+ *   D0-D7            | P4_12..P4_19 D20..D27| P1_4..P1_11 D12..D19
+ *   PCLK             | P4_20        D28     | P1_14        D22
+ *   HREF             | P4_21        D29     | P0_11        D3
+ *   VSYNC (GPIO IRQ) | P4_22        GPIO4   | P0_4         GPIO0
+ */
+#define CAMERA_FLEXIO_PIN_GROUP_PORT4			1
+#define CAMERA_FLEXIO_PIN_GROUP_PORT1			2
+
+#ifndef CONFIG__CAMERA_FLEXIO_PIN_GROUP
+#define CONFIG__CAMERA_FLEXIO_PIN_GROUP			(CAMERA_FLEXIO_PIN_GROUP_PORT4)
+#endif
+
+#if CONFIG__CAMERA_FLEXIO_PIN_GROUP != CAMERA_FLEXIO_PIN_GROUP_PORT4 && \
+    CONFIG__CAMERA_FLEXIO_PIN_GROUP != CAMERA_FLEXIO_PIN_GROUP_PORT1
+#error Invalid CONFIG__CAMERA_FLEXIO_PIN_GROUP.
+#endif
+
+/*
+ * The PORT1 group is only wired for the FlexIO eDMA capture path. The older
+ * FlexIO signal/pipeline diagnostics remain Port 4 only.
+ */
+#if CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT1 && \
+    CONFIG__CAMERA_CAPTURE_BACKEND != CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA
+#error CAMERA_FLEXIO_PIN_GROUP_PORT1 requires CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA.
+#endif
+
 #define CONFIG__CAMERA_RESOLUTION_X				(320)
 
 #define CONFIG__CAMERA_RESOLUTION_Y				(200)
