@@ -54,7 +54,7 @@ depends_on = ["dual-qdc-count-diag"]
 [[steps]]
 id = "wheel-geometry-calibration"
 title = "Record encoder geometry and convert QDC rate to wheel RPM"
-status = "active"
+status = "done"
 depends_on = ["open-loop-speed-telemetry"]
 
 [[steps]]
@@ -89,37 +89,37 @@ status = "met"
 [[exit_criteria]]
 id = "pin-ownership-safe"
 title = "Firmware build/profile selection prevents encoder pins from conflicting with alternate LCD/EZH functions"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "qdc-access-layer"
 title = "QDC0 and QDC1 can be initialized through the selected driver or thin HAL"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "bench-signal-visibility"
 title = "Bench diagnostic confirms live encoder A/B transitions on J11 and J17"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "safe-blocks-test"
 title = "Low-speed chassis-on-blocks diagnostic has explicit motor limits and stop conditions"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "dual-encoder-counts"
 title = "QDC0 and QDC1 report directionally correct position deltas for both motors"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "speed-control-feasible"
 title = "Open-loop speed telemetry is stable enough to support PID tuning"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "rpm-conversion-known"
 title = "Encoder counts per wheel revolution and wheel geometry are recorded well enough to report RPM"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "design-doc-intent-audit"

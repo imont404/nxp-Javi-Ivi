@@ -60,7 +60,7 @@ disagree with the HTML, the HTML wins — re-extract and fix this file.
 
 ---
 
-## ⚠️ Encoder counts per wheel revolution — vendor contradicts itself
+## ✅ Encoder counts per wheel revolution — MEASURED: 1320
 
 This feeds `CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV`, currently `0`, and the
 `wheel-geometry-calibration` step of `motor-encoder-qdc-bringup`.
@@ -82,8 +82,38 @@ is forgetting the 4× quadrature multiplier. That is decent evidence for 1:30.
 no-load from a motor of this class) fit the higher reduction better.** The contradiction is
 unresolved.
 
-**Do not hard-code either value.** Measure it on the actual car: rotate a wheel a known
-number of turns and read the QDC delta. Both numbers are plausible until then.
+### Measured 2026-07-25 — the support answer is right
+
+A wheel was marked and turned **exactly 10 revolutions** by hand with motors off,
+reading the QDC position delta:
+
+```
+13188 counts / 10 revolutions = 1318.8 per revolution
+```
+
+**1320 to within 0.09 percent.** The 12-count shortfall is not landing exactly back on the
+mark. The other encoder read exactly zero throughout, confirming channel independence.
+
+**The spec table's 1:90 is wrong; the support answer's 1:30 is correct.**
+`CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV` is set to **1320**.
+
+> **Do not estimate wheel speed from PWM duty.** A rated-speed argument initially pointed
+> the wrong way: 110 rpm no-load suggested ~11 rpm at 10 percent duty, which would have
+> implied 3960 counts. The wheel actually turns about **31 rpm at 10 percent duty**, some
+> 28 percent of no-load. Duty is strongly non-linear in speed at the low end.
+
+### Derived platform figures
+
+Wheel diameter 75 mm, circumference 235.6 mm.
+
+| | counts/sec | rpm | ground speed |
+|---|---|---|---|
+| 10% duty | ~678 (M0) / 739 (M1) | 30.8 / 33.6 | 0.121 / 0.132 m/s |
+| 20% duty | ~1450 | 65.9 | 0.259 m/s |
+| no-load rating | — | 110 | **0.432 m/s** |
+
+The motors are **not matched**: M1 runs 8.8 percent faster than M0 at identical duty, so a
+car commanded straight in open loop will curve.
 
 ## Vendor support links
 

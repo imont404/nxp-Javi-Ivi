@@ -13,7 +13,9 @@ param(
     # Removes the race between a scripted capture window and a button press.
     [int]$AutoStartMs = 0,
     [int]$ReportMs = 250,
-    [int]$CountsPerWheelRev = 0
+    # Omitted by default so the measured value in avc__master_config.h wins.
+    # Override only to test a different constant.
+    [int]$CountsPerWheelRev = -1
 )
 
 $ErrorActionPreference = "Stop"
@@ -41,9 +43,12 @@ $defines = @(
     "CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0=$PwmPercentM0",
     "CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1=$PwmPercentM1",
     "CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS=$AutoStartMs",
-    "CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS=$ReportMs",
-    "CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV=$CountsPerWheelRev"
+    "CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS=$ReportMs"
 )
+
+if ($CountsPerWheelRev -ge 0) {
+    $defines += "CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV=$CountsPerWheelRev"
+}
 
 & (Join-Path $PSScriptRoot "build_cmake.ps1") `
     -Configuration $Configuration `

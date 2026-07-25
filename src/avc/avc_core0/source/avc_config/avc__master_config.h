@@ -188,8 +188,33 @@
 #define CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS	(250U)
 #endif
 
+/*
+ * Encoder counts per wheel revolution.
+ *
+ * MEASURED 2026-07-25: 13188 counts over exactly 10 hand-turned revolutions,
+ * i.e. 1318.8/rev, which is 1320 to within 0.09 percent. Consistent with
+ * gear_ratio 30 x 11 encoder lines x 4 (quadrature) = 1320.
+ *
+ * This settles a vendor contradiction. Hiwonder's spec table states 1:90,
+ * which would give 3960; their support answer states 1:30 giving 1320. The
+ * measurement backs the support answer.
+ *
+ * Note the rated-speed argument points the wrong way and should not be trusted
+ * here: the motor is rated 110 rpm no-load, and at 10 percent duty the wheel
+ * turns about 31 rpm rather than the ~11 rpm a linear reading would predict.
+ * PWM duty is strongly non-linear in speed at the low end.
+ */
 #ifndef CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV
-#define CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV	(0U)
+#define CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV	(1320U)
+#endif
+
+/*
+ * Wheel diameter, for converting encoder rate to ground speed.
+ * 75 mm, equal to the chassis ground-to-top-plate height.
+ * See docs/car_chassis/README.md.
+ */
+#ifndef CONFIG__MOTOR_ENCODER_WHEEL_DIAMETER_MM
+#define CONFIG__MOTOR_ENCODER_WHEEL_DIAMETER_MM		(75U)
 #endif
 
 #if CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_DISABLED && CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_QDC
