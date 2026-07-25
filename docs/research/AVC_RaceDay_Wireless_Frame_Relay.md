@@ -111,6 +111,33 @@ on whatever handset a team turns up with, no OTG lottery, no asking someone to
 strap their own phone to a moving car. It stays configured, stays charged, and
 is the same every year.
 
+A cheap prepaid handset off a shelf at a local shop is ideal, and being able to
+buy it the same day matters more than the price - shipping risk is what makes
+the board options unattractive this close to the event.
+
+### What to check before buying
+
+1. **Dual-band Wi-Fi.** This is the trap. Budget handsets are frequently
+   **2.4 GHz only**, exactly like the Raspberry Pi Zero 2 W that this document
+   already disqualified for the same reason. A 2.4 GHz-only phone in a
+   conference hall gives back the advantage the phone was bought for. Confirm
+   802.11ac or ax on the box, not just "Wi-Fi".
+2. **USB-C with OTG host.** Near-universal but not guaranteed at the bottom of
+   the range, and it is the one feature the whole idea depends on. Worth testing
+   in the shop with a USB stick if possible.
+3. **Storage of 32 GB or more**, since full-rate recording is the feature no
+   board could match. 320x200 RGB565 at 23.4 FPS is roughly 10 GB per hour raw,
+   so plan on encoding for anything long.
+4. **A recent enough Android** for the USB host APIs and a current Chrome, if
+   WebUSB is to work as the fallback.
+
+No SIM or service is needed - this is a Wi-Fi and USB appliance - so a locked
+prepaid unit is perfectly good.
+
+**Buy two.** At around 100 dollars, a spare is cheap insurance against the one
+that matters failing on race morning, and the second one doubles as the
+development unit so the race phone stays in a known state.
+
 ## Verdict (superseded - see above)
 
 The idea works. **Use a small Linux board, not an MCU** - under Linux the whole
