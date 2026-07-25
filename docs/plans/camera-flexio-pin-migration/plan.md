@@ -1,23 +1,23 @@
 +++
 type = "plan"
 id = "camera-flexio-pin-migration"
-status = "pending"
+status = "active"
 created = "2026-07-25"
 
 [[steps]]
 id = "confirm-board-access"
 title = "Confirm the three target pins are free and unclaimed on the test board"
-status = "pending"
+status = "done"
 
 [[steps]]
 id = "baseline-capture"
-title = "Record EZH and Port 4 FlexIO baselines before changing anything"
+title = "Record the Port 4 FlexIO baseline the Port 1 group must match"
 status = "pending"
 
 [[steps]]
 id = "pin-group-selector"
 title = "Add a FlexIO pin-group selector that keeps the Port 4 group as default"
-status = "pending"
+status = "active"
 
 [[steps]]
 id = "decouple-port-hardcoding"
@@ -34,8 +34,8 @@ depends_on = ["decouple-port-hardcoding"]
 [[steps]]
 id = "jumper-fit"
 title = "Fit the three J9_EXT jumpers and verify EZH still runs unchanged"
-status = "pending"
-depends_on = ["confirm-board-access", "baseline-capture"]
+status = "done"
+depends_on = ["confirm-board-access"]
 
 [[steps]]
 id = "port1-signal-diag"
@@ -98,7 +98,7 @@ status = "pending"
 [[exit_criteria]]
 id = "jumpers-non-destructive"
 title = "The three jumpers are fitted with no cuts and EZH capture still works with them in place"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "port1-frame-correct"
@@ -217,9 +217,14 @@ alternate to `P1_14` if needed.
 
 ### baseline-capture
 
-Record frame rate and a reference image for **both** the EZH build and the Port 4 FlexIO
-build before touching anything. The Port 4 baseline is what the Port 1 group must match;
-the EZH baseline is what proves the jumpers are non-destructive.
+**Rescoped 2026-07-25.** The jumpers were fitted before a written baseline was taken, and
+the EZH build was verified clean with them in place by observation. That settles
+`jumpers-non-destructive`, so the pre-jumper EZH baseline is no longer needed and the
+dependency from `jumper-fit` has been dropped.
+
+What still matters: record frame rate and a reference image for the **Port 4 FlexIO**
+build. That is the number the Port 1 group has to match, and it is still obtainable
+because the jumpers do not affect the Port 4 path.
 
 ### pin-group-selector / decouple-port-hardcoding
 
