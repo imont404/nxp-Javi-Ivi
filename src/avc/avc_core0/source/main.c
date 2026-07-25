@@ -370,13 +370,15 @@ void avc__update_overlay()
     *   y 0-14, x 100-270 : motor status, FONT_10_14
     *   y 3-10,  x 3-48   : CPU percentage, FONT_5_7
     *   y 20-34           : pot values, FONT_10_14
-    * That leaves y 11-18 free left of x=100, and the right end of the top row.
+    * That leaves y 11-18 free left of x=100, and the column right of x=270.
+    * RPM for both wheels goes in the first, per-wheel m/s stacked in the second.
     *
     * Showing both wheels together is the point - they do not match at equal
     * drive, with M1 running several percent faster than M0. The whole band
     * wants a proper layout pass eventually.
     */
-   sprintf(pot_text, "L%+.1f R%+.1f",
+   /* Both wheels' RPM in the strip under the CPU readout. */
+   sprintf(pot_text, "L%+.1f R%+.1f rpm",
            avc__wheel_rpm(AVC_MOTOR_ENCODER_M0),
            avc__wheel_rpm(AVC_MOTOR_ENCODER_M1));
 
@@ -385,11 +387,22 @@ void avc__update_overlay()
                           &FONT_5_7_1BPP,
                           eGFX_COLOR_RGB888_TO_RGB565(0xFF,0xFF,0));
 
-   sprintf(pot_text, "%+.2fm/s",
-           avc__wheel_velocity_mps(AVC_MOTOR_ENCODER_M0));
+   /*
+    * Ground speed per wheel, stacked in the free column right of the motor
+    * status. Independent per wheel on purpose - the two do not match, and a
+    * single combined figure would hide exactly the asymmetry worth seeing.
+    */
+   sprintf(pot_text, "L%+.2f", avc__wheel_velocity_mps(AVC_MOTOR_ENCODER_M0));
 
    eGFX_DrawStringColored(&top_info,
-                          pot_text,275,3,
+                          pot_text,274,1,
+                          &FONT_5_7_1BPP,
+                          eGFX_COLOR_RGB888_TO_RGB565(0xFF,0xFF,0));
+
+   sprintf(pot_text, "R%+.2f", avc__wheel_velocity_mps(AVC_MOTOR_ENCODER_M1));
+
+   eGFX_DrawStringColored(&top_info,
+                          pot_text,274,10,
                           &FONT_5_7_1BPP,
                           eGFX_COLOR_RGB888_TO_RGB565(0xFF,0xFF,0));
 #endif
