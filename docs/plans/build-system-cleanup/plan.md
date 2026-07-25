@@ -34,6 +34,12 @@ status = "pending"
 depends_on = ["consolidate-wrappers", "guard-coverage"]
 
 [[steps]]
+id = "split-capture-backends"
+title = "Split the capture backends into separate translation units selected by CMake"
+status = "pending"
+depends_on = ["variant-matrix"]
+
+[[steps]]
 id = "flexio-diag-pin-groups"
 title = "Decide whether the FlexIO signal and pipeline diagnostics follow the pin-group selector"
 status = "pending"
@@ -77,6 +83,11 @@ status = "pending"
 [[exit_criteria]]
 id = "one-entry-point"
 title = "Variants are selected by parameter rather than by a separate script per experiment"
+status = "pending"
+
+[[exit_criteria]]
+id = "backends-structurally-separate"
+title = "Capture backends live in separate translation units, so an unselected backend cannot be referenced rather than merely being guarded"
 status = "pending"
 
 [[exit_criteria]]
@@ -191,6 +202,30 @@ came from has been retired; its logs are in git history).
 respin, and it has served that purpose — `P3_20/PWM1_A3` is verified. Once Rev B routing is
 decided, one of the two options becomes dead weight. See
 `docs/research/AVC_RevB_Servo_PWM_Options.md`.
+
+### Split the capture backends into separate translation units
+
+`bv_camera__interface.c` is **1770 lines carrying four capture backends**, with 15
+backend-conditional regions. Backend-specific code and data are currently kept apart by
+`#if CONFIG__CAMERA_CAPTURE_BACKEND == ...` guards.
+
+Those guards are correct but they are the weaker form of the idea. **The better end state
+is one file per backend**, selected by CMake, so exclusion is structural:
+
+- No `#if` guards needed at all — a backend that is not built is simply not compiled.
+- Cross-backend references become **impossible** rather than merely guarded. That matters
+  because the EZH and FlexIO PORT1 groups share pins `P1_4..P1_11`, so a stray reference
+  relinking the EZH init would mux them to alt7 and silently break FlexIO capture.
+- The shared parts — sensor bring-up, frame buffers, the `avc_camera__init()` dispatch —
+  become an obvious common file rather than something to infer.
+
+Shape roughly: `bv_camera__common.c` for sensor/buffers/dispatch, plus
+`bv_camera__smartdma_ezh.c`, `bv_camera__flexio_edma.c`, and the two diagnostic backends,
+with `CMakeLists.txt` adding only the selected one.
+
+This is a refactor of working, hardware-verified capture code, so it wants the same
+treatment the pin-group work got: change one thing, rebuild every backend, compare text
+sizes, and re-verify on hardware. Not before the race.
 
 ### Wrapper proliferation
 
