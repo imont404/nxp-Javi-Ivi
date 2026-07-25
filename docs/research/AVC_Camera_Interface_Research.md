@@ -64,6 +64,20 @@ That's **multiple engine cycles per pixel**, all gated on detecting a *registere
 
 > If you keep the parallel camera, do #1–#2 regardless of MCU. If the run is unavoidably long, #3 is the durable fix.
 
+### ✅ RESOLVED (2026-07-24) — option #3 was built and works
+
+Option **#3 (differential/LVDS)** was implemented as two boards plus a custom flex cable and is **working clean at ~12"**:
+
+- **`avc-cam-tx`** — mounts on the Adafruit OV5640; LVDS drivers for `PCLK`/`HSYNC`/`VSYNC`/`D0..D7`, LVDS receiver for `XCLK`.
+- **`avc-cam-rx`** — plugs into the FRDM-AVC shield; converts back to single-ended for the MCXN947.
+- **Custom 50-pin JLCPCB flex**, ~12", differential pairs with interdigitated ground between pairs. I2C/SCCB, `RESET`, `PWDN` and +3V3 run single-ended alongside.
+
+This replaces the old competition wiring (dupont jumpers into headers), where cable length was capped by PCLK integrity and produced HSYNC/VSYNC errors.
+
+**Consequence for this document:** cable signal integrity is **no longer the limiter**, so the §1 conclusion now stands alone — the remaining frame-rate ceiling is the **SmartDMA/EZH capture engine**, and the §6 recommendation #1 (FlexIO capture) is the only one still outstanding. Recommendation #2 (fix the cable electrically) is **done**.
+
+Full as-built record, including the bring-up gotcha (a partially-seated flex connector presents as a dead camera with no firmware fault): **`AVC_LVDS_Adapter.md` §0**.
+
 ---
 
 ## 4. Display: SPI TFT → 8080 parallel
