@@ -90,7 +90,7 @@ depends_on = ["governance-tooling", "cmake-presets"]
 [[steps]]
 id = "retire-mcuxpresso"
 title = "Remove the MCUXpresso dependency from the documented workflow"
-status = "pending"
+status = "done"
 depends_on = ["byte-parity", "cmake-presets", "vscode-integration"]
 
 [[steps]]
@@ -131,7 +131,7 @@ status = "pending"
 [[exit_criteria]]
 id = "no-mcuxpresso"
 title = "Building, flashing, and debugging require no MCUXpresso installation"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "build-reproduces"
