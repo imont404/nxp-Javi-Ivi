@@ -212,6 +212,47 @@ would remove the race entirely at the cost of 128 KB and a memcpy. Probably the
 wrong trade at this resolution, but it should be a decision rather than an
 accident.
 
+### Cheaper fix: refuse the swap instead of tearing
+
+There is a better option than a copy. If the camera declines to hand over a
+buffer while a dump is still running, the frame is simply **dropped** rather
+than torn. Costs nothing but a flag and a test in the capture callback.
+
+That is bad for a control loop - a dropped frame is a lost measurement, and the
+car is steering on stale data for 42.7 ms. But it converts a catastrophic,
+confusing failure into a graceful, obvious one, which is exactly the property
+this path currently lacks. A student who draws too much would see the frame rate
+sag rather than the screen corrupt, and sagging frame rate is a symptom that
+points at the right cause.
+
+Best of both: make it a build option. Drop-frame while the screen is on for
+development, tear-free guaranteed; and for the race, either accept the risk with
+a small overlay or turn the display off entirely.
+
+### The faster display is the one already built
+
+`AVC_USB_Debug_Display_Current_State.md` records the USB CDC stream sustaining
+2.870 MiB/s at 23.43 FPS with no drops, and a **synthetic ceiling near
+34 MiB/s**. The sustained figure is camera-limited, not link-limited - it is
+simply what 23.43 FPS of 320x200 amounts to.
+
+At that ceiling a full 320x240 frame is roughly **4.5 ms**, against 34 ms over
+SPI today and an optimistic 5-10 ms for a parallel panel that does not exist
+yet and would cost around thirteen pins on Rev B.
+
+So the fastest display path is the one already working, and it needs no hardware
+change at all. Wiring `eGFX_Dump()` to the USB transport would let students
+develop with the LCD effectively out of the loop.
+
+That reframes the whole effort. **The LCD only earns its cost when the car is
+untethered.** At a desk, USB is faster, the screen is bigger, and it does not
+compete with the algorithm for the frame budget. On the track the display could
+run at a fraction of the rate, or not at all.
+
+Needs measuring rather than assuming: the 34 MiB/s was a synthetic burst, and
+whether it holds while the camera and the control loop are running is exactly
+the kind of thing this plan has been wrong about before.
+
 ## The part that matters more than all of the above
 
 The panel is 320x240 at 16 bpp, so a frame is **153,600 bytes**. That is
