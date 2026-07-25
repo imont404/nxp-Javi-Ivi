@@ -175,7 +175,7 @@ status = "pending"
 
 [[exit_criteria]]
 id = "build-docs-exist"
-title = "The build system, toolchain provisioning, and quality gates are documented well enough for a student to follow without asking"
+title = "The build system, toolchain provisioning, and quality gates are published as HTML, good enough for a student to follow without asking, with the rack suite asserting the claims"
 status = "pending"
 
 [[exit_criteria]]
@@ -400,14 +400,37 @@ Cover at minimum:
 - **The linker capture convention** — that `link/` holds static captures, where they came
   from, and how to regenerate for a drift diff.
 
-**Open question:** the reference publishes HTML (`docs/setup.html`, plus a
-`docs/governance/` tree) and the `zephyr-firmware` profile expects HTML docs; AVC's
-documentation is Markdown under `docs/research/`. Decide whether to adopt the HTML
-convention or keep Markdown and satisfy the profile another way — worth settling before
-writing, not after.
+Published as **HTML** with a small shared stylesheet — see the decision below.
 
-Also worth copying: the reference keeps `docs/quality/lizard-baseline.txt`, so complexity
-debt is a tracked baseline rather than a pass/fail cliff.
+### DECIDED 2026-07-25: HTML, and it is less disruptive than it sounds
+
+**Published docs are HTML.** The reference is not a wholesale conversion — it uses each
+format where it fits, and AVC's existing structure already matches:
+
+| Format | Used for | AVC today |
+|---|---|---|
+| **HTML** | `setup.html`, `architecture.html`, `governance/` (ADRs, published plans, index) | none yet — this is the new work |
+| **Markdown** | plan documents, work logs, research notes, firmware notes | already the case under `docs/plans` and `docs/research` |
+
+So **no mass migration.** The Markdown research corpus stays exactly as it is; HTML is for
+the published entry points a student or reviewer lands on.
+
+**Authoring is plain hand-written HTML** — no generator, no Sphinx, no MkDocs. A shared
+stylesheet does the work, and the reference's is **eleven lines**: CSS variables for ink,
+paper, accent and rule, then body, headings, code, and table rules. Pages carry no inline
+styling. That is the whole convention, and it is worth keeping that small — a doc toolchain
+is another thing to install and another thing to break four weeks before a race.
+
+**One pattern worth stealing outright.** The reference's `setup.html` opens with:
+
+> Machine-checkable invariants for this page are held by the rack suite (`tests/`).
+
+The doc makes claims and the rack suite asserts them, so setup instructions cannot rot
+silently into fiction. That is the difference between documentation and a promise. Do the
+same: whatever `setup.html` says the one-script install produces, L0 or L1 should verify.
+
+Also copy `docs/quality/lizard-baseline.txt`, so complexity debt is a tracked baseline
+rather than a pass/fail cliff.
 
 ### own-the-source-list
 
