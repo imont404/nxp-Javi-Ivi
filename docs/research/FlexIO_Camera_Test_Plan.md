@@ -8,6 +8,13 @@ Date: 2026-06-17.
 - **eDMA: 16 channels**, up to 16-byte bursts.
 - **SRAM ~480 KB** -> full QVGA RGB565 frame (320x240x2 = 153.6 KB) fits with room to spare; ping-pong line/stripe buffers trivially fit.
 
+> **Note added 2026-07-25.** Two figures above have drifted from the shipped
+> configuration, without changing the capacity argument being made. The firmware runs
+> **320x200**, not QVGA 320x240, so a frame is **128 KB** and the ping-pong pair is
+> **256 KB**. The linker defines 384 + 96 + 32 + 4 = **516 KB** of regions
+> (`avc_core0_Debug_memory.ld`). RAM is in practice the *scarce* resource once both camera
+> buffers are allocated — see `AVC_Competition_Overview.md` §7.
+
 ## Buffering model (two levels)
 1. **In FlexIO: tiny elastic FIFO only** — 1 shifter fills 32 bits every 4 PCLKs (PWIDTH=8); chain shifters for ~16-32 B total. NOT a frame buffer; just hides DMA/bus latency.
 2. **In SRAM via eDMA: the real buffer** — line / stripe / full-frame, your choice. **eDMA major-loop size = IRQ granularity** (set to one line -> 1 IRQ/line). Near-zero CPU during capture.

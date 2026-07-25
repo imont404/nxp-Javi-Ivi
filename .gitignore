@@ -86,3 +86,6 @@ build/
 
 !eGFX_FontGen.exe
 !eGFX_Tools.exe
+
+### Office temp / owner-lock files ###
+~$*
