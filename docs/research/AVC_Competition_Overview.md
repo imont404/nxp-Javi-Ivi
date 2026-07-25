@@ -360,6 +360,8 @@ Judge any proposed change against these:
   detection upgrades, and PowerQuad overlap
 - [`AVC_Camera_FlexIO_Pin_Migration.md`](AVC_Camera_FlexIO_Pin_Migration.md) — proving
   FlexIO capture on the Rev A camera pins, and the Rev B routing recommendation
+- [`AVC_RevB_Servo_PWM_Options.md`](AVC_RevB_Servo_PWM_Options.md) — the Rev A servo PWM
+  conflict and the free PWM channel for Rev B
 - [`AVC_Camera_Interface_Research.md`](AVC_Camera_Interface_Research.md) — camera interface options
 - [`AVC_LVDS_Adapter.md`](AVC_LVDS_Adapter.md) — camera cabling; §0.6 documents the connector-seating
   incident that motivated the SCCB robustness work
