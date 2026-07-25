@@ -10,8 +10,18 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$buildDir = Join-Path $PSScriptRoot "build\cmake\avc_core0-MotorEncoderDiag"
+# Separate output directory per variant. Both images used to land in one folder,
+# so the tree did not tell you which was there - a bad property when one of
+# them spins the wheels.
+$variant = if ($EnableMotors) { "MotorEncoderDiag-Motors" } else { "MotorEncoderDiag" }
+$buildDir = Join-Path $PSScriptRoot "build\cmake\avc_core0-$variant"
 $motorEnable = if ($EnableMotors) { "1" } else { "0" }
+
+if ($EnableMotors) {
+    Write-Host "MOTORS ENABLED - PWM capped at $PwmPercent percent. Car must be on blocks." -ForegroundColor Yellow
+} else {
+    Write-Host "Motors disabled - encoder read-only, safe to turn wheels by hand." -ForegroundColor Green
+}
 $defines = @(
     "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC",
     "CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1",
@@ -27,3 +37,5 @@ $defines = @(
     -Define $defines
 
 exit $LASTEXITCODE
+
+Write-Host "Image: $buildDir\avc_core0.axf"
