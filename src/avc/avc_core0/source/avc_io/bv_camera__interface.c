@@ -1571,16 +1571,33 @@ static void avc_camera__init_smartdma_ezh(void)
 
 	DEBUG(VT100_YELLOW"%d "VT100_DEFAULT" 32bit words assembled (%d bytes) \r\n"VT100_DEFAULT,words_assembled, words_assembled<<2);
 
-    camera__configure_xclk();
-    camera__configure_i2c();
-    camera__init_sensor();
 
     INPUTMUX_Init(INPUTMUX0);
 
 
-    SYSCON->LPCAC_CTRL &= ~1;                                  // rocky: enable LPCAC ICache
-    SYSCON->NVM_CTRL &= SYSCON->NVM_CTRL & ~(1 << 2 | 1 << 4); // enable flash Data cache     /* init I3C0*/
-    SYSCON->AHBMATPRIO |= (0x3<<4)|(0x3<<6); // Give priority to SmartDMA
+    /*
+     * AHB matrix priority - UNDOCUMENTED REGISTER.
+     *
+     * Raises the SmartDMA/EZH master's arbitration priority for AHB bus
+     * transactions. SYSCON->AHBMATPRIO does not appear in the reference manual;
+     * this is tribal knowledge carried from an early NXP sample. Do not expect
+     * to find bit definitions for it.
+     *
+     * It matters because the EZH samples the camera's pixel clock in software
+     * and cannot tolerate being held off the bus - losing arbitration shows up
+     * as corrupted pixels, not as a stall you can detect.
+     *
+     * This is genuinely SmartDMA-specific and stays here. Note the FlexIO
+     * capture path has no equivalent and does not appear to need one: it uses
+     * eDMA, a different bus master, and captures cleanly at the same frame rate
+     * with zero shifter errors. If FlexIO capture is ever pushed to a higher
+     * pixel clock, revisit whether eDMA wants similar treatment.
+     *
+     * Cache enables used to live here too. They are not EZH-specific and now
+     * run for every build in avc__flash_cache_init() from avc__init(); leaving
+     * them here meant a FlexIO build ran with the flash data cache disabled.
+     */
+    SYSCON->AHBMATPRIO |= (0x3<<4)|(0x3<<6);
     
 
     INPUTMUX_AttachSignal(INPUTMUX0, 0, kINPUTMUX_GpioPort0Pin4ToSmartDma); //vsync
@@ -1632,9 +1649,6 @@ static void avc_camera__init_flexio_diag(void)
 {
     DEBUG("Camera capture backend: FLEXIO_DIAG\r\n");
 
-    camera__configure_xclk();
-    camera__configure_i2c();
-    camera__init_sensor();
     camera__configure_flexio_diag_inputs();
     camera__configure_reference_diag_inputs();
 
@@ -1651,9 +1665,6 @@ static void avc_camera__init_flexio_pipeline_diag(void)
     g_camera_pipeline_diag_next_buffer = 0U;
 
     camera__fill_pipeline_diag_buffers();
-    camera__configure_xclk();
-    camera__configure_i2c();
-    camera__init_sensor();
     camera__configure_flexio_diag_inputs();
     camera__configure_reference_diag_inputs();
 
@@ -1670,9 +1681,6 @@ static void avc_camera__init_flexio_edma(void)
 {
     DEBUG("Camera capture backend: FLEXIO_EDMA\r\n");
 
-    camera__configure_xclk();
-    camera__configure_i2c();
-    camera__init_sensor();
     camera__configure_flexio_camera();
     camera__configure_flexio_edma();
     camera__configure_frame_timing();
@@ -1687,6 +1695,21 @@ static void avc_camera__init_flexio_edma(void)
 
 void avc_camera__init(void)
 {
+    /*
+     * Sensor bring-up is common to every capture backend - the OV5640 needs its
+     * clock, its SCCB bus, and its register configuration regardless of how the
+     * pixels are subsequently captured. This sequence used to be duplicated in
+     * all four backend init functions.
+     *
+     * Ordering note: this now runs before the backend-specific setup in every
+     * case. Previously the EZH path ran bunny_build() first and the pipeline
+     * diagnostic filled its buffers first; both are RAM-only operations that do
+     * not touch the camera, so moving them after this is safe.
+     */
+    camera__configure_xclk();
+    camera__configure_i2c();
+    camera__init_sensor();
+
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
     avc_camera__init_smartdma_ezh();
 #elif CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_DIAG

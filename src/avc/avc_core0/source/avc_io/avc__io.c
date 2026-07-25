@@ -173,10 +173,32 @@ void avc_io__uart_init()
 
 
 
+/*
+ * Enable the instruction and flash data caches.
+ *
+ * These were previously set inside avc_camera__init_smartdma_ezh(), so any
+ * build not using the EZH capture backend ran with the flash data cache
+ * disabled. Nothing about them is camera-specific, and flash-resident lookup
+ * tables in particular depend on the data cache, so they belong in common
+ * startup.
+ *
+ * SystemInit() already enables LPCAC; repeating it is harmless and keeps the
+ * two related settings together and greppable.
+ */
+static void avc__flash_cache_init(void)
+{
+    SYSCON->LPCAC_CTRL &= ~SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
+
+    SYSCON->NVM_CTRL &= ~(SYSCON_NVM_CTRL_DIS_FLASH_CACHE_MASK |
+                          SYSCON_NVM_CTRL_DIS_FLASH_DATA_MASK);
+}
+
 void avc__init()
 {
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
+
+    avc__flash_cache_init();
 
     CLOCK_EnableClock(kCLOCK_Gpio0);
     CLOCK_EnableClock(kCLOCK_Dma0);

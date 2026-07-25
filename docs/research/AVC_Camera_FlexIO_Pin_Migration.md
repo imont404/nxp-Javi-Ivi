@@ -360,6 +360,33 @@ If you were hoping the now-unused `J12` header offers more, it does not:
 distinct channels there, with `PIO26`/`PIO27` unreachable, so the widest contiguous run is
 4 bits. **The pins the EZH already has are the best wide bus available on this board.**
 
+## 10b. Two settings that were hiding in the EZH init
+
+The EZH camera init came from an early NXP sample and carried two unrelated things.
+
+**`SYSCON->AHBMATPRIO` — an undocumented register.** It raises the SmartDMA/EZH master's
+AHB arbitration priority. It does not appear in the reference manual; this is tribal
+knowledge. It matters because the EZH samples the pixel clock in software and cannot
+tolerate losing bus arbitration — that shows up as corrupted pixels rather than a
+detectable stall.
+
+**This is correctly EZH-specific and stays.** The FlexIO path has no equivalent and does
+not appear to need one: it uses eDMA, a different bus master, and captures cleanly at the
+same frame rate with zero shifter errors. **If FlexIO capture is ever pushed to a higher
+pixel clock, revisit whether eDMA wants similar treatment** — this is the sort of thing
+that fails as image corruption, not as an error flag.
+
+**The cache enables were not EZH-specific and have been moved.** `LPCAC_CTRL` and
+`NVM_CTRL[DIS_FLASH_CACHE | DIS_FLASH_DATA]` now run for every build from
+`avc__flash_cache_init()` in `avc__init()`. Leaving them in the EZH path meant a FlexIO
+build ran with the **flash data cache disabled** — which matters directly for the
+flash-resident lookup tables in
+[`AVC_Vision_Pipeline_Design.md`](AVC_Vision_Pipeline_Design.md).
+
+Common sensor bring-up (`camera__configure_xclk`, `camera__configure_i2c`,
+`camera__init_sensor`) was also duplicated across all four backends and is now called once
+from `avc_camera__init()` before the backend dispatch.
+
 ## 11. Bring-up notes
 
 Operational detail from the 2026-07-25 bring-up, kept because it is the part that would
