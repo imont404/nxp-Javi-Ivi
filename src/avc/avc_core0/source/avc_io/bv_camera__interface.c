@@ -145,23 +145,37 @@
 #define CAMERA_TIMING_OSTIMER_HIGH_MASK OSTIMER_EVTIMERH_EVTIMER_COUNT_VALUE_MASK
 
 
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
+/*
+ * EZH program image, assembled at runtime by bunny_build(). Lives in SRAM_H so
+ * it is clear of the camera frame buffers.
+ */
 __BSS(SRAM_H) volatile uint32_t ezh_binary[512];
+#endif
 
 SDK_ALIGN(__BSS(FRAME_BUFFERS) uint16_t g_camera_buffer[CAMERA_FRAME_PIXELS * CAMERA_FRAME_BUFFER_COUNT],
           CAMERA_FLEXIO_DMA_MINOR_BYTES);
 
 
 
-volatile uint32_t next_buffer=0;
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
+/*
+ * SmartDMA/EZH capture state. Guarded so a FlexIO build cannot compile any of
+ * it in - that matters because the EZH camera data pins are P1_4..P1_11, the
+ * same pins the FlexIO PORT1 group uses. An EZH init reaching those pins would
+ * mux them to alt7 and silently break FlexIO capture.
+ *
+ * These were previously unguarded and excluded only by --gc-sections, which
+ * works until any incidental reference pulls them back in.
+ */
+volatile uint32_t next_buffer = 0;
 
 volatile uint32_t line;
-
 
 volatile uint8_t img_ready = 0;   /* non-zero when new data signaled by SmartDMA IRQ */
 
 static volatile uint8_t g_samrtdma_stack[EZH_STACK_SIZE];
-
-volatile uint32_t ezh_binary[512];
+#endif
 
 static volatile uint32_t g_camera_diag_hsync_count;
 static volatile uint32_t g_camera_diag_vsync_count;
@@ -206,7 +220,9 @@ static volatile uint32_t g_camera_timing_min_dma_frame_ticks;
 static volatile uint32_t g_camera_timing_max_dma_frame_ticks;
 
 //This needs to be global
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
 smartdma_camera_param_t smartdmaParam;
+#endif
 
 static uint16_t *camera__frame_buffer(uint32_t buffer_index)
 {
@@ -373,11 +389,24 @@ void camera__pull_power_pin(bool pullUp)
 
 
 
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
 static void ezh_camera_callback(void *param)
 {
 	//EZH_SetExternalFlag(1) ;
 
 	line = LPC_EZH_ARCH_B0->EZHB_EZH2ARM;
+
+	/*
+	 * NOTE: this is an assignment, not a comparison - "=" where "==" was almost
+	 * certainly meant. It therefore always evaluates true and overwrites the
+	 * value just read from EZHB_EZH2ARM.
+	 *
+	 * Left as-is deliberately. The current behaviour (advance the buffer on
+	 * every EZH callback) is what the working competition image does, and
+	 * "fixing" the typo would gate frame advance on EZHB_EZH2ARM actually
+	 * reading 0xFFFFFF - a behavioural change with unknown EZH-side semantics
+	 * that must be verified on hardware before it is made.
+	 */
 	if(line = 0xFFFFFF)
 	{
 			next_buffer++;
@@ -397,6 +426,7 @@ static void ezh_camera_callback(void *param)
 	}
 
 }
+#endif
 
 
 
@@ -1559,6 +1589,7 @@ static void camera__run_flexio_diag_loop(void)
     }
 }
 
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
 static void avc_camera__init_smartdma_ezh(void)
 {
 
@@ -1644,6 +1675,7 @@ static void avc_camera__init_smartdma_ezh(void)
     DEBUG("EZH interface configured\r\n");
 
 }
+#endif
 
 static void avc_camera__init_flexio_diag(void)
 {

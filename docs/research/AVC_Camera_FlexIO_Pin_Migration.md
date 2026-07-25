@@ -387,6 +387,43 @@ Common sensor bring-up (`camera__configure_xclk`, `camera__configure_i2c`,
 `camera__init_sensor`) was also duplicated across all four backends and is now called once
 from `avc_camera__init()` before the backend dispatch.
 
+### The EZH is now excluded by construction, not by luck
+
+The EZH capture code and its globals were **not** guarded by `#if`. A FlexIO build excluded
+them only because of `-ffunction-sections` and `--gc-sections`.
+
+**That is a real hazard for the PORT1 group specifically:** the EZH camera data pins are
+`P1_4..P1_11`, the same pins FlexIO uses. Any incidental reference — a diagnostic print, a
+stats helper, someone calling `bunny_build()` — would relink the EZH init, which muxes
+those pins to **alt7** and silently breaks FlexIO capture. Nothing would report an error;
+the image would just stop working.
+
+`bunny_build`, `ezh_binary`, `g_samrtdma_stack`, `smartdmaParam`, `ezh_camera_callback`,
+and `avc_camera__init_smartdma_ezh()` are now inside
+`#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH`. Verified by
+symbol table: present in the EZH image, absent from every FlexIO image. Text sizes did not
+change, which confirms the guards only make explicit what the linker was already doing.
+
+Also fixed while there: **`ezh_binary[512]` was defined twice**, once with `__BSS(SRAM_H)`
+and once without. C tentative-definition rules let that link, but which section won was not
+something to rely on.
+
+### A latent bug left deliberately unfixed
+
+`ezh_camera_callback()` contains:
+
+```c
+line = LPC_EZH_ARCH_B0->EZHB_EZH2ARM;
+if(line = 0xFFFFFF)          /* assignment, not comparison */
+```
+
+That is `=` where `==` was surely meant. It always evaluates true and overwrites the value
+just read. **Left as-is on purpose** — advancing the buffer on every callback is what the
+working competition image does, and correcting the typo would gate frame advance on
+`EZHB_EZH2ARM` actually reading `0xFFFFFF`, a behavioural change with unknown EZH-side
+semantics. Flagged in a comment at the site. Fix it only with hardware verification, and
+not close to the race.
+
 ## 11. Bring-up notes
 
 Operational detail from the 2026-07-25 bring-up, kept because it is the part that would
