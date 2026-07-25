@@ -129,4 +129,4 @@ MCXN947, which is expected.
 
 - [`../research/AVC_Competition_Overview.md`](../research/AVC_Competition_Overview.md) §3 — vehicle section
 - [`../research/AVC_Motor_Encoder_QDC_Research.md`](../research/AVC_Motor_Encoder_QDC_Research.md) — QDC routing
-- [`../plans/motor-encoder-qdc-bringup/`](../plans/motor-encoder-qdc-bringup/) — active plan
+- [`../plans/motor-speed-pid/`](../plans/motor-speed-pid/) — follow-on: wheel speed control as a student exercise
