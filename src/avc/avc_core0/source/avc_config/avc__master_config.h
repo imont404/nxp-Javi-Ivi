@@ -154,6 +154,36 @@
 #define CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT	(12)
 #endif
 
+/*
+ * Per-motor diagnostic PWM. Default to the shared value so existing behaviour
+ * is unchanged. Setting them differently is a deliberate test: if M0 and M1 are
+ * driven at different duties and the two QDC channels report proportionally
+ * different rates, the channels are provably independent and correctly
+ * associated - a cross-wiring or duplicate-read fault cannot survive it, where
+ * driving both at one duty would hide exactly that.
+ */
+#ifndef CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0
+#define CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0	(CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT)
+#endif
+
+#ifndef CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1
+#define CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1	(CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT)
+#endif
+
+/*
+ * Optional auto-start for the motors-on diagnostic, in milliseconds after the
+ * diagnostic loop begins. 0 means button-only, which is the default.
+ *
+ * This exists because a scripted RTT capture window and a human pressing a
+ * button race each other, and the capture usually wins. Auto-start makes the
+ * measurement repeatable. It is still gated behind
+ * CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE and the 20 percent duty cap, and the
+ * button still toggles afterwards. Car on blocks.
+ */
+#ifndef CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS
+#define CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS	(0U)
+#endif
+
 #ifndef CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS
 #define CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS	(250U)
 #endif
@@ -176,6 +206,14 @@
 
 #if CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT < 0 || CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT > 20
 #error CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT must stay between 0 and 20 for the bench diagnostic.
+#endif
+
+#if CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0 < 0 || CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0 > 20
+#error CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0 must stay between 0 and 20 for the bench diagnostic.
+#endif
+
+#if CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1 < 0 || CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1 > 20
+#error CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1 must stay between 0 and 20 for the bench diagnostic.
 #endif
 
 

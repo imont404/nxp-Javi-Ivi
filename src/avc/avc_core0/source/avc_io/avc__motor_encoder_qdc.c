@@ -165,10 +165,11 @@ static void avc__motor_encoder_qdc_diag_set_motors(bool enable)
 #if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE
     if (enable)
     {
-        const float pwm = (float)CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT / 100.0f;
+        const float pwm_m0 = (float)CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0 / 100.0f;
+        const float pwm_m1 = (float)CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1 / 100.0f;
 
         avc__enable_motor_control();
-        avc__set_motor_pwm(pwm, pwm);
+        avc__set_motor_pwm(pwm_m0, pwm_m1);
     }
     else
     {
@@ -196,14 +197,33 @@ void avc__motor_encoder_qdc_diag_run(void)
           CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV);
 
 #if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE
-    DEBUG("Motor encoder QDC diagnostic motors: center button toggles both motors at %u%% PWM\r\n",
-          CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT);
+    DEBUG("Motor encoder QDC diagnostic motors: center button toggles M0 at %u%% and M1 at %u%% PWM\r\n",
+          CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0,
+          CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1);
 #else
     DEBUG("Motor encoder QDC diagnostic motors disabled at build time; spin wheels by hand or rebuild with -EnableMotors\r\n");
 #endif
 
+#if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE && (CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS > 0U)
+    uint32_t autostart_ms = e_tick__get_ms();
+    bool autostart_pending = true;
+
+    DEBUG("Motor encoder QDC diagnostic motors: auto-start in %u ms; car must be on blocks\r\n",
+          CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS);
+#endif
+
     while (1)
     {
+#if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE && (CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS > 0U)
+        if (autostart_pending &&
+            e_tick__timeout(&autostart_ms, CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS))
+        {
+            autostart_pending = false;
+            avc__motor_encoder_qdc_diag_set_motors(true);
+            DEBUG("motor_encoder_diag autostart motors=1\r\n");
+        }
+#endif
+
         if (button__up(&center_btn))
         {
             avc__motor_encoder_qdc_diag_set_motors(!s_diag_motors_enabled);

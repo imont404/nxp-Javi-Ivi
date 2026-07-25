@@ -24,7 +24,7 @@ depends_on = ["pin-owner-build-profile"]
 [[steps]]
 id = "qdc-static-self-test"
 title = "Validate QDC module setup without motor wiring using self-test or synthetic inputs"
-status = "pending"
+status = "done"
 depends_on = ["qdc-driver-strategy"]
 
 [[steps]]
@@ -36,25 +36,25 @@ depends_on = ["qdc-driver-strategy"]
 [[steps]]
 id = "encoder-signal-diag"
 title = "Add bench diagnostic mode for raw encoder signal visibility"
-status = "active"
+status = "done"
 depends_on = ["bench-fixture-and-safety"]
 
 [[steps]]
 id = "dual-qdc-count-diag"
 title = "Count both motor encoders with QDC0 and QDC1"
-status = "pending"
+status = "done"
 depends_on = ["encoder-signal-diag"]
 
 [[steps]]
 id = "open-loop-speed-telemetry"
 title = "Report per-motor QDC rate from low-speed open-loop PWM sweeps"
-status = "pending"
+status = "done"
 depends_on = ["dual-qdc-count-diag"]
 
 [[steps]]
 id = "wheel-geometry-calibration"
 title = "Record encoder geometry and convert QDC rate to wheel RPM"
-status = "pending"
+status = "active"
 depends_on = ["open-loop-speed-telemetry"]
 
 [[steps]]
