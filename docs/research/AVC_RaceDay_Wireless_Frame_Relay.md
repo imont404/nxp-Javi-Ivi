@@ -174,9 +174,51 @@ In rough order, smallest useful thing first:
 Fallback if native Android proves slow going: the WebUSB spike already exists,
 runs in Chrome on the phone, and needs no install or store account.
 
-**The car needs no firmware change for any of this** beyond enabling
-`CONFIG__USB_DEBUG_STREAM_ENABLE`, which is the one thing on the car side that
-must be measured rather than assumed - see the frame-budget note below.
+### The compile-time switch can probably just go away
+
+`CONFIG__USB_DEBUG_STREAM_ENABLE` does not need to be a build option, a jumper,
+or a student-facing setting. **The cable already is the switch**, and the code
+is written for it.
+
+`avc_usb_debug_stream__publish_frame()` opens with:
+
+```c
+if ((frame == NULL) || (s_streamEnabled == 0U) || !avc_usb_debug_stream__is_open())
+{
+    return false;
+}
+```
+
+So with nothing attached, or with a host that has not asked for the stream, the
+per-frame cost is a couple of comparisons.
+
+Better still, **there is no per-frame copy**. It stores a pointer -
+`s_streamFrameData = (const uint8_t *)frame` - and the bytes are pushed
+incrementally from `avc_usb_debug_stream__service()` in the main loop. An
+earlier note describing a memcpy before `USB_DeviceCdcAcmSend()` was describing
+the send path, not a blocking copy at publish time.
+
+That means the honest default is **compiled in and always on**, gated at runtime
+by enumeration. Plugged in, it streams; unplugged, it costs nothing worth
+measuring. No knob, no jumper, nothing for a student to get wrong, and the
+race image and the development image stop being different builds - which is
+worth more than the microseconds, because it removes a class of "works on my
+build" problems.
+
+Still worth measuring once, with the scope marker, is the cost of `service()`
+while actually streaming, since that is real work in the main loop competing
+with the algorithm. The expectation is that it is small, but this document has
+been wrong about that kind of expectation before.
+
+### One caveat that carries over from the LCD work
+
+`s_streamFrameData` points at the **live camera buffer**, exactly as the LCD
+dump does. So the same aliasing hazard applies: if streaming a frame is still in
+progress when the camera swaps buffers, the tail of the frame is next frame's
+pixels. Spread across `service()` calls over a whole frame period, that window
+is wider than the LCD's, not narrower.
+
+Worth checking deliberately rather than discovering on the big screen.
 
 ## Verdict (superseded - see above)
 
