@@ -363,25 +363,34 @@ void avc__update_overlay()
 
 #if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
    /*
-    * Wheel speed on the top row. Positive is forward.
-    * The two wheels do not match at equal drive - M1 runs several percent
-    * faster than M0 - so seeing both side by side is the point.
+    * Wheel speed. Positive is forward.
+    *
+    * The 320x40 band is already crowded, so this uses the small font and the
+    * gaps rather than a row of its own:
+    *   y 0-14, x 100-270 : motor status, FONT_10_14
+    *   y 3-10,  x 3-48   : CPU percentage, FONT_5_7
+    *   y 20-34           : pot values, FONT_10_14
+    * That leaves y 11-18 free left of x=100, and the right end of the top row.
+    *
+    * Showing both wheels together is the point - they do not match at equal
+    * drive, with M1 running several percent faster than M0. The whole band
+    * wants a proper layout pass eventually.
     */
-   sprintf(pot_text, "L%+6.1f R%+6.1f rpm",
+   sprintf(pot_text, "L%+.1f R%+.1f",
            avc__wheel_rpm(AVC_MOTOR_ENCODER_M0),
            avc__wheel_rpm(AVC_MOTOR_ENCODER_M1));
 
    eGFX_DrawStringColored(&top_info,
-                          pot_text,0,2,
-                          &FONT_10_14_1BPP,
+                          pot_text,3,11,
+                          &FONT_5_7_1BPP,
                           eGFX_COLOR_RGB888_TO_RGB565(0xFF,0xFF,0));
 
-   sprintf(pot_text, "%+5.2f m/s",
+   sprintf(pot_text, "%+.2fm/s",
            avc__wheel_velocity_mps(AVC_MOTOR_ENCODER_M0));
 
    eGFX_DrawStringColored(&top_info,
-                          pot_text,215,2,
-                          &FONT_10_14_1BPP,
+                          pot_text,275,3,
+                          &FONT_5_7_1BPP,
                           eGFX_COLOR_RGB888_TO_RGB565(0xFF,0xFF,0));
 #endif
 
