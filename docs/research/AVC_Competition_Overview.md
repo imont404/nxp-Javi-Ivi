@@ -305,9 +305,17 @@ What the starter demonstrates:
 **Students decide for themselves** how to find track center and what control algorithm to
 use. That is the point of the exercise.
 
-**2026 teaching addition: PID.** It was not taught in 2025, though some teams worked it out
-independently and did very well. This year it will be introduced explicitly. The
-independent rear wheels and the active-differential idea pair naturally with it.
+**2026 teaching addition: PID — as a student exercise.** It was not taught in 2025, though
+some teams worked it out independently and did very well. This year it is introduced
+explicitly, and students write the control law themselves; the platform supplies the
+scaffolding, not the controller.
+
+The motivating fact is already measured and observable: **M1 runs 8.8% faster than M0 at
+identical duty**, so a car commanded straight in open loop visibly curves. A student can
+see that before writing any control code. The independent rear wheels and the
+active-differential idea pair naturally with it.
+
+See [`../plans/motor-speed-pid/`](../plans/motor-speed-pid/).
 
 Three tuning potentiometers (alpha, beta, gamma) and a center button give live, no-rebuild
 adjustment — with a pots-at-midpoint safety interlock before motors will enable.
