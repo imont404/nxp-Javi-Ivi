@@ -17,13 +17,13 @@ depends_on = ["measure-baseline"]
 
 [[steps]]
 id = "split-init-from-reconfigure"
-title = "Stop re-initialising LPSPI and the whole EDMA controller twice per frame"
+title = "Replace fsl_lpspi_edma with a purpose-built driver: one-time init, no RX path"
 status = "pending"
 depends_on = ["measure-baseline"]
 
 [[steps]]
 id = "polled-small-transfers"
-title = "Send control bytes by polled FIFO writes instead of setting up a DMA descriptor per byte"
+title = "Send control bytes by polled FIFO writes, waiting on transfer-complete before moving RS"
 status = "pending"
 depends_on = ["split-init-from-reconfigure"]
 
@@ -41,7 +41,7 @@ depends_on = ["confirm-spi-clock"]
 
 [[steps]]
 id = "single-block-dump"
-title = "Evaluate collapsing the 15-block frame dump into one transfer"
+title = "Collapse the 15-block dump into one pre-built TCD armed by writing SADDR"
 status = "pending"
 depends_on = ["split-init-from-reconfigure"]
 
@@ -115,11 +115,15 @@ status = "pending"
 ## What prompted this
 
 The observation was ~500 us of control overhead before each frame, caused by
-small DMA transfers going through the stock NXP driver, plus a suspicion that
-SCK is capped around 27.5 MHz.
+small DMA transfers going through the stock NXP driver, plus SCK being capped
+at 37.5 MHz.
 
-Both are real. Reading the code first turned up something larger that was not in
-the original description, and it changes what to fix first.
+Both are real. The 37.5 MHz figure is corroborated: it is exactly what the clock
+tree predicts, derived below independently of the measurement. There is nothing
+unexplained about the current speed - only the question of how far up it can go.
+
+Reading the code first turned up something larger that was not in the original
+description, and it changes what to fix first.
 
 ## What the code actually does per frame
 
@@ -208,9 +212,9 @@ LPSPI cannot divide by less than two, so the fastest SCK from a 75 MHz source is
 clamped - `LPSPI_MasterSetBaudRate` picks the closest divider it can and does not
 complain.
 
-So the configured request is fiction, and the real number is 37.5 MHz at best.
-Whether the hardware is actually running there, or lower as suspected, is a
-measurement - hence `confirm-spi-clock` before `raise-spi-clock`.
+So the configured request is fiction, and the real number is 37.5 MHz - which is
+the observed figure. The clock tree and the measurement agree, so `confirm-spi-clock`
+is now about establishing the *ceiling*, not the current value.
 
 The lever for going faster is PLLCLKDIV. At divide-by-1 the source becomes
 150 MHz and SCK could reach 75 MHz. **PLLCLKDIV is not private to the LCD** -
@@ -227,6 +231,77 @@ Two ceilings then apply, and both need looking up rather than assuming:
    integrity, and expect it to look like sparkle or torn pixels rather than a
    clean failure.
 
+## The driver to write
+
+The stock `fsl_lpspi_edma` driver is general-purpose: full duplex, arbitrary
+transfer descriptors rebuilt per call, callbacks, state machines. We use one
+direction, to one device, with one buffer layout. Writing a small purpose-built
+driver is less code than configuring the general one, and the register facts
+below make it concrete.
+
+### Drop the receive path entirely
+
+`TCR[RXMSK]` masks received data so nothing is ever loaded into the RX FIFO.
+Set it once and the entire receive side disappears: no RX DMA channel, no RX
+FIFO draining, no overflow handling, no `MASTER_DMA_RX_CHANNEL`. That is one of
+the two DMA channels currently allocated, and roughly half the driver's
+complexity, removed by one bit.
+
+This is safe here because nothing is ever read back from the panel on this path.
+
+### Control bytes: polled FIFO writes
+
+The TX FIFO is **8 words deep** (`FCR[TXWATER]` is 3 bits; confirm against
+`PARAM[TXFIFO]` at runtime). Every byte `LCD_SetPos` needs fits in the FIFO at
+once, so the whole sequence is: set `TCR[FRAMESZ]` to 8-bit, write the bytes to
+`TDR`, wait for completion. No descriptors, no interrupts, no callback.
+
+**The one trap is the RS/DC line.** It selects command versus data, and it must
+not change until the byte it applies to has actually left the shifter. Waiting
+for the FIFO to drain is not enough - the last byte is still shifting out. Wait
+on the transfer-complete flag or the module-busy flag in `SR`, not on FIFO
+count. This is the classic way a polled display driver produces intermittent
+garbage that looks like a signal-integrity problem.
+
+### Frame data: one pre-built TCD, armed by writing an address
+
+Build the TCD once at init with everything that never changes - destination
+`TDR`, destination offset zero, source offset, attributes, minor loop size,
+`CSR`. Per frame, write `SADDR` and start the channel. That is the shape you
+described, and it is achievable.
+
+**But the obvious version does not fit in one TCD, and that is almost certainly
+why the code has a 15-block loop.** The arithmetic:
+
+- `CITER`/`BITER` are 15 bits - `DMA_TCD_CITER_ELINKNO_CITER_MASK` is `0x7FFF`,
+  so **32,767 iterations maximum**
+- a frame is 153,600 bytes
+- with a 4-byte minor loop, that needs **38,400 iterations** - over the limit
+
+Hence 15 blocks of 10,240 bytes, each comfortably inside the limit. The loop is
+not arbitrary; it is working around a hardware ceiling.
+
+Two ways past it, both worth trying:
+
+1. **Widen the minor loop.** `NBYTES` is 30 bits, so it is not the constraint.
+   At 8 bytes per minor loop the frame needs **19,200 iterations**, which fits
+   in a single TCD. The FIFO is 8 words, so moving two words per DMA request is
+   comfortable - set `FCR[TXWATER]` so a request is only raised with room for
+   the whole minor loop.
+2. **Scatter-gather two linked TCDs.** Pre-build a chain covering the frame and
+   let the eDMA walk it with no CPU involvement at all.
+
+Option 1 is simpler and should be tried first. If the frame buffers are at fixed
+addresses - and with double buffering there are only two - then both TCDs can be
+pre-built at init and a frame costs *one register write to select which*, which
+is as close to free as this gets.
+
+### What stays
+
+`TCR[BYSW]` provides the byte swapping the 32-bit pixel path depends on. Keep
+it, and verify colours after the change; wrong byte order shows as wrong colours
+rather than a dead display.
+
 ## Approach
 
 `measure-baseline` comes first and is not optional. There is already a GPIO
@@ -238,15 +313,14 @@ Measure: total `eGFX_Dump()`, each `lpspi1_init()`, `LCD_SetPos()`, and the
 
 Then the cheap structural fixes, in order of risk:
 
-- `split-init-from-reconfigure` - one-time init at startup, and a small
-  `lpspi1_set_frame_size()` that writes `TCR` only. Biggest correctness win.
-- `polled-small-transfers` - a `lpspi1_write_small()` that pushes bytes into the
-  TX FIFO and waits for idle. For eleven bytes this beats DMA by a wide margin,
-  and it removes the DMA path from the control sequence entirely.
+- `split-init-from-reconfigure` - one-time init at startup, `TCR[RXMSK]` set so
+  the receive path and its DMA channel disappear, and a small frame-size helper
+  that writes `TCR` only. Biggest correctness win.
+- `polled-small-transfers` - push control bytes straight into the TX FIFO and
+  wait on transfer-complete. Mind the RS timing noted above.
 - `hoist-window-setup` - set the window at init; per frame send only `RAMWR`.
-- `single-block-dump` - the 15-block loop exists for reasons that may no longer
-  apply. One 153,600-byte transfer removes 14 setups and 14 busy-waits. Check
-  the eDMA major/minor loop limits before assuming it is expressible.
+- `single-block-dump` - widen the minor loop to 8 bytes so the frame fits one
+  TCD, pre-build it, and arm it by writing `SADDR`.
 
 Then `raise-spi-clock`, which is the payoff and the risk, and is deliberately
 sequenced last so it is not confounded with the structural changes.
