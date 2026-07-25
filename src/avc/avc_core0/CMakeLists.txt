@@ -4,7 +4,13 @@ project(avc_core0 C ASM)
 
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/mcuxpresso_debug.cmake")
 
-add_executable(avc_core0 ${MCUX_SOURCES})
+# Sources owned by this repository rather than derived from MCUXpresso project
+# metadata. See source/shared/ for why each exists.
+set(AVC_SHARED_SOURCES
+    "${CMAKE_CURRENT_LIST_DIR}/source/shared/avc__sbrk.c"
+)
+
+add_executable(avc_core0 ${MCUX_SOURCES} ${AVC_SHARED_SOURCES})
 set_target_properties(avc_core0 PROPERTIES
     OUTPUT_NAME "avc_core0"
     SUFFIX ".axf"
@@ -15,7 +21,13 @@ set(AVC_EXTRA_DEFINES "" CACHE STRING "Additional AVC compile definitions")
 if(AVC_EXTRA_DEFINES)
     target_compile_definitions(avc_core0 PRIVATE ${AVC_EXTRA_DEFINES})
 endif()
-target_include_directories(avc_core0 PRIVATE ${MCUX_INCLUDE_DIRS})
+# Vendored headers that ship only with the MCUXpresso IDE. Listed before the
+# MCUXpresso include dirs so the in-repo copy wins and the build does not depend
+# on the IDE being installed. See source/shared/cr_section_macros.h.
+target_include_directories(avc_core0 PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}/source/shared"
+    ${MCUX_INCLUDE_DIRS}
+)
 
 foreach(source IN LISTS MCUX_C_SOURCES)
     get_filename_component(source_dir "${source}" DIRECTORY)
