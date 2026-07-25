@@ -36,7 +36,8 @@ signals. It still hit the EZH frame rate with no shifter errors, so a properly r
 Rev B should be at least as good — but **no PCLK ceiling should be inferred from this
 setup in either direction.**
 
-See `docs/plans/camera-flexio-pin-migration/` for the full bring-up record.
+The plan that drove this has been retired; its bring-up logs are in git history, and
+§11 keeps the notes worth having.
 
 ## Purpose — read this first
 
@@ -406,9 +407,9 @@ probes and one belonged to unrelated work.
 ### Build commands
 
 ```powershell
-.uild_cmake.ps1                              # Rev A competition default, EZH
-.uild_flexio_camera.ps1 -PinGroup Port1      # FlexIO on the Rev A camera wiring
-.uild_flexio_camera.ps1 -PinGroup Port4      # original group, needs 11 fly-wires
+.\build_cmake.ps1                              # Rev A competition default, EZH
+.\build_flexio_camera.ps1 -PinGroup Port1      # FlexIO on the Rev A camera wiring
+.\build_flexio_camera.ps1 -PinGroup Port4      # original group, needs 11 fly-wires
 ```
 
 ## 12. Related

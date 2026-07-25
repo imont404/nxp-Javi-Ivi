@@ -146,10 +146,7 @@ worth keeping, since vendor pages rot.
 
 **Steering servo:** LD-1501MG, 6–8.4 V, PWM pulse-width control, 0.3° precision, 61 g.
 
-### Encoder counts per wheel revolution — resolves an open plan item
-
-The `motor-encoder-qdc-bringup` plan needs this for
-`CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV`, which is currently `0`.
+### Encoder counts per wheel revolution — measured
 
 - Encoder: **AB dual-phase, 11 lines** (11 base pulses per motor-shaft revolution).
 - With 4× quadrature decoding, which is what the MCXN947 QDC does:

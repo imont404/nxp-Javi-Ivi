@@ -59,8 +59,9 @@ same spirit as `avc__line_processor.c` for vision: a clear place to put the
 algorithm, feedback to close around, live tuning, visible telemetry, and safety
 rails — with the interesting part deliberately left undone.
 
-Carried out of `motor-encoder-qdc-bringup`, which verified the encoder hardware
-and stopped short of control on purpose.
+Carried out of the retired `motor-encoder-qdc-bringup`, which verified the encoder
+hardware and stopped short of control on purpose. Its results are in
+`docs/research/AVC_Motor_Encoder_QDC_Research.md`.
 
 ## Why the exercise motivates itself
 

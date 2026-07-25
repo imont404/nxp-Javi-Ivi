@@ -15,7 +15,7 @@ as such. Hardware facts are cited to source.
 | Finding | Consequence |
 |---|---|
 | **The MCXN947 flash cache is 64 bytes.** | A random-access LUT in flash gets ~zero cache benefit. Refines *where* tables live; does not kill the idea. |
-| **Flash speculation is disabled by default.** | `NVM_CTRL[DIS_MBECC_ERR_DATA]` is set at reset. Clearing it early is free performance. |
+| **The flash data cache is enabled only on the EZH camera path.** | A FlexIO-backend build never enables it. Latent, and a real backend-to-backend difference. |
 | **Per-pixel HSV is impossible today at full frame; a LUT makes it routine.** | ~64 ms → ~3 ms. This is the whole argument. |
 | **PowerQuad's native driver is fire-and-forget; the CMSIS wrapper is what blocks.** | 41 `PQ_WaitDone()` calls in the CMSIS layer, 0 in the native filter/matrix/transform drivers. Skip CMSIS to get overlap. |
 | **PowerQuad has no interrupt.** | Completion is poll-only. Overlap must be statically structured, not event-driven. |
@@ -46,16 +46,38 @@ which you will never want.
 every pixel, a full-frame LUT pass lands comfortably inside the frame budget. It changes
 *where you put which table*, not *whether to use tables*.
 
-### Free performance available today
+### Correction, and a real finding underneath it
 
-Same section, worth acting on independently:
+An earlier draft of this document claimed `NVM_CTRL[DIS_MBECC_ERR_DATA]` was left set and
+was costing flash speculation. **That was wrong** — `SystemInit()` in
+`device/system_MCXN947_cm33_core0.c` already clears it unconditionally at startup, and
+that bit governs ECC bus-error reporting rather than the cache.
 
-> `NVM_CTRL[DIS_MBECC_ERR_DATA]` is set by default which disables the flash speculation
-> even though `NVM_CTRL[DIS_FLASH_SPEC]` is cleared. **For best performance,
-> `NVM_CTRL[DIS_MBECC_ERR_DATA]` should be cleared early on in startup code.**
+**What is actually true, and does matter:**
 
-Worth checking whether AVC startup does this. If not, it is a one-line change that speeds
-up all flash-resident code and data, LUT or no LUT.
+`bv_camera__interface.c:1581-1582` enables the caches:
+
+```c
+SYSCON->LPCAC_CTRL &= ~1;                                  // instruction cache
+SYSCON->NVM_CTRL   &= SYSCON->NVM_CTRL & ~(1 << 2 | 1 << 4);
+```
+
+Bit 2 is `DIS_FLASH_CACHE` and bit 4 is `DIS_FLASH_DATA`, so this enables the flash data
+cache. **But it sits inside `avc_camera__init_smartdma_ezh()`**, which only runs when the
+EZH capture backend is selected.
+
+**A FlexIO-backend build therefore never enables the flash data cache.** The instruction
+cache is fine either way — `SystemInit()` enables `LPCAC` independently — but flash *data*
+access is uncached on the FlexIO path.
+
+That matters directly here: a lookup table in flash is exactly flash-resident *data*. The
+cost model in §2 assumes the same flash behaviour on both backends, and it does not
+currently hold.
+
+**Recommended:** move the cache enable out of the EZH init into common startup, so it is
+not coupled to a capture backend. It is a two-line move and removes a silent
+backend-to-backend performance difference. Measure the LUT before and after — this could
+be a meaningful fraction of the §2 estimate.
 
 ---
 
@@ -271,8 +293,9 @@ measuring.
 
 ## 6. Recommended sequence
 
-1. **Clear `NVM_CTRL[DIS_MBECC_ERR_DATA]`** if startup does not already. Free, independent
-   of everything else.
+1. **Move the flash cache enable out of `avc_camera__init_smartdma_ezh()`** into common
+   startup, so FlexIO builds get it too. Two lines, independent of everything else, and it
+   removes a silent difference between capture backends.
 2. **Build the packed `uint32` RGB565 → Y/H/S/V table in flash.** This is the enabling
    change — it makes full-frame colour possible for the first time. Measure the real
    per-pixel cost against the ~4 ms estimate above; the flash-cache behaviour is the main
@@ -290,7 +313,8 @@ measuring.
 - What is the actual measured cost of a random-index flash LUT read? The 64-byte cache says
   "expect a miss every time," but raw flash latency at 150 MHz is not documented in the
   material reachable here (the datasheet is blocked to tooling — see the NPU assessment).
-- Does AVC startup already clear `DIS_MBECC_ERR_DATA`?
+- How much does the flash data cache actually change the LUT cost? Worth measuring on both
+  backends once the cache enable is common.
 - What does the YUY2-vs-RGB565 decision do to all of this? A chroma-indexed `(U,V)` table
   is 64 KB instead of 256 KB and is illumination-invariant, but costs a YUV→RGB565
   conversion for the LCD view. Both approaches are compatible with everything above; the

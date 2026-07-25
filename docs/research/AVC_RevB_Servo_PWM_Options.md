@@ -175,7 +175,7 @@ Servo PWM output: P3_20/PWM1_A3 (shield J1.5) at 50 Hz
 Build the candidate with:
 
 ```powershell
-.uild_cmake.ps1 -BuildDir "build\cmakevc_core0-ServoP3_20" `
+.\build_cmake.ps1 -BuildDir "build\cmake\avc_core0-ServoP3_20" `
     -Define "CONFIG__SERVO_PWM_OUTPUT=SERVO_PWM_OUTPUT_P3_20_A3"
 ```
 

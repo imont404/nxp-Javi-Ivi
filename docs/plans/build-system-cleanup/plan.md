@@ -143,16 +143,24 @@ set of `-Define` values:
 - `flash.ps1`, `flash_motor_encoder_diag.ps1`
 - `rtt.ps1`, `rtt_motor_encoder_diag.ps1`
 
-Configuration axes in `avc__master_config.h`:
+Configuration axes in `avc__master_config.h` — **22 knobs**, accurate as of 2026-07-25:
 
-| Knob | Values |
+| Knob | Values / default |
 |---|---|
-| `CONFIG__CAMERA_CAPTURE_BACKEND` | SMARTDMA_EZH, FLEXIO_DIAG, FLEXIO_EDMA, FLEXIO_PIPELINE_DIAG |
-| `CONFIG__CAMERA_FLEXIO_PIN_GROUP` | PORT4, PORT1 |
-| `CONFIG__DISPLAY_PANEL` | ER_TFT020_3, ER_TFT020_7 |
-| `CONFIG__DISPLAY_TE_ENABLE`, `CONFIG__DISPLAY_TEST_MODE`, `CONFIG__DISPLAY_PARALLEL_BITBANG_*` | several |
-| `CONFIG__USB_DEBUG_STREAM_ENABLE` | 0, 1 |
-| `CONFIG__MOTOR_ENCODER_BACKEND` plus four `_DIAG_` knobs | several |
+| `CONFIG__CAMERA_CAPTURE_BACKEND` | SMARTDMA_EZH *(default)*, FLEXIO_DIAG, FLEXIO_EDMA, FLEXIO_PIPELINE_DIAG |
+| `CONFIG__CAMERA_FLEXIO_PIN_GROUP` | PORT4 *(default)*, PORT1 |
+| `CONFIG__DISPLAY_PANEL` | ER_TFT020_3 *(default)*, ER_TFT020_7 |
+| `CONFIG__DISPLAY_TE_ENABLE` / `_TEST_MODE` / `_PARALLEL_BITBANG_TEST_MODE` | 0 *(default)* / 1 |
+| `CONFIG__DISPLAY_PARALLEL_BITBANG_WR_DELAY_CYCLES` / `_FRAME_DELAY_MS` | 16U / 250U |
+| `CONFIG__SERVO_PWM_OUTPUT` | P2_3_B2 *(default)*, P3_20_A3 |
+| `CONFIG__USB_DEBUG_STREAM_ENABLE` | 0 *(default)*, 1 |
+| `CONFIG__MOTOR_ENCODER_BACKEND` | DISABLED *(default)*, QDC |
+| `CONFIG__MOTOR_ENCODER_DIAG_ENABLE` / `_MOTOR_ENABLE` | 0 *(default)* / 1 |
+| `CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT` / `_M0` / `_M1` | 12, capped at 20 by `#error` |
+| `CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS` / `_REPORT_MS` | 0U *(button only)* / 250U |
+| `CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV` | 1320U — **measured**, not a guess |
+| `CONFIG__MOTOR_ENCODER_INVERT_M0` / `_M1` | 1 / 1 — forward reads positive |
+| `CONFIG__MOTOR_ENCODER_WHEEL_DIAMETER_MM` | 75U |
 
 The product of those axes is large and mostly meaningless. Only a handful of combinations
 are real, and nothing currently records which.
@@ -174,7 +182,15 @@ not worth the bench time. Port 4 builds, and its pin set was checked statically 
 the pre-refactor image, but it has not captured since. Either verify it or retire the
 group — leaving a build variant that nobody has run is worse than having one fewer.
 
-Reasoning is recorded in `docs/plans/camera-flexio-pin-migration/logs/`.
+Reasoning is recorded in `docs/research/AVC_Camera_FlexIO_Pin_Migration.md` (the plan it
+came from has been retired; its logs are in git history).
+
+### Servo PWM output selection
+
+`CONFIG__SERVO_PWM_OUTPUT` exists to let the Rev B candidate pin be scoped without a
+respin, and it has served that purpose — `P3_20/PWM1_A3` is verified. Once Rev B routing is
+decided, one of the two options becomes dead weight. See
+`docs/research/AVC_RevB_Servo_PWM_Options.md`.
 
 ### Wrapper proliferation
 
@@ -201,5 +217,7 @@ matrix becomes, the path to *the competition image* should be one obvious comman
 - `build_cmake.ps1`, `build.ps1`, and the per-experiment wrappers at the repository root
 - `scripts/tools/jlink_common.ps1` — probe selection shared by the flash and RTT wrappers
 - `AGENTS.md` — documents the current build and flash flow
-- `docs/plans/camera-flexio-pin-migration/` — where the pin-group selector came from
-- `docs/plans/motor-encoder-qdc-bringup/` — where the encoder diagnostic variants came from
+- `docs/research/AVC_Camera_FlexIO_Pin_Migration.md` — where the pin-group selector came from
+- `docs/research/AVC_Motor_Encoder_QDC_Research.md` — where the encoder diagnostic variants came from
+
+Both plans have been retired; their work logs are in git history.

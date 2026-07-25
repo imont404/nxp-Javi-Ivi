@@ -91,7 +91,9 @@ status = "pending"
 
 ## Priority
 
-**Lower priority. Sequence this after the `motor-encoder-qdc-bringup` work completes.**
+**Lower priority.** The `motor-encoder-qdc-bringup` work it was sequenced behind is
+complete (retired 2026-07-25), so this is no longer blocked — but it remains lower
+priority than race preparation.
 
 ## Purpose
 

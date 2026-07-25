@@ -64,6 +64,41 @@ The MCUXpresso wrapper defaults to
 workspace. Generated `.mcux_workspace*` folders are local build state and should
 not be committed.
 
+### Diagnostic build variants
+
+The default build is the **Rev A competition image** and should stay that way:
+EZH camera capture, ER-TFT020-3 SPI LCD, USB stream off, encoders disabled.
+Everything else is a variant behind `CONFIG__` selection with `#error` guards.
+
+```powershell
+.\build_cmake.ps1                                  # Rev A competition default
+
+.\build_flexio_camera.ps1 -PinGroup Port1          # FlexIO capture on the Rev A
+                                                   #   camera pins (needs 3 J9_EXT
+                                                   #   jumpers), frees the EZH
+.\build_flexio_camera.ps1 -PinGroup Port4          # original FlexIO group, 11 fly-wires
+
+.\build_motor_encoder_diag.ps1                     # encoders, motors off, RTT only
+.\build_motor_encoder_diag.ps1 -EnableMotors -PwmPercentM0 10 -PwmPercentM1 20 -AutoStartMs 4000
+.\flash_motor_encoder_diag.ps1 -EnableMotors       # must match how it was built
+.tt_motor_encoder_diag.ps1  -EnableMotors -Seconds 30
+```
+
+Ad-hoc variants go through `-Define`, e.g.:
+
+```powershell
+.\build_cmake.ps1 -BuildDir "build\cmake\avc_core0-Encoders" `
+    -Define "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC"
+```
+
+Motors-on encoder builds go to a **separate output directory** from motors-off,
+so the tree tells you which image is there. Duty is capped at 20 percent by an
+`#error`. Car on blocks.
+
+The wrapper proliferation is known debt — see `docs/plans/build-system-cleanup`.
+
+### Probe selection
+
 The flash and RTT wrappers default to SEGGER J-Link, device `MCXN947_M33_0`,
 and SWD at 4 MHz.
 
@@ -99,7 +134,18 @@ for: the NXP Cup / FIT student race, the 55 cm track, the chassis and electronic
 41 ms frame budget, and the constraint that this is an organizer-supplied platform tuned by
 novices in about three days. Every plan assumes that context.
 
-For NPU / camera-processing questions, see `docs/research/neutron_npu/`.
+Hardware findings, all verified on the bench 2026-07-25 unless noted:
+
+- `docs/research/AVC_Camera_FlexIO_Pin_Migration.md` — FlexIO capture on the Rev A camera
+  wiring with three jumpers; frees the EZH and with it core1
+- `docs/research/AVC_Motor_Encoder_QDC_Research.md` — encoder feedback, 1320 counts/rev
+  measured, wheel-speed API, and the 8.8% motor mismatch
+- `docs/research/AVC_RevB_Servo_PWM_Options.md` — the Rev A servo PWM conflict and the
+  verified `P3_20` replacement
+- `docs/research/AVC_Vision_Pipeline_Design.md` — LUT colour processing, edge detection,
+  PowerQuad overlap
+- `docs/research/AVC_J12_SmartDMA_Availability.md` — what the unused J12 header can reach
+- `docs/research/neutron_npu/` — NPU assessment (conclusion: wrong tool for this year)
 
 Start FlexIO camera work by reading:
 
