@@ -239,6 +239,40 @@ direction, to one device, with one buffer layout. Writing a small purpose-built
 driver is less code than configuring the general one, and the register facts
 below make it concrete.
 
+### Is bypassing the HAL worth it? Measured, not argued
+
+**Flash is not the reason.** All LPSPI and eDMA HAL code reaching the linked
+image totals **10,596 bytes** - 4.3% of `text`, and **1.0% of the 1 MB flash**,
+which is 23% used. Removing it is real but nobody would notice. The two largest
+contributors are `LPSPI_MasterTransferEDMALite` at 1,368 bytes and
+`EDMA_ConfigChannelSoftwareTCDExt` at 1,014 bytes.
+
+**Cycles are the reason.** Submitting one transfer costs **32.3 us, which is
+4,845 cycles at 150 MHz** - measured, consistent across both the single-byte and
+the 8,192-byte paths, so it is fixed cost independent of size. Writing a TCD is
+roughly eight register writes. The HAL is spending something like a hundred
+times what the hardware operation needs, on argument checking, handle
+bookkeeping, a software TCD build, and a completion path through
+`EDMA_HandleIRQ` into two nested callbacks.
+
+The sharpest illustration: `LCD_SetPos` moves 11 bytes, which at 37.5 MHz is
+**2.3 us of wire time**, and measures **355 us**. That is 154x overhead to move
+eleven bytes.
+
+**What it is worth: about 1.36 ms per frame** - 42 transfer submissions at
+32.3 us. That is a third of what raising the clock is worth, and it is the
+entire remaining gap between the current 34.14 ms and the 32.8 ms wire-time
+floor.
+
+**So: yes, but for the right reason.** Not to save flash, and not primarily for
+the 1.36 ms. The better arguments are that a purpose-built path removes the
+shared-DMA0 hazard by construction rather than by discipline, and that a
+readable driver of a couple of hundred lines is something a student can follow
+when the display misbehaves, which 10 KB of general-purpose HAL is not.
+
+Sequence it after the clock work, since the clock is worth more and is
+independent.
+
 ### Drop the receive path entirely
 
 `TCR[RXMSK]` masks received data so nothing is ever loaded into the RX FIFO.
