@@ -206,7 +206,10 @@ motor/PWM drive and the camera interface.
 
 ### MCXN947
 
-- Dual **Cortex-M33 @ 150 MHz**. **Only core0 is used today — core1 is idle.**
+- Dual **Cortex-M33 @ 150 MHz**. **Only core0 is used today.** Core1 has been impractical
+  because the EZH shares a code bus with it, and the EZH runs camera capture. Moving
+  capture to FlexIO removes that contention and makes core1 genuinely available — see
+  [`AVC_Camera_FlexIO_Pin_Migration.md`](AVC_Camera_FlexIO_Pin_Migration.md).
 - eIQ **Neutron N1-16 NPU** (see the assessment doc; not currently used).
 - PowerQuad DSP coprocessor, CoolFlux BSP32 (both effectively unusable — no toolchain).
 - 2 MB flash, ~512 KB SRAM.
@@ -217,7 +220,7 @@ motor/PWM drive and the camera interface.
 |---|---|
 | Sensor | OV5640 |
 | Capture backend | **EZH / SmartDMA** coprocessor (`CONFIG__CAMERA_CAPTURE_BACKEND`) |
-| Alternate backend | FlexIO (implemented, not the Rev A default) |
+| Alternate backend | FlexIO + eDMA — implemented and hardware-proven, not the Rev A default |
 | Format | RGB565 |
 | Resolution | **320 × 200** |
 | Frame rate | **~24 FPS** |
@@ -231,8 +234,18 @@ motor/PWM drive and the camera interface.
 - **RGB565 was chosen for display convenience** — it blits straight to the LCD. Luminance
   (Y) is extracted in software for edge detection. Moving to **YUY2** is under
   consideration and would make Y free; see the NPU assessment for the tradeoff.
-- **Rev A hardware is wired for EZH and is currently in Guatemala.** A possible **Rev B**
-  would switch capture to FlexIO, freeing the EZH for other work.
+- **Rev A hardware is wired for EZH and is currently in Guatemala.** A **Rev B** is
+  recommended to switch capture to FlexIO and free the EZH for other work.
+
+**FlexIO capture is proven on the Rev A camera wiring** (2026-07-25). Three jumpers on
+`J9_EXT` — camera D4 and D5 onto `P1_8`/`P1_9`, PCLK onto `P1_14` — make `P1_4..P1_11`
+simultaneously contiguous `FLEXIO0_D12..D19` and contiguous `SMARTDMA_PIO0..PIO7`.
+Backend selection then becomes **alt7 versus alt6 in firmware on one harness**, verified
+by flashing both alternately with no hands on the hardware. FlexIO captured at
+**23.39 fps** against the EZH baseline of 23.43, with zero errors.
+
+Rev B needs only two routing changes: camera D4/D5 to `P1_8`/`P1_9`, and PCLK to `P1_14`.
+See [`AVC_Camera_FlexIO_Pin_Migration.md`](AVC_Camera_FlexIO_Pin_Migration.md).
 
 ### Display and debug
 
@@ -325,7 +338,10 @@ Judge any proposed change against these:
   edge, or outer to outer. A ±4 cm swing that matters for track construction.
 - **Confirm as-built track dimensions on-site** and record them here.
 - **Decide RGB565 vs YUY2**, including the cost of YUV→RGB565 for the LCD view.
-- **Rev B decision** — move capture to FlexIO and free the EZH.
+- **Rev B decision** — routing recommended and measured; needs a build decision. Also
+  decide whether the MCU-Link VCOM should stay connected to `P1_8` at all.
+- **What the freed EZH is actually for** — capture no longer needs it, but nothing has
+  yet demonstrated it running unrelated work alongside FlexIO capture.
 
 ## 9. Related documents
 
@@ -333,6 +349,8 @@ Judge any proposed change against these:
   — NPU feasibility and the recommended color-processing approach
 - [`AVC_Vision_Pipeline_Design.md`](AVC_Vision_Pipeline_Design.md) — LUT design, edge
   detection upgrades, and PowerQuad overlap
+- [`AVC_Camera_FlexIO_Pin_Migration.md`](AVC_Camera_FlexIO_Pin_Migration.md) — proving
+  FlexIO capture on the Rev A camera pins, and the Rev B routing recommendation
 - [`AVC_Camera_Interface_Research.md`](AVC_Camera_Interface_Research.md) — camera interface options
 - [`AVC_LVDS_Adapter.md`](AVC_LVDS_Adapter.md) — camera cabling; §0.6 documents the connector-seating
   incident that motivated the SCCB robustness work

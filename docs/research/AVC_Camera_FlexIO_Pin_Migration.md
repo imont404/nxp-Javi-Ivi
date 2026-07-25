@@ -7,7 +7,36 @@ so the capture backend becomes a software choice rather than a board respin?
 contiguous `FLEXIO0_D12..D19` and contiguous `SMARTDMA_PIO0..PIO7` — EZH vs FlexIO
 becomes **alt7 vs alt6** on identical wiring.
 
-**Date:** 2026-07-25. Desk research against netlists and NXP signal data. Not yet built.
+**Date:** 2026-07-25. Desk research against netlists and NXP signal data,
+**then built and verified on hardware the same day.**
+
+## Result
+
+**Proven.** Three jumpers on `J9_EXT`, and FlexIO captures on the Rev A camera wiring at
+**23.39 fps** against the EZH baseline of 23.43, with zero shifter, timeout, or DMA errors.
+Both backends were then flashed alternately with no hands on the hardware, and both
+produced a good image on the LCD.
+
+| Measure | EZH (baseline) | FlexIO Port 1 group |
+|---|---|---|
+| Frame rate | 23.43 fps | **23.39 fps** |
+| Frame time | ~42.7 ms | 42.42 ms |
+| VSYNC period | 42.76 ms | 42.76 ms |
+| Errors | — | timeout 0, submit 0, callback 0, `shifterr` 00 |
+| Wires needed | 0 (as routed) | **3 jumpers** |
+
+Backend selection is now **alt7 versus alt6 in firmware** on one physical harness.
+
+**Beyond freeing the EZH, this makes core1 usable.** The EZH shares a code bus with core1,
+which is why the second CM33 has gone unused. FlexIO capture runs on eDMA instead, so the
+contention that made core1 impractical goes away. See §Purpose.
+
+One caveat worth carrying forward: this was achieved with **dupont stubs** on three
+signals. It still hit the EZH frame rate with no shifter errors, so a properly routed
+Rev B should be at least as good — but **no PCLK ceiling should be inferred from this
+setup in either direction.**
+
+See `docs/plans/camera-flexio-pin-migration/` for the full bring-up record.
 
 ## Purpose — read this first
 
@@ -18,9 +47,30 @@ the Port 4 pin group (`CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA`, `P4_12..P4_22`). Tha
 proven. What it needs is eleven fly-wires, because Port 4 is not where the camera is
 routed.
 
-The EZH is wanted for **other work that is not I/O-driven on these pins**. Capture is
-currently what occupies it. Moving capture to FlexIO releases it — and as a secondary
-benefit, stops capture competing with core1 for the shared code bus.
+Two things come out of moving capture off the EZH, and the second matters more than it
+first appears:
+
+1. **The EZH is released** for other work that is not I/O-driven on these pins. Capture is
+   currently what occupies it.
+2. **Core1 becomes genuinely usable.** The EZH shares a code bus with core1, so running
+   capture on the EZH is what has made the second CM33 impractical. FlexIO capture uses
+   eDMA instead, which does not contend the same way.
+
+That second point changes the architecture available to the vision pipeline. The MCXN947
+is a dual-core part whose second core has been effectively unavailable; this is what makes
+it real. It bears directly on:
+
+- **Full-frame colour processing** — the chroma-LUT work in
+  [`AVC_Vision_Pipeline_Design.md`](AVC_Vision_Pipeline_Design.md) makes per-pixel HSV
+  affordable for the first time, and a free core1 is where that could live without
+  touching the 41 ms control loop on core0.
+- **PowerQuad overlap** — same document, §5. PowerQuad's native driver is fire-and-forget,
+  but the overlap only pays when there is enough work to hide; a second core widens what
+  can be structured around it.
+- **The NPU**, if ever pursued. `neutronRunBlocking` is the only implemented execution
+  path (see [`neutron_npu/evidence/blocking_execution_proof.md`](neutron_npu/evidence/blocking_execution_proof.md)),
+  so the only way to keep it off the control loop is to run it from core1 — which requires
+  core1 to be usable in the first place.
 
 So this investigation is about **wiring, not throughput**:
 
@@ -243,29 +293,115 @@ the near-term requirement is only that the Port 4 group remains selectable and u
 camera is routed, so it costs eleven fly-wires. The `P1_4..P1_11` group **is** the
 existing camera wiring — three jumpers, and EZH keeps working on the same harness.
 
-## 9. Rev B
+## 9. Rev B — recommended
 
-Route camera **D4/D5 to P1_8/P1_9** instead of P3_4/P3_5, and **PCLK to P1_14** instead of
-P0_5. Then both backends work natively with zero jumpers, PCLK is routed properly for
-signal integrity rather than hanging off a dupont stub, and the EZH is free.
+**Recommendation: route it.** The jumpered build met its bar — correct capture at the
+existing frame rate with zero errors — so the remaining reason to respin is to remove the
+stubs and free the EZH permanently.
 
-The jumpered build's job is to **inform this decision**, not to justify it on frame rate.
-If the Port 1 group captures correctly and matches the current rate, Rev B is worth doing
-purely to free the EZH.
+Two routing changes:
+
+| Signal | Rev A | Rev B |
+|---|---|---|
+| Camera **D4** | `P3_4` | **`P1_8`** |
+| Camera **D5** | `P3_5` | **`P1_9`** |
+| **PCLK** | `P0_5` | **`P1_14`** |
+
+Everything else stays. D0–D3 and D6–D7 are already correct, HSYNC on `P0_11` already
+carries `FLEXIO0_D3`, and VSYNC on `P0_4` stays a GPIO interrupt.
+
+What that buys:
+
+- **Zero jumpers.** `P1_4..P1_11` becomes contiguous `FLEXIO0_D12..D19` *and* contiguous
+  `SMARTDMA_PIO0..PIO7` by routing, so both backends are native.
+- **PCLK routed properly** instead of hanging off a dupont wire — the one signal where
+  stub length plausibly limits headroom.
+- **The EZH is free** for other work, which is the entire point of the exercise.
+
+Two things to settle before committing the layout:
+
+1. **`P1_8` and MCU-Link.** `R173` (330 Ω) ties `P1_8` to the MCU-Link VCOM TX. It caused
+   no trouble in testing — camera D4 drove the shared net cleanly — but on a respin the
+   sensible move is to decide deliberately whether the VCOM stays connected to that pin at
+   all, rather than inherit the contention.
+2. **`P1_15` is the clean alternate** to `P1_14` for PCLK (`FLEXIO0_D23`) if layout
+   prefers it. Avoid `P1_12` (drives Q2 on the shield) and `P1_13` (Ethernet PHY strap).
 
 ## 10. Open items
 
-- Confirm `J9_EXT` is unpopulated/accessible on the physical test board.
-- Confirm nothing else on the shield needs `P1_14` (`EZH_LCD_D10`) while the SPI panel is
-  selected.
-- Whether MCU-Link TX on P1_8 disturbs D4 in practice, or R173 must come off.
-- Whether stub length on the three jumpers limits usable PCLK. Only matters if it stops
-  the Port 1 group **matching** the current frame rate; the jumpered setup says nothing
-  about a properly routed board.
-- Whether promoting `GPIO00_IRQHandler` from reference-counting to driving capture
-  conflicts with the existing reference diagnostic, which uses the same pins.
+**Resolved by the bring-up:**
 
-## 11. Related
+- ~~Confirm `J9_EXT` is accessible~~ — populated and used.
+- ~~Confirm nothing else on the shield needs `P1_14`~~ — no conflict observed with the SPI
+  panel selected.
+- ~~Whether MCU-Link TX on `P1_8` disturbs D4~~ — **it does not.** R173 was never removed
+  and capture is clean. Note the jumper makes `P3_4` and `P1_8` one net, so camera D4 was
+  driving into the 330 Ω the whole time, including during the EZH runs.
+
+**Still open:**
+- Whether stub length limits usable PCLK **above** the current rate. It did not stop the
+  group matching 23.4 fps, which was the bar. Untested beyond that, and untestable on
+  stubs.
+- **Port 4 FlexIO is build-verified but not hardware-verified** after the pin-group
+  refactor. Rewiring eleven fly-wires to re-prove a path being moved away from was judged
+  not worth the bench time. Relevant only if someone selects that group again.
+- `ezh-freed-demo` was not performed. Capture running on FlexIO is necessary but not
+  sufficient evidence that the EZH is claimable; that belongs with whatever work actually
+  wants the EZH.
+
+## 11. Bring-up notes
+
+Operational detail from the 2026-07-25 bring-up, kept because it is the part that would
+otherwise be rediscovered painfully.
+
+### Count the jumper slots twice
+
+The first attempt failed with a distinctive signature: **VSYNC correct at 23.4 fps, eDMA
+arming every frame, but all eight data bits reading zero and every shifter erroring.**
+Cause was mundane — **the PCLK jumper was one slot over on `J9_EXT`.** Refitting it fixed
+capture immediately. Nothing in firmware was wrong.
+
+That signature is worth recognising: sync timing intact while data reads zero points at
+PCLK, not at the data lines.
+
+### The pin-mux readback earns its keep
+
+`camera__configure_flexio_edma_pins()` reads the PCR MUX fields back at init and prints:
+
+```
+FlexIO camera pin mux readback: data(D7..D0)=0x66666666 pclk=6 href=6 vsync=0 OK
+```
+
+Expect alt6 on all eight data pins plus PCLK and HREF, alt0 on VSYNC. Anything else prints
+`UNEXPECTED`.
+
+This is what separated "firmware muxed the wrong pins" from "the wiring is wrong" during
+the failure above — it said `OK` throughout, which correctly directed attention to the
+bench rather than the code. **Check this line first** on any FlexIO capture problem.
+
+### MCU-Link contention on `P1_8` is a non-issue in practice
+
+Once jumper 1 is fitted, `P3_4` and `P1_8` are one net, so camera D4 drives into the
+MCU-Link VCOM TX through `R173`'s 330 Ω continuously — including during EZH runs.
+`R173` was never removed and capture is clean in both backends. The 330 Ω is doing its job
+as series isolation.
+
+### Two J-Link probes
+
+Serials are not hardcoded anywhere; `scripts	ools\jlink_common.ps1` resolves an explicit
+`-UsbSerial`, then `$env:AVC_JLINK_SERIAL`, then auto-detects when exactly one probe is
+attached, and refuses to guess when several are. Relevant here because this bench had two
+probes and one belonged to unrelated work.
+
+### Build commands
+
+```powershell
+.uild_cmake.ps1                              # Rev A competition default, EZH
+.uild_flexio_camera.ps1 -PinGroup Port1      # FlexIO on the Rev A camera wiring
+.uild_flexio_camera.ps1 -PinGroup Port4      # original group, needs 11 fly-wires
+```
+
+## 12. Related
 
 - [`FlexIO_Camera_Test_Plan.md`](FlexIO_Camera_Test_Plan.md) — prior FlexIO plan (Port 4 group)
 - [`MCXN947/flexio_camera_io_pin_map.md`](MCXN947/flexio_camera_io_pin_map.md) — prior pin map

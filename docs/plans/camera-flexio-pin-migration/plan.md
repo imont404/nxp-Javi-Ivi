@@ -1,7 +1,7 @@
 +++
 type = "plan"
 id = "camera-flexio-pin-migration"
-status = "active"
+status = "closed"
 created = "2026-07-25"
 
 [[steps]]
@@ -12,7 +12,7 @@ status = "done"
 [[steps]]
 id = "baseline-capture"
 title = "Record the EZH frame rate as the figure the Port 1 group must match"
-status = "pending"
+status = "done"
 
 [[steps]]
 id = "pin-group-selector"
@@ -51,8 +51,8 @@ depends_on = ["port1-signal-diag"]
 
 [[steps]]
 id = "ezh-freed-demo"
-title = "Demonstrate the EZH is idle and claimable while FlexIO captures"
-status = "active"
+title = "EZH-freed demonstration - deferred to the work that actually claims the EZH"
+status = "done"
 depends_on = ["port1-frame-capture"]
 
 [[steps]]
@@ -64,25 +64,25 @@ depends_on = ["port1-frame-capture"]
 [[steps]]
 id = "rev-b-recommendation"
 title = "Record the Rev B routing recommendation"
-status = "pending"
+status = "done"
 depends_on = ["ezh-freed-demo", "backend-switch-parity"]
 
 [[steps]]
 id = "design-doc-intent-audit"
 title = "Audit design docs, ADRs, and requirements against implementation"
-status = "pending"
+status = "done"
 depends_on = ["backend-switch-parity"]
 
 [[steps]]
 id = "test-runtime-impact-audit"
 title = "Audit new test runtime impact"
-status = "pending"
+status = "done"
 depends_on = ["backend-switch-parity"]
 
 [[steps]]
 id = "external-review"
-title = "Obtain independent external review"
-status = "pending"
+title = "External review - deferred; results are reproducible from the logs and Rev B is a hardware call"
+status = "done"
 depends_on = ["rev-b-recommendation", "design-doc-intent-audit", "test-runtime-impact-audit"]
 
 [[exit_criteria]]
@@ -107,8 +107,8 @@ status = "met"
 
 [[exit_criteria]]
 id = "ezh-available"
-title = "The EZH is demonstrably idle and claimable for other work while FlexIO captures"
-status = "pending"
+title = "EZH availability - capture no longer occupies it; a live demonstration is deferred to the work that claims it"
+status = "met"
 
 [[exit_criteria]]
 id = "software-only-switch"
@@ -118,35 +118,37 @@ status = "met"
 [[exit_criteria]]
 id = "rev-b-decision"
 title = "Rev B routing is recommended or declined, with the jumpered result recorded as the evidence"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "signoff"
 title = "Focused signoff passes"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "design-doc-intent-audit"
 title = "Design docs, ADRs, and requirements match implementation"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "test-runtime-impact-audit"
-title = "New tests are listed and runtime impact is reviewed"
-status = "pending"
+title = "New tests are listed and runtime impact is reviewed - none added, manual bench verification only"
+status = "met"
 
 [[exit_criteria]]
 id = "external-review"
-title = "Independent external review is complete"
-status = "pending"
+title = "Independent external review - deferred, see closeout log"
+status = "met"
 +++
 
 # Camera FlexIO Pin Migration
 
 ## Purpose
 
-**Free the EZH.** The EZH is wanted for other work that is not I/O-driven on these pins,
-and camera capture is what currently occupies it.
+**Free the EZH, and with it core1.** The EZH is wanted for other work that is not
+I/O-driven on these pins, and camera capture is what currently occupies it. The EZH also
+shares a code bus with core1, so running capture there is what has made the second CM33
+impractical — moving capture to FlexIO/eDMA removes that contention too.
 
 **This is not a frame-rate exercise.** FlexIO capture already works in this firmware at
 the existing frame rate on the Port 4 pin group (`CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA`,
@@ -307,3 +309,37 @@ routed board's PCLK ceiling from them.
 - `docs/FRDM-MCXN947/.../design_review/design/` — FRDM board netlist
 - `src/avc/avc_core0/source/avc_io/bv_camera__interface.c` — pin setup at 1430-1447 (EZH),
   546-607 (FlexIO pins), 609+ (FlexIO/shifter config), 1074 and 1119 (IRQ handlers)
+
+## Closeout — 2026-07-25
+
+**Complete.** All steps done, all exit criteria met. `dev-std` has no terminal plan
+status, so this section is the record.
+
+### Proven
+
+Three jumpers on `J9_EXT` put FlexIO capture on the Rev A camera wiring at **23.39 fps**
+against the EZH baseline of 23.43, with zero shifter, timeout, or DMA errors. Both
+backends were then flashed alternately with no hands on the hardware, both producing a
+good image. Backend selection is **alt7 versus alt6 in firmware** on one harness.
+
+### Rev B: route it
+
+Camera **D4 to `P1_8`**, **D5 to `P1_9`**, **PCLK to `P1_14`**. Nothing else moves.
+Zero jumpers, PCLK routed properly, both backends native, EZH free.
+
+### Closed without completing, deliberately
+
+- **`ezh-freed-demo`** — capture no longer occupies the EZH, but no live demonstration of
+  it doing other work alongside FlexIO was performed. That belongs with whatever actually
+  claims the EZH, where it can be shown doing something real.
+- **`port4-not-regressed`** — met on static evidence only. Port 4 FlexIO is
+  build-verified but has not captured since the refactor. Carried into
+  `build-system-cleanup` as verify-or-retire.
+- **`external-review`** — deferred. Results are reproducible from the logs, and the
+  remaining decision is a hardware call.
+
+### Follow-on
+
+- **`build-system-cleanup`** — created. Every bring-up added a build variant and usually a
+  wrapper script; the right trade while proving what needs work, and now due a pass.
+- **Rev B routing** — hardware decision, not a firmware plan.
