@@ -68,7 +68,7 @@ The flash and RTT wrappers default to SEGGER J-Link, device `MCXN947_M33_0`,
 and SWD at 4 MHz.
 
 **Probe selection is not hardcoded** — every kit has a different J-Link serial.
-`scripts	ools\jlink_common.ps1` resolves it in this order:
+`scripts\tools\jlink_common.ps1` resolves it in this order:
 
 1. An explicit `-UsbSerial` argument.
 2. `$env:AVC_JLINK_SERIAL`.
@@ -78,7 +78,9 @@ If more than one probe is attached and none was specified, the wrappers **throw
 and list what they found** rather than guessing. Without that, J-Link Commander
 picks whichever probe enumerates first, which on a workstation driving two
 boards will silently flash the wrong one. A student with a single kit needs no
-configuration. If the configured SEGGER path is missing, the
+configuration.
+
+If the configured SEGGER path is missing, the
 wrappers auto-detect the newest installed `C:\Program Files\SEGGER\JLink_V*`
 tool path. `rtt.ps1` defaults to a PyLink monitor
 under `scripts\tools\rtt_monitor.py`; it derives `_SEGGER_RTT` from the current
