@@ -14,6 +14,10 @@ add_executable(avc_core0 ${MCUX_SOURCES} ${AVC_SHARED_SOURCES})
 set_target_properties(avc_core0 PROPERTIES
     OUTPUT_NAME "avc_core0"
     SUFFIX ".axf"
+    # Land the image at the top of the build directory rather than nested under
+    # the source path, so flashing is <build dir>/avc_core0.axf regardless of
+    # whether the build was driven by a preset or by build_cmake.ps1.
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
 
 target_compile_definitions(avc_core0 PRIVATE ${MCUX_DEFINES})

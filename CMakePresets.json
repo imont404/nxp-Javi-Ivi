@@ -1,0 +1,94 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
+
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/cmake/${presetName}",
+      "toolchainFile": "${sourceDir}/src/avc/avc_core0/cmake/mcuxpresso-toolchain.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+
+    {
+      "name": "competition",
+      "displayName": "Competition image (Rev A default) - START HERE",
+      "description": "What the car runs on race day: EZH camera capture, ER-TFT020-3 SPI LCD, USB stream off, encoders disabled. Build this unless you have a reason not to.",
+      "inherits": "base"
+    },
+
+    {
+      "name": "encoders",
+      "displayName": "Competition image + wheel encoders",
+      "description": "Adds QDC wheel-speed feedback and the on-screen RPM readout. Same camera and display as the competition image.",
+      "inherits": "base",
+      "cacheVariables": {
+        "AVC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC"
+      }
+    },
+
+    {
+      "name": "flexio-port1",
+      "displayName": "FlexIO camera capture on the Rev A wiring (needs 3 jumpers)",
+      "description": "Frees the EZH. Requires the three J9_EXT jumpers: 12->32, 11->30, 15->2. See docs/research/AVC_Camera_FlexIO_Pin_Migration.md.",
+      "inherits": "base",
+      "cacheVariables": {
+        "AVC_EXTRA_DEFINES": "CONFIG__CAMERA_CAPTURE_BACKEND=3;CONFIG__CAMERA_FLEXIO_PIN_GROUP=2"
+      }
+    },
+
+    {
+      "name": "flexio-port4",
+      "displayName": "FlexIO camera capture on the original Port 4 pins (needs 11 fly-wires)",
+      "description": "The original FlexIO pin group. Build-verified but not hardware-verified since the pin-group refactor.",
+      "inherits": "base",
+      "cacheVariables": {
+        "AVC_EXTRA_DEFINES": "CONFIG__CAMERA_CAPTURE_BACKEND=3"
+      }
+    },
+
+    {
+      "name": "servo-p3-20",
+      "displayName": "Competition image with the Rev B servo pin (P3_20)",
+      "description": "Drives the servo from P3_20/PWM1_A3 on shield J1.5 instead of P2_3. For scoping the Rev B candidate.",
+      "inherits": "base",
+      "cacheVariables": {
+        "AVC_EXTRA_DEFINES": "CONFIG__SERVO_PWM_OUTPUT=SERVO_PWM_OUTPUT_P3_20_A3"
+      }
+    },
+
+    {
+      "name": "encoder-diag",
+      "displayName": "Encoder bench diagnostic, motors OFF",
+      "description": "RTT-only encoder diagnostic. Skips camera and LCD startup. Safe to turn wheels by hand.",
+      "inherits": "base",
+      "cacheVariables": {
+        "AVC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC;CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1"
+      }
+    },
+
+    {
+      "name": "encoder-diag-motors",
+      "displayName": "Encoder bench diagnostic, MOTORS ON - car must be on blocks",
+      "description": "Drives both motors at 10 percent duty, auto-starting 4s after boot. Duty is capped at 20 percent by an #error. Put the car on blocks.",
+      "inherits": "base",
+      "cacheVariables": {
+        "AVC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC;CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1;CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE=1;CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT=10;CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS=4000"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    { "name": "competition",          "configurePreset": "competition" },
+    { "name": "encoders",             "configurePreset": "encoders" },
+    { "name": "flexio-port1",         "configurePreset": "flexio-port1" },
+    { "name": "flexio-port4",         "configurePreset": "flexio-port4" },
+    { "name": "servo-p3-20",          "configurePreset": "servo-p3-20" },
+    { "name": "encoder-diag",         "configurePreset": "encoder-diag" },
+    { "name": "encoder-diag-motors",  "configurePreset": "encoder-diag-motors" }
+  ]
+}

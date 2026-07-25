@@ -48,7 +48,7 @@ depends_on = ["own-the-source-list", "toolchain-installer", "break-ide-dependenc
 [[steps]]
 id = "cmake-presets"
 title = "Replace the wrapper scripts with CMakePresets build configurations"
-status = "pending"
+status = "done"
 depends_on = ["byte-parity"]
 
 [[steps]]
