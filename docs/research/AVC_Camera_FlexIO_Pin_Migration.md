@@ -388,7 +388,7 @@ as series isolation.
 
 ### Two J-Link probes
 
-Serials are not hardcoded anywhere; `scripts	ools\jlink_common.ps1` resolves an explicit
+Serials are not hardcoded anywhere; `scripts\tools\jlink_common.ps1` resolves an explicit
 `-UsbSerial`, then `$env:AVC_JLINK_SERIAL`, then auto-detects when exactly one probe is
 attached, and refuses to guess when several are. Relevant here because this bench had two
 probes and one belonged to unrelated work.
