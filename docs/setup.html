@@ -21,11 +21,21 @@ cmake --build --preset competition       <em>build</em></pre>
 
 <p>Then put the firmware on the board:</p>
 
-<pre>.\flash.ps1 -File build\cmake\competition\avc_core0.axf</pre>
+<pre>.\flash.ps1</pre>
 
 <p>And watch it run:</p>
 
-<pre>.\rtt.ps1 -File build\cmake\competition\avc_core0.axf -Reset -Seconds 30</pre>
+<pre>.\rtt.ps1 -Reset -Seconds 30</pre>
+
+<p>Both default to the <code>competition</code> preset. To use a different one,
+name it &ndash; you do not have to type a path:</p>
+
+<pre>.\flash.ps1 -Preset encoder-diag
+.\rtt.ps1   -Preset encoder-diag -Reset -Seconds 30</pre>
+
+<p>If you name a preset that does not exist, the script says so and lists the
+real ones. If you name one you have not built yet, it tells you the two commands
+to build it rather than flashing an old image by mistake.</p>
 
 <div class="note">
 <strong>MCUXpresso is not required.</strong> It used to be. <code>setup.ps1</code>

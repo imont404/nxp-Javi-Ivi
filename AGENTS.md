@@ -36,28 +36,37 @@ research files are durable/reference material during the current migration.
 first; it covers provisioning a machine from nothing, the preset list, and the
 conventions below.
 
-The short version:
+**CMake presets are the default flow.** Use them for new work; the wrapper
+scripts below are legacy and kept only for the cases noted against each one.
 
 ```powershell
 .\setup.ps1                              # once per machine; no MCUXpresso needed
 cmake --preset competition
 cmake --build --preset competition
-.\flash.ps1 -File build\cmake\competition\avc_core0.axf
+.\flash.ps1                              # defaults to the competition preset
+.\rtt.ps1 -Reset -Seconds 10
 ```
 
-Build variants are **CMake presets** (`cmake --list-presets`), not one wrapper
-script each. The wrappers below still work and are kept for the drift check and
-for anything already referencing them.
-
-Use the root CMake wrapper for normal scripted builds:
+`flash.ps1` and `rtt.ps1` take `-Preset <name>` to pick any other image, and
+resolve it to `build\cmake\<preset>\avc_core0.axf`:
 
 ```powershell
-.\build_cmake.ps1
-.\flash.ps1 -CMake
-.\rtt.ps1 -CMake -Reset -Seconds 10
+.\flash.ps1 -Preset flexio-port1
+.\rtt.ps1   -Preset encoder-diag -Seconds 30
 ```
 
-The CMake flow is adapted from the W71 project. It generates
+They refuse an unknown preset by name rather than reporting a missing file, and
+they refuse an image that has not been built rather than silently flashing a
+stale one. `cmake --list-presets` is the authoritative list. `-File` still takes
+an explicit path, and `-Mcux` selects the MCUXpresso output directory for the
+rare case of comparing the two build systems. `-CMake` is a deprecated no-op.
+
+Both scripts find `arm-none-eabi-*` the same way the build does: the toolchain
+`setup.ps1` provisioned under `out\toolchains`, before any MCUXpresso install.
+
+`.\build_cmake.ps1` remains for ad-hoc `-Define` builds and for `-CheckDrift`
+and `-Regenerate` against MCUXpresso project metadata. The CMake flow is adapted
+from the W71 project. It generates
 `src\avc\avc_core0\cmake\mcuxpresso_debug.cmake` from durable MCUXpresso
 project metadata: `.cproject` source roots/options plus `.project` linked
 resources. Do not read or depend on generated `Debug` makefiles for scripted
@@ -65,14 +74,14 @@ build source lists; those files are transient and MCUXpresso recreates them.
 The linker scripts are copied into `src\avc\avc_core0\link` so the scripted
 build does not depend on MCUXpresso regenerating files under `Debug`.
 
-Use the MCUXpresso headless wrapper as the fallback and to refresh generated
-makefiles after project setting changes:
+MCUXpresso is **not required to build**. The headless wrapper exists only to
+refresh generated makefiles after changing project settings in the IDE, whose
+result is then carried into the committed source list by `-Regenerate`:
 
 ```powershell
 .\build.ps1
 .\build.ps1 -Clean -ResetWorkspace
-.\flash.ps1
-.\rtt.ps1 -Seconds 10
+.\flash.ps1 -Mcux
 ```
 
 The MCUXpresso wrapper defaults to
@@ -87,20 +96,29 @@ The default build is the **Rev A competition image** and should stay that way:
 EZH camera capture, ER-TFT020-3 SPI LCD, USB stream off, encoders disabled.
 Everything else is a variant behind `CONFIG__` selection with `#error` guards.
 
+Prefer a preset:
+
 ```powershell
-.\build_cmake.ps1                                  # Rev A competition default
+cmake --build --preset competition           # Rev A competition default
+cmake --build --preset flexio-port1          # FlexIO capture on the Rev A camera
+                                             #   pins (needs 3 J9_EXT jumpers),
+                                             #   frees the EZH
+cmake --build --preset flexio-port4          # original FlexIO group, 11 fly-wires
+cmake --build --preset encoder-diag          # encoders, motors off, RTT only
+cmake --build --preset encoder-diag-motors   # spins the wheels. Car on blocks.
+```
 
-.\build_flexio_camera.ps1 -PinGroup Port1          # FlexIO capture on the Rev A
-                                                   #   camera pins (needs 3 J9_EXT
-                                                   #   jumpers), frees the EZH
-.\build_flexio_camera.ps1 -PinGroup Port4          # original FlexIO group, 11 fly-wires
+The wrapper scripts remain where they do something a fixed preset cannot,
+namely tuning the diagnostic at build time:
 
-.\build_motor_encoder_diag.ps1                     # encoders, motors off, RTT only
+```powershell
 .\build_motor_encoder_diag.ps1 -EnableMotors -PwmPercentM0 10 -PwmPercentM1 20 -AutoStartMs 4000
 .\flash_motor_encoder_diag.ps1 -EnableMotors       # must match how it was built
-.
-tt_motor_encoder_diag.ps1  -EnableMotors -Seconds 30
+.\rtt_motor_encoder_diag.ps1 -EnableMotors -Seconds 30
 ```
+
+Driving the two motors at *different* duties is deliberate: equal duty would
+hide a cross-wiring or duplicate-read fault between the two QDC channels.
 
 Ad-hoc variants go through `-Define`, e.g.:
 

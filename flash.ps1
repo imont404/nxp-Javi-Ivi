@@ -1,6 +1,18 @@
 param(
     [switch]$NoReset,
+
+    # Which image to flash. The CMake preset flow is the default; the preset
+    # name is the normal way to choose. See CMakePresets.json for the list.
+    [string]$Preset = "competition",
+
+    # Deprecated no-op. CMake is the default now; kept so existing commands and
+    # notes do not break.
     [switch]$CMake,
+
+    # Flash the MCUXpresso output directory instead. Only useful when comparing
+    # the two build systems.
+    [switch]$Mcux,
+
     [ValidateSet("Debug")]
     [string]$Configuration = "Debug",
     [string]$File,
@@ -19,6 +31,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 . (Join-Path $PSScriptRoot "scripts\tools\jlink_common.ps1")
+. (Join-Path $PSScriptRoot "scripts\tools\avc_image_common.ps1")
 $UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
 
 function Resolve-SeggerTool {
@@ -50,18 +63,12 @@ function Resolve-SeggerTool {
 }
 
 $projectDir = $PSScriptRoot
-$mcuxAxf = Join-Path $projectDir "src\avc\avc_core0\$Configuration\avc_core0.axf"
-$cmakeAxf = Join-Path $projectDir "build\cmake\avc_core0-$Configuration\avc_core0.axf"
-$defaultAxf = if ($CMake) { $cmakeAxf } else { $mcuxAxf }
-$axfFile = if ($File) { $File } else { $defaultAxf }
+$axfFile = Resolve-AvcImage -RepoRoot $projectDir -Preset $Preset -File $File `
+                            -Mcux:$Mcux -Configuration $Configuration
 $JLinkPath = Resolve-SeggerTool -ConfiguredPath $JLinkPath -ToolName "JLink.exe"
 
 if (-not (Test-Path -LiteralPath $JLinkPath)) {
     throw "J-Link Commander not found: $JLinkPath"
-}
-
-if (-not (Test-Path -LiteralPath $axfFile)) {
-    throw "Firmware not found: $axfFile. Build first with .\build.ps1"
 }
 
 $fileInfo = Get-Item -LiteralPath $axfFile

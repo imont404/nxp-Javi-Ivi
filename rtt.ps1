@@ -1,7 +1,17 @@
 param(
     [int]$Seconds = 0,
     [switch]$NoTail,
+
+    # Which image to read symbols from. RTT needs the .axf that is actually on
+    # the board, to locate _SEGGER_RTT. Defaults to the CMake preset flow.
+    [string]$Preset = "competition",
+
+    # Deprecated no-op. CMake is the default now.
     [switch]$CMake,
+
+    # Use the MCUXpresso output directory instead.
+    [switch]$Mcux,
+
     [switch]$Reset,
     [ValidateSet("Debug")]
     [string]$Configuration = "Debug",
@@ -12,7 +22,9 @@ param(
     [string]$UvPath = "uv",
     [string]$JLinkDllPath = "C:\Program Files\SEGGER\JLink_V940\JLink_x64.dll",
     [string]$JLinkRTTLoggerPath = "C:\Program Files\SEGGER\JLink_V940\JLinkRTTLogger.exe",
-    [string]$NmPath = "C:\nxp\MCUXpressoIDE_25.6.136\ide\plugins\com.nxp.mcuxpresso.tools.win32_25.6.0.202501151204\tools\bin\arm-none-eabi-nm.exe",
+    # Leave empty to resolve from the toolchain setup.ps1 provisioned, matching
+    # the discovery order the CMake build uses.
+    [string]$NmPath = "",
     [string]$Device = "MCXN947_M33_0",
     [string]$Interface = "SWD",
     [int]$SpeedKHz = 4000,
@@ -24,6 +36,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 . (Join-Path $PSScriptRoot "scripts\tools\jlink_common.ps1")
+. (Join-Path $PSScriptRoot "scripts\tools\avc_image_common.ps1")
 $UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
 
 function Resolve-SeggerTool {
@@ -55,16 +68,11 @@ function Resolve-SeggerTool {
 }
 
 $projectDir = $PSScriptRoot
-$mcuxAxf = Join-Path $projectDir "src\avc\avc_core0\$Configuration\avc_core0.axf"
-$cmakeAxf = Join-Path $projectDir "build\cmake\avc_core0-$Configuration\avc_core0.axf"
-$defaultAxf = if ($CMake) { $cmakeAxf } else { $mcuxAxf }
-$axfFile = if ($File) { $File } else { $defaultAxf }
+$axfFile = Resolve-AvcImage -RepoRoot $projectDir -Preset $Preset -File $File `
+                            -Mcux:$Mcux -Configuration $Configuration
 $JLinkDllPath = Resolve-SeggerTool -ConfiguredPath $JLinkDllPath -ToolName "JLink_x64.dll"
 $JLinkRTTLoggerPath = Resolve-SeggerTool -ConfiguredPath $JLinkRTTLoggerPath -ToolName "JLinkRTTLogger.exe"
-
-if (-not (Test-Path -LiteralPath $NmPath)) {
-    throw "arm-none-eabi-nm not found: $NmPath"
-}
+$NmPath = Resolve-AvcArmTool -RepoRoot $projectDir -ToolName "arm-none-eabi-nm" -ConfiguredPath $NmPath
 
 if (-not (Test-Path -LiteralPath $axfFile)) {
     throw "Firmware not found: $axfFile. Build first with .\build.ps1"
