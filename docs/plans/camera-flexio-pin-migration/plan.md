@@ -58,7 +58,7 @@ depends_on = ["port1-frame-capture"]
 [[steps]]
 id = "backend-switch-parity"
 title = "Prove EZH and FlexIO both run on the identical harness by alt7/alt6 selection"
-status = "pending"
+status = "done"
 depends_on = ["port1-frame-capture"]
 
 [[steps]]
@@ -113,7 +113,7 @@ status = "pending"
 [[exit_criteria]]
 id = "software-only-switch"
 title = "Backend selection is alt7 versus alt6 on identical wiring, with no rewiring between builds"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "rev-b-decision"
