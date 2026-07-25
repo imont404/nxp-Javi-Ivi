@@ -1,0 +1,347 @@
++++
+type = "plan"
+id = "cmake-build-and-toolchain"
+status = "pending"
+created = "2026-07-25"
+
+[[steps]]
+id = "study-reference"
+title = "Extract the reusable pattern from the bunny_vision build system"
+status = "pending"
+
+[[steps]]
+id = "toolchain-installer"
+title = "Write setup.ps1 provisioning the Arm toolchain, CMake, and Ninja"
+status = "pending"
+depends_on = ["study-reference"]
+
+[[steps]]
+id = "toolchain-file"
+title = "Add a CMake toolchain file with ordered toolchain discovery"
+status = "pending"
+depends_on = ["study-reference"]
+
+[[steps]]
+id = "own-the-source-list"
+title = "Replace the .cproject-generated source list with a checked-in CMakeLists"
+status = "pending"
+depends_on = ["toolchain-file"]
+
+[[steps]]
+id = "byte-parity"
+title = "Prove the standalone toolchain reproduces the MCUXpresso build"
+status = "pending"
+depends_on = ["own-the-source-list", "toolchain-installer"]
+
+[[steps]]
+id = "cmake-presets"
+title = "Replace the wrapper scripts with CMakePresets build configurations"
+status = "pending"
+depends_on = ["byte-parity"]
+
+[[steps]]
+id = "split-capture-backends"
+title = "Split the capture backends into separate translation units selected by CMake"
+status = "pending"
+depends_on = ["own-the-source-list"]
+
+[[steps]]
+id = "vscode-integration"
+title = "Make VS Code the supported editor with working presets, IntelliSense, and debug"
+status = "pending"
+depends_on = ["cmake-presets"]
+
+[[steps]]
+id = "host-build-root"
+title = "Add a host-side CMake root for PC tools"
+status = "pending"
+depends_on = ["cmake-presets"]
+
+[[steps]]
+id = "sdl-camera-viewer"
+title = "Build an SDL live camera viewer fed by the USB debug stream"
+status = "pending"
+depends_on = ["host-build-root"]
+
+[[steps]]
+id = "verify-script"
+title = "Add a build-everything verification gate"
+status = "pending"
+depends_on = ["cmake-presets", "host-build-root"]
+
+[[steps]]
+id = "retire-mcuxpresso"
+title = "Remove the MCUXpresso dependency from the documented workflow"
+status = "pending"
+depends_on = ["byte-parity", "cmake-presets", "vscode-integration"]
+
+[[steps]]
+id = "student-onboarding"
+title = "Prove a clean machine reaches a flashed board from one script"
+status = "pending"
+depends_on = ["retire-mcuxpresso", "verify-script"]
+
+[[steps]]
+id = "design-doc-intent-audit"
+title = "Audit design docs, ADRs, and requirements against implementation"
+status = "pending"
+depends_on = ["student-onboarding"]
+
+[[steps]]
+id = "test-runtime-impact-audit"
+title = "Audit new test runtime impact"
+status = "pending"
+depends_on = ["verify-script"]
+
+[[steps]]
+id = "external-review"
+title = "Obtain independent external review"
+status = "pending"
+depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
+
+[[exit_criteria]]
+id = "one-script-setup"
+title = "A clean Windows machine with no NXP software reaches a built firmware image by running one script"
+status = "pending"
+
+[[exit_criteria]]
+id = "no-mcuxpresso"
+title = "Building, flashing, and debugging require no MCUXpresso installation"
+status = "pending"
+
+[[exit_criteria]]
+id = "build-reproduces"
+title = "The standalone toolchain reproduces the MCUXpresso build byte-for-byte, or every difference is explained and accepted"
+status = "pending"
+
+[[exit_criteria]]
+id = "presets-replace-wrappers"
+title = "Build variants are CMakePresets rather than a wrapper script each, and the competition image is the obvious default"
+status = "pending"
+
+[[exit_criteria]]
+id = "backends-structurally-separate"
+title = "Capture backends live in separate translation units, so an unselected backend cannot be referenced rather than merely guarded"
+status = "pending"
+
+[[exit_criteria]]
+id = "vscode-works"
+title = "VS Code selects presets, resolves includes for IntelliSense, and can build and debug without extra configuration"
+status = "pending"
+
+[[exit_criteria]]
+id = "sdl-viewer-live"
+title = "The SDL tool shows a live camera feed from the board and is built by the same CMake system"
+status = "pending"
+
+[[exit_criteria]]
+id = "verify-gate"
+title = "One command builds every supported target from clean and asserts the artifacts exist"
+status = "pending"
+
+[[exit_criteria]]
+id = "competition-image-safe"
+title = "The Rev A competition image is unchanged in behaviour and reproducible throughout"
+status = "pending"
+
+[[exit_criteria]]
+id = "signoff"
+title = "Focused signoff passes"
+status = "pending"
+
+[[exit_criteria]]
+id = "design-doc-intent-audit"
+title = "Design docs, ADRs, and requirements match implementation"
+status = "pending"
+
+[[exit_criteria]]
+id = "test-runtime-impact-audit"
+title = "New tests are listed and runtime impact is reviewed"
+status = "pending"
+
+[[exit_criteria]]
+id = "external-review"
+title = "Independent external review is complete"
+status = "pending"
++++
+
+# CMake Build System, Toolchain Installer, and Host Tools
+
+## Purpose
+
+**Get rid of MCUXpresso, and make the whole toolchain installable by one script.**
+
+The model already exists and works: `bunny_vision_sw`, another MCXN947 project with a
+camera and `bunny_build`, has a raw CMake build that eliminates MCUXpresso and builds much
+faster. AVC should end up in the same place, and eventually with the same set of host
+tools.
+
+Three outcomes:
+
+1. **One script, no prior knowledge.** A student on a clean Windows machine runs one
+   script and can build and flash. No MCUXpresso install, no PATH surgery, no reading.
+2. **CMake presets instead of wrapper scripts.** Build configurations become data that
+   VS Code understands natively, rather than eight PowerShell files that grew one
+   experiment at a time.
+3. **Host tools built by the same system**, starting with an **SDL live camera viewer** —
+   a native counterpart to the existing Chrome Web Serial page.
+
+**Supersedes `build-system-cleanup`**, whose remaining items are absorbed here. Presets
+*are* the wrapper consolidation, so keeping both plans would put two owners on one surface.
+
+## The reference implementation
+
+`D:\prj\wavenumber\bunny_vision\bunny_vision_firmware-west\bunny_vision_sw\src`
+
+**Another agent is active in that tree — treat it as read-only.**
+
+| Piece | What it does |
+|---|---|
+| `setup.ps1` | Downloads Arm GNU Toolchain into `out/toolchains/`, installs CMake and Ninja via winget if absent. Idempotent, persists no environment changes. |
+| `cmake/arm-none-eabi.cmake` | Toolchain file. Discovery order: explicit `-D`, then env var, then the locally provisioned toolchain, then MCUXpresso as fallback. |
+| `CMakePresets.json` | Configure and build presets for firmware roles and host tools. What VS Code reads. |
+| `CMakeLists.txt` | Orchestrates host and firmware targets behind `option()` switches. |
+| `bunny_cam_sim`, `bunny_display_sim` | Host tools; SDL and Dear ImGui pulled in by `FetchContent` behind a `WITH_GUI` option. |
+| `verify.ps1` | Configures and builds everything from clean and asserts the artifacts exist. |
+
+## Why a strong safety net exists here
+
+**AVC's MCUXpresso 25.6 bundles Arm GNU Toolchain 14.2.Rel1 — the same version
+`setup.ps1` downloads.** Verified:
+
+```
+arm-none-eabi-gcc.exe (Arm GNU Toolchain 14.2.Rel1 (Build arm-14.52)) 14.2.1 20241119
+```
+
+So this migration has an unusually strong check available: **the standalone toolchain
+should reproduce the current build byte-for-byte.** Any difference is then a real finding
+about flags or source lists rather than noise. Use it — it is the difference between "the
+new build seems fine" and "the new build is the same build."
+
+## Where the work actually is
+
+`build_cmake.ps1` generates `src\avc\avc_core0\cmake\mcuxpresso_debug.cmake` from
+`.cproject` source roots and options plus `.project` linked resources. **That file is 310
+lines listing 179 source files, derived from MCUXpresso project metadata.**
+
+Eliminating MCUXpresso means **owning that list** — a checked-in `CMakeLists.txt` that does
+not need the IDE's project files to exist. For comparison `bunny_cam/CMakeLists.txt` is
+212 lines with roughly 45 explicit sources, so AVC pulls in considerably more SDK.
+
+Everything else in this plan is plumbing around that step.
+
+## Step Notes
+
+### study-reference
+
+Read the reference before copying it. In particular, understand why `setup.ps1` streams the
+zip through the .NET API rather than `Expand-Archive` (pathologically slow on the ~13k-file
+Arm toolchain zip, and it looks like a hang), and why the toolchain lands in a git-ignored
+`out/` rather than on PATH.
+
+### toolchain-installer
+
+Mirror `setup.ps1`: Arm GNU Toolchain **14.2.Rel1** to match the MCUXpresso bundle, into a
+git-ignored machine-local directory, plus CMake and Ninja via winget when not already on
+PATH. Idempotent, and it must not modify the user's environment.
+
+**The audience is a student with no idea.** Failure messages must say what to do next, not
+what went wrong internally. Assume winget may be absent or blocked on a locked-down laptop
+and handle that explicitly rather than failing obscurely.
+
+### own-the-source-list
+
+The riskiest step. Suggested approach: generate the list once from the current
+`.cproject`-derived output, check it in, then **diff every later regeneration against it**
+so drift is visible rather than silent. Do not hand-curate 179 paths in one pass.
+
+Keep `build.ps1`, the MCUXpresso headless fallback, working until `byte-parity` passes.
+
+### byte-parity
+
+Build the Rev A competition image with the MCUXpresso toolchain and with the provisioned
+one, and compare. Identical `text`/`data`/`bss` is a good signal; an identical binary is
+the real one. Where build paths get embedded, expect and explain the difference rather than
+waving at it.
+
+**Do this before the presets work**, so any later divergence has a known-good baseline.
+
+### cmake-presets
+
+Presets replace the wrapper scripts. The competition image must be the obvious default,
+not one option among many.
+
+Absorbed from `build-system-cleanup`: decide which variant combinations are actually
+supported, and make illegal combinations fail at configure or compile time rather than at
+runtime. The `#error` guards in `avc__master_config.h` already do much of this.
+
+### split-capture-backends
+
+`bv_camera__interface.c` is 1770 lines carrying four capture backends across 15
+backend-conditional regions. The `#if` guards added 2026-07-25 are correct but are the
+weaker form of the idea.
+
+One file per backend selected by CMake makes exclusion **structural**: no guards needed,
+and cross-backend references become impossible rather than merely prevented. That matters
+because the EZH and FlexIO PORT1 groups share pins `P1_4..P1_11` — a stray reference
+relinking the EZH init would mux them to alt7 and silently break FlexIO capture.
+
+Also carried over: **Port 4 FlexIO is build-verified but not hardware-verified** since the
+pin-group refactor. Verify it or retire it — a variant nobody has run is worse than one
+fewer variant.
+
+### vscode-integration
+
+Presets are most of it; VS Code's CMake Tools reads `CMakePresets.json` directly. What
+still needs deciding: a checked-in `.vscode/` with recommended extensions and launch
+configurations, IntelliSense resolving the SDK include paths, and whether debug stays on
+Ozone or moves to a VS Code Cortex-Debug setup.
+
+Students edit here. **If IntelliSense cannot resolve `avc__line_processor.h`, they will
+assume the code is broken**, and they will be right to.
+
+### sdl-camera-viewer
+
+A native counterpart to the Chrome Web Serial page, fed by the existing USB CDC debug
+stream. See `docs/research/AVC_USB_Debug_Transport_Protocol.md` and
+`AVC_USB_Debug_Display_Current_State.md` — the stream already runs at ~23.4 FPS with
+measured headroom.
+
+The reference splits this into a reusable core plus a thin `main`, with SDL and ImGui
+behind a `WITH_GUI` option via `FetchContent`. Worth keeping that shape: the decoder stays
+testable on the host without opening a window.
+
+**Settle early:** is this an organiser debugging tool, or something students use during the
+event? That changes how much it must tolerate being unplugged mid-frame, and whether it
+needs to be in the one-script install.
+
+### student-onboarding
+
+The real test is not that it builds on this machine. **Take a clean Windows machine with no
+NXP software, run the one script, and get to a flashed board.** Time it, and write down
+every point where a student would have to ask a question.
+
+## Constraints and sequencing
+
+- **The race is late August 2026.** The Rev A competition image must stay behaviourally
+  unchanged and reproducible throughout.
+- **A timing question that changes the whole shape of this plan:** is it for *this* year's
+  event or the next? "One script for students with no idea" and "students use VS Code"
+  read like event infrastructure, which makes this race-critical with roughly four weeks
+  available — competing directly with race preparation. If it is for next year, sequencing
+  relaxes and `byte-parity` can take as long as it needs. **Decide before starting
+  `own-the-source-list`.**
+- Another agent is working in `bunny_vision_sw`. Read it; do not modify it.
+- Keep the MCUXpresso path working until `byte-parity` passes, so there is always a way
+  back.
+
+## Source Material
+
+- `bunny_vision_sw/src/` — the reference: `setup.ps1`, `verify.ps1`, `CMakePresets.json`,
+  `cmake/arm-none-eabi.cmake`, `bunny_cam/CMakeLists.txt`, and the two sim tools
+- `build_cmake.ps1` and `src/avc/avc_core0/cmake/generate_mcuxpresso_cmake.py` — what is
+  being replaced
+- `src/avc/avc_core0/cmake/mcuxpresso_debug.cmake` — the 310-line generated source list
+- `AGENTS.md` — the current documented build and flash flow
+- `docs/research/AVC_USB_Debug_Transport_Protocol.md` — what the SDL viewer consumes
+- `docs/research/AVC_Competition_Overview.md` — who the audience is and why it matters
