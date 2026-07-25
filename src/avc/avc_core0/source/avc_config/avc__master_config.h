@@ -125,6 +125,35 @@
 #error CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE is only valid for the alternate ER-TFT020-7 panel.
 #endif
 
+/*
+ * Servo PWM output selection.
+ *
+ * Rev A intended P2_2/PWM1_A2 as the main servo output, but P2_2 is also
+ * CAMERA_CLKIN - one MCU pin landing on both the camera header and the
+ * Arduino-style header - so the aux P2_3/PWM1_B2 was used instead. Both buffers
+ * (U9 and U10) are fitted.
+ *
+ * P3_20/PWM1_A3 is a candidate for Rev B: PWM1 submodule 3 is entirely unused,
+ * and P3_20 already reaches the shield at J1.5 with nothing connected to it.
+ * Selecting it here drives that header pin so it can be verified with a scope
+ * before committing to a board respin.
+ *
+ * See docs/research/AVC_RevB_Servo_PWM_Options.md.
+ *
+ *   P2_3_B2  PWM1 submodule 2, channel B, alt5 - as built on Rev A (shield J3.5)
+ *   P3_20_A3 PWM1 submodule 3, channel A, alt5 - Rev B candidate (shield J1.5)
+ */
+#define SERVO_PWM_OUTPUT_P2_3_B2				1
+#define SERVO_PWM_OUTPUT_P3_20_A3				2
+
+#ifndef CONFIG__SERVO_PWM_OUTPUT
+#define CONFIG__SERVO_PWM_OUTPUT				(SERVO_PWM_OUTPUT_P2_3_B2)
+#endif
+
+#if CONFIG__SERVO_PWM_OUTPUT != SERVO_PWM_OUTPUT_P2_3_B2 &&     CONFIG__SERVO_PWM_OUTPUT != SERVO_PWM_OUTPUT_P3_20_A3
+#error Invalid CONFIG__SERVO_PWM_OUTPUT.
+#endif
+
 #ifndef CONFIG__USB_DEBUG_STREAM_ENABLE
 #define CONFIG__USB_DEBUG_STREAM_ENABLE			(0)
 #endif
