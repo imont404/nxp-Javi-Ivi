@@ -80,6 +80,13 @@ the Eclipse workspace import is stale and omitted linked shared-source objects.
 
 ## Reference Material
 
+**Read `docs/research/AVC_Competition_Overview.md` first.** It covers what this project is
+for: the NXP Cup / FIT student race, the 55 cm track, the chassis and electronics, the
+41 ms frame budget, and the constraint that this is an organizer-supplied platform tuned by
+novices in about three days. Every plan assumes that context.
+
+For NPU / camera-processing questions, see `docs/research/neutron_npu/`.
+
 Start FlexIO camera work by reading:
 
 - `docs/research/FlexIO_Camera_Test_Plan.md`

@@ -1,0 +1,20 @@
+(function () {
+    var scriptAppEmbeds = document.querySelector('script[data-app-embeds=getbutton]'); // find script element of app embeds
+    if (scriptAppEmbeds) {
+        var curScript = document.currentScript; // get script tag that invoked current js scope
+        var isAppEmbeds = curScript && curScript.getAttribute('data-app-embeds') === 'getbutton';
+        if (!isAppEmbeds) {
+            console.log('Getbutton: skip loading scriptTag - app embeds found');
+            return false;
+        }
+        console.log('Getbutton: loading app embeds');
+    } else {
+        console.log('Getbutton: loading scriptTag');
+    }
+
+    var options = {"call_to_action":"Message us","button_text":"Contact us","button_text_close":"Close","position":"left","page_list_to_show":"","page_list_to_hide":"","display_on_all_pages_in_string":"yes","display_on_all_pages":true,"bg_style":"color","greeting_style":"alternative","button_style":"classic","direction":"column","greeting_direction":"column","button_image_url":"","greeting_message_delay":3,"greeting_messengers":true,"greeting_cookie":86400,"greeting_agent_name":"Bob","greeting_agent_position":"Manager","greeting_start_chat_with":"Start Chat with:","activator_size":56,"button_shadow":40,"button_opacity":100,"button_animation":"heartBeat","activator_icon":"classic","button_border_radius":50,"mirror":false,"border":false,"notification_indicator":false,"animation":true,"button_color":"#FF6550","whatsapp":"+8618825289328","whatsapp_color":"#4dc247","whatsapp_label":"WhatsApp","whatsapp_agent_image_1":"https:\/\/static.getbutton.io\/img\/flag.jpg?v=1","whatsapp_agent_image_2":"https:\/\/static.getbutton.io\/img\/flag.jpg?v=1","whatsapp_agent_image_3":"https:\/\/static.getbutton.io\/img\/flag.jpg?v=1","whatsapp_agent_image_4":"https:\/\/static.getbutton.io\/img\/flag.jpg?v=1","whatsapp_agent_image_5":"https:\/\/static.getbutton.io\/img\/flag.jpg?v=1","whatsapp_popup_title":"Start a Conversation","whatsapp_popup_subtitle":"Click one of our members below to chat"};
+    var proto = document.location.protocol, host = "getbutton.io", url = proto + "//static." + host;
+    var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget/bundle.js';
+    s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+    var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+})();
