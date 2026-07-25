@@ -94,10 +94,16 @@ status = "pending"
 depends_on = ["byte-parity", "cmake-presets", "vscode-integration"]
 
 [[steps]]
+id = "build-tooling-docs"
+title = "Document the build system, toolchain, and quality gates"
+status = "pending"
+depends_on = ["cmake-presets", "governance-tooling"]
+
+[[steps]]
 id = "student-onboarding"
 title = "Prove a clean machine reaches a flashed board from one script"
 status = "pending"
-depends_on = ["retire-mcuxpresso", "verify-script"]
+depends_on = ["retire-mcuxpresso", "build-tooling-docs"]
 
 [[steps]]
 id = "design-doc-intent-audit"
@@ -165,6 +171,11 @@ status = "pending"
 [[exit_criteria]]
 id = "tooling-provisioned"
 title = "setup.ps1 provisions everything the build and signoff need - Arm toolchain, CMake, Ninja, uv, and the clang tooling"
+status = "pending"
+
+[[exit_criteria]]
+id = "build-docs-exist"
+title = "The build system, toolchain provisioning, and quality gates are documented well enough for a student to follow without asking"
 status = "pending"
 
 [[exit_criteria]]
@@ -360,11 +371,43 @@ that AVC has almost none of the tooling the reference project runs.
 that de-risks `own-the-source-list`, which is the highest-risk step in this plan. Getting
 L0 and L1 up front pays for itself; L2 complexity and L99 signoff can follow.
 
-`setup.ps1` must provision what these need — `uv` for the Python tooling, and the clang
-binaries. **Open question:** where does clang-tidy come from on a student laptop? The Arm
-toolchain is GCC, so it is not bundled. LLVM via winget is the obvious answer but adds
-another large download to the one-script install; decide whether format and tidy are
-student-facing at all, or organiser-only gates.
+**DECIDED 2026-07-25:** `setup.ps1` provisions everything, including LLVM via winget for
+`clang-format` and `clang-tidy`. The extra download is acceptable — one script that
+installs everything beats a second-class setup that works until someone runs a gate.
+
+So `setup.ps1` covers: the Arm GNU toolchain, CMake, Ninja, `uv` for the Python tooling,
+and LLVM. Same idempotent, no-PATH-surgery rules as the rest.
+
+### build-tooling-docs
+
+**Governance requires this, and it is also the thing that makes the one-script install
+real.** A script a student cannot find or does not understand is not an install path.
+
+The reference's `docs/setup.html` is the model, with sections covering: prerequisites,
+toolchain provisioning (no MCUXpresso required), workspace checkout, build, flash and
+bench, host tool quick checks, conventions, and quality gates. That is the right table of
+contents.
+
+Cover at minimum:
+
+- **Getting started from nothing** — run one script, then build, then flash. What a student
+  reads first, written for someone who has never seen the repo.
+- **The build variants** — what each preset is for, and which one is the competition image.
+- **Toolchain provisioning** — what `setup.ps1` installs, where it puts it, and that it
+  changes no environment. Also what to do when winget is blocked on a locked-down laptop.
+- **Quality gates** — how to run the rack strata and the signoff suite, and what each is
+  checking.
+- **The linker capture convention** — that `link/` holds static captures, where they came
+  from, and how to regenerate for a drift diff.
+
+**Open question:** the reference publishes HTML (`docs/setup.html`, plus a
+`docs/governance/` tree) and the `zephyr-firmware` profile expects HTML docs; AVC's
+documentation is Markdown under `docs/research/`. Decide whether to adopt the HTML
+convention or keep Markdown and satisfy the profile another way — worth settling before
+writing, not after.
+
+Also worth copying: the reference keeps `docs/quality/lizard-baseline.txt`, so complexity
+debt is a tracked baseline rather than a pass/fail cliff.
 
 ### own-the-source-list
 
@@ -455,6 +498,7 @@ race-critical.**
 | `cmake-presets` | How students select a build; also what VS Code reads. |
 | `vscode-integration` | Students edit here. IntelliSense must resolve. |
 | `retire-mcuxpresso` | Removes the install students would otherwise need. |
+| `build-tooling-docs` | Governance requires it, and a script nobody can find is not an install path. |
 | `student-onboarding` | Clean machine to flashed board. The only test that counts. |
 
 ### Deferrable — real value, no student blocks it
