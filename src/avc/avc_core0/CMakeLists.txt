@@ -11,6 +11,10 @@ set_target_properties(avc_core0 PROPERTIES
 )
 
 target_compile_definitions(avc_core0 PRIVATE ${MCUX_DEFINES})
+set(AVC_EXTRA_DEFINES "" CACHE STRING "Additional AVC compile definitions")
+if(AVC_EXTRA_DEFINES)
+    target_compile_definitions(avc_core0 PRIVATE ${AVC_EXTRA_DEFINES})
+endif()
 target_include_directories(avc_core0 PRIVATE ${MCUX_INCLUDE_DIRS})
 
 foreach(source IN LISTS MCUX_C_SOURCES)

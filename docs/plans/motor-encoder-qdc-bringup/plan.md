@@ -12,13 +12,13 @@ status = "done"
 [[steps]]
 id = "pin-owner-build-profile"
 title = "Add explicit Rev A build-time ownership for encoder pins versus alternate LCD/EZH uses"
-status = "pending"
+status = "done"
 depends_on = ["qdc-routing-research"]
 
 [[steps]]
 id = "qdc-driver-strategy"
 title = "Choose and integrate the QDC access layer"
-status = "pending"
+status = "done"
 depends_on = ["pin-owner-build-profile"]
 
 [[steps]]
@@ -30,13 +30,13 @@ depends_on = ["qdc-driver-strategy"]
 [[steps]]
 id = "bench-fixture-and-safety"
 title = "Define the chassis-on-blocks low-speed motor test mode"
-status = "pending"
+status = "done"
 depends_on = ["qdc-driver-strategy"]
 
 [[steps]]
 id = "encoder-signal-diag"
 title = "Add bench diagnostic mode for raw encoder signal visibility"
-status = "pending"
+status = "active"
 depends_on = ["bench-fixture-and-safety"]
 
 [[steps]]
@@ -180,3 +180,50 @@ The first practical test should be isolated from camera work:
 
 The PID step should wait until the open-loop telemetry is stable and the RPM
 conversion constants are documented.
+
+## Resume State: 2026-07-21
+
+The first QDC diagnostic implementation is in the working tree and has been
+build-validated, but it has not been flashed or bench-validated yet.
+
+Current normal firmware defaults are intentionally still the Rev A competition
+baseline:
+
+- `CONFIG__CAMERA_CAPTURE_BACKEND = CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH`
+- `CONFIG__DISPLAY_PANEL = DISPLAY_PANEL_ER_TFT020_3`
+- `CONFIG__USB_DEBUG_STREAM_ENABLE = 0`
+- `CONFIG__MOTOR_ENCODER_BACKEND = MOTOR_ENCODER_BACKEND_DISABLED`
+
+Current diagnostic implementation:
+
+- `src/avc/avc_core0/source/avc_io/avc__motor_encoder_qdc.c`
+- `src/avc/avc_core0/source/avc_io/avc__motor_encoder_qdc.h`
+- `build_motor_encoder_diag.ps1`
+- `flash_motor_encoder_diag.ps1`
+- `rtt_motor_encoder_diag.ps1`
+
+The diagnostic image:
+
+- Skips camera and LCD startup.
+- Configures `P1_0`, `P1_1`, `P1_22`, and `P2_0` as `TRIG_IN` inputs.
+- Routes `TRIG_IN0/1` to `QDC0_PHASEA/B`.
+- Routes `TRIG_IN3/5` to `QDC1_PHASEA/B`.
+- Reports raw `IMR`, position, delta, counts/sec, direction, and QDC flags over
+  the existing `DEBUG` path.
+- Starts with motors off.
+- When built with `-EnableMotors`, the center button toggles both motors at
+  `CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT`, capped at 20 percent by config.
+
+Builds completed before reboot:
+
+- `.\build_cmake.ps1`
+- `.\build_motor_encoder_diag.ps1`
+- `.\build_motor_encoder_diag.ps1 -EnableMotors`
+
+The current motor-enabled diagnostic AXF is:
+
+- `build/cmake/avc_core0-MotorEncoderDiag/avc_core0.axf`
+
+Do not mark `encoder-signal-diag`, `dual-qdc-count-diag`, or the runtime exit
+criteria done until the board is flashed on the chassis-on-blocks setup and the
+RTT output confirms live encoder transitions/counts for both motors.

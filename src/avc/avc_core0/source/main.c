@@ -7,6 +7,10 @@
 #include "avc_usb_debug_stream.h"
 #endif
 
+#if CONFIG__MOTOR_ENCODER_DIAG_ENABLE
+#include "avc__motor_encoder_qdc.h"
+#endif
+
 
 volatile uint16_t bat;
 
@@ -74,6 +78,10 @@ int main(void)
 {
 
 	avc__init();
+
+#if CONFIG__MOTOR_ENCODER_DIAG_ENABLE
+    avc__motor_encoder_qdc_diag_run();
+#endif
 
 	//Initialize the ARM CPU cycle counter for measuring performance
 

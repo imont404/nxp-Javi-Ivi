@@ -4,6 +4,7 @@ param(
 
     [string]$BuildDir = "",
     [switch]$SkipGenerate,
+    [string[]]$Define = @(),
 
     [string]$ProjectPath = (Join-Path $PSScriptRoot "src\avc\avc_core0")
 )
@@ -83,6 +84,9 @@ Write-Host "Configuring CMake/Ninja build..." -ForegroundColor Cyan
 $configureArgs = @("-S", $ProjectPath, "-B", $BuildDir, "-G", "Ninja")
 if (-not (Test-Path -LiteralPath $cachePath)) {
     $configureArgs += "-DCMAKE_TOOLCHAIN_FILE=$toolchain"
+}
+if ($Define.Count -gt 0) {
+    $configureArgs += "-DAVC_EXTRA_DEFINES=$($Define -join ';')"
 }
 
 Invoke-Checked {

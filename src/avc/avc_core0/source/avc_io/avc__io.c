@@ -8,6 +8,10 @@
 #include "avc_usb_debug_stream.h"
 #endif
 
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+#include "avc__motor_encoder_qdc.h"
+#endif
+
 #ifndef CONFIG__AVC_UART_TX_Q_SIZE_BYTES
 	#define CONFIG__AVC_UART_TX_Q_SIZE_BYTES 2048
 #endif
@@ -210,6 +214,13 @@ void avc__init()
 
 #if CONFIG__DISPLAY_TEST_MODE
     avc__display_test_mode_run();
+#endif
+
+#if CONFIG__MOTOR_ENCODER_DIAG_ENABLE
+    avc__motor_control_init();
+    avc__motor_encoder_qdc_init();
+    DEBUG("Motor encoder diagnostic init complete; camera and LCD startup skipped for this build.\r\n");
+    return;
 #endif
 
     avc_camera__init();

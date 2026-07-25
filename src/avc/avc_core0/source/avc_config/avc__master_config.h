@@ -85,6 +85,55 @@
 #define CONFIG__USB_DEBUG_STREAM_ENABLE			(0)
 #endif
 
+/*
+ * Motor encoder bring-up:
+ * Default firmware leaves the encoder hardware disabled. The QDC path is
+ * selected by a separate diagnostic build so the normal competition image keeps
+ * the verified EZH camera + SPI LCD behavior.
+ */
+#define MOTOR_ENCODER_BACKEND_DISABLED			0
+#define MOTOR_ENCODER_BACKEND_QDC				1
+
+#ifndef CONFIG__MOTOR_ENCODER_BACKEND
+#define CONFIG__MOTOR_ENCODER_BACKEND			(MOTOR_ENCODER_BACKEND_DISABLED)
+#endif
+
+#ifndef CONFIG__MOTOR_ENCODER_DIAG_ENABLE
+#define CONFIG__MOTOR_ENCODER_DIAG_ENABLE		(0)
+#endif
+
+#ifndef CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE
+#define CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE	(0)
+#endif
+
+#ifndef CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT
+#define CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT	(12)
+#endif
+
+#ifndef CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS
+#define CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS	(250U)
+#endif
+
+#ifndef CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV
+#define CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV	(0U)
+#endif
+
+#if CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_DISABLED && CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_QDC
+#error Invalid CONFIG__MOTOR_ENCODER_BACKEND.
+#endif
+
+#if CONFIG__MOTOR_ENCODER_DIAG_ENABLE && CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_QDC
+#error CONFIG__MOTOR_ENCODER_DIAG_ENABLE requires CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC.
+#endif
+
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC && CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
+#error QDC encoder mode is mutually exclusive with alternate parallel LCD bit-bang mode.
+#endif
+
+#if CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT < 0 || CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT > 20
+#error CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT must stay between 0 and 20 for the bench diagnostic.
+#endif
+
 
 //#define CONFIG__OV7670_IS_160x120 (1)           // This only applies to the OV7670
 
