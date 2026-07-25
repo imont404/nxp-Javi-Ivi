@@ -10,7 +10,8 @@
       "binaryDir": "${sourceDir}/build/cmake/${presetName}",
       "toolchainFile": "${sourceDir}/src/avc/avc_core0/cmake/mcuxpresso-toolchain.cmake",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
 

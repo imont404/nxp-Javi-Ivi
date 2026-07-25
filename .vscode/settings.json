@@ -1,0 +1,29 @@
+{
+  "// note": "Shared editor settings for the AVC project. User-specific state is git-ignored; only this file, extensions.json, tasks.json, and launch.json are checked in.",
+
+  "// cmake": "CMake Tools reads CMakePresets.json directly. Do not configure on open - a student opening the folder should not trigger a build they did not ask for.",
+  "cmake.useCMakePresets": "always",
+  "cmake.configureOnOpen": false,
+  "cmake.configureOnEdit": false,
+
+  "// intellisense": "compile_commands.json is emitted by every preset (CMAKE_EXPORT_COMPILE_COMMANDS). Point cpptools at the competition build so includes resolve without the student choosing anything. If you build a different preset, change the path or select it in CMake Tools.",
+  "C_Cpp.default.compileCommands": "${workspaceFolder}/build/cmake/competition/compile_commands.json",
+  "C_Cpp.default.compilerPath": "${workspaceFolder}/out/toolchains/arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-gcc.exe",
+  "C_Cpp.default.cStandard": "c17",
+  "C_Cpp.default.intelliSenseMode": "gcc-arm",
+
+  "// editor": "The firmware is a mix of tabs and spaces inherited from the SDK. Do not reformat on save; a whitespace-only diff across 179 SDK files helps nobody.",
+  "editor.formatOnSave": false,
+  "files.trimTrailingWhitespace": false,
+
+  "files.associations": {
+    "*.ld": "linkerscript",
+    "*.jdebug": "javascript"
+  },
+
+  "files.exclude": {
+    "**/build": true,
+    "**/out": true,
+    "**/.mcux_workspace*": true
+  }
+}

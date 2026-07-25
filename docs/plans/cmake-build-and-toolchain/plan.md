@@ -60,7 +60,7 @@ depends_on = ["own-the-source-list"]
 [[steps]]
 id = "vscode-integration"
 title = "Make VS Code the supported editor with working presets, IntelliSense, and debug"
-status = "pending"
+status = "done"
 depends_on = ["cmake-presets"]
 
 [[steps]]

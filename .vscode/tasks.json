@@ -1,0 +1,56 @@
+{
+  "version": "2.0.0",
+  "// note": "Flash and RTT are PowerShell wrappers rather than CMake targets, because they talk to a J-Link. Building is done through CMake Tools and its presets, not here.",
+  "tasks": [
+    {
+      "label": "Flash: competition image",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        "${workspaceFolder}/flash.ps1",
+        "-File", "${workspaceFolder}/build/cmake/competition/avc_core0.axf"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "RTT: watch competition image",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        "${workspaceFolder}/rtt.ps1",
+        "-File", "${workspaceFolder}/build/cmake/competition/avc_core0.axf",
+        "-Reset", "-Seconds", "30"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Setup: provision the toolchain",
+      "detail": "Run once on a new machine. Downloads the Arm toolchain and installs CMake, Ninja, uv, and LLVM.",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        "${workspaceFolder}/setup.ps1"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Check: source list drift",
+      "detail": "Regenerate the source list from MCUXpresso project metadata and diff it against the committed one.",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        "${workspaceFolder}/build_cmake.ps1",
+        "-CheckDrift"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

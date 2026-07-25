@@ -1,0 +1,8 @@
+{
+  "// note": "Extensions VS Code offers to install when this folder is opened. Keep this list short - every entry is something a student has to wait for.",
+  "recommendations": [
+    "ms-vscode.cpptools",
+    "ms-vscode.cmake-tools",
+    "twxs.cmake"
+  ]
+}

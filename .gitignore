@@ -1,4 +1,9 @@
-.vscode
+# Shared editor config is checked in; user-specific state is not.
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
 .settings/
 
 *.o
