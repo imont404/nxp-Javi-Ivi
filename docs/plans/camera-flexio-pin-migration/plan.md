@@ -40,19 +40,19 @@ depends_on = ["confirm-board-access"]
 [[steps]]
 id = "port1-signal-diag"
 title = "Confirm live PCLK, HREF, and data toggling on the Port 1 FlexIO pins"
-status = "active"
+status = "done"
 depends_on = ["jumper-fit", "decouple-port-hardcoding"]
 
 [[steps]]
 id = "port1-frame-capture"
 title = "Capture a correct frame through FlexIO plus eDMA on the Rev A camera pins"
-status = "pending"
+status = "done"
 depends_on = ["port1-signal-diag"]
 
 [[steps]]
 id = "ezh-freed-demo"
 title = "Demonstrate the EZH is idle and claimable while FlexIO captures"
-status = "pending"
+status = "active"
 depends_on = ["port1-frame-capture"]
 
 [[steps]]
@@ -103,7 +103,7 @@ status = "met"
 [[exit_criteria]]
 id = "port1-frame-correct"
 title = "FlexIO captures a correct frame on P1_4..P1_11 with PCLK on P1_14, at no worse than the current frame rate"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "ezh-available"
