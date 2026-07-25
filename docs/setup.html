@@ -19,21 +19,19 @@ seen this repository and have nothing installed.</p>
 cmake --preset competition               <em>configure</em>
 cmake --build --preset competition       <em>build</em></pre>
 
-<p>Then put the firmware on the board:</p>
+<p>That produces the firmware image here:</p>
 
-<pre>.\flash.ps1</pre>
+<pre>build\cmake\competition\avc_core0.axf</pre>
+
+<p><strong>Flashing is done with Segger Ozone</strong>, using the project in
+<code>src\avc\avc_core0\ozone__core0.jdebug</code>. See the Ozone section of
+<code>README.md</code> for installing it and connecting to the board.</p>
 
 <p>The car should come up with live camera on the LCD. That is the loop you will
 spend the week in: edit, build, flash, look at the screen.</p>
 
-<p><code>flash.ps1</code> defaults to the <code>competition</code> preset. To
-flash a different one, name it &ndash; you do not have to type a path:</p>
-
-<pre>.\flash.ps1 -Preset encoder-diag</pre>
-
-<p>If you name a preset that does not exist, the script says so and lists the
-real ones. If you name one you have not built yet, it tells you the two commands
-to build it rather than flashing an old image by mistake.</p>
+<p>If you name a preset that does not exist, CMake says so and lists the real
+ones.</p>
 
 <h2>Seeing what the car is thinking</h2>
 
@@ -138,10 +136,10 @@ once</strong> or headers will appear unresolved:</p>
 tabs and spaces inherited from the NXP SDK, and reformatting on save produces
 enormous whitespace-only diffs.</p>
 
-<p>Flashing, setup, and the drift check are available as VS Code tasks
-(<em>Terminal &rarr; Run Task</em>). Building is not one of them &ndash; that goes
-through CMake Tools and the preset picker in the status bar. The task marked
-<em>maintainers</em> needs a debug probe you will not have.</p>
+<p><strong>VS Code is the editor and nothing more here.</strong> There are no build
+tasks, run buttons, or debug configurations checked in, and that is deliberate:
+you build in a terminal and flash in Ozone, so there is one way to do each thing
+rather than two that can disagree.</p>
 
 <h2>Toolchain provisioning</h2>
 

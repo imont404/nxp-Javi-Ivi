@@ -60,30 +60,41 @@ def test_docs_commands_are_current():
     assert "setup.ps1" in html, "setup page does not mention the provisioning script"
 
 
-def test_docs_do_not_teach_rtt():
-    """Students debug through the LCD and the USB frame stream. They are not
-    given a J-Link, so an RTT command on the setup page is an instruction they
-    cannot follow.
+def test_docs_do_not_teach_probe_scripts():
+    """The student path is: build with CMake, flash with Ozone. flash.ps1 and
+    rtt.ps1 are maintainer tooling that drive a J-Link directly.
 
-    This is worth a test rather than a convention: RTT is the easiest way for a
-    maintainer to watch a running board, so it drifts into student-facing docs
-    without anyone deciding it should.
+    This is worth a test rather than a convention: those scripts are the fastest
+    way for a maintainer to put an image on a board, so they drift into
+    student-facing docs without anyone deciding they should.
     """
     html = SETUP_DOC.read_text(encoding="utf-8")
     offenders = [
         line.strip()
         for line in html.splitlines()
-        if re.search(r"(?i)rtt\.ps1|JLinkRTT|_SEGGER_RTT", line)
+        if re.search(r"(?i)rtt\.ps1|flash\.ps1|JLinkRTT|_SEGGER_RTT", line)
     ]
     assert not offenders, (
-        "docs/setup.html tells students to run RTT, which needs a debugger they "
-        f"do not have: {offenders}"
+        "docs/setup.html tells students to run maintainer probe tooling: "
+        f"{offenders}"
+    )
+
+
+def test_docs_name_ozone_as_the_flashing_route():
+    """Having removed the scripts, the page must still say how to get an image
+    onto the board, and point at the image the CMake build actually produces."""
+    html = SETUP_DOC.read_text(encoding="utf-8")
+    assert re.search(r"(?i)ozone", html), (
+        "setup page does not say how to flash the board"
+    )
+    assert "build\\cmake\\competition\\avc_core0.axf" in html, (
+        "setup page does not name the image the competition preset produces"
     )
 
 
 def test_docs_point_at_the_debug_tools_students_have():
-    """The flip side of the above: having removed RTT, the page must still say
-    how to see what the car is doing."""
+    """Students observe a running car through the LCD and the USB frame stream,
+    not a debugger."""
     html = SETUP_DOC.read_text(encoding="utf-8")
     assert re.search(r"(?i)\bLCD\b", html), (
         "setup page does not mention the on-board LCD"

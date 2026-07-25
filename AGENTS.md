@@ -47,11 +47,19 @@ cmake --build --preset competition
 .\rtt.ps1 -Reset -Seconds 10
 ```
 
-**RTT is maintainer tooling, not a student workflow.** Students debug through
-the on-board LCD and the USB frame stream; they are not given a J-Link or asked
-to run `rtt.ps1`. Keep it out of `docs/setup.html` — an L0 test enforces this,
-because RTT is by far the easiest way for an agent to observe a running board
-and so it drifts into student docs on its own.
+**`flash.ps1` and `rtt.ps1` are maintainer tooling, not a student workflow.**
+The student path is: build with a CMake preset, flash with **Segger Ozone**
+(`src\avc\avc_core0\ozone__core0.jdebug`), observe through the on-board LCD and
+the USB frame stream. Students are not given a J-Link and do not run these
+scripts. Keep both out of `docs/setup.html` — an L0 test enforces it, because
+they are the fastest way for an agent to put an image on a board and so they
+drift into student docs on their own.
+
+**VS Code is the editor and nothing more.** No tasks, no launch configurations,
+no debug integration — one way to build and one way to flash, rather than two
+that can disagree. `.vscode/` carries only `settings.json` and `extensions.json`.
+Nothing here is load-bearing: if it is wrong the student gets unresolved
+includes, not a broken build, so it is not worth a test.
 
 `flash.ps1` and `rtt.ps1` take `-Preset <name>` to pick any other image, and
 resolve it to `build\cmake\<preset>\avc_core0.axf`:

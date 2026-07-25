@@ -59,7 +59,7 @@ depends_on = ["own-the-source-list"]
 
 [[steps]]
 id = "vscode-integration"
-title = "Make VS Code the supported editor with working presets, IntelliSense, and debug"
+title = "Make VS Code a working editor: presets visible, IntelliSense resolving. No tasks or debug integration by decision"
 status = "done"
 depends_on = ["cmake-presets"]
 
@@ -150,8 +150,8 @@ status = "pending"
 
 [[exit_criteria]]
 id = "vscode-works"
-title = "VS Code selects presets, resolves includes for IntelliSense, and can build and debug without extra configuration"
-status = "pending"
+title = "VS Code opens the tree, shows the presets, and resolves includes for IntelliSense with no extra configuration"
+status = "met"
 
 [[exit_criteria]]
 id = "sdl-viewer-live"
