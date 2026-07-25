@@ -18,7 +18,7 @@ depends_on = ["measure-baseline"]
 [[steps]]
 id = "split-init-from-reconfigure"
 title = "Replace fsl_lpspi_edma with a purpose-built driver: one-time init, no RX path"
-status = "pending"
+status = "done"
 depends_on = ["measure-baseline"]
 
 [[steps]]

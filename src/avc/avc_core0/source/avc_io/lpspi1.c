@@ -25,10 +25,65 @@ edma_handle_t g_DMA_Handle;
 volatile bool request_frame_for_display = true;
 
 
+#define LPSPI1_TRANSFER_CONFIG_FLAGS \
+    (kLPSPI_Pcs0 | kLPSPI_MasterByteSwap | kLPSPI_MasterPcsContinuous)
+
+static bool lpspi1_hardware_ready = false;
+
+/*
+ * Change the SPI frame size without re-initialising anything.
+ *
+ * The display path alternates between 8-bit control bytes and 32-bit pixel
+ * words. Frame size lives in TCR[FRAMESZ], and both LPSPI_MasterTransferEDMALite
+ * and LPSPI_MasterTransferPrepareEDMALite read it back out of TCR at call time,
+ * so switching is a register write plus a re-prepare to refresh the handle's
+ * bytesEachWrite/bytesEachRead fields. PrepareEDMALite preserves FRAMESZ - it
+ * only rewrites CONT, CONTC, BYSW and PCS.
+ *
+ * The module is disabled around the TCR write. With LPSPI enabled a TCR write
+ * enqueues a command rather than taking effect directly, which is the wrong
+ * behaviour for a mode change between transfers.
+ */
+void lpspi1_set_frame_size(uint8_t transaction_bits)
+{
+    lpspi1_wait_idle();
+
+    LPSPI_Enable(LPSPI1, false);
+    LPSPI1->TCR = (LPSPI1->TCR & ~(uint32_t)LPSPI_TCR_FRAMESZ_MASK) |
+                  LPSPI_TCR_FRAMESZ((uint32_t)transaction_bits - 1U);
+    LPSPI_Enable(LPSPI1, true);
+
+    (void)LPSPI_MasterTransferPrepareEDMALite(LPSPI1, &g_m_edma_handle,
+                                              LPSPI1_TRANSFER_CONFIG_FLAGS);
+}
+
+/* Frame size currently programmed in TCR, in bits. Used to prove the mode
+ * switch took effect without needing to look at the panel. */
+uint8_t lpspi1_get_frame_size(void)
+{
+    return (uint8_t)(((LPSPI1->TCR & LPSPI_TCR_FRAMESZ_MASK) >>
+                      LPSPI_TCR_FRAMESZ_SHIFT) + 1U);
+}
+
+/*
+ * Bring up LPSPI1 and its DMA channels. Safe to call repeatedly: the expensive
+ * work happens once and later calls only change frame size.
+ *
+ * This used to re-run in full on every call, which meant EDMA_Init() reset the
+ * whole DMA0 controller twice per display update - four times per frame, since
+ * the frame is drawn in two regions. DMA0 is shared with the camera, so that
+ * was a hazard as well as costing ~770 us a time.
+ */
 void lpspi1_init(uint8_t transaction_bits)
 {
     uint32_t srcClock_Hz;
     lpspi_master_config_t masterConfig;
+
+    if (lpspi1_hardware_ready)
+    {
+        lpspi1_set_frame_size(transaction_bits);
+        return;
+    }
 
     while (!isTransferCompleted);
 
@@ -70,7 +125,9 @@ void lpspi1_init(uint8_t transaction_bits)
                                          NULL, &lpspiEdmaMasterRxRegToRxDataHandle,
                                          &lpspiEdmaMasterTxDataToTxRegHandle);
     
-    LPSPI_MasterTransferPrepareEDMALite(LPSPI1, &g_m_edma_handle, kLPSPI_Pcs0 | kLPSPI_MasterByteSwap | kLPSPI_MasterPcsContinuous);
+    LPSPI_MasterTransferPrepareEDMALite(LPSPI1, &g_m_edma_handle, LPSPI1_TRANSFER_CONFIG_FLAGS);
+
+    lpspi1_hardware_ready = true;
 }
 
 

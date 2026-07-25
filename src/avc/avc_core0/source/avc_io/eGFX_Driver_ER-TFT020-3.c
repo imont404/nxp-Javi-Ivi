@@ -21,6 +21,15 @@
 static uint32_t diag_init8, diag_setpos, diag_init32, diag_blocks;
 static uint32_t diag_calls, diag_blocks_seen;
 
+/*
+ * TCR frame size read back after each mode switch. Proves the 8/32-bit change
+ * took effect, which otherwise could only be confirmed by looking at the panel.
+ */
+static uint8_t diag_fs8, diag_fs32;
+static bool diag_fs_reported;
+
+#define eGFX_TIMING_FS(var)     do { (var) = lpspi1_get_frame_size(); } while (0)
+
 #define eGFX_TIMING_DECL()      uint32_t diag_t0, diag_t1
 #define eGFX_TIMING_MARK()      do { diag_t0 = CYCLE_COUNTER; } while (0)
 #define eGFX_TIMING_ACC(field)  do {                                          \
@@ -53,6 +62,11 @@ static uint32_t diag_calls, diag_blocks_seen;
                     (diag_init8 + diag_setpos + diag_init32) / n));           \
             diag_init8 = diag_setpos = diag_init32 = diag_blocks = 0;         \
             diag_calls = diag_blocks_seen = 0;                                \
+            if (!diag_fs_reported) {                                          \
+                diag_fs_reported = true;                                      \
+                DEBUG("lcd_dump framesz control=%u pixel=%u bits\r\n",        \
+                      (unsigned)diag_fs8, (unsigned)diag_fs32);               \
+            }                                                                 \
         }                                                                     \
     } while (0)
 
@@ -61,6 +75,7 @@ static uint32_t diag_calls, diag_blocks_seen;
 #define eGFX_TIMING_DECL()      do { } while (0)
 #define eGFX_TIMING_MARK()      do { } while (0)
 #define eGFX_TIMING_ACC(field)  do { } while (0)
+#define eGFX_TIMING_FS(var)     do { } while (0)
 #define eGFX_TIMING_REPORT(b)   do { (void)(b); } while (0)
 
 #endif
@@ -119,12 +134,14 @@ void eGFX_DumpRaw(uint8_t *buffer,
     eGFX_TIMING_MARK();
     lpspi1_init(8);
     eGFX_TIMING_ACC(diag_init8);
+    eGFX_TIMING_FS(diag_fs8);
 
     LCD_SetPos(x0, x1, y0, y1); // 320x240
     eGFX_TIMING_ACC(diag_setpos);
 
     lpspi1_init(32);
     eGFX_TIMING_ACC(diag_init32);
+    eGFX_TIMING_FS(diag_fs32);
 
 	LCD_RS__SET;
     uint32_t blk_size;
