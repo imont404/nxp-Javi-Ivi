@@ -16,11 +16,15 @@ param(
     [string]$Device = "MCXN947_M33_0",
     [string]$Interface = "SWD",
     [int]$SpeedKHz = 4000,
-    [string]$UsbSerial = "1066857635",
+    # See flash.ps1 / scripts\tools\jlink_common.ps1. Empty resolves automatically.
+    [string]$UsbSerial = "",
     [int]$Channel = 0
 )
 
 $ErrorActionPreference = "Stop"
+
+. (Join-Path $PSScriptRoot "scripts\tools\jlink_common.ps1")
+$UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
 
 function Resolve-SeggerTool {
     param(

@@ -7,10 +7,19 @@ param(
     [string]$JLinkPath = "C:\Program Files\SEGGER\JLink_V940\JLink.exe",
     [string]$Device = "MCXN947_M33_0",
     [string]$Interface = "SWD",
-    [int]$SpeedKHz = 4000
+    [int]$SpeedKHz = 4000,
+
+    # J-Link probe serial. Leave empty to resolve automatically:
+    # AVC_JLINK_SERIAL, else auto-detect when exactly one probe is attached.
+    # Not hardcoded - every kit has a different serial.
+    # See scripts\tools\jlink_common.ps1.
+    [string]$UsbSerial = ""
 )
 
 $ErrorActionPreference = "Stop"
+
+. (Join-Path $PSScriptRoot "scripts\tools\jlink_common.ps1")
+$UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
 
 function Resolve-SeggerTool {
     param(
@@ -61,6 +70,7 @@ Write-Host ("=" * 50)
 Write-Host " AVC MCXN947 - Flash"
 Write-Host ("=" * 50)
 Write-Host "Device: $Device"
+Write-Host "J-Link S/N: $UsbSerial"
 Write-Host "Interface: $Interface @ $SpeedKHz kHz"
 Write-Host "File: $axfFile"
 Write-Host "Size: $($fileInfo.Length) bytes"
@@ -85,8 +95,14 @@ $commands = @(
 
 $commands | Set-Content -Path $cmdFile -Encoding ASCII
 
+$jlinkArgs = @()
+if (-not [string]::IsNullOrWhiteSpace($UsbSerial)) {
+    $jlinkArgs += @("-SelectEmuBySN", $UsbSerial)
+}
+$jlinkArgs += @("-CommandFile", $cmdFile)
+
 try {
-    & $JLinkPath -CommandFile $cmdFile
+    & $JLinkPath @jlinkArgs
     exit $LASTEXITCODE
 } finally {
     Remove-Item -LiteralPath $cmdFile -Force -ErrorAction SilentlyContinue
