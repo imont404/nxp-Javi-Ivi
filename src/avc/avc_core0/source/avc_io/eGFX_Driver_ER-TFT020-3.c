@@ -88,6 +88,12 @@ extern void ST7789_Initial(void);
 
 void eGFX_InitDriver(eGFX_VSyncCallback_t VS)
 {
+    /*
+     * PLLCLKDIV feeds the LPSPI and nothing else in this design, so setting
+     * it here - next to the only consumer - keeps the display's clock choice
+     * in one place. See CONFIG__DISPLAY_SPI_PLLCLKDIV.
+     */
+    CLOCK_SetClkDiv(kCLOCK_DivPllClk, CONFIG__DISPLAY_SPI_PLLCLKDIV);
     CLOCK_SetClkDiv(kCLOCK_DivFlexcom1Clk, 1u);
     CLOCK_AttachClk(kPLL_DIV_to_FLEXCOMM1);
 

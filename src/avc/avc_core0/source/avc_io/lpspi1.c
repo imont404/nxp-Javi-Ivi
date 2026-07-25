@@ -10,7 +10,10 @@
 #define DEMO_LPSPI_RECEIVE_EDMA_CHANNEL       kDma0RequestMuxLpFlexcomm1Rx
 
 #define LPSPI_MASTER_CLK_FREQ CLOCK_GetLPFlexCommClkFreq(1u)
-#define CONFIG__TRANSFER_BAUDRATE 50000000  //50000000 original
+#include "avc__master_config.h"
+
+/* Requested SCK; see CONFIG__DISPLAY_SPI_BAUD_HZ. */
+#define CONFIG__TRANSFER_BAUDRATE CONFIG__DISPLAY_SPI_BAUD_HZ
 #define CONFIG__BITS_PER_FRAME  8
 
 
@@ -98,6 +101,9 @@ void lpspi1_report_clock(void)
     DEBUG("lpspi1 clock src=%luHz sckdiv=%u prescale=%u actual=%luHz requested=%luHz\r\n",
           (unsigned long)src, (unsigned)sckdiv, (unsigned)prescale,
           (unsigned long)sck, (unsigned long)CONFIG__TRANSFER_BAUDRATE);
+    DEBUG("lpspi1 raw CCR=%08lX TCR=%08lX CFGR1=%08lX\r\n",
+          (unsigned long)LPSPI1->CCR, (unsigned long)LPSPI1->TCR,
+          (unsigned long)LPSPI1->CFGR1);
 }
 
 /* Frame size currently programmed in TCR, in bits. Used to prove the mode
@@ -142,6 +148,26 @@ void lpspi1_init(uint8_t transaction_bits)
 
     srcClock_Hz = LPSPI_MASTER_CLK_FREQ;
     LPSPI_MasterInit(LPSPI1, &masterConfig, srcClock_Hz);
+
+#if CONFIG__DISPLAY_SPI_SCKDIV >= 0
+    /*
+     * Set the divider directly rather than trusting the baud-rate search.
+     *
+     * LPSPI_MasterSetBaudRate reads the source clock through
+     * CLOCK_GetLPFlexCommClkFreq at init time and picks the closest divider it
+     * can, silently. When PLLCLKDIV is changed in the same function that then
+     * initialises LPSPI, the value it sees has been observed not to match the
+     * clock the peripheral actually ends up running from - which produced a
+     * 75 MHz SCK from a 50 MHz request.
+     *
+     * SCK = src / (2^PRESCALE * (SCKDIV + 2)), so from a 150 MHz source:
+     *   SCKDIV 0 -> 75 MHz, SCKDIV 1 -> 50 MHz, SCKDIV 2 -> 37.5 MHz
+     */
+    LPSPI_Enable(LPSPI1, false);
+    LPSPI1->CCR = (LPSPI1->CCR & ~(uint32_t)LPSPI_CCR_SCKDIV_MASK) |
+                  LPSPI_CCR_SCKDIV(CONFIG__DISPLAY_SPI_SCKDIV);
+    LPSPI_Enable(LPSPI1, true);
+#endif
 
 
     EDMA_GetDefaultConfig(&dma_config);

@@ -190,6 +190,46 @@
 #endif
 
 /*
+ * Display SPI clock.
+ *
+ * The LPSPI source is PLLCLKDIV, which is PLL0 (150 MHz) divided by
+ * CONFIG__DISPLAY_SPI_PLLCLKDIV. LPSPI cannot divide by less than two, so:
+ *
+ *   PLLCLKDIV 2 -> 75 MHz source  -> SCK ceiling 37.5 MHz
+ *   PLLCLKDIV 1 -> 150 MHz source -> SCK ceiling 75 MHz
+ *
+ * PLLCLKDIV is consumed by nothing except the display - the only
+ * kPLL_DIV_to_* attach in the tree is FLEXCOMM1 in the display driver - so
+ * changing it does not move any other peripheral's clock. The camera runs from
+ * PLL0 directly (kPLL0_to_FLEXIO) and is unaffected.
+ *
+ * The default stays at the Rev A verified value. Raising it is a real risk to
+ * signal integrity on the panel flex, and that failure looks like sparkle or
+ * torn pixels rather than a clean error, so it needs someone looking at the
+ * screen before it becomes the default.
+ */
+#ifndef CONFIG__DISPLAY_SPI_PLLCLKDIV
+#define CONFIG__DISPLAY_SPI_PLLCLKDIV			(2)
+#endif
+
+/*
+ * Requested SCK. The achieved rate is srcClock / (2^PRESCALE * (SCKDIV + 2))
+ * and the driver reports what it actually got - a request the divider cannot
+ * reach is silently clamped, which is how 50 MHz became 37.5 MHz.
+ */
+#ifndef CONFIG__DISPLAY_SPI_BAUD_HZ
+#define CONFIG__DISPLAY_SPI_BAUD_HZ			(50000000)
+#endif
+
+/*
+ * Explicit LPSPI SCKDIV. -1 leaves the SDK baud-rate search in charge.
+ * From a 150 MHz source: 0 -> 75 MHz, 1 -> 50 MHz, 2 -> 37.5 MHz.
+ */
+#ifndef CONFIG__DISPLAY_SPI_SCKDIV
+#define CONFIG__DISPLAY_SPI_SCKDIV			(-1)
+#endif
+
+/*
  * Motor encoder bring-up:
  * Default firmware leaves the encoder hardware disabled. The QDC path is
  * selected by a separate diagnostic build so the normal competition image keeps
