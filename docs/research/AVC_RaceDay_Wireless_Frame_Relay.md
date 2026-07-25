@@ -13,7 +13,76 @@ and forwards frames over Wi-Fi to a PC running the existing viewer.
 The constraint that shapes everything: **transparent to the student's code**.
 Whatever we build must consume the stream the car already produces.
 
-## Verdict
+## Update: the relay is a phone
+
+Everything below surveys boards to buy. It is superseded by a better answer that
+costs nothing: **an Android phone riding on the chassis**.
+
+A phone is already the exact machine this job needs, and every student has one:
+
+| Need | Board survey answer | Phone |
+|---|---|---|
+| USB host for the CDC stream | the gating question for every board | OTG, built in |
+| Dual-band Wi-Fi | disqualified half the survey | built in, 5 GHz |
+| Power | 12-20 V PD, or another cable | own battery |
+| Storage for recording | microSD, sometimes absent | tens of GB |
+| A screen | none of them had one | it is a screen |
+| Procurement, four weeks out | stock risk, backorders | already in a pocket |
+| Cost | 15-30 dollars each | zero if borrowed, ~100 dollars for a dedicated one |
+
+There is space under the top deck for a small phone, so it can stay attached and
+serve as both recorder and transmitter: read CDC over OTG, write frames to
+storage at full rate, and stream a decimated copy over Wi-Fi to the big screen.
+
+**Recording is the part no board offered.** A phone can capture every frame to
+local storage at full rate with no radio involved at all, and the network path
+becomes a nice-to-have rather than the thing the demo depends on. That removes
+the single largest race-day risk in this document - the contended 2.4/5 GHz
+hall - because a lost network means a lost live view, not a lost recording.
+
+### It also removes the LCD from the frame budget
+
+If the phone is the display, the on-board LCD stops being necessary. That is
+worth **34 ms per frame** - see `docs/plans/lcd-spi-throughput` - which is more
+than any display optimisation on the table, and it makes the parallel-panel Rev B
+work optional rather than important.
+
+The existing behaviour already supports this: the USB stream does not transmit
+when nothing is attached, so a cable can be plugged and yanked freely. Laptop at
+the track, removed for the run, phone left aboard.
+
+### What to check
+
+1. **Weight and mounting.** A phone is 150-200 g on the top deck, which is the
+   highest point and the worst place for mass. This is the same fairness point
+   raised below: put it on a demonstration car, or on every car.
+2. **USB host on the student's specific phone.** OTG is near-universal but not
+   guaranteed, and cheap handsets sometimes omit it.
+3. **CDC-ACM access without root.** `usb-serial-for-android` handles this in a
+   native app; Chrome's WebUSB is the fallback and there is already a spike.
+4. **Charging while acting as OTG host.** Some phones cannot do both without a
+   powered Y-cable, which matters for a phone left aboard all day.
+
+### Recommendation
+
+Build the phone path first. A quick native Android app reading CDC and writing
+to storage is a small piece of work, WebUSB is the fallback that needs no
+install, and neither needs anything ordered. Treat the boards below as the
+contingency if phone USB host turns out to be unreliable across the students'
+handsets.
+
+**A dedicated cheap handset is around 100 dollars**, which is three to six times
+the board options and still the better buy. It arrives with a battery, a screen,
+storage, dual-band Wi-Fi, a charger and a case, and it needs no driver work, no
+PD trigger, no enclosure and no soldering. The boards look cheaper because their
+price tag excludes everything a phone includes.
+
+Buying one also removes the awkward parts of borrowing a student's: no reliance
+on whatever handset a team turns up with, no OTG lottery, no asking someone to
+strap their own phone to a moving car. It stays configured, stays charged, and
+is the same every year.
+
+## Verdict (superseded - see above)
 
 The idea works. **Use a small Linux board, not an MCU** - under Linux the whole
 firmware problem collapses into `pyserial` reading a CDC device and forwarding
