@@ -159,6 +159,37 @@
 #endif
 
 /*
+ * Display SPI timing diagnostic:
+ * Instruments eGFX_DumpRaw with the cycle counter and reports where the frame
+ * dump time goes. Measurement only - it changes no behavior - but it costs a
+ * few cycles per phase and prints over RTT, so it stays off in the competition
+ * image. See docs/plans/lcd-spi-throughput.
+ */
+#ifndef CONFIG__DISPLAY_TIMING_DIAG_ENABLE
+#define CONFIG__DISPLAY_TIMING_DIAG_ENABLE		(0)
+#endif
+
+/* Report once per this many eGFX_DumpRaw calls. Two calls per frame. */
+#ifndef CONFIG__DISPLAY_TIMING_DIAG_REPORT_CALLS
+#define CONFIG__DISPLAY_TIMING_DIAG_REPORT_CALLS	(48)
+#endif
+
+/*
+ * Force test mode regardless of the TEST switch (P3_18).
+ *
+ * The LCD refresh path only runs in test mode, so measuring it otherwise needs
+ * someone at the bench to hold a switch. This is for diagnostic builds run
+ * remotely.
+ *
+ * It does not make the car move: testmode__motors_enable starts at 0 and is
+ * only set by a center-button press, so the motor branch stays unreachable
+ * without someone physically at the board.
+ */
+#ifndef CONFIG__FORCE_TEST_MODE
+#define CONFIG__FORCE_TEST_MODE				(0)
+#endif
+
+/*
  * Motor encoder bring-up:
  * Default firmware leaves the encoder hardware disabled. The QDC path is
  * selected by a separate diagnostic build so the normal competition image keeps

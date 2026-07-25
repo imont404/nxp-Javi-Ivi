@@ -98,6 +98,20 @@ void lpspi1_transfer_byte(uint8_t next_byte)
     lpspi1_transfer_block(&next_byte, 1);
 }
 
+/*
+ * Block until the last submitted transfer has completed.
+ *
+ * lpspi1_transfer_block returns once a transfer is *submitted*; it waits for
+ * the previous one on the way in. Callers that need the data to have actually
+ * reached the panel - or that are timing the transfer - must wait explicitly.
+ */
+void lpspi1_wait_idle(void)
+{
+    while (!isTransferCompleted)
+    {
+    }
+}
+
 
 void LPSPI_MasterUserCallback(LPSPI_Type *base, lpspi_master_edma_handle_t *handle, status_t status, void *userData)
 {

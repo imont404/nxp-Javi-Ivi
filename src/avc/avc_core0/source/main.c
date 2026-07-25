@@ -21,6 +21,18 @@ float servo_position;
 
 bool testmode__motors_enable = 0;
 
+/*
+ * Test mode gates the LCD refresh path. Normally it follows the TEST switch;
+ * diagnostic builds can force it so the display path can be measured without
+ * someone at the bench. See CONFIG__FORCE_TEST_MODE.
+ */
+#if CONFIG__FORCE_TEST_MODE
+#define AVC_TEST_MODE_ACTIVE() (1)
+#else
+#define AVC_TEST_MODE_ACTIVE() (GPIO_PinRead(GPIO3, TEST_SW_PIN) == 0)
+#endif
+
+
 uint32_t line_to_process;
 
 uint8_t pot_text[64];
@@ -157,7 +169,7 @@ int main(void)
         //Alpha, beta and gamma will be -1.0f to 1.0f
 
         // Test mode enable
-        if(GPIO_PinRead(GPIO3, TEST_SW_PIN) == 0)
+        if(AVC_TEST_MODE_ACTIVE())
         {   
 
             if(next_frame_ready)

@@ -12,6 +12,7 @@ extern volatile bool request_frame_for_display;
 extern void lpspi1_init(uint8_t transaction_bits);
 extern void lpspi1_transfer_block(void *block, uint32_t block_size);
 extern void lpspi1_transfer_byte(uint8_t next_byte);
+extern void lpspi1_wait_idle(void);
 
 extern void lpspi1_configure_16_bit_transfer();
 extern void lpspi1_configure_8_bit_transfer();

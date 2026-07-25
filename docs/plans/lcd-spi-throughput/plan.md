@@ -7,7 +7,7 @@ created = "2026-07-25"
 [[steps]]
 id = "measure-baseline"
 title = "Instrument the frame path and measure where the time actually goes, before changing anything"
-status = "pending"
+status = "done"
 
 [[steps]]
 id = "confirm-spi-clock"

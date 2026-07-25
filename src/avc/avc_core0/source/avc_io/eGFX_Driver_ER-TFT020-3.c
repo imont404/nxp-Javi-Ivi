@@ -1,3 +1,4 @@
+#include "avc__master_config.h"
 #include "eGFX.h"
 #include "eGFX_Driver_ER-TFT020-3.h"
 #include "st7789.h"
@@ -6,6 +7,63 @@
 #include "st7789.h"
 
 #ifdef eGFX_DRIVER_ER_TFT020_3
+
+/*
+ * Frame-dump timing instrumentation. See docs/plans/lcd-spi-throughput.
+ * Measurement only; compiles to nothing when the knob is off.
+ */
+#if CONFIG__DISPLAY_TIMING_DIAG_ENABLE
+
+#include "avc__io.h"
+#include "e_debug.h"
+
+/* Cycles, accumulated across CONFIG__DISPLAY_TIMING_DIAG_REPORT_CALLS calls. */
+static uint32_t diag_init8, diag_setpos, diag_init32, diag_blocks;
+static uint32_t diag_calls, diag_blocks_seen;
+
+#define eGFX_TIMING_DECL()      uint32_t diag_t0, diag_t1
+#define eGFX_TIMING_MARK()      do { diag_t0 = CYCLE_COUNTER; } while (0)
+#define eGFX_TIMING_ACC(field)  do {                                          \
+        diag_t1 = CYCLE_COUNTER;                                              \
+        (field) += (diag_t1 - diag_t0);                                       \
+        diag_t0 = diag_t1;                                                    \
+    } while (0)
+
+/* Core is 150 MHz, so cycles/150 is microseconds. */
+#define eGFX_DIAG_US(cycles) ((cycles) / 150u)
+
+#define eGFX_TIMING_REPORT(blocks)                                            \
+    do {                                                                      \
+        diag_blocks_seen += (blocks);                                         \
+        if (++diag_calls >= CONFIG__DISPLAY_TIMING_DIAG_REPORT_CALLS) {       \
+            uint32_t n = diag_calls;                                          \
+            uint32_t total = diag_init8 + diag_setpos                         \
+                           + diag_init32 + diag_blocks;                       \
+            DEBUG(                                                            \
+                "lcd_dump n=%lu avg_us total=%lu init8=%lu setpos=%lu "       \
+                "init32=%lu blocks=%lu blks=%lu overhead_us=%lu\r\n",         \
+                (unsigned long)n,                                             \
+                (unsigned long)eGFX_DIAG_US(total / n),                       \
+                (unsigned long)eGFX_DIAG_US(diag_init8 / n),                  \
+                (unsigned long)eGFX_DIAG_US(diag_setpos / n),                 \
+                (unsigned long)eGFX_DIAG_US(diag_init32 / n),                 \
+                (unsigned long)eGFX_DIAG_US(diag_blocks / n),                 \
+                (unsigned long)(diag_blocks_seen / n),                        \
+                (unsigned long)eGFX_DIAG_US(                                  \
+                    (diag_init8 + diag_setpos + diag_init32) / n));           \
+            diag_init8 = diag_setpos = diag_init32 = diag_blocks = 0;         \
+            diag_calls = diag_blocks_seen = 0;                                \
+        }                                                                     \
+    } while (0)
+
+#else
+
+#define eGFX_TIMING_DECL()      do { } while (0)
+#define eGFX_TIMING_MARK()      do { } while (0)
+#define eGFX_TIMING_ACC(field)  do { } while (0)
+#define eGFX_TIMING_REPORT(b)   do { (void)(b); } while (0)
+
+#endif
 
 eGFX_VSyncCallback_t *VSyncCallback;
 
@@ -56,14 +114,21 @@ void eGFX_DumpRaw(uint8_t *buffer,
 				  uint32_t y0,
 				  uint32_t y1)
 {
+    eGFX_TIMING_DECL();
 
+    eGFX_TIMING_MARK();
     lpspi1_init(8);
+    eGFX_TIMING_ACC(diag_init8);
 
     LCD_SetPos(x0, x1, y0, y1); // 320x240
+    eGFX_TIMING_ACC(diag_setpos);
 
     lpspi1_init(32);
+    eGFX_TIMING_ACC(diag_init32);
+
 	LCD_RS__SET;
     uint32_t blk_size;
+    uint32_t blocks = 0;
     while(length)
     {
     	if(length >= 8192)
@@ -80,9 +145,20 @@ void eGFX_DumpRaw(uint8_t *buffer,
 
         buffer += blk_size;
         length-=blk_size;
+        blocks++;
 
     }
 
+    /*
+     * The block loop returns as soon as the last transfer is submitted, not
+     * when it completes - lpspi1_transfer_block waits for the *previous* one.
+     * Wait here so the measurement covers the pixels actually reaching the
+     * panel rather than stopping at the final DMA submit.
+     */
+    lpspi1_wait_idle();
+    eGFX_TIMING_ACC(diag_blocks);
+
+    eGFX_TIMING_REPORT(blocks);
 }
 
 
