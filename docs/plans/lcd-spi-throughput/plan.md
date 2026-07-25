@@ -179,6 +179,39 @@ needs re-issuing to start a new write.
 
 Eleven single-byte transfers per frame can become one.
 
+## The dump time is a race, not just a budget
+
+The headroom framing understates the problem, because the SPI DMA sources
+**directly from the live camera buffer**. `main.c:192` assigns
+`camera_view.Data = (uint8_t *)frame`, where `frame` is the camera ping-pong
+buffer, and `eGFX_DumpRaw()` hands that pointer straight to the DMA. There is no
+intermediate copy.
+
+Capture is double buffered, so while the dump reads buffer A the camera fills
+buffer B. That is fine **only while the dump finishes before the next VSYNC
+swaps them**. If the algorithm and overlay work push the dump later, or the dump
+itself is long enough, the camera starts writing the buffer still being
+transmitted - and the lower part of the screen shows the next frame's pixels
+arriving mid-scan.
+
+At 23.4 FPS the frame period is 42.7 ms. With the dump at 34 ms, everything else
+- the student's algorithm, the overlay drawing, the line processing - has to fit
+in the remaining **8.7 ms** or the transfer runs into the swap.
+
+That changes what this work is for. It is not only about giving students
+milliseconds back; it is about widening the window in which a correct picture is
+even possible. Halving the dump time roughly quadruples the margin before the
+race condition bites, because both the dump shortens and the slack grows.
+
+It also means a student who "just draws a bit more" does not degrade gracefully.
+They cross a threshold and the display starts tearing, which looks like a
+hardware fault rather than a deadline they missed.
+
+Worth considering separately: dumping from a copy rather than the live buffer
+would remove the race entirely at the cost of 128 KB and a memcpy. Probably the
+wrong trade at this resolution, but it should be a decision rather than an
+accident.
+
 ## The part that matters more than all of the above
 
 The panel is 320x240 at 16 bpp, so a frame is **153,600 bytes**. That is
