@@ -89,3 +89,6 @@ build/
 
 ### Office temp / owner-lock files ###
 ~$*
+
+### Provisioned toolchains (setup.ps1) ###
+out/

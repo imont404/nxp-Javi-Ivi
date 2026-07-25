@@ -1,6 +1,39 @@
+# Arm bare-metal toolchain for the AVC firmware build.
+#
+# Toolchain discovery order, highest priority first:
+#   1. -DAVC_ARM_TOOLCHAIN_DIR=<path to bin>
+#   2. the AVC_ARM_TOOLCHAIN_DIR environment variable
+#   3. a standalone Arm GNU toolchain provisioned by setup.ps1 under
+#      out/toolchains/arm-gnu-toolchain-*-arm-none-eabi/bin
+#   4. the GCC bundled with MCUXpresso  (the byte-parity reference)
+#
+# setup.ps1 downloads the same Arm GNU version MCUXpresso 25.6 bundles
+# (14.2.Rel1), so builds are comparable regardless of which is found.
+# MCUXpresso is a fallback, not a requirement.
+
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+# --- 1/2/3: explicit, environment, or locally provisioned -------------------
+if(NOT DEFINED AVC_ARM_TOOLCHAIN_DIR)
+    if(DEFINED ENV{AVC_ARM_TOOLCHAIN_DIR})
+        set(AVC_ARM_TOOLCHAIN_DIR "$ENV{AVC_ARM_TOOLCHAIN_DIR}")
+    else()
+        # Repository root is three levels up from src/avc/avc_core0/cmake.
+        get_filename_component(_avc_repo_root "${CMAKE_CURRENT_LIST_DIR}/../../../.." ABSOLUTE)
+        file(GLOB _avc_local_arm
+            "${_avc_repo_root}/out/toolchains/arm-gnu-toolchain-*-arm-none-eabi/bin")
+        if(_avc_local_arm)
+            list(SORT _avc_local_arm ORDER DESCENDING)
+            list(GET _avc_local_arm 0 AVC_ARM_TOOLCHAIN_DIR)
+        endif()
+    endif()
+endif()
+
+if(AVC_ARM_TOOLCHAIN_DIR)
+    file(TO_CMAKE_PATH "${AVC_ARM_TOOLCHAIN_DIR}" AVC_ARM_TOOLCHAIN_DIR)
+endif()
 
 if(NOT DEFINED MCUXPRESSO_IDE)
     if(DEFINED ENV{MCUXPRESSO_IDE})
@@ -16,7 +49,12 @@ endif()
 
 file(TO_CMAKE_PATH "${MCUXPRESSO_IDE}" MCUXPRESSO_IDE)
 
-set(_MCUXPRESSO_TOOL_DIRS "${MCUXPRESSO_IDE}/tools/bin")
+# The standalone toolchain, when present, is searched before MCUXpresso.
+set(_MCUXPRESSO_TOOL_DIRS "")
+if(AVC_ARM_TOOLCHAIN_DIR)
+    list(APPEND _MCUXPRESSO_TOOL_DIRS "${AVC_ARM_TOOLCHAIN_DIR}")
+endif()
+list(APPEND _MCUXPRESSO_TOOL_DIRS "${MCUXPRESSO_IDE}/tools/bin")
 if(EXISTS "${MCUXPRESSO_IDE}/plugins")
     file(GLOB _MCUXPRESSO_TOOL_PLUGINS LIST_DIRECTORIES true "${MCUXPRESSO_IDE}/plugins/com.nxp.mcuxpresso.tools.*_*")
     list(SORT _MCUXPRESSO_TOOL_PLUGINS ORDER DESCENDING)
@@ -36,7 +74,12 @@ function(_mcux_find_tool out_var tool_name description)
         find_program(${out_var} NAMES "${tool_name}" "${tool_name}.exe")
     endif()
     if(NOT ${out_var})
-        message(FATAL_ERROR "${description} not found. Set MCUXPRESSO_IDE to the MCUXpresso IDE 'ide' directory.")
+        message(FATAL_ERROR
+            "${description} not found.
+"
+            "Run .\setup.ps1 to provision a standalone Arm GNU toolchain, "
+            "or set AVC_ARM_TOOLCHAIN_DIR to a toolchain bin directory, "
+            "or set MCUXPRESSO_IDE to the MCUXpresso IDE 'ide' directory.")
     endif()
     set(${out_var} "${${out_var}}" CACHE FILEPATH "${description}" FORCE)
 endfunction()

@@ -12,13 +12,13 @@ status = "done"
 [[steps]]
 id = "toolchain-installer"
 title = "Write setup.ps1 provisioning the Arm toolchain, CMake, and Ninja"
-status = "pending"
+status = "done"
 depends_on = ["study-reference"]
 
 [[steps]]
 id = "toolchain-file"
 title = "Add a CMake toolchain file with ordered toolchain discovery"
-status = "pending"
+status = "done"
 depends_on = ["study-reference"]
 
 [[steps]]
@@ -30,7 +30,7 @@ depends_on = ["study-reference"]
 [[steps]]
 id = "break-ide-dependencies"
 title = "Remove the two hard MCUXpresso dependencies: the NXP-only newlib and cr_section_macros.h"
-status = "pending"
+status = "done"
 depends_on = ["toolchain-file"]
 
 [[steps]]
@@ -42,7 +42,7 @@ depends_on = ["toolchain-file"]
 [[steps]]
 id = "byte-parity"
 title = "Prove the standalone toolchain reproduces the MCUXpresso build"
-status = "pending"
+status = "done"
 depends_on = ["own-the-source-list", "toolchain-installer", "break-ide-dependencies"]
 
 [[steps]]
@@ -136,7 +136,7 @@ status = "pending"
 [[exit_criteria]]
 id = "build-reproduces"
 title = "The standalone toolchain reproduces the MCUXpresso build byte-for-byte, or every difference is explained and accepted"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "presets-replace-wrappers"
