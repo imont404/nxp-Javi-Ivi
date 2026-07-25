@@ -1,13 +1,13 @@
 +++
 type = "plan"
 id = "cmake-build-and-toolchain"
-status = "pending"
+status = "active"
 created = "2026-07-25"
 
 [[steps]]
 id = "study-reference"
 title = "Extract the reusable pattern from the bunny_vision build system"
-status = "pending"
+status = "done"
 
 [[steps]]
 id = "toolchain-installer"
@@ -41,7 +41,7 @@ depends_on = ["byte-parity"]
 
 [[steps]]
 id = "split-capture-backends"
-title = "Split the capture backends into separate translation units selected by CMake"
+title = "Split the capture backends into separate translation units (DEFERRED past the race)"
 status = "pending"
 depends_on = ["own-the-source-list"]
 
@@ -53,13 +53,13 @@ depends_on = ["cmake-presets"]
 
 [[steps]]
 id = "host-build-root"
-title = "Add a host-side CMake root for PC tools"
+title = "Add a host-side CMake root for PC tools (deferrable)"
 status = "pending"
 depends_on = ["cmake-presets"]
 
 [[steps]]
 id = "sdl-camera-viewer"
-title = "Build an SDL live camera viewer fed by the USB debug stream"
+title = "Build an SDL live camera viewer fed by the USB debug stream (deferrable)"
 status = "pending"
 depends_on = ["host-build-root"]
 
@@ -121,7 +121,7 @@ status = "pending"
 
 [[exit_criteria]]
 id = "backends-structurally-separate"
-title = "Capture backends live in separate translation units, so an unselected backend cannot be referenced rather than merely guarded"
+title = "Capture backends live in separate translation units - DEFERRED past the race; the 2026-07-25 #if guards already make the separation correct"
 status = "pending"
 
 [[exit_criteria]]
@@ -131,7 +131,7 @@ status = "pending"
 
 [[exit_criteria]]
 id = "sdl-viewer-live"
-title = "The SDL tool shows a live camera feed from the board and is built by the same CMake system"
+title = "The SDL tool shows a live camera feed from the board and is built by the same CMake system - deferrable, the Web Serial page already covers students"
 status = "pending"
 
 [[exit_criteria]]
@@ -321,16 +321,51 @@ The real test is not that it builds on this machine. **Take a clean Windows mach
 NXP software, run the one script, and get to a flashed board.** Time it, and write down
 every point where a student would have to ask a question.
 
-## Constraints and sequencing
+## Sequencing under a four-week deadline
+
+The plan splits cleanly into what students need and what we want. **Only the first is
+race-critical.**
+
+### Critical path — students cannot work without this
+
+| Step | Why it is required |
+|---|---|
+| `toolchain-installer` | The one script. This is the whole point. |
+| `toolchain-file` | Nothing builds without toolchain discovery. |
+| `own-the-source-list` | The actual MCUXpresso break. Highest risk, earliest possible start. |
+| `byte-parity` | The gate that says the new build is the same build. |
+| `cmake-presets` | How students select a build; also what VS Code reads. |
+| `vscode-integration` | Students edit here. IntelliSense must resolve. |
+| `retire-mcuxpresso` | Removes the install students would otherwise need. |
+| `student-onboarding` | Clean machine to flashed board. The only test that counts. |
+
+### Deferrable — real value, no student blocks it
+
+| Step | Why it can wait |
+|---|---|
+| `split-capture-backends` | **Defer past the race.** It refactors working, hardware-verified capture code for zero student benefit, and it is the highest-risk item in the plan. The `#if` guards added 2026-07-25 already make the EZH/FlexIO separation correct; separate files only make it structural. |
+| `sdl-camera-viewer` | The Chrome Web Serial page already gives students a live view. This is a better tool, not a missing one. |
+| `host-build-root` | Only needed for the SDL viewer. |
+| `verify-script` | Useful to us, invisible to students. Worth doing if time allows, because it makes the other steps safer. |
+
+**Recommended order:** the critical path in sequence, then `verify-script` if there is
+time, then the host tools and the backend split after the race.
+
+**If time runs out**, the fallback is honest and cheap: ship the toolchain installer and
+presets without `retire-mcuxpresso`, so students get the fast build and VS Code while
+MCUXpresso remains an available fallback for anyone who hits trouble. That is a strictly
+better position than today even if nothing else lands.
+
+## Constraints
 
 - **The race is late August 2026.** The Rev A competition image must stay behaviourally
   unchanged and reproducible throughout.
-- **A timing question that changes the whole shape of this plan:** is it for *this* year's
-  event or the next? "One script for students with no idea" and "students use VS Code"
-  read like event infrastructure, which makes this race-critical with roughly four weeks
-  available — competing directly with race preparation. If it is for next year, sequencing
-  relaxes and `byte-parity` can take as long as it needs. **Decide before starting
-  `own-the-source-list`.**
+- **DECIDED 2026-07-25: this is for the August 2026 event, starting now.** That makes it
+  **race-critical event infrastructure with roughly four weeks**, not a cleanup exercise.
+  Two consequences follow, and they pull in opposite directions:
+  - The safety net matters more, not less. Keep the MCUXpresso path working until
+    `byte-parity` passes, and treat the competition image as untouchable.
+  - **Scope has to be cut to the critical path.** See the sequencing section below.
 - Another agent is working in `bunny_vision_sw`. Read it; do not modify it.
 - Keep the MCUXpresso path working until `byte-parity` passes, so there is always a way
   back.
