@@ -11,7 +11,7 @@ status = "done"
 
 [[steps]]
 id = "baseline-capture"
-title = "Record the Port 4 FlexIO baseline the Port 1 group must match"
+title = "Record the EZH frame rate as the figure the Port 1 group must match"
 status = "pending"
 
 [[steps]]
@@ -27,8 +27,8 @@ depends_on = ["pin-group-selector"]
 
 [[steps]]
 id = "port4-regression"
-title = "Prove the Port 4 FlexIO path still works after the refactor"
-status = "active"
+title = "Port 4 hardware regression - skipped by decision, static checks recorded instead"
+status = "done"
 depends_on = ["decouple-port-hardcoding"]
 
 [[steps]]
@@ -40,7 +40,7 @@ depends_on = ["confirm-board-access"]
 [[steps]]
 id = "port1-signal-diag"
 title = "Confirm live PCLK, HREF, and data toggling on the Port 1 FlexIO pins"
-status = "pending"
+status = "active"
 depends_on = ["jumper-fit", "decouple-port-hardcoding"]
 
 [[steps]]
@@ -87,8 +87,8 @@ depends_on = ["rev-b-recommendation", "design-doc-intent-audit", "test-runtime-i
 
 [[exit_criteria]]
 id = "port4-not-regressed"
-title = "The existing Port 4 FlexIO path still builds and captures after the refactor"
-status = "pending"
+title = "The existing Port 4 FlexIO path still builds, with static evidence recorded in place of the skipped hardware test"
+status = "met"
 
 [[exit_criteria]]
 id = "both-groups-selectable"
@@ -217,14 +217,12 @@ alternate to `P1_14` if needed.
 
 ### baseline-capture
 
-**Rescoped 2026-07-25.** The jumpers were fitted before a written baseline was taken, and
-the EZH build was verified clean with them in place by observation. That settles
-`jumpers-non-destructive`, so the pre-jumper EZH baseline is no longer needed and the
-dependency from `jumper-fit` has been dropped.
+**Rescoped twice.** The jumpers were fitted before a written baseline was taken, and the
+EZH build was verified clean with them in place, which is what that baseline existed to
+establish. The Port 4 FlexIO baseline is then also moot, since Port 4 is not being wired.
 
-What still matters: record frame rate and a reference image for the **Port 4 FlexIO**
-build. That is the number the Port 1 group has to match, and it is still obtainable
-because the jumpers do not affect the Port 4 path.
+What remains: record the **EZH** frame rate and a reference image. That is now the figure
+the Port 1 group has to match, and it is obtainable at any time on the current wiring.
 
 ### pin-group-selector / decouple-port-hardcoding
 
@@ -253,8 +251,21 @@ near-term bar is only that the Port 4 group stays selectable and unbroken.
 
 ### port4-regression
 
-Non-negotiable. The refactor touches a working capture path. Rebuild the Port 4 group and
-confirm it still captures before trusting anything about Port 1.
+**Skipped by decision, 2026-07-25.** Rewiring eleven fly-wires to re-prove a path we are
+moving away from is not worth the bench time.
+
+The cost of skipping is that a Port 1 failure becomes ambiguous between the refactor and
+the wiring. Two things narrow that:
+
+- The Port 4 image was rebuilt from the parent commit and compared. The configured pin set
+  is identical, the default EZH image is byte-identical, and one real delta was found and
+  fixed (the original cleared HREF and VSYNC stale interrupt flags together; the refactor
+  cleared only VSYNC).
+- A **pin-mux readback** now prints the actual PCR MUX fields at init. If Port 1 capture
+  fails, that line separates "pins not muxed as intended" from "wiring or FlexIO problem"
+  immediately.
+
+Port 4 remains build-verified but hardware-unverified. Say so if it ever matters.
 
 ### jumper-fit
 

@@ -119,6 +119,13 @@
 
 #define CAMERA_FLEXIO_DATA_WIDTH (8U)
 #define CAMERA_FLEXIO_VSYNC_MASK (1UL << CAMERA_FLEXIO_VSYNC_GPIO_PIN)
+#define CAMERA_FLEXIO_HREF_MASK (1UL << CAMERA_FLEXIO_HREF_GPIO_PIN)
+/*
+ * HREF and VSYNC land on the same GPIO instance in both pin groups (GPIO4 for
+ * PORT4, GPIO0 for PORT1), so stale flags for both are cleared together. This
+ * matches what the original PORT4-only code did.
+ */
+#define CAMERA_FLEXIO_SYNC_CLEAR_MASK (CAMERA_FLEXIO_VSYNC_MASK | CAMERA_FLEXIO_HREF_MASK)
 
 #define CAMERA_FLEXIO_SHIFTER_START (0U)
 #define CAMERA_FLEXIO_SHIFTER_COUNT (8U)
@@ -679,9 +686,9 @@ static void camera__configure_flexio_edma_pins(void)
 #if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
     GPIO_SetPinInterruptChannel(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN,
                                 kGPIO_InterruptOutput0);
-    GPIO_GpioClearInterruptChannelFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_MASK, 0U);
+    GPIO_GpioClearInterruptChannelFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_SYNC_CLEAR_MASK, 0U);
 #else
-    GPIO_GpioClearInterruptFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_MASK);
+    GPIO_GpioClearInterruptFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_SYNC_CLEAR_MASK);
 #endif
 
     GPIO_SetPinInterruptConfig(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN,
@@ -692,6 +699,50 @@ static void camera__configure_flexio_edma_pins(void)
     EnableIRQ(CAMERA_FLEXIO_VSYNC_IRQN);
 
     DEBUG("FlexIO camera eDMA pins: " CAMERA_FLEXIO_PIN_GROUP_NAME "\r\n");
+
+    /*
+     * Read the mux fields back and report them.
+     *
+     * This exists because the pin group is now selectable, so a capture failure
+     * has two very different causes: the pins were not muxed the way this build
+     * intended, or they were and the problem is wiring/FlexIO. Printing the
+     * actual PCR MUX values separates those two without a debugger.
+     *
+     * Expect alt6 (FlexIO) on every data pin plus PCLK and HREF, and alt0
+     * (GPIO) on VSYNC.
+     */
+    {
+        uint32_t data_mux = 0U;
+        bool data_ok = true;
+
+        for (uint32_t i = 0U; i < CAMERA_FLEXIO_DATA_WIDTH; i++)
+        {
+            uint32_t mux = (CAMERA_FLEXIO_DATA_PORT->PCR[CAMERA_FLEXIO_DATA_GPIO_START_PIN + i] &
+                            PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
+
+            data_mux |= (mux & 0xFU) << (i * 4U);
+
+            if (mux != 6U)
+            {
+                data_ok = false;
+            }
+        }
+
+        uint32_t pclk_mux = (CAMERA_FLEXIO_PCLK_PORT->PCR[CAMERA_FLEXIO_PCLK_GPIO_PIN] &
+                             PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
+        uint32_t href_mux = (CAMERA_FLEXIO_HREF_PORT->PCR[CAMERA_FLEXIO_HREF_GPIO_PIN] &
+                             PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
+        uint32_t vsync_mux = (CAMERA_FLEXIO_VSYNC_PORT->PCR[CAMERA_FLEXIO_VSYNC_GPIO_PIN] &
+                              PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
+
+        DEBUG("FlexIO camera pin mux readback: data(D7..D0)=0x%08X pclk=%u href=%u vsync=%u %s\r\n",
+              (unsigned int)data_mux,
+              (unsigned int)pclk_mux,
+              (unsigned int)href_mux,
+              (unsigned int)vsync_mux,
+              (data_ok && pclk_mux == 6U && href_mux == 6U && vsync_mux == 0U)
+                  ? "OK" : "UNEXPECTED");
+    }
 }
 
 static void camera__configure_flexio_camera(void)
