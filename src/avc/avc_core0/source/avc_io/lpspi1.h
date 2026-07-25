@@ -15,6 +15,7 @@ extern void lpspi1_transfer_byte(uint8_t next_byte);
 extern void lpspi1_wait_idle(void);
 extern void lpspi1_set_frame_size(uint8_t transaction_bits);
 extern uint8_t lpspi1_get_frame_size(void);
+extern void lpspi1_report_clock(void);
 
 extern void lpspi1_configure_16_bit_transfer();
 extern void lpspi1_configure_8_bit_transfer();

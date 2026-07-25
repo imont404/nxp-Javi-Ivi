@@ -66,6 +66,7 @@ static bool diag_fs_reported;
                 diag_fs_reported = true;                                      \
                 DEBUG("lcd_dump framesz control=%u pixel=%u bits\r\n",        \
                       (unsigned)diag_fs8, (unsigned)diag_fs32);               \
+                lpspi1_report_clock();                                        \
             }                                                                 \
         }                                                                     \
     } while (0)

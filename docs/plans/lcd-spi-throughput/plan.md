@@ -12,7 +12,7 @@ status = "done"
 [[steps]]
 id = "confirm-spi-clock"
 title = "Establish the real SCK frequency and the actual ceiling, on a scope and from the divider registers"
-status = "pending"
+status = "done"
 depends_on = ["measure-baseline"]
 
 [[steps]]
@@ -286,7 +286,28 @@ when the display misbehaves, which 10 KB of general-purpose HAL is not.
 Sequence it after the clock work, since the clock is worth more and is
 independent.
 
-### Setup code specifically: leave it alone
+### Measured: the divider is already at minimum
+
+Read back from the hardware, no scope needed:
+
+```
+lpspi1 clock src=75000000Hz sckdiv=0 prescale=0 actual=37500000Hz requested=50000000Hz
+```
+
+**`SCKDIV` is 0 and `PRESCALE` is 0 - the smallest divider the peripheral has.**
+The 37.5 MHz is not a configuration mistake that a better request would fix;
+LPSPI is already dividing its 75 MHz source as little as it can. The requested
+50 MHz was silently clamped because it is unreachable from this source.
+
+That closes the question the plan opened. The *only* way to a faster SCK is a
+faster source clock, which means PLLCLKDIV - and per the finding above, that
+divider is effectively private to the LCD.
+
+It also sharpens the argument about init: **the 272-byte `LPSPI_MasterSetBaudRate`
+search exists to solve for an arbitrary runtime baud rate, and on this board its
+entire output is `SCKDIV = 0`.** A hand-written init writes a constant.
+
+### Setup code specifically: a constant, not a search
 
 Splitting the same 10,596 bytes by which path it is on:
 
@@ -295,16 +316,21 @@ Splitting the same 10,596 bytes by which path it is on:
 | setup / configuration | 3,412 | 32% | **once, at boot** |
 | transfer submission | 7,184 | 68% | 42x per frame |
 
-**The setup path is the part not worth rewriting**, which is the opposite of the
-intuition. Now that `lpspi1_init()` runs its expensive work once, that 3,412
-bytes costs 770 us one time at boot and nothing thereafter. Hand-writing it
-would save 0.3% of flash and no measurable time.
+**The setup path buys no runtime any more**, now that `lpspi1_init()` runs its
+expensive work once - 3,412 bytes costing 770 us one time at boot. So rewriting
+it is a clarity decision, not a performance one.
 
-It is also the part where the HAL genuinely earns its place. `LPSPI_MasterSetDelayTimes`
-is the largest single function at 644 bytes, and it is doing scaler search
-arithmetic; `LPSPI_MasterSetBaudRate` at 272 bytes is doing the prescaler and
-`SCKDIV` search. That is fiddly, easy to get subtly wrong, and it runs once
-where being slow costs nothing.
+On clarity, hand-writing it is the better answer, because the configuration is
+fixed and known. `LPSPI_MasterSetDelayTimes` (644 bytes) and
+`LPSPI_MasterSetBaudRate` (272 bytes) are search routines solving for arbitrary
+runtime values. We have one source clock and one target, and the measurement
+above shows the search's entire output is `SCKDIV = 0`, `PRESCALE = 0` - the
+minimum divider - with all three delay scalers requested as 0 ns. **Nearly a
+kilobyte of divider search to arrive at constants we could write down.**
+
+So: a short init that writes `CFGR1`, `CCR` and `TCR` directly is both smaller
+and easier to reason about than configuring the general one. It is just not
+where the milliseconds are, so it should not be sequenced ahead of the clock.
 
 All the cost that remains is in the **transfer** path - the 7,184 bytes that run
 42 times a frame at 4,845 cycles a call. That is where a hand-written driver

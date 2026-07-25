@@ -1,6 +1,7 @@
 #include "lpspi1.h"
 #include "fsl_debug_console.h"
 #include "fsl_gpio.h"
+#include "e_debug.h"
 
 
 #define MASTER_DMA_RX_CHANNEL   0U
@@ -55,6 +56,48 @@ void lpspi1_set_frame_size(uint8_t transaction_bits)
 
     (void)LPSPI_MasterTransferPrepareEDMALite(LPSPI1, &g_m_edma_handle,
                                               LPSPI1_TRANSFER_CONFIG_FLAGS);
+}
+
+/*
+ * Recover the SCK the hardware actually settled on.
+ *
+ * LPSPI_MasterSetBaudRate searches for the closest achievable divider and does
+ * not report when it cannot reach the request, so the configured
+ * CONFIG__TRANSFER_BAUDRATE is a wish rather than a fact. The truth is in the
+ * registers:
+ *
+ *     SCK = srcClock / (2^PRESCALE * (SCKDIV + 2))
+ *
+ * Reading it back answers the clock question exactly, with no scope needed.
+ */
+uint32_t lpspi1_get_actual_sck_hz(uint32_t *src_hz_out,
+                                  uint8_t *sckdiv_out,
+                                  uint8_t *prescale_out)
+{
+    uint32_t src      = LPSPI_MASTER_CLK_FREQ;
+    uint32_t sckdiv   = (LPSPI1->CCR & LPSPI_CCR_SCKDIV_MASK) >> LPSPI_CCR_SCKDIV_SHIFT;
+    uint32_t prescale = (LPSPI1->TCR & LPSPI_TCR_PRESCALE_MASK) >> LPSPI_TCR_PRESCALE_SHIFT;
+
+    if (src_hz_out != NULL)   { *src_hz_out = src; }
+    if (sckdiv_out != NULL)   { *sckdiv_out = (uint8_t)sckdiv; }
+    if (prescale_out != NULL) { *prescale_out = (uint8_t)prescale; }
+
+    return src / ((1U << prescale) * (sckdiv + 2U));
+}
+
+/*
+ * Print the clock the hardware settled on, and the request it came from.
+ * Lives here because CONFIG__TRANSFER_BAUDRATE is local to this file.
+ */
+void lpspi1_report_clock(void)
+{
+    uint32_t src;
+    uint8_t sckdiv, prescale;
+    uint32_t sck = lpspi1_get_actual_sck_hz(&src, &sckdiv, &prescale);
+
+    DEBUG("lpspi1 clock src=%luHz sckdiv=%u prescale=%u actual=%luHz requested=%luHz\r\n",
+          (unsigned long)src, (unsigned)sckdiv, (unsigned)prescale,
+          (unsigned long)sck, (unsigned long)CONFIG__TRANSFER_BAUDRATE);
 }
 
 /* Frame size currently programmed in TCR, in bits. Used to prove the mode
