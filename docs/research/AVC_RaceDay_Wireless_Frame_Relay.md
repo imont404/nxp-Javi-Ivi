@@ -178,7 +178,7 @@ selection is about hardware fit, and **two criteria do most of the sorting**:
 | Raspberry Pi Zero 2 W | BCM2710A1 | 65 x 30 | **2.4 GHz only** | one micro-USB OTG, the only data port | 5 V | ~$15 |
 | Orange Pi Zero 2W | Allwinner H618 | 65 x 30 | Wi-Fi 5, dual-band | needs the 24-pin adapter board for USB-A | 5 V / 2 A | ~$20 |
 | Milk-V Duo S | Sophgo SG2000 | tiny | Wi-Fi 6, dual-band (RTL8852BE) | USB 2.0 host | 5 V, ~5 W | ~$15 |
-| Luckfox Pico Ultra W | **Rockchip RV1106** | tiny | **2.4 GHz only**, 256 MB RAM | USB 2.0 host/device | 5 V | ~$18-30 |
+| Luckfox Pico Ultra W | **Rockchip RV1106** | 50 x 50 | **2.4 GHz only**, 256 MB RAM | USB-A, HS 480 Mbps, but **muxed with the Type-C power port** | 5 V (use the GPIO header) | ~$18-30 |
 | Luckfox Lyra Zero W | **Rockchip RK3506B** | tiny | **2.4 GHz only** | USB 2.0 | 5 V | low |
 | FRDM-RW612 | RW612 | - | Wi-Fi 6 but **1x1 20 MHz** | HS, EHCI, VBUS unconfirmed | 5 V | NXP board |
 | ESP32-S3 | ESP32-S3 | tiny | Wi-Fi 4 | **full-speed only, 12 Mbps** | 5 V | ~$10 |
@@ -202,6 +202,64 @@ US distributor currently lists it out of stock, and a four-week runway does not
 absorb a backorder. This is precisely why the FRDM-IMX93 ranks first if you can
 get one from inside NXP - availability you control beats a better spec you are
 waiting on.
+
+### Luckfox Pico Ultra W, looked at properly
+
+Asked specifically. The answer is **yes, it can work** - the USB side is better
+than I expected - **but only if you power it through the GPIO header**, and the
+radio remains the reason not to choose it.
+
+What the RV1106 datasheet says, quoted:
+
+> Support one USB 2.0 Host/Device
+> Supports high-speed(480Mbps), full-speed(12Mbps) and low-speed(1.5Mbps) mode
+
+So high-speed host is real at the silicon level, and 480 Mbps against our
+24 Mbps is ample. The board brings it out to an actual USB-A socket, which is
+more than the Pi Zero manages.
+
+**The catch is in how that socket is wired.** From the board specification:
+
+> 1 x USB-A port (Switching with USB Type-C by chip, enabled automatically for
+> USB communication when USB-C is not connected)
+
+There is **one** USB controller, muxed between the Type-C and the USB-A socket.
+Power is "5V via USB-C port or PoE". So the obvious arrangement - power in on
+Type-C, car on USB-A - **disables the host port**. PoE solves it and is absurd
+on a moving car.
+
+The way out is to **feed 5 V into the 26-pin GPIO header** and leave Type-C
+unplugged, which lets the mux settle on USB-A. That is a clean arrangement for a
+car that already has a 5 V rail, and it is the thing to verify first if you go
+this way.
+
+Two more checks before trusting it:
+
+1. **How is the Wi-Fi module attached?** The RV1106 has exactly one USB
+   controller. If the Wi-Fi 6 module were USB-attached it would collide with the
+   camera stream outright. It is almost certainly SDIO, but "almost certainly"
+   is not a thing to discover on race morning.
+2. **Does the module do SoftAP?** The whole venue strategy depends on the relay
+   hosting its own network. Worth confirming rather than assuming.
+
+Specifications: single-core Cortex-A7 at 1.2 GHz, **256 MB DDR3L**, 8 GB eMMC,
+50 x 50 mm, **2.4 GHz Wi-Fi 6 only**, ~$18-30.
+
+**The honest summary: it is not cheaper than the Radxa, and it is worse.** More
+money, a quarter of the RAM, one A7 core instead of four A55s, and the wrong
+band. 256 MB is fine for forwarding frames, and one A7 will manage 6 Mbps
+comfortably, so neither of those is disqualifying - the band is.
+
+**If one is already in a drawer, it is worth an evening.** Power it from the
+header, confirm the USB-A socket enumerates the car, run it as a SoftAP on the
+quietest 2.4 GHz channel you can find, and decimate hard - 3 Mbps at every 8th
+frame asks little enough airtime that a strong short-range link may punch
+through a busy hall. That is a real possibility, not a consolation prize: at
+close range you get a high MCS, and high MCS means short airtime, which is what
+actually matters on a contended channel.
+
+**If you are buying something, buy the Radxa.** There is no argument for
+spending more to get less.
 
 ### Reading of that table
 
@@ -320,3 +378,5 @@ car, build it a dedicated image, and leave everyone else's untouched.
 - [Luckfox Pico Ultra W wiki](https://wiki.luckfox.com/Luckfox-Pico-Ultra/) - confirms 2.4 GHz only, 256 MB
 - [Orange Pi Zero 2W](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-Zero-2W.html)
 - [Milk-V Duo S](https://milkv.io/duo-s)
+- [Rockchip RV1106 datasheet v1.9](https://rockchip.fr/RV1106%20datasheet%20V1.9.pdf) - USB host and 480 Mbps quoted from the feature list
+- [Luckfox Pico Ultra, CNX Software](https://www.cnx-software.com/2024/06/21/luckfox-pico-ultra-micro-development-board-features-mipi-csi-wifi-6-ethernet-poe-gpio-headers/) - source of the USB-A/Type-C mux wording
