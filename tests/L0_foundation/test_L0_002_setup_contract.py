@@ -60,6 +60,39 @@ def test_docs_commands_are_current():
     assert "setup.ps1" in html, "setup page does not mention the provisioning script"
 
 
+def test_docs_do_not_teach_rtt():
+    """Students debug through the LCD and the USB frame stream. They are not
+    given a J-Link, so an RTT command on the setup page is an instruction they
+    cannot follow.
+
+    This is worth a test rather than a convention: RTT is the easiest way for a
+    maintainer to watch a running board, so it drifts into student-facing docs
+    without anyone deciding it should.
+    """
+    html = SETUP_DOC.read_text(encoding="utf-8")
+    offenders = [
+        line.strip()
+        for line in html.splitlines()
+        if re.search(r"(?i)rtt\.ps1|JLinkRTT|_SEGGER_RTT", line)
+    ]
+    assert not offenders, (
+        "docs/setup.html tells students to run RTT, which needs a debugger they "
+        f"do not have: {offenders}"
+    )
+
+
+def test_docs_point_at_the_debug_tools_students_have():
+    """The flip side of the above: having removed RTT, the page must still say
+    how to see what the car is doing."""
+    html = SETUP_DOC.read_text(encoding="utf-8")
+    assert re.search(r"(?i)\bLCD\b", html), (
+        "setup page does not mention the on-board LCD"
+    )
+    assert re.search(r"(?i)USB", html), (
+        "setup page does not mention the USB frame stream"
+    )
+
+
 def test_docs_warn_about_motors():
     """encoder-diag-motors spins the wheels four seconds after reset, without
     being asked. A page that omits that is a page that breaks a car."""

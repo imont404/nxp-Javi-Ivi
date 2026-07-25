@@ -47,6 +47,12 @@ cmake --build --preset competition
 .\rtt.ps1 -Reset -Seconds 10
 ```
 
+**RTT is maintainer tooling, not a student workflow.** Students debug through
+the on-board LCD and the USB frame stream; they are not given a J-Link or asked
+to run `rtt.ps1`. Keep it out of `docs/setup.html` — an L0 test enforces this,
+because RTT is by far the easiest way for an agent to observe a running board
+and so it drifts into student docs on its own.
+
 `flash.ps1` and `rtt.ps1` take `-Preset <name>` to pick any other image, and
 resolve it to `build\cmake\<preset>\avc_core0.axf`:
 

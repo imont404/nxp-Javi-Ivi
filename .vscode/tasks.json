@@ -4,24 +4,26 @@
   "tasks": [
     {
       "label": "Flash: competition image",
+      "detail": "Put the competition build on the board. Build it first with CMake Tools.",
       "type": "shell",
       "command": "powershell",
       "args": [
         "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
         "${workspaceFolder}/flash.ps1",
-        "-File", "${workspaceFolder}/build/cmake/competition/avc_core0.axf"
+        "-Preset", "competition"
       ],
       "problemMatcher": [],
       "presentation": { "reveal": "always", "panel": "dedicated" }
     },
     {
-      "label": "RTT: watch competition image",
+      "label": "RTT: watch competition image (maintainers)",
+      "detail": "Needs a J-Link. Students use the LCD and the USB frame stream instead.",
       "type": "shell",
       "command": "powershell",
       "args": [
         "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
         "${workspaceFolder}/rtt.ps1",
-        "-File", "${workspaceFolder}/build/cmake/competition/avc_core0.axf",
+        "-Preset", "competition",
         "-Reset", "-Seconds", "30"
       ],
       "problemMatcher": [],

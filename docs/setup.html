@@ -23,19 +23,38 @@ cmake --build --preset competition       <em>build</em></pre>
 
 <pre>.\flash.ps1</pre>
 
-<p>And watch it run:</p>
+<p>The car should come up with live camera on the LCD. That is the loop you will
+spend the week in: edit, build, flash, look at the screen.</p>
 
-<pre>.\rtt.ps1 -Reset -Seconds 30</pre>
+<p><code>flash.ps1</code> defaults to the <code>competition</code> preset. To
+flash a different one, name it &ndash; you do not have to type a path:</p>
 
-<p>Both default to the <code>competition</code> preset. To use a different one,
-name it &ndash; you do not have to type a path:</p>
-
-<pre>.\flash.ps1 -Preset encoder-diag
-.\rtt.ps1   -Preset encoder-diag -Reset -Seconds 30</pre>
+<pre>.\flash.ps1 -Preset encoder-diag</pre>
 
 <p>If you name a preset that does not exist, the script says so and lists the
 real ones. If you name one you have not built yet, it tells you the two commands
 to build it rather than flashing an old image by mistake.</p>
+
+<h2>Seeing what the car is thinking</h2>
+
+<p>You have two windows into a running car, and neither needs a debugger:</p>
+
+<ul>
+<li><strong>The on-board LCD</strong> shows the live camera image. You can draw
+on it &ndash; the frame buffer is yours, so overlay the pixels your algorithm is
+actually looking at, mark the track centre you computed, and you will see it move
+as the car sees.</li>
+<li><strong>The USB stream</strong> sends the same frames to a PC when you turn it
+on, which is easier to study than a small screen bolted to a moving car.</li>
+</ul>
+
+<div class="note">
+<strong>Drawing costs time.</strong> You have about 41&nbsp;ms per frame to
+decide a steering angle. Text rendering in particular is not free. If you overlay
+too much, you will blow the frame budget and the car will drive worse than the
+one that drew nothing &ndash; which is a real lesson, and cheaper to learn here
+than on the track.
+</div>
 
 <div class="note">
 <strong>MCUXpresso is not required.</strong> It used to be. <code>setup.ps1</code>
@@ -82,9 +101,13 @@ the rest by hand and run <code>setup.ps1</code> again to confirm.
 <tr><td><code>flexio-port1</code></td><td>Camera capture through FlexIO instead of the EZH, on the existing camera wiring.</td><td>three jumpers on <code>J9_EXT</code></td></tr>
 <tr><td><code>flexio-port4</code></td><td>The original FlexIO pin group.</td><td>eleven fly-wires</td></tr>
 <tr><td><code>servo-p3-20</code></td><td>Competition image driving the servo from the Rev B candidate pin.</td><td>scope on shield <code>J1.5</code></td></tr>
-<tr><td><code>encoder-diag</code></td><td>Encoder bench diagnostic, motors off. RTT only, no camera or LCD.</td><td>turn the wheels by hand</td></tr>
+<tr><td><code>encoder-diag</code></td><td>Encoder bench diagnostic, motors off. No camera or LCD &ndash; it reports over a debugger connection.</td><td>turn the wheels by hand</td></tr>
 <tr><td><code>encoder-diag-motors</code></td><td>Same, but drives the motors at 10% and auto-starts.</td><td><strong>car on blocks</strong></td></tr>
 </table>
+
+<p>The first two are the ones you will use. The rest are bench and bring-up
+images the organisers use to check hardware; they are listed so the set is
+honest about what exists, not because you need them.</p>
 
 <p>Build any of them the same way:</p>
 
@@ -115,8 +138,10 @@ once</strong> or headers will appear unresolved:</p>
 tabs and spaces inherited from the NXP SDK, and reformatting on save produces
 enormous whitespace-only diffs.</p>
 
-<p>Flashing, RTT, setup, and the drift check are also available as VS Code tasks
-(<em>Terminal &rarr; Run Task</em>).</p>
+<p>Flashing, setup, and the drift check are available as VS Code tasks
+(<em>Terminal &rarr; Run Task</em>). Building is not one of them &ndash; that goes
+through CMake Tools and the preset picker in the status bar. The task marked
+<em>maintainers</em> needs a debug probe you will not have.</p>
 
 <h2>Toolchain provisioning</h2>
 
