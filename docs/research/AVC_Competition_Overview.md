@@ -159,17 +159,18 @@ counts/wheel-rev = gear_ratio x 11 lines x 4 (quadrature)
                  = 30 x 11 x 4 = 1320
 ```
 
-**Vendor-confirmed and independently measured** — a customer measured 1320 over ten hand
-rotations on both motors, and Hiwonder support confirmed the arithmetic in writing on the
-product page.
+**Measured on this car 2026-07-25:** 13188 counts over exactly 10 hand-turned
+revolutions = 1318.8/rev, i.e. **1320 to within 0.09%**.
 
-> ⚠️ **The vendor contradicts itself on gear ratio.** The spec table on the same page says
-> **1:90**, while the support answer says **1:30** — and 1:30 is what matches the measured
-> 1320. If the ratio were truly 1:90 the count would be 3960. **Do not hard-code either
-> value.** Measure it on the actual car during `wheel-geometry-calibration`: rotate a wheel
-> a known number of turns and read the QDC delta. Both 1320 and 3960 are plausible until
-> measured, and the no-load speed figures (110 rpm output) are more consistent with the
-> higher reduction.
+The vendor contradicts itself — the spec table says **1:90** (which would give 3960) and
+the support answer says **1:30**. **The measurement backs 1:30.**
+`CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV` is set to **1320**.
+
+> Note the no-load speed argument points the *wrong* way and should not be trusted: 110 rpm
+> no-load suggests ~11 rpm at 10% duty, which would imply 3960. The wheel actually turns
+> ~31 rpm at 10% duty. **PWM duty is strongly non-linear in speed at the low end.**
+
+Derived: wheel circumference **235.6 mm**, theoretical top speed **0.432 m/s**.
 
 **Two consequences that shape the control problem:**
 

@@ -1,6 +1,65 @@
 # AVC Motor Encoder QDC Research
 
-Date: 2026-07-21
+Date: 2026-07-21. **Hardware-verified 2026-07-25.**
+
+## Result — verified on hardware
+
+The routing below works. Both channels count true quadrature, respond
+independently, and now report calibrated wheel speed.
+
+| Fact | Value |
+|---|---|
+| **Counts per wheel revolution** | **1320** (measured: 13188 over exactly 10 hand turns) |
+| Gear ratio | **1:30** — the vendor spec table's 1:90 is wrong |
+| Wheel diameter / circumference | 75 mm / 235.6 mm |
+| M0 @ 10% duty | 678 counts/s, 30.8 rpm, 0.121 m/s |
+| M1 @ 10% duty | 739 counts/s, 33.6 rpm, 0.132 m/s |
+| M1 @ 20% duty | 1450 counts/s, 65.9 rpm, 0.259 m/s |
+| Theoretical top speed | 0.432 m/s (110 rpm no-load) |
+| Rate stability | sd under 0.5% of mean, no overflow or error flags |
+
+### Three findings that change how the platform should be driven
+
+**1. The motors are not matched.** M1 runs **8.8% faster than M0 at identical
+duty**, consistently and well outside measurement noise. A car commanded
+straight in open loop will curve. This is the concrete justification for
+closed-loop wheel speed control, and it is worth showing students rather than
+asserting.
+
+**2. PWM duty is strongly non-linear in speed at the low end.** At 10% duty the
+wheel turns ~31 rpm, about **28%** of the 110 rpm no-load rating, not the ~11 rpm
+a linear reading predicts. Estimating wheel speed from duty will mislead you —
+this actually produced a wrong counts-per-revolution inference before the
+measurement corrected it.
+
+**3. Encoder polarity was inverted.** With the QDC blocks in their default
+direction, driving forward produced negative counts and position counted *down*
+from zero, wrapping to ~4.29 billion. Fixed in hardware via `CTRL[REV]`
+(`CONFIG__MOTOR_ENCODER_INVERT_M0` / `_M1`, both default 1) so forward reads
+positive and position counts up. Fixing it in the peripheral rather than
+negating in software keeps the raw position register meaningful.
+
+### Channel independence — proven, not assumed
+
+Driving M0 at 10% and M1 at 20% simultaneously: M0 held to within **0.4%** of
+its baseline while M1 nearly exactly doubled (**+96.1%**), a rate ratio of 2.130
+against a PWM ratio of 2.000. Driving both at one duty could not have
+distinguished correct wiring from cross-wiring, or from two channels reading the
+same source.
+
+### Wheel-speed API
+
+Available in the normal build when `CONFIG__MOTOR_ENCODER_BACKEND` selects QDC.
+Sampled on a fixed 100 ms interval so the rate is measured over a known window
+regardless of frame timing.
+
+```c
+float avc__wheel_rpm(avc_motor_encoder_id_t wheel);          /* + is forward */
+float avc__wheel_velocity_mps(avc_motor_encoder_id_t wheel); /* + is forward */
+```
+
+Both wheels are shown on the LCD overlay. Per-wheel rather than combined,
+deliberately — a single figure hides the mismatch above.
 
 ## Scope
 
@@ -26,6 +85,9 @@ routing arbitrary GPIO directly to QDC. The working route is:
 
 This is stronger than a software edge-counting fallback, and it should be cheap
 enough for future closed-loop motor speed work.
+
+**Confirmed 2026-07-25.** This exact route works — see the verified result at the
+top of this document.
 
 ## Rev A Connector Wiring
 
