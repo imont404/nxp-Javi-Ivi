@@ -349,6 +349,16 @@ Two things to settle before committing the layout:
   sufficient evidence that the EZH is claimable; that belongs with whatever work actually
   wants the EZH.
 
+## 10a. What the freed EZH can reach
+
+Moving capture to FlexIO frees `PIO0..PIO7` on `P1_4..P1_11` plus `PIO13` on `P1_17` —
+a **contiguous 8-bit SmartDMA group**.
+
+If you were hoping the now-unused `J12` header offers more, it does not:
+[`AVC_J12_SmartDMA_Availability.md`](AVC_J12_SmartDMA_Availability.md) finds only six
+distinct channels there, with `PIO26`/`PIO27` unreachable, so the widest contiguous run is
+4 bits. **The pins the EZH already has are the best wide bus available on this board.**
+
 ## 11. Bring-up notes
 
 Operational detail from the 2026-07-25 bring-up, kept because it is the part that would
