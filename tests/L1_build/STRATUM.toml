@@ -1,0 +1,21 @@
+name = "Build"
+order = 1
+description = "Build-everything smoke: every supported preset configures and compiles from the current tree. Bench-free, no flashing."
+enabled = true
+concerns = ["build-system"]
+objectives = ["Prove every build variant still compiles after a change, using whichever toolchain is discovered"]
+
+[[subtests]]
+id = "L1_001"
+file = "test_L1_001_build_smoke.py"
+name = "Build smoke"
+description = "The competition image and every other preset configure and build"
+test_case_type = "algorithmic"
+
+[subtests.code_under_test]
+module = "CMakePresets.json"
+
+[subtests.test_functions]
+test_competition_builds = "the competition preset produces avc_core0.axf"
+test_all_presets_build = "every non-hidden preset configures and builds"
+test_source_list_has_not_drifted = "the committed source list matches MCUXpresso project metadata"

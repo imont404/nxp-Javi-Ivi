@@ -24,7 +24,7 @@ depends_on = ["study-reference"]
 [[steps]]
 id = "governance-tooling"
 title = "Adopt the rack signoff suite, lizard, and clang-format/clang-tidy"
-status = "pending"
+status = "done"
 depends_on = ["study-reference"]
 
 [[steps]]
@@ -78,13 +78,13 @@ depends_on = ["host-build-root"]
 [[steps]]
 id = "verify-script"
 title = "Add a build-everything verification gate"
-status = "pending"
+status = "done"
 depends_on = ["cmake-presets", "host-build-root"]
 
 [[steps]]
 id = "signoff-gate"
 title = "Wire the build and quality strata into the signoff gate"
-status = "pending"
+status = "done"
 depends_on = ["governance-tooling", "cmake-presets"]
 
 [[steps]]
@@ -141,7 +141,7 @@ status = "met"
 [[exit_criteria]]
 id = "presets-replace-wrappers"
 title = "Build variants are CMakePresets rather than a wrapper script each, and the competition image is the obvious default"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "backends-structurally-separate"
@@ -166,22 +166,22 @@ status = "pending"
 [[exit_criteria]]
 id = "signoff-runs"
 title = "The rack signoff suite runs from one command, with build, complexity, and format checks wired in"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "tooling-provisioned"
 title = "setup.ps1 provisions everything the build and signoff need - Arm toolchain, CMake, Ninja, uv, and the clang tooling"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "build-docs-exist"
 title = "The build system, toolchain provisioning, and quality gates are published as HTML, good enough for a student to follow without asking, with the rack suite asserting the claims"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "competition-image-safe"
 title = "The Rev A competition image is unchanged in behaviour and reproducible throughout"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "signoff"

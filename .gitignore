@@ -97,3 +97,8 @@ build/
 
 ### Provisioned toolchains (setup.ps1) ###
 out/
+
+### rack test results (regenerated) ###
+tests/rack_results/
+**/__pycache__/
+.pytest_cache/

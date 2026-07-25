@@ -1,0 +1,7 @@
+# L99 signoff configuration per wn-dev-std project governance.
+# The signoff gate is the L99_signoff stratum of the rack suite in tests/.
+
+[signoff]
+suite = "tests"
+strata = ["L99_signoff"]
+runner = "uv run rack run L99"

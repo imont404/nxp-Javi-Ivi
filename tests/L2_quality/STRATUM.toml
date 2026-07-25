@@ -1,0 +1,19 @@
+name = "Quality"
+order = 2
+description = "Complexity and formatting debt, tracked against a baseline rather than enforced as a cliff."
+enabled = true
+concerns = ["maintainability"]
+objectives = ["Keep complexity from growing unnoticed in the code students read"]
+
+[[subtests]]
+id = "L2_001"
+file = "test_L2_001_complexity_debt.py"
+name = "Complexity debt"
+description = "Firmware complexity is measured against docs/quality/lizard-baseline.txt"
+test_case_type = "algorithmic"
+
+[subtests.code_under_test]
+module = "src/avc/avc_core0/source"
+
+[subtests.test_functions]
+test_complexity_against_baseline = "no function exceeds the recorded baseline complexity"

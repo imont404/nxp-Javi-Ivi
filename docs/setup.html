@@ -132,20 +132,42 @@ functional difference between a build made with either compiler.</p>
 
 <h2>Quality gates</h2>
 
-<p>Governance checks &ndash; these work today and need no board:</p>
+<p>One command says whether the tree is in good shape:</p>
+
+<pre>uv run rack run          <em>everything</em>
+uv run rack run L99      <em>the signoff gate only</em></pre>
+
+<table>
+<tr><th>Stratum</th><th>Checks</th><th>Needs</th></tr>
+<tr><td><code>L0_foundation</code></td><td>The build definitions are present and self-contained: presets, the checked-in source list, the vendored header, the linker captures.</td><td>nothing</td></tr>
+<tr><td><code>L1_build</code></td><td>The competition image compiles, and the source list has not drifted from the MCUXpresso project metadata.</td><td>a toolchain</td></tr>
+<tr><td><code>L2_quality</code></td><td>Complexity against <code>docs/quality/lizard-baseline.txt</code>.</td><td><code>uv</code></td></tr>
+<tr><td><code>L99_signoff</code></td><td>Governance audit, and that the student entry points and competition defaults are intact.</td><td><code>uvx</code></td></tr>
+</table>
+
+<p>Building every preset is slow, so it is opt-in:</p>
+
+<pre>$env:AVC_TEST_ALL_PRESETS = "1"
+uv run rack run L1</pre>
+
+<div class="note">
+<strong>Complexity is a tracked baseline, not a cliff.</strong> Existing debt
+does not fail the gate; making something worse does. If you deliberately accept
+a more complex function, regenerate
+<code>docs/quality/lizard-baseline.txt</code> and say why in the commit.
+</div>
+
+<p>Governance checks alone, without the suite:</p>
 
 <pre>uvx --from wn-dev-std==2026.7.18 dev-std audit . --scope docs.plans</pre>
 
-<div class="note">
-<strong>The rack test suite is not set up for AVC yet.</strong>
-<code>setup.ps1</code> installs everything it needs (<code>uv</code>, LLVM for
-<code>clang-format</code> and <code>clang-tidy</code>), but the
-<code>tests\</code> strata themselves are still to be written &ndash; see
-<code>docs\plans\cmake-build-and-toolchain</code>, step
-<code>governance-tooling</code>. When they land, the commands will be
-<code>uv run rack run</code> for the full suite and <code>uv run rack run L99</code>
-for signoff.
-</div>
+<h3>Formatting</h3>
+
+<p><code>.clang-format</code> exists but is <strong>not</strong> applied across the
+tree &ndash; reformatting the NXP SDK sources would bury every real change in
+whitespace. Use it on files you are already editing:</p>
+
+<pre>clang-format -i src\avc\avc_core0\source\&lt;file&gt;.c</pre>
 
 <h2>Conventions worth knowing</h2>
 

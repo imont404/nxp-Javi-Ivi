@@ -1,0 +1,38 @@
+name = "Foundation"
+order = 0
+description = "Repository invariants that need no toolchain: the build definitions are present and self-contained, and the documented setup path exists."
+enabled = true
+concerns = ["build-system", "governance"]
+objectives = ["Prove the repository can be built from a clean machine without MCUXpresso"]
+
+[[subtests]]
+id = "L0_001"
+file = "test_L0_001_build_definitions.py"
+name = "Build definitions"
+description = "Presets, toolchain file, source list, linker captures, and vendored headers are present and self-contained"
+test_case_type = "algorithmic"
+
+[subtests.code_under_test]
+module = "CMakePresets.json"
+
+[subtests.test_functions]
+test_presets_exist = "CMakePresets.json parses and defines the competition preset"
+test_source_list_is_self_contained = "the committed source list references no MCUXpresso install path"
+test_vendored_header_present = "cr_section_macros.h is in the repository, not only in the IDE"
+test_linker_capture_documented = "the edited linker script explains the libnosys substitution"
+test_no_ide_only_library = "no linker script pulls libcr_newlib_nohost.a"
+
+[[subtests]]
+id = "L0_002"
+file = "test_L0_002_setup_contract.py"
+name = "Setup contract"
+description = "setup.ps1 and docs/setup.html agree with each other and with the tree"
+test_case_type = "algorithmic"
+
+[subtests.code_under_test]
+module = "setup.ps1"
+
+[subtests.test_functions]
+test_setup_script_exists = "setup.ps1 is present and provisions the documented tools"
+test_docs_reference_real_presets = "every preset named in docs/setup.html exists in CMakePresets.json"
+test_docs_commands_are_current = "the documented build command matches the preset workflow"

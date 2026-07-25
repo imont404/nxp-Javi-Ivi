@@ -1,0 +1,8 @@
+[rack]
+name = "AVC Firmware Suite"
+version = "1.0"
+description = "Governance and build-verification strata for the FRDM-MCXN947 AVC firmware"
+
+[strata]
+order = ["L0_foundation", "L1_build", "L2_quality", "L99_signoff"]
+default_enabled = ["L0_foundation", "L1_build", "L2_quality", "L99_signoff"]

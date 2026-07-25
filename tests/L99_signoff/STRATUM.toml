@@ -1,0 +1,20 @@
+name = "Signoff"
+order = 99
+description = "The release gate. Aggregates the lower strata and asserts the competition image is buildable and reproducible."
+enabled = true
+concerns = ["governance"]
+objectives = ["Give one command that says whether the tree is fit to hand to students"]
+
+[[subtests]]
+id = "L99_001"
+file = "test_L99_001_signoff.py"
+name = "Signoff"
+description = "Governance audit passes and the competition image builds"
+test_case_type = "algorithmic"
+
+[subtests.code_under_test]
+module = "docs/plans"
+
+[subtests.test_functions]
+test_governance_audit_passes = "dev-std audit reports no plan hygiene failures"
+test_competition_image_present = "the competition image has been built"

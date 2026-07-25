@@ -7,9 +7,11 @@ requires-python = ">=3.12,<3.13"
 
 [dependency-groups]
 dev = [
+    "lizard>=1.23.0",
     "openpyxl>=3.1.5",
     "pylink-square>=2.0.0",
     "pymupdf>=1.28.0",
+    "pytest>=8.0",
     "wn-dev-std==2026.7.18",
 ]
 
@@ -23,6 +25,11 @@ distribution = "none"
 languages = ["c", "asm", "powershell", "markdown"]
 strict = false
 artifact_policy = "custom"
+
+[tool.wn_dev_std.signoff]
+suite = "tests"
+strata = ["L99_signoff"]
+runner = "uv run rack run L99"
 
 [tool.wn_dev_std.documentation.plans]
 roots = ["docs/plans"]
