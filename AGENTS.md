@@ -32,6 +32,23 @@ research files are durable/reference material during the current migration.
 
 ## Build
 
+**Student-facing setup and build documentation is `docs/setup.html`.** Read that
+first; it covers provisioning a machine from nothing, the preset list, and the
+conventions below.
+
+The short version:
+
+```powershell
+.\setup.ps1                              # once per machine; no MCUXpresso needed
+cmake --preset competition
+cmake --build --preset competition
+.\flash.ps1 -File build\cmake\competition\avc_core0.axf
+```
+
+Build variants are **CMake presets** (`cmake --list-presets`), not one wrapper
+script each. The wrappers below still work and are kept for the drift check and
+for anything already referencing them.
+
 Use the root CMake wrapper for normal scripted builds:
 
 ```powershell
@@ -81,7 +98,8 @@ Everything else is a variant behind `CONFIG__` selection with `#error` guards.
 .\build_motor_encoder_diag.ps1                     # encoders, motors off, RTT only
 .\build_motor_encoder_diag.ps1 -EnableMotors -PwmPercentM0 10 -PwmPercentM1 20 -AutoStartMs 4000
 .\flash_motor_encoder_diag.ps1 -EnableMotors       # must match how it was built
-.tt_motor_encoder_diag.ps1  -EnableMotors -Seconds 30
+.
+tt_motor_encoder_diag.ps1  -EnableMotors -Seconds 30
 ```
 
 Ad-hoc variants go through `-Define`, e.g.:

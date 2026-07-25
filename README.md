@@ -2,7 +2,31 @@
 
 This repository has source code for use with FRDM-MCXN947 and the FRDM-AVC shield.
 
-The current project uses the MCUXpresso IDE 
+## Quick start
+
+**No NXP software required.** On a fresh Windows machine:
+
+```powershell
+.\setup.ps1                              # provisions the compiler and build tools
+cmake --preset competition
+cmake --build --preset competition
+.\flash.ps1 -File build\cmake\competition\avc_core0.axf
+```
+
+Full instructions, the list of build variants, and the conventions are in
+**[docs/setup.html](docs/setup.html)**.
+
+Edit in **VS Code** - open this folder and accept the recommended extensions.
+
+---
+
+## MCUXpresso IDE (optional)
+
+MCUXpresso is no longer required to build or flash. It remains useful as a
+fallback and for changing project settings; the sections below describe that
+path.
+
+The legacy project uses the MCUXpresso IDE 
 
 # 1 Build Tooling / Installation
 

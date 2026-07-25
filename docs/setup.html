@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AVC - Setup and Build</title>
+<link rel="stylesheet" href="avc.css">
+</head>
+<body>
+
+<h1>AVC &ndash; Setup and Build</h1>
+<p>Updated 2026-07-25. This is the page to read first. It assumes you have never
+seen this repository and have nothing installed.</p>
+
+<h2>Getting started, from nothing</h2>
+
+<p>Three commands. The first one is slow; the other two are not.</p>
+
+<pre>.\setup.ps1                              <em>once per machine, ~5 minutes</em>
+cmake --preset competition               <em>configure</em>
+cmake --build --preset competition       <em>build</em></pre>
+
+<p>Then put the firmware on the board:</p>
+
+<pre>.\flash.ps1 -File build\cmake\competition\avc_core0.axf</pre>
+
+<p>And watch it run:</p>
+
+<pre>.\rtt.ps1 -File build\cmake\competition\avc_core0.axf -Reset -Seconds 30</pre>
+
+<div class="note">
+<strong>MCUXpresso is not required.</strong> It used to be. <code>setup.ps1</code>
+downloads a standalone Arm compiler instead, and the build was verified to
+produce the same firmware either way &ndash; see <em>Toolchain provisioning</em>
+below.
+</div>
+
+<h2>What setup.ps1 installs</h2>
+
+<table>
+<tr><th>Tool</th><th>Used for</th><th>Where it goes</th></tr>
+<tr><td>Arm GNU Toolchain 14.2.Rel1</td><td>compiling the firmware</td><td><code>out\toolchains\</code> in this repository</td></tr>
+<tr><td>CMake</td><td>the build system</td><td>winget, system-wide</td></tr>
+<tr><td>Ninja</td><td>the thing that actually runs the compiler</td><td>winget, system-wide</td></tr>
+<tr><td>uv</td><td>Python tooling for the quality gates</td><td>winget, system-wide</td></tr>
+<tr><td>LLVM</td><td><code>clang-format</code> and <code>clang-tidy</code></td><td>winget, system-wide</td></tr>
+</table>
+
+<p>It is safe to run more than once &ndash; anything already present is skipped.
+It does not change your <code>PATH</code> and does not set environment
+variables. The Arm toolchain lives inside the repository under
+<code>out\</code>, which is git-ignored; deleting that folder and re-running
+<code>setup.ps1</code> puts it back.</p>
+
+<div class="warn">
+<strong>If winget is blocked</strong> &ndash; common on managed or work laptops
+&ndash; <code>setup.ps1</code> will say which tools it could not install and
+carry on. The Arm toolchain is downloaded directly and does not need winget, so
+the firmware will still build as long as CMake and Ninja are available. Install
+the rest by hand and run <code>setup.ps1</code> again to confirm.
+</div>
+
+<h2>Build variants</h2>
+
+<p>Variants are <strong>CMake presets</strong>, not separate scripts. List them:</p>
+
+<pre>cmake --list-presets</pre>
+
+<table>
+<tr><th>Preset</th><th>What it is</th><th>Hardware needed</th></tr>
+<tr><td><code>competition</code></td><td><strong>The race image. Start here.</strong> EZH camera capture, SPI LCD, USB stream off, encoders off.</td><td>the car as built</td></tr>
+<tr><td><code>encoders</code></td><td>Competition image plus wheel-speed feedback and the on-screen RPM readout.</td><td>the car as built</td></tr>
+<tr><td><code>flexio-port1</code></td><td>Camera capture through FlexIO instead of the EZH, on the existing camera wiring.</td><td>three jumpers on <code>J9_EXT</code></td></tr>
+<tr><td><code>flexio-port4</code></td><td>The original FlexIO pin group.</td><td>eleven fly-wires</td></tr>
+<tr><td><code>servo-p3-20</code></td><td>Competition image driving the servo from the Rev B candidate pin.</td><td>scope on shield <code>J1.5</code></td></tr>
+<tr><td><code>encoder-diag</code></td><td>Encoder bench diagnostic, motors off. RTT only, no camera or LCD.</td><td>turn the wheels by hand</td></tr>
+<tr><td><code>encoder-diag-motors</code></td><td>Same, but drives the motors at 10% and auto-starts.</td><td><strong>car on blocks</strong></td></tr>
+</table>
+
+<p>Build any of them the same way:</p>
+
+<pre>cmake --preset &lt;name&gt;
+cmake --build --preset &lt;name&gt;</pre>
+
+<p>The image always lands at <code>build\cmake\&lt;name&gt;\avc_core0.axf</code>.</p>
+
+<div class="warn">
+<strong><code>encoder-diag-motors</code> spins the wheels</strong> four seconds
+after reset, without being asked. Put the car on blocks. Duty is capped at 20%
+by a compile-time check, but a car on the floor will still drive away.
+</div>
+
+<h2>Editing: VS Code</h2>
+
+<p>Open the repository folder in VS Code. It will offer to install the C/C++ and
+CMake Tools extensions; accept. Pick a preset from the status bar and build from
+there if you prefer buttons to commands.</p>
+
+<p>IntelliSense reads <code>compile_commands.json</code> from the
+<code>competition</code> build, so <strong>configure that preset at least
+once</strong> or headers will appear unresolved:</p>
+
+<pre>cmake --preset competition</pre>
+
+<p><em>Format-on-save is deliberately off.</em> The firmware carries a mix of
+tabs and spaces inherited from the NXP SDK, and reformatting on save produces
+enormous whitespace-only diffs.</p>
+
+<p>Flashing, RTT, setup, and the drift check are also available as VS Code tasks
+(<em>Terminal &rarr; Run Task</em>).</p>
+
+<h2>Toolchain provisioning</h2>
+
+<p>The build finds a compiler in this order:</p>
+
+<ol>
+<li><code>-DAVC_ARM_TOOLCHAIN_DIR=&lt;path to bin&gt;</code></li>
+<li>the <code>AVC_ARM_TOOLCHAIN_DIR</code> environment variable</li>
+<li>the toolchain <code>setup.ps1</code> put in <code>out\toolchains\</code></li>
+<li>the compiler bundled with MCUXpresso, if it happens to be installed</li>
+</ol>
+
+<p>MCUXpresso is a fallback, not a requirement. The version
+<code>setup.ps1</code> downloads is the same one MCUXpresso 25.6 bundles
+(14.2.Rel1), which is what makes the two comparable.</p>
+
+<p><strong>They were compared.</strong> Building the competition image with each
+toolchain differs by exactly four bytes, and those four bytes are a build path
+that NXP's copy of the C library has baked into it
+(<code>&hellip;/arm-14-5/&hellip;</code> where Arm's says
+<code>&hellip;/arm-14/&hellip;</code>). Everything else is identical. There is no
+functional difference between a build made with either compiler.</p>
+
+<h2>Quality gates</h2>
+
+<p>Governance checks &ndash; these work today and need no board:</p>
+
+<pre>uvx --from wn-dev-std==2026.7.18 dev-std audit . --scope docs.plans</pre>
+
+<div class="note">
+<strong>The rack test suite is not set up for AVC yet.</strong>
+<code>setup.ps1</code> installs everything it needs (<code>uv</code>, LLVM for
+<code>clang-format</code> and <code>clang-tidy</code>), but the
+<code>tests\</code> strata themselves are still to be written &ndash; see
+<code>docs\plans\cmake-build-and-toolchain</code>, step
+<code>governance-tooling</code>. When they land, the commands will be
+<code>uv run rack run</code> for the full suite and <code>uv run rack run L99</code>
+for signoff.
+</div>
+
+<h2>Conventions worth knowing</h2>
+
+<h3>The source list is checked in</h3>
+
+<p><code>src\avc\avc_core0\cmake\mcuxpresso_debug.cmake</code> lists every source
+file. It was originally generated from the MCUXpresso project files, but it is
+committed and used as-is, so a normal build needs neither Python nor
+MCUXpresso.</p>
+
+<p>If you change the project settings in MCUXpresso, that file can fall out of
+date. Check and update it explicitly:</p>
+
+<pre>.\build_cmake.ps1 -CheckDrift    <em>show what changed, write nothing</em>
+.\build_cmake.ps1 -Regenerate    <em>accept it, then review and commit</em></pre>
+
+<h3>The linker scripts are captures</h3>
+
+<p><code>src\avc\avc_core0\link\</code> holds copies of the linker scripts
+MCUXpresso would otherwise generate into <code>Debug\</code>. They are the source
+of truth, and each carries a header saying so.</p>
+
+<p>One is deliberately edited: the MCUXpresso original pulls in
+<code>libcr_newlib_nohost.a</code>, which ships only with the IDE. It was
+replaced with the standard <code>libnosys.a</code>. That change removed the
+bounded heap NXP's library provided, so
+<code>source\shared\avc__sbrk.c</code> restores it. If you regenerate and diff,
+expect to see exactly that one library line differ.</p>
+
+<h3>Vendored headers</h3>
+
+<p><code>source\shared\cr_section_macros.h</code> is copied from the MCUXpresso
+install because the firmware needs it for memory placement &ndash; it is what
+puts the camera frame buffers where they belong. Do not edit it.</p>
+
+<h2>Older scripts</h2>
+
+<p><code>build_cmake.ps1</code> still works and does the same thing as the
+<code>competition</code> preset. It remains for the drift check and for anything
+that already referenced it. New work should use presets.</p>
+
+<p><code>build.ps1</code> drives MCUXpresso headlessly and is the fallback if the
+CMake build ever fails in a way that needs the IDE to diagnose.</p>
+
+</body>
+</html>

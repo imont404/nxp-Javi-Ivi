@@ -96,7 +96,7 @@ depends_on = ["byte-parity", "cmake-presets", "vscode-integration"]
 [[steps]]
 id = "build-tooling-docs"
 title = "Document the build system, toolchain, and quality gates"
-status = "pending"
+status = "done"
 depends_on = ["cmake-presets", "governance-tooling"]
 
 [[steps]]

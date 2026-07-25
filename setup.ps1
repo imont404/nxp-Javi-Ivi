@@ -221,6 +221,10 @@ if ($warnings.Count -gt 0) {
 
 Write-Host ""
 Write-Host "  Next:" -ForegroundColor White
-Write-Host "    .\build_cmake.ps1        # build the competition image" -ForegroundColor Green
-Write-Host "    .\flash.ps1 -CMake       # flash it" -ForegroundColor Green
+Write-Host "    cmake --preset competition           # configure" -ForegroundColor Green
+Write-Host "    cmake --build --preset competition   # build" -ForegroundColor Green
+Write-Host "    .\flash.ps1 -File build\cmake\competition\avc_core0.axf" -ForegroundColor Green
+Write-Host ""
+Write-Host "  Full instructions:    docs\setup.html" -ForegroundColor White
+Write-Host "  Other build variants: cmake --list-presets" -ForegroundColor White
 Write-Host ""
