@@ -22,6 +22,18 @@ status = "pending"
 depends_on = ["study-reference"]
 
 [[steps]]
+id = "governance-tooling"
+title = "Adopt the rack signoff suite, lizard, and clang-format/clang-tidy"
+status = "pending"
+depends_on = ["study-reference"]
+
+[[steps]]
+id = "break-ide-dependencies"
+title = "Remove the two hard MCUXpresso dependencies: the NXP-only newlib and cr_section_macros.h"
+status = "pending"
+depends_on = ["toolchain-file"]
+
+[[steps]]
 id = "own-the-source-list"
 title = "Replace the .cproject-generated source list with a checked-in CMakeLists"
 status = "pending"
@@ -31,7 +43,7 @@ depends_on = ["toolchain-file"]
 id = "byte-parity"
 title = "Prove the standalone toolchain reproduces the MCUXpresso build"
 status = "pending"
-depends_on = ["own-the-source-list", "toolchain-installer"]
+depends_on = ["own-the-source-list", "toolchain-installer", "break-ide-dependencies"]
 
 [[steps]]
 id = "cmake-presets"
@@ -68,6 +80,12 @@ id = "verify-script"
 title = "Add a build-everything verification gate"
 status = "pending"
 depends_on = ["cmake-presets", "host-build-root"]
+
+[[steps]]
+id = "signoff-gate"
+title = "Wire the build and quality strata into the signoff gate"
+status = "pending"
+depends_on = ["governance-tooling", "cmake-presets"]
 
 [[steps]]
 id = "retire-mcuxpresso"
@@ -137,6 +155,16 @@ status = "pending"
 [[exit_criteria]]
 id = "verify-gate"
 title = "One command builds every supported target from clean and asserts the artifacts exist"
+status = "pending"
+
+[[exit_criteria]]
+id = "signoff-runs"
+title = "The rack signoff suite runs from one command, with build, complexity, and format checks wired in"
+status = "pending"
+
+[[exit_criteria]]
+id = "tooling-provisioned"
+title = "setup.ps1 provisions everything the build and signoff need - Arm toolchain, CMake, Ninja, uv, and the clang tooling"
 status = "pending"
 
 [[exit_criteria]]
@@ -230,6 +258,61 @@ not need the IDE's project files to exist. For comparison `bunny_cam/CMakeLists.
 
 Everything else in this plan is plumbing around that step.
 
+## Two hard dependencies on the IDE, both already confirmed present
+
+These are not theoretical. Both exist in AVC today, and **both will stop a standalone
+toolchain build dead.** The reference project hit exactly these and solved them, so the
+fixes are known.
+
+### 1. The linker pulls an NXP-IDE-only library
+
+`src/avc/avc_core0/link/avc_core0_Debug_library.ld:16` has:
+
+```
+GROUP (
+  ...
+  "libcr_newlib_nohost.a"
+```
+
+**That library ships only with MCUXpresso.** The standalone Arm GNU toolchain does not
+have it.
+
+**Known fix, from the reference:** replace it with `libnosys.a`, which is present in both
+the MCUXpresso bundle and standalone Arm GNU 14.2.Rel1. The reference verified this is
+**output-neutral** — `text`/`data`/`bss` unchanged and the flashable `.bin` byte-identical
+across both toolchains. Their firmware referenced nothing from it (no heap, no syscalls);
+**confirm the same is true for AVC** rather than assuming, since AVC links more SDK.
+
+### 2. `cr_section_macros.h` does not exist in this repository
+
+`bv_camera__interface.c:14` includes it, and it currently resolves out of the MCUXpresso
+install tree:
+
+```
+C:
+C:\nxp\MCUXpressoIDE_25.6.136\ide\plugins\...\tools\arm-none-eabi\include\cr_section_macros.h
+```
+
+It is not incidental — AVC uses `__BSS(SRAM_H)` for the EZH program image and
+`__BSS(FRAME_BUFFERS)` for the **camera frame buffers**. Placement of those is not
+optional.
+
+**Fix:** copy the header into the repository as the reference did
+(`source/shared/cr_section_macros.h` there). Check what else in the tree resolves only out
+of the IDE include path while doing it — these two were found by inspection, and there may
+be more.
+
+### Static linker scripts — mostly already done
+
+AVC already copies its linker scripts into `src/avc/avc_core0/link/`, so the scripted build
+does not depend on MCUXpresso regenerating `Debug/`. That is the same move the reference
+made, and it is the reason only the two items above remain.
+
+Worth adopting from the reference: a **header comment in each static script** recording
+that it is a capture, where it came from, how to regenerate for comparison, and any
+deliberate edit. Their `libnosys.a` change is documented in-file precisely so a later drift
+diff shows one expected line instead of an unexplained difference.
+
 ## Step Notes
 
 ### study-reference
@@ -248,6 +331,40 @@ PATH. Idempotent, and it must not modify the user's environment.
 **The audience is a student with no idea.** Failure messages must say what to do next, not
 what went wrong internally. Assume winget may be absent or blocked on a locked-down laptop
 and handle that explicitly rather than failing obscurely.
+
+### break-ide-dependencies
+
+Do this **early and independently** — it is small, it is a hard blocker for everything
+after it, and it can be verified against the existing MCUXpresso build before any of the
+larger changes land. Swapping `libnosys.a` and vendoring the header should both be
+output-neutral; prove that with the current toolchain first, so `byte-parity` is not
+debugging two things at once.
+
+### governance-tooling
+
+`wn-dev-std` **2026.7.18 is already the latest resolvable** and is what AVC pins — verified,
+and it bundles `wn-rack 2026.7.16`. So "update to latest" is satisfied; the real gap is
+that AVC has almost none of the tooling the reference project runs.
+
+| | reference | AVC today |
+|---|---|---|
+| `tests/` rack suite | L0_foundation, L1_build, L2_quality, L99_signoff | **missing** |
+| `signoff.toml` | present, `uv run rack run L99` | **missing** |
+| `.clang-format` | present | **missing** |
+| clang-tidy | per the `zephyr-firmware` profile | **missing** |
+| `lizard` complexity | dev dependency, drives L2 | **missing** |
+| dev-std scopes | `docs.plans`, `docs.adrs` | `docs.plans` only |
+
+**Sequencing note that makes this worth doing early rather than last:** the reference's
+**L1_build** stratum is a "does everything still build" gate. That is exactly the check
+that de-risks `own-the-source-list`, which is the highest-risk step in this plan. Getting
+L0 and L1 up front pays for itself; L2 complexity and L99 signoff can follow.
+
+`setup.ps1` must provision what these need — `uv` for the Python tooling, and the clang
+binaries. **Open question:** where does clang-tidy come from on a student laptop? The Arm
+toolchain is GCC, so it is not bundled. LLVM via winget is the obvious answer but adds
+another large download to the one-script install; decide whether format and tidy are
+student-facing at all, or organiser-only gates.
 
 ### own-the-source-list
 
@@ -332,6 +449,7 @@ race-critical.**
 |---|---|
 | `toolchain-installer` | The one script. This is the whole point. |
 | `toolchain-file` | Nothing builds without toolchain discovery. |
+| `break-ide-dependencies` | Two hard blockers: the NXP-only newlib and the vendored header. Small, and everything after depends on it. |
 | `own-the-source-list` | The actual MCUXpresso break. Highest risk, earliest possible start. |
 | `byte-parity` | The gate that says the new build is the same build. |
 | `cmake-presets` | How students select a build; also what VS Code reads. |
