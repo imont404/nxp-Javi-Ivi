@@ -62,8 +62,7 @@ disagree with the HTML, the HTML wins — re-extract and fix this file.
 
 ## ✅ Encoder counts per wheel revolution — MEASURED: 1320
 
-This feeds `CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV`, currently `0`, and the
-`wheel-geometry-calibration` step of `motor-encoder-qdc-bringup`.
+This feeds `CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV`, now set to **1320**.
 
 ```
 counts/wheel-rev = gear_ratio × 11 lines × 4 (quadrature decoding)
@@ -76,11 +75,10 @@ counts/wheel-rev = gear_ratio × 11 lines × 4 (quadrature decoding)
 
 A customer measured **1320** over ten hand rotations, on both motors independently, and
 Hiwonder support confirmed that arithmetic in writing — explaining that the common mistake
-is forgetting the 4× quadrature multiplier. That is decent evidence for 1:30.
+is forgetting the 4× quadrature multiplier.
 
-**But the spec table on the same page says 1:90, and the quoted output speeds (110 rpm
-no-load from a motor of this class) fit the higher reduction better.** The contradiction is
-unresolved.
+The spec table on the same page says **1:90**, which would give 3960. **We measured it
+ourselves and the support answer wins** — see below.
 
 ### Measured 2026-07-25 — the support answer is right
 
