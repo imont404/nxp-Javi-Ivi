@@ -331,6 +331,8 @@ Judge any proposed change against these:
 
 - [`neutron_npu/AVC_Neutron_NPU_Assessment.md`](neutron_npu/AVC_Neutron_NPU_Assessment.md)
   — NPU feasibility and the recommended color-processing approach
+- [`AVC_Vision_Pipeline_Design.md`](AVC_Vision_Pipeline_Design.md) — LUT design, edge
+  detection upgrades, and PowerQuad overlap
 - [`AVC_Camera_Interface_Research.md`](AVC_Camera_Interface_Research.md) — camera interface options
 - [`AVC_LVDS_Adapter.md`](AVC_LVDS_Adapter.md) — camera cabling; §0.6 documents the connector-seating
   incident that motivated the SCCB robustness work

@@ -238,6 +238,10 @@ already under consideration.
    see the chroma scatter, paint the class regions, regenerate, flash. That teaches color
    spaces, quantization, and calibration far better than an opaque precompiled graph.
 
+**Design detail for this recommendation — table layout, flash-cache behaviour, edge
+detection, and PowerQuad overlap — is in
+[`../AVC_Vision_Pipeline_Design.md`](../AVC_Vision_Pipeline_Design.md).**
+
 **Cost check:** ~3 ms of a 41 ms budget for a full frame, or well under 1 ms for the
 handful of scanlines actually needed. No new toolchain, no version-lock, no NPU.
 
