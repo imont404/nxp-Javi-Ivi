@@ -3,7 +3,23 @@ param(
     [string]$Configuration = "Debug",
 
     [string]$BuildDir = "",
+
+    # The checked-in cmake/mcuxpresso_debug.cmake is the source of truth for the
+    # source list. Regeneration is opt-in because it requires Python and the
+    # MCUXpresso .cproject/.project metadata, neither of which a normal build
+    # should depend on.
+    [switch]$Regenerate,
+
+    # Regenerate to a temporary file and diff it against the committed one, so
+    # drift after an MCUXpresso project change is visible rather than silent.
+    [switch]$CheckDrift,
+
+    # Deprecated no-op: not regenerating is now the default.
     [switch]$SkipGenerate,
+
+    # Python tooling runs through uv against pyproject.toml - never a bare
+    # interpreter. setup.ps1 provisions uv.
+    [string]$UvPath = "uv",
     [string[]]$Define = @(),
 
     [string]$ProjectPath = (Join-Path $PSScriptRoot "src\avc\avc_core0")
@@ -37,15 +53,42 @@ if (-not (Test-Path -LiteralPath $ProjectPath)) {
     throw "CMake project not found: $ProjectPath"
 }
 
-if (-not $SkipGenerate) {
-    Write-Host "Generating CMake settings from MCUXpresso $Configuration project metadata..." -ForegroundColor Cyan
+if ($SkipGenerate) {
+    Write-Host "-SkipGenerate is now the default and can be dropped." -ForegroundColor DarkGray
+}
+
+if ($CheckDrift -or $Regenerate) {
+    if (-not (Get-Command $UvPath -ErrorAction SilentlyContinue)) {
+        throw "uv not found; it is required only for -CheckDrift and -Regenerate. Run .\setup.ps1, or pass -UvPath."
+    }
+}
+
+if ($CheckDrift) {
+    Write-Host "Checking the committed source list against MCUXpresso project metadata..." -ForegroundColor Cyan
+    $tmp = Join-Path ([System.IO.Path]::GetTempPath()) "avc_mcuxpresso_drift.cmake"
     Invoke-Checked {
-        python $generator --project-dir $ProjectPath --config $Configuration --output $generatedInclude
+        & $UvPath run python $generator --project-dir $ProjectPath --config $Configuration --output $tmp
+    } "Source list drift check"
+    $diff = Compare-Object (Get-Content $generatedInclude) (Get-Content $tmp)
+    Remove-Item $tmp -Force -ErrorAction SilentlyContinue
+    if ($diff) {
+        Write-Host "  [DRIFT] The committed source list differs from the regenerated one:" -ForegroundColor Yellow
+        $diff | ForEach-Object { Write-Host ("    {0} {1}" -f $_.SideIndicator, $_.InputObject) -ForegroundColor Yellow }
+        Write-Host "  Re-run with -Regenerate to accept, then review and commit." -ForegroundColor White
+        exit 1
+    }
+    Write-Host "  [OK] No drift." -ForegroundColor Green
+}
+elseif ($Regenerate) {
+    Write-Host "Regenerating CMake settings from MCUXpresso $Configuration project metadata..." -ForegroundColor Cyan
+    Invoke-Checked {
+        & $UvPath run python $generator --project-dir $ProjectPath --config $Configuration --output $generatedInclude
     } "CMake settings generation"
+    Write-Host "  Review and commit the change to $generatedInclude" -ForegroundColor White
 }
 
 if (-not (Test-Path -LiteralPath $generatedInclude)) {
-    throw "Generated CMake include not found: $generatedInclude. Run without -SkipGenerate first."
+    throw "Source list not found: $generatedInclude. It is normally committed; run with -Regenerate to rebuild it."
 }
 
 $cachePath = Join-Path $BuildDir "CMakeCache.txt"

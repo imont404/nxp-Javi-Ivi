@@ -36,7 +36,7 @@ depends_on = ["toolchain-file"]
 [[steps]]
 id = "own-the-source-list"
 title = "Replace the .cproject-generated source list with a checked-in CMakeLists"
-status = "pending"
+status = "done"
 depends_on = ["toolchain-file"]
 
 [[steps]]
