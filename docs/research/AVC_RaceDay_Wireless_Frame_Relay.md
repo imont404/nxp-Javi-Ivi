@@ -40,6 +40,35 @@ becomes a nice-to-have rather than the thing the demo depends on. That removes
 the single largest race-day risk in this document - the contended 2.4/5 GHz
 hall - because a lost network means a lost live view, not a lost recording.
 
+### The live path, and the thing a phone does that no board could
+
+Phone joins a local network, streams frames to the big screen. Two details make
+this much easier than the board version:
+
+**Let the phone serve the page.** If it runs a small HTTP/WebSocket server, the
+display end is a browser pointed at its address - nothing to install on the
+laptop driving the projector, and it reuses the viewer thinking already done for
+the Web Serial page. Fewer moving parts than a custom receiver on both ends.
+
+**Hardware video encoding is the big one.** Every phone has an H.264 encoder in
+silicon, and it is free to use. Raw RGB565 at full rate is 24 Mbps; the same
+content H.264-encoded is a couple of Mbps, an order of magnitude less airtime in
+a hall full of contending devices. None of the boards surveyed could do that
+without burning CPU it did not have.
+
+That changes the risk calculus entirely. The earlier analysis leaned on
+decimating to every fourth frame to survive interference. With hardware encode,
+full frame rate at a few Mbps is comfortably achievable, so the live view can be
+smooth *and* robust rather than a trade between them.
+
+Network shape, unchanged from the earlier recommendation: **avoid venue Wi-Fi**.
+Either the phone hosts its own hotspot with the display laptop joining it, or
+bring a small travel router and put both on it. Prefer 5 GHz. The venue network
+is the one variable nobody controls.
+
+And the recording still runs underneath all of it, so a network failure degrades
+the live view without costing the capture.
+
 ### It also removes the LCD from the frame budget
 
 If the phone is the display, the on-board LCD stops being necessary. That is
