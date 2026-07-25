@@ -15,16 +15,24 @@ Whatever we build must consume the stream the car already produces.
 
 ## Verdict
 
-An FRDM-RW612 can do this. It is the right shape of part - it has a
-host-capable high-speed USB and a Wi-Fi 6 radio on one board, which is exactly
-the two halves of the job.
+The idea works. **Use a small Linux board, not an MCU** - under Linux the whole
+firmware problem collapses into `pyserial` reading a CDC device and forwarding
+UDP, which is an afternoon rather than a project. See the board survey below;
+the short version is **FRDM-IMX93 if you can get one this week, otherwise a
+Radxa Zero 3W** (Rockchip RK3566, $15, dual-band Wi-Fi 6, proper host port).
 
-Three things are worth knowing before committing:
+An FRDM-RW612 can also do it and is the right *shape* of part - host-capable
+high-speed USB and a Wi-Fi 6 radio on one board. But it is a firmware project
+competing with four weeks of race preparation, and its radio is the weakest of
+the candidates. It is the better demo and the worse plan; build it after the
+race.
 
-1. **The radio is 1x1 and 20 MHz only.** Full-rate streaming is 24 Mbps, which
-   is a large fraction of what that radio can realistically deliver in a
-   crowded hall. Decimating frames fixes this completely and costs nothing
-   visually.
+Three things are worth knowing whichever way you go:
+
+1. **Full-rate streaming is 24 Mbps**, which is a large fraction of what a small
+   board's radio can realistically deliver in a crowded hall - and on the RW612,
+   whose radio is 1x1 and 20 MHz only, it is most of it. Decimating frames fixes
+   this completely and costs nothing visually.
 2. **The venue is the risk, not the silicon.** A conference hall full of phones
    is the worst RF environment we could pick. The mitigation is architectural
    and cheap: make the dongle its own access point and let the display laptop
@@ -150,27 +158,116 @@ bolt to a moving car.
 So the choice is a small computer that speaks USB host on one side and a
 network on the other. Which is exactly the RW612 proposal.
 
-## Alternative silicon, honestly compared
+## Board survey
 
-| Option | USB host | Radio | Effort | Notes |
-|---|---|---|---|---|
-| **FRDM-RW612** | HS, EHCI, SDK example | Wi-Fi 6, 1x1 20 MHz | Firmware project | On-brand for an NXP event. Full USB rate available. |
-| **ESP32-S3** | **Full-speed only (12 Mbps)** | Wi-Fi 4 | Firmware project | FS USB caps us at ~10 Mbps real - forces heavy decimation. Cheap and small. |
-| **Raspberry Pi Zero 2 W** | HS via Linux | Wi-Fi 5 | ~50 lines of Python | Least work by a wide margin. Off-brand at an NXP event. |
+Under a Linux board the firmware problem disappears entirely: `pyserial` reading
+a CDC device and forwarding UDP datagrams is an afternoon, not a project. So the
+selection is about hardware fit, and **two criteria do most of the sorting**:
 
-The Pi is the pragmatic answer and I should say so plainly: `pyserial` reading
-a CDC device and forwarding datagrams is an afternoon, not a project, and it
-would almost certainly work the first time.
+- **Dual-band Wi-Fi.** Since 2.4 GHz will be unusable at a conference, a
+  2.4-only board is disqualified from the good solution and relegated to
+  needing a USB dongle.
+- **A USB host port that is not also the power port.** The car plugs into the
+  host port. If the board's only data port is also how it is powered, that is a
+  hub and another cable on a moving chassis.
 
-The RW612 is the *better* answer for this specific event, for reasons that are
-real rather than sentimental: it is an NXP race, run by NXP, in front of
-students being introduced to NXP parts, and a dongle we built on NXP silicon is
-part of the show. It also has genuine headroom the ESP32-S3 lacks. The cost is
-that it is a firmware project competing with four weeks of race preparation.
+| Board | SoC | Size (mm) | Wi-Fi | USB host | Power | ~Cost |
+|---|---|---|---|---|---|---|
+| **Radxa Zero 3W** | **Rockchip RK3566** | 65 x 30 | **Wi-Fi 6, dual-band** | USB 3.0 host Type-C, **separate** from the OTG/power port | 5 V | **$15** 1 GB, ~$21 with 8 GB eMMC |
+| **FRDM-IMX93** | i.MX93 | 105 x 65 | **Wi-Fi 6, dual-band** (IW612) | **USB 2.0 Type-A**, plus a Type-C | **12-20 V PD, will not take 5 V** | NXP board |
+| Raspberry Pi Zero 2 W | BCM2710A1 | 65 x 30 | **2.4 GHz only** | one micro-USB OTG, the only data port | 5 V | ~$15 |
+| Orange Pi Zero 2W | Allwinner H618 | 65 x 30 | Wi-Fi 5, dual-band | needs the 24-pin adapter board for USB-A | 5 V / 2 A | ~$20 |
+| Milk-V Duo S | Sophgo SG2000 | tiny | Wi-Fi 6, dual-band (RTL8852BE) | USB 2.0 host | 5 V, ~5 W | ~$15 |
+| Luckfox Pico Ultra W | **Rockchip RV1106** | tiny | **2.4 GHz only**, 256 MB RAM | USB 2.0 host/device | 5 V | ~$18-30 |
+| Luckfox Lyra Zero W | **Rockchip RK3506B** | tiny | **2.4 GHz only** | USB 2.0 | 5 V | low |
+| FRDM-RW612 | RW612 | - | Wi-Fi 6 but **1x1 20 MHz** | HS, EHCI, VBUS unconfirmed | 5 V | NXP board |
+| ESP32-S3 | ESP32-S3 | tiny | Wi-Fi 4 | **full-speed only, 12 Mbps** | 5 V | ~$10 |
 
-If you want the demo guaranteed, build the Pi version as the fallback and the
-RW612 version as the one you hope to use. They consume the identical stream, so
-the PC side is written once either way.
+### On the cheap Rockchip boards specifically
+
+You are right that this is where the small cheap Linux boards live, and the
+board I am recommending is one of them - the **Radxa Zero 3W is a Rockchip
+RK3566**, at **$15 for the 1 GB version**. It is not a premium choice; it is
+simultaneously the cheapest and the best fit.
+
+The rest of the cheap Rockchip family falls out on the radio. The **Luckfox
+Pico** line (RV1106, RV1103) and the newer **Lyra Zero W** (RK3506B) are
+genuinely tiny and genuinely cheap, and they are all **2.4 GHz only**. The Pico
+Ultra W also has 256 MB of RAM, which is survivable for this job but leaves no
+room to be careless. Given that 2.4 GHz is the band that will be saturated, they
+are out for the same reason the Pi Zero 2 W is.
+
+**One caveat on the Radxa: check stock before planning around it.** At least one
+US distributor currently lists it out of stock, and a four-week runway does not
+absorb a backorder. This is precisely why the FRDM-IMX93 ranks first if you can
+get one from inside NXP - availability you control beats a better spec you are
+waiting on.
+
+### Reading of that table
+
+**The Pi Zero 2 W is the wrong answer here**, which surprised me - it is the
+default choice for this kind of job and I suggested it myself before checking.
+It is 2.4 GHz only, and it has a single USB data port. Fixing the radio means a
+5 GHz dongle, which means a hub, because that one port is already carrying the
+car. Two extra parts velcroed to a moving chassis to reach where other boards
+start.
+
+**Radxa Zero 3W is the best fit on paper.** Identical footprint to the Pi Zero,
+dual-band Wi-Fi 6, and - the part that matters - a dedicated USB 3.0 host port
+*separate* from the power port. Plug the car into one end, power into the other,
+done. Runs Debian.
+
+**FRDM-IMX93 is the best fit in practice, if you can get one this week.** It
+carries an IW612 - the same dual-band Wi-Fi 6 radio family as the RW612 you
+suggested - so it gets you the NXP story without the firmware project. It has a
+real USB-A host socket, runs Debian or Yocto, and is enormously overpowered for
+forwarding 24 Mbps, which is a virtue when you have four weeks and no time to
+discover a performance problem.
+
+Two caveats, and the second is the real one:
+
+1. **105 x 65 mm** on a 270 x 197 mm chassis. It fits the top plate, but it is
+   not a discreet little dongle.
+2. **It will not run from 5 V.** Primary input is VBUS_IN at **12-20 V through
+   USB-C PD**, regulated down on-board. The car has a 12 V battery, so the
+   voltage is available - but the board expects a *PD source*, and feeding raw
+   12 V into a USB-C connector skips the negotiation the sink is waiting for.
+   **Check whether it powers up from a plain 12 V feed before planning around
+   it.** If not, the clean answer is a small USB-C PD power bank, which also
+   isolates the relay from the car's electrical system entirely - no shared
+   ground with the motor drivers, which is worth something on its own.
+
+## Recommendation
+
+Pragmatically, and in order:
+
+1. **If you can pull an FRDM-IMX93 off a shelf this week, use it.** Availability
+   beats elegance with four weeks left, it is on-brand for an NXP event, and
+   Linux plus `pyserial` makes the software a non-event. Resolve the 12 V
+   question first.
+2. **Otherwise order a Radxa Zero 3W.** Better mechanical fit, dual-band, proper
+   host port, 5 V.
+3. **Use a Pi Zero 2 W only if one is already in a drawer and you accept
+   2.4 GHz** - and expect it to struggle when the hall fills.
+4. **Keep the RW612 as the interesting version to build after the race**, when
+   it is a project rather than a dependency. It is the better demo and the worse
+   plan.
+
+The PC side is written once regardless: all of these emit the same UDP frames.
+That is what makes this low-risk - you can change your mind about the board in
+week three without touching the viewer.
+
+### The bit that is easy to forget
+
+Whatever goes on the car adds mass, and it goes on the **top plate**, which is
+the worst place for it - highest point, most leverage on weight transfer. A car
+carrying a 105 x 65 mm board plus a power bank will not handle like the others.
+
+If the streaming car is also competing for a podium, that is unfair to its team
+in one direction or the other. Cleanest answer: **put the relay on a
+demonstration car**, or on the same car every time and tell the teams. Not a
+technical problem, but it is the kind of thing that turns into an argument on
+race morning.
 
 ## What has to change on the car
 
@@ -217,3 +314,9 @@ car, build it a dedicated image, and leave everyone else's untouched.
 - [MCUXpresso SDK usb_host_cdc example](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/examples/usb_examples/usb_host_cdc/readme.html)
 - [MCUXpresso SDK USB Host Stack Reference Manual](https://mcuxpresso.nxp.com/mcuxsdk/latest/html/_static/usb/MCUXpresso_SDK_USB_Stack_Host_Reference_Manual.pdf)
 - [FRDM-RW612 schematic overview](https://www.scribd.com/document/880975511/FRDM-RW612-SCH-3) - source of the NX5P3090UK observation, third-party and unverified
+- [Radxa Zero 3W](https://radxa.com/products/zeros/zero3w/) - RK3566, Wi-Fi 6, USB 3.0 host
+- [FRDM-IMX93 board](https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX93) and [UM12181 user manual](https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/6507/FRDM-IMX93.pdf) - source of the 12-20 V PD requirement
+- [Raspberry Pi Zero 2 W product brief](https://pip.raspberrypi.com/documents/RP-008359-DS-raspberry-pi-zero-2-w-product-brief.pdf) - confirms 2.4 GHz only
+- [Luckfox Pico Ultra W wiki](https://wiki.luckfox.com/Luckfox-Pico-Ultra/) - confirms 2.4 GHz only, 256 MB
+- [Orange Pi Zero 2W](http://www.orangepi.org/html/hardWare/computerAndMicrocontrollers/details/Orange-Pi-Zero-2W.html)
+- [Milk-V Duo S](https://milkv.io/duo-s)
