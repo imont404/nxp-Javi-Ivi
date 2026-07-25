@@ -273,6 +273,35 @@ when the display misbehaves, which 10 KB of general-purpose HAL is not.
 Sequence it after the clock work, since the clock is worth more and is
 independent.
 
+### Setup code specifically: leave it alone
+
+Splitting the same 10,596 bytes by which path it is on:
+
+| | Bytes | Share | Runs |
+|---|---|---|---|
+| setup / configuration | 3,412 | 32% | **once, at boot** |
+| transfer submission | 7,184 | 68% | 42x per frame |
+
+**The setup path is the part not worth rewriting**, which is the opposite of the
+intuition. Now that `lpspi1_init()` runs its expensive work once, that 3,412
+bytes costs 770 us one time at boot and nothing thereafter. Hand-writing it
+would save 0.3% of flash and no measurable time.
+
+It is also the part where the HAL genuinely earns its place. `LPSPI_MasterSetDelayTimes`
+is the largest single function at 644 bytes, and it is doing scaler search
+arithmetic; `LPSPI_MasterSetBaudRate` at 272 bytes is doing the prescaler and
+`SCKDIV` search. That is fiddly, easy to get subtly wrong, and it runs once
+where being slow costs nothing.
+
+All the cost that remains is in the **transfer** path - the 7,184 bytes that run
+42 times a frame at 4,845 cycles a call. That is where a hand-written driver
+pays, and it is a much smaller thing to write than a full init sequence.
+
+**One useful side effect of the baud rate search living in the HAL:** it picked
+the divider that clamped the requested 50 MHz to 37.5 MHz. `CCR[SCKDIV]` and
+`TCR[PRESCALE]` can be read back to recover the exact SCK the hardware settled
+on, which gives `confirm-spi-clock` an answer without a scope.
+
 ### Drop the receive path entirely
 
 `TCR[RXMSK]` masks received data so nothing is ever loaded into the RX FIFO.
