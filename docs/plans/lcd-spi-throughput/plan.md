@@ -292,6 +292,53 @@ Needs measuring rather than assuming: the 34 MiB/s was a synthetic burst, and
 whether it holds while the camera and the control loop are running is exactly
 the kind of thing this plan has been wrong about before.
 
+## Bigger levers than making the transfer faster
+
+Everything above shortens the transfer. These remove it from the algorithm's
+path instead, which is worth more.
+
+### Drive the streaming from interrupts, not the main loop
+
+`avc_usb_debug_stream__service()` is called from the main loop, so it competes
+with the algorithm for exactly the milliseconds this plan is trying to protect.
+The natural fix is to chain the next chunk from the **USB transfer-complete
+interrupt**: the stack already gets one, and the stream becomes self-sustaining
+with no main-loop cost at all. A timer IRQ is the cruder version - simpler, but
+it polls, and it picks a rate rather than following the link.
+
+The same argument applies to the LCD. The eDMA completion interrupt is already
+firing; the block loop could advance from there rather than from a busy-wait in
+`lpspi1_transfer_block()`. That alone would return most of the dump time to the
+algorithm without making the transfer one bit faster.
+
+### Use the second core
+
+The MCXN947 has **two Cortex-M33s at 150 MHz and we use one**. Core1 is sitting
+idle through all of this.
+
+Moving the display dump to core1 would make its 34 ms effectively free from
+core0's point of view - which is worth more than every optimisation in this plan
+combined, and would make the SPI clock question largely academic. The same
+applies to USB streaming.
+
+The shape that suggests itself: **core0 owns capture, vision and control; core1
+owns output** - LCD, USB, overlay rendering. That is a clean split along the
+line the frame budget already draws.
+
+What needs care before attempting it:
+
+- **The frame buffers live in a specific bank** (`FRAME_BUFFERS`, currently
+  304,936 of 393,216 bytes). Core1's access to that memory, and any cache
+  coherency between the cores, has to be established rather than assumed.
+- **The buffer aliasing gets worse, not better.** Today the dump and the camera
+  interleave on one core; with core1 reading while camera DMA writes, they are
+  genuinely concurrent. This needs explicit buffer ownership handoff, not a
+  hope that the timing works out.
+- **Nobody has brought core1 up yet** in this project, so the first step is a
+  bring-up exercise, not a port.
+
+Worth its own plan rather than being smuggled into this one.
+
 ## The part that matters more than all of the above
 
 The panel is 320x240 at 16 bpp, so a frame is **153,600 bytes**. That is
