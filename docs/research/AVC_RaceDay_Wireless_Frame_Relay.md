@@ -1,7 +1,15 @@
 # Race-day wireless frame relay: streaming a car's camera to a big screen
 
-Research note. Status: feasible, with one gating hardware check and one
-significant race-day risk. No commitment made.
+Research note. **Conclusion: use an Android phone on the chassis.** It reads the
+car's USB CDC stream over OTG, records every frame locally, and serves a live
+view over Wi-Fi to a browser on the projector laptop.
+
+The board survey that occupies most of this document - RW612, i.MX93, Radxa,
+Luckfox - is **superseded** and kept only as the contingency and as the record
+of how the requirements were derived. The measured transport numbers in it are
+still valid and still the basis for the bandwidth arithmetic.
+
+Nothing is committed. Implementation is a separate session.
 
 ## The question
 
@@ -137,6 +145,38 @@ prepaid unit is perfectly good.
 **Buy two.** At around 100 dollars, a spare is cheap insurance against the one
 that matters failing on race morning, and the second one doubles as the
 development unit so the race phone stays in a known state.
+
+A spare phone already to hand is enough to start - the buying decision only has
+to be made once the approach is proven, and proving it needs one handset and a
+cable.
+
+### Starting point for the implementation session
+
+In rough order, smallest useful thing first:
+
+1. **Prove USB host and CDC enumeration** with the spare phone and a cable.
+   Everything else depends on it, it needs no code beyond a terminal app, and it
+   is the assumption most likely to be wrong. Confirm the car enumerates and
+   bytes arrive.
+2. **Parse the existing packet format.** `AVC_USB_Debug_Transport_Protocol.md`
+   has the 32-byte header and the frame payload layout; the receiver already
+   exists in Python and can be read as the reference implementation rather than
+   reverse-engineered.
+3. **Record to storage first, display second.** Recording is the feature that
+   makes this better than every board considered, it has no network dependency,
+   and it is useful on its own even if the live view is never finished.
+4. **Then the live view**: phone serves an HTTP/WebSocket page, projector laptop
+   points a browser at it. Reuse the Web Serial viewer's rendering.
+5. **Hardware H.264 encode last.** It is the piece that makes full frame rate
+   survive a contended hall, but raw frames over a quiet 5 GHz link will
+   demonstrate the idea, and encoding is an optimisation of a working thing.
+
+Fallback if native Android proves slow going: the WebUSB spike already exists,
+runs in Chrome on the phone, and needs no install or store account.
+
+**The car needs no firmware change for any of this** beyond enabling
+`CONFIG__USB_DEBUG_STREAM_ENABLE`, which is the one thing on the car side that
+must be measured rather than assumed - see the frame-budget note below.
 
 ## Verdict (superseded - see above)
 
