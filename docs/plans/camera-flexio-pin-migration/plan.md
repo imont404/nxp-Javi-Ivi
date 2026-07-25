@@ -6,55 +6,66 @@ created = "2026-07-25"
 
 [[steps]]
 id = "confirm-board-access"
-title = "Confirm J9_EXT is accessible and the three target pins are free on the test board"
+title = "Confirm the three target pins are free and unclaimed on the test board"
 status = "pending"
 
 [[steps]]
-id = "baseline-ezh-capture"
-title = "Record the EZH baseline frame rate and image before touching anything"
+id = "baseline-capture"
+title = "Record EZH and Port 4 FlexIO baselines before changing anything"
 status = "pending"
+
+[[steps]]
+id = "pin-group-selector"
+title = "Add a FlexIO pin-group selector that keeps the Port 4 group as default"
+status = "pending"
+
+[[steps]]
+id = "decouple-port-hardcoding"
+title = "Decouple the FlexIO pin setup from PORT4 and from single-port contiguity"
+status = "pending"
+depends_on = ["pin-group-selector"]
+
+[[steps]]
+id = "port4-regression"
+title = "Prove the Port 4 FlexIO path still works after the refactor"
+status = "pending"
+depends_on = ["decouple-port-hardcoding"]
 
 [[steps]]
 id = "jumper-fit"
 title = "Fit the three J9_EXT jumpers and verify EZH still runs unchanged"
 status = "pending"
-depends_on = ["confirm-board-access", "baseline-ezh-capture"]
+depends_on = ["confirm-board-access", "baseline-capture"]
 
 [[steps]]
-id = "flexio-pinmux-profile"
-title = "Add a build profile that muxes the camera bus to FlexIO alt6"
+id = "port1-signal-diag"
+title = "Confirm live PCLK, HREF, and data toggling on the Port 1 FlexIO pins"
 status = "pending"
-depends_on = ["confirm-board-access"]
+depends_on = ["jumper-fit", "decouple-port-hardcoding"]
 
 [[steps]]
-id = "flexio-signal-diag"
-title = "Confirm live PCLK, HSYNC, and data toggling on the FlexIO pins"
+id = "port1-frame-capture"
+title = "Capture a correct frame through FlexIO plus eDMA on the Rev A camera pins"
 status = "pending"
-depends_on = ["jumper-fit", "flexio-pinmux-profile"]
+depends_on = ["port1-signal-diag"]
 
 [[steps]]
-id = "flexio-frame-capture"
-title = "Capture a correct frame through FlexIO plus eDMA on the migrated pins"
+id = "ezh-freed-demo"
+title = "Demonstrate the EZH is idle and claimable while FlexIO captures"
 status = "pending"
-depends_on = ["flexio-signal-diag"]
-
-[[steps]]
-id = "pclk-ceiling"
-title = "Find the usable PCLK ceiling with jumper stubs in place"
-status = "pending"
-depends_on = ["flexio-frame-capture"]
+depends_on = ["port1-frame-capture"]
 
 [[steps]]
 id = "backend-switch-parity"
 title = "Prove EZH and FlexIO both run on the identical harness by alt7/alt6 selection"
 status = "pending"
-depends_on = ["flexio-frame-capture"]
+depends_on = ["port1-frame-capture"]
 
 [[steps]]
 id = "rev-b-recommendation"
-title = "Record the Rev B routing recommendation with measured justification"
+title = "Record the Rev B routing recommendation"
 status = "pending"
-depends_on = ["pclk-ceiling", "backend-switch-parity"]
+depends_on = ["ezh-freed-demo", "backend-switch-parity"]
 
 [[steps]]
 id = "design-doc-intent-audit"
@@ -75,13 +86,28 @@ status = "pending"
 depends_on = ["rev-b-recommendation", "design-doc-intent-audit", "test-runtime-impact-audit"]
 
 [[exit_criteria]]
+id = "port4-not-regressed"
+title = "The existing Port 4 FlexIO path still builds and captures after the refactor"
+status = "pending"
+
+[[exit_criteria]]
+id = "both-groups-selectable"
+title = "Port 4 and Port 1 FlexIO pin groups are both selectable by configuration, Port 4 remaining the default"
+status = "pending"
+
+[[exit_criteria]]
 id = "jumpers-non-destructive"
 title = "The three jumpers are fitted with no cuts and EZH capture still works with them in place"
 status = "pending"
 
 [[exit_criteria]]
-id = "flexio-frame-correct"
-title = "FlexIO captures a correct frame on P1_4..P1_11 with PCLK on P1_14"
+id = "port1-frame-correct"
+title = "FlexIO captures a correct frame on P1_4..P1_11 with PCLK on P1_14, at no worse than the current frame rate"
+status = "pending"
+
+[[exit_criteria]]
+id = "ezh-available"
+title = "The EZH is demonstrably idle and claimable for other work while FlexIO captures"
 status = "pending"
 
 [[exit_criteria]]
@@ -90,13 +116,8 @@ title = "Backend selection is alt7 versus alt6 on identical wiring, with no rewi
 status = "pending"
 
 [[exit_criteria]]
-id = "pclk-headroom-known"
-title = "The usable PCLK ceiling and resulting frame rate are measured and compared against the EZH baseline"
-status = "pending"
-
-[[exit_criteria]]
 id = "rev-b-decision"
-title = "Rev B routing is either recommended with measured justification or explicitly declined"
+title = "Rev B routing is recommended or declined, with the jumpered result recorded as the evidence"
 status = "pending"
 
 [[exit_criteria]]
@@ -124,24 +145,28 @@ status = "pending"
 
 ## Purpose
 
-Make the camera capture backend a **software choice** instead of a board respin.
+**Free the EZH.** The EZH is wanted for other work that is not I/O-driven on these pins,
+and camera capture is what currently occupies it.
 
-Rev A is wired for EZH/SmartDMA. EZH caps PCLK, and it competes with core1 for the shared
-code bus, which is part of why core1 is unused today. The EZH is also wanted for other
-work. Moving capture to FlexIO frees it — but the previous FlexIO attempt targeted a
-completely different pin group and needed eleven fly-wires.
+**This is not a frame-rate exercise.** FlexIO capture already works in this firmware at
+the existing frame rate on the Port 4 pin group (`CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA`,
+`P4_12..P4_22`). What that path costs is **eleven fly-wires**, because Port 4 is not where
+the camera is routed.
 
-**Research finding:** the existing camera pins *do* carry FlexIO, and three jumpers make
-`P1_4..P1_11` simultaneously contiguous `FLEXIO0_D12..D19` **and** contiguous
-`SMARTDMA_PIO0..PIO7`. Backend selection then reduces to **alt7 vs alt6**.
+The question this plan answers is whether the **existing Rev A camera wiring** can drive
+FlexIO with minimal change — proving on hardware we already have that the EZH can be
+released, and informing what the next board revision should route.
 
-Full analysis, netlist evidence, and pin tables:
+**Matching the current frame rate is success.** Any improvement is incidental and cannot
+be claimed from a jumpered setup anyway.
+
+Analysis, netlist evidence, and pin tables:
 **`docs/research/AVC_Camera_FlexIO_Pin_Migration.md`**
 
 ## The Change
 
 Three short dupont jumpers on `J9_EXT` (spare 2x16 header on the same nets as J9, so the
-stack is undisturbed):
+stack is undisturbed). **Confirmed populated and ready on the test board.**
 
 | # | From | To | Why |
 |---|---|---|---|
@@ -155,78 +180,114 @@ drives P1_8 through 330 ohm. The VCOM is unused; debug is SEGGER RTT.
 **No cuts.** The camera signal stays on its original net; the old pin is muxed off in
 firmware. Both pins see the signal, only the new one is read.
 
-Firmware side:
+HSYNC needs no jumper — `P0_11` already carries `FLEXIO0_D3`. VSYNC stays a GPIO IRQ on
+`P0_4`.
 
-- `P1_4..P1_11` -> alt6 (`FLEXIO0_D12..D19`)
-- `P1_14` -> alt6 (`FLEXIO0_D22`, PCLK)
-- `P0_11` -> alt6 (`FLEXIO0_D3`, HSYNC) — no jumper needed, already FlexIO-capable
-- `P0_4` VSYNC -> GPIO IRQ, unchanged
-- Mux `P3_4`, `P3_5`, `P0_5` to disabled
-- Drop the three `INPUTMUX_AttachSignal` calls on the FlexIO path
+## Firmware Shape
 
-## Sequencing Notes
+Keep **both** FlexIO pin groups selectable. The Port 4 path works and must not be
+regressed; this adds a second option, it does not replace anything.
+
+```c
+#define CAMERA_FLEXIO_PIN_GROUP_PORT4  1   /* proven, needs 11 fly-wires      */
+#define CAMERA_FLEXIO_PIN_GROUP_PORT1  2   /* Rev A camera wiring + 3 jumpers */
+
+#ifndef CONFIG__CAMERA_FLEXIO_PIN_GROUP
+#define CONFIG__CAMERA_FLEXIO_PIN_GROUP (CAMERA_FLEXIO_PIN_GROUP_PORT4)
+#endif
+```
+
+| | Port 4 group (proven) | Port 1 group (new) |
+|---|---|---|
+| Data D0-D7 | `P4_12..P4_19` -> `D20..D27` | `P1_4..P1_11` -> `D12..D19` |
+| PCLK | `P4_20` -> `D28` | `P1_14` -> `D22` |
+| HREF | `P4_21` -> `D29` | `P0_11` -> `D3` |
+| VSYNC | `P4_22`, GPIO4 IRQ | `P0_4`, GPIO0 IRQ |
+
+## Step Notes
 
 ### confirm-board-access
 
-Desk research says `J9_EXT` is an unpopulated 2x16 on the same nets as J9. **Confirm on the
-physical test board before ordering any work around it.** Also confirm nothing on the
-shield needs `P1_14` (`EZH_LCD_D10`) while the SPI panel is selected.
+`J9_EXT` is confirmed populated. Still confirm nothing on the shield needs `P1_14`
+(`EZH_LCD_D10`) while the SPI panel is selected.
 
 Avoid `P1_12` (drives Q2 FDV301N plus R3 100k on the shield) and `P1_13` (R163 0 ohm to
-`ENET_RXDV/MODE2`, an Ethernet PHY bootstrap strap). `P1_15` is the equally clean
-alternate to `P1_14`.
+`ENET_RXDV/MODE2`, an Ethernet PHY bootstrap strap). `P1_15` -> `FLEXIO0_D23` is the clean
+alternate to `P1_14` if needed.
 
-### baseline-ezh-capture
+### baseline-capture
 
-Record frame rate, a reference image, and the current PCLK **before** fitting jumpers.
-Without this there is nothing to compare the FlexIO result against, and the whole point is
-the comparison.
+Record frame rate and a reference image for **both** the EZH build and the Port 4 FlexIO
+build before touching anything. The Port 4 baseline is what the Port 1 group must match;
+the EZH baseline is what proves the jumpers are non-destructive.
+
+### pin-group-selector / decouple-port-hardcoding
+
+The existing FlexIO path is already parameterised by `CAMERA_FLEXIO_DATA_GPIO_START_PIN`,
+`CAMERA_FLEXIO_DATA_PIN_START`, `CAMERA_FLEXIO_PCLK_PIN`, and `CAMERA_FLEXIO_HREF_PIN`, so
+the shifter, timer, and eDMA setup need **no structural change** — only different
+constants. Three couplings do block a second group:
+
+- **~48 hardcoded `PORT4`/`GPIO4` references**, plus `kCLOCK_Port4` / `kCLOCK_Gpio4`.
+- **`camera__configure_flexio_edma_pins()` walks one contiguous range on one port**
+  (`for (pin = DATA_GPIO_START_PIN; pin <= CAMERA_DIAG_HSYNC_PIN; pin++)`). The Port 1
+  group has a gap (data ends at `P1_11`, PCLK is `P1_14`) and puts HREF on a **different
+  port** (`P0_11`). Split into a data loop plus explicit PCLK and HREF configuration.
+- **VSYNC IRQ is hardcoded** to `GPIO40_IRQn` / `GPIO40_IRQHandler`. The Port 1 group needs
+  `GPIO00_IRQHandler`.
+
+In our favour: **`GPIO00_IRQHandler` already exists** in this file and already services
+`P0_4` and `P0_11` as the reference diagnostic counters (`CAMERA_REF_VSYNC_PIN`,
+`CAMERA_REF_HSYNC_PIN`). The Port 1 sync pins are already configured, already
+interrupting, already counted — the work is promoting that handler from counting to
+driving capture. **Watch for a conflict with the reference diagnostic**, which uses the
+same pins.
+
+This is a **prove-it-is-possible** exercise. A build-system-wide cleanup comes later; the
+near-term bar is only that the Port 4 group stays selectable and unbroken.
+
+### port4-regression
+
+Non-negotiable. The refactor touches a working capture path. Rebuild the Port 4 group and
+confirm it still captures before trusting anything about Port 1.
 
 ### jumper-fit
 
 After fitting, **the EZH build must still work unchanged**. That is the proof the change
-is non-destructive and the fallback is intact. If EZH breaks with jumpers in, stop — the
-stubs are already a problem and the PCLK ceiling question is answered badly.
+is non-destructive and the fallback intact.
 
-### flexio-pinmux-profile
+### ezh-freed-demo
 
-Follow the existing pattern: a `CONFIG__` selection with `#error` guards, matching how
-`CONFIG__CAMERA_CAPTURE_BACKEND` and `CONFIG__MOTOR_ENCODER_BACKEND` already gate risky
-subsystems. **The Rev A competition default must not change.**
-
-### pclk-ceiling
-
-The jumpers add stubs to three signals. Expect this to limit PCLK below what properly
-routed traces would allow. **Do not conclude anything about FlexIO's real frame-rate
-ceiling from the jumpered setup** — that is what Rev B routing is for. Measure and record
-the difference honestly.
-
-### backend-switch-parity
-
-The headline claim is that the same physical harness runs both backends. Demonstrate it:
-build EZH, capture, build FlexIO, capture, no hands on the hardware in between.
+The actual point of the plan. Show the EZH is idle and claimable while FlexIO captures —
+not merely that FlexIO works. A minimal EZH program doing something unrelated, running
+concurrently with FlexIO capture, is the convincing demonstration.
 
 ### rev-b-recommendation
 
-Rev B would route cam D4/D5 to `P1_8`/`P1_9` and PCLK to `P1_14`, giving zero jumpers,
-properly routed PCLK, and a freed EZH. **Only recommend it with a measured frame-rate
-number** — the whole justification is beating the ~24 FPS EZH ceiling, and if FlexIO does
-not clearly beat it, say so and decline.
+Rev B would route cam D4/D5 to `P1_8`/`P1_9` and PCLK to `P1_14`: zero jumpers, PCLK
+routed properly instead of hanging off a dupont stub, EZH free. **The jumpered result
+informs this decision rather than justifying it on frame rate.** If the Port 1 group
+captures correctly and matches the current rate, Rev B is worth doing purely to free the
+EZH.
+
+Note the jumpers add stubs to three signals. Do not conclude anything about a properly
+routed board's PCLK ceiling from them.
 
 ## Constraints
 
-- **The race is late August 2026.** This work must not put the competition image at risk.
-  Everything stays behind a build flag; Rev A EZH remains the default until there is a
-  measured reason to change and time to validate it. See
+- **The race is late August 2026.** This must not put the competition image at risk.
+  Everything stays behind configuration; Rev A EZH remains the default. See
   `docs/research/AVC_Competition_Overview.md`.
 - Rev A hardware is in Guatemala. This work happens on the local test board.
+- The Port 4 FlexIO path is working code. Regressing it is a failure, not a tradeoff.
 
 ## Source Material
 
 - `docs/research/AVC_Camera_FlexIO_Pin_Migration.md` — the analysis behind this plan
-- `docs/research/FlexIO_Camera_Test_Plan.md` — prior FlexIO plan, Port 4 pin group
-- `docs/research/MCXN947/flexio_camera_io_pin_map.md` — prior pin map
+- `docs/research/FlexIO_Camera_Test_Plan.md` — the Port 4 FlexIO work
+- `docs/research/MCXN947/flexio_camera_io_pin_map.md` — Port 4 pin map
 - `docs/research/MCXN947/json/ksdk2_0/MCXN947VDF/signal_configuration.json` — pin mux authority
 - `frdm-avc/tracks/A/output/design_review/design/` — shield netlist
 - `docs/FRDM-MCXN947/.../design_review/design/` — FRDM board netlist
-- `src/avc/avc_core0/source/avc_io/bv_camera__interface.c:1430-1447` — current pin setup
+- `src/avc/avc_core0/source/avc_io/bv_camera__interface.c` — pin setup at 1430-1447 (EZH),
+  546-607 (FlexIO pins), 609+ (FlexIO/shifter config), 1074 and 1119 (IRQ handlers)

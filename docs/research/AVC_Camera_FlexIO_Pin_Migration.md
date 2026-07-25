@@ -1,15 +1,38 @@
 # Camera Capture Backend — Can FlexIO Use the Existing EZH Pins?
 
-**Question:** Rev A is wired for the EZH/SmartDMA camera backend. EZH caps PCLK and
-consumes core1's usable bandwidth (shared code bus), and the EZH may be wanted for other
-work. **Do the pins the camera is already routed to also carry FlexIO — so the backend
-becomes a software choice rather than a board respin?**
+**Question:** Do the pins the camera is *already routed to* on Rev A also carry FlexIO —
+so the capture backend becomes a software choice rather than a board respin?
 
 **Answer: yes, with three jumper wires.** After them, `P1_4..P1_11` is *simultaneously*
 contiguous `FLEXIO0_D12..D19` and contiguous `SMARTDMA_PIO0..PIO7` — EZH vs FlexIO
 becomes **alt7 vs alt6** on identical wiring.
 
 **Date:** 2026-07-25. Desk research against netlists and NXP signal data. Not yet built.
+
+## Purpose — read this first
+
+**The goal is to free the EZH, not to raise the frame rate.**
+
+FlexIO camera capture **already works** in this firmware, at the existing frame rate, on
+the Port 4 pin group (`CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA`, `P4_12..P4_22`). That path is
+proven. What it needs is eleven fly-wires, because Port 4 is not where the camera is
+routed.
+
+The EZH is wanted for **other work that is not I/O-driven on these pins**. Capture is
+currently what occupies it. Moving capture to FlexIO releases it — and as a secondary
+benefit, stops capture competing with core1 for the shared code bus.
+
+So this investigation is about **wiring, not throughput**:
+
+- Can the *existing* Rev A camera wiring drive FlexIO with minimal change?
+- Does that let us prove the EZH can be freed on hardware we already have?
+- What should the next board revision route?
+
+**Frame rate is not a success criterion.** Matching the current rate is sufficient. Any
+improvement is incidental and must not be claimed from a jumpered setup anyway.
+
+**Both FlexIO pin groups stay selectable.** The Port 4 path is working and must not be
+regressed — this adds a second option behind a `#define`, it does not replace anything.
 
 ---
 
@@ -144,31 +167,105 @@ until Rev B routes it properly.
 - Mux `P3_4`, `P3_5`, `P0_5` to disabled
 - Drop the three `INPUTMUX_AttachSignal` calls on the FlexIO path
 
-## 7. Why this beats the previous FlexIO attempt
+## 7. Code analysis — what has to change
+
+Source: `src/avc/avc_core0/source/avc_io/bv_camera__interface.c`.
+
+The working FlexIO path is **already partly parameterised**, which helps:
+
+```c
+#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (12U)  /* PORT pin index of camera D0     */
+#define CAMERA_FLEXIO_DATA_PIN_START      (20U)  /* FLEXIO0_D index of camera D0    */
+#define CAMERA_FLEXIO_PCLK_PIN            (28U)  /* FLEXIO0_D index for PCLK        */
+#define CAMERA_FLEXIO_HREF_PIN            (29U)  /* FLEXIO0_D index for HREF        */
+#define CAMERA_DIAG_PCLK_PIN              (20U)  /* PORT4 pin index                 */
+#define CAMERA_DIAG_HSYNC_PIN             (21U)  /* PORT4 pin index                 */
+#define CAMERA_DIAG_VSYNC_PIN             (22U)  /* PORT4 pin index                 */
+```
+
+### What blocks a second pin group
+
+| Coupling | Where | Why it blocks Port 1 |
+|---|---|---|
+| **Port hardcoded** | ~48 `PORT4`/`GPIO4` references, `kCLOCK_Port4`, `kCLOCK_Gpio4` | Port 1 group needs `PORT1`/`GPIO1` for data |
+| **Single contiguous loop** | `camera__configure_flexio_edma_pins()`: `for (pin = DATA_GPIO_START_PIN; pin <= CAMERA_DIAG_HSYNC_PIN; pin++)` on `PORT4` | Assumes data + PCLK + HREF are consecutive pins on **one** port. Port 1 group has data on `P1_4..P1_11`, PCLK on `P1_14` (gap at 12/13), HREF on **`P0_11` — a different port** |
+| **VSYNC IRQ hardcoded** | `GPIO40_IRQn`, `GPIO40_IRQHandler` | Port 1 group's VSYNC is `P0_4` → `GPIO00_IRQHandler` |
+
+### What is already in our favour
+
+- **`GPIO00_IRQHandler` already exists** in this file and already services `P0_4` (VSYNC)
+  and `P0_11` (HSYNC) as the *reference* diagnostic counters
+  (`CAMERA_REF_VSYNC_PIN 4`, `CAMERA_REF_HSYNC_PIN 11`). The Port 1 group's sync pins are
+  therefore **already configured, already interrupting, already counted**. The work is
+  promoting that handler from counting to driving capture — not building it.
+- Shifter/timer/eDMA config (`camera__configure_flexio_camera()`) is expressed purely in
+  terms of the `FLEXIO0_D` indices above, so it needs **no structural change** — only
+  different constants.
+- `camera__flexio_timer_trigger_sel_pininput()` derives the timer trigger from the PCLK
+  FlexIO index, so PCLK moving from `D28` to `D22` is a constant change.
+
+### Required shape
+
+Add a pin-group selector alongside the existing backend selector, defaulting to the
+proven Port 4 group:
+
+```c
+#define CAMERA_FLEXIO_PIN_GROUP_PORT4  1   /* proven, needs 11 fly-wires   */
+#define CAMERA_FLEXIO_PIN_GROUP_PORT1  2   /* Rev A camera wiring + 3 jumpers */
+
+#ifndef CONFIG__CAMERA_FLEXIO_PIN_GROUP
+#define CONFIG__CAMERA_FLEXIO_PIN_GROUP (CAMERA_FLEXIO_PIN_GROUP_PORT4)
+#endif
+```
+
+Then per-group constants for: data port/GPIO/clock/start-pin/FlexIO-start, PCLK
+port+pin+FlexIO index, HREF port+pin+FlexIO index, VSYNC port+GPIO+pin+IRQn. And split
+the one contiguous loop into a data loop plus explicit PCLK and HREF configuration, since
+they are no longer guaranteed to be adjacent or even on the same port.
+
+**This is a prove-it-is-possible exercise.** A tidy build-system-wide cleanup comes later;
+the near-term requirement is only that the Port 4 group remains selectable and unbroken.
+
+### Group constants
+
+| | Port 4 group (proven) | Port 1 group (proposed) |
+|---|---|---|
+| Data D0–D7 | `P4_12..P4_19` → `D20..D27` | `P1_4..P1_11` → `D12..D19` |
+| PCLK | `P4_20` → `D28` | `P1_14` → `D22` |
+| HREF | `P4_21` → `D29` | `P0_11` → `D3` |
+| VSYNC | `P4_22`, GPIO4 IRQ | `P0_4`, GPIO0 IRQ |
+| Wires needed | 11 fly-wires | **3 jumpers on `J9_EXT`** |
+
+## 8. Relationship to the earlier FlexIO work
 
 `FlexIO_Camera_Test_Plan.md` and `MCXN947/flexio_camera_io_pin_map.md` target
-`P4_12..P4_23` → `FLEXIO0_D20..D31`, which needs **all eight data lines fly-wired** plus
-the syncs. The `P1_4..P1_11` group **is the existing camera wiring** — three wires instead
-of eleven, and it keeps EZH working on the same harness.
+`P4_12..P4_23`. **That path works and is not being replaced.** It simply is not where the
+camera is routed, so it costs eleven fly-wires. The `P1_4..P1_11` group **is** the
+existing camera wiring — three jumpers, and EZH keeps working on the same harness.
 
-## 8. Rev B
+## 9. Rev B
 
 Route camera **D4/D5 to P1_8/P1_9** instead of P3_4/P3_5, and **PCLK to P1_14** instead of
-P0_5. Then both backends work natively with zero jumpers, PCLK can be routed for signal
-integrity, and the EZH is freed for other use.
+P0_5. Then both backends work natively with zero jumpers, PCLK is routed properly for
+signal integrity rather than hanging off a dupont stub, and the EZH is free.
 
-## 9. Open items
+The jumpered build's job is to **inform this decision**, not to justify it on frame rate.
+If the Port 1 group captures correctly and matches the current rate, Rev B is worth doing
+purely to free the EZH.
+
+## 10. Open items
 
 - Confirm `J9_EXT` is unpopulated/accessible on the physical test board.
 - Confirm nothing else on the shield needs `P1_14` (`EZH_LCD_D10`) while the SPI panel is
   selected.
 - Whether MCU-Link TX on P1_8 disturbs D4 in practice, or R173 must come off.
-- Whether stub length on the three jumpers limits usable PCLK — measure before concluding
-  anything about FlexIO's frame-rate ceiling.
-- Actual FlexIO frame rate achieved vs the ~24 FPS EZH ceiling. That number is the whole
-  justification for Rev B.
+- Whether stub length on the three jumpers limits usable PCLK. Only matters if it stops
+  the Port 1 group **matching** the current frame rate; the jumpered setup says nothing
+  about a properly routed board.
+- Whether promoting `GPIO00_IRQHandler` from reference-counting to driving capture
+  conflicts with the existing reference diagnostic, which uses the same pins.
 
-## 10. Related
+## 11. Related
 
 - [`FlexIO_Camera_Test_Plan.md`](FlexIO_Camera_Test_Plan.md) — prior FlexIO plan (Port 4 group)
 - [`MCXN947/flexio_camera_io_pin_map.md`](MCXN947/flexio_camera_io_pin_map.md) — prior pin map
