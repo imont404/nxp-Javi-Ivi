@@ -169,6 +169,24 @@
 #define CONFIG__DISPLAY_TIMING_DIAG_ENABLE		(0)
 #endif
 
+/*
+ * Scope marker for the frame dump, on P4_1.
+ *
+ * Drives P4_1 high for the whole per-frame LCD dump - both eGFX_DumpRaw calls -
+ * and low between. Pulse width is the total dump time, pulse period is the
+ * frame period, both read directly off a scope.
+ *
+ * This exists because the software instrumentation cannot be trusted: it reads
+ * the DWT cycle counter, and avc__next_frame() zeroes that counter on every
+ * camera frame. A GPIO edge does not care.
+ *
+ * P4_1 is already configured as an output in pin_mux.c, and P4_0 is used the
+ * same way by the memcpy DMA path.
+ */
+#ifndef CONFIG__DISPLAY_SCOPE_MARKER_ENABLE
+#define CONFIG__DISPLAY_SCOPE_MARKER_ENABLE		(0)
+#endif
+
 /* Report once per this many eGFX_DumpRaw calls. Two calls per frame. */
 #ifndef CONFIG__DISPLAY_TIMING_DIAG_REPORT_CALLS
 #define CONFIG__DISPLAY_TIMING_DIAG_REPORT_CALLS	(48)

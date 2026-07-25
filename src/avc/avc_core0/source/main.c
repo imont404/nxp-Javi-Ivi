@@ -26,6 +26,19 @@ bool testmode__motors_enable = 0;
  * diagnostic builds can force it so the display path can be measured without
  * someone at the bench. See CONFIG__FORCE_TEST_MODE.
  */
+/*
+ * Scope marker bracketing the whole per-frame LCD dump. See
+ * CONFIG__DISPLAY_SCOPE_MARKER_ENABLE. Independent of the cycle counter, which
+ * avc__next_frame() resets.
+ */
+#if CONFIG__DISPLAY_SCOPE_MARKER_ENABLE
+#define AVC_SCOPE_DUMP_BEGIN() GPIO_PinWrite(GPIO4, 1U, 1U)
+#define AVC_SCOPE_DUMP_END()   GPIO_PinWrite(GPIO4, 1U, 0U)
+#else
+#define AVC_SCOPE_DUMP_BEGIN() do { } while (0)
+#define AVC_SCOPE_DUMP_END()   do { } while (0)
+#endif
+
 #if CONFIG__FORCE_TEST_MODE
 #define AVC_TEST_MODE_ACTIVE() (1)
 #else
@@ -310,6 +323,7 @@ int main(void)
             	 *
             	 */
 
+            	AVC_SCOPE_DUMP_BEGIN();
             	eGFX_DumpRaw((uint8_t *)top_info.Data,
                 					  320*40*2,
                 					  0,
@@ -327,6 +341,8 @@ int main(void)
             					  319,
             					  40,
             					  39+200);
+
+            	AVC_SCOPE_DUMP_END();
 
             }
 
