@@ -72,19 +72,19 @@ depends_on = ["relay-backpressure"]
 [[steps]]
 id = "full-rate-jpeg"
 title = "Benchmark full-camera-rate JPEG from RGB565 without blocking USB or growing latency"
-status = "active"
+status = "done"
 depends_on = ["compression-inventory"]
 
 [[steps]]
 id = "hardware-h264"
 title = "Prove and benchmark hardware-accelerated H.264 encoding from the existing RGB565 camera stream"
-status = "pending"
+status = "done"
 depends_on = ["compression-inventory"]
 
 [[steps]]
 id = "compressed-browser-delivery"
 title = "Select and integrate the simplest compressed browser delivery path supported by measured phone performance"
-status = "pending"
+status = "active"
 depends_on = ["full-rate-jpeg", "hardware-h264"]
 
 [[steps]]
@@ -144,7 +144,7 @@ status = "met"
 [[exit_criteria]]
 id = "full-rate-compression"
 title = "The phone sustains the camera frame rate through a bounded compressed-video path without degrading USB capture"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "rf-bitrate"
@@ -206,6 +206,16 @@ buffers as well as surface input, so the first H.264 proof can use a bounded RGB
 YUV420 conversion without adding EGL or changing the camera firmware. The vendor codec
 table advertises roughly 125-129 FPS at 320x240; the live measurement remains decisive
 because it includes conversion, codec queueing, USB capture, preview, and relay load.
+
+Both live compression probes now sustain the 23.42 FPS source while USB remains at
+2.869-2.870 MiB/s with zero sequence and malformed-chunk errors. JPEG quality 70 measured
+23.47 FPS, 1.956 Mbit/s, about 4.0 ms mean end-to-end encode latency, no drops after
+startup, and 48 MiB PSS. MediaTek hardware H.264 at a 750 kbit/s target measured 23.38
+FPS, 0.752 Mbit/s, about 50.8 ms mean latency, four bounded startup drops, and 74 MiB PSS.
+The measured RF saving from H.264 is real, but full-rate JPEG is already only about eight
+percent of raw RGB565 bandwidth and is much simpler for an ordinary browser to consume.
+Use JPEG for the next one-browser MVP; retain H.264 as a proven option if race-network
+measurements justify its added framing, initialization, and browser-decoder complexity.
 
 ## Concrete Hardware
 

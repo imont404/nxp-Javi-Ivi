@@ -77,6 +77,8 @@ check an already running app directly, use:
 .\scripts\android\test_android_relay_backpressure.ps1 -Serial <phone-ip>:5555
 .\scripts\android\test_android_session_reconnect.ps1 -Serial <phone-ip>:5555
 .\scripts\android\test_android_locked_relay.ps1 -Serial <phone-ip>:5555
+.\scripts\android\test_android_compression.ps1 -Mode jpeg -Serial <phone-ip>:5555
+.\scripts\android\test_android_compression.ps1 -Mode h264 -Serial <phone-ip>:5555
 ```
 
 The verified `yellow`-network proof rendered live video and `system.uptime` in desktop
@@ -104,6 +106,14 @@ keep the local relay reachable when the secure lockscreen enters Doze; all are r
 when the activity exits. The locked-screen test deliberately sleeps the phone, confirms
 `Dozing` plus screen-off state, verifies live frames, and wakes it again. The original
 one-minute screen timeout remains unchanged.
+
+The compression probe is opt-in and never runs in the normal bridge launch. It copies
+only the newest complete RGB565 frame into a fixed three-buffer worker, so JPEG or H.264
+work cannot block the USB reader or create a growing queue. JPEG uses Android's bitmap
+encoder; H.264 converts RGB565 little-endian to I420 with fixed LUTs and feeds the
+phone's non-secure hardware AVC encoder through bounded byte buffers. The test script
+launches one mode for a fixed interval, requires at least 20 encoded FPS and clean USB
+parser health, reports memory/battery data, then restores the normal bridge.
 
 A short fully loaded, locked-screen sample held 27 C, 23.42 USB FPS, 2.869 MiB/s, and
 49-60 MiB PSS while current draw varied from roughly 427 to 588 mA. This is a development

@@ -3,9 +3,10 @@
 Research note. **Conclusion: use the available Moto G Power 5G (2023) as the
 Android relay.** Its native USB-host, framed CDC control path, and live phone preview
 are now verified on the Rev A car. Its embedded one-browser Wi-Fi relay also renders
-live video and generic telemetry on a laptop. Slow-client/reconnect hardening, race-day
-hardening is now verified; physical integration, race-day network selection, recording,
-and hardware video encoding remain follow-ups.
+live video and generic telemetry on a laptop. Slow-client, reconnect, and locked-screen
+hardening are verified. Full-rate JPEG and hardware H.264 have now also been measured;
+compressed browser delivery, physical integration, and race-day network selection remain
+follow-ups.
 
 The board survey that occupies most of this document - RW612, i.MX93, Radxa,
 Luckfox - is **superseded** and kept only as the contingency and as the record
@@ -65,11 +66,13 @@ display end is a browser pointed at its address - nothing to install on the
 laptop driving the projector, and it reuses the viewer thinking already done for
 the Web Serial page. Fewer moving parts than a custom receiver on both ends.
 
-**Hardware video encoding is a later optimization.** The phone has hardware video
-facilities, but feeding raw RGB565 camera buffers into Android's codec path needs
-conversion and lifecycle work that does not help prove USB host operation. Raw RGB565
-at full rate is 24 Mbps. The first relay proof should decimate complete frames to about
-6 Mbps; H.264 can be evaluated after the end-to-end path is measured.
+**Compression is now measured.** Raw RGB565 at full rate is 24.1 Mbit/s. On the live
+camera stream, JPEG quality 70 sustained 23.47 FPS at 1.956 Mbit/s with about 4.0 ms mean
+encode latency. The Moto's MediaTek hardware AVC encoder sustained 23.38 FPS at 0.752
+Mbit/s with about 50.8 ms mean latency, including the RGB565-to-I420 conversion. Both
+kept USB at 23.42 FPS with clean parser health. JPEG is the next browser MVP because its
+independent frames are trivial to carry over the existing bounded WebSocket; H.264 is a
+proven lower-bitrate option if the race RF test justifies more browser plumbing.
 
 The earlier analysis already identified the right first lever: decimate to every
 fourth complete frame. This preserves a useful 5.9 FPS preview and gives the Wi-Fi
@@ -151,16 +154,20 @@ In rough order, smallest useful thing first:
    accepted a new client immediately; the final source-to-sent frame gap was one.
 6. **Stress app restart: complete.** Six abrupt process losses recovered distinct
    firmware sessions 27-32, clean USB video, telemetry, and recent Wi-Fi frames. The test
-   found a restart-dependent IPv6-only wildcard listener; explicitly selecting IPv4 and
-   binding the WLAN address fixed it.
-7. **Validate the physical vehicle: active.** USB removal/reinsertion, car power cycle,
+   now explicitly selects IPv4 and binds the active WLAN address.
+7. **Benchmark compression: complete.** Fixed-buffer JPEG and hardware H.264 probes both
+   sustained full camera rate without corrupting or slowing USB. JPEG quality 70 used
+   about 1.96 Mbit/s and 48 MiB PSS; H.264 at a 750 kbit/s target used about 0.75 Mbit/s
+   and 74 MiB PSS. The test harness restores the normal bridge after each opt-in run.
+8. **Deliver full-rate JPEG to the browser: active.** Preserve bounded latest-frame
+   semantics and generic `AVCU` telemetry, then measure actual Wi-Fi frame age and RF
+   bitrate. Keep hardware H.264 available rather than making it the first browser path.
+9. **Validate the physical vehicle: pending.** USB removal/reinsertion, car power cycle,
    mounting and strain relief, phone thermal/battery runtime, and actual race-network RF
    remain attended tests. The locked-screen software case now passes: a connected-device
    foreground service kept CPU and Wi-Fi active while Android reported `Dozing`, screen
    off, and light idle. A short loaded baseline held 27 C and roughly 427-588 mA draw;
    it is not a substitute for the race-duration measurement.
-8. **Add recording or H.264 only after the MVP is measured.** They are valuable race-day
-   features, but neither should delay proof of the actual USB-to-browser path.
 
 No reusable Android/WebUSB implementation was found in the inspected Bunny Vision tree,
 so it is not a fallback dependency.

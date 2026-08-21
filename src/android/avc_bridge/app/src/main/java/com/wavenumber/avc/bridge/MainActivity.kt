@@ -26,6 +26,9 @@ import com.wavenumber.avc.bridge.usb.AvcUsbSession
 import com.wavenumber.avc.bridge.usb.AvcUsbState
 import com.wavenumber.avc.bridge.relay.AvcRelayServer
 import com.wavenumber.avc.bridge.video.AvcCodecInventory
+import com.wavenumber.avc.bridge.video.AvcCompressionMode
+import com.wavenumber.avc.bridge.video.AvcCompressionProbe
+import com.wavenumber.avc.bridge.video.AvcCompressionSnapshot
 import java.nio.ByteBuffer
 import java.util.Locale
 
@@ -33,6 +36,7 @@ class MainActivity : Activity() {
     companion object {
         private const val ACTION_USB_PERMISSION = "com.wavenumber.avc.bridge.USB_PERMISSION"
         private const val HEALTH_TAG = "AVC_BRIDGE_HEALTH"
+        private const val COMPRESSION_TAG = "AVC_COMPRESSION"
     }
 
     private lateinit var usbManager: UsbManager
@@ -40,6 +44,9 @@ class MainActivity : Activity() {
     private lateinit var relayServer: AvcRelayServer
     private lateinit var statusView: TextView
     private lateinit var previewView: ImageView
+    private var compressionProbe: AvcCompressionProbe? = null
+    @Volatile
+    private var compressionSnapshot: AvcCompressionSnapshot? = null
     private val previewBitmap = Bitmap.createBitmap(320, 200, Bitmap.Config.RGB_565)
     private var permissionPending = false
     private var renderedFrames = 0L
@@ -101,10 +108,23 @@ class MainActivity : Activity() {
         } else {
             avcEncoders.forEach { Log.i("AVC_CODEC_INVENTORY", AvcCodecInventory.logLine(it)) }
         }
+        AvcCompressionMode.parse(intent.getStringExtra("compression_probe"))?.let { mode ->
+            compressionProbe = AvcCompressionProbe(
+                mode = mode,
+                jpegQuality = intent.getIntExtra("jpeg_quality", 70),
+                h264Bitrate = intent.getIntExtra("h264_bitrate", 750_000),
+            ) { snapshot ->
+                compressionSnapshot = snapshot
+                Log.i(COMPRESSION_TAG, snapshot.logLine())
+            }
+        }
         session = AvcUsbSession(
             usbManager,
             ::showHealth,
-            relayServer::offerFrame,
+            { frame ->
+                relayServer.offerFrame(frame)
+                compressionProbe?.offerFrame(frame)
+            },
             relayServer::offerDiagnostic,
         )
         previewView = ImageView(this).apply {
@@ -165,6 +185,7 @@ class MainActivity : Activity() {
     override fun onDestroy() {
         previewView.removeCallbacks(renderLoop)
         session.stop()
+        compressionProbe?.close()
         relayServer.stop()
         stopService(Intent(this, BridgeKeepAliveService::class.java))
         unregisterReceiver(usbReceiver)
@@ -233,6 +254,16 @@ class MainActivity : Activity() {
                     "Relay frames: selected=${relay.selectedFrames} sent=${relay.sentFrames} " +
                         "dropped=${relay.droppedFrames} clients=${relay.clients}",
                 )
+                compressionSnapshot?.let { compression ->
+                    appendLine(
+                        "Compression: ${compression.mode.wireName} ${compression.state} " +
+                            "%.1f FPS %.3f Mbit/s drops=${compression.droppedFrames}".format(
+                                Locale.US,
+                                compression.framesPerSecond,
+                                compression.megabitsPerSecond,
+                            ),
+                    )
+                }
                 if (health.sessionId != 0L) appendLine("Session ID: ${health.sessionId}")
             }
             Log.i(

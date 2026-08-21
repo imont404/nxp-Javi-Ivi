@@ -2,6 +2,7 @@ package com.wavenumber.avc.bridge.video
 
 import android.media.MediaCodecInfo
 import android.media.MediaCodecList
+import android.os.Build
 
 data class AvcEncoderCapability(
     val name: String,
@@ -48,12 +49,13 @@ object AvcCodecInventory {
     private fun capability(info: MediaCodecInfo): AvcEncoderCapability? = try {
         val capabilities = info.getCapabilitiesForType(MIME_TYPE)
         val video = capabilities.videoCapabilities
+        val knownSoftwareCodec = info.name.startsWith("c2.android.") || info.name.startsWith("OMX.google.")
         AvcEncoderCapability(
             name = info.name,
-            canonicalName = info.canonicalName,
-            hardwareAccelerated = info.isHardwareAccelerated,
-            softwareOnly = info.isSoftwareOnly,
-            vendor = info.isVendor,
+            canonicalName = if (Build.VERSION.SDK_INT >= 29) info.canonicalName else info.name,
+            hardwareAccelerated = if (Build.VERSION.SDK_INT >= 29) info.isHardwareAccelerated else !knownSoftwareCodec,
+            softwareOnly = if (Build.VERSION.SDK_INT >= 29) info.isSoftwareOnly else knownSoftwareCodec,
+            vendor = if (Build.VERSION.SDK_INT >= 29) info.isVendor else !knownSoftwareCodec,
             colorFormats = capabilities.colorFormats.toList(),
             widthRange = video.supportedWidths.toString(),
             heightRange = video.supportedHeights.toString(),
