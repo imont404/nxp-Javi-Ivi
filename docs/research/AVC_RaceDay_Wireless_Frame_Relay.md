@@ -1,15 +1,19 @@
 # Race-day wireless frame relay: streaming a car's camera to a big screen
 
-Research note. **Conclusion: use an Android phone on the chassis.** It reads the
-car's USB CDC stream over OTG, records every frame locally, and serves a live
-view over Wi-Fi to a browser on the projector laptop.
+Research note. **Conclusion: use the available Moto G Power 5G (2023) as the
+Android relay.** Its native USB-host and framed CDC control path are now verified
+on the Rev A car. Live phone preview and then a one-browser Wi-Fi relay are the
+next milestones. Recording and hardware video encoding remain follow-ups.
 
 The board survey that occupies most of this document - RW612, i.MX93, Radxa,
 Luckfox - is **superseded** and kept only as the contingency and as the record
 of how the requirements were derived. The measured transport numbers in it are
 still valid and still the basis for the bandwidth arithmetic.
 
-Nothing is committed. Implementation is a separate session.
+The Android foundation and unattended development loop were completed on 2026-08-21.
+Execution state and bench evidence live in
+`docs/plans/android-telemetry-bridge/plan.md`; reproducible setup and connection
+instructions live in `src/android/avc_bridge/README.md`.
 
 ## The question
 
@@ -23,24 +27,25 @@ Whatever we build must consume the stream the car already produces.
 
 ## Update: the relay is a phone
 
-Everything below surveys boards to buy. It is superseded by a better answer that
-costs nothing: **an Android phone riding on the chassis**.
+Everything below surveys boards to buy. It is superseded by the available
+**Moto G Power 5G (2023) riding on the chassis**.
 
-A phone is already the exact machine this job needs, and every student has one:
+This specific phone is a substantially better starting point than the older Moto G4
+first mentioned during planning:
 
 | Need | Board survey answer | Phone |
 |---|---|---|
-| USB host for the CDC stream | the gating question for every board | OTG, built in |
-| Dual-band Wi-Fi | disqualified half the survey | built in, 5 GHz |
-| Power | 12-20 V PD, or another cable | own battery |
-| Storage for recording | microSD, sometimes absent | tens of GB |
+| USB host for the CDC stream | the gating question for every board | verified on J11 with the OTG adapter topology |
+| Dual-band Wi-Fi | disqualified half the survey | 802.11ac, 2.4/5 GHz, hotspot |
+| Power | 12-20 V PD, or another cable | 5000 mAh battery |
+| Storage for recording | microSD, sometimes absent | 256 GB plus microSD support |
 | A screen | none of them had one | it is a screen |
 | Procurement, four weeks out | stock risk, backorders | already in a pocket |
-| Cost | 15-30 dollars each | zero if borrowed, ~100 dollars for a dedicated one |
+| Cost | 15-30 dollars each | already available |
 
 There is space under the top deck for a small phone, so it can stay attached and
-serve as both recorder and transmitter: read CDC over OTG, write frames to
-storage at full rate, and stream a decimated copy over Wi-Fi to the big screen.
+serve as the receiver and transmitter: read CDC over OTG and stream a decimated
+copy over Wi-Fi to the big screen. Recording is not implemented yet.
 
 **Recording is the part no board offered.** A phone can capture every frame to
 local storage at full rate with no radio involved at all, and the network path
@@ -58,16 +63,15 @@ display end is a browser pointed at its address - nothing to install on the
 laptop driving the projector, and it reuses the viewer thinking already done for
 the Web Serial page. Fewer moving parts than a custom receiver on both ends.
 
-**Hardware video encoding is the big one.** Every phone has an H.264 encoder in
-silicon, and it is free to use. Raw RGB565 at full rate is 24 Mbps; the same
-content H.264-encoded is a couple of Mbps, an order of magnitude less airtime in
-a hall full of contending devices. None of the boards surveyed could do that
-without burning CPU it did not have.
+**Hardware video encoding is a later optimization.** The phone has hardware video
+facilities, but feeding raw RGB565 camera buffers into Android's codec path needs
+conversion and lifecycle work that does not help prove USB host operation. Raw RGB565
+at full rate is 24 Mbps. The first relay proof should decimate complete frames to about
+6 Mbps; H.264 can be evaluated after the end-to-end path is measured.
 
-That changes the risk calculus entirely. The earlier analysis leaned on
-decimating to every fourth frame to survive interference. With hardware encode,
-full frame rate at a few Mbps is comfortably achievable, so the live view can be
-smooth *and* robust rather than a trade between them.
+The earlier analysis already identified the right first lever: decimate to every
+fourth complete frame. This preserves a useful 5.9 FPS preview and gives the Wi-Fi
+link roughly four times the margin without changing firmware behavior.
 
 Network shape, unchanged from the earlier recommendation: **avoid venue Wi-Fi**.
 Either the phone hosts its own hotspot with the display laptop joining it, or
@@ -79,10 +83,13 @@ the live view without costing the capture.
 
 ### It also removes the LCD from the frame budget
 
-If the phone is the display, the on-board LCD stops being necessary. That is
-worth **34 ms per frame** - see `docs/plans/lcd-spi-throughput` - which is more
-than any display optimisation on the table, and it makes the parallel-panel Rev B
-work optional rather than important.
+If the phone is the display, the on-board LCD refresh can be skipped. A 320x240
+RGB565 transfer has about **32.77 ms of wire time at 37.5 MHz** before command
+overhead, so this is larger than any remaining display-side micro-optimization.
+The older DWT timing measurements are not authoritative; see
+[`AVC_LCD_SPI_Design.md`](AVC_LCD_SPI_Design.md) for the verified decision and
+measurement caveat. This also makes parallel-panel Rev B work optional rather
+than important.
 
 The existing behaviour already supports this: the USB stream does not transmit
 when nothing is attached, so a cable can be plugged and yanked freely. Laptop at
@@ -90,95 +97,67 @@ the track, removed for the run, phone left aboard.
 
 ### What to check
 
-1. **Weight and mounting.** A phone is 150-200 g on the top deck, which is the
-   highest point and the worst place for mass. This is the same fairness point
-   raised below: put it on a demonstration car, or on every car.
-2. **USB host on the student's specific phone.** OTG is near-universal but not
-   guaranteed, and cheap handsets sometimes omit it.
-3. **CDC-ACM access without root.** `usb-serial-for-android` handles this in a
-   native app; Chrome's WebUSB is the fallback and there is already a spike.
-4. **Charging while acting as OTG host.** Some phones cannot do both without a
-   powered Y-cable, which matters for a phone left aboard all day.
+1. **Weight and mounting.** The Moto is 185 g, and a high mounting point changes
+   handling. Put it on a demonstration car unless the competition treats the added
+   mass consistently.
+2. **USB host on this exact handset: verified.** Android 14/API 34 reports
+   `android.hardware.usb.host`; the OTG adapter makes the phone DFP/source/host and
+   the car enumerates as `WAVENUMBER AVC`, VID/PID `1FC9:0094`.
+3. **CDC-ACM access without root: verified.** The native app uses `UsbManager`
+   directly, claims the bulk interface, and completes `HELLO`, `SET_CHANNELS(0)`,
+   `PING`, and `CLOSE`. No generic serial library, Chrome feature, or firmware fork
+   is required.
+4. **Power topology.** Start from the phone battery while it hosts the independently
+   powered car. Confirm there is no back-power path before considering a powered hub
+   or charge-through adapter.
 
 ### Recommendation
 
-Build the phone path first. A quick native Android app reading CDC and writing
-to storage is a small piece of work, WebUSB is the fallback that needs no
-install, and neither needs anything ordered. Treat the boards below as the
-contingency if phone USB host turns out to be unreliable across the students'
-handsets.
+Build the Moto path first. A native app is the reliable boundary: USB host APIs on one
+side, the existing `AVCU` protocol in the middle, and an embedded HTTP/WebSocket page
+on the other. Treat the boards below as contingency only if this specific phone fails
+the USB-host, sustained-throughput, power, or race-day RF tests.
 
-**A dedicated cheap handset is around 100 dollars**, which is three to six times
-the board options and still the better buy. It arrives with a battery, a screen,
-storage, dual-band Wi-Fi, a charger and a case, and it needs no driver work, no
-PD trigger, no enclosure and no soldering. The boards look cheaper because their
-price tag excludes everything a phone includes.
+The available Moto already satisfies the published Android, storage, battery, USB-C,
+and dual-band Wi-Fi requirements, so there is no buying decision before the proof. No
+SIM or service is required. If a second phone is purchased later, duplicate the proven
+model and build rather than reopening handset selection during race week.
 
-Buying one also removes the awkward parts of borrowing a student's: no reliance
-on whatever handset a team turns up with, no OTG lottery, no asking someone to
-strap their own phone to a moving car. It stays configured, stays charged, and
-is the same every year.
-
-A cheap prepaid handset off a shelf at a local shop is ideal, and being able to
-buy it the same day matters more than the price - shipping risk is what makes
-the board options unattractive this close to the event.
-
-### What to check before buying
-
-1. **Dual-band Wi-Fi.** This is the trap. Budget handsets are frequently
-   **2.4 GHz only**, exactly like the Raspberry Pi Zero 2 W that this document
-   already disqualified for the same reason. A 2.4 GHz-only phone in a
-   conference hall gives back the advantage the phone was bought for. Confirm
-   802.11ac or ax on the box, not just "Wi-Fi".
-2. **USB-C with OTG host.** Near-universal but not guaranteed at the bottom of
-   the range, and it is the one feature the whole idea depends on. Worth testing
-   in the shop with a USB stick if possible.
-3. **Storage of 32 GB or more**, since full-rate recording is the feature no
-   board could match. 320x200 RGB565 at 23.4 FPS is roughly 10 GB per hour raw,
-   so plan on encoding for anything long.
-4. **A recent enough Android** for the USB host APIs and a current Chrome, if
-   WebUSB is to work as the fallback.
-
-No SIM or service is needed - this is a Wi-Fi and USB appliance - so a locked
-prepaid unit is perfectly good.
-
-**Buy two.** At around 100 dollars, a spare is cheap insurance against the one
-that matters failing on race morning, and the second one doubles as the
-development unit so the race phone stays in a known state.
-
-A spare phone already to hand is enough to start - the buying decision only has
-to be made once the approach is proven, and proving it needs one handset and a
-cable.
-
-### Starting point for the implementation session
+### Current implementation sequence
 
 In rough order, smallest useful thing first:
 
-1. **Prove USB host and CDC enumeration** with the spare phone and a cable.
-   Everything else depends on it, it needs no code beyond a terminal app, and it
-   is the assumption most likely to be wrong. Confirm the car enumerates and
-   bytes arrive.
-2. **Parse the existing packet format.** `AVC_USB_Debug_Transport_Protocol.md`
-   has the 32-byte header and the frame payload layout; the receiver already
-   exists in Python and can be read as the reference implementation rather than
-   reverse-engineered.
-3. **Record to storage first, display second.** Recording is the feature that
-   makes this better than every board considered, it has no network dependency,
-   and it is useful on its own even if the live view is never finished.
-4. **Then the live view**: phone serves an HTTP/WebSocket page, projector laptop
-   points a browser at it. Reuse the Web Serial viewer's rendering.
-5. **Hardware H.264 encode last.** It is the piece that makes full frame rate
-   survive a contended hall, but raw frames over a quiet 5 GHz link will
-   demonstrate the idea, and encoding is an optimisation of a working thing.
+1. **Command-line toolchain and wireless adb loop: complete.** Pinned repository-local
+   tools build, test, install, launch, and collect machine-readable health while the
+   phone's only USB-C port hosts the car.
+2. **USB host and framed CDC control: complete.** The Moto and OTG adapter enumerate,
+   retain permission, and repeatedly complete `HELLO`, `SET_CHANNELS(0)`, `PING`, and
+   `CLOSE` in the one-command loop.
+3. **Parse and display on the phone: active.** Reuse the 32-byte envelope and frame layout from
+   `AVC_USB_Debug_Transport_Protocol.md`; use captured/synthetic JVM fixtures before
+   relying on visual inspection.
+4. **Relay to one browser.** Serve an embedded HTTP page and binary WebSocket, initially
+   forwarding every fourth complete frame plus telemetry over a controlled 5 GHz network.
+5. **Harden backpressure and reconnects.** USB draining remains independent; the relay
+   keeps only the newest complete frame and exposes all drops through `/health` and
+   logcat.
+6. **Add recording or H.264 only after the MVP is measured.** They are valuable race-day
+   features, but neither should delay proof of the actual USB-to-browser path.
 
-Fallback if native Android proves slow going: the WebUSB spike already exists,
-runs in Chrome on the phone, and needs no install or store account.
+No reusable Android/WebUSB implementation was found in the inspected Bunny Vision tree,
+so it is not a fallback dependency.
 
-### The compile-time switch can probably just go away
+The verified physical topology is phone USB-C -> USB-C OTG adapter -> USB-A-to-C data
+cable -> FRDM J11, with J17 still connected to the workstation for debug/power. A plain
+C-to-C cable negotiated in the opposite direction because the FRDM CC controller defaults
+to dual-role mode. Wireless adb can request a role swap during development, but the OTG
+adapter is deterministic and does not require that command.
 
-`CONFIG__USB_DEBUG_STREAM_ENABLE` does not need to be a build option, a jumper,
-or a student-facing setting. **The cable already is the switch**, and the code
-is written for it.
+### The competition image now includes the transport
+
+`CONFIG__USB_DEBUG_STREAM_ENABLE` is enabled in the competition default. It is not a
+student-facing setting. Enumeration alone is not the stream switch: a recognized framed
+session must explicitly subscribe to frames, stats, logs, or telemetry.
 
 `avc_usb_debug_stream__publish_frame()` opens with:
 
@@ -198,27 +177,20 @@ incrementally from `avc_usb_debug_stream__service()` in the main loop. An
 earlier note describing a memcpy before `USB_DeviceCdcAcmSend()` was describing
 the send path, not a blocking copy at publish time.
 
-That means the honest default is **compiled in and always on**, gated at runtime
-by enumeration. Plugged in, it streams; unplugged, it costs nothing worth
-measuring. No knob, no jumper, nothing for a student to get wrong, and the
-race image and the development image stop being different builds - which is
-worth more than the microseconds, because it removes a class of "works on my
-build" problems.
+The disconnected and connected service costs have now been measured, and the competition
+image delivered about 23.41 FPS and 2.867 MiB/s with zero reported transport errors in
+the recorded run. No separate Android or USB race image is required. Full race-algorithm
+load and physical disconnect/reconnect remain explicit signoff checks rather than reasons
+to fork the build.
 
-Still worth measuring once, with the scope marker, is the cost of `service()`
-while actually streaming, since that is real work in the main loop competing
-with the algorithm. The expectation is that it is small, but this document has
-been wrong about that kind of expectation before.
+### The live-buffer caveat is resolved
 
-### One caveat that carries over from the LCD work
-
-`s_streamFrameData` points at the **live camera buffer**, exactly as the LCD
-dump does. So the same aliasing hazard applies: if streaming a frame is still in
-progress when the camera swaps buffers, the tail of the frame is next frame's
-pixels. Spread across `service()` calls over a whole frame period, that window
-is wider than the LCD's, not narrower.
-
-Worth checking deliberately rather than discovering on the big screen.
+USB still retains a pointer to the live camera buffer, but the transport now records
+the camera generation and checks the two-buffer reuse horizon before and after every
+16 KiB staging copy. If capture catches up, it aborts the incomplete USB frame and marks
+the next frame with `DROPPED_BEFORE`; hosts reset partial assembly. A forced-backpressure
+test observed recovery without malformed packets or sequence errors. Android must retain
+the same partial-frame discard behavior.
 
 ## Verdict (superseded - see above)
 
@@ -244,9 +216,9 @@ Three things are worth knowing whichever way you go:
    is the worst RF environment we could pick. The mitigation is architectural
    and cheap: make the dongle its own access point and let the display laptop
    join it, so we never touch venue Wi-Fi.
-3. **The car's USB stream is currently disabled** in the competition image.
-   Race day needs it on, which is a config change with a frame-budget cost that
-   must be measured, not assumed.
+3. **The car's USB transport is now included** in the competition image. It remains
+   dormant until a recognized session subscribes, and its disconnected/connected cost
+   has been measured. Realistic final algorithm load remains a signoff item.
 
 Two of your assumptions need correcting: the RW612 core is **260 MHz**, not
 300, and the **FRDM-RW612 has no SD card slot**. Ethernet is real (RJ45,
@@ -538,22 +510,18 @@ race morning.
 
 Less than you might expect, which is the point of the design - but not nothing.
 
-`CONFIG__USB_DEBUG_STREAM_ENABLE` is **`(0)` in the competition image**, and an
-L99 signoff test asserts that, deliberately. Race day means turning it on, and
-that is a real change to the image the students tuned:
+As of 2026-08-21, `CONFIG__USB_DEBUG_STREAM_ENABLE` is **`(1)` in the competition
+image**. This no longer requires a dedicated car image. USB enumerates when a
+cable is present, but no frame, log, stats, or telemetry traffic begins until a
+recognized framed session explicitly subscribes.
 
-- The stream copies each frame before `USB_DeviceCdcAcmSend()`. Our own notes
-  record this as comfortably inside the 41 ms budget at 24 FPS, but "comfortably"
-  was measured with the LCD doing its normal work and no student overlay code
-  competing for the same milliseconds.
-- **Measure it with a student's actual algorithm running**, late in the week,
-  not with the reference code. The teams that win are the ones running closest
-  to the deadline, and they are exactly the ones a surprise memcpy would hurt.
-- If it turns out to cost too much, the decimation trick applies on the car side
-  too: send every Nth frame and skip the copy entirely on the others.
-
-One car needs this, not all of them. That is worth remembering - we can pick the
-car, build it a dedicated image, and leave everyone else's untouched.
+The main-loop service measured about 48 cycles closed and 194 cycles average
+while streaming at 150 MHz; a competition-default hardware run sustained 23.41
+FPS with zero transport errors or drops. Frame data is copied one bounded USB
+chunk at a time into the endpoint staging buffer, with generation checks around
+each copy so a reused camera buffer causes an explicit frame drop rather than
+corruption. A student's final algorithm load still belongs in race signoff, but
+enabling telemetry is no longer an unmeasured build fork.
 
 ## Open questions
 
@@ -572,7 +540,14 @@ car, build it a dedicated image, and leave everyone else's untouched.
 
 - `docs/research/AVC_USB_Debug_Transport_Protocol.md` - packet format
 - `docs/research/AVC_USB_Debug_Display_Current_State.md` - the measurements above
+- `docs/plans/android-telemetry-bridge/plan.md` - authorization-gated Moto MVP and
+  unattended development loop
 - `docs/research/N947_USB_Host_Assessment.md` - prior host-side work on the car
+- [Moto G Power 5G (2023) specifications](https://en-ca.support.motorola.com/app/answers/detail/a_id/174789/~/moto-g-power-5g-%282023%29---specifications)
+- [Moto G Power 5G (2023) hotspot setup](https://en-us.support.motorola.com/app/answers/detail/a_id/173296/~/wi-fi-hotspot---moto-g-power-5g-%282023%29)
+- [Android USB host overview](https://developer.android.com/develop/connectivity/usb/host)
+- [Android USB debugging while host hardware occupies the port](https://developer.android.com/develop/connectivity/usb)
+- [Android local-only hotspot](https://developer.android.com/develop/connectivity/wifi/localonlyhotspot)
 - [FRDM-RW612 board, Zephyr documentation](https://docs.zephyrproject.org/latest/boards/nxp/frdm_rw612/doc/index.html)
 - [FRDM-RW612 board user manual UM12160](https://www.mouser.com/pdfDocs/NXP_FRDM-RW612_UM.pdf)
 - [RW612 product page](https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-plus-802-15-4/wireless-mcu-with-integrated-tri-radio-1x1-wi-fi-6-plus-bluetooth-low-energy-5-4-802-15-4:RW612)
