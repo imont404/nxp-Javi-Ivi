@@ -8,7 +8,9 @@ import com.wavenumber.avc.bridge.video.AvcVideoFrame
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
+import java.io.EOFException
 import java.io.InputStream
+import java.io.IOException
 import java.io.OutputStream
 import java.net.Inet4Address
 import java.net.InetSocketAddress
@@ -20,6 +22,7 @@ import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.util.Base64
 import java.util.Locale
+import java.util.concurrent.atomic.AtomicLong
 
 class AvcRelayServer(
     private val viewerHtml: ByteArray,
@@ -28,6 +31,8 @@ class AvcRelayServer(
     companion object {
         private const val MAX_HTTP_HEADER_BYTES = 8 * 1024
         private const val MAX_CLIENT_PAYLOAD_BYTES = 4 * 1024
+        private const val SEND_DEADLINE_NS = 2_000_000_000L
+        private const val SEND_WATCHDOG_PERIOD_MS = 100L
         private const val WEBSOCKET_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
     }
 
@@ -101,33 +106,37 @@ class AvcRelayServer(
     }
 
     private fun handleClient(socket: Socket) {
-        socket.use { client ->
-            client.soTimeout = 2_000
-            client.tcpNoDelay = true
-            val input = BufferedInputStream(client.getInputStream())
-            val output = BufferedOutputStream(client.getOutputStream())
-            val request = readHttpRequest(input) ?: return
-            when {
-                request.path == "/" || request.path == "/index.html" ->
-                    writeHttpResponse(output, 200, "OK", "text/html; charset=utf-8", viewerHtml)
-                request.path == "/health" ->
-                    writeHttpResponse(
+        try {
+            socket.use { client ->
+                client.soTimeout = 2_000
+                client.tcpNoDelay = true
+                val input = BufferedInputStream(client.getInputStream())
+                val output = BufferedOutputStream(client.getOutputStream())
+                val request = readHttpRequest(input) ?: return
+                when {
+                    request.path == "/" || request.path == "/index.html" ->
+                        writeHttpResponse(output, 200, "OK", "text/html; charset=utf-8", viewerHtml)
+                    request.path == "/health" ->
+                        writeHttpResponse(
+                            output,
+                            200,
+                            "OK",
+                            "application/json; charset=utf-8",
+                            healthJson().toByteArray(StandardCharsets.UTF_8),
+                        )
+                    request.path == "/stream" && request.headers["upgrade"]?.lowercase(Locale.US) == "websocket" ->
+                        serveWebSocket(client, input, output, request.headers)
+                    else -> writeHttpResponse(
                         output,
-                        200,
-                        "OK",
-                        "application/json; charset=utf-8",
-                        healthJson().toByteArray(StandardCharsets.UTF_8),
+                        404,
+                        "Not Found",
+                        "text/plain; charset=utf-8",
+                        "not found\n".toByteArray(StandardCharsets.UTF_8),
                     )
-                request.path == "/stream" && request.headers["upgrade"]?.lowercase(Locale.US) == "websocket" ->
-                    serveWebSocket(client, input, output, request.headers)
-                else -> writeHttpResponse(
-                    output,
-                    404,
-                    "Not Found",
-                    "text/plain; charset=utf-8",
-                    "not found\n".toByteArray(StandardCharsets.UTF_8),
-                )
+                }
             }
+        } catch (_: IOException) {
+            // Disconnects, resets, and the send-deadline watchdog are client-local.
         }
     }
 
@@ -164,38 +173,70 @@ class AvcRelayServer(
             )
             output.flush()
             socket.soTimeout = 75
-            var relaySequence = 0
-            while (running && !socket.isClosed) {
-                val diagnostics = mailbox.takeDiagnostics(4)
-                diagnostics.forEach { packet ->
-                    writeWebSocketFrame(output, 0x2, AvcRelayProtocol.encodeDiagnostic(packet, relaySequence++))
-                }
-
-                val frame = mailbox.takeLatestFrame()
-                if (frame != null) {
-                    var sent = false
-                    try {
-                        val encoded = AvcRelayProtocol.encodeFrame(
-                            AvcVideoFrame(frame.frameId, frame.width, frame.height, frame.pixels),
-                            relaySequence,
-                            frame.droppedBefore,
-                        )
-                        encoded.packets.forEach { writeWebSocketFrame(output, 0x2, it) }
-                        relaySequence = encoded.nextSequence
-                        output.flush()
-                        sent = true
-                    } finally {
-                        mailbox.releaseSentFrame(frame, sent)
+            socket.sendBufferSize = 64 * 1024
+            val outboundWriteStartedNs = AtomicLong(0)
+            val sendWatchdog = Thread(
+                {
+                    while (running && !socket.isClosed) {
+                        val startedNs = outboundWriteStartedNs.get()
+                        if (startedNs != 0L && System.nanoTime() - startedNs >= SEND_DEADLINE_NS) {
+                            mailbox.noteSlowClientDisconnect()
+                            socket.closeQuietly()
+                            break
+                        }
+                        try {
+                            Thread.sleep(SEND_WATCHDOG_PERIOD_MS)
+                        } catch (_: InterruptedException) {
+                            break
+                        }
                     }
-                } else if (diagnostics.isNotEmpty()) {
-                    output.flush()
-                }
+                },
+                "avc-relay-send-watchdog",
+            ).apply {
+                isDaemon = true
+                start()
+            }
+            var relaySequence = 0
+            try {
+                while (running && !socket.isClosed) {
+                    val diagnostics = mailbox.takeDiagnostics(4)
+                    val frame = mailbox.takeLatestFrame()
+                    if (diagnostics.isNotEmpty() || frame != null) {
+                        var frameSent = false
+                        outboundWriteStartedNs.set(System.nanoTime())
+                        try {
+                            diagnostics.forEach { packet ->
+                                writeWebSocketFrame(
+                                    output,
+                                    0x2,
+                                    AvcRelayProtocol.encodeDiagnostic(packet, relaySequence++),
+                                )
+                            }
+                            if (frame != null) {
+                                val encoded = AvcRelayProtocol.encodeFrame(
+                                    AvcVideoFrame(frame.frameId, frame.width, frame.height, frame.pixels),
+                                    relaySequence,
+                                    frame.droppedBefore,
+                                )
+                                encoded.packets.forEach { writeWebSocketFrame(output, 0x2, it) }
+                                relaySequence = encoded.nextSequence
+                            }
+                            output.flush()
+                            frameSent = frame != null
+                        } finally {
+                            outboundWriteStartedNs.set(0)
+                            if (frame != null) mailbox.releaseSentFrame(frame, frameSent)
+                        }
+                    }
 
-                try {
-                    if (!readClientFrame(input, output)) break
-                } catch (_: SocketTimeoutException) {
-                    // Expected polling boundary; outbound work remains latest-only.
+                    try {
+                        if (!readClientFrame(input, output)) break
+                    } catch (_: SocketTimeoutException) {
+                        // Expected polling boundary; outbound work remains latest-only.
+                    }
                 }
+            } finally {
+                sendWatchdog.interrupt()
             }
         } finally {
             synchronized(clientLock) {
@@ -311,7 +352,7 @@ class AvcRelayServer(
     private fun healthJson(): String {
         val relay = mailbox.snapshot()
         val usb = usbHealth
-        return """{"state":"${usb.state.wireName}","usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"clients":${relay.clients},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
+        return """{"state":"${usb.state.wireName}","usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
     }
 
     private fun format(value: Double): String = String.format(Locale.US, "%.3f", value)
@@ -327,13 +368,15 @@ class AvcRelayServer(
         null
     }
 
-    private fun readRequired(input: InputStream): Int = input.read().also { if (it < 0) error("unexpected EOF") }
+    private fun readRequired(input: InputStream): Int = input.read().also {
+        if (it < 0) throw EOFException("unexpected EOF")
+    }
 
     private fun readFully(input: InputStream, destination: ByteArray) {
         var offset = 0
         while (offset < destination.size) {
             val count = input.read(destination, offset, destination.size - offset)
-            if (count < 0) error("unexpected EOF")
+            if (count < 0) throw EOFException("unexpected EOF")
             offset += count
         }
     }

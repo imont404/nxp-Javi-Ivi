@@ -4,7 +4,8 @@ Research note. **Conclusion: use the available Moto G Power 5G (2023) as the
 Android relay.** Its native USB-host, framed CDC control path, and live phone preview
 are now verified on the Rev A car. Its embedded one-browser Wi-Fi relay also renders
 live video and generic telemetry on a laptop. Slow-client/reconnect hardening, race-day
-network selection, recording, and hardware video encoding remain follow-ups.
+hardening is now verified; physical integration, race-day network selection, recording,
+and hardware video encoding remain follow-ups.
 
 The board survey that occupies most of this document - RW612, i.MX93, Radxa,
 Luckfox - is **superseded** and kept only as the contingency and as the record
@@ -143,9 +144,11 @@ In rough order, smallest useful thing first:
    8765 and a binary WebSocket that preserves normal `AVCU` packets. Desktop Chrome on
    `yellow` rendered every-fourth-frame video plus `system.uptime`; the measured USB side
    remained at about 23.42 FPS and 2.869 MiB/s with zero sequence or malformed errors.
-5. **Harden backpressure and reconnects: active.** USB draining remains independent; the relay
-   keeps only the newest complete frame and exposes all drops through `/health` and
-   logcat.
+5. **Harden backpressure and reconnects: complete.** USB draining is independent; the
+   relay keeps only the newest complete frame, closes a non-reading client after a
+   two-second send deadline, and exposes the result through `/health`. Six consecutive
+   hardware stalls kept USB healthy and warm app PSS around 56-59 MiB. Every forced close
+   accepted a new client immediately; the final source-to-sent frame gap was one.
 6. **Add recording or H.264 only after the MVP is measured.** They are valuable race-day
    features, but neither should delay proof of the actual USB-to-browser path.
 

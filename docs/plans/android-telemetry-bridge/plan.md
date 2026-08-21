@@ -60,13 +60,13 @@ depends_on = ["phone-preview"]
 [[steps]]
 id = "relay-backpressure"
 title = "Prove slow or disconnected Wi-Fi clients cannot block USB reads, grow memory, or create unbounded display latency"
-status = "active"
+status = "done"
 depends_on = ["wifi-relay-proof"]
 
 [[steps]]
 id = "vehicle-integration"
 title = "Validate battery life, heat, mounting, cable retention, reconnects, RF behavior, and noninterference on the car"
-status = "pending"
+status = "active"
 depends_on = ["relay-backpressure"]
 
 [[steps]]
@@ -115,7 +115,7 @@ status = "met"
 [[exit_criteria]]
 id = "bounded-backpressure"
 title = "A slow or absent Wi-Fi viewer cannot stall USB input or grow memory and always converges to the newest complete frame"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "safe-reconnect"
@@ -152,8 +152,11 @@ one-browser Wi-Fi relay are complete on the real Rev A car. The Moto G Power ser
 embedded page at `http://<phone-address>:8765/`, preserves `AVCU` framing over a binary
 WebSocket, and relays every fourth complete camera frame plus generic telemetry. Chrome
 rendered live video and `system.uptime` while USB remained at about 23.42 FPS and
-2.869 MiB/s with zero sequence or malformed-chunk errors. Active work is now the
-slow-client, disconnect, memory-bound, and newest-frame backpressure proof.
+2.869 MiB/s with zero sequence or malformed-chunk errors. A two-second network-send
+deadline now closes a client that stops reading. Six consecutive forced stalls kept USB
+advancing, stayed near 56-59 MiB PSS after warm-up, and reconnected to a complete frame
+within one source frame in the final recorded run. Active work is now physical vehicle,
+power, cable, reconnect, and race-network validation.
 
 ## Concrete Hardware
 

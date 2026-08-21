@@ -74,8 +74,13 @@ check an already running app directly, use:
 
 ```powershell
 .\scripts\android\verify_android_relay.ps1 -Serial <phone-ip>:5555
+.\scripts\android\test_android_relay_backpressure.ps1 -Serial <phone-ip>:5555
 ```
 
 The verified `yellow`-network proof rendered live video and `system.uptime` in desktop
-Chrome. Slow-client timeout and reconnect stress are the next milestone; this first proof
-is intentionally one-client and unstyled.
+Chrome. A separate fixed-buffer relay mailbox prevents network work from stalling USB,
+and a two-second send deadline closes a client that stops draining TCP. The automated
+backpressure test deliberately opens a WebSocket and stops reading, checks USB progress,
+parser health, and app PSS, then proves a new client receives a recent complete frame.
+Six consecutive real-hardware stalls passed with warm PSS around 56-59 MiB and a final
+source-to-sent frame gap of one. The viewer remains intentionally one-client and unstyled.

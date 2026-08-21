@@ -250,8 +250,11 @@ port 8765 and preserves `AVCU` framing over a one-client binary WebSocket. Deskt
 on the controlled `yellow` 5 GHz network rendered decimated live video and generic
 `system.uptime` telemetry while the USB counters remained clean. The relay uses an
 independent fixed three-buffer latest-frame mailbox, and the unattended verification
-script validates complete contiguous frames without visual assistance. Slow-client and
-reconnect stress remain the next Android step.
+script validates complete contiguous frames without visual assistance. A two-second
+send watchdog contains stalled TCP writes as client-local failures. Six consecutive
+non-reading-client tests kept USB advancing, held warm app PSS around 56-59 MiB, and
+successfully reconnected to a recent complete frame after every forced close. Physical
+vehicle and race-network validation remain the next Android step.
 
 ## Hardware and Event Implication
 

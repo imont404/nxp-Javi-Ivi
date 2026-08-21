@@ -112,6 +112,10 @@ $healthAfter = Invoke-RestMethod -Uri "$baseUri/health" -TimeoutSec 5
 if ($healthAfter.sequence_errors -ne 0 -or $healthAfter.malformed_chunks -ne 0) {
     throw "USB health degraded during relay: sequence=$($healthAfter.sequence_errors), malformed=$($healthAfter.malformed_chunks)."
 }
+$frameAge = $healthAfter.last_source_frame_id - $healthAfter.last_sent_frame_id
+if ($frameAge -lt 0 -or $frameAge -gt 8) {
+    throw "Relay did not converge to a recent complete frame; source/sent frame gap is $frameAge."
+}
 
 [PSCustomObject]@{
     url = "$baseUri/"
@@ -121,6 +125,7 @@ if ($healthAfter.sequence_errors -ne 0 -or $healthAfter.malformed_chunks -ne 0) 
     usb_mib_s = $healthAfter.usb_mib_s
     relay_sent_frames = $healthAfter.relay_sent_frames
     relay_dropped_frames = $healthAfter.relay_dropped_frames
+    source_sent_frame_gap = $frameAge
 } | Format-List
 
 Write-Host "AVC Android relay verification passed." -ForegroundColor Green

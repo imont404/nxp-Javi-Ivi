@@ -70,4 +70,15 @@ class AvcRelayProtocolTest {
         mailbox.releaseSentFrame(latest, sent = true)
         assertEquals(1, mailbox.snapshot().sentFrames)
     }
+
+    @Test
+    fun failedSendMarksTheNextSelectedFrameAsFollowingADrop() {
+        val mailbox = AvcRelayMailbox(frameBytes = 2, decimation = 1)
+        mailbox.offerSourceFrame(AvcVideoFrame(1, 1, 1, byteArrayOf(1, 1)))
+        val failed = requireNotNull(mailbox.takeLatestFrame())
+        mailbox.releaseSentFrame(failed, sent = false)
+        mailbox.offerSourceFrame(AvcVideoFrame(2, 1, 1, byteArrayOf(2, 2)))
+
+        assertTrue(requireNotNull(mailbox.takeLatestFrame()).droppedBefore)
+    }
 }

@@ -18,7 +18,9 @@ data class AvcRelaySnapshot(
     val sentFrames: Long,
     val droppedFrames: Long,
     val diagnosticDrops: Long,
+    val slowClientDisconnects: Long,
     val clients: Int,
+    val lastSourceFrameId: Long,
     val lastSentFrameId: Long,
 )
 
@@ -45,13 +47,16 @@ class AvcRelayMailbox(
     private var sentFrames = 0L
     private var droppedFrames = 0L
     private var diagnosticDrops = 0L
+    private var slowClientDisconnects = 0L
     private var clients = 0
+    private var lastSourceFrameId = -1L
     private var lastSentFrameId = -1L
     private var dropPending = false
 
     @Synchronized
     fun offerSourceFrame(frame: AvcVideoFrame) {
         sourceFrames++
+        lastSourceFrameId = frame.frameId
         if ((sourceFrames - 1) % decimation != 0L) return
         selectedFrames++
 
@@ -90,6 +95,9 @@ class AvcRelayMailbox(
         if (sent) {
             sentFrames++
             lastSentFrameId = frame.frameId
+        } else {
+            droppedFrames++
+            dropPending = true
         }
         freeFrames.addLast(frame.pixels)
     }
@@ -116,13 +124,20 @@ class AvcRelayMailbox(
     }
 
     @Synchronized
+    fun noteSlowClientDisconnect() {
+        slowClientDisconnects++
+    }
+
+    @Synchronized
     fun snapshot(): AvcRelaySnapshot = AvcRelaySnapshot(
         sourceFrames,
         selectedFrames,
         sentFrames,
         droppedFrames,
         diagnosticDrops,
+        slowClientDisconnects,
         clients,
+        lastSourceFrameId,
         lastSentFrameId,
     )
 }
