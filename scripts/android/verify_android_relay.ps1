@@ -25,19 +25,22 @@ if ($healthBefore.sequence_errors -ne 0 -or $healthBefore.malformed_chunks -ne 0
 $socket = [System.Net.WebSockets.ClientWebSocket]::new()
 $deadline = [System.Threading.CancellationTokenSource]::new()
 $deadline.CancelAfter([TimeSpan]::FromSeconds($TimeoutSeconds))
-$receiveBuffer = New-Object byte[] 20000
+$receiveBuffer = New-Object byte[] 300000
 $segment = [System.ArraySegment[byte]]::new($receiveBuffer)
 $completedFrames = 0
 $telemetryPackets = 0
-$activeFrameId = $null
-$nextOffset = 0
+$lastFrameId = $null
 $expectedSequence = $null
+$jpegBytesReceived = 0L
+$receiveTimer = [Diagnostics.Stopwatch]::new()
 
 try {
+    $socket.Options.SetRequestHeader("X-AVC-Replace-Viewer", "1")
     $socket.ConnectAsync(
         [Uri]"ws://${phoneAddress}:$Port/stream",
         $deadline.Token
     ).GetAwaiter().GetResult() | Out-Null
+    $receiveTimer.Start()
     while ($completedFrames -lt $MinimumFrames) {
         $message = [System.IO.MemoryStream]::new()
         do {
@@ -49,8 +52,41 @@ try {
         } while (-not $result.EndOfMessage)
 
         $packet = $message.ToArray()
-        if ($packet.Length -lt 32 -or [BitConverter]::ToUInt32($packet, 0) -ne 0x55435641) {
-            throw "Relay emitted a malformed AVCU packet."
+        if ($packet.Length -lt 32) {
+            throw "Relay emitted a message shorter than its fixed header."
+        }
+        $magic = [BitConverter]::ToUInt32($packet, 0)
+        if ($magic -eq 0x4A435641) {
+            $version = $packet[4]
+            $headerBytes = $packet[5]
+            $frameId = [BitConverter]::ToUInt32($packet, 8)
+            $width = [BitConverter]::ToUInt16($packet, 12)
+            $height = [BitConverter]::ToUInt16($packet, 14)
+            $jpegBytes = [BitConverter]::ToUInt32($packet, 16)
+            if (
+                $version -ne 1 -or
+                $headerBytes -ne 32 -or
+                $width -ne 320 -or
+                $height -ne 200 -or
+                $packet.Length -ne 32 + $jpegBytes -or
+                $jpegBytes -lt 4 -or
+                $packet[32] -ne 0xFF -or
+                $packet[33] -ne 0xD8 -or
+                $packet[$packet.Length - 2] -ne 0xFF -or
+                $packet[$packet.Length - 1] -ne 0xD9
+            ) {
+                throw "Relay emitted a malformed AVCJ frame."
+            }
+            if ($null -ne $lastFrameId -and $frameId -le $lastFrameId) {
+                throw "Relay JPEG frame IDs did not advance: previous $lastFrameId, received $frameId."
+            }
+            $lastFrameId = $frameId
+            $jpegBytesReceived += $jpegBytes
+            $completedFrames++
+            continue
+        }
+        if ($magic -ne 0x55435641) {
+            throw "Relay emitted an unknown message magic 0x$('{0:X8}' -f $magic)."
         }
         $sequence = [BitConverter]::ToUInt32($packet, 12)
         if ($null -ne $expectedSequence -and $sequence -ne $expectedSequence) {
@@ -65,38 +101,10 @@ try {
         $messageId = [BitConverter]::ToUInt32($packet, 8)
         if ($messageId -eq 0x01000500) {
             $telemetryPackets++
-            continue
-        }
-        if ($messageId -ne 0x01000002 -or $payloadBytes -lt 24) { continue }
-
-        $frameId = [BitConverter]::ToUInt32($packet, 32)
-        $offset = [BitConverter]::ToUInt32($packet, 36)
-        $totalBytes = [BitConverter]::ToUInt32($packet, 40)
-        $width = [BitConverter]::ToUInt16($packet, 44)
-        $height = [BitConverter]::ToUInt16($packet, 46)
-        $pixelFormat = [BitConverter]::ToUInt16($packet, 48)
-        $chunkFlags = [BitConverter]::ToUInt32($packet, 52)
-        $dataBytes = $payloadBytes - 24
-        if ($totalBytes -ne 128000 -or $width -ne 320 -or $height -ne 200 -or $pixelFormat -ne 1) {
-            throw "Relay emitted unsupported frame metadata."
-        }
-        if (($chunkFlags -band 1) -ne 0) {
-            if ($offset -ne 0) { throw "Frame start did not begin at offset zero." }
-            $activeFrameId = $frameId
-            $nextOffset = 0
-        }
-        if ($null -eq $activeFrameId -or $frameId -ne $activeFrameId -or $offset -ne $nextOffset) {
-            throw "Relay emitted non-contiguous frame chunks."
-        }
-        $nextOffset += $dataBytes
-        if (($chunkFlags -band 2) -ne 0) {
-            if ($nextOffset -ne 128000) { throw "Relay ended a partial frame at $nextOffset bytes." }
-            $completedFrames++
-            $activeFrameId = $null
-            $nextOffset = 0
         }
     }
 } finally {
+    $receiveTimer.Stop()
     if ($socket.State -eq [System.Net.WebSockets.WebSocketState]::Open) {
         $socket.CloseOutputAsync(
             [System.Net.WebSockets.WebSocketCloseStatus]::NormalClosure,
@@ -112,18 +120,31 @@ $healthAfter = Invoke-RestMethod -Uri "$baseUri/health" -TimeoutSec 5
 if ($healthAfter.sequence_errors -ne 0 -or $healthAfter.malformed_chunks -ne 0) {
     throw "USB health degraded during relay: sequence=$($healthAfter.sequence_errors), malformed=$($healthAfter.malformed_chunks)."
 }
+if ($healthAfter.relay_mode -ne "jpeg") {
+    throw "Relay mode is '$($healthAfter.relay_mode)', expected full-rate JPEG."
+}
 $frameAge = $healthAfter.last_source_frame_id - $healthAfter.last_sent_frame_id
 if ($frameAge -lt 0 -or $frameAge -gt 8) {
     throw "Relay did not converge to a recent complete frame; source/sent frame gap is $frameAge."
 }
+$receivedFps = if ($receiveTimer.Elapsed.TotalSeconds -gt 0) {
+    $completedFrames / $receiveTimer.Elapsed.TotalSeconds
+} else { 0 }
+$receivedMegabitsPerSecond = if ($receiveTimer.Elapsed.TotalSeconds -gt 0) {
+    $jpegBytesReceived * 8 / $receiveTimer.Elapsed.TotalSeconds / 1000000
+} else { 0 }
 
 [PSCustomObject]@{
     url = "$baseUri/"
     frames = $completedFrames
+    received_fps = [Math]::Round($receivedFps, 3)
+    received_mbit_s = [Math]::Round($receivedMegabitsPerSecond, 3)
     telemetry_packets = $telemetryPackets
     usb_fps = $healthAfter.usb_fps
     usb_mib_s = $healthAfter.usb_mib_s
     relay_sent_frames = $healthAfter.relay_sent_frames
+    relay_mbit_s = $healthAfter.relay_mbit_s
+    relay_last_sent_age_ms = $healthAfter.relay_last_sent_age_ms
     relay_dropped_frames = $healthAfter.relay_dropped_frames
     source_sent_frame_gap = $frameAge
 } | Format-List

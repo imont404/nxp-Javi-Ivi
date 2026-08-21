@@ -47,7 +47,7 @@ first mentioned during planning:
 | Cost | 15-30 dollars each | already available |
 
 There is space under the top deck for a small phone, so it can stay attached and
-serve as the receiver and transmitter: read CDC over OTG and stream a decimated
+serve as the receiver and transmitter: read CDC over OTG and stream a full-rate JPEG
 copy over Wi-Fi to the big screen. Recording is not implemented yet.
 
 **Recording is the part no board offered.** A phone can capture every frame to
@@ -74,17 +74,17 @@ kept USB at 23.42 FPS with clean parser health. JPEG is the next browser MVP bec
 independent frames are trivial to carry over the existing bounded WebSocket; H.264 is a
 proven lower-bitrate option if the race RF test justifies more browser plumbing.
 
-The earlier analysis already identified the right first lever: decimate to every
-fourth complete frame. This preserves a useful 5.9 FPS preview and gives the Wi-Fi
-link roughly four times the margin without changing firmware behavior.
+The first proof used the earlier low-risk lever: decimate to every fourth complete frame.
+The measured JPEG path has now superseded that relay mode, delivering the full 23.4 FPS
+at about one-third of the decimated raw stream's bitrate without changing firmware.
 
 Network shape, unchanged from the earlier recommendation: **avoid venue Wi-Fi**.
 Either the phone hosts its own hotspot with the display laptop joining it, or
 bring a small travel router and put both on it. Prefer 5 GHz. The venue network
 is the one variable nobody controls.
 
-And the recording still runs underneath all of it, so a network failure degrades
-the live view without costing the capture.
+Bounded recording could later run underneath this path so a network failure degrades
+the live view without costing the capture; it is not implemented for race week.
 
 ### It also removes the LCD from the frame budget
 
@@ -159,9 +159,11 @@ In rough order, smallest useful thing first:
    sustained full camera rate without corrupting or slowing USB. JPEG quality 70 used
    about 1.96 Mbit/s and 48 MiB PSS; H.264 at a 750 kbit/s target used about 0.75 Mbit/s
    and 74 MiB PSS. The test harness restores the normal bridge after each opt-in run.
-8. **Deliver full-rate JPEG to the browser: active.** Preserve bounded latest-frame
-   semantics and generic `AVCU` telemetry, then measure actual Wi-Fi frame age and RF
-   bitrate. Keep hardware H.264 available rather than making it the first browser path.
+8. **Deliver full-rate JPEG to the browser: complete.** One bounded `AVCJ` WebSocket
+   message carries each independent JPEG while generic telemetry remains `AVCU`. A
+   240-frame run delivered 23.493 FPS at 1.972 Mbit/s with about 24 ms latest-frame age;
+   headless Chrome decoded 120 frames in five seconds without page errors. Hardware H.264
+   remains available rather than becoming the first browser path.
 9. **Validate the physical vehicle: pending.** USB removal/reinsertion, car power cycle,
    mounting and strain relief, phone thermal/battery runtime, and actual race-network RF
    remain attended tests. The locked-screen software case now passes: a connected-device

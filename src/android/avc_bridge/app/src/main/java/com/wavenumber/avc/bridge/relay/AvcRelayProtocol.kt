@@ -2,62 +2,30 @@ package com.wavenumber.avc.bridge.relay
 
 import com.wavenumber.avc.bridge.protocol.AvcPacket
 import com.wavenumber.avc.bridge.protocol.AvcProtocol
-import com.wavenumber.avc.bridge.video.AvcVideoFrame
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
-data class AvcEncodedFrame(
-    val packets: List<ByteArray>,
-    val nextSequence: Int,
-)
-
 object AvcRelayProtocol {
-    private const val FRAME_DATA_BYTES =
-        AvcProtocol.MAX_PAYLOAD_BYTES - AvcProtocol.FRAME_CHUNK_HEADER_BYTES
+    const val JPEG_MAGIC = 0x4A435641
+    const val JPEG_VERSION = 1
+    const val JPEG_HEADER_BYTES = 32
+    const val JPEG_FLAG_DROPPED_BEFORE = 1
 
-    fun encodeFrame(
-        frame: AvcVideoFrame,
-        firstSequence: Int,
-        droppedBefore: Boolean,
-    ): AvcEncodedFrame {
-        val packets = ArrayList<ByteArray>()
-        var sequence = firstSequence
-        var offset = 0
-        while (offset < frame.pixels.size) {
-            val dataBytes = minOf(FRAME_DATA_BYTES, frame.pixels.size - offset)
-            val startsFrame = offset == 0
-            val endsFrame = offset + dataBytes == frame.pixels.size
-            val chunkFlags =
-                (if (startsFrame) AvcProtocol.CHUNK_FRAME_START else 0) or
-                    (if (endsFrame) AvcProtocol.CHUNK_FRAME_END else 0)
-            val payload = ByteBuffer.allocate(AvcProtocol.FRAME_CHUNK_HEADER_BYTES + dataBytes)
-                .order(ByteOrder.LITTLE_ENDIAN)
-                .putInt(frame.frameId.toInt())
-                .putInt(offset)
-                .putInt(frame.pixels.size)
-                .putShort(frame.width.toShort())
-                .putShort(frame.height.toShort())
-                .putShort(AvcProtocol.PIXEL_FORMAT_RGB565_LE.toShort())
-                .putShort(0)
-                .putInt(chunkFlags)
-                .put(frame.pixels, offset, dataBytes)
-                .array()
-            packets.add(
-                encodePacket(
-                    sequence = sequence,
-                    messageId = AvcProtocol.MSG_RUI_WRITE_FRAME_BUFFER_RAW,
-                    flags = if (startsFrame && droppedBefore) AvcProtocol.FLAG_DROPPED_BEFORE else 0,
-                    arg0 = frame.frameId.toInt(),
-                    arg1 = offset,
-                    arg2 = dataBytes,
-                    payload = payload,
-                ),
-            )
-            sequence++
-            offset += dataBytes
-        }
-        return AvcEncodedFrame(packets, sequence)
-    }
+    fun encodeJpegFrame(frame: AvcRelayFrame): ByteArray =
+        ByteBuffer.allocate(JPEG_HEADER_BYTES + frame.byteCount)
+            .order(ByteOrder.LITTLE_ENDIAN)
+            .putInt(JPEG_MAGIC)
+            .put(JPEG_VERSION.toByte())
+            .put(JPEG_HEADER_BYTES.toByte())
+            .putShort(if (frame.droppedBefore) JPEG_FLAG_DROPPED_BEFORE.toShort() else 0)
+            .putInt(frame.frameId.toInt())
+            .putShort(frame.width.toShort())
+            .putShort(frame.height.toShort())
+            .putInt(frame.byteCount)
+            .putLong(frame.capturedNs)
+            .putInt(0)
+            .put(frame.bytes, 0, frame.byteCount)
+            .array()
 
     fun encodeDiagnostic(packet: AvcPacket, sequence: Int): ByteArray = encodePacket(
         sequence = sequence,

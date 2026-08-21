@@ -84,26 +84,26 @@ depends_on = ["compression-inventory"]
 [[steps]]
 id = "compressed-browser-delivery"
 title = "Select and integrate the simplest compressed browser delivery path supported by measured phone performance"
-status = "active"
+status = "done"
 depends_on = ["full-rate-jpeg", "hardware-h264"]
 
 [[steps]]
 id = "vehicle-integration"
 title = "Validate battery life, heat, reconnects, RF behavior, and noninterference on the car; keep mounting and cable retention outside the software track"
-status = "pending"
+status = "active"
 depends_on = ["compressed-browser-delivery"]
 
 [[steps]]
 id = "design-doc-intent-audit"
 title = "Audit the Android design and protocol use against the implemented USB contract"
-status = "pending"
-depends_on = ["vehicle-integration"]
+status = "done"
+depends_on = ["compressed-browser-delivery"]
 
 [[steps]]
 id = "test-runtime-impact-audit"
 title = "Audit app, host, hardware, and firmware validation coverage and runtime impact"
-status = "pending"
-depends_on = ["vehicle-integration"]
+status = "done"
+depends_on = ["compressed-browser-delivery"]
 
 [[steps]]
 id = "external-review"
@@ -149,7 +149,7 @@ status = "met"
 [[exit_criteria]]
 id = "rf-bitrate"
 title = "Measured compressed bitrate and latency are suitable for smooth one-viewer race-day use on a controlled 5 GHz link"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "safe-reconnect"
@@ -164,12 +164,12 @@ status = "pending"
 [[exit_criteria]]
 id = "design-doc-intent-audit"
 title = "Android design and protocol documentation match implementation"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "test-runtime-impact-audit"
 title = "New tests are listed and runtime impact is reviewed"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "external-review"
@@ -181,12 +181,14 @@ status = "pending"
 
 ## Current Status
 
-Execution was authorized on 2026-08-21. The native USB host, phone preview, and first
+Execution was authorized on 2026-08-21. The native USB host, phone preview, and full-rate
 one-browser Wi-Fi relay are complete on the real Rev A car. The Moto G Power serves its
-embedded page at `http://<phone-address>:8765/`, preserves `AVCU` framing over a binary
-WebSocket, and relays every fourth complete camera frame plus generic telemetry. Chrome
-rendered live video and `system.uptime` while USB remained at about 23.42 FPS and
-2.869 MiB/s with zero sequence or malformed-chunk errors. A two-second network-send
+embedded page at `http://<phone-address>:8765/`, sends each JPEG as one bounded `AVCJ`
+WebSocket message, and preserves generic telemetry as normal `AVCU` messages. A 240-frame
+end-to-end run delivered 23.493 FPS at 1.972 Mbit/s with a most-recent-frame age of about
+24 ms while USB remained at 23.42 FPS and 2.870 MiB/s with zero sequence or malformed-
+chunk errors. Headless Chrome decoded 120 frames in five seconds with no page errors and
+nonblack canvas pixels. A two-second network-send
 deadline now closes a client that stops reading. Six consecutive forced stalls kept USB
 advancing, stayed near 56-59 MiB PSS after warm-up, and reconnected to a complete frame
 within one source frame in the final recorded run. Six subsequent abrupt app-process
@@ -196,9 +198,8 @@ and binds the active WLAN address. A connected-device foreground service now kee
 CPU and Wi-Fi active through the secure lockscreen: live relay verification passed while
 Android reported `Dozing`, screen off, and light idle. A 30-second loaded baseline held
 27 C, 23.42 USB FPS, 2.869 MiB/s, 49-60 MiB PSS, and roughly 427-588 mA discharge. Physical
-integration is parked while the active software track measures full-rate JPEG and
-hardware H.264 from the existing RGB565 stream, then selects the simplest compressed
-browser delivery path supported by evidence.
+integration remains parked; the active software work is documentation and test/runtime
+audit of the now-complete compressed relay.
 
 The Android codec inventory reports the MediaTek `c2.mtk.avc.encoder` as a hardware,
 vendor AVC encoder. At 320x200 it accepts planar, semiplanar, and flexible YUV420 byte
@@ -216,6 +217,20 @@ The measured RF saving from H.264 is real, but full-rate JPEG is already only ab
 percent of raw RGB565 bandwidth and is much simpler for an ordinary browser to consume.
 Use JPEG for the next one-browser MVP; retain H.264 as a proven option if race-network
 measurements justify its added framing, initialization, and browser-decoder complexity.
+That JPEG browser path is now implemented. An initial 75 ms inbound WebSocket poll capped
+delivery at 13.2 FPS; reducing the bounded client-control poll to 5 ms removed the cap and
+produced the 23.493 FPS result above. A repeated slow-reader test still closed the client
+at the two-second watchdog, kept USB healthy, and remained bounded at about 59 MiB PSS.
+
+The design audit confirms that firmware and the USB contract did not change: Android
+still sends only `HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`, and contains no actuator or
+vehicle-mode command. `AVCJ` exists only between the phone and its embedded browser;
+generic telemetry remains `AVCU`. The test/runtime audit covers new JVM framing and
+RGB565-to-I420 fixtures plus real-phone JPEG, H.264, WebSocket payload, slow-reader,
+forced-restart, locked-screen, and Chrome decode proofs. With a live JPEG browser, a spot
+sample showed about 50 MiB PSS, 25.9 percent process CPU in Android's eight-core `top`,
+27 C battery temperature, and roughly 483 mA discharge. These are healthy development
+measurements, not a substitute for a race-duration battery/thermal run.
 
 ## Concrete Hardware
 
@@ -246,7 +261,8 @@ protocol used by the PC viewer. The minimum useful product is:
 ```text
 Rev A car -- USB CDC --> Android AVC parser --> phone preview
                                       |
-                                      +--> latest complete frame + telemetry
+                                      +--> latest complete frame --> JPEG
+                                           + generic telemetry
                                             --> embedded HTTP/WebSocket server
                                             --> laptop browser
 ```
@@ -262,24 +278,26 @@ The first executable slice is deliberately small:
    `HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`.
 2. Parse fragmented `AVCU` packets on a dedicated worker and show live RGB565 frames plus
    connection, parser, frame-rate, byte-rate, sequence, and drop counters on the phone.
-3. Serve a static page embedded in the APK and forward a decimated latest-frame stream
-   plus telemetry to one laptop browser over binary WebSocket.
+3. Serve a static page embedded in the APK and forward a full-rate, latest-frame JPEG
+   stream plus generic `AVCU` telemetry to one laptop browser over binary WebSocket.
 4. Provide an in-app and machine-readable health view so the development loop can verify
    USB state, session state, last frame age, rates, drops, and connected browser count.
 
-The relay should initially preserve the `AVCU` message format so the browser can reuse the
-existing parser concepts. The phone may omit complete camera frames according to its
-relay policy, but it must not forward partial frames as complete. Logs and telemetry are
-small; camera frames use latest-complete-frame semantics.
+The USB side remains the existing `AVCU` contract. On Wi-Fi, telemetry retains `AVCU`
+framing while each independently decodable JPEG uses one small `AVCJ` envelope carrying
+frame ID, dimensions, byte count, capture timestamp, and a dropped-before flag. The phone
+may omit complete camera frames under backpressure, but it never forwards a partial frame
+as complete. Camera frames use latest-complete-frame semantics throughout.
 
 Raw full-rate video is about 24.1 Mbit/s. The completed first Wi-Fi proof sends every
 fourth frame, about 5.9 FPS and 6.0 Mbit/s, while continuing to drain USB at full rate.
 The next experiment keeps the firmware and RGB565 camera mode fixed and compares bounded
 full-rate JPEG with Android hardware H.264. Measure achieved encode FPS, encoded bitrate,
 frame age/latency, drops, USB health, CPU time, memory, temperature, and battery current.
-JPEG is the low-complexity independent-frame candidate; H.264 is the likely RF-efficient
-candidate. Browser transport is selected only after both phone-side encoder results are
-known. Recording, multi-client support, and a polished race dashboard remain deferred.
+The measured result selected JPEG: it sustains the full 23.4 FPS in the browser at about
+1.97 Mbit/s. H.264 remains the lower-bitrate option, but does not justify its additional
+browser transport and decoder lifecycle for the current controlled 5 GHz link. Recording,
+multi-client support, and a polished race dashboard remain deferred.
 
 WebSocket uses TCP because an ordinary browser cannot consume arbitrary UDP datagrams.
 Bounded application queues prevent TCP backpressure from becoming growing latency: keep
@@ -293,8 +311,10 @@ Development and race operation have different best first configurations:
 - **Development:** put the workstation and phone on the same controlled 5 GHz access
   point or travel router. This gives the most reliable wireless `adb` connection while
   the phone's only USB-C port is connected to the car.
-- **Race MVP:** manually enable the phone's 5 GHz hotspot and join the projector laptop
-  to it. The app displays the local URL and, later, a QR code. This avoids venue Wi-Fi.
+- **Race candidate:** manually enable the phone's 5 GHz hotspot, restart the bridge so it
+  binds the hotspot address, and join the projector laptop to it. Device inventory reports
+  no concurrent STA+AP support, so this disconnects `yellow` and wireless adb. The hotspot
+  client path and post-switch address must still be tested before relying on it.
 - **Optional follow-up:** Android's local-only hotspot API is available from API 26 and
   can create a no-Internet network for nearby clients. Android 13-targeted apps require
   `NEARBY_WIFI_DEVICES`. Programmatic hotspot control is not required for the first proof.

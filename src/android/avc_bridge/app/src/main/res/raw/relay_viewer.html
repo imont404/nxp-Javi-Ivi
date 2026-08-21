@@ -27,41 +27,46 @@
 <script>
 (() => {
   'use strict';
-  const MAGIC = 0x55435641;
-  const MSG_FRAME = 0x01000002;
+  const AVCU_MAGIC = 0x55435641;
+  const JPEG_MAGIC = 0x4a435641;
+  const JPEG_HEADER_BYTES = 32;
   const MSG_TELEMETRY = 0x01000500;
-  const FLAG_DROPPED_BEFORE = 1 << 3;
-  const FRAME_START = 1;
-  const FRAME_END = 2;
-  const FRAME_BYTES = 320 * 200 * 2;
   const status = document.querySelector('#status');
   const metrics = document.querySelector('#metrics');
   const telemetryBody = document.querySelector('#telemetry');
   const context = document.querySelector('#camera').getContext('2d', { alpha: false });
-  const image = context.createImageData(320, 200);
-  const pixels = new Uint8Array(FRAME_BYTES);
   const telemetry = new Map();
   const decoder = new TextDecoder();
-  let activeFrame = null;
-  let nextOffset = 0;
+  let pendingJpeg = null;
+  let decodingJpeg = false;
+  let lastFrameId = -1;
   let displayed = 0;
   let lastRateTime = performance.now();
 
-  function renderFrame() {
-    for (let source = 0, target = 0; source < FRAME_BYTES; source += 2, target += 4) {
-      const rgb = pixels[source] | (pixels[source + 1] << 8);
-      image.data[target] = Math.round(((rgb >> 11) & 31) * 255 / 31);
-      image.data[target + 1] = Math.round(((rgb >> 5) & 63) * 255 / 63);
-      image.data[target + 2] = Math.round((rgb & 31) * 255 / 31);
-      image.data[target + 3] = 255;
+  async function drainJpeg() {
+    if (decodingJpeg) return;
+    decodingJpeg = true;
+    while (pendingJpeg !== null) {
+      const frame = pendingJpeg;
+      pendingJpeg = null;
+      try {
+        const bitmap = await createImageBitmap(
+          new Blob([new Uint8Array(frame.buffer, JPEG_HEADER_BYTES, frame.jpegBytes)], { type: 'image/jpeg' })
+        );
+        context.drawImage(bitmap, 0, 0, 320, 200);
+        bitmap.close();
+        lastFrameId = frame.frameId;
+        displayed++;
+      } catch (error) {
+        status.textContent = `JPEG decode error: ${error}`;
+      }
+      const now = performance.now();
+      if (now - lastRateTime >= 1000) {
+        status.textContent = `Live JPEG - frame ${lastFrameId}, browser frames ${displayed}`;
+        lastRateTime = now;
+      }
     }
-    context.putImageData(image, 0, 0);
-    displayed++;
-    const now = performance.now();
-    if (now - lastRateTime >= 1000) {
-      status.textContent = `Live - frame ${activeFrame}, browser frames ${displayed}`;
-      lastRateTime = now;
-    }
+    decodingJpeg = false;
   }
 
   function showTelemetry(view, payloadStart, payloadLength) {
@@ -94,43 +99,33 @@
 
   function receivePacket(buffer) {
     const view = new DataView(buffer);
-    if (view.byteLength < 32 || view.getUint32(0, true) !== MAGIC || view.getUint8(4) !== 1 || view.getUint8(5) !== 32) return;
-    const flags = view.getUint16(6, true);
+    if (view.byteLength < 32) return;
+    const magic = view.getUint32(0, true);
+    if (magic === JPEG_MAGIC) {
+      const jpegBytes = view.getUint32(16, true);
+      if (
+        view.getUint8(4) !== 1 || view.getUint8(5) !== JPEG_HEADER_BYTES ||
+        view.getUint16(12, true) !== 320 || view.getUint16(14, true) !== 200 ||
+        JPEG_HEADER_BYTES + jpegBytes !== view.byteLength || jpegBytes < 4 ||
+        view.getUint8(JPEG_HEADER_BYTES) !== 0xff || view.getUint8(JPEG_HEADER_BYTES + 1) !== 0xd8 ||
+        view.getUint8(view.byteLength - 2) !== 0xff || view.getUint8(view.byteLength - 1) !== 0xd9
+      ) return;
+      pendingJpeg = { buffer, jpegBytes, frameId: view.getUint32(8, true) };
+      void drainJpeg();
+      return;
+    }
+    if (magic !== AVCU_MAGIC || view.getUint8(4) !== 1 || view.getUint8(5) !== 32) return;
     const messageId = view.getUint32(8, true);
     const payloadLength = view.getUint32(16, true);
     if (32 + payloadLength !== view.byteLength) return;
     if (messageId === MSG_TELEMETRY) {
       showTelemetry(view, 32, payloadLength);
-      return;
-    }
-    if (messageId !== MSG_FRAME || payloadLength <= 24) return;
-    const frameId = view.getUint32(32, true);
-    const offset = view.getUint32(36, true);
-    const total = view.getUint32(40, true);
-    const width = view.getUint16(44, true);
-    const height = view.getUint16(46, true);
-    const format = view.getUint16(48, true);
-    const chunkFlags = view.getUint32(52, true);
-    const dataBytes = payloadLength - 24;
-    if ((flags & FLAG_DROPPED_BEFORE) !== 0) { activeFrame = null; nextOffset = 0; }
-    if (total !== FRAME_BYTES || width !== 320 || height !== 200 || format !== 1 || offset + dataBytes > total) return;
-    if ((chunkFlags & FRAME_START) !== 0) {
-      if (offset !== 0) return;
-      activeFrame = frameId;
-      nextOffset = 0;
-    }
-    if (activeFrame !== frameId || offset !== nextOffset) { activeFrame = null; nextOffset = 0; return; }
-    pixels.set(new Uint8Array(buffer, 32 + 24, dataBytes), offset);
-    nextOffset += dataBytes;
-    if ((chunkFlags & FRAME_END) !== 0) {
-      if (nextOffset === FRAME_BYTES) renderFrame();
-      activeFrame = null;
-      nextOffset = 0;
     }
   }
 
   function connect() {
-    const socket = new WebSocket(`ws://${location.host}/stream`);
+    const replace = new URLSearchParams(location.search).has('replace') ? '?replace=1' : '';
+    const socket = new WebSocket(`ws://${location.host}/stream${replace}`);
     socket.binaryType = 'arraybuffer';
     socket.onopen = () => { status.textContent = 'Connected; waiting for frame...'; };
     socket.onmessage = event => receivePacket(event.data);

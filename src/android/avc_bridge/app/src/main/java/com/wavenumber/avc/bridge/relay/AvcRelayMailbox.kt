@@ -1,14 +1,16 @@
 package com.wavenumber.avc.bridge.relay
 
 import com.wavenumber.avc.bridge.protocol.AvcPacket
-import com.wavenumber.avc.bridge.video.AvcVideoFrame
+import com.wavenumber.avc.bridge.video.AvcJpegFrameView
 import java.util.ArrayDeque
 
 data class AvcRelayFrame(
     val frameId: Long,
     val width: Int,
     val height: Int,
-    val pixels: ByteArray,
+    val capturedNs: Long,
+    val bytes: ByteArray,
+    val byteCount: Int,
     val droppedBefore: Boolean,
 )
 
@@ -16,72 +18,93 @@ data class AvcRelaySnapshot(
     val sourceFrames: Long,
     val selectedFrames: Long,
     val sentFrames: Long,
+    val sentBytes: Long,
+    val rateWindowBytes: Long,
+    val rateWindowFirstNs: Long,
+    val rateWindowLastNs: Long,
     val droppedFrames: Long,
     val diagnosticDrops: Long,
     val slowClientDisconnects: Long,
     val clients: Int,
     val lastSourceFrameId: Long,
     val lastSentFrameId: Long,
+    val lastSentCapturedNs: Long,
 )
 
+private data class SentSample(val timestampNs: Long, val bytes: Int)
+
 class AvcRelayMailbox(
-    private val frameBytes: Int,
-    private val decimation: Int = 4,
+    private val maxFrameBytes: Int,
     frameBufferCount: Int = 3,
     private val diagnosticCapacity: Int = 32,
 ) {
     init {
-        require(frameBytes > 0)
-        require(decimation > 0)
+        require(maxFrameBytes > 0)
         require(frameBufferCount >= 3)
         require(diagnosticCapacity > 0)
     }
 
     private val freeFrames = ArrayDeque<ByteArray>().apply {
-        repeat(frameBufferCount) { addLast(ByteArray(frameBytes)) }
+        repeat(frameBufferCount) { addLast(ByteArray(maxFrameBytes)) }
     }
     private val diagnostics = ArrayDeque<AvcPacket>()
+    private val sentSamples = ArrayDeque<SentSample>()
     private var latestFrame: AvcRelayFrame? = null
     private var sourceFrames = 0L
     private var selectedFrames = 0L
     private var sentFrames = 0L
+    private var sentBytes = 0L
+    private var rateWindowBytes = 0L
     private var droppedFrames = 0L
     private var diagnosticDrops = 0L
     private var slowClientDisconnects = 0L
     private var clients = 0
     private var lastSourceFrameId = -1L
+    private var lastSelectedFrameId = -1L
     private var lastSentFrameId = -1L
+    private var lastSentCapturedNs = 0L
     private var dropPending = false
 
     @Synchronized
-    fun offerSourceFrame(frame: AvcVideoFrame) {
+    fun noteSourceFrame(frameId: Long) {
         sourceFrames++
-        lastSourceFrameId = frame.frameId
-        if ((sourceFrames - 1) % decimation != 0L) return
+        lastSourceFrameId = frameId
+    }
+
+    @Synchronized
+    fun offerJpegFrame(frame: AvcJpegFrameView) {
+        require(frame.byteCount in 1..maxFrameBytes)
         selectedFrames++
+        if (lastSelectedFrameId >= 0 && frame.frameId > lastSelectedFrameId + 1) {
+            droppedFrames += frame.frameId - lastSelectedFrameId - 1
+            dropPending = true
+        }
+        lastSelectedFrameId = frame.frameId
 
         val destination = freeFrames.pollFirst() ?: latestFrame?.let {
             latestFrame = null
             droppedFrames++
             dropPending = true
-            it.pixels
+            it.bytes
         } ?: run {
             droppedFrames++
             dropPending = true
             return
         }
-        frame.pixels.copyInto(destination)
+        frame.bytes.copyInto(destination, endIndex = frame.byteCount)
         val replaced = latestFrame
         if (replaced != null) {
             droppedFrames++
             dropPending = true
-            freeFrames.addLast(replaced.pixels)
+            freeFrames.addLast(replaced.bytes)
         }
         latestFrame = AvcRelayFrame(
             frame.frameId,
             frame.width,
             frame.height,
+            frame.capturedNs,
             destination,
+            frame.byteCount,
             droppedBefore = dropPending,
         )
         dropPending = false
@@ -93,13 +116,24 @@ class AvcRelayMailbox(
     @Synchronized
     fun releaseSentFrame(frame: AvcRelayFrame, sent: Boolean) {
         if (sent) {
+            val nowNs = System.nanoTime()
             sentFrames++
+            sentBytes += frame.byteCount
+            sentSamples.addLast(SentSample(nowNs, frame.byteCount))
+            rateWindowBytes += frame.byteCount
+            while (
+                sentSamples.size > 1 &&
+                nowNs - checkNotNull(sentSamples.peekFirst()).timestampNs > 5_000_000_000L
+            ) {
+                rateWindowBytes -= sentSamples.removeFirst().bytes
+            }
             lastSentFrameId = frame.frameId
+            lastSentCapturedNs = frame.capturedNs
         } else {
             droppedFrames++
             dropPending = true
         }
-        freeFrames.addLast(frame.pixels)
+        freeFrames.addLast(frame.bytes)
     }
 
     @Synchronized
@@ -133,11 +167,16 @@ class AvcRelayMailbox(
         sourceFrames,
         selectedFrames,
         sentFrames,
+        sentBytes,
+        rateWindowBytes,
+        sentSamples.peekFirst()?.timestampNs ?: 0L,
+        sentSamples.peekLast()?.timestampNs ?: 0L,
         droppedFrames,
         diagnosticDrops,
         slowClientDisconnects,
         clients,
         lastSourceFrameId,
         lastSentFrameId,
+        lastSentCapturedNs,
     )
 }

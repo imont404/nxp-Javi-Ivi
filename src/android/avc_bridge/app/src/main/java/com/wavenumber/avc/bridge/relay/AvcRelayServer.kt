@@ -4,7 +4,7 @@ import com.wavenumber.avc.bridge.protocol.AvcPacket
 import com.wavenumber.avc.bridge.protocol.AvcProtocol
 import com.wavenumber.avc.bridge.usb.AvcUsbHealth
 import com.wavenumber.avc.bridge.usb.AvcUsbState
-import com.wavenumber.avc.bridge.video.AvcVideoFrame
+import com.wavenumber.avc.bridge.video.AvcJpegFrameView
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
@@ -32,12 +32,13 @@ class AvcRelayServer(
     companion object {
         private const val MAX_HTTP_HEADER_BYTES = 8 * 1024
         private const val MAX_CLIENT_PAYLOAD_BYTES = 4 * 1024
+        private const val CLIENT_POLL_TIMEOUT_MS = 5
         private const val SEND_DEADLINE_NS = 2_000_000_000L
         private const val SEND_WATCHDOG_PERIOD_MS = 100L
         private const val WEBSOCKET_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
     }
 
-    private val mailbox = AvcRelayMailbox(frameBytes = 320 * 200 * 2, decimation = 4)
+    private val mailbox = AvcRelayMailbox(maxFrameBytes = 320 * 200 * 4)
     private val clientLock = Any()
 
     @Volatile
@@ -66,7 +67,9 @@ class AvcRelayServer(
         acceptThread?.interrupt()
     }
 
-    fun offerFrame(frame: AvcVideoFrame) = mailbox.offerSourceFrame(frame)
+    fun noteSourceFrame(frameId: Long) = mailbox.noteSourceFrame(frameId)
+
+    fun offerJpegFrame(frame: AvcJpegFrameView) = mailbox.offerJpegFrame(frame)
 
     fun offerDiagnostic(packet: AvcPacket) {
         if (packet.header.messageId == AvcProtocol.MSG_TELEMETRY_SCALAR) {
@@ -128,7 +131,7 @@ class AvcRelayServer(
                             healthJson().toByteArray(StandardCharsets.UTF_8),
                         )
                     request.path == "/stream" && request.headers["upgrade"]?.lowercase(Locale.US) == "websocket" ->
-                        serveWebSocket(client, input, output, request.headers)
+                        serveWebSocket(client, input, output, request.headers, request.replaceViewer)
                     else -> writeHttpResponse(
                         output,
                         404,
@@ -148,6 +151,7 @@ class AvcRelayServer(
         input: BufferedInputStream,
         output: BufferedOutputStream,
         headers: Map<String, String>,
+        replaceViewer: Boolean,
     ) {
         val key = headers["sec-websocket-key"] ?: run {
             writeHttpResponse(output, 400, "Bad Request", "text/plain", "missing websocket key\n".toByteArray())
@@ -155,8 +159,13 @@ class AvcRelayServer(
         }
         synchronized(clientLock) {
             if (activeClient != null) {
-                writeHttpResponse(output, 503, "Busy", "text/plain", "one viewer already connected\n".toByteArray())
-                return
+                if (replaceViewer || headers["x-avc-replace-viewer"] == "1") {
+                    activeClient?.closeQuietly()
+                    activeClient = null
+                } else {
+                    writeHttpResponse(output, 503, "Busy", "text/plain", "one viewer already connected\n".toByteArray())
+                    return
+                }
             }
             activeClient = socket
             mailbox.setClients(1)
@@ -175,7 +184,7 @@ class AvcRelayServer(
                     ).toByteArray(StandardCharsets.US_ASCII),
             )
             output.flush()
-            socket.soTimeout = 75
+            socket.soTimeout = CLIENT_POLL_TIMEOUT_MS
             socket.sendBufferSize = 64 * 1024
             val outboundWriteStartedNs = AtomicLong(0)
             val sendWatchdog = Thread(
@@ -216,13 +225,7 @@ class AvcRelayServer(
                                 )
                             }
                             if (frame != null) {
-                                val encoded = AvcRelayProtocol.encodeFrame(
-                                    AvcVideoFrame(frame.frameId, frame.width, frame.height, frame.pixels),
-                                    relaySequence,
-                                    frame.droppedBefore,
-                                )
-                                encoded.packets.forEach { writeWebSocketFrame(output, 0x2, it) }
-                                relaySequence = encoded.nextSequence
+                                writeWebSocketFrame(output, 0x2, AvcRelayProtocol.encodeJpegFrame(frame))
                             }
                             output.flush()
                             frameSent = frame != null
@@ -243,8 +246,10 @@ class AvcRelayServer(
             }
         } finally {
             synchronized(clientLock) {
-                if (activeClient === socket) activeClient = null
-                mailbox.setClients(0)
+                if (activeClient === socket) {
+                    activeClient = null
+                    mailbox.setClients(0)
+                }
             }
         }
     }
@@ -308,7 +313,11 @@ class AvcRelayServer(
             val colon = line.indexOf(':')
             if (colon > 0) headers[line.substring(0, colon).trim().lowercase(Locale.US)] = line.substring(colon + 1).trim()
         }
-        return HttpRequest(requestParts[1].substringBefore('?'), headers)
+        val target = requestParts[1]
+        val replaceViewer = target.substringAfter('?', "")
+            .split('&')
+            .any { it.substringBefore('=') == "replace" }
+        return HttpRequest(target.substringBefore('?'), headers, replaceViewer)
     }
 
     private fun writeHttpResponse(
@@ -355,7 +364,15 @@ class AvcRelayServer(
     private fun healthJson(): String {
         val relay = mailbox.snapshot()
         val usb = usbHealth
-        return """{"state":"${usb.state.wireName}","session_id":${usb.sessionId},"usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
+        val elapsedSeconds = (relay.rateWindowLastNs - relay.rateWindowFirstNs) / 1_000_000_000.0
+        val relayMegabitsPerSecond =
+            if (elapsedSeconds > 0) relay.rateWindowBytes * 8.0 / elapsedSeconds / 1_000_000.0 else 0.0
+        val lastSentAgeMs = if (relay.lastSentCapturedNs > 0) {
+            (System.nanoTime() - relay.lastSentCapturedNs).coerceAtLeast(0) / 1_000_000.0
+        } else {
+            0.0
+        }
+        return """{"state":"${usb.state.wireName}","session_id":${usb.sessionId},"usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_mode":"jpeg","relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_sent_bytes":${relay.sentBytes},"relay_mbit_s":${format(relayMegabitsPerSecond)},"relay_last_sent_age_ms":${format(lastSentAgeMs)},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
     }
 
     private fun format(value: Double): String = String.format(Locale.US, "%.3f", value)
@@ -397,5 +414,6 @@ class AvcRelayServer(
     private data class HttpRequest(
         val path: String,
         val headers: Map<String, String>,
+        val replaceViewer: Boolean,
     )
 }

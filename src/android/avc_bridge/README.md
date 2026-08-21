@@ -63,11 +63,30 @@ The app also serves a standalone viewer from the phone:
 http://<phone-address>:8765/
 ```
 
-The binary WebSocket at `/stream` preserves normal `AVCU` frame and telemetry packets.
-The relay copies every fourth complete source frame into a separate fixed three-buffer
-latest-frame mailbox; browser or network work never runs on the USB reader. The embedded
-page has no server-side asset dependencies and renders generic named telemetry alongside
-the live camera. `/health` exposes both USB and relay counters.
+The binary WebSocket at `/stream` carries full-rate JPEG frames in the small `AVCJ`
+envelope below and preserves telemetry as normal `AVCU` packets. A fixed three-buffer
+RGB565 encoder input and a separate fixed three-buffer JPEG relay mailbox keep only the
+newest complete frame; browser, network, and compression work never run on the USB reader.
+The embedded page has no server-side asset dependencies and renders generic named
+telemetry alongside the live camera. `/health` exposes USB, compression, relay bitrate,
+frame-age, drop, and client counters.
+
+`AVCJ` is little-endian and occupies one binary WebSocket message per JPEG:
+
+```text
+offset  size  field
+0       4     magic "AVCJ"
+4       1     version (1)
+5       1     header bytes (32)
+6       2     flags (bit 0: dropped before)
+8       4     frame ID
+12      2     width
+14      2     height
+16      4     JPEG payload bytes
+20      8     phone monotonic capture time, ns
+28      4     reserved
+32      N     complete JPEG (SOI through EOI)
+```
 
 `android_loop.ps1` now verifies this path without a person watching either screen. To
 check an already running app directly, use:
@@ -81,8 +100,10 @@ check an already running app directly, use:
 .\scripts\android\test_android_compression.ps1 -Mode h264 -Serial <phone-ip>:5555
 ```
 
-The verified `yellow`-network proof rendered live video and `system.uptime` in desktop
-Chrome. A separate fixed-buffer relay mailbox prevents network work from stalling USB,
+The verified `yellow`-network proof delivered 240 consecutive JPEGs at 23.493 FPS and
+1.972 Mbit/s, with about 24 ms most-recent-frame age and clean 23.42 FPS USB input.
+Headless desktop Chrome decoded 120 frames in five seconds with no page errors and
+nonblack canvas output. A separate fixed-buffer relay mailbox prevents network work from stalling USB,
 and a two-second send deadline closes a client that stops draining TCP. The automated
 backpressure test deliberately opens a WebSocket and stops reading, checks USB progress,
 parser health, and app PSS, then proves a new client receives a recent complete frame.
@@ -92,9 +113,7 @@ source-to-sent frame gap of one. The viewer remains intentionally one-client and
 The reconnect test force-stops the app six times while the USB cable remains attached.
 Each restart must produce a distinct firmware session, clean USB frames, telemetry, and
 a recent relayed frame. Sessions 27 through 32 passed consecutively on the bench. The
-server explicitly enables Android's IPv4 socket stack and binds the active WLAN address;
-this avoids a restart-dependent IPv6-only wildcard listener that is not reachable through
-the displayed IPv4 URL.
+server explicitly enables Android's IPv4 socket stack and binds the active WLAN address.
 
 These scripts do not replace the attended car checks: physically remove/reinsert J11,
 power-cycle the car, inspect USB back-power behavior, measure phone temperature and
@@ -107,13 +126,13 @@ when the activity exits. The locked-screen test deliberately sleeps the phone, c
 `Dozing` plus screen-off state, verifies live frames, and wakes it again. The original
 one-minute screen timeout remains unchanged.
 
-The compression probe is opt-in and never runs in the normal bridge launch. It copies
-only the newest complete RGB565 frame into a fixed three-buffer worker, so JPEG or H.264
-work cannot block the USB reader or create a growing queue. JPEG uses Android's bitmap
-encoder; H.264 converts RGB565 little-endian to I420 with fixed LUTs and feeds the
+Bounded JPEG quality 70 is the normal relay path. The H.264 comparison remains opt-in.
+Both copy only the newest complete RGB565 frame into a fixed three-buffer worker, so
+compression cannot block the USB reader or create a growing queue. JPEG uses Android's
+bitmap encoder; H.264 converts RGB565 little-endian to I420 with fixed LUTs and feeds the
 phone's non-secure hardware AVC encoder through bounded byte buffers. The test script
 launches one mode for a fixed interval, requires at least 20 encoded FPS and clean USB
-parser health, reports memory/battery data, then restores the normal bridge.
+parser health, reports memory/battery data, then restores the normal JPEG bridge.
 
 A short fully loaded, locked-screen sample held 27 C, 23.42 USB FPS, 2.869 MiB/s, and
 49-60 MiB PSS while current draw varied from roughly 427 to 588 mA. This is a development

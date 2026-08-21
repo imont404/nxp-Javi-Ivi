@@ -56,10 +56,20 @@ data class AvcCompressionSnapshot(
             ) + if (error.isEmpty()) "" else " error=${error.replace(' ', '_')}"
 }
 
+data class AvcJpegFrameView(
+    val frameId: Long,
+    val width: Int,
+    val height: Int,
+    val capturedNs: Long,
+    val bytes: ByteArray,
+    val byteCount: Int,
+)
+
 class AvcCompressionProbe(
     private val mode: AvcCompressionMode,
     private val jpegQuality: Int = 70,
     private val h264Bitrate: Int = 750_000,
+    private val onJpegFrame: ((AvcJpegFrameView) -> Unit)? = null,
     private val onSnapshot: (AvcCompressionSnapshot) -> Unit,
 ) : AutoCloseable {
     companion object {
@@ -158,6 +168,20 @@ class AvcCompressionProbe(
                         "Bitmap JPEG encoder returned false"
                     }
                     val doneNs = System.nanoTime()
+                    try {
+                        onJpegFrame?.invoke(
+                            AvcJpegFrameView(
+                                frameId = frame.frameId,
+                                width = WIDTH,
+                                height = HEIGHT,
+                                capturedNs = frame.capturedNs,
+                                bytes = output.buffer,
+                                byteCount = output.size,
+                            ),
+                        )
+                    } catch (_: RuntimeException) {
+                        // An optional relay consumer must never stop the encoder worker.
+                    }
                     measurements.encoded(output.size.toLong(), startNs, doneNs, frame.capturedNs)
                 } finally {
                     freeBuffers.offer(frame.pixels)
@@ -355,7 +379,7 @@ class AvcCompressionProbe(
     }
 
     private class FixedByteArrayOutputStream(capacity: Int) : OutputStream() {
-        private val buffer = ByteArray(capacity)
+        val buffer = ByteArray(capacity)
         var size = 0
             private set
 

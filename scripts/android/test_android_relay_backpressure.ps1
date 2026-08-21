@@ -24,8 +24,8 @@ function Get-AppPssKb {
 }
 
 $before = Invoke-RestMethod -Uri "$baseUri/health" -TimeoutSec 5
-if ($before.state -ne "streaming" -or $before.clients -ne 0) {
-    throw "Backpressure proof requires one streaming app with no active browser."
+if ($before.state -ne "streaming") {
+    throw "Backpressure proof requires a streaming app."
 }
 $pssBeforeKb = Get-AppPssKb
 $client = [System.Net.Sockets.TcpClient]::new()
@@ -49,6 +49,7 @@ try {
         "Connection: Upgrade"
         "Sec-WebSocket-Key: $webSocketKey"
         "Sec-WebSocket-Version: 13"
+        "X-AVC-Replace-Viewer: 1"
         ""
         ""
     ) -join "`r`n"

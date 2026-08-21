@@ -108,21 +108,22 @@ class MainActivity : Activity() {
         } else {
             avcEncoders.forEach { Log.i("AVC_CODEC_INVENTORY", AvcCodecInventory.logLine(it)) }
         }
-        AvcCompressionMode.parse(intent.getStringExtra("compression_probe"))?.let { mode ->
-            compressionProbe = AvcCompressionProbe(
-                mode = mode,
-                jpegQuality = intent.getIntExtra("jpeg_quality", 70),
-                h264Bitrate = intent.getIntExtra("h264_bitrate", 750_000),
-            ) { snapshot ->
-                compressionSnapshot = snapshot
-                Log.i(COMPRESSION_TAG, snapshot.logLine())
-            }
+        val compressionMode = AvcCompressionMode.parse(intent.getStringExtra("compression_probe"))
+            ?: AvcCompressionMode.JPEG
+        compressionProbe = AvcCompressionProbe(
+            mode = compressionMode,
+            jpegQuality = intent.getIntExtra("jpeg_quality", 70),
+            h264Bitrate = intent.getIntExtra("h264_bitrate", 750_000),
+            onJpegFrame = if (compressionMode == AvcCompressionMode.JPEG) relayServer::offerJpegFrame else null,
+        ) { snapshot ->
+            compressionSnapshot = snapshot
+            Log.i(COMPRESSION_TAG, snapshot.logLine())
         }
         session = AvcUsbSession(
             usbManager,
             ::showHealth,
             { frame ->
-                relayServer.offerFrame(frame)
+                relayServer.noteSourceFrame(frame.frameId)
                 compressionProbe?.offerFrame(frame)
             },
             relayServer::offerDiagnostic,

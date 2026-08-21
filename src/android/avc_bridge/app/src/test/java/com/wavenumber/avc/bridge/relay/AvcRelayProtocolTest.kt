@@ -1,7 +1,6 @@
 package com.wavenumber.avc.bridge.relay
 
-import com.wavenumber.avc.bridge.protocol.AvcProtocol
-import com.wavenumber.avc.bridge.video.AvcVideoFrame
+import com.wavenumber.avc.bridge.video.AvcJpegFrameView
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import org.junit.Assert.assertArrayEquals
@@ -11,73 +10,64 @@ import org.junit.Test
 
 class AvcRelayProtocolTest {
     @Test
-    fun completeFrameIsRechunkedIntoStandardAvcuPackets() {
-        val pixels = ByteArray(320 * 200 * 2) { (it and 0xFF).toByte() }
-        val encoded = AvcRelayProtocol.encodeFrame(
-            AvcVideoFrame(55, 320, 200, pixels),
-            firstSequence = 100,
-            droppedBefore = true,
+    fun jpegFrameIsEncodedAsOneBoundedWebSocketPayload() {
+        val jpeg = byteArrayOf(0xFF.toByte(), 0xD8.toByte(), 1, 2, 0xFF.toByte(), 0xD9.toByte())
+        val packet = AvcRelayProtocol.encodeJpegFrame(
+            AvcRelayFrame(
+                frameId = 55,
+                width = 320,
+                height = 200,
+                capturedNs = 123_456_789,
+                bytes = jpeg,
+                byteCount = jpeg.size,
+                droppedBefore = true,
+            ),
         )
-        val reassembled = ByteArray(pixels.size)
-        var expectedOffset = 0
-        encoded.packets.forEachIndexed { index, packet ->
-            val view = ByteBuffer.wrap(packet).order(ByteOrder.LITTLE_ENDIAN)
-            assertEquals(AvcProtocol.MAGIC, view.getInt(0))
-            assertEquals(AvcProtocol.MSG_RUI_WRITE_FRAME_BUFFER_RAW, view.getInt(8))
-            assertEquals(100 + index, view.getInt(12))
-            assertEquals(55, view.getInt(20))
-            assertEquals(expectedOffset, view.getInt(24))
-            val dataBytes = view.getInt(28)
-            val payloadOffset = AvcProtocol.HEADER_BYTES
-            val chunkFlags = view.getInt(payloadOffset + 20)
-            if (index == 0) {
-                assertTrue(view.getShort(6).toInt() and AvcProtocol.FLAG_DROPPED_BEFORE != 0)
-                assertTrue(chunkFlags and AvcProtocol.CHUNK_FRAME_START != 0)
-            }
-            if (index == encoded.packets.lastIndex) {
-                assertTrue(chunkFlags and AvcProtocol.CHUNK_FRAME_END != 0)
-            }
-            packet.copyInto(
-                reassembled,
-                expectedOffset,
-                payloadOffset + AvcProtocol.FRAME_CHUNK_HEADER_BYTES,
-                payloadOffset + AvcProtocol.FRAME_CHUNK_HEADER_BYTES + dataBytes,
-            )
-            expectedOffset += dataBytes
-        }
-        assertEquals(8, encoded.packets.size)
-        assertEquals(108, encoded.nextSequence)
-        assertArrayEquals(pixels, reassembled)
+        val view = ByteBuffer.wrap(packet).order(ByteOrder.LITTLE_ENDIAN)
+        assertEquals(AvcRelayProtocol.JPEG_MAGIC, view.getInt(0))
+        assertEquals(AvcRelayProtocol.JPEG_VERSION, view.get(4).toInt())
+        assertEquals(AvcRelayProtocol.JPEG_HEADER_BYTES, view.get(5).toInt())
+        assertEquals(AvcRelayProtocol.JPEG_FLAG_DROPPED_BEFORE, view.getShort(6).toInt())
+        assertEquals(55, view.getInt(8))
+        assertEquals(320, view.getShort(12).toInt())
+        assertEquals(200, view.getShort(14).toInt())
+        assertEquals(jpeg.size, view.getInt(16))
+        assertEquals(123_456_789, view.getLong(20))
+        assertArrayEquals(jpeg, packet.copyOfRange(AvcRelayProtocol.JPEG_HEADER_BYTES, packet.size))
     }
 
     @Test
-    fun relayMailboxDecimatesAndKeepsOnlyNewestSelectedFrame() {
-        val mailbox = AvcRelayMailbox(frameBytes = 2, decimation = 2)
+    fun relayMailboxKeepsOnlyNewestEncodedFrame() {
+        val mailbox = AvcRelayMailbox(maxFrameBytes = 8)
         for (frameId in 0L..4L) {
-            mailbox.offerSourceFrame(
-                AvcVideoFrame(frameId, 1, 1, byteArrayOf(frameId.toByte(), frameId.toByte())),
+            mailbox.noteSourceFrame(frameId)
+            mailbox.offerJpegFrame(
+                AvcJpegFrameView(frameId, 1, 1, frameId, byteArrayOf(frameId.toByte()), 1),
             )
         }
 
         val latest = requireNotNull(mailbox.takeLatestFrame())
         assertEquals(4, latest.frameId)
-        assertArrayEquals(byteArrayOf(4, 4), latest.pixels)
+        assertArrayEquals(byteArrayOf(4), latest.bytes.copyOf(latest.byteCount))
         assertTrue(latest.droppedBefore)
         val snapshot = mailbox.snapshot()
         assertEquals(5, snapshot.sourceFrames)
-        assertEquals(3, snapshot.selectedFrames)
-        assertEquals(2, snapshot.droppedFrames)
+        assertEquals(5, snapshot.selectedFrames)
+        assertEquals(4, snapshot.droppedFrames)
         mailbox.releaseSentFrame(latest, sent = true)
         assertEquals(1, mailbox.snapshot().sentFrames)
+        assertEquals(1, mailbox.snapshot().sentBytes)
     }
 
     @Test
     fun failedSendMarksTheNextSelectedFrameAsFollowingADrop() {
-        val mailbox = AvcRelayMailbox(frameBytes = 2, decimation = 1)
-        mailbox.offerSourceFrame(AvcVideoFrame(1, 1, 1, byteArrayOf(1, 1)))
+        val mailbox = AvcRelayMailbox(maxFrameBytes = 8)
+        mailbox.noteSourceFrame(1)
+        mailbox.offerJpegFrame(AvcJpegFrameView(1, 1, 1, 1, byteArrayOf(1), 1))
         val failed = requireNotNull(mailbox.takeLatestFrame())
         mailbox.releaseSentFrame(failed, sent = false)
-        mailbox.offerSourceFrame(AvcVideoFrame(2, 1, 1, byteArrayOf(2, 2)))
+        mailbox.noteSourceFrame(2)
+        mailbox.offerJpegFrame(AvcJpegFrameView(2, 1, 1, 2, byteArrayOf(2), 1))
 
         assertTrue(requireNotNull(mailbox.takeLatestFrame()).droppedBefore)
     }
