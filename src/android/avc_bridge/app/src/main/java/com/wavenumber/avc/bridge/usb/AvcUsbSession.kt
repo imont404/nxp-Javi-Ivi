@@ -49,6 +49,8 @@ data class AvcUsbHealth(
 class AvcUsbSession(
     private val usbManager: UsbManager,
     private val onHealth: (AvcUsbHealth) -> Unit,
+    private val onCompletedFrame: ((AvcVideoFrame) -> Unit)? = null,
+    private val onDiagnosticPacket: ((AvcPacket) -> Unit)? = null,
 ) {
     companion object {
         const val AVC_VENDOR_ID = 0x1FC9
@@ -87,7 +89,7 @@ class AvcUsbSession(
     private fun runStream(device: UsbDevice) {
         var connection: UsbDeviceConnection? = null
         var dataInterface: UsbInterface? = null
-        val assembler = AvcFrameAssembler(mailbox, FRAME_WIDTH, FRAME_HEIGHT)
+        val assembler = AvcFrameAssembler(mailbox, FRAME_WIDTH, FRAME_HEIGHT, onCompletedFrame)
         try {
             report(AvcUsbHealth(AvcUsbState.OPENING, "opening %04X:%04X".format(device.vendorId, device.productId)))
             val endpoints = findCdcEndpoints(device)
@@ -120,6 +122,7 @@ class AvcUsbSession(
                     AvcProtocol.MSG_TELEMETRY_SCALAR -> try {
                         AvcPayloadDecoder.telemetry(packet.payload)
                         telemetryRecords++
+                        onDiagnosticPacket?.invoke(packet)
                     } catch (_: IllegalArgumentException) {
                         malformedPayloads++
                     }

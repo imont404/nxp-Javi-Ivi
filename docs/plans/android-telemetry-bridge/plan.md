@@ -54,13 +54,13 @@ depends_on = ["android-usb-host-proof"]
 [[steps]]
 id = "wifi-relay-proof"
 title = "Serve an embedded page and relay bounded camera and telemetry data to one browser over a controlled 5 GHz network"
-status = "active"
+status = "done"
 depends_on = ["phone-preview"]
 
 [[steps]]
 id = "relay-backpressure"
 title = "Prove slow or disconnected Wi-Fi clients cannot block USB reads, grow memory, or create unbounded display latency"
-status = "pending"
+status = "active"
 depends_on = ["wifi-relay-proof"]
 
 [[steps]]
@@ -110,7 +110,7 @@ status = "met"
 [[exit_criteria]]
 id = "browser-relay"
 title = "One laptop browser receives a useful live camera and telemetry view over the phone's controlled 5 GHz network"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "bounded-backpressure"
@@ -147,11 +147,13 @@ status = "pending"
 
 ## Current Status
 
-Execution was authorized on 2026-08-21. The native foundation, portable command-line
-toolchain, protocol fixtures, wireless adb loop, physical USB-host enumeration, and
-framed control-session proof are complete. On the real Rev A car the Moto G Power now
-completes `HELLO`, `SET_CHANNELS(0)`, `PING`, and `CLOSE` without a firmware fork or any
-actuator control. The active work starts at bounded live camera preview on the phone.
+Execution was authorized on 2026-08-21. The native USB host, phone preview, and first
+one-browser Wi-Fi relay are complete on the real Rev A car. The Moto G Power serves its
+embedded page at `http://<phone-address>:8765/`, preserves `AVCU` framing over a binary
+WebSocket, and relays every fourth complete camera frame plus generic telemetry. Chrome
+rendered live video and `system.uptime` while USB remained at about 23.42 FPS and
+2.869 MiB/s with zero sequence or malformed-chunk errors. Active work is now the
+slow-client, disconnect, memory-bound, and newest-frame backpressure proof.
 
 ## Concrete Hardware
 
@@ -281,10 +283,11 @@ One-time attended setup is unavoidable:
    the car independently, and leave the vehicle in a safe non-moving mode.
 
 After that setup, `scripts/android/android_loop.ps1` builds, tests, installs, starts,
-waits for a healthy framed session, captures diagnostics, and exits nonzero on failure.
-Structured `AVC_BRIDGE_HEALTH` logcat records make the foundation proof independent of a
-person looking at the screen. An HTTP `/health` response belongs to the later Wi-Fi relay
-step.
+waits for a healthy framed session, verifies complete frames through the phone's
+WebSocket, captures diagnostics, and exits nonzero on failure. Structured
+`AVC_BRIDGE_HEALTH` logcat records and the HTTP `/health` endpoint make the proof
+independent of a person looking at either screen. Use `-SkipRelay` only for a deliberate
+USB-only diagnostic run.
 
 Physical cable insertion, USB permission after app reinstall/reset, phone reboot,
 hotspot permission dialogs, and car power cycling remain attended boundaries unless

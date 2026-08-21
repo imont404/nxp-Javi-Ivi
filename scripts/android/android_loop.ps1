@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [string]$Serial,
-    [switch]$Clean
+    [switch]$Clean,
+    [switch]$SkipRelay
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,5 +26,9 @@ if ([string]::IsNullOrWhiteSpace($Serial)) {
 & (Join-Path $PSScriptRoot "build_android.ps1") -Clean:$Clean
 
 & (Join-Path $PSScriptRoot "deploy_android.ps1") -Serial $Serial
+
+if (-not $SkipRelay) {
+    & (Join-Path $PSScriptRoot "verify_android_relay.ps1") -Serial $Serial
+}
 
 Write-Host "AVC Android loop passed for $Serial" -ForegroundColor Green

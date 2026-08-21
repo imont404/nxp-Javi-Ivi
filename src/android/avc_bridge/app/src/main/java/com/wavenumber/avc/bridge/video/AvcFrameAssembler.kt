@@ -79,6 +79,7 @@ class AvcFrameAssembler(
     private val mailbox: LatestFrameMailbox,
     private val width: Int = 320,
     private val height: Int = 200,
+    private val onCompletedFrame: ((AvcVideoFrame) -> Unit)? = null,
 ) {
     private val frameBytes = width * height * 2
     private var activeFrameId = -1L
@@ -170,7 +171,13 @@ class AvcFrameAssembler(
                 abortActive()
                 return
             }
-            mailbox.publish(AvcVideoFrame(activeFrameId, width, height, destination))
+            val completedFrame = AvcVideoFrame(activeFrameId, width, height, destination)
+            try {
+                onCompletedFrame?.invoke(completedFrame)
+            } catch (_: RuntimeException) {
+                // An optional consumer must never interrupt the USB ingest path.
+            }
+            mailbox.publish(completedFrame)
             completedFrames++
             activeBytes = null
             activeFrameId = -1L

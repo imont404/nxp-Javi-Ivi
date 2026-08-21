@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import com.wavenumber.avc.bridge.usb.AvcUsbHealth
 import com.wavenumber.avc.bridge.usb.AvcUsbSession
 import com.wavenumber.avc.bridge.usb.AvcUsbState
+import com.wavenumber.avc.bridge.relay.AvcRelayServer
 import java.nio.ByteBuffer
 import java.util.Locale
 
@@ -35,6 +36,7 @@ class MainActivity : Activity() {
 
     private lateinit var usbManager: UsbManager
     private lateinit var session: AvcUsbSession
+    private lateinit var relayServer: AvcRelayServer
     private lateinit var statusView: TextView
     private lateinit var previewView: ImageView
     private val previewBitmap = Bitmap.createBitmap(320, 200, Bitmap.Config.RGB_565)
@@ -85,7 +87,15 @@ class MainActivity : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         usbManager = getSystemService(Context.USB_SERVICE) as UsbManager
-        session = AvcUsbSession(usbManager, ::showHealth)
+        val relayViewer = resources.openRawResource(R.raw.relay_viewer).use { it.readBytes() }
+        relayServer = AvcRelayServer(relayViewer)
+        relayServer.start()
+        session = AvcUsbSession(
+            usbManager,
+            ::showHealth,
+            relayServer::offerFrame,
+            relayServer::offerDiagnostic,
+        )
         previewView = ImageView(this).apply {
             setImageBitmap(previewBitmap)
             scaleType = ImageView.ScaleType.FIT_CENTER
@@ -144,6 +154,7 @@ class MainActivity : Activity() {
     override fun onDestroy() {
         previewView.removeCallbacks(renderLoop)
         session.stop()
+        relayServer.stop()
         unregisterReceiver(usbReceiver)
         super.onDestroy()
     }
@@ -173,8 +184,10 @@ class MainActivity : Activity() {
     }
 
     private fun showHealth(health: AvcUsbHealth) {
+        relayServer.updateUsbHealth(health)
         runOnUiThread {
             val devices = usbManager.deviceList.values.toList()
+            val relay = relayServer.snapshot()
             statusView.text = buildString {
                 appendLine("AVC Android Bridge")
                 appendLine()
@@ -202,6 +215,11 @@ class MainActivity : Activity() {
                 appendLine(
                     "Diagnostics: stats=${health.statsReports} logs=${health.logRecords} " +
                         "telemetry=${health.telemetryRecords}",
+                )
+                appendLine("Relay: ${relayServer.localUrl()}")
+                appendLine(
+                    "Relay frames: selected=${relay.selectedFrames} sent=${relay.sentFrames} " +
+                        "dropped=${relay.droppedFrames} clients=${relay.clients}",
                 )
                 if (health.sessionId != 0L) appendLine("Session ID: ${health.sessionId}")
             }

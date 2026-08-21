@@ -245,8 +245,13 @@ bulk interface and repeatedly completed framed `HELLO`, `SET_CHANNELS(0)`, `PING
 deployment loop, structured health logging, and Android lint all pass. The bounded
 three-buffer phone preview now displays the live RGB565 camera at about 23.42 FPS and
 2.869 MiB/s with zero sequence or malformed-chunk errors in the recorded sustained run.
-Graceful close and immediate reopen pass. A one-browser Wi-Fi relay is the next Android
-step.
+Graceful close and immediate reopen pass. The phone now also serves a standalone page on
+port 8765 and preserves `AVCU` framing over a one-client binary WebSocket. Desktop Chrome
+on the controlled `yellow` 5 GHz network rendered decimated live video and generic
+`system.uptime` telemetry while the USB counters remained clean. The relay uses an
+independent fixed three-buffer latest-frame mailbox, and the unattended verification
+script validates complete contiguous frames without visual assistance. Slow-client and
+reconnect stress remain the next Android step.
 
 ## Hardware and Event Implication
 

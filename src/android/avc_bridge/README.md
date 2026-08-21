@@ -55,4 +55,27 @@ Graceful exit sends `SET_CHANNELS(0)` and `CLOSE`.
 errors, malformed chunks, preview drops, and diagnostic record counts. The unattended
 deploy check requires at least one complete frame with zero sequence and malformed-chunk
 errors. On the verified Rev A car, the sustained preview runs at about 23.42 FPS and
-2.869 MiB/s. Wi-Fi relay is the next milestone.
+2.869 MiB/s.
+
+The app also serves a standalone viewer from the phone:
+
+```text
+http://<phone-address>:8765/
+```
+
+The binary WebSocket at `/stream` preserves normal `AVCU` frame and telemetry packets.
+The relay copies every fourth complete source frame into a separate fixed three-buffer
+latest-frame mailbox; browser or network work never runs on the USB reader. The embedded
+page has no server-side asset dependencies and renders generic named telemetry alongside
+the live camera. `/health` exposes both USB and relay counters.
+
+`android_loop.ps1` now verifies this path without a person watching either screen. To
+check an already running app directly, use:
+
+```powershell
+.\scripts\android\verify_android_relay.ps1 -Serial <phone-ip>:5555
+```
+
+The verified `yellow`-network proof rendered live video and `system.uptime` in desktop
+Chrome. Slow-client timeout and reconnect stress are the next milestone; this first proof
+is intentionally one-client and unstyled.
