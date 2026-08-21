@@ -155,7 +155,10 @@ In rough order, smallest useful thing first:
    binding the WLAN address fixed it.
 7. **Validate the physical vehicle: active.** USB removal/reinsertion, car power cycle,
    mounting and strain relief, phone thermal/battery runtime, and actual race-network RF
-   remain attended tests.
+   remain attended tests. The locked-screen software case now passes: a connected-device
+   foreground service kept CPU and Wi-Fi active while Android reported `Dozing`, screen
+   off, and light idle. A short loaded baseline held 27 C and roughly 427-588 mA draw;
+   it is not a substitute for the race-duration measurement.
 8. **Add recording or H.264 only after the MVP is measured.** They are valuable race-day
    features, but neither should delay proof of the actual USB-to-browser path.
 

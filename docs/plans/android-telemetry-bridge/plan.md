@@ -159,8 +159,12 @@ within one source frame in the final recorded run. Six subsequent abrupt app-pro
 losses also recovered distinct firmware sessions 27-32, clean USB video, telemetry, and
 recent Wi-Fi frames without cable handling. That test exposed and fixed Android choosing
 an IPv6-only wildcard listener after restart; the relay now explicitly selects the IPv4
-stack and binds the active WLAN address. Active work is now physical USB removal,
-vehicle power, mounting, cable retention, thermal/runtime, and race-network validation.
+stack and binds the active WLAN address. A connected-device foreground service now keeps
+CPU and Wi-Fi active through the secure lockscreen: live relay verification passed while
+Android reported `Dozing`, screen off, and light idle. A 30-second loaded baseline held
+27 C, 23.42 USB FPS, 2.869 MiB/s, 49-60 MiB PSS, and roughly 427-588 mA discharge. Active
+work is now physical USB removal, vehicle power, mounting, cable retention, full-duration
+thermal/runtime, and race-network validation.
 
 ## Concrete Hardware
 

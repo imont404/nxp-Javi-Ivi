@@ -259,6 +259,11 @@ abrupt app-process test recovered distinct firmware sessions 27-32, clean USB vi
 telemetry, and recent relay frames without touching the cable. It also exposed and fixed
 an Android restart case that created an IPv6-only wildcard listener behind an IPv4 URL;
 the server now explicitly uses the IPv4 stack and active WLAN address.
+The bridge also runs a connected-device foreground service with CPU and Wi-Fi locks while
+the activity owns the session. With Android reporting `Dozing`, screen off, and light
+idle, the laptop still received recent complete frames and USB remained at 23.42 FPS and
+2.869 MiB/s. A 30-second loaded sample held 27 C, 49-60 MiB PSS, and approximately
+427-588 mA discharge. Longer battery/thermal and physical vehicle tests remain open.
 
 ## Hardware and Event Implication
 

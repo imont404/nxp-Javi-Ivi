@@ -76,6 +76,7 @@ check an already running app directly, use:
 .\scripts\android\verify_android_relay.ps1 -Serial <phone-ip>:5555
 .\scripts\android\test_android_relay_backpressure.ps1 -Serial <phone-ip>:5555
 .\scripts\android\test_android_session_reconnect.ps1 -Serial <phone-ip>:5555
+.\scripts\android\test_android_locked_relay.ps1 -Serial <phone-ip>:5555
 ```
 
 The verified `yellow`-network proof rendered live video and `system.uptime` in desktop
@@ -96,3 +97,14 @@ the displayed IPv4 URL.
 These scripts do not replace the attended car checks: physically remove/reinsert J11,
 power-cycle the car, inspect USB back-power behavior, measure phone temperature and
 battery runtime, secure the OTG adapter/cable, and test the actual race network and range.
+
+The bridge starts a `connectedDevice` foreground service while the activity owns the USB
+session. Its ongoing notification, partial CPU wake lock, and high-performance Wi-Fi lock
+keep the local relay reachable when the secure lockscreen enters Doze; all are released
+when the activity exits. The locked-screen test deliberately sleeps the phone, confirms
+`Dozing` plus screen-off state, verifies live frames, and wakes it again. The original
+one-minute screen timeout remains unchanged.
+
+A short fully loaded, locked-screen sample held 27 C, 23.42 USB FPS, 2.869 MiB/s, and
+49-60 MiB PSS while current draw varied from roughly 427 to 588 mA. This is a development
+baseline only, not the required race-duration battery and thermal test.

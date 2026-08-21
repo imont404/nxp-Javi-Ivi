@@ -85,6 +85,10 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        ContextCompat.startForegroundService(
+            this,
+            Intent(this, BridgeKeepAliveService::class.java),
+        )
 
         usbManager = getSystemService(Context.USB_SERVICE) as UsbManager
         val relayViewer = resources.openRawResource(R.raw.relay_viewer).use { it.readBytes() }
@@ -155,6 +159,7 @@ class MainActivity : Activity() {
         previewView.removeCallbacks(renderLoop)
         session.stop()
         relayServer.stop()
+        stopService(Intent(this, BridgeKeepAliveService::class.java))
         unregisterReceiver(usbReceiver)
         super.onDestroy()
     }
