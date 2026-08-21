@@ -64,10 +64,34 @@ status = "done"
 depends_on = ["wifi-relay-proof"]
 
 [[steps]]
-id = "vehicle-integration"
-title = "Validate battery life, heat, mounting, cable retention, reconnects, RF behavior, and noninterference on the car"
-status = "active"
+id = "compression-inventory"
+title = "Inventory the Moto hardware video encoders and define bounded full-rate JPEG and H.264 measurements against the existing RGB565 stream"
+status = "done"
 depends_on = ["relay-backpressure"]
+
+[[steps]]
+id = "full-rate-jpeg"
+title = "Benchmark full-camera-rate JPEG from RGB565 without blocking USB or growing latency"
+status = "active"
+depends_on = ["compression-inventory"]
+
+[[steps]]
+id = "hardware-h264"
+title = "Prove and benchmark hardware-accelerated H.264 encoding from the existing RGB565 camera stream"
+status = "pending"
+depends_on = ["compression-inventory"]
+
+[[steps]]
+id = "compressed-browser-delivery"
+title = "Select and integrate the simplest compressed browser delivery path supported by measured phone performance"
+status = "pending"
+depends_on = ["full-rate-jpeg", "hardware-h264"]
+
+[[steps]]
+id = "vehicle-integration"
+title = "Validate battery life, heat, reconnects, RF behavior, and noninterference on the car; keep mounting and cable retention outside the software track"
+status = "pending"
+depends_on = ["compressed-browser-delivery"]
 
 [[steps]]
 id = "design-doc-intent-audit"
@@ -118,6 +142,16 @@ title = "A slow or absent Wi-Fi viewer cannot stall USB input or grow memory and
 status = "met"
 
 [[exit_criteria]]
+id = "full-rate-compression"
+title = "The phone sustains the camera frame rate through a bounded compressed-video path without degrading USB capture"
+status = "pending"
+
+[[exit_criteria]]
+id = "rf-bitrate"
+title = "Measured compressed bitrate and latency are suitable for smooth one-viewer race-day use on a controlled 5 GHz link"
+status = "pending"
+
+[[exit_criteria]]
 id = "safe-reconnect"
 title = "Connect, disconnect, app restart, and reconnect cannot enable motors or select a moving vehicle mode"
 status = "pending"
@@ -157,14 +191,21 @@ deadline now closes a client that stops reading. Six consecutive forced stalls k
 advancing, stayed near 56-59 MiB PSS after warm-up, and reconnected to a complete frame
 within one source frame in the final recorded run. Six subsequent abrupt app-process
 losses also recovered distinct firmware sessions 27-32, clean USB video, telemetry, and
-recent Wi-Fi frames without cable handling. That test exposed and fixed Android choosing
-an IPv6-only wildcard listener after restart; the relay now explicitly selects the IPv4
-stack and binds the active WLAN address. A connected-device foreground service now keeps
+recent Wi-Fi frames without cable handling. The relay explicitly selects the IPv4 stack
+and binds the active WLAN address. A connected-device foreground service now keeps
 CPU and Wi-Fi active through the secure lockscreen: live relay verification passed while
 Android reported `Dozing`, screen off, and light idle. A 30-second loaded baseline held
-27 C, 23.42 USB FPS, 2.869 MiB/s, 49-60 MiB PSS, and roughly 427-588 mA discharge. Active
-work is now physical USB removal, vehicle power, mounting, cable retention, full-duration
-thermal/runtime, and race-network validation.
+27 C, 23.42 USB FPS, 2.869 MiB/s, 49-60 MiB PSS, and roughly 427-588 mA discharge. Physical
+integration is parked while the active software track measures full-rate JPEG and
+hardware H.264 from the existing RGB565 stream, then selects the simplest compressed
+browser delivery path supported by evidence.
+
+The Android codec inventory reports the MediaTek `c2.mtk.avc.encoder` as a hardware,
+vendor AVC encoder. At 320x200 it accepts planar, semiplanar, and flexible YUV420 byte
+buffers as well as surface input, so the first H.264 proof can use a bounded RGB565-to-
+YUV420 conversion without adding EGL or changing the camera firmware. The vendor codec
+table advertises roughly 125-129 FPS at 320x240; the live measurement remains decisive
+because it includes conversion, codec queueing, USB capture, preview, and relay load.
 
 ## Concrete Hardware
 
@@ -221,11 +262,14 @@ existing parser concepts. The phone may omit complete camera frames according to
 relay policy, but it must not forward partial frames as complete. Logs and telemetry are
 small; camera frames use latest-complete-frame semantics.
 
-Raw full-rate video is about 24.1 Mbit/s. The first Wi-Fi proof should send every fourth
-frame, about 5.9 FPS and 6.0 Mbit/s, while continuing to drain USB at full rate. This is
-enough to prove the bridge with useful visual feedback and provides margin on a crowded
-network. Hardware H.264, recording, multi-client support, and a polished race dashboard
-come only after this proof.
+Raw full-rate video is about 24.1 Mbit/s. The completed first Wi-Fi proof sends every
+fourth frame, about 5.9 FPS and 6.0 Mbit/s, while continuing to drain USB at full rate.
+The next experiment keeps the firmware and RGB565 camera mode fixed and compares bounded
+full-rate JPEG with Android hardware H.264. Measure achieved encode FPS, encoded bitrate,
+frame age/latency, drops, USB health, CPU time, memory, temperature, and battery current.
+JPEG is the low-complexity independent-frame candidate; H.264 is the likely RF-efficient
+candidate. Browser transport is selected only after both phone-side encoder results are
+known. Recording, multi-client support, and a polished race dashboard remain deferred.
 
 WebSocket uses TCP because an ordinary browser cannot consume arbitrary UDP datagrams.
 Bounded application queues prevent TCP backpressure from becoming growing latency: keep
@@ -339,8 +383,9 @@ choice.
 - No dependency on Android Chrome Web Serial or WebUSB.
 - No app-store release, account system, cloud service, or venue network.
 - No polished telemetry styling; the generic data path and health evidence matter first.
-- No recording in the first relay proof. Add bounded recording after USB and Wi-Fi are
-  proven, then evaluate hardware H.264 only if RF measurements justify it.
+- No recording in the compression proof. Evaluate JPEG and hardware H.264 directly from
+  the live RGB565 stream before changing camera format or committing to a browser video
+  protocol.
 - No replacement of the standalone PC Web Serial viewer.
 
 The inspected Bunny Vision firmware/software tree contains useful CDC host-side lineage

@@ -25,6 +25,7 @@ import com.wavenumber.avc.bridge.usb.AvcUsbHealth
 import com.wavenumber.avc.bridge.usb.AvcUsbSession
 import com.wavenumber.avc.bridge.usb.AvcUsbState
 import com.wavenumber.avc.bridge.relay.AvcRelayServer
+import com.wavenumber.avc.bridge.video.AvcCodecInventory
 import java.nio.ByteBuffer
 import java.util.Locale
 
@@ -94,6 +95,12 @@ class MainActivity : Activity() {
         val relayViewer = resources.openRawResource(R.raw.relay_viewer).use { it.readBytes() }
         relayServer = AvcRelayServer(relayViewer)
         relayServer.start()
+        val avcEncoders = AvcCodecInventory.encoders()
+        if (avcEncoders.isEmpty()) {
+            Log.w("AVC_CODEC_INVENTORY", "No AVC encoders reported")
+        } else {
+            avcEncoders.forEach { Log.i("AVC_CODEC_INVENTORY", AvcCodecInventory.logLine(it)) }
+        }
         session = AvcUsbSession(
             usbManager,
             ::showHealth,
