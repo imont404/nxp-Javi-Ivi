@@ -75,6 +75,7 @@ check an already running app directly, use:
 ```powershell
 .\scripts\android\verify_android_relay.ps1 -Serial <phone-ip>:5555
 .\scripts\android\test_android_relay_backpressure.ps1 -Serial <phone-ip>:5555
+.\scripts\android\test_android_session_reconnect.ps1 -Serial <phone-ip>:5555
 ```
 
 The verified `yellow`-network proof rendered live video and `system.uptime` in desktop
@@ -84,3 +85,14 @@ backpressure test deliberately opens a WebSocket and stops reading, checks USB p
 parser health, and app PSS, then proves a new client receives a recent complete frame.
 Six consecutive real-hardware stalls passed with warm PSS around 56-59 MiB and a final
 source-to-sent frame gap of one. The viewer remains intentionally one-client and unstyled.
+
+The reconnect test force-stops the app six times while the USB cable remains attached.
+Each restart must produce a distinct firmware session, clean USB frames, telemetry, and
+a recent relayed frame. Sessions 27 through 32 passed consecutively on the bench. The
+server explicitly enables Android's IPv4 socket stack and binds the active WLAN address;
+this avoids a restart-dependent IPv6-only wildcard listener that is not reachable through
+the displayed IPv4 URL.
+
+These scripts do not replace the attended car checks: physically remove/reinsert J11,
+power-cycle the car, inspect USB back-power behavior, measure phone temperature and
+battery runtime, secure the OTG adapter/cable, and test the actual race network and range.

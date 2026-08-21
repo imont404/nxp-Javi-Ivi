@@ -155,8 +155,12 @@ rendered live video and `system.uptime` while USB remained at about 23.42 FPS an
 2.869 MiB/s with zero sequence or malformed-chunk errors. A two-second network-send
 deadline now closes a client that stops reading. Six consecutive forced stalls kept USB
 advancing, stayed near 56-59 MiB PSS after warm-up, and reconnected to a complete frame
-within one source frame in the final recorded run. Active work is now physical vehicle,
-power, cable, reconnect, and race-network validation.
+within one source frame in the final recorded run. Six subsequent abrupt app-process
+losses also recovered distinct firmware sessions 27-32, clean USB video, telemetry, and
+recent Wi-Fi frames without cable handling. That test exposed and fixed Android choosing
+an IPv6-only wildcard listener after restart; the relay now explicitly selects the IPv4
+stack and binds the active WLAN address. Active work is now physical USB removal,
+vehicle power, mounting, cable retention, thermal/runtime, and race-network validation.
 
 ## Concrete Hardware
 

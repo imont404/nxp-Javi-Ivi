@@ -13,6 +13,7 @@ import java.io.InputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.net.Inet4Address
+import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.NetworkInterface
 import java.net.ServerSocket
@@ -83,9 +84,11 @@ class AvcRelayServer(
 
     private fun acceptLoop() {
         try {
+            System.setProperty("java.net.preferIPv4Stack", "true")
+            val bindAddress = wifiIpv4Address() ?: "127.0.0.1"
             val listener = ServerSocket().apply {
                 reuseAddress = true
-                bind(InetSocketAddress(port))
+                bind(InetSocketAddress(InetAddress.getByName(bindAddress), port))
             }
             serverSocket = listener
             while (running) {
@@ -352,7 +355,7 @@ class AvcRelayServer(
     private fun healthJson(): String {
         val relay = mailbox.snapshot()
         val usb = usbHealth
-        return """{"state":"${usb.state.wireName}","usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
+        return """{"state":"${usb.state.wireName}","session_id":${usb.sessionId},"usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
     }
 
     private fun format(value: Double): String = String.format(Locale.US, "%.3f", value)

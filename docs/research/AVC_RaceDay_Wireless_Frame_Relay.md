@@ -149,7 +149,14 @@ In rough order, smallest useful thing first:
    two-second send deadline, and exposes the result through `/health`. Six consecutive
    hardware stalls kept USB healthy and warm app PSS around 56-59 MiB. Every forced close
    accepted a new client immediately; the final source-to-sent frame gap was one.
-6. **Add recording or H.264 only after the MVP is measured.** They are valuable race-day
+6. **Stress app restart: complete.** Six abrupt process losses recovered distinct
+   firmware sessions 27-32, clean USB video, telemetry, and recent Wi-Fi frames. The test
+   found a restart-dependent IPv6-only wildcard listener; explicitly selecting IPv4 and
+   binding the WLAN address fixed it.
+7. **Validate the physical vehicle: active.** USB removal/reinsertion, car power cycle,
+   mounting and strain relief, phone thermal/battery runtime, and actual race-network RF
+   remain attended tests.
+8. **Add recording or H.264 only after the MVP is measured.** They are valuable race-day
    features, but neither should delay proof of the actual USB-to-browser path.
 
 No reusable Android/WebUSB implementation was found in the inspected Bunny Vision tree,

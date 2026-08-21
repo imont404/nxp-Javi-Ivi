@@ -254,7 +254,11 @@ script validates complete contiguous frames without visual assistance. A two-sec
 send watchdog contains stalled TCP writes as client-local failures. Six consecutive
 non-reading-client tests kept USB advancing, held warm app PSS around 56-59 MiB, and
 successfully reconnected to a recent complete frame after every forced close. Physical
-vehicle and race-network validation remain the next Android step.
+vehicle and race-network validation remain the next Android step. A separate six-cycle
+abrupt app-process test recovered distinct firmware sessions 27-32, clean USB video,
+telemetry, and recent relay frames without touching the cable. It also exposed and fixed
+an Android restart case that created an IPv6-only wildcard listener behind an IPv4 URL;
+the server now explicitly uses the IPv4 stack and active WLAN address.
 
 ## Hardware and Event Implication
 
