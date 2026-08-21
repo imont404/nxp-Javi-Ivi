@@ -6,18 +6,26 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.Typeface
 import android.hardware.usb.UsbDevice
 import android.hardware.usb.UsbManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.wavenumber.avc.bridge.usb.AvcUsbHealth
 import com.wavenumber.avc.bridge.usb.AvcUsbSession
 import com.wavenumber.avc.bridge.usb.AvcUsbState
+import java.nio.ByteBuffer
+import java.util.Locale
 
 class MainActivity : Activity() {
     companion object {
@@ -28,7 +36,28 @@ class MainActivity : Activity() {
     private lateinit var usbManager: UsbManager
     private lateinit var session: AvcUsbSession
     private lateinit var statusView: TextView
+    private lateinit var previewView: ImageView
+    private val previewBitmap = Bitmap.createBitmap(320, 200, Bitmap.Config.RGB_565)
     private var permissionPending = false
+    private var renderedFrames = 0L
+    private var lastRenderedFrameId = -1L
+
+    private val renderLoop = object : Runnable {
+        override fun run() {
+            val frame = if (::session.isInitialized) session.takeLatestFrame() else null
+            if (frame != null) {
+                try {
+                    previewBitmap.copyPixelsFromBuffer(ByteBuffer.wrap(frame.pixels))
+                    renderedFrames++
+                    lastRenderedFrameId = frame.frameId
+                    previewView.invalidate()
+                } finally {
+                    session.releaseFrame(frame)
+                }
+            }
+            if (::previewView.isInitialized) previewView.postDelayed(this, 33)
+        }
+    }
 
     private val usbReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -57,13 +86,41 @@ class MainActivity : Activity() {
 
         usbManager = getSystemService(Context.USB_SERVICE) as UsbManager
         session = AvcUsbSession(usbManager, ::showHealth)
-        statusView = TextView(this).apply {
-            textSize = 18f
-            gravity = Gravity.START
-            setPadding(36, 48, 36, 36)
-            setTextIsSelectable(true)
+        previewView = ImageView(this).apply {
+            setImageBitmap(previewBitmap)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            setBackgroundColor(Color.BLACK)
+            contentDescription = "Live AVC camera preview"
         }
-        setContentView(statusView)
+        statusView = TextView(this).apply {
+            textSize = 14f
+            gravity = Gravity.START
+            setPadding(24, 18, 24, 24)
+            setTextIsSelectable(true)
+            setTextColor(Color.WHITE)
+            setBackgroundColor(Color.rgb(18, 50, 74))
+            typeface = Typeface.MONOSPACE
+        }
+        val root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(
+                previewView,
+                LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    0,
+                    1f,
+                ),
+            )
+            addView(
+                statusView,
+                LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                ),
+            )
+        }
+        setContentView(root)
+        previewView.post(renderLoop)
 
         val filter = IntentFilter().apply {
             addAction(ACTION_USB_PERMISSION)
@@ -85,6 +142,7 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
+        previewView.removeCallbacks(renderLoop)
         session.stop()
         unregisterReceiver(usbReceiver)
         super.onDestroy()
@@ -125,14 +183,39 @@ class MainActivity : Activity() {
                 appendLine("Attached USB devices: ${devices.size}")
                 appendLine("Session: ${health.state.wireName}")
                 appendLine("Detail: ${health.detail}")
-                appendLine("Packets: ${health.packets}")
-                appendLine("Bytes: ${health.bytes}")
+                appendLine(
+                    "Frames: ${health.frames}  Displayed: $renderedFrames  " +
+                        "Last: $lastRenderedFrameId",
+                )
+                appendLine(
+                    "Rate: %.1f FPS  %.3f MiB/s".format(
+                        Locale.US,
+                        health.framesPerSecond,
+                        health.mebibytesPerSecond,
+                    ),
+                )
+                appendLine("Packets: ${health.packets}  Bytes: ${health.bytes}")
+                appendLine(
+                    "Errors: seq=${health.sequenceErrors} malformed=${health.malformedChunks} " +
+                        "preview_drop=${health.previewDrops}",
+                )
+                appendLine(
+                    "Diagnostics: stats=${health.statsReports} logs=${health.logRecords} " +
+                        "telemetry=${health.telemetryRecords}",
+                )
                 if (health.sessionId != 0L) appendLine("Session ID: ${health.sessionId}")
             }
             Log.i(
                 HEALTH_TAG,
                 "state=${health.state.wireName} usb_devices=${devices.size} packets=${health.packets} " +
-                    "bytes=${health.bytes} session_id=${health.sessionId} detail=${health.detail.replace(' ', '_')}",
+                    "bytes=${health.bytes} frames=${health.frames} fps=%.2f mib_s=%.3f ".format(
+                        Locale.US,
+                        health.framesPerSecond,
+                        health.mebibytesPerSecond,
+                    ) +
+                    "seq_errors=${health.sequenceErrors} malformed=${health.malformedChunks} " +
+                    "preview_drops=${health.previewDrops} session_id=${health.sessionId} " +
+                    "detail=${health.detail.replace(' ', '_')}",
             )
         }
     }

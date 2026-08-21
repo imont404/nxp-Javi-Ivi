@@ -11,6 +11,9 @@ import com.wavenumber.avc.bridge.protocol.AvcPacket
 import com.wavenumber.avc.bridge.protocol.AvcPayloadDecoder
 import com.wavenumber.avc.bridge.protocol.AvcProtocol
 import com.wavenumber.avc.bridge.protocol.AvcStreamParser
+import com.wavenumber.avc.bridge.video.AvcFrameAssembler
+import com.wavenumber.avc.bridge.video.AvcVideoFrame
+import com.wavenumber.avc.bridge.video.LatestFrameMailbox
 import java.util.ArrayDeque
 
 enum class AvcUsbState(val wireName: String) {
@@ -19,6 +22,7 @@ enum class AvcUsbState(val wireName: String) {
     HELLO("hello"),
     CHANNELS("channels"),
     PING("ping"),
+    STREAMING("streaming"),
     CLOSING("closing"),
     COMPLETE("complete"),
     DISCONNECTED("disconnected"),
@@ -31,6 +35,15 @@ data class AvcUsbHealth(
     val packets: Long = 0,
     val bytes: Long = 0,
     val sessionId: Long = 0,
+    val frames: Long = 0,
+    val framesPerSecond: Double = 0.0,
+    val mebibytesPerSecond: Double = 0.0,
+    val sequenceErrors: Long = 0,
+    val malformedChunks: Long = 0,
+    val previewDrops: Long = 0,
+    val statsReports: Long = 0,
+    val logRecords: Long = 0,
+    val telemetryRecords: Long = 0,
 )
 
 class AvcUsbSession(
@@ -40,40 +53,96 @@ class AvcUsbSession(
     companion object {
         const val AVC_VENDOR_ID = 0x1FC9
         const val AVC_PRODUCT_ID = 0x0094
+        private const val FRAME_WIDTH = 320
+        private const val FRAME_HEIGHT = 200
+        private const val FRAME_BYTES = FRAME_WIDTH * FRAME_HEIGHT * 2
         private const val READ_TIMEOUT_MS = 100
         private const val RESPONSE_TIMEOUT_MS = 3_000L
+        private const val HEALTH_PERIOD_NS = 1_000_000_000L
     }
+
+    private val mailbox = LatestFrameMailbox(FRAME_BYTES)
 
     @Volatile
     private var stopRequested = false
+    @Volatile
     private var worker: Thread? = null
 
     fun start(device: UsbDevice) {
         if (worker?.isAlive == true) return
+        mailbox.reset()
         stopRequested = false
-        worker = Thread({ runProof(device) }, "avc-usb-session").also { it.start() }
+        worker = Thread({ runStream(device) }, "avc-usb-session").also { it.start() }
     }
 
     fun stop() {
         stopRequested = true
         worker?.interrupt()
-        worker = null
     }
 
-    private fun runProof(device: UsbDevice) {
+    fun takeLatestFrame(): AvcVideoFrame? = mailbox.takeLatest()
+
+    fun releaseFrame(frame: AvcVideoFrame) = mailbox.release(frame)
+
+    private fun runStream(device: UsbDevice) {
         var connection: UsbDeviceConnection? = null
         var dataInterface: UsbInterface? = null
+        val assembler = AvcFrameAssembler(mailbox, FRAME_WIDTH, FRAME_HEIGHT)
         try {
-            report(AvcUsbState.OPENING, "opening %04X:%04X".format(device.vendorId, device.productId))
+            report(AvcUsbHealth(AvcUsbState.OPENING, "opening %04X:%04X".format(device.vendorId, device.productId)))
             val endpoints = findCdcEndpoints(device)
             dataInterface = endpoints.dataInterface
             connection = usbManager.openDevice(device) ?: error("UsbManager.openDevice returned null")
-            check(connection.claimInterface(dataInterface, true)) { "could not claim CDC data interface" }
+            check(connection.claimInterface(endpoints.dataInterface, true)) { "could not claim CDC data interface" }
             endpoints.controlInterface?.let { configureCdc(connection, it) }
 
             val responses = ArrayDeque<AvcPacket>()
             var receivedBytes = 0L
-            val parser = AvcStreamParser { packet -> responses.addLast(packet) }
+            var statsReports = 0L
+            var logRecords = 0L
+            var telemetryRecords = 0L
+            var malformedPayloads = 0L
+            val parser = AvcStreamParser { packet ->
+                when (packet.header.messageId) {
+                    AvcProtocol.MSG_RUI_WRITE_FRAME_BUFFER_RAW -> assembler.accept(packet)
+                    AvcProtocol.MSG_STATS_REPORT -> try {
+                        AvcPayloadDecoder.stats(packet.payload)
+                        statsReports++
+                    } catch (_: IllegalArgumentException) {
+                        malformedPayloads++
+                    }
+                    AvcProtocol.MSG_LOG_TEXT -> try {
+                        AvcPayloadDecoder.log(packet.payload)
+                        logRecords++
+                    } catch (_: IllegalArgumentException) {
+                        malformedPayloads++
+                    }
+                    AvcProtocol.MSG_TELEMETRY_SCALAR -> try {
+                        AvcPayloadDecoder.telemetry(packet.payload)
+                        telemetryRecords++
+                    } catch (_: IllegalArgumentException) {
+                        malformedPayloads++
+                    }
+                }
+                if (packet.header.flags and AvcProtocol.FLAG_RESPONSE != 0) {
+                    responses.addLast(packet)
+                }
+            }
+            val readBuffer = ByteArray(16 * 1024)
+
+            fun readOnce(): Int {
+                val count = connection.bulkTransfer(
+                    endpoints.bulkIn,
+                    readBuffer,
+                    readBuffer.size,
+                    READ_TIMEOUT_MS,
+                )
+                if (count > 0) {
+                    receivedBytes += count
+                    parser.push(readBuffer, 0, count)
+                }
+                return count
+            }
 
             fun exchange(
                 state: AvcUsbState,
@@ -81,14 +150,21 @@ class AvcUsbSession(
                 messageId: Int,
                 arg0: Int = 0,
                 arg1: Int = 0,
+                allowWhileStopping: Boolean = false,
             ): AvcPacket {
-                report(state, "request=0x%08X sequence=$sequence".format(messageId), parser.parsedPackets, receivedBytes)
+                report(
+                    AvcUsbHealth(
+                        state,
+                        "request=0x%08X sequence=$sequence".format(messageId),
+                        parser.parsedPackets,
+                        receivedBytes,
+                    ),
+                )
                 val request = AvcControlPacketBuilder.build(sequence, messageId, arg0, arg1)
                 val written = connection.bulkTransfer(endpoints.bulkOut, request, request.size, 1_000)
                 check(written == request.size) { "short USB write: $written/${request.size}" }
                 val deadline = System.currentTimeMillis() + RESPONSE_TIMEOUT_MS
-                val readBuffer = ByteArray(16 * 1024)
-                while (!stopRequested && System.currentTimeMillis() < deadline) {
+                while ((allowWhileStopping || !stopRequested) && System.currentTimeMillis() < deadline) {
                     val iterator = responses.iterator()
                     while (iterator.hasNext()) {
                         val packet = iterator.next()
@@ -104,44 +180,107 @@ class AvcUsbSession(
                             return packet
                         }
                     }
-                    val count = connection.bulkTransfer(
-                        endpoints.bulkIn,
-                        readBuffer,
-                        readBuffer.size,
-                        READ_TIMEOUT_MS,
-                    )
-                    if (count > 0) {
-                        receivedBytes += count
-                        parser.push(readBuffer, 0, count)
-                    }
+                    readOnce()
                 }
                 error("timed out waiting for 0x%08X sequence=$sequence".format(messageId))
             }
 
             val helloPacket = exchange(AvcUsbState.HELLO, 0, AvcProtocol.MSG_CONTROL_HELLO)
             val hello = AvcPayloadDecoder.hello(helloPacket.payload)
+            check(hello.frameWidth == FRAME_WIDTH && hello.frameHeight == FRAME_HEIGHT) {
+                "unsupported frame geometry ${hello.frameWidth}x${hello.frameHeight}"
+            }
+            check(hello.pixelFormat == AvcProtocol.PIXEL_FORMAT_RGB565_LE) {
+                "unsupported pixel format ${hello.pixelFormat}"
+            }
             check(hello.sessionId == (helloPacket.header.arg2.toLong() and 0xFFFF_FFFFL)) {
                 "HELLO session IDs disagree"
             }
-            exchange(AvcUsbState.CHANNELS, 1, AvcProtocol.MSG_CONTROL_SET_CHANNELS, arg0 = 0)
+
+            val channels = AvcProtocol.CHANNEL_FRAMES or AvcProtocol.CHANNEL_STATS or
+                AvcProtocol.CHANNEL_LOGS or AvcProtocol.CHANNEL_TELEMETRY
+            exchange(
+                AvcUsbState.CHANNELS,
+                1,
+                AvcProtocol.MSG_CONTROL_SET_CHANNELS,
+                arg0 = channels,
+                arg1 = 0,
+            )
             exchange(AvcUsbState.PING, 2, AvcProtocol.MSG_CONTROL_PING)
-            exchange(AvcUsbState.CLOSING, 3, AvcProtocol.MSG_CONTROL_CLOSE)
+            parser.beginSequenceWindow()
+
+            var lastReportNs = System.nanoTime()
+            var lastReportBytes = receivedBytes
+            var lastReportFrames = assembler.completedFrames
+            report(AvcUsbHealth(AvcUsbState.STREAMING, "camera subscription active", sessionId = hello.sessionId))
+            while (!stopRequested) {
+                readOnce()
+                val nowNs = System.nanoTime()
+                if (nowNs - lastReportNs < HEALTH_PERIOD_NS) continue
+                val elapsedSeconds = (nowNs - lastReportNs).toDouble() / 1_000_000_000.0
+                val frameStats = assembler.stats()
+                val fps = (frameStats.completedFrames - lastReportFrames) / elapsedSeconds
+                val mibPerSecond = (receivedBytes - lastReportBytes) / elapsedSeconds / (1024.0 * 1024.0)
+                report(
+                    AvcUsbHealth(
+                        state = AvcUsbState.STREAMING,
+                        detail = "camera subscription active",
+                        packets = parser.parsedPackets,
+                        bytes = receivedBytes,
+                        sessionId = hello.sessionId,
+                        frames = frameStats.completedFrames,
+                        framesPerSecond = fps,
+                        mebibytesPerSecond = mibPerSecond,
+                        sequenceErrors = parser.sequenceErrors,
+                        malformedChunks = frameStats.malformedChunks + malformedPayloads,
+                        previewDrops = mailbox.supersededFrames + frameStats.noBufferDrops,
+                        statsReports = statsReports,
+                        logRecords = logRecords,
+                        telemetryRecords = telemetryRecords,
+                    ),
+                )
+                lastReportNs = nowNs
+                lastReportBytes = receivedBytes
+                lastReportFrames = frameStats.completedFrames
+
+                if (usbManager.deviceList.values.none { it.deviceName == device.deviceName }) {
+                    error("AVC USB device disconnected")
+                }
+            }
+
+            exchange(
+                AvcUsbState.CLOSING,
+                3,
+                AvcProtocol.MSG_CONTROL_SET_CHANNELS,
+                allowWhileStopping = true,
+            )
+            exchange(
+                AvcUsbState.CLOSING,
+                4,
+                AvcProtocol.MSG_CONTROL_CLOSE,
+                allowWhileStopping = true,
+            )
             report(
-                AvcUsbState.COMPLETE,
-                "HELLO, SET_CHANNELS(0), PING, CLOSE passed",
-                parser.parsedPackets,
-                receivedBytes,
-                hello.sessionId,
+                AvcUsbHealth(
+                    AvcUsbState.COMPLETE,
+                    "stream stopped cleanly",
+                    parser.parsedPackets,
+                    receivedBytes,
+                    hello.sessionId,
+                    assembler.completedFrames,
+                ),
             )
         } catch (error: Throwable) {
             if (stopRequested) {
-                report(AvcUsbState.DISCONNECTED, "session stopped")
+                report(AvcUsbHealth(AvcUsbState.DISCONNECTED, "session stopped"))
             } else {
-                report(AvcUsbState.ERROR, error.message ?: error.javaClass.simpleName)
+                report(AvcUsbHealth(AvcUsbState.ERROR, error.message ?: error.javaClass.simpleName))
             }
         } finally {
+            assembler.abortActive()
             dataInterface?.let { connection?.releaseInterface(it) }
             connection?.close()
+            if (Thread.currentThread() === worker) worker = null
         }
     }
 
@@ -181,13 +320,7 @@ class AvcUsbSession(
         connection.controlTransfer(0x21, 0x22, 3, controlInterface.id, null, 0, 1_000)
     }
 
-    private fun report(
-        state: AvcUsbState,
-        detail: String,
-        packets: Long = 0,
-        bytes: Long = 0,
-        sessionId: Long = 0,
-    ) = onHealth(AvcUsbHealth(state, detail, packets, bytes, sessionId))
+    private fun report(health: AvcUsbHealth) = onHealth(health)
 
     private data class CdcEndpoints(
         val controlInterface: UsbInterface?,

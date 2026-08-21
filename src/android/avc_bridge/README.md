@@ -44,8 +44,15 @@ a race-day solution. The board's documented R50 10 kOhm UFP strap is the direct
 C-to-C hardware option; evaluate that as separate vehicle hardware work before
 changing a board.
 
-The checked-in foundation provides a bounded `AVCU` stream parser, packed-payload
-decoders, framed control-packet builder, JVM fixtures, and an explicit USB session
-state machine. On launch it safely proves `HELLO`, `SET_CHANNELS(0)`, `PING`, and
-`CLOSE` against the real car and emits `AVC_BRIDGE_HEALTH` logcat records. It does
-not yet subscribe to or relay camera frames.
+The checked-in app provides a bounded `AVCU` stream parser, packed-payload decoders,
+framed control-packet builder, JVM fixtures, and an explicit USB session state machine.
+On launch it completes `HELLO`, subscribes to camera/stats/log/telemetry channels,
+performs `PING`, and displays only complete 320x200 RGB565 frames. A fixed three-buffer
+mailbox keeps only the newest preview, so display work cannot block USB or grow memory.
+Graceful exit sends `SET_CHANNELS(0)` and `CLOSE`.
+
+`AVC_BRIDGE_HEALTH` logcat records expose FPS, MiB/s, packet and frame counts, sequence
+errors, malformed chunks, preview drops, and diagnostic record counts. The unattended
+deploy check requires at least one complete frame with zero sequence and malformed-chunk
+errors. On the verified Rev A car, the sustained preview runs at about 23.42 FPS and
+2.869 MiB/s. Wi-Fi relay is the next milestone.

@@ -242,8 +242,11 @@ The Android consumer is implemented separately under
 through a USB-C OTG adapter and USB-A-to-C data cable. The native app claimed the CDC
 bulk interface and repeatedly completed framed `HELLO`, `SET_CHANNELS(0)`, `PING`, and
 `CLOSE`. Its pinned command-line toolchain, eight JVM protocol fixtures, wireless adb
-deployment loop, structured health logging, and Android lint all pass. Live frame
-subscription/display is the next Android step; Wi-Fi relay follows that proof.
+deployment loop, structured health logging, and Android lint all pass. The bounded
+three-buffer phone preview now displays the live RGB565 camera at about 23.42 FPS and
+2.869 MiB/s with zero sequence or malformed-chunk errors in the recorded sustained run.
+Graceful close and immediate reopen pass. A one-browser Wi-Fi relay is the next Android
+step.
 
 ## Hardware and Event Implication
 

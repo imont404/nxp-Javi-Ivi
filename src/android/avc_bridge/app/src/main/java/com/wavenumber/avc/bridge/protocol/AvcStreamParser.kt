@@ -33,6 +33,11 @@ class AvcStreamParser(
         lastSequence = null
     }
 
+    fun beginSequenceWindow() {
+        lastSequence = null
+        sequenceErrors = 0
+    }
+
     fun push(input: ByteArray, offset: Int = 0, length: Int = input.size - offset) {
         require(offset >= 0 && length >= 0 && offset + length <= input.size)
         require(length <= BUFFER_CAPACITY) { "input exceeds parser capacity" }

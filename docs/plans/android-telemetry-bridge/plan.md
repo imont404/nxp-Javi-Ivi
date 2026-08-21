@@ -48,13 +48,13 @@ depends_on = ["wireless-adb-loop"]
 [[steps]]
 id = "phone-preview"
 title = "Parse and display live RGB565 camera frames plus connection and transport counters on the phone"
-status = "active"
+status = "done"
 depends_on = ["android-usb-host-proof"]
 
 [[steps]]
 id = "wifi-relay-proof"
 title = "Serve an embedded page and relay bounded camera and telemetry data to one browser over a controlled 5 GHz network"
-status = "pending"
+status = "active"
 depends_on = ["phone-preview"]
 
 [[steps]]
@@ -105,7 +105,7 @@ status = "pending"
 [[exit_criteria]]
 id = "usb-preview"
 title = "The Moto G Power receives and displays the live AVC camera stream with observable parser and transport health"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "browser-relay"

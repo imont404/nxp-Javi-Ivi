@@ -1,9 +1,9 @@
 # Race-day wireless frame relay: streaming a car's camera to a big screen
 
 Research note. **Conclusion: use the available Moto G Power 5G (2023) as the
-Android relay.** Its native USB-host and framed CDC control path are now verified
-on the Rev A car. Live phone preview and then a one-browser Wi-Fi relay are the
-next milestones. Recording and hardware video encoding remain follow-ups.
+Android relay.** Its native USB-host, framed CDC control path, and live phone preview
+are now verified on the Rev A car. A one-browser Wi-Fi relay is the next milestone.
+Recording and hardware video encoding remain follow-ups.
 
 The board survey that occupies most of this document - RW612, i.MX93, Radxa,
 Luckfox - is **superseded** and kept only as the contingency and as the record
@@ -133,9 +133,11 @@ In rough order, smallest useful thing first:
 2. **USB host and framed CDC control: complete.** The Moto and OTG adapter enumerate,
    retain permission, and repeatedly complete `HELLO`, `SET_CHANNELS(0)`, `PING`, and
    `CLOSE` in the one-command loop.
-3. **Parse and display on the phone: active.** Reuse the 32-byte envelope and frame layout from
-   `AVC_USB_Debug_Transport_Protocol.md`; use captured/synthetic JVM fixtures before
-   relying on visual inspection.
+3. **Parse and display on the phone: complete.** A fixed three-buffer mailbox assembles
+   only contiguous complete RGB565 frames and exposes superseded-frame counts. A remote
+   screenshot and structured health logs independently confirmed the live image. The
+   measured steady state is 23.42 FPS and 2.869 MiB/s with zero sequence or malformed
+   chunk errors; graceful close and immediate reopen also pass.
 4. **Relay to one browser.** Serve an embedded HTTP page and binary WebSocket, initially
    forwarding every fourth complete frame plus telemetry over a controlled 5 GHz network.
 5. **Harden backpressure and reconnects.** USB draining remains independent; the relay

@@ -30,14 +30,32 @@ if ($LASTEXITCODE -ne 0) { throw "APK install failed with exit code $LASTEXITCOD
 & $adb -s $Serial shell am start -W -n $activityName
 if ($LASTEXITCODE -ne 0) { throw "App start failed with exit code $LASTEXITCODE" }
 
-for ($attempt = 0; $attempt -lt 30; $attempt++) {
+for ($attempt = 0; $attempt -lt 60; $attempt++) {
     Start-Sleep -Milliseconds 500
     $health = & $adb -s $Serial logcat -d -s "AVC_BRIDGE_HEALTH:I" "*:S"
-    if ($health | Where-Object { $_ -match "state=complete" }) { break }
+    if (
+        $health |
+            Where-Object {
+                $_ -match "state=streaming" -and
+                $_ -match "frames=[1-9][0-9]*" -and
+                $_ -match "seq_errors=0" -and
+                $_ -match "malformed=0"
+            }
+    ) { break }
     if ($health | Where-Object { $_ -match "state=error" }) { break }
 }
-if (-not ($health | Where-Object { $_ -match "state=complete" })) {
+if (
+    -not (
+        $health |
+            Where-Object {
+                $_ -match "state=streaming" -and
+                $_ -match "frames=[1-9][0-9]*" -and
+                $_ -match "seq_errors=0" -and
+                $_ -match "malformed=0"
+            }
+    )
+) {
     $health | Write-Host
-    throw "AVC bridge did not complete its USB control-session proof. Check the phone for a USB permission prompt."
+    throw "AVC bridge did not reach an error-free live-frame state. Check USB permission and AVC_BRIDGE_HEALTH."
 }
 $health | Write-Host

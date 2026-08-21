@@ -228,6 +228,21 @@ class AvcStreamParserTest {
         AvcPayloadDecoder.telemetry(payload)
     }
 
+    @Test
+    fun newSequenceWindowExcludesPreSessionDiscontinuity() {
+        val parsed = mutableListOf<AvcPacket>()
+        val parser = AvcStreamParser(parsed::add)
+        parser.push(packet(AvcProtocol.MSG_CONTROL_HELLO, 10))
+        parser.push(packet(AvcProtocol.MSG_CONTROL_SET_CHANNELS, 12))
+        assertEquals(1, parser.sequenceErrors)
+
+        parser.beginSequenceWindow()
+        parser.push(packet(AvcProtocol.MSG_RUI_WRITE_FRAME_BUFFER_RAW, 200))
+        parser.push(packet(AvcProtocol.MSG_RUI_WRITE_FRAME_BUFFER_RAW, 201))
+
+        assertEquals(0, parser.sequenceErrors)
+    }
+
     private fun validLogPayload(): ByteArray = ByteBuffer.allocate(AvcProtocol.LOG_RECORD_HEADER_BYTES + 2)
         .order(ByteOrder.LITTLE_ENDIAN)
         .putInt(1)
