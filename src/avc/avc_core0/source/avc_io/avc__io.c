@@ -247,8 +247,6 @@ void avc__init()
 
     avc_camera__init();
     eGFX_InitDriver(0);
-    eGFX_Dump((eGFX_ImagePlane *)&Sprite_16BPP_RGB565_fit2025);
-    e_tick__delay_ms(2000);
 
     avc__adc_init();
     avc__motor_control_init();
