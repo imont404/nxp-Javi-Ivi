@@ -154,7 +154,7 @@ In rough order, smallest useful thing first:
    accepted a new client immediately; the final source-to-sent frame gap was one.
 6. **Stress app restart: complete.** Six abrupt process losses recovered distinct
    firmware sessions 27-32, clean USB video, telemetry, and recent Wi-Fi frames. The test
-   now explicitly selects IPv4 and binds the active WLAN address.
+   now explicitly selects IPv4 and binds every local interface.
 7. **Benchmark compression: complete.** Fixed-buffer JPEG and hardware H.264 probes both
    sustained full camera rate without corrupting or slowing USB. JPEG quality 70 used
    about 1.96 Mbit/s and 48 MiB PSS; H.264 at a 750 kbit/s target used about 0.75 Mbit/s
@@ -164,7 +164,14 @@ In rough order, smallest useful thing first:
    240-frame run delivered 23.493 FPS at 1.972 Mbit/s with about 24 ms latest-frame age;
    headless Chrome decoded 120 frames in five seconds without page errors. Hardware H.264
    remains available rather than becoming the first browser path.
-9. **Validate the physical vehicle: pending.** USB removal/reinsertion, car power cycle,
+9. **Phone hotspot and wireless adb: complete.** The workstation joined the Moto's Soft
+   AP and authenticated adb at the hotspot gateway while the phone remained USB host for
+   the car. A 120-frame WebSocket run delivered 23.65 FPS with clean 23.43 FPS USB input,
+   a zero-frame source/sent gap, and a working headless-Chrome camera view. Android uses
+   `ap0` for Soft AP, so the relay now binds all local interfaces rather than assuming
+   `wlan0`. Screen-off delivery also passed. The bench network was open and 2.4 GHz;
+   secured 5 GHz and venue RF remain pending.
+10. **Validate the physical vehicle: pending.** USB removal/reinsertion, car power cycle,
    mounting and strain relief, phone thermal/battery runtime, and actual race-network RF
    remain attended tests. The locked-screen software case now passes: a connected-device
    foreground service kept CPU and Wi-Fi active while Android reported `Dozing`, screen

@@ -15,7 +15,6 @@ import java.io.InputStream
 import java.io.IOException
 import java.io.OutputStream
 import java.net.Inet4Address
-import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.NetworkInterface
 import java.net.ServerSocket
@@ -104,17 +103,19 @@ class AvcRelayServer(
         usbHealth = health
     }
 
-    fun localUrl(): String = "http://${wifiIpv4Address() ?: "127.0.0.1"}:$port/"
+    fun localUrl(): String = "http://${relayIpv4Address() ?: "127.0.0.1"}:$port/"
 
     fun snapshot(): AvcRelaySnapshot = mailbox.snapshot()
 
     private fun acceptLoop() {
         try {
             System.setProperty("java.net.preferIPv4Stack", "true")
-            val bindAddress = wifiIpv4Address() ?: "127.0.0.1"
             val listener = ServerSocket().apply {
                 reuseAddress = true
-                bind(InetSocketAddress(InetAddress.getByName(bindAddress), port))
+                // Bind every local interface so the same running relay works on normal
+                // Wi-Fi (wlan0) and Android Soft AP (ap0). The network may change while
+                // the phone's only USB-C port remains attached to the car.
+                bind(InetSocketAddress(port))
             }
             serverSocket = listener
             while (running) {
@@ -414,10 +415,17 @@ class AvcRelayServer(
 
     private fun jsonEscape(value: String): String = value.replace("\\", "\\\\").replace("\"", "\\\"")
 
-    private fun wifiIpv4Address(): String? = try {
-        NetworkInterface.getByName("wlan0")?.inetAddresses?.toList()
-            ?.filterIsInstance<Inet4Address>()
-            ?.firstOrNull { !it.isLoopbackAddress }
+    private fun relayIpv4Address(): String? = try {
+        val interfaces = NetworkInterface.getNetworkInterfaces()?.toList().orEmpty()
+        val preferredNames = listOf("wlan0", "ap0")
+        val ordered = interfaces.sortedBy { network ->
+            preferredNames.indexOf(network.name).let { if (it < 0) Int.MAX_VALUE else it }
+        }
+        ordered.asSequence()
+            .filter { it.isUp && !it.isLoopback }
+            .flatMap { it.inetAddresses.toList().asSequence() }
+            .filterIsInstance<Inet4Address>()
+            .firstOrNull { !it.isLoopbackAddress }
             ?.hostAddress
     } catch (_: Throwable) {
         null

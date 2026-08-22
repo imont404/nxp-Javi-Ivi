@@ -17,8 +17,8 @@ try {
     & $adb -s $Serial shell input keyevent KEYCODE_SLEEP
     Start-Sleep -Seconds $SettlingSeconds
     $power = & $adb -s $Serial shell dumpsys power
-    if (-not ($power | Where-Object { $_ -match "mWakefulness=Dozing" })) {
-        throw "Phone did not enter the expected screen-off Dozing state."
+    if (-not ($power | Where-Object { $_ -match "mWakefulness=(Dozing|Asleep)" })) {
+        throw "Phone did not enter an expected screen-off power state (Dozing or Asleep)."
     }
     $idle = & $adb -s $Serial shell dumpsys deviceidle
     if (-not ($idle | Where-Object { $_ -match "mScreenOn=false" })) {

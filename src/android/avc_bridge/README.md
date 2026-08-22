@@ -128,6 +128,17 @@ parser health, and app PSS, then proves a new client receives a recent complete 
 Six consecutive real-hardware stalls passed with warm PSS around 56-59 MiB and a final
 source-to-sent frame gap of one. The viewer remains intentionally one-client and unstyled.
 
+The Moto Soft AP path is also proven. With the phone simultaneously acting as USB host
+for the car and broadcasting its `wavenumber` hotspot, authenticated adb connected to
+the hotspot gateway and a workstation WebSocket client received 120 consecutive JPEGs
+at 23.65 FPS. USB remained at 23.43 FPS with zero sequence or malformed errors and the
+relay converged to a zero-frame source/sent gap. Headless Chrome rendered the live page
+through the hotspot, and the same path delivered fresh frames with the phone screen off
+and Android reporting `Dozing`. Android names the hotspot interface `ap0`, not `wlan0`;
+the relay therefore binds all local interfaces and only uses the preferred interface
+address to display a URL. The recorded bench hotspot was open and 2.4 GHz. Configure and
+validate WPA2/WPA3 plus 5 GHz before race use.
+
 The reconnect test force-stops the app six times while the USB cable remains attached.
 Each restart must produce a distinct firmware session, clean USB frames, telemetry, and
 a recent relayed frame. Sessions 27 through 32 passed consecutively on the bench. The

@@ -96,7 +96,7 @@ depends_on = ["compressed-browser-delivery"]
 [[steps]]
 id = "hotspot-adb-proof"
 title = "Determine whether authenticated wireless ADB and the relay remain reachable when the Moto supplies the race network as a hotspot"
-status = "active"
+status = "done"
 depends_on = ["h264-browser-proof"]
 
 [[steps]]
@@ -210,17 +210,19 @@ and binds the active WLAN address. A connected-device foreground service now kee
 CPU and Wi-Fi active through the secure lockscreen: live relay verification passed while
 Android reported `Dozing`, screen off, and light idle. A 30-second loaded baseline held
 27 C, 23.42 USB FPS, 2.869 MiB/s, 49-60 MiB PSS, and roughly 427-588 mA discharge. Physical
-integration remains parked; the active software work is the hotspot-ADB/network proof.
+integration remains parked; the hotspot ADB/network proof is complete.
 
-The next active experiment is hotspot ADB. Inventory proves this Moto cannot keep its
-normal Wi-Fi client connection while running Soft AP, but `adbd` is listening on TCP
-5555 and its RSA authorization is device-wide. The test is prepared to enable the saved
-`wavenumber` hotspot, move the PC onto it, discover the hotspot gateway, reconnect ADB,
-restart the relay so it binds the hotspot interface, and then restore `yellow`. The first
-attempt stopped before enabling the hotspot because the secure lockscreen relocked and
-the battery had fallen to 19 percent. The app was stopped, the temporary ten-minute
-screen timeout was restored to one minute, and the phone was placed on its normal
-charger. At the latest check it was at 24 percent, charging at about 10 W and 26 C.
+The Moto cannot keep its normal Wi-Fi client connection while running Soft AP, but that
+does not block the development loop. With the phone hosting the car over USB and serving
+the `wavenumber` hotspot, the workstation joined the hotspot and authenticated adb at
+the phone gateway. Android exposed the hotspot on `ap0`; the relay's earlier `wlan0`-
+only address lookup incorrectly bound its server to loopback. The server now binds all
+local interfaces so it survives client-Wi-Fi and Soft AP configurations. A hotspot
+WebSocket proof received 120 consecutive JPEGs at 23.65 FPS with a zero-frame source/
+sent gap while USB remained at 23.43 FPS with no sequence or malformed errors. Headless
+Chrome rendered the live camera, and a screen-off proof continued to receive fresh
+frames while Android reported `Dozing`. The tested hotspot was open and 2.4 GHz; WPA2/
+WPA3, 5 GHz, venue RF, battery duration, and heat remain vehicle-integration work.
 
 An opt-in H.264 browser proof is also complete without changing the default JPEG path.
 The MediaTek encoder supplies baseline Annex-B SPS/PPS and one access unit per output;
