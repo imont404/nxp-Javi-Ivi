@@ -81,8 +81,8 @@
     .visual-card.wide { grid-column: 1 / -1; }
     .visual-card p, .controls p { color: var(--muted); font-size: .9rem; }
     canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: .65rem; background: #050914; touch-action: none; }
-    #rgbSlice { cursor: crosshair; }
     #hsvDisk { cursor: crosshair; }
+    .visual-card.wide canvas { max-width: 620px; margin-inline: auto; }
 
     .swatch-row { display: grid; grid-template-columns: 4.5rem 1fr; gap: .9rem; align-items: center; margin-bottom: 1rem; }
     #swatch { width: 4.5rem; aspect-ratio: 1; border-radius: .8rem; border: 1px solid rgba(255,255,255,.25); box-shadow: inset 0 0 0 1px rgba(0,0,0,.3); }
@@ -203,20 +203,14 @@
         </article>
 
         <article class="panel visual-card">
-          <h2>Explore one RGB slice</h2>
-          <p>Drag across red and green while blue stays fixed at <strong id="blueFixed">53</strong>. A slice makes a 3-D cube editable on a 2-D screen.</p>
-          <canvas id="rgbSlice" width="620" height="620" aria-label="Interactive red-green plane at the selected blue value"></canvas>
-        </article>
-
-        <article class="panel visual-card">
           <h2>HSV as a teaching cone</h2>
-          <p>Hue is an angle. Saturation moves away from gray. Value moves upward. Here radius is <strong>S × V</strong>, so the available chroma visibly collapses near black.</p>
+          <p>Hue is an angle. Saturation moves away from the dashed gray axis. Value selects the translucent slice. Here radius is <strong>S × V</strong>, so the available chroma visibly collapses near black.</p>
           <canvas id="hsvCone" width="620" height="620" aria-label="HSV cone with the selected color plotted"></canvas>
         </article>
 
-        <article class="panel visual-card">
+        <article class="panel visual-card wide">
           <h2>Hue–saturation disk</h2>
-          <p>Drag on the disk to choose hue and saturation. Its radius shrinks with V: at low light many nominal hues produce nearly the same dark RGB values.</p>
+          <p>Drag on the disk to choose hue and saturation. The solid circle is the current radius; the dashed circle is the V = 100% maximum. At low light many nominal hues produce nearly the same dark RGB values.</p>
           <canvas id="hsvDisk" width="620" height="620" aria-label="Interactive hue and saturation disk whose size follows value"></canvas>
         </article>
 
@@ -346,19 +340,17 @@
       const edges = [[0,1],[0,2],[0,3],[1,4],[1,5],[2,4],[2,6],[3,5],[3,6],[4,7],[5,7],[6,7]];
       ctx.lineWidth = n*.004;
       for (const [a,b] of edges) { const p=project(...vertices[a]), q=project(...vertices[b]); ctx.strokeStyle="#52627a"; ctx.beginPath(); ctx.moveTo(...p); ctx.lineTo(...q); ctx.stroke(); }
+      function axisArrow(to, color) {
+        const angle = Math.atan2(to[1]-o[1], to[0]-o[0]), head=n*.035;
+        ctx.strokeStyle=color; ctx.fillStyle=color; ctx.lineWidth=n*.008;
+        ctx.beginPath(); ctx.moveTo(...o); ctx.lineTo(...to); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(...to); ctx.lineTo(to[0]-head*Math.cos(angle-.45),to[1]-head*Math.sin(angle-.45)); ctx.lineTo(to[0]-head*Math.cos(angle+.45),to[1]-head*Math.sin(angle+.45)); ctx.closePath(); ctx.fill();
+      }
+      axisArrow(project(1,0,0),"#fb7185"); axisArrow(project(0,1,0),"#6ee7b7"); axisArrow(project(0,0,1),"#93c5fd");
       for (const v of vertices) { const p=project(...v); ctx.fillStyle=cssRgb(v[0]*255,v[1]*255,v[2]*255); ctx.beginPath(); ctx.arc(...p,n*.018,0,Math.PI*2); ctx.fill(); ctx.strokeStyle="#fff"; ctx.stroke(); }
       const p = project(state.r/255,state.g/255,state.b/255);
       ctx.shadowColor="#fff"; ctx.shadowBlur=n*.035; ctx.fillStyle=cssRgb(state.r,state.g,state.b); ctx.beginPath(); ctx.arc(...p,n*.035,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.strokeStyle="#fff"; ctx.lineWidth=n*.007; ctx.stroke();
       ctx.font=`700 ${n*.038}px system-ui`; ctx.fillStyle="#fb7185"; ctx.fillText("R",o[0]+ex[0]+n*.03,o[1]+n*.01); ctx.fillStyle="#6ee7b7"; ctx.fillText("G",o[0]+ey[0]+n*.01,o[1]+ey[1]); ctx.fillStyle="#93c5fd"; ctx.fillText("B",o[0]+n*.01,o[1]+ez[1]-n*.02);
-    }
-
-    function drawRgbSlice() {
-      const { ctx, n } = fitCanvas($("rgbSlice")), pad=n*.09, size=n-2*pad;
-      const image=ctx.createImageData(Math.max(1,Math.floor(size)),Math.max(1,Math.floor(size)));
-      for(let y=0;y<image.height;y++) for(let x=0;x<image.width;x++) { const i=(y*image.width+x)*4; image.data[i]=x/(image.width-1)*255; image.data[i+1]=(1-y/(image.height-1))*255; image.data[i+2]=state.b; image.data[i+3]=255; }
-      ctx.clearRect(0,0,n,n); ctx.putImageData(image,pad,pad); ctx.strokeStyle="#9aa8bd"; ctx.lineWidth=n*.003; ctx.strokeRect(pad,pad,size,size);
-      const x=pad+state.r/255*size,y=pad+(1-state.g/255)*size; ctx.strokeStyle="#fff"; ctx.lineWidth=n*.006; ctx.beginPath();ctx.arc(x,y,n*.027,0,Math.PI*2);ctx.stroke(); ctx.beginPath();ctx.moveTo(x-n*.045,y);ctx.lineTo(x+n*.045,y);ctx.moveTo(x,y-n*.045);ctx.lineTo(x,y+n*.045);ctx.stroke();
-      ctx.font=`700 ${n*.035}px system-ui`; ctx.fillStyle="#fb7185";ctx.fillText("R →",pad,n*.975);ctx.fillStyle="#6ee7b7";ctx.fillText("G ↑",n*.01,pad*.7);
     }
 
     function drawHsvCone() {
@@ -368,17 +360,21 @@
       ctx.save();ctx.beginPath();ctx.ellipse(cx,topY,rx,ry,0,0,Math.PI*2);ctx.fillStyle=grad;ctx.globalAlpha=.82;ctx.fill();ctx.restore();
       ctx.beginPath();ctx.moveTo(cx-rx,topY);ctx.lineTo(cx,bottomY);ctx.lineTo(cx+rx,topY);ctx.strokeStyle="#73839b";ctx.lineWidth=n*.004;ctx.stroke();
       ctx.beginPath();ctx.ellipse(cx,topY,rx,ry,0,0,Math.PI*2);ctx.stroke();
-      const a=(state.h-90)*Math.PI/180, localRx=rx*state.s*state.v, localRy=ry*state.s*state.v, baseY=bottomY-(bottomY-topY)*state.v;
+      const a=(state.h-90)*Math.PI/180, sliceRx=rx*state.v, sliceRy=ry*state.v, localRx=sliceRx*state.s, localRy=sliceRy*state.s, baseY=bottomY-(bottomY-topY)*state.v;
+      const sliceGrad=ctx.createConicGradient(-Math.PI/2,cx,baseY);for(let i=0;i<=12;i++)sliceGrad.addColorStop(i/12,`hsl(${i*30} 100% 50%)`);
+      ctx.save();ctx.beginPath();ctx.ellipse(cx,baseY,sliceRx,sliceRy,0,0,Math.PI*2);ctx.clip();ctx.globalAlpha=.34;ctx.fillStyle=sliceGrad;ctx.fillRect(cx-sliceRx,baseY-sliceRy,sliceRx*2,sliceRy*2);ctx.restore();
+      ctx.strokeStyle="rgba(255,255,255,.62)";ctx.lineWidth=n*.004;ctx.beginPath();ctx.ellipse(cx,baseY,sliceRx,sliceRy,0,0,Math.PI*2);ctx.stroke();
+      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(255,255,255,.58)";ctx.beginPath();ctx.moveTo(cx,bottomY);ctx.lineTo(cx,topY);ctx.stroke();ctx.setLineDash([]);
       const x=cx+Math.cos(a)*localRx,y=baseY+Math.sin(a)*localRy;
-      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(255,255,255,.45)";ctx.beginPath();ctx.moveTo(cx,bottomY);ctx.lineTo(x,y);ctx.stroke();ctx.setLineDash([]);
       ctx.shadowColor="#fff";ctx.shadowBlur=n*.035;ctx.fillStyle=cssRgb(state.r,state.g,state.b);ctx.beginPath();ctx.arc(x,y,n*.035,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle="#fff";ctx.lineWidth=n*.006;ctx.stroke();
-      ctx.font=`700 ${n*.034}px system-ui`;ctx.fillStyle="#dce5f3";ctx.fillText("V = 100%",n*.68,n*.12);ctx.fillText("V = 0%",n*.54,n*.9);
+      ctx.font=`700 ${n*.034}px system-ui`;ctx.fillStyle="#dce5f3";ctx.fillText("V = 100%",n*.68,n*.12);ctx.fillText("V = 0%",n*.54,n*.9);ctx.fillText(`current V = ${Math.round(state.v*100)}%`,n*.58,baseY-n*.035);
     }
 
     function drawHsvDisk() {
       const { ctx,n }=fitCanvas($("hsvDisk"));ctx.clearRect(0,0,n,n);const cx=n/2,cy=n/2,max=n*.40,radius=max*state.v;
       if(radius>1){const image=ctx.createImageData(n,n);for(let y=0;y<n;y++)for(let x=0;x<n;x++){const dx=x-cx,dy=y-cy,d=Math.hypot(dx,dy);if(d<=radius){const sat=d/radius,h=(Math.atan2(dy,dx)*180/Math.PI+90+360)%360,[r,g,b]=hsvToRgb(h,sat,state.v),i=(y*n+x)*4;image.data[i]=r;image.data[i+1]=g;image.data[i+2]=b;image.data[i+3]=255;}}ctx.putImageData(image,0,0);}
-      ctx.strokeStyle="#9aa8bd";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke();
+      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(255,255,255,.38)";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,max,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+      ctx.strokeStyle="#dce5f3";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke();
       const a=(state.h-90)*Math.PI/180,x=cx+Math.cos(a)*radius*state.s,y=cy+Math.sin(a)*radius*state.s;ctx.strokeStyle="#fff";ctx.lineWidth=n*.006;ctx.beginPath();ctx.arc(x,y,n*.027,0,Math.PI*2);ctx.stroke();
       ctx.font=`700 ${n*.033}px system-ui`;ctx.fillStyle="#dce5f3";ctx.fillText(`disk radius = V = ${Math.round(state.v*100)}%`,n*.05,n*.95);
     }
@@ -387,12 +383,12 @@
       const color=`#${pad2(state.r)}${pad2(state.g)}${pad2(state.b)}`, q=rgb565(state.r,state.g,state.b), f=firmwareFeatures(q.r,q.g,q.b);
       controls.r.value=state.r;controls.g.value=state.g;controls.b.value=state.b;controls.h.value=Math.round(state.h)%360;controls.s.value=Math.round(state.s*100);controls.v.value=Math.round(state.v*100);
       $("rOut").value=state.r;$("gOut").value=state.g;$("bOut").value=state.b;$("hOut").value=`${Math.round(state.h)}°`;$("sOut").value=`${Math.round(state.s*100)}%`;$("vOut").value=`${Math.round(state.v*100)}%`;
-      $("swatch").style.background=color;$("hexValue").textContent=color;$("colorPicker").value=color.toLowerCase();$("blueFixed").textContent=state.b;
+      $("swatch").style.background=color;$("hexValue").textContent=color;$("colorPicker").value=color.toLowerCase();
       $("rgb888").textContent=`${state.r}, ${state.g}, ${state.b}`;$("rgb565").textContent=`0x${pad4(q.word)}`;$("expanded").textContent=`${q.r}, ${q.g}, ${q.b}`;$("yhsv").textContent=`${f.y} / ${f.h} / ${f.s} / ${f.v}`;$("packed").textContent=`0x${pad8(f.packed)}`;$("chroma").textContent=(state.s*state.v).toFixed(3);
       const reliable=state.s>=.30&&state.v>=.25, confidence=$("confidence");confidence.className=`confidence ${reliable?"good":""}`;confidence.textContent=reliable?"Hue is useful here: this pixel has enough color and light.":state.v<.25?"Hue is weak evidence here: the pixel is near black.":"Hue is weak evidence here: the pixel is close to gray.";
       const rgbPass=state.r>96&&state.r>1.35*state.g&&state.r>1.35*state.b, hueDistance=Math.min(state.h,360-state.h),hsvPass=hueDistance<30&&state.s>.30&&state.v>.25;
       $("rgbExample").className=`example-result ${rgbPass?"pass":"fail"}`;$("rgbExample").textContent=`Selected pixel: ${rgbPass?"passes":"does not pass"}`;$("hsvExample").className=`example-result ${hsvPass?"pass":"fail"}`;$("hsvExample").textContent=`Selected pixel: ${hsvPass?"passes":"does not pass"}`;
-      drawRgbCube();drawRgbSlice();drawHsvCone();drawHsvDisk();
+      drawRgbCube();drawHsvCone();drawHsvDisk();
     }
 
     ["r","g","b"].forEach((id)=>controls[id].addEventListener("input",()=>setFromRgb(+controls.r.value,+controls.g.value,+controls.b.value)));
@@ -402,7 +398,6 @@
 
     function pointerPosition(canvas,event){const rect=canvas.getBoundingClientRect();return{x:(event.clientX-rect.left)/rect.width,y:(event.clientY-rect.top)/rect.height};}
     function dragSurface(canvas,handler){let active=false;canvas.addEventListener("pointerdown",(e)=>{active=true;canvas.setPointerCapture(e.pointerId);handler(e);});canvas.addEventListener("pointermove",(e)=>{if(active)handler(e);});canvas.addEventListener("pointerup",()=>active=false);canvas.addEventListener("pointercancel",()=>active=false);}
-    dragSurface($("rgbSlice"),(e)=>{const p=pointerPosition($("rgbSlice"),e),pad=.09,size=.82;setFromRgb(clamp((p.x-pad)/size,0,1)*255,(1-clamp((p.y-pad)/size,0,1))*255,state.b);});
     dragSurface($("hsvDisk"),(e)=>{const p=pointerPosition($("hsvDisk"),e),dx=p.x-.5,dy=p.y-.5,radius=.40*state.v;if(radius<.005)return;const s=clamp(Math.hypot(dx,dy)/radius,0,1),h=(Math.atan2(dy,dx)*180/Math.PI+90+360)%360;setFromHsv(h,s,state.v);});
     let resizeTimer;window.addEventListener("resize",()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(render,80);});
     render();
