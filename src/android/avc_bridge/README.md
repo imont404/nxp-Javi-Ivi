@@ -28,8 +28,11 @@ phone -- USB-C OTG adapter -- USB-A-to-C data cable --> FRDM J11 (MCX HS USB)
 
 The OTG adapter makes the phone host/source deterministically. The phone then
 enumerates `WAVENUMBER AVC / AVC USB DEBUG CEDC`, VID/PID `1FC9:0094`.
-The first run requires one attended Android USB-device permission approval;
-subsequent `install -r` loops retain it while the device remains authorized.
+The app declares that VID/PID as an attached-device target. On the first attach,
+select AVC Bridge and approve Android's persistent/default association. Later physical
+detach/reconnect cycles then relaunch or notify the existing single activity and reopen
+the stream without another prompt. Clearing app defaults/data, uninstalling the app, or
+using a different VID/PID requires attended approval again; `install -r` retains it.
 
 A plain C-to-C cable can negotiate the wrong direction because the FRDM board's
 PTN5150A defaults to dual-role mode. For development, wireless adb can request
@@ -143,6 +146,14 @@ The reconnect test force-stops the app six times while the USB cable remains att
 Each restart must produce a distinct firmware session, clean USB frames, telemetry, and
 a recent relayed frame. Sessions 27 through 32 passed consecutively on the bench. The
 server explicitly enables Android's IPv4 socket stack and binds the active WLAN address.
+
+Physical USB reconnect is also proven with the persistent Android association. Repeated
+detach/attach cycles produced one sequential reader session at a time without another
+permission prompt. A shorter OTG-adapter/A-to-C cable combination delivered 120 browser
+frames at 23.73 FPS while USB held 23.42 FPS with zero sequence or malformed errors and
+a zero-frame source/sent gap. A car power cycle that leaves Android's USB device
+enumerated can still leave a stale read; a no-data watchdog remains separate follow-up
+work from the proven physical detach/reconnect path.
 
 These scripts do not replace the attended car checks: physically remove/reinsert J11,
 power-cycle the car, inspect USB back-power behavior, measure phone temperature and

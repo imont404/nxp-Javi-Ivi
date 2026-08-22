@@ -201,6 +201,14 @@ class MainActivity : Activity() {
         if (::session.isInitialized) connectIfAvailable()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (intent.action == UsbManager.ACTION_USB_DEVICE_ATTACHED && ::session.isInitialized) {
+            connectIfAvailable()
+        }
+    }
+
     override fun onDestroy() {
         previewView.removeCallbacks(renderLoop)
         session.stop()

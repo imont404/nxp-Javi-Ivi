@@ -171,9 +171,13 @@ In rough order, smallest useful thing first:
    `ap0` for Soft AP, so the relay now binds all local interfaces rather than assuming
    `wlan0`. Screen-off delivery also passed. The bench network was open and 2.4 GHz;
    secured 5 GHz and venue RF remain pending.
-10. **Validate the physical vehicle: pending.** USB removal/reinsertion, car power cycle,
-   mounting and strain relief, phone thermal/battery runtime, and actual race-network RF
-   remain attended tests. The locked-screen software case now passes: a connected-device
+10. **Validate the physical vehicle: pending.** Repeated USB removal/reinsertion is now
+   proven with a persistent Android device association: the app reopened one sequential
+   session without another prompt, and a shorter adapter/cable path passed 120 relayed
+   frames at 23.73 FPS with clean 23.42 FPS USB input. A car power cycle that leaves the
+   USB device logically enumerated can still require stale-session detection. Mounting
+   and strain relief, phone thermal/battery runtime, and actual race-network RF remain
+   attended tests. The locked-screen software case now passes: a connected-device
    foreground service kept CPU and Wi-Fi active while Android reported `Dozing`, screen
    off, and light idle. A short loaded baseline held 27 C and roughly 427-588 mA draw;
    it is not a substitute for the race-duration measurement.
@@ -214,8 +218,9 @@ the send path, not a blocking copy at publish time.
 The disconnected and connected service costs have now been measured, and the competition
 image delivered about 23.41 FPS and 2.867 MiB/s with zero reported transport errors in
 the recorded run. No separate Android or USB race image is required. Full race-algorithm
-load and physical disconnect/reconnect remain explicit signoff checks rather than reasons
-to fork the build.
+load and power-only restart recovery remain explicit signoff checks rather than reasons
+to fork the build. Physical USB detach/reconnect is proven on the Moto with both tested
+adapter/cable combinations.
 
 ### The live-buffer caveat is resolved
 

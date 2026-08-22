@@ -212,6 +212,15 @@ Android reported `Dozing`, screen off, and light idle. A 30-second loaded baseli
 27 C, 23.42 USB FPS, 2.869 MiB/s, 49-60 MiB PSS, and roughly 427-588 mA discharge. Physical
 integration remains parked; the hotspot ADB/network proof is complete.
 
+Android now owns the AVC VID/PID through a persistent attached-device association and
+routes attach intents into a single activity, preventing duplicate USB readers. Repeated
+physical detach/reconnect cycles reopened sequential sessions without another permission
+prompt. The shorter bench adapter/cable combination passed an end-to-end 120-frame relay
+check at 23.73 browser FPS and 23.42 USB FPS with zero sequence or malformed errors and a
+zero-frame source/sent gap. A power-only car restart that does not cause Android to emit a
+USB detach is not covered by this result; stale-session detection remains vehicle-
+integration work.
+
 The Moto cannot keep its normal Wi-Fi client connection while running Soft AP, but that
 does not block the development loop. With the phone hosting the car over USB and serving
 the `wavenumber` hotspot, the workstation joined the hotspot and authenticated adb at
@@ -412,9 +421,11 @@ WebSocket, captures diagnostics, and exits nonzero on failure. Structured
 independent of a person looking at either screen. Use `-SkipRelay` only for a deliberate
 USB-only diagnostic run.
 
-Physical cable insertion, USB permission after app reinstall/reset, phone reboot,
+Physical cable insertion, USB permission after app uninstall/default reset, phone reboot,
 hotspot permission dialogs, and car power cycling remain attended boundaries unless
-additional switching hardware is deliberately added.
+additional switching hardware is deliberately added. With the persistent AVC device
+association intact, ordinary physical detach/reconnect no longer needs another USB
+permission response.
 
 ## Test Strategy
 
