@@ -47,7 +47,7 @@ depends_on = ["wireless-adb-loop"]
 
 [[steps]]
 id = "phone-preview"
-title = "Parse and display live RGB565 camera frames plus connection and transport counters on the phone"
+title = "Display live RGB565 camera frames and connection state while exposing transport counters through diagnostics"
 status = "done"
 depends_on = ["android-usb-host-proof"]
 
@@ -100,10 +100,28 @@ status = "done"
 depends_on = ["h264-browser-proof"]
 
 [[steps]]
+id = "phone-appliance-ui"
+title = "Reduce the phone UI to live camera, clear connection state, and the browser address"
+status = "done"
+depends_on = ["phone-preview", "hotspot-adb-proof"]
+
+[[steps]]
+id = "client-video-selection"
+title = "Let the sole browser client select bounded JPEG, H.264, or raw RGB565 delivery while keeping JPEG as the default"
+status = "done"
+depends_on = ["full-rate-jpeg", "h264-browser-proof"]
+
+[[steps]]
+id = "bridge-lifecycle-solidification"
+title = "Move long-lived USB, relay, encoder, network-change, and no-data-watchdog ownership out of the activity"
+status = "pending"
+depends_on = ["phone-appliance-ui", "client-video-selection"]
+
+[[steps]]
 id = "vehicle-integration"
 title = "Validate battery life, heat, reconnects, RF behavior, and noninterference on the car; keep mounting and cable retention outside the software track"
 status = "pending"
-depends_on = ["compressed-browser-delivery", "hotspot-adb-proof"]
+depends_on = ["client-video-selection", "hotspot-adb-proof"]
 
 [[steps]]
 id = "design-doc-intent-audit"
@@ -161,6 +179,11 @@ status = "met"
 [[exit_criteria]]
 id = "rf-bitrate"
 title = "Measured compressed bitrate and latency are suitable for smooth one-viewer race-day use on a controlled 5 GHz link"
+status = "met"
+
+[[exit_criteria]]
+id = "client-video-selection"
+title = "The sole browser client can select JPEG, H.264, or raw RGB565 without restarting the app or changing firmware"
 status = "met"
 
 [[exit_criteria]]
@@ -274,6 +297,15 @@ sample showed about 50 MiB PSS, 25.9 percent process CPU in Android's eight-core
 27 C battery temperature, and roughly 483 mA discharge. These are healthy development
 measurements, not a substitute for a race-duration battery/thermal run.
 
+The final race-week convenience slice is also complete. The phone screen now contains
+the camera, a compact connection/mode line, the usable browser URL, and a large overlay
+when the car is disconnected. The sole browser client selects `jpeg`, `h264`, or `raw`
+through the page URL; JPEG remains the default and only the selected producer runs. A
+same-process real-car check delivered 120 raw frames at 23.347 FPS / 23.907 Mbit/s, 120
+H.264 frames at 22.696 FPS / 0.740 Mbit/s, and 120 JPEG frames at 23.706 FPS /
+3.135 Mbit/s. USB stayed at about 23.42 FPS and 2.869 MiB/s with zero sequence or
+malformed errors. Raw backpressure and six further process-restart cycles also passed.
+
 ## Concrete Hardware
 
 The available handset is a **Moto G Power 5G (2023)**, not the older Moto G4 assumed in
@@ -303,7 +335,7 @@ protocol used by the PC viewer. The minimum useful product is:
 ```text
 Rev A car -- USB CDC --> Android AVC parser --> phone preview
                                       |
-                                      +--> latest complete frame --> JPEG
+                                      +--> latest complete frame --> JPEG/H.264/raw
                                            + generic telemetry
                                             --> embedded HTTP/WebSocket server
                                             --> laptop browser
@@ -318,12 +350,14 @@ The first executable slice is deliberately small:
 
 1. Detect the attached AVC CDC device, obtain user permission, open it, and complete
    `HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`.
-2. Parse fragmented `AVCU` packets on a dedicated worker and show live RGB565 frames plus
-   connection, parser, frame-rate, byte-rate, sequence, and drop counters on the phone.
-3. Serve a static page embedded in the APK and forward a full-rate, latest-frame JPEG
-   stream plus generic `AVCU` telemetry to one laptop browser over binary WebSocket.
-4. Provide an in-app and machine-readable health view so the development loop can verify
-   USB state, session state, last frame age, rates, drops, and connected browser count.
+2. Parse fragmented `AVCU` packets on a dedicated worker and show live RGB565 frames,
+   connection state, and the usable viewer URL on the phone. Keep detailed counters in
+   machine-readable diagnostics instead of consuming the display.
+3. Serve a static page embedded in the APK and forward a client-selected full-rate JPEG,
+   H.264, or raw RGB565 stream plus generic `AVCU` telemetry to one laptop browser over
+   binary WebSocket. Default to JPEG.
+4. Provide machine-readable logcat and HTTP health views so the development loop can
+   verify USB state, session state, last frame age, rates, drops, and browser count.
 
 The USB side remains the existing `AVCU` contract. On Wi-Fi, telemetry retains `AVCU`
 framing while each independently decodable JPEG uses one small `AVCJ` envelope carrying
@@ -331,16 +365,13 @@ frame ID, dimensions, byte count, capture timestamp, and a dropped-before flag. 
 may omit complete camera frames under backpressure, but it never forwards a partial frame
 as complete. Camera frames use latest-complete-frame semantics throughout.
 
-Raw full-rate video is about 24.1 Mbit/s. The completed first Wi-Fi proof sends every
-fourth frame, about 5.9 FPS and 6.0 Mbit/s, while continuing to drain USB at full rate.
-The next experiment keeps the firmware and RGB565 camera mode fixed and compares bounded
-full-rate JPEG with Android hardware H.264. Measure achieved encode FPS, encoded bitrate,
-frame age/latency, drops, USB health, CPU time, memory, temperature, and battery current.
-The initial measured result selected JPEG: it sustains the full 23.4 FPS in the browser
-at about 1.97 Mbit/s. The subsequent opt-in H.264/MSE proof also sustains the source rate
-at about 0.6 Mbit/s, but its dependent-frame recovery and decoder lifecycle remain more
-complex. Keep JPEG as the default until venue RF testing makes the bandwidth reduction
-valuable. Recording,
+Raw full-rate video is about 24.1 Mbit/s. The completed first Wi-Fi proof sent every
+fourth raw frame, about 5.9 FPS and 6.0 Mbit/s, while continuing to drain USB at full
+rate. The later bounded paths keep the firmware and RGB565 camera mode fixed. JPEG
+sustains the full 23.4 FPS at roughly 2-3 Mbit/s; hardware H.264 sustains the source rate
+at roughly 0.6-0.75 Mbit/s but has dependent-frame recovery and decoder lifecycle; raw
+now sustains the full source rate at about 24 Mbit/s as a diagnostic. Keep JPEG as the
+default until venue RF testing makes H.264's bandwidth reduction valuable. Recording,
 multi-client support, and a polished race dashboard remain deferred.
 
 WebSocket uses TCP because an ordinary browser cannot consume arbitrary UDP datagrams.
@@ -462,10 +493,17 @@ choice.
 - No dependency on Android Chrome Web Serial or WebUSB.
 - No app-store release, account system, cloud service, or venue network.
 - No polished telemetry styling; the generic data path and health evidence matter first.
-- No recording in the compression proof. Evaluate JPEG and hardware H.264 directly from
-  the live RGB565 stream before changing camera format or committing to a browser video
-  protocol.
+- No recording in the current relay. JPEG, hardware H.264, and raw diagnostics all consume
+  the existing live RGB565 stream without changing the camera format.
 - No replacement of the standalone PC Web Serial viewer.
+
+The next Android structure pass is deliberately parked behind the student-firmware work.
+Its target boundary is: the activity owns display only; a foreground service owns the USB
+session, latest-frame hub, selected encoder, relay, network-address changes, and a no-data
+watchdog; the relay server owns one-client negotiation and bounded backpressure. Exactly
+one encoder may run, logcat and `/health` remain the machine-readable diagnostics, and
+the change must add lifecycle/reconnect tests before altering this proven race-week path.
+It does not include actuator commands, a polished dashboard, or student firmware changes.
 
 The inspected Bunny Vision firmware/software tree contains useful CDC host-side lineage
 but no reusable Android/Gradle application or confirmed WebUSB spike. Treat claims of an

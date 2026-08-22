@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -29,7 +30,6 @@ import com.wavenumber.avc.bridge.relay.AvcRelayVideoMode
 import com.wavenumber.avc.bridge.video.AvcCodecInventory
 import com.wavenumber.avc.bridge.video.AvcCompressionMode
 import com.wavenumber.avc.bridge.video.AvcCompressionProbe
-import com.wavenumber.avc.bridge.video.AvcCompressionSnapshot
 import com.wavenumber.avc.bridge.video.AvcFragmentedMp4Muxer
 import java.nio.ByteBuffer
 import java.util.Locale
@@ -45,14 +45,16 @@ class MainActivity : Activity() {
     private lateinit var session: AvcUsbSession
     private lateinit var relayServer: AvcRelayServer
     private lateinit var statusView: TextView
+    private lateinit var disconnectedView: TextView
     private lateinit var previewView: ImageView
-    private var compressionProbe: AvcCompressionProbe? = null
     @Volatile
-    private var compressionSnapshot: AvcCompressionSnapshot? = null
+    private var compressionProbe: AvcCompressionProbe? = null
     private val previewBitmap = Bitmap.createBitmap(320, 200, Bitmap.Config.RGB_565)
     private var permissionPending = false
-    private var renderedFrames = 0L
-    private var lastRenderedFrameId = -1L
+    private var lastHealth = AvcUsbHealth(AvcUsbState.IDLE, "waiting for AVC USB device")
+    private var relayVideoMode = AvcRelayVideoMode.JPEG
+    private var jpegQuality = 70
+    private var h264Bitrate = 750_000
 
     private val renderLoop = object : Runnable {
         override fun run() {
@@ -60,8 +62,6 @@ class MainActivity : Activity() {
             if (frame != null) {
                 try {
                     previewBitmap.copyPixelsFromBuffer(ByteBuffer.wrap(frame.pixels))
-                    renderedFrames++
-                    lastRenderedFrameId = frame.frameId
                     previewView.invalidate()
                 } finally {
                     session.releaseFrame(frame)
@@ -102,13 +102,22 @@ class MainActivity : Activity() {
 
         usbManager = getSystemService(Context.USB_SERVICE) as UsbManager
         val relayViewer = resources.openRawResource(R.raw.relay_viewer).use { it.readBytes() }
-        val relayVideoMode = AvcRelayVideoMode.parse(intent.getStringExtra("relay_video"))
-            ?: AvcRelayVideoMode.JPEG
+        val compressionOverride = AvcCompressionMode.parse(intent.getStringExtra("compression_probe"))
+        relayVideoMode = compressionOverride?.let {
+            when (it) {
+                AvcCompressionMode.JPEG -> AvcRelayVideoMode.JPEG
+                AvcCompressionMode.H264 -> AvcRelayVideoMode.H264
+            }
+        } ?: AvcRelayVideoMode.parse(intent.getStringExtra("relay_video")) ?: AvcRelayVideoMode.JPEG
+        jpegQuality = intent.getIntExtra("jpeg_quality", 70)
+        h264Bitrate = intent.getIntExtra("h264_bitrate", 750_000)
         relayServer = AvcRelayServer(
             relayViewer,
             port = intent.getIntExtra("relay_port", 8765),
-            videoMode = relayVideoMode,
+            defaultVideoMode = relayVideoMode,
+            onVideoModeChanged = ::selectRelayVideoMode,
         )
+        selectRelayVideoMode(relayVideoMode)
         relayServer.start()
         val avcEncoders = AvcCodecInventory.encoders()
         if (avcEncoders.isEmpty()) {
@@ -116,32 +125,12 @@ class MainActivity : Activity() {
         } else {
             avcEncoders.forEach { Log.i("AVC_CODEC_INVENTORY", AvcCodecInventory.logLine(it)) }
         }
-        val compressionMode = AvcCompressionMode.parse(intent.getStringExtra("compression_probe"))
-            ?: when (relayVideoMode) {
-                AvcRelayVideoMode.JPEG -> AvcCompressionMode.JPEG
-                AvcRelayVideoMode.H264 -> AvcCompressionMode.H264
-            }
-        val h264Muxer = if (relayVideoMode == AvcRelayVideoMode.H264) AvcFragmentedMp4Muxer() else null
-        compressionProbe = AvcCompressionProbe(
-            mode = compressionMode,
-            jpegQuality = intent.getIntExtra("jpeg_quality", 70),
-            h264Bitrate = intent.getIntExtra("h264_bitrate", 750_000),
-            onJpegFrame = if (compressionMode == AvcCompressionMode.JPEG) relayServer::offerJpegFrame else null,
-            onH264Format = h264Muxer?.let { muxer ->
-                { format -> relayServer.offerH264Initialization(muxer.initialization(format)) }
-            },
-            onH264AccessUnit = h264Muxer?.let { muxer ->
-                { accessUnit -> relayServer.offerH264Fragment(muxer.fragment(accessUnit)) }
-            },
-        ) { snapshot ->
-            compressionSnapshot = snapshot
-            Log.i(COMPRESSION_TAG, snapshot.logLine())
-        }
         session = AvcUsbSession(
             usbManager,
             ::showHealth,
             { frame ->
                 relayServer.noteSourceFrame(frame.frameId)
+                relayServer.offerRawFrame(frame)
                 compressionProbe?.offerFrame(frame)
             },
             relayServer::offerDiagnostic,
@@ -152,19 +141,45 @@ class MainActivity : Activity() {
             setBackgroundColor(Color.BLACK)
             contentDescription = "Live AVC camera preview"
         }
+        disconnectedView = TextView(this).apply {
+            text = "CAR NOT CONNECTED"
+            textSize = 30f
+            gravity = Gravity.CENTER
+            setTextColor(Color.WHITE)
+            setBackgroundColor(Color.argb(180, 0, 0, 0))
+            typeface = Typeface.DEFAULT_BOLD
+        }
+        val previewContainer = FrameLayout(this).apply {
+            setBackgroundColor(Color.BLACK)
+            addView(
+                previewView,
+                FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                ),
+            )
+            addView(
+                disconnectedView,
+                FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                ),
+            )
+        }
         statusView = TextView(this).apply {
-            textSize = 14f
-            gravity = Gravity.START
-            setPadding(24, 18, 24, 24)
+            textSize = 16f
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(24, 10, 24, 12)
             setTextIsSelectable(true)
             setTextColor(Color.WHITE)
-            setBackgroundColor(Color.rgb(18, 50, 74))
-            typeface = Typeface.MONOSPACE
+            setBackgroundColor(Color.rgb(24, 24, 24))
+            maxLines = 2
         }
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Color.BLACK)
             addView(
-                previewView,
+                previewContainer,
                 LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     0,
@@ -180,6 +195,7 @@ class MainActivity : Activity() {
             )
         }
         setContentView(root)
+        updatePhoneDisplay(lastHealth)
         previewView.post(renderLoop)
 
         val filter = IntentFilter().apply {
@@ -212,8 +228,8 @@ class MainActivity : Activity() {
     override fun onDestroy() {
         previewView.removeCallbacks(renderLoop)
         session.stop()
-        compressionProbe?.close()
         relayServer.stop()
+        compressionProbe?.close()
         stopService(Intent(this, BridgeKeepAliveService::class.java))
         unregisterReceiver(usbReceiver)
         super.onDestroy()
@@ -244,55 +260,11 @@ class MainActivity : Activity() {
     }
 
     private fun showHealth(health: AvcUsbHealth) {
+        lastHealth = health
         relayServer.updateUsbHealth(health)
         runOnUiThread {
             val devices = usbManager.deviceList.values.toList()
-            val relay = relayServer.snapshot()
-            statusView.text = buildString {
-                appendLine("AVC Android Bridge")
-                appendLine()
-                appendLine("Device: ${Build.MANUFACTURER} ${Build.MODEL}")
-                appendLine("Android: ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})")
-                appendLine("Attached USB devices: ${devices.size}")
-                appendLine("Session: ${health.state.wireName}")
-                appendLine("Detail: ${health.detail}")
-                appendLine(
-                    "Frames: ${health.frames}  Displayed: $renderedFrames  " +
-                        "Last: $lastRenderedFrameId",
-                )
-                appendLine(
-                    "Rate: %.1f FPS  %.3f MiB/s".format(
-                        Locale.US,
-                        health.framesPerSecond,
-                        health.mebibytesPerSecond,
-                    ),
-                )
-                appendLine("Packets: ${health.packets}  Bytes: ${health.bytes}")
-                appendLine(
-                    "Errors: seq=${health.sequenceErrors} malformed=${health.malformedChunks} " +
-                        "preview_drop=${health.previewDrops}",
-                )
-                appendLine(
-                    "Diagnostics: stats=${health.statsReports} logs=${health.logRecords} " +
-                        "telemetry=${health.telemetryRecords}",
-                )
-                appendLine("Relay: ${relayServer.localUrl()}")
-                appendLine(
-                    "Relay frames: selected=${relay.selectedFrames} sent=${relay.sentFrames} " +
-                        "dropped=${relay.droppedFrames} clients=${relay.clients}",
-                )
-                compressionSnapshot?.let { compression ->
-                    appendLine(
-                        "Compression: ${compression.mode.wireName} ${compression.state} " +
-                            "%.1f FPS %.3f Mbit/s drops=${compression.droppedFrames}".format(
-                                Locale.US,
-                                compression.framesPerSecond,
-                                compression.megabitsPerSecond,
-                            ),
-                    )
-                }
-                if (health.sessionId != 0L) appendLine("Session ID: ${health.sessionId}")
-            }
+            updatePhoneDisplay(health)
             Log.i(
                 HEALTH_TAG,
                 "state=${health.state.wireName} usb_devices=${devices.size} packets=${health.packets} " +
@@ -306,6 +278,54 @@ class MainActivity : Activity() {
                     "detail=${health.detail.replace(' ', '_')}",
             )
         }
+    }
+
+    @Synchronized
+    private fun selectRelayVideoMode(mode: AvcRelayVideoMode) {
+        val currentProbe = compressionProbe
+        val alreadyConfigured = relayVideoMode == mode &&
+            ((mode == AvcRelayVideoMode.RAW && currentProbe == null) ||
+                (mode != AvcRelayVideoMode.RAW && currentProbe != null))
+        if (alreadyConfigured) return
+
+        compressionProbe = null
+        currentProbe?.close()
+        relayVideoMode = mode
+        val compressionMode = when (mode) {
+            AvcRelayVideoMode.RAW -> null
+            AvcRelayVideoMode.JPEG -> AvcCompressionMode.JPEG
+            AvcRelayVideoMode.H264 -> AvcCompressionMode.H264
+        }
+        val h264Muxer = if (mode == AvcRelayVideoMode.H264) AvcFragmentedMp4Muxer() else null
+        compressionProbe = compressionMode?.let { selectedMode ->
+            AvcCompressionProbe(
+                mode = selectedMode,
+                jpegQuality = jpegQuality,
+                h264Bitrate = h264Bitrate,
+                onJpegFrame = if (selectedMode == AvcCompressionMode.JPEG) relayServer::offerJpegFrame else null,
+                onH264Format = h264Muxer?.let { muxer ->
+                    { format -> relayServer.offerH264Initialization(muxer.initialization(format)) }
+                },
+                onH264AccessUnit = h264Muxer?.let { muxer ->
+                    { accessUnit -> relayServer.offerH264Fragment(muxer.fragment(accessUnit)) }
+                },
+            ) { snapshot ->
+                Log.i(COMPRESSION_TAG, snapshot.logLine())
+            }
+        }
+        if (::statusView.isInitialized) runOnUiThread { updatePhoneDisplay(lastHealth) }
+    }
+
+    private fun updatePhoneDisplay(health: AvcUsbHealth) {
+        val connected = health.state == AvcUsbState.STREAMING
+        disconnectedView.visibility = if (connected) android.view.View.GONE else android.view.View.VISIBLE
+        disconnectedView.text = when (health.state) {
+            AvcUsbState.OPENING, AvcUsbState.HELLO, AvcUsbState.CHANNELS, AvcUsbState.PING -> "CONNECTING TO CAR..."
+            AvcUsbState.ERROR -> "CAR CONNECTION ERROR"
+            else -> "CAR NOT CONNECTED"
+        }
+        val stateLabel = if (connected) "CONNECTED" else "DISCONNECTED"
+        statusView.text = "$stateLabel  •  ${relayVideoMode.wireName.uppercase(Locale.US)}\n${relayServer.localUrl()}"
     }
 
     @Suppress("DEPRECATION")

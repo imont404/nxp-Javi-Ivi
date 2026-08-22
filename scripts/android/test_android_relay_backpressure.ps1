@@ -2,6 +2,8 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$Serial,
+    [ValidateSet("raw", "jpeg", "h264")]
+    [string]$Mode = "jpeg",
     [int]$Port = 8765,
     [int]$TimeoutSeconds = 12
 )
@@ -43,7 +45,7 @@ try {
     }
     $webSocketKey = [Convert]::ToBase64String($keyBytes)
     $request = @(
-        "GET /stream HTTP/1.1"
+        "GET /stream?video=$Mode HTTP/1.1"
         "Host: ${phoneAddress}:$Port"
         "Upgrade: websocket"
         "Connection: Upgrade"
@@ -99,7 +101,7 @@ try {
     $client.Dispose()
 }
 
-& (Join-Path $PSScriptRoot "verify_android_relay.ps1") -Serial $Serial -Port $Port
+& (Join-Path $PSScriptRoot "verify_android_relay.ps1") -Serial $Serial -Port $Port -Mode $Mode
 $pssAfterKb = Get-AppPssKb
 
 [PSCustomObject]@{
@@ -109,6 +111,7 @@ $pssAfterKb = Get-AppPssKb
     pss_before_kb = $pssBeforeKb
     pss_during_kb = $pssDuringKb
     pss_after_kb = $pssAfterKb
+    relay_mode = $Mode
 } | Format-List
 
 Write-Host "AVC Android relay backpressure proof passed." -ForegroundColor Green

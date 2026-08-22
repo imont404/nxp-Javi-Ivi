@@ -16,6 +16,11 @@ object AvcRelayProtocol {
     const val H264_FLAG_INITIALIZATION = 1
     const val H264_FLAG_KEY_FRAME = 2
     const val H264_FLAG_DISCONTINUITY = 4
+    const val RAW_MAGIC = 0x52435641
+    const val RAW_VERSION = 1
+    const val RAW_HEADER_BYTES = 32
+    const val RAW_FLAG_DROPPED_BEFORE = 1
+    const val RAW_PIXEL_FORMAT_RGB565_LE = 1
 
     fun encodeJpegFrame(frame: AvcRelayFrame): ByteArray =
         ByteBuffer.allocate(JPEG_HEADER_BYTES + frame.byteCount)
@@ -30,6 +35,22 @@ object AvcRelayProtocol {
             .putInt(frame.byteCount)
             .putLong(frame.capturedNs)
             .putInt(0)
+            .put(frame.bytes, 0, frame.byteCount)
+            .array()
+
+    fun encodeRawFrame(frame: AvcRelayFrame): ByteArray =
+        ByteBuffer.allocate(RAW_HEADER_BYTES + frame.byteCount)
+            .order(ByteOrder.LITTLE_ENDIAN)
+            .putInt(RAW_MAGIC)
+            .put(RAW_VERSION.toByte())
+            .put(RAW_HEADER_BYTES.toByte())
+            .putShort(if (frame.droppedBefore) RAW_FLAG_DROPPED_BEFORE.toShort() else 0)
+            .putInt(frame.frameId.toInt())
+            .putShort(frame.width.toShort())
+            .putShort(frame.height.toShort())
+            .putInt(frame.byteCount)
+            .putLong(frame.capturedNs)
+            .putInt(RAW_PIXEL_FORMAT_RGB565_LE)
             .put(frame.bytes, 0, frame.byteCount)
             .array()
 

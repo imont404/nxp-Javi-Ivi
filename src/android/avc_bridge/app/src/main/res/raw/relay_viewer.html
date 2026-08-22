@@ -31,8 +31,11 @@
   const AVCU_MAGIC = 0x55435641;
   const JPEG_MAGIC = 0x4a435641;
   const H264_MAGIC = 0x34435641;
+  const RAW_MAGIC = 0x52435641;
   const JPEG_HEADER_BYTES = 32;
   const H264_HEADER_BYTES = 32;
+  const RAW_HEADER_BYTES = 32;
+  const RAW_PIXEL_FORMAT_RGB565_LE = 1;
   const H264_FLAG_INITIALIZATION = 1;
   const MAX_MSE_QUEUE = 48;
   const MSG_TELEMETRY = 0x01000500;
@@ -42,6 +45,7 @@
   const canvas = document.querySelector('#camera');
   const video = document.querySelector('#h264');
   const context = canvas.getContext('2d', { alpha: false });
+  const rawImage = context.createImageData(320, 200);
   const telemetry = new Map();
   const decoder = new TextDecoder();
   let pendingJpeg = null;
@@ -54,6 +58,10 @@
   let sourceBuffer = null;
   let mediaUrl = null;
   let mseQueue = [];
+  const pageParameters = new URLSearchParams(location.search);
+  const requestedVideo = ['raw', 'jpeg', 'h264'].includes(pageParameters.get('video'))
+    ? pageParameters.get('video')
+    : 'jpeg';
 
   function codecName(codecConfig) {
     return `avc1.${codecConfig.toString(16).padStart(6, '0')}`;
@@ -160,6 +168,28 @@
     decodingJpeg = false;
   }
 
+  function showRaw(buffer, view, rawBytes) {
+    const source = new Uint8Array(buffer, RAW_HEADER_BYTES, rawBytes);
+    const destination = rawImage.data;
+    for (let sourceIndex = 0, pixelIndex = 0; sourceIndex < source.length; sourceIndex += 2, pixelIndex += 4) {
+      const pixel = source[sourceIndex] | (source[sourceIndex + 1] << 8);
+      destination[pixelIndex] = Math.round(((pixel >>> 11) & 0x1f) * 255 / 31);
+      destination[pixelIndex + 1] = Math.round(((pixel >>> 5) & 0x3f) * 255 / 63);
+      destination[pixelIndex + 2] = Math.round((pixel & 0x1f) * 255 / 31);
+      destination[pixelIndex + 3] = 255;
+    }
+    video.hidden = true;
+    canvas.hidden = false;
+    context.putImageData(rawImage, 0, 0);
+    lastFrameId = view.getUint32(8, true);
+    displayed++;
+    const now = performance.now();
+    if (now - lastRateTime >= 1000) {
+      status.textContent = `Live raw RGB565 - frame ${lastFrameId}, browser frames ${displayed}`;
+      lastRateTime = now;
+    }
+  }
+
   function showTelemetry(view, payloadStart, payloadLength) {
     if (payloadLength < 16) return;
     const valueBits = view.getUint32(payloadStart + 8, true);
@@ -221,6 +251,17 @@
       else queueH264(payload);
       return;
     }
+    if (magic === RAW_MAGIC) {
+      const rawBytes = view.getUint32(16, true);
+      if (
+        view.getUint8(4) !== 1 || view.getUint8(5) !== RAW_HEADER_BYTES ||
+        view.getUint16(12, true) !== 320 || view.getUint16(14, true) !== 200 ||
+        rawBytes !== 320 * 200 * 2 || RAW_HEADER_BYTES + rawBytes !== view.byteLength ||
+        view.getUint32(28, true) !== RAW_PIXEL_FORMAT_RGB565_LE
+      ) return;
+      showRaw(buffer, view, rawBytes);
+      return;
+    }
     if (magic !== AVCU_MAGIC || view.getUint8(4) !== 1 || view.getUint8(5) !== 32) return;
     const messageId = view.getUint32(8, true);
     const payloadLength = view.getUint32(16, true);
@@ -231,11 +272,12 @@
   }
 
   function connect() {
-    const replace = new URLSearchParams(location.search).has('replace') ? '?replace=1' : '';
-    const socket = new WebSocket(`ws://${location.host}/stream${replace}`);
+    const streamParameters = new URLSearchParams({ video: requestedVideo });
+    if (pageParameters.has('replace')) streamParameters.set('replace', '1');
+    const socket = new WebSocket(`ws://${location.host}/stream?${streamParameters}`);
     currentSocket = socket;
     socket.binaryType = 'arraybuffer';
-    socket.onopen = () => { status.textContent = 'Connected; waiting for frame...'; };
+    socket.onopen = () => { status.textContent = `Connected (${requestedVideo}); waiting for frame...`; };
     socket.onmessage = event => receivePacket(event.data);
     socket.onerror = () => socket.close();
     socket.onclose = () => { status.textContent = 'Disconnected; retrying...'; setTimeout(connect, 1000); };

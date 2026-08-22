@@ -2,6 +2,8 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$Serial,
+    [ValidateSet("raw", "jpeg", "h264")]
+    [string]$Mode,
     [int]$Port = 8765,
     [int]$MinimumFrames = 3,
     [int]$TimeoutSeconds = 15
@@ -21,6 +23,7 @@ if ($healthBefore.state -ne "streaming") {
 if ($healthBefore.sequence_errors -ne 0 -or $healthBefore.malformed_chunks -ne 0) {
     throw "USB health is not clean: sequence=$($healthBefore.sequence_errors), malformed=$($healthBefore.malformed_chunks)."
 }
+$requestedMode = if ([string]::IsNullOrWhiteSpace($Mode)) { $healthBefore.relay_mode } else { $Mode }
 
 $socket = [System.Net.WebSockets.ClientWebSocket]::new()
 $deadline = [System.Threading.CancellationTokenSource]::new()
@@ -33,13 +36,14 @@ $lastFrameId = $null
 $expectedSequence = $null
 $jpegBytesReceived = 0L
 $h264BytesReceived = 0L
+$rawBytesReceived = 0L
 $h264InitializationSeen = $false
 $receiveTimer = [Diagnostics.Stopwatch]::new()
 
 try {
     $socket.Options.SetRequestHeader("X-AVC-Replace-Viewer", "1")
     $socket.ConnectAsync(
-        [Uri]"ws://${phoneAddress}:$Port/stream",
+        [Uri]"ws://${phoneAddress}:$Port/stream?video=$requestedMode",
         $deadline.Token
     ).GetAwaiter().GetResult() | Out-Null
     $receiveTimer.Start()
@@ -121,6 +125,30 @@ try {
             $completedFrames++
             continue
         }
+        if ($magic -eq 0x52435641) {
+            $version = $packet[4]
+            $headerBytes = $packet[5]
+            $frameId = [BitConverter]::ToUInt32($packet, 8)
+            $width = [BitConverter]::ToUInt16($packet, 12)
+            $height = [BitConverter]::ToUInt16($packet, 14)
+            $rawBytes = [BitConverter]::ToUInt32($packet, 16)
+            $pixelFormat = [BitConverter]::ToUInt32($packet, 28)
+            if (
+                $version -ne 1 -or $headerBytes -ne 32 -or
+                $width -ne 320 -or $height -ne 200 -or
+                $rawBytes -ne 320 * 200 * 2 -or
+                $packet.Length -ne 32 + $rawBytes -or $pixelFormat -ne 1
+            ) {
+                throw "Relay emitted a malformed AVCR frame."
+            }
+            if ($null -ne $lastFrameId -and $frameId -le $lastFrameId) {
+                throw "Relay raw frame IDs did not advance: previous $lastFrameId, received $frameId."
+            }
+            $lastFrameId = $frameId
+            $rawBytesReceived += $rawBytes
+            $completedFrames++
+            continue
+        }
         if ($magic -ne 0x55435641) {
             throw "Relay emitted an unknown message magic 0x$('{0:X8}' -f $magic)."
         }
@@ -156,9 +184,6 @@ $healthAfter = Invoke-RestMethod -Uri "$baseUri/health" -TimeoutSec 5
 if ($healthAfter.sequence_errors -ne 0 -or $healthAfter.malformed_chunks -ne 0) {
     throw "USB health degraded during relay: sequence=$($healthAfter.sequence_errors), malformed=$($healthAfter.malformed_chunks)."
 }
-if ($healthAfter.relay_mode -ne $healthBefore.relay_mode) {
-    throw "Relay mode changed from '$($healthBefore.relay_mode)' to '$($healthAfter.relay_mode)'."
-}
 $frameAge = $healthAfter.last_source_frame_id - $healthAfter.last_sent_frame_id
 if ($frameAge -lt 0 -or $frameAge -gt 8) {
     throw "Relay did not converge to a recent complete frame; source/sent frame gap is $frameAge."
@@ -167,12 +192,12 @@ $receivedFps = if ($receiveTimer.Elapsed.TotalSeconds -gt 0) {
     $completedFrames / $receiveTimer.Elapsed.TotalSeconds
 } else { 0 }
 $receivedMegabitsPerSecond = if ($receiveTimer.Elapsed.TotalSeconds -gt 0) {
-    ($jpegBytesReceived + $h264BytesReceived) * 8 / $receiveTimer.Elapsed.TotalSeconds / 1000000
+    ($jpegBytesReceived + $h264BytesReceived + $rawBytesReceived) * 8 / $receiveTimer.Elapsed.TotalSeconds / 1000000
 } else { 0 }
 
 [PSCustomObject]@{
-    url = "$baseUri/"
-    relay_mode = $healthAfter.relay_mode
+    url = "$baseUri/?video=$requestedMode"
+    relay_mode = $requestedMode
     frames = $completedFrames
     received_fps = [Math]::Round($receivedFps, 3)
     received_mbit_s = [Math]::Round($receivedMegabitsPerSecond, 3)

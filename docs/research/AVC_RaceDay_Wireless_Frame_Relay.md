@@ -5,8 +5,8 @@ Android relay.** Its native USB-host, framed CDC control path, and live phone pr
 are now verified on the Rev A car. Its embedded one-browser Wi-Fi relay also renders
 live video and generic telemetry on a laptop. Slow-client, reconnect, and locked-screen
 hardening are verified. Full-rate JPEG and hardware H.264 have now also been measured;
-compressed browser delivery, physical integration, and race-day network selection remain
-follow-ups.
+compressed browser delivery and client-selected JPEG/H.264/raw modes are complete.
+Physical integration and race-day network selection remain follow-ups.
 
 The board survey that occupies most of this document - RW612, i.MX93, Radxa,
 Luckfox - is **superseded** and kept only as the contingency and as the record
@@ -70,9 +70,10 @@ the Web Serial page. Fewer moving parts than a custom receiver on both ends.
 camera stream, JPEG quality 70 sustained 23.47 FPS at 1.956 Mbit/s with about 4.0 ms mean
 encode latency. The Moto's MediaTek hardware AVC encoder sustained 23.38 FPS at 0.752
 Mbit/s with about 50.8 ms mean latency, including the RGB565-to-I420 conversion. Both
-kept USB at 23.42 FPS with clean parser health. JPEG is the next browser MVP because its
-independent frames are trivial to carry over the existing bounded WebSocket; H.264 is a
-proven lower-bitrate option if the race RF test justifies more browser plumbing.
+kept USB at 23.42 FPS with clean parser health. JPEG is the default browser path because
+its independent frames are trivial to carry over the existing bounded WebSocket. H.264
+is a proven lower-bitrate option, and raw RGB565 is available as a bounded diagnostic;
+the sole client selects among them with the page's `video` query parameter.
 
 The first proof used the earlier low-risk lever: decimate to every fourth complete frame.
 The measured JPEG path has now superseded that relay mode, delivering the full 23.4 FPS
@@ -171,7 +172,13 @@ In rough order, smallest useful thing first:
    `ap0` for Soft AP, so the relay now binds all local interfaces rather than assuming
    `wlan0`. Screen-off delivery also passed. The bench network was open and 2.4 GHz;
    secured 5 GHz and venue RF remain pending.
-10. **Validate the physical vehicle: pending.** Repeated USB removal/reinsertion is now
+10. **Simplify the phone and expose client-selected video: complete.** The phone now
+   devotes its screen to the camera plus connection state and the usable browser URL,
+   with a large disconnected overlay. The sole browser client can request JPEG, H.264,
+   or raw RGB565 without restarting the app. A same-process 120-frame check measured
+   23.706 FPS / 3.135 Mbit/s JPEG, 22.696 FPS / 0.740 Mbit/s H.264, and 23.347 FPS /
+   23.907 Mbit/s raw while USB remained clean at about 23.42 FPS.
+11. **Validate the physical vehicle: pending.** Repeated USB removal/reinsertion is now
    proven with a persistent Android device association: the app reopened one sequential
    session without another prompt, and a shorter adapter/cable path passed 120 relayed
    frames at 23.73 FPS with clean 23.42 FPS USB input. A car power cycle that leaves the

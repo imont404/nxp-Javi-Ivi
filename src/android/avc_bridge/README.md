@@ -66,19 +66,36 @@ The app also serves a standalone viewer from the phone:
 http://<phone-address>:8765/
 ```
 
-JPEG remains the default. To start the measured hardware-H.264/MSE path explicitly:
+The phone display is intentionally appliance-like: live camera, connection state, and
+the browser URL. Detailed parser and relay health remains available in logcat and at
+`/health`; when the car is absent the preview is covered by a large disconnected message.
+
+The one browser client selects its video representation in the page URL. JPEG remains
+the default when `video` is omitted:
+
+```text
+http://<phone-address>:8765/?video=jpeg
+http://<phone-address>:8765/?video=h264
+http://<phone-address>:8765/?video=raw
+```
+
+The app keeps at most one video producer selected: Android bitmap JPEG, hardware H.264,
+or copied RGB565 frames. A client request changes that selection; when the client
+disconnects, the app returns to its configured default (JPEG unless overridden by
+maintainer tooling). To change the default before opening a browser:
 
 ```powershell
 .\scripts\android\start_android_relay.ps1 -Mode h264 -Serial <phone-ip>:5555
 ```
 
-The command prints the exact viewer URL. `-Mode jpeg` restores the default, and `-Port`
-can isolate a bench run from an already-open browser tab.
+The command prints the exact viewer URL. `-Mode raw` and `-Mode jpeg` are also accepted,
+and `-Port` can isolate a bench run from an already-open browser tab.
 
-The binary WebSocket at `/stream` carries full-rate JPEG frames in the small `AVCJ`
-envelope below and preserves telemetry as normal `AVCU` packets. A fixed three-buffer
-RGB565 encoder input and a separate fixed three-buffer JPEG relay mailbox keep only the
-newest complete frame; browser, network, and compression work never run on the USB reader.
+The binary WebSocket at `/stream` carries the selected full-rate video representation
+and preserves telemetry as normal `AVCU` packets. JPEG uses the small `AVCJ` envelope
+below. A fixed three-buffer RGB565 encoder input and a separate fixed three-buffer relay
+mailbox keep only the newest complete frame; browser, network, and compression work never
+run on the USB reader.
 The embedded page has no server-side asset dependencies and renders generic named
 telemetry alongside the live camera. `/health` exposes USB, compression, relay bitrate,
 frame-age, drop, and client counters.
@@ -109,11 +126,20 @@ or an overflow discards dependent frames until the next IDR, then sends a fresh
 initialization segment. The embedded page feeds those fragments to Media Source
 Extensions, bounds its own append queue, and trims old buffered media.
 
+The diagnostic raw path uses magic `AVCR` and the same one-message-per-frame rule. Its
+32-byte little-endian header carries version 1, frame ID, width, height, payload size,
+capture timestamp, and pixel format `1` at offset 28 (`RGB565_LE`). The payload is one
+complete 128,000-byte 320x200 frame. The phone copies into the existing bounded relay
+mailbox, so this test mode never retains a firmware/USB input buffer and cannot create an
+unbounded queue. Raw is useful for measuring the actual link, not the race-day default.
+
 `android_loop.ps1` now verifies this path without a person watching either screen. To
 check an already running app directly, use:
 
 ```powershell
 .\scripts\android\verify_android_relay.ps1 -Serial <phone-ip>:5555
+.\scripts\android\verify_android_relay.ps1 -Mode raw -Serial <phone-ip>:5555
+.\scripts\android\verify_android_relay.ps1 -Mode h264 -Serial <phone-ip>:5555
 .\scripts\android\test_android_relay_backpressure.ps1 -Serial <phone-ip>:5555
 .\scripts\android\test_android_session_reconnect.ps1 -Serial <phone-ip>:5555
 .\scripts\android\test_android_locked_relay.ps1 -Serial <phone-ip>:5555
@@ -130,6 +156,13 @@ backpressure test deliberately opens a WebSocket and stops reading, checks USB p
 parser health, and app PSS, then proves a new client receives a recent complete frame.
 Six consecutive real-hardware stalls passed with warm PSS around 56-59 MiB and a final
 source-to-sent frame gap of one. The viewer remains intentionally one-client and unstyled.
+
+A same-process client-selection run on the real car switched among all three paths
+without restarting the app. Raw delivered 120 frames at 23.347 FPS and 23.907 Mbit/s;
+H.264 delivered 120 frames at 22.696 FPS and 0.740 Mbit/s; JPEG delivered 120 frames at
+23.706 FPS and 3.135 Mbit/s. USB remained about 23.42 FPS and 2.869 MiB/s with zero
+sequence or malformed errors. A separate raw non-reading-client test also kept USB
+advancing, disconnected the stalled client, and accepted a fresh recent-frame viewer.
 
 The Moto Soft AP path is also proven. With the phone simultaneously acting as USB host
 for the car and broadcasting its `wavenumber` hotspot, authenticated adb connected to
@@ -166,13 +199,14 @@ when the activity exits. The locked-screen test deliberately sleeps the phone, c
 `Dozing` plus screen-off state, verifies live frames, and wakes it again. The original
 one-minute screen timeout remains unchanged.
 
-Bounded JPEG quality 70 is the normal relay path. The H.264 browser relay remains opt-in.
-Both copy only the newest complete RGB565 frame into a fixed three-buffer worker, so
-compression cannot block the USB reader or create a growing queue. JPEG uses Android's
-bitmap encoder; H.264 converts RGB565 little-endian to I420 with fixed LUTs and feeds the
-phone's non-secure hardware AVC encoder through bounded byte buffers. Its browser path
-packages the MediaTek encoder's Annex-B baseline stream as fragmented MP4 without
-transcoding. The test script
+Bounded JPEG quality 70 is the normal relay path. H.264 and raw remain client-selected
+alternatives. Only the requested producer is active. JPEG and H.264 copy only the newest
+complete RGB565 frame into a fixed three-buffer worker; raw copies into the separate
+fixed three-buffer relay mailbox. Compression cannot block the USB reader or create a
+growing queue. JPEG uses Android's bitmap encoder; H.264 converts RGB565 little-endian to
+I420 with fixed LUTs and feeds the phone's non-secure hardware AVC encoder through
+bounded byte buffers. Its browser path packages the MediaTek encoder's Annex-B baseline
+stream as fragmented MP4 without transcoding. The test script
 launches one mode for a fixed interval, requires at least 20 encoded FPS and clean USB
 parser health, reports memory/battery data, then restores the normal JPEG bridge.
 

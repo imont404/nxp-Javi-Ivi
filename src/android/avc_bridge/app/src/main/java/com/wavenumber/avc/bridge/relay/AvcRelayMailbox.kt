@@ -2,6 +2,7 @@ package com.wavenumber.avc.bridge.relay
 
 import com.wavenumber.avc.bridge.protocol.AvcPacket
 import com.wavenumber.avc.bridge.video.AvcJpegFrameView
+import com.wavenumber.avc.bridge.video.AvcVideoFrame
 import java.util.ArrayDeque
 
 data class AvcRelayFrame(
@@ -74,12 +75,43 @@ class AvcRelayMailbox(
     @Synchronized
     fun offerJpegFrame(frame: AvcJpegFrameView) {
         require(frame.byteCount in 1..maxFrameBytes)
+        offerFrame(
+            frame.frameId,
+            frame.width,
+            frame.height,
+            frame.capturedNs,
+            frame.bytes,
+            frame.byteCount,
+        )
+    }
+
+    @Synchronized
+    fun offerRawFrame(frame: AvcVideoFrame) {
+        require(frame.pixels.size <= maxFrameBytes)
+        offerFrame(
+            frame.frameId,
+            frame.width,
+            frame.height,
+            System.nanoTime(),
+            frame.pixels,
+            frame.pixels.size,
+        )
+    }
+
+    private fun offerFrame(
+        frameId: Long,
+        width: Int,
+        height: Int,
+        capturedNs: Long,
+        source: ByteArray,
+        byteCount: Int,
+    ) {
         selectedFrames++
-        if (lastSelectedFrameId >= 0 && frame.frameId > lastSelectedFrameId + 1) {
-            droppedFrames += frame.frameId - lastSelectedFrameId - 1
+        if (lastSelectedFrameId >= 0 && frameId > lastSelectedFrameId + 1) {
+            droppedFrames += frameId - lastSelectedFrameId - 1
             dropPending = true
         }
-        lastSelectedFrameId = frame.frameId
+        lastSelectedFrameId = frameId
 
         val destination = freeFrames.pollFirst() ?: latestFrame?.let {
             latestFrame = null
@@ -91,7 +123,7 @@ class AvcRelayMailbox(
             dropPending = true
             return
         }
-        frame.bytes.copyInto(destination, endIndex = frame.byteCount)
+        source.copyInto(destination, endIndex = byteCount)
         val replaced = latestFrame
         if (replaced != null) {
             droppedFrames++
@@ -99,15 +131,22 @@ class AvcRelayMailbox(
             freeFrames.addLast(replaced.bytes)
         }
         latestFrame = AvcRelayFrame(
-            frame.frameId,
-            frame.width,
-            frame.height,
-            frame.capturedNs,
+            frameId,
+            width,
+            height,
+            capturedNs,
             destination,
-            frame.byteCount,
+            byteCount,
             droppedBefore = dropPending,
         )
         dropPending = false
+    }
+
+    @Synchronized
+    fun discardLatestFrame() {
+        latestFrame?.let { freeFrames.addLast(it.bytes) }
+        latestFrame = null
+        dropPending = true
     }
 
     @Synchronized

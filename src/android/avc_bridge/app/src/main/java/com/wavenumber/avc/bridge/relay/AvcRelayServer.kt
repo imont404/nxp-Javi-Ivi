@@ -7,6 +7,7 @@ import com.wavenumber.avc.bridge.usb.AvcUsbState
 import com.wavenumber.avc.bridge.video.AvcJpegFrameView
 import com.wavenumber.avc.bridge.video.AvcMp4Fragment
 import com.wavenumber.avc.bridge.video.AvcMp4Initialization
+import com.wavenumber.avc.bridge.video.AvcVideoFrame
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
@@ -27,6 +28,7 @@ import java.util.Locale
 import java.util.concurrent.atomic.AtomicLong
 
 enum class AvcRelayVideoMode(val wireName: String) {
+    RAW("raw"),
     JPEG("jpeg"),
     H264("h264");
 
@@ -39,7 +41,8 @@ enum class AvcRelayVideoMode(val wireName: String) {
 class AvcRelayServer(
     private val viewerHtml: ByteArray,
     private val port: Int = 8765,
-    private val videoMode: AvcRelayVideoMode = AvcRelayVideoMode.JPEG,
+    private val defaultVideoMode: AvcRelayVideoMode = AvcRelayVideoMode.JPEG,
+    private val onVideoModeChanged: (AvcRelayVideoMode) -> Unit = {},
 ) {
     companion object {
         private const val MAX_HTTP_HEADER_BYTES = 8 * 1024
@@ -64,6 +67,8 @@ class AvcRelayServer(
     private var usbHealth = AvcUsbHealth(AvcUsbState.IDLE, "not connected")
     @Volatile
     private var serverError: String? = null
+    @Volatile
+    private var activeVideoMode = defaultVideoMode
     private var acceptThread: Thread? = null
 
     fun start() {
@@ -82,12 +87,21 @@ class AvcRelayServer(
 
     fun noteSourceFrame(frameId: Long) = mailbox.noteSourceFrame(frameId)
 
-    fun offerJpegFrame(frame: AvcJpegFrameView) = mailbox.offerJpegFrame(frame)
+    fun offerRawFrame(frame: AvcVideoFrame) {
+        if (activeVideoMode == AvcRelayVideoMode.RAW && mailbox.snapshot().clients > 0) {
+            mailbox.offerRawFrame(frame)
+        }
+    }
+
+    fun offerJpegFrame(frame: AvcJpegFrameView) {
+        if (activeVideoMode == AvcRelayVideoMode.JPEG) mailbox.offerJpegFrame(frame)
+    }
 
     fun offerH264Initialization(initialization: AvcMp4Initialization) =
-        h264Mailbox.offerInitialization(initialization)
+        if (activeVideoMode == AvcRelayVideoMode.H264) h264Mailbox.offerInitialization(initialization) else Unit
 
     fun offerH264Fragment(fragment: AvcMp4Fragment) {
+        if (activeVideoMode != AvcRelayVideoMode.H264) return
         if (mailbox.snapshot().clients == 0) return
         val dropped = h264Mailbox.offerFragment(fragment)
         mailbox.noteEncodedFrameSelected(fragment.frameId, dropped)
@@ -154,8 +168,20 @@ class AvcRelayServer(
                             "application/json; charset=utf-8",
                             healthJson().toByteArray(StandardCharsets.UTF_8),
                         )
-                    request.path == "/stream" && request.headers["upgrade"]?.lowercase(Locale.US) == "websocket" ->
-                        serveWebSocket(client, input, output, request.headers, request.replaceViewer)
+                    request.path == "/stream" && request.headers["upgrade"]?.lowercase(Locale.US) == "websocket" -> {
+                        val requestedMode = request.videoModeName?.let(AvcRelayVideoMode::parse) ?: defaultVideoMode
+                        if (request.videoModeName != null && AvcRelayVideoMode.parse(request.videoModeName) == null) {
+                            writeHttpResponse(
+                                output,
+                                400,
+                                "Bad Request",
+                                "text/plain; charset=utf-8",
+                                "video must be raw, jpeg, or h264\n".toByteArray(StandardCharsets.UTF_8),
+                            )
+                        } else {
+                            serveWebSocket(client, input, output, request.headers, request.replaceViewer, requestedMode)
+                        }
+                    }
                     else -> writeHttpResponse(
                         output,
                         404,
@@ -176,6 +202,7 @@ class AvcRelayServer(
         output: BufferedOutputStream,
         headers: Map<String, String>,
         replaceViewer: Boolean,
+        videoMode: AvcRelayVideoMode,
     ) {
         val key = headers["sec-websocket-key"] ?: run {
             writeHttpResponse(output, 400, "Bad Request", "text/plain", "missing websocket key\n".toByteArray())
@@ -192,6 +219,7 @@ class AvcRelayServer(
                 }
             }
             activeClient = socket
+            selectVideoMode(videoMode)
             if (videoMode == AvcRelayVideoMode.H264) h264Mailbox.resetForViewer()
             mailbox.setClients(1)
         }
@@ -237,7 +265,9 @@ class AvcRelayServer(
             try {
                 while (running && !socket.isClosed) {
                     val diagnostics = mailbox.takeDiagnostics(4)
-                    val frame = if (videoMode == AvcRelayVideoMode.JPEG) mailbox.takeLatestFrame() else null
+                    val frame = if (
+                        videoMode == AvcRelayVideoMode.JPEG || videoMode == AvcRelayVideoMode.RAW
+                    ) mailbox.takeLatestFrame() else null
                     val h264Packet = if (videoMode == AvcRelayVideoMode.H264) h264Mailbox.takePacket() else null
                     if (diagnostics.isNotEmpty() || frame != null || h264Packet != null) {
                         var frameSent = false
@@ -251,7 +281,12 @@ class AvcRelayServer(
                                 )
                             }
                             if (frame != null) {
-                                writeWebSocketFrame(output, 0x2, AvcRelayProtocol.encodeJpegFrame(frame))
+                                val encoded = if (videoMode == AvcRelayVideoMode.RAW) {
+                                    AvcRelayProtocol.encodeRawFrame(frame)
+                                } else {
+                                    AvcRelayProtocol.encodeJpegFrame(frame)
+                                }
+                                writeWebSocketFrame(output, 0x2, encoded)
                             }
                             if (h264Packet != null) {
                                 writeWebSocketFrame(output, 0x2, AvcRelayProtocol.encodeH264Packet(h264Packet))
@@ -285,6 +320,7 @@ class AvcRelayServer(
                 if (activeClient === socket) {
                     activeClient = null
                     mailbox.setClients(0)
+                    if (running) selectVideoMode(defaultVideoMode)
                 }
             }
         }
@@ -350,10 +386,14 @@ class AvcRelayServer(
             if (colon > 0) headers[line.substring(0, colon).trim().lowercase(Locale.US)] = line.substring(colon + 1).trim()
         }
         val target = requestParts[1]
-        val replaceViewer = target.substringAfter('?', "")
+        val queryItems = target.substringAfter('?', "")
             .split('&')
-            .any { it.substringBefore('=') == "replace" }
-        return HttpRequest(target.substringBefore('?'), headers, replaceViewer)
+            .filter { it.isNotEmpty() }
+        val replaceViewer = queryItems.any { it.substringBefore('=') == "replace" }
+        val videoModeName = queryItems
+            .firstOrNull { it.substringBefore('=') == "video" }
+            ?.substringAfter('=', "")
+        return HttpRequest(target.substringBefore('?'), headers, replaceViewer, videoModeName)
     }
 
     private fun writeHttpResponse(
@@ -408,7 +448,17 @@ class AvcRelayServer(
         } else {
             0.0
         }
-        return """{"state":"${usb.state.wireName}","session_id":${usb.sessionId},"usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_mode":"${videoMode.wireName}","relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_sent_bytes":${relay.sentBytes},"relay_mbit_s":${format(relayMegabitsPerSecond)},"relay_last_sent_age_ms":${format(lastSentAgeMs)},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
+        return """{"state":"${usb.state.wireName}","session_id":${usb.sessionId},"usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_mode":"${activeVideoMode.wireName}","relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_sent_bytes":${relay.sentBytes},"relay_mbit_s":${format(relayMegabitsPerSecond)},"relay_last_sent_age_ms":${format(lastSentAgeMs)},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
+    }
+
+    private fun selectVideoMode(mode: AvcRelayVideoMode) {
+        if (activeVideoMode == mode) return
+        mailbox.discardLatestFrame()
+        activeVideoMode = mode
+        // Publish the new mode before starting its producer. MediaCodec reports its
+        // H.264 initialization exactly once, and that callback must not be filtered as
+        // belonging to the previous mode.
+        onVideoModeChanged(mode)
     }
 
     private fun format(value: Double): String = String.format(Locale.US, "%.3f", value)
@@ -458,5 +508,6 @@ class AvcRelayServer(
         val path: String,
         val headers: Map<String, String>,
         val replaceViewer: Boolean,
+        val videoModeName: String?,
     )
 }

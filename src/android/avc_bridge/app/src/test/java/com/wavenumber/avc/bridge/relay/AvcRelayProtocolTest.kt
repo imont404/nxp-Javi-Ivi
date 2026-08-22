@@ -1,6 +1,7 @@
 package com.wavenumber.avc.bridge.relay
 
 import com.wavenumber.avc.bridge.video.AvcJpegFrameView
+import com.wavenumber.avc.bridge.video.AvcVideoFrame
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import org.junit.Assert.assertArrayEquals
@@ -9,6 +10,14 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class AvcRelayProtocolTest {
+    @Test
+    fun relayModesParseClientWireNames() {
+        assertEquals(AvcRelayVideoMode.RAW, AvcRelayVideoMode.parse("raw"))
+        assertEquals(AvcRelayVideoMode.JPEG, AvcRelayVideoMode.parse("JPEG"))
+        assertEquals(AvcRelayVideoMode.H264, AvcRelayVideoMode.parse("h264"))
+        assertEquals(null, AvcRelayVideoMode.parse("png"))
+    }
+
     @Test
     fun jpegFrameIsEncodedAsOneBoundedWebSocketPayload() {
         val jpeg = byteArrayOf(0xFF.toByte(), 0xD8.toByte(), 1, 2, 0xFF.toByte(), 0xD9.toByte())
@@ -88,5 +97,31 @@ class AvcRelayProtocolTest {
         )
         assertEquals(0x42000d, view.getInt(28))
         assertArrayEquals(mp4, encoded.copyOfRange(AvcRelayProtocol.H264_HEADER_BYTES, encoded.size))
+    }
+
+    @Test
+    fun rawRgb565FrameIsCopiedAndEncodedAsOnePayload() {
+        val mailbox = AvcRelayMailbox(maxFrameBytes = 8)
+        val source = byteArrayOf(0x00, 0xF8.toByte(), 0xE0.toByte(), 0x07)
+        mailbox.noteSourceFrame(9)
+        mailbox.offerRawFrame(AvcVideoFrame(9, 2, 1, source))
+        source.fill(0)
+
+        val frame = requireNotNull(mailbox.takeLatestFrame())
+        val packet = AvcRelayProtocol.encodeRawFrame(frame)
+        val view = ByteBuffer.wrap(packet).order(ByteOrder.LITTLE_ENDIAN)
+        assertEquals(AvcRelayProtocol.RAW_MAGIC, view.getInt(0))
+        assertEquals(AvcRelayProtocol.RAW_VERSION, view.get(4).toInt())
+        assertEquals(AvcRelayProtocol.RAW_HEADER_BYTES, view.get(5).toInt())
+        assertEquals(9, view.getInt(8))
+        assertEquals(2, view.getShort(12).toInt())
+        assertEquals(1, view.getShort(14).toInt())
+        assertEquals(4, view.getInt(16))
+        assertEquals(AvcRelayProtocol.RAW_PIXEL_FORMAT_RGB565_LE, view.getInt(28))
+        assertArrayEquals(
+            byteArrayOf(0x00, 0xF8.toByte(), 0xE0.toByte(), 0x07),
+            packet.copyOfRange(AvcRelayProtocol.RAW_HEADER_BYTES, packet.size),
+        )
+        mailbox.releaseSentFrame(frame, sent = true)
     }
 }

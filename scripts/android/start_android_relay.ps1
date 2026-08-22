@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("jpeg", "h264")]
+    [ValidateSet("raw", "jpeg", "h264")]
     [string]$Mode,
     [string]$Serial,
     [ValidateRange(1024, 65535)]
@@ -47,7 +47,7 @@ for ($attempt = 0; $attempt -lt 20; $attempt++) {
     try {
         $health = Invoke-RestMethod -Uri "$baseUri/health" -TimeoutSec 1
         if ($health.state -eq "streaming" -and $health.relay_mode -eq $Mode) {
-            Write-Host "Relay ready: $baseUri/?replace=1" -ForegroundColor Green
+            Write-Host "Relay ready: $baseUri/?video=$Mode&replace=1" -ForegroundColor Green
             return
         }
     } catch {
