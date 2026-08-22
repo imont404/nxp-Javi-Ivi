@@ -93,7 +93,7 @@ eGFX_ImagePlane top_info;
 
 eGFX_ImagePlane camera_view;
 
-hsl_t  line_hsl[CONFIG__CAMERA_RESOLUTION_X];
+avc_color_features_t line_color[CONFIG__CAMERA_RESOLUTION_X];
 
 uint8_t black_filter[CONFIG__CAMERA_RESOLUTION_X];
 
@@ -260,39 +260,32 @@ int main(void)
 
 					uint32_t line = line_to_process;
 
-					avc__convert_rgb565_to_hsl_struct(&frame[line*CONFIG__CAMERA_RESOLUTION_X],
-													   line_hsl,
-													   CONFIG__CAMERA_RESOLUTION_X);
+					avc__convert_rgb565_to_yhsv(&frame[line * CONFIG__CAMERA_RESOLUTION_X],
+											 line_color,
+											 CONFIG__CAMERA_RESOLUTION_X);
 
+					/*
+					 * Y, H, S, and V are uint8 values from one RGB565-indexed table
+					 * read per pixel. Thresholding remains visible here for teaching;
+					 * the table contains no track- or obstacle-specific classes.
+					 */
+					const uint8_t black_y_threshold =
+						(uint8_t)(avc__read_beta() * 255.0f);
+					const uint8_t red_saturation_min = 77u; /* 0.30 x 255. */
+					const uint8_t red_value_min = 64u;
+					const uint8_t red_hue_low_max = 21u;   /* 30 degrees. */
+					const uint8_t red_hue_high_min = 235u; /* 330 degrees. */
 
-					//filter to black and white using saturation and luminance
-					for(int x=0;x<CONFIG__CAMERA_RESOLUTION_X;x++)
+					for (int x = 0; x < CONFIG__CAMERA_RESOLUTION_X; x++)
 					{
-							//threshold the luminance
-							if(line_hsl[x].l > avc__read_beta())
-							{
-								//mark white as zero
-								black_filter[x] = 0;
+						const avc_color_features_t color = line_color[x];
 
-								if(line_hsl[x].s > .3)
-								{
-									if(line_hsl[x].h >330 || line_hsl[x].h <30)
-									{
-										red_filter[x] = 1;
-									}
-								}
-								else
-								{
-									red_filter[x] = 0;
-								}
-
-							}
-							else
-							{
-								//mark black as 1
-								black_filter[x] = 1;
-								red_filter[x]=0;
-							}
+						black_filter[x] = (color.y <= black_y_threshold) ? 1u : 0u;
+						red_filter[x] =
+							((color.s > red_saturation_min) &&
+							 (color.v > red_value_min) &&
+							 ((color.h >= red_hue_high_min) ||
+							  (color.h <= red_hue_low_max))) ? 1u : 0u;
 					}
 
 

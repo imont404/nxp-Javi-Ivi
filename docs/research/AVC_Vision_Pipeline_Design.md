@@ -15,11 +15,11 @@ as such. Hardware facts are cited to source.
 | Finding | Consequence |
 |---|---|
 | **The MCXN947 flash cache is 64 bytes.** | A random-access LUT in flash gets ~zero cache benefit. Refines *where* tables live; does not kill the idea. |
-| **The flash data cache is enabled only on the EZH camera path.** | A FlexIO-backend build never enables it. Latent, and a real backend-to-backend difference. |
+| **The flash data cache used to be enabled only on the EZH camera path.** | Fixed in common `avc__init()` startup; EZH and FlexIO now get the same cache setup. |
 | **Per-pixel HSV is impossible today at full frame; a LUT makes it routine.** | ~64 ms → ~3 ms. This is the whole argument. |
 | **PowerQuad's native driver is fire-and-forget; the CMSIS wrapper is what blocks.** | 41 `PQ_WaitDone()` calls in the CMSIS layer, 0 in the native filter/matrix/transform drivers. Skip CMSIS to get overlap. |
 | **PowerQuad has no interrupt.** | Completion is poll-only. Overlap must be statically structured, not event-driven. |
-| **The line processor already implements 1-D Sobel and non-maximum suppression.** | Two of Canny's four stages exist. Gaussian pre-smoothing and hysteresis are missing and cheap. |
+| **Edge detection is student-owned.** | Old float experiments were removed; the LUT exposes generic features without supplying the race solution. |
 
 ---
 
@@ -53,31 +53,20 @@ was costing flash speculation. **That was wrong** — `SystemInit()` in
 `device/system_MCXN947_cm33_core0.c` already clears it unconditionally at startup, and
 that bit governs ECC bus-error reporting rather than the cache.
 
-**What is actually true, and does matter:**
+**What was actually true, and did matter:**
 
-`bv_camera__interface.c:1581-1582` enables the caches:
+The cache enable originally lived inside the EZH camera path:
 
 ```c
 SYSCON->LPCAC_CTRL &= ~1;                                  // instruction cache
 SYSCON->NVM_CTRL   &= SYSCON->NVM_CTRL & ~(1 << 2 | 1 << 4);
 ```
 
-Bit 2 is `DIS_FLASH_CACHE` and bit 4 is `DIS_FLASH_DATA`, so this enables the flash data
-cache. **But it sits inside `avc_camera__init_smartdma_ezh()`**, which only runs when the
-EZH capture backend is selected.
-
-**A FlexIO-backend build therefore never enables the flash data cache.** The instruction
-cache is fine either way — `SystemInit()` enables `LPCAC` independently — but flash *data*
-access is uncached on the FlexIO path.
-
-That matters directly here: a lookup table in flash is exactly flash-resident *data*. The
-cost model in §2 assumes the same flash behaviour on both backends, and it does not
-currently hold.
-
-**Recommended:** move the cache enable out of the EZH init into common startup, so it is
-not coupled to a capture backend. It is a two-line move and removes a silent
-backend-to-backend performance difference. Measure the LUT before and after — this could
-be a meaningful fraction of the §2 estimate.
+Bit 2 is `DIS_FLASH_CACHE` and bit 4 is `DIS_FLASH_DATA`, so FlexIO builds previously ran
+with flash data caching disabled. **Fixed:** `avc__flash_cache_init()` now runs from common
+`avc__init()` startup before capture-backend selection. The table therefore has the same
+cache configuration on EZH and FlexIO. Backend-specific target timing still needs to be
+measured because the shared bus workload differs.
 
 ---
 
@@ -116,13 +105,12 @@ the table.** Four separate `uint8` tables means four independent flash misses pe
 One `uint32` table means one:
 
 ```c
-/* 65,536 entries x 4 bytes = 256 KB in flash.
- * Current firmware uses ~261 KB of 2 MB, so this is comfortable. */
-extern const uint32_t avc__rgb565_hsvy_lut[65536];
+/* 65,536 entries x 4 bytes = 256 KiB in flash. */
+extern const uint32_t avc_rgb565_yhsv_lut[65536];
 
-static inline void avc__unpack(uint16_t px, uint8_t *y, uint8_t *h, uint8_t *s, uint8_t *v)
+static inline void avc_color__unpack(uint16_t px, uint8_t *y, uint8_t *h, uint8_t *s, uint8_t *v)
 {
-    uint32_t e = avc__rgb565_hsvy_lut[px];   /* one access -> all four channels */
+    uint32_t e = avc_rgb565_yhsv_lut[px];   /* one access -> all four channels */
     *y =  e        & 0xFF;
     *h = (e >>  8) & 0xFF;
     *s = (e >> 16) & 0xFF;
@@ -136,11 +124,12 @@ Eight-bit hue is 1.4°/step — far finer than any threshold a student would set
 than RGB565 quantisation justifies in the first place. Integer compares also avoid FPU
 loads. Float tables would be 4× the flash for no usable precision.
 
-### Pre-rotate hue so red does not wrap
+### Keep hue generic and circular
 
-`main.c` currently tests red as `h > 330 || h < 30`. Bake a +30° rotation into the table
-and that becomes a single range check. Wraparound is a real source of student confusion and
-it costs nothing to remove — the offset is chosen once, at table-generation time.
+The generated hue uses 256 equal circular bins, with no color-specific rotation. Red still
+crosses the zero point, which is useful in the first-day color-space lesson and keeps the
+framework table generic. A later application-specific table may rotate hue, but must name
+that convention rather than hiding it from students.
 
 ### Keep the teaching structure
 
@@ -160,27 +149,45 @@ class byte is the natural "now make it fast" follow-up exercise, not the startin
 
 ### Generation
 
-Generate on the PC and emit a C header. This pairs naturally with the existing USB
-high-speed / Web Serial frame path: point the camera at the actual track, look at where the
-colours actually land, choose thresholds against real data rather than theory, regenerate.
-That loop is worth more to a three-day student than any amount of on-target tuning.
+`scripts/tools/generate_rgb565_color_lut.py` generates the committed
+`avc_rgb565_yhsv_lut.inc`. The generator uses RGB bit replication, BT.601 Y, and Python's
+HSV reference conversion; it exhaustively validates all 65,536 entries and supports
+`--check` for CI. The artifact is deterministic and contains no tuned color classes.
+
+```powershell
+uv run python scripts/tools/generate_rgb565_color_lut.py
+uv run python scripts/tools/generate_rgb565_color_lut.py --check
+```
+
+**Implemented 2026-08-21:** the competition build now uses this table for the existing
+scanline test view. The old float HSL conversion was removed. The table occupies exactly
+`0x40000` bytes in `.rodata` and consumes no SRAM. A clean staged LUT-only competition
+snapshot uses 354,180 bytes of the first 1 MiB flash bank; the current integrated working
+tree with pending state-machine/telemetry changes uses 383,368 bytes. Both leave ample
+headroom.
 
 ---
 
-## 4. Edge detection — you already have half of Canny
+## 4. Edge detection remains student-owned
 
-Reading `avc__line_processor.c` against the textbook Canny stages:
+The earlier line processor contained unused float-HSL gradient, adaptive threshold, and
+hybrid segment experiments. They were removed with the LUT integration: they duplicated
+color work, used variable-length float arrays, and risked handing students too much of the
+solution. The remaining binary edge/segment helpers are intentionally simple; the
+student-API plan still needs to decide whether even those belong in the handoff.
+
+For teaching and future student work, the relevant Canny comparison remains:
 
 | Canny stage | Status in current code |
 |---|---|
 | Gaussian smoothing | **Missing** |
-| Gradient | **Present** — `calculate_gradient_smooth()` computes `(l[i+1] - l[i-1])/2`, which *is* the 1-D Sobel derivative kernel |
-| Non-maximum suppression | **Present** — the local-max test in `avc__find_segments_from_hsl_gradient()` |
-| Double threshold + hysteresis | **Missing** — one `gradient_threshold` only |
+| Gradient | Student implementation |
+| Non-maximum suppression | Student implementation |
+| Double threshold + hysteresis | Student implementation |
 
 ### Add Gaussian pre-smoothing
 
-Nothing smooths before differentiating, so the current code differentiates noise. A 5-tap
+Without a smoothing pass, an implementation differentiates noise. A 5-tap
 `[1,4,6,4,1]/16` pass over the line is the single biggest robustness win available, and it
 matters specifically for this track: tape edges under conference-hall lighting produce
 glare speckle that a raw central difference will happily report as an edge.
@@ -204,8 +211,7 @@ the lane edges'. That converts the crossing hazard from "hope it survives" into 
 testable condition — and it is the strongest argument for processing a band of rows rather
 than a single line.
 
-This only becomes affordable once the LUT removes the per-pixel HSV cost. **The two changes
-are coupled.**
+The LUT makes multi-row experiments affordable without prescribing their implementation.
 
 ---
 
@@ -293,15 +299,13 @@ measuring.
 
 ## 6. Recommended sequence
 
-1. **Move the flash cache enable out of `avc_camera__init_smartdma_ezh()`** into common
-   startup, so FlexIO builds get it too. Two lines, independent of everything else, and it
-   removes a silent difference between capture backends.
-2. **Build the packed `uint32` RGB565 → Y/H/S/V table in flash.** This is the enabling
-   change — it makes full-frame colour possible for the first time. Measure the real
-   per-pixel cost against the ~4 ms estimate above; the flash-cache behaviour is the main
-   unknown.
-3. **Add Gaussian pre-smoothing and hysteresis** to the line processor. Small, high
-   robustness return, good teaching material, independent of everything else.
+1. **Done:** flash cache enable now runs from common `avc__init()` startup, so FlexIO and
+   EZH builds get the same setup.
+2. **Done 2026-08-21:** build the packed `uint32` RGB565 → Y/H/S/V table in flash and use
+   it in the existing scanline test path. Target timing remains to be measured against the
+   ~4 ms full-frame estimate; flash-cache behaviour is still the main unknown.
+3. Keep Gaussian pre-smoothing and hysteresis as student-facing teaching material rather
+   than adding a finished edge detector to the framework.
 4. **Only then** evaluate PowerQuad overlap, once step 2 has produced a workload large
    enough to hide anything behind. Use the native driver, not the CMSIS wrapper. The SDK
    ships `powerquad_benchmark_filter` and a paired software version for FRDM-MCXN947 —
@@ -313,11 +317,9 @@ measuring.
 - What is the actual measured cost of a random-index flash LUT read? The 64-byte cache says
   "expect a miss every time," but raw flash latency at 150 MHz is not documented in the
   material reachable here (the datasheet is blocked to tooling — see the NPU assessment).
-- How much does the flash data cache actually change the LUT cost? Worth measuring on both
-  backends once the cache enable is common.
-- What does the YUY2-vs-RGB565 decision do to all of this? A chroma-indexed `(U,V)` table
-  is 64 KB instead of 256 KB and is illumination-invariant, but costs a YUV→RGB565
-  conversion for the LCD view. Both approaches are compatible with everything above; the
-  table index changes, the structure does not.
+- Measure LUT timing on both capture backends now that cache setup is common; bus workload
+  can still make the results differ.
+- RGB565 is the competition format. YUY2 is deferred; it would require LCD conversion and
+  changes across the already-proven USB/Android paths.
 - Real PowerQuad FIR throughput for a 320-sample line including setup overhead, and how
   much bus contention it introduces against EZH capture.
