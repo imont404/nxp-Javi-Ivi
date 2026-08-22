@@ -3,39 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="light">
   <title>From RGB565 to HSV | Wavenumber AVC</title>
   <style>
     :root {
-      --ink: #f5f7fb;
-      --muted: #aeb9ca;
-      --panel: rgba(15, 23, 39, .91);
-      --line: #34445f;
-      --cyan: #67e8f9;
-      --amber: #fbbf24;
-      --green: #6ee7b7;
-      --red: #fb7185;
-      --page: #08101e;
+      --ink: #111;
+      --muted: #555;
+      --panel: #fff;
+      --line: #888;
+      --cyan: #111;
+      --amber: #111;
+      --green: #111;
+      --red: #111;
+      --page: #fff;
+      color-scheme: light;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 12% 0%, #193253 0, transparent 33rem),
-        radial-gradient(circle at 90% 35%, #261c4f 0, transparent 34rem),
-        var(--page);
-      line-height: 1.5;
-    }
+    body { margin: 0; color: var(--ink); background: var(--page); line-height: 1.5; }
 
     button, input { font: inherit; }
     button { color: inherit; }
     a { color: var(--cyan); }
-    code { color: #d8b4fe; }
-    .shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; }
+    code { color: #111; }
+    .shell { width: 100%; margin: 0 auto; padding-inline: clamp(1rem, 4vw, 4rem); }
     .hero { padding: clamp(2.5rem, 8vw, 6rem) 0 2rem; }
     .eyebrow {
       margin: 0 0 .5rem;
@@ -48,7 +41,7 @@
     h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 8vw, 6.7rem); line-height: .92; letter-spacing: -.055em; }
     h2 { margin: 0 0 .7rem; font-size: clamp(1.55rem, 3vw, 2.35rem); line-height: 1.05; }
     h3 { margin: 0 0 .4rem; font-size: 1.05rem; }
-    .lead { max-width: 68ch; margin: 1.5rem 0 0; color: #d5dceb; font-size: clamp(1.05rem, 2vw, 1.3rem); }
+    .lead { max-width: 68ch; margin: 1.5rem 0 0; color: #222; font-size: clamp(1.05rem, 2vw, 1.3rem); }
     .hero-note { margin-top: 1.2rem; color: var(--muted); font-size: .94rem; }
 
     .pipeline {
@@ -59,11 +52,11 @@
       margin: 2rem 0;
       overflow-x: auto;
       padding: 1rem;
-      border: 1px solid var(--line);
+      border: 0;
       border-radius: 1rem;
-      background: rgba(7, 12, 24, .58);
+      background: #f5f5f5;
     }
-    .pipeline .stage { min-width: max-content; padding: .65rem .8rem; border-radius: .65rem; background: #172238; text-align: center; }
+    .pipeline .stage { min-width: max-content; padding: .65rem .8rem; border-radius: .65rem; background: #e8e8e8; text-align: center; }
     .pipeline .arrow { color: var(--amber); font-weight: 800; }
     .pipeline small { display: block; color: var(--muted); }
 
@@ -74,49 +67,50 @@
       margin: 1rem 0 3rem;
       align-items: start;
     }
-    .panel { border: 1px solid var(--line); border-radius: 1rem; background: var(--panel); box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+    .panel { border: 0; border-radius: 0; background: var(--panel); box-shadow: none; }
     .controls { position: sticky; top: 1rem; padding: 1.1rem; }
     .visuals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
     .visual-card { padding: 1rem; min-width: 0; }
     .visual-card.wide { grid-column: 1 / -1; }
     .visual-card p, .controls p { color: var(--muted); font-size: .9rem; }
-    canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: .65rem; background: #050914; touch-action: none; }
+    canvas { display: block; width: 100%; aspect-ratio: 1; border: 0; border-radius: 0; background: #fff; touch-action: none; }
     #hsvDisk { cursor: crosshair; }
     .visual-card.wide canvas { max-width: 620px; margin-inline: auto; }
+    #hsvCone { max-width: none; aspect-ratio: 1.8; }
 
     .swatch-row { display: grid; grid-template-columns: 4.5rem 1fr; gap: .9rem; align-items: center; margin-bottom: 1rem; }
-    #swatch { width: 4.5rem; aspect-ratio: 1; border-radius: .8rem; border: 1px solid rgba(255,255,255,.25); box-shadow: inset 0 0 0 1px rgba(0,0,0,.3); }
+    #swatch { width: 4.5rem; aspect-ratio: 1; border-radius: 0; border: 0; box-shadow: none; }
     #hexValue { font: 800 1.25rem ui-monospace, SFMono-Regular, Consolas, monospace; }
-    #colorPicker { width: 100%; height: 2.4rem; padding: .15rem; border: 1px solid var(--line); border-radius: .45rem; background: #0c1425; }
+    #colorPicker { width: 100%; height: 2.4rem; padding: .15rem; border: 0; border-radius: 0; background: #eee; }
 
     fieldset { margin: 1rem 0; padding: 0; border: 0; }
     legend { margin-bottom: .55rem; color: var(--muted); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
     .slider { display: grid; grid-template-columns: 1.4rem 1fr 3.4rem; gap: .55rem; align-items: center; margin: .45rem 0; }
-    .slider output { text-align: right; color: #dce5f3; font: .82rem ui-monospace, SFMono-Regular, Consolas, monospace; }
-    input[type="range"] { width: 100%; accent-color: var(--cyan); }
+    .slider output { text-align: right; color: #111; font: .82rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    input[type="range"] { width: 100%; accent-color: #111; }
     .preset-row { display: flex; flex-wrap: wrap; gap: .4rem; }
     .preset-row button, .mode-button {
-      border: 1px solid var(--line);
+      border: 0;
       border-radius: 999px;
       padding: .35rem .65rem;
-      background: #121d31;
+      background: #ededed;
       cursor: pointer;
     }
-    button:hover, button:focus-visible { border-color: var(--cyan); outline: none; }
+    button:hover { background: #ddd; }
+    button:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
 
     .readout { display: grid; grid-template-columns: 1fr auto; gap: .3rem 1rem; margin: 1rem 0 0; font-size: .84rem; }
     .readout dt { color: var(--muted); }
     .readout dd { margin: 0; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; text-align: right; }
-    .confidence { margin-top: 1rem; padding: .7rem; border-radius: .6rem; background: rgba(251,191,36,.12); color: #fde68a; }
-    .confidence.good { background: rgba(110,231,183,.12); color: var(--green); }
+    .confidence { margin-top: 1rem; padding: .7rem; border-radius: 0; background: #eee; color: #111; }
+    .confidence.good { background: #eee; color: #111; }
 
     .concepts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0 4rem; }
     .concept { padding: 1.1rem; }
-    .formula { display: block; margin: .8rem 0; padding: .7rem; overflow-x: auto; border-radius: .55rem; background: #080e1a; color: #e9d5ff; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .formula { display: block; margin: .8rem 0; padding: .7rem; overflow-x: auto; border-radius: 0; background: #f2f2f2; color: #111; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
     .example-result { font-weight: 750; }
-    .pass { color: var(--green); }
-    .fail { color: var(--red); }
-    .footer { padding: 2rem 0 4rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+    .pass, .fail { color: #111; }
+    .footer { padding: 2rem 0 4rem; border-top: 0; color: var(--muted); font-size: .9rem; }
 
     @media (max-width: 840px) {
       .lab { grid-template-columns: 1fr; }
@@ -133,13 +127,6 @@
 </head>
 <body>
   <main class="shell">
-    <header class="hero">
-      <p class="eyebrow">Wavenumber AVC · interactive lesson seed</p>
-      <h1>One pixel, three views.</h1>
-      <p class="lead">A camera gives us numbers. A color-space transform lets us choose numbers that match the question we want to ask. Move one color below and watch the same pixel travel through RGB, RGB565, and HSV.</p>
-      <p class="hero-note">This page works from a downloaded file—no server, package install, or internet connection required.</p>
-    </header>
-
     <section aria-labelledby="pipeline-title">
       <h2 id="pipeline-title">Where this fits in the car</h2>
       <div class="pipeline" aria-label="Camera pixel processing pipeline">
@@ -196,13 +183,13 @@
       </aside>
 
       <div class="visuals">
-        <article class="panel visual-card">
+        <article class="panel visual-card wide">
           <h2>RGB is a cube</h2>
           <p>R, G, and B are Cartesian axes. The point is simple; the volume that means “red under many lighting conditions” is not.</p>
           <canvas id="rgbCube" width="620" height="620" aria-label="RGB cube with the selected color plotted"></canvas>
         </article>
 
-        <article class="panel visual-card">
+        <article class="panel visual-card wide">
           <h2>HSV as a teaching cone</h2>
           <p>Hue is an angle. Saturation moves away from the dashed gray axis. Value selects the translucent slice. Here radius is <strong>S × V</strong>, so the available chroma visibly collapses near black.</p>
           <canvas id="hsvCone" width="620" height="620" aria-label="HSV cone with the selected color plotted"></canvas>
@@ -326,10 +313,10 @@
       render();
     }
 
-    function fitCanvas(canvas) {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2), px = Math.max(280, Math.round(canvas.clientWidth * dpr));
-      if (canvas.width !== px || canvas.height !== px) { canvas.width = px; canvas.height = px; }
-      return { ctx: canvas.getContext("2d"), n: px };
+    function fitCanvas(canvas, aspect = 1) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2), w = Math.max(280, Math.round(canvas.clientWidth * dpr)), h = Math.round(w / aspect);
+      if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+      return { ctx: canvas.getContext("2d"), n: Math.min(w, h), w, h };
     }
 
     function drawRgbCube() {
@@ -347,36 +334,48 @@
         ctx.beginPath(); ctx.moveTo(...to); ctx.lineTo(to[0]-head*Math.cos(angle-.45),to[1]-head*Math.sin(angle-.45)); ctx.lineTo(to[0]-head*Math.cos(angle+.45),to[1]-head*Math.sin(angle+.45)); ctx.closePath(); ctx.fill();
       }
       axisArrow(project(1,0,0),"#fb7185"); axisArrow(project(0,1,0),"#6ee7b7"); axisArrow(project(0,0,1),"#93c5fd");
-      for (const v of vertices) { const p=project(...v); ctx.fillStyle=cssRgb(v[0]*255,v[1]*255,v[2]*255); ctx.beginPath(); ctx.arc(...p,n*.018,0,Math.PI*2); ctx.fill(); ctx.strokeStyle="#fff"; ctx.stroke(); }
+      for (const v of vertices) { const p=project(...v); ctx.fillStyle=cssRgb(v[0]*255,v[1]*255,v[2]*255); ctx.beginPath(); ctx.arc(...p,n*.018,0,Math.PI*2); ctx.fill(); ctx.strokeStyle="#111"; ctx.stroke(); }
       const p = project(state.r/255,state.g/255,state.b/255);
-      ctx.shadowColor="#fff"; ctx.shadowBlur=n*.035; ctx.fillStyle=cssRgb(state.r,state.g,state.b); ctx.beginPath(); ctx.arc(...p,n*.035,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.strokeStyle="#fff"; ctx.lineWidth=n*.007; ctx.stroke();
+      ctx.fillStyle=cssRgb(state.r,state.g,state.b); ctx.beginPath(); ctx.arc(...p,n*.035,0,Math.PI*2); ctx.fill(); ctx.strokeStyle="#111"; ctx.lineWidth=n*.007; ctx.stroke();
       ctx.font=`700 ${n*.038}px system-ui`; ctx.fillStyle="#fb7185"; ctx.fillText("R",o[0]+ex[0]+n*.03,o[1]+n*.01); ctx.fillStyle="#6ee7b7"; ctx.fillText("G",o[0]+ey[0]+n*.01,o[1]+ey[1]); ctx.fillStyle="#93c5fd"; ctx.fillText("B",o[0]+n*.01,o[1]+ez[1]-n*.02);
     }
 
     function drawHsvCone() {
-      const { ctx, n }=fitCanvas($("hsvCone")); ctx.clearRect(0,0,n,n);
-      const topY=n*.17,bottomY=n*.83,rx=n*.36,ry=n*.11,cx=n*.5;
+      const { ctx, n, w, h }=fitCanvas($("hsvCone"),1.8); ctx.clearRect(0,0,w,h);
+      const topY=h*.18,bottomY=h*.84,rx=w*.25,ry=h*.10,cx=w*.32;
       const grad=ctx.createConicGradient(-Math.PI/2,cx,topY); for(let i=0;i<=12;i++) grad.addColorStop(i/12,`hsl(${i*30} 100% 50%)`);
       ctx.save();ctx.beginPath();ctx.ellipse(cx,topY,rx,ry,0,0,Math.PI*2);ctx.fillStyle=grad;ctx.globalAlpha=.82;ctx.fill();ctx.restore();
-      ctx.beginPath();ctx.moveTo(cx-rx,topY);ctx.lineTo(cx,bottomY);ctx.lineTo(cx+rx,topY);ctx.strokeStyle="#73839b";ctx.lineWidth=n*.004;ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx-rx,topY);ctx.lineTo(cx,bottomY);ctx.lineTo(cx+rx,topY);ctx.strokeStyle="#555";ctx.lineWidth=n*.003;ctx.stroke();
       ctx.beginPath();ctx.ellipse(cx,topY,rx,ry,0,0,Math.PI*2);ctx.stroke();
       const a=(state.h-90)*Math.PI/180, sliceRx=rx*state.v, sliceRy=ry*state.v, localRx=sliceRx*state.s, localRy=sliceRy*state.s, baseY=bottomY-(bottomY-topY)*state.v;
       const sliceGrad=ctx.createConicGradient(-Math.PI/2,cx,baseY);for(let i=0;i<=12;i++)sliceGrad.addColorStop(i/12,`hsl(${i*30} 100% 50%)`);
       ctx.save();ctx.beginPath();ctx.ellipse(cx,baseY,sliceRx,sliceRy,0,0,Math.PI*2);ctx.clip();ctx.globalAlpha=.34;ctx.fillStyle=sliceGrad;ctx.fillRect(cx-sliceRx,baseY-sliceRy,sliceRx*2,sliceRy*2);ctx.restore();
-      ctx.strokeStyle="rgba(255,255,255,.62)";ctx.lineWidth=n*.004;ctx.beginPath();ctx.ellipse(cx,baseY,sliceRx,sliceRy,0,0,Math.PI*2);ctx.stroke();
-      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(255,255,255,.58)";ctx.beginPath();ctx.moveTo(cx,bottomY);ctx.lineTo(cx,topY);ctx.stroke();ctx.setLineDash([]);
+      ctx.strokeStyle="#444";ctx.lineWidth=n*.003;ctx.beginPath();ctx.ellipse(cx,baseY,sliceRx,sliceRy,0,0,Math.PI*2);ctx.stroke();
+      ctx.setLineDash([n*.010,n*.010]);ctx.strokeStyle="rgba(17,17,17,.55)";ctx.beginPath();ctx.moveTo(cx,bottomY);ctx.lineTo(cx,topY);ctx.stroke();ctx.setLineDash([]);
       const x=cx+Math.cos(a)*localRx,y=baseY+Math.sin(a)*localRy;
-      ctx.shadowColor="#fff";ctx.shadowBlur=n*.035;ctx.fillStyle=cssRgb(state.r,state.g,state.b);ctx.beginPath();ctx.arc(x,y,n*.035,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle="#fff";ctx.lineWidth=n*.006;ctx.stroke();
-      ctx.font=`700 ${n*.034}px system-ui`;ctx.fillStyle="#dce5f3";ctx.fillText("V = 100%",n*.68,n*.12);ctx.fillText("V = 0%",n*.54,n*.9);ctx.fillText(`current V = ${Math.round(state.v*100)}%`,n*.58,baseY-n*.035);
+      ctx.setLineDash([n*.010,n*.010]);ctx.strokeStyle="rgba(17,17,17,.65)";ctx.beginPath();ctx.moveTo(cx,baseY);ctx.lineTo(x,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle=cssRgb(state.r,state.g,state.b);ctx.beginPath();ctx.ellipse(x,y,n*.020,n*.009,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#111";ctx.lineWidth=n*.004;ctx.stroke();
+
+      const calloutX=w*.69,calloutY=h*.26,swatch=h*.11,q=rgb565(state.r,state.g,state.b),f=firmwareFeatures(q.r,q.g,q.b);
+      const leaderStartX=calloutX-h*.025,leaderStartY=calloutY+swatch*.55,c1x=w*.60,c1y=leaderStartY,c2x=x+w*.10,c2y=y-h*.08;
+      ctx.setLineDash([n*.010,n*.010]);ctx.strokeStyle="#111";ctx.lineWidth=n*.003;ctx.beginPath();ctx.moveTo(leaderStartX,leaderStartY);ctx.bezierCurveTo(c1x,c1y,c2x,c2y,x,y);ctx.stroke();ctx.setLineDash([]);
+      const leaderAngle=Math.atan2(y-c2y,x-c2x),head=n*.022;ctx.fillStyle="#111";ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-head*Math.cos(leaderAngle-.48),y-head*Math.sin(leaderAngle-.48));ctx.lineTo(x-head*Math.cos(leaderAngle+.48),y-head*Math.sin(leaderAngle+.48));ctx.closePath();ctx.fill();
+      ctx.fillStyle=cssRgb(state.r,state.g,state.b);ctx.beginPath();ctx.ellipse(x,y,n*.020,n*.009,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#111";ctx.lineWidth=n*.004;ctx.stroke();
+      ctx.fillStyle=cssRgb(state.r,state.g,state.b);ctx.fillRect(calloutX,calloutY,swatch,swatch);
+      ctx.fillStyle="#111";ctx.font=`700 ${n*.030}px system-ui`;ctx.fillText("selected pixel",calloutX+swatch+h*.035,calloutY+h*.035);
+      ctx.font=`500 ${n*.026}px ui-monospace, monospace`;ctx.fillText(`#${pad2(state.r)}${pad2(state.g)}${pad2(state.b)}`,calloutX+swatch+h*.035,calloutY+h*.075);ctx.fillText(`RGB565  0x${pad4(q.word)}`,calloutX+swatch+h*.035,calloutY+h*.112);ctx.fillText(`H/S/V   ${f.h} / ${f.s} / ${f.v}`,calloutX+swatch+h*.035,calloutY+h*.149);
+      ctx.font=`700 ${n*.027}px system-ui`;ctx.fillStyle="#111";ctx.fillText("V = 100%",cx+rx-h*.20,topY-h*.09);ctx.fillText("V = 0%",cx+h*.03,bottomY+h*.08);ctx.fillText(`current V = ${Math.round(state.v*100)}%`,cx+sliceRx+h*.025,baseY-h*.025);
     }
 
     function drawHsvDisk() {
       const { ctx,n }=fitCanvas($("hsvDisk"));ctx.clearRect(0,0,n,n);const cx=n/2,cy=n/2,max=n*.40,radius=max*state.v;
       if(radius>1){const image=ctx.createImageData(n,n);for(let y=0;y<n;y++)for(let x=0;x<n;x++){const dx=x-cx,dy=y-cy,d=Math.hypot(dx,dy);if(d<=radius){const sat=d/radius,h=(Math.atan2(dy,dx)*180/Math.PI+90+360)%360,[r,g,b]=hsvToRgb(h,sat,state.v),i=(y*n+x)*4;image.data[i]=r;image.data[i+1]=g;image.data[i+2]=b;image.data[i+3]=255;}}ctx.putImageData(image,0,0);}
-      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(255,255,255,.38)";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,max,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
-      ctx.strokeStyle="#dce5f3";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke();
-      const a=(state.h-90)*Math.PI/180,x=cx+Math.cos(a)*radius*state.s,y=cy+Math.sin(a)*radius*state.s;ctx.strokeStyle="#fff";ctx.lineWidth=n*.006;ctx.beginPath();ctx.arc(x,y,n*.027,0,Math.PI*2);ctx.stroke();
-      ctx.font=`700 ${n*.033}px system-ui`;ctx.fillStyle="#dce5f3";ctx.fillText(`disk radius = V = ${Math.round(state.v*100)}%`,n*.05,n*.95);
+      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(17,17,17,.45)";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,max,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+      ctx.strokeStyle="#111";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke();
+      const a=(state.h-90)*Math.PI/180,x=cx+Math.cos(a)*radius*state.s,y=cy+Math.sin(a)*radius*state.s;
+      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(17,17,17,.65)";ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(x,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.strokeStyle="#111";ctx.lineWidth=n*.006;ctx.beginPath();ctx.arc(x,y,n*.027,0,Math.PI*2);ctx.stroke();
+      ctx.font=`700 ${n*.033}px system-ui`;ctx.fillStyle="#111";ctx.fillText(`disk radius = V = ${Math.round(state.v*100)}%`,n*.05,n*.95);
     }
 
     function render() {

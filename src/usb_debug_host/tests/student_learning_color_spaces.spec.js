@@ -18,7 +18,8 @@ test("color-space lesson works directly from a local file", async ({ page }) => 
   await page.goto(lessonUrl);
 
   await expect(page).toHaveTitle(/RGB565 to HSV/);
-  await expect(page.getByRole("heading", { name: "One pixel, three views." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Where this fits in the car" })).toBeVisible();
+  await expect(page.locator(".hero")).toHaveCount(0);
   await expect(page.locator("canvas")).toHaveCount(3);
   await expect(page.getByRole("heading", { name: "Explore one RGB slice" })).toHaveCount(0);
   await expect(page.locator("#rgb565")).toHaveText("0xE1C6");
