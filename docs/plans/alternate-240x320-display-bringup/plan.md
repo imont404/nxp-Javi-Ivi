@@ -1,7 +1,7 @@
 +++
 type = "plan"
 id = "alternate-240x320-display-bringup"
-status = "active"
+status = "pending"
 created = "2026-07-10"
 
 [[steps]]
@@ -30,7 +30,7 @@ depends_on = ["spi-bringup"]
 [[steps]]
 id = "parallel-ezh-strategy"
 title = "Define the parallel MCU bus and EZH/bunny-build transfer strategy"
-status = "active"
+status = "pending"
 depends_on = ["spi-validation"]
 
 [[steps]]
@@ -118,6 +118,14 @@ status = "pending"
 +++
 
 # Alternate 240x320 Display Bringup
+
+## Current Competition-Week Decision
+
+Park this plan until after the competition unless the installed display blocks the race
+algorithm. The Rev A competition image remains on the working ER-TFT020-3 SPI display;
+the accepted 37.5 MHz configuration is the race-week baseline. Do not spend camera-
+assembly time on the alternate parallel bus, EZH writer, TE evaluation, or Rev B choice.
+The completed ER-TFT020-7 SPI proof and parallel research remain durable follow-up input.
 
 ## Purpose
 
@@ -490,7 +498,7 @@ The likely first questions are:
 - Only consider hardware event/DMA timestamping if ISR jitter prevents a useful
   camera/display phase measurement.
 
-## Immediate Next Steps
+## Deferred Next Steps
 
 1. Power down and strap the display for 8080 Series I:
    `IM2=GND`, `IM1=GND`, and `IM0=GND`.

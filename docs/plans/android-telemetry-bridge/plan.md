@@ -94,10 +94,16 @@ status = "done"
 depends_on = ["compressed-browser-delivery"]
 
 [[steps]]
+id = "hotspot-adb-proof"
+title = "Determine whether authenticated wireless ADB and the relay remain reachable when the Moto supplies the race network as a hotspot"
+status = "active"
+depends_on = ["h264-browser-proof"]
+
+[[steps]]
 id = "vehicle-integration"
 title = "Validate battery life, heat, reconnects, RF behavior, and noninterference on the car; keep mounting and cable retention outside the software track"
-status = "active"
-depends_on = ["compressed-browser-delivery"]
+status = "pending"
+depends_on = ["compressed-browser-delivery", "hotspot-adb-proof"]
 
 [[steps]]
 id = "design-doc-intent-audit"
@@ -160,11 +166,11 @@ status = "met"
 [[exit_criteria]]
 id = "safe-reconnect"
 title = "Connect, disconnect, app restart, and reconnect cannot enable motors or select a moving vehicle mode"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "vehicle-fit"
-title = "The phone, USB cable, battery runtime, heat, RF link, and mounting are validated on the car"
+title = "Phone battery runtime, heat, RF link, and USB session behavior are validated on the car; mounting remains outside software scope"
 status = "pending"
 
 [[exit_criteria]]
@@ -204,8 +210,17 @@ and binds the active WLAN address. A connected-device foreground service now kee
 CPU and Wi-Fi active through the secure lockscreen: live relay verification passed while
 Android reported `Dozing`, screen off, and light idle. A 30-second loaded baseline held
 27 C, 23.42 USB FPS, 2.869 MiB/s, 49-60 MiB PSS, and roughly 427-588 mA discharge. Physical
-integration remains parked; the active software work is documentation and test/runtime
-audit of the now-complete compressed relay.
+integration remains parked; the active software work is the hotspot-ADB/network proof.
+
+The next active experiment is hotspot ADB. Inventory proves this Moto cannot keep its
+normal Wi-Fi client connection while running Soft AP, but `adbd` is listening on TCP
+5555 and its RSA authorization is device-wide. The test is prepared to enable the saved
+`wavenumber` hotspot, move the PC onto it, discover the hotspot gateway, reconnect ADB,
+restart the relay so it binds the hotspot interface, and then restore `yellow`. The first
+attempt stopped before enabling the hotspot because the secure lockscreen relocked and
+the battery had fallen to 19 percent. The app was stopped, the temporary ten-minute
+screen timeout was restored to one minute, and the phone was placed on its normal
+charger. At the latest check it was at 24 percent, charging at about 10 W and 26 C.
 
 An opt-in H.264 browser proof is also complete without changing the default JPEG path.
 The MediaTek encoder supplies baseline Annex-B SPS/PPS and one access unit per output;
@@ -332,7 +347,10 @@ Development and race operation have different best first configurations:
 - **Race candidate:** manually enable the phone's 5 GHz hotspot, restart the bridge so it
   binds the hotspot address, and join the projector laptop to it. Device inventory reports
   no concurrent STA+AP support, so this disconnects `yellow` and wireless adb. The hotspot
-  client path and post-switch address must still be tested before relying on it.
+  client path and post-switch address must still be tested before relying on it. The saved
+  phone configuration observed on 2026-08-21 is an **open**, 2.4 GHz `wavenumber`
+  hotspot; that is acceptable only for this short bench experiment. Race use requires a
+  deliberate WPA2/WPA3 configuration and 5 GHz validation.
 - **Optional follow-up:** Android's local-only hotspot API is available from API 26 and
   can create a no-Internet network for nearby clients. Android 13-targeted apps require
   `NEARBY_WIFI_DEVICES`. Programmatic hotspot control is not required for the first proof.

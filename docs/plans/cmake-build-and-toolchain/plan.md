@@ -1,7 +1,7 @@
 +++
 type = "plan"
 id = "cmake-build-and-toolchain"
-status = "active"
+status = "pending"
 created = "2026-07-25"
 
 [[steps]]
@@ -52,34 +52,16 @@ status = "done"
 depends_on = ["byte-parity"]
 
 [[steps]]
-id = "split-capture-backends"
-title = "Split the capture backends into separate translation units (DEFERRED past the race)"
-status = "pending"
-depends_on = ["own-the-source-list"]
-
-[[steps]]
 id = "vscode-integration"
 title = "Make VS Code a working editor: presets visible, IntelliSense resolving. No tasks or debug integration by decision"
 status = "done"
 depends_on = ["cmake-presets"]
 
 [[steps]]
-id = "host-build-root"
-title = "Add a host-side CMake root for PC tools (deferrable)"
-status = "pending"
-depends_on = ["cmake-presets"]
-
-[[steps]]
-id = "sdl-camera-viewer"
-title = "Build an SDL live camera viewer fed by the USB debug stream (deferrable)"
-status = "pending"
-depends_on = ["host-build-root"]
-
-[[steps]]
 id = "verify-script"
 title = "Add a build-everything verification gate"
 status = "done"
-depends_on = ["cmake-presets", "host-build-root"]
+depends_on = ["cmake-presets"]
 
 [[steps]]
 id = "signoff-gate"
@@ -101,7 +83,7 @@ depends_on = ["cmake-presets", "governance-tooling"]
 
 [[steps]]
 id = "student-onboarding"
-title = "Prove a clean machine reaches a flashed board from one script"
+title = "Prove a clean machine builds the competition image and follows the documented Ozone flash path"
 status = "pending"
 depends_on = ["retire-mcuxpresso", "build-tooling-docs"]
 
@@ -125,7 +107,7 @@ depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
 
 [[exit_criteria]]
 id = "one-script-setup"
-title = "A clean Windows machine with no NXP software reaches a built firmware image by running one script"
+title = "A clean Windows machine provisions and builds with setup.ps1, then reaches a flashed board through the documented Ozone path"
 status = "pending"
 
 [[exit_criteria]]
@@ -144,19 +126,9 @@ title = "Build variants are CMakePresets rather than a wrapper script each, and 
 status = "met"
 
 [[exit_criteria]]
-id = "backends-structurally-separate"
-title = "Capture backends live in separate translation units - DEFERRED past the race; the 2026-07-25 #if guards already make the separation correct"
-status = "pending"
-
-[[exit_criteria]]
 id = "vscode-works"
 title = "VS Code opens the tree, shows the presets, and resolves includes for IntelliSense with no extra configuration"
 status = "met"
-
-[[exit_criteria]]
-id = "sdl-viewer-live"
-title = "The SDL tool shows a live camera feed from the board and is built by the same CMake system - deferrable, the Web Serial page already covers students"
-status = "pending"
 
 [[exit_criteria]]
 id = "verify-gate"
@@ -204,27 +176,40 @@ title = "Independent external review is complete"
 status = "pending"
 +++
 
-# CMake Build System, Toolchain Installer, and Host Tools
+# CMake Build System and Student Toolchain
+
+## Current Competition-Week Status
+
+The CMake/preset migration, repository-local toolchain, student setup page, Ozone flash
+path, and maintainer flash/RTT helpers are implemented. The competition preset built and
+flashed successfully again on 2026-08-21 after the splash removal. This plan is parked
+while camera assemblies are screened.
+
+Resume on Monday/Tuesday before the first Wednesday class. The next decisive step is a
+clean-machine student run from `docs/setup.html`: provision, build `competition`, and
+flash with Ozone without relying on MCUXpresso or workstation-global tools. Evaluate an
+NSIS/Nullsoft bundle and a centralized download only as optional convenience; do not put
+an unproven installer on the critical path. The portable Guatemala laptop setup and an
+offline tool cache remain explicit acceptance work.
 
 ## Purpose
 
-**Get rid of MCUXpresso, and make the whole toolchain installable by one script.**
+**Keep MCUXpresso optional, and make the primary student toolchain provisionable by one
+script.**
 
 The model already exists and works: `bunny_vision_sw`, another MCXN947 project with a
 camera and `bunny_build`, has a raw CMake build that eliminates MCUXpresso and builds much
-faster. AVC should end up in the same place, and eventually with the same set of host
-tools.
+faster. AVC should end up in the same place for firmware build tooling. Host tooling is
+owned by its feature plan, not this one.
 
-Three outcomes:
+Two outcomes:
 
-1. **One script, no prior knowledge.** A student on a clean Windows machine runs one
-   script and can build and flash. No MCUXpresso install, no PATH surgery, no reading.
+1. **One build setup, explicit flash path.** A student on a clean Windows machine runs
+   `setup.ps1` and can build without MCUXpresso or PATH surgery, then flashes through the
+   documented Segger Ozone workflow.
 2. **CMake presets instead of wrapper scripts.** Build configurations become data that
    VS Code understands natively, rather than eight PowerShell files that grew one
    experiment at a time.
-3. **Host tools built by the same system**, starting with an **SDL live camera viewer** —
-   a native counterpart to the existing Chrome Web Serial page.
-
 **Supersedes `build-system-cleanup`**, whose remaining items are absorbed here. Presets
 *are* the wrapper consolidation, so keeping both plans would put two owners on one surface.
 
@@ -232,7 +217,7 @@ Three outcomes:
 
 `D:\prj\wavenumber\bunny_vision\bunny_vision_firmware-west\bunny_vision_sw\src`
 
-**Another agent is active in that tree — treat it as read-only.**
+Treat the reference tree as read-only.
 
 | Piece | What it does |
 |---|---|
@@ -458,53 +443,24 @@ Absorbed from `build-system-cleanup`: decide which variant combinations are actu
 supported, and make illegal combinations fail at configure or compile time rather than at
 runtime. The `#error` guards in `avc__master_config.h` already do much of this.
 
-### split-capture-backends
-
-`bv_camera__interface.c` is 1770 lines carrying four capture backends across 15
-backend-conditional regions. The `#if` guards added 2026-07-25 are correct but are the
-weaker form of the idea.
-
-One file per backend selected by CMake makes exclusion **structural**: no guards needed,
-and cross-backend references become impossible rather than merely prevented. That matters
-because the EZH and FlexIO PORT1 groups share pins `P1_4..P1_11` — a stray reference
-relinking the EZH init would mux them to alt7 and silently break FlexIO capture.
-
-Also carried over: **Port 4 FlexIO is build-verified but not hardware-verified** since the
-pin-group refactor. Verify it or retire it — a variant nobody has run is worse than one
-fewer variant.
-
 ### vscode-integration
 
-Presets are most of it; VS Code's CMake Tools reads `CMakePresets.json` directly. What
-still needs deciding: a checked-in `.vscode/` with recommended extensions and launch
-configurations, IntelliSense resolving the SDK include paths, and whether debug stays on
-Ozone or moves to a VS Code Cortex-Debug setup.
+Presets are most of it; VS Code's CMake Tools reads `CMakePresets.json` directly. The
+decision is now fixed: `.vscode/` contains recommendations and settings only, IntelliSense
+resolves the SDK includes, and flashing stays in Ozone rather than adding a second VS Code
+debug/build workflow.
 
 Students edit here. **If IntelliSense cannot resolve `avc__line_processor.h`, they will
 assume the code is broken**, and they will be right to.
 
-### sdl-camera-viewer
-
-A native counterpart to the Chrome Web Serial page, fed by the existing USB CDC debug
-stream. See `docs/research/AVC_USB_Debug_Transport_Protocol.md` and
-`AVC_USB_Debug_Display_Current_State.md` — the stream already runs at ~23.4 FPS with
-measured headroom.
-
-The reference splits this into a reusable core plus a thin `main`, with SDL and ImGui
-behind a `WITH_GUI` option via `FetchContent`. Worth keeping that shape: the decoder stays
-testable on the host without opening a window.
-
-**Settle early:** is this an organiser debugging tool, or something students use during the
-event? That changes how much it must tolerate being unplugged mid-frame, and whether it
-needs to be in the one-script install.
-
 ### student-onboarding
 
 The real test is not that it builds on this machine. **Take a clean Windows machine with no
-NXP software, run the one script, and get to a flashed board.** Time it, and write down
-every point where a student would have to ask a question.
+NXP software, run `setup.ps1`, build the competition preset, then follow the documented
+Ozone path to a flashed board.** Time it, and write down every point where a student would
+have to ask a question.
 
-## Sequencing under a four-week deadline
+## Competition-week closeout
 
 The plan splits cleanly into what students need and what we want. **Only the first is
 race-critical.**
@@ -522,24 +478,16 @@ race-critical.**
 | `vscode-integration` | Students edit here. IntelliSense must resolve. |
 | `retire-mcuxpresso` | Removes the install students would otherwise need. |
 | `build-tooling-docs` | Governance requires it, and a script nobody can find is not an install path. |
-| `student-onboarding` | Clean machine to flashed board. The only test that counts. |
+| `student-onboarding` | Clean machine through setup, build, and the documented Ozone flash. The only test that counts. |
 
-### Deferrable — real value, no student blocks it
+**Recommended order:** finish the clean-machine student onboarding and closeout audits
+before the first class. Host tooling belongs to `usb-debug-telemetry`; capture-backend
+refactoring belongs to a later code/API cleanup plan.
 
-| Step | Why it can wait |
-|---|---|
-| `split-capture-backends` | **Defer past the race.** It refactors working, hardware-verified capture code for zero student benefit, and it is the highest-risk item in the plan. The `#if` guards added 2026-07-25 already make the EZH/FlexIO separation correct; separate files only make it structural. |
-| `sdl-camera-viewer` | The Chrome Web Serial page already gives students a live view. This is a better tool, not a missing one. |
-| `host-build-root` | Only needed for the SDL viewer. |
-| `verify-script` | Useful to us, invisible to students. Worth doing if time allows, because it makes the other steps safer. |
-
-**Recommended order:** the critical path in sequence, then `verify-script` if there is
-time, then the host tools and the backend split after the race.
-
-**If time runs out**, the fallback is honest and cheap: ship the toolchain installer and
-presets without `retire-mcuxpresso`, so students get the fast build and VS Code while
-MCUXpresso remains an available fallback for anyone who hits trouble. That is a strictly
-better position than today even if nothing else lands.
+Evaluation of an NSIS/Nullsoft bundle, a centralized tool-download page, and renewed
+MCUXpresso fallback validation is deliberately deferred to the Monday/Tuesday onboarding
+work. Do not make the Wednesday student path depend on an untested installer assembled at
+the last minute.
 
 ## Constraints
 
@@ -551,7 +499,7 @@ better position than today even if nothing else lands.
   - The safety net matters more, not less. Keep the MCUXpresso path working until
     `byte-parity` passes, and treat the competition image as untouchable.
   - **Scope has to be cut to the critical path.** See the sequencing section below.
-- Another agent is working in `bunny_vision_sw`. Read it; do not modify it.
+- Treat `bunny_vision_sw` as read-only reference material.
 - Keep the MCUXpresso path working until `byte-parity` passes, so there is always a way
   back.
 
@@ -563,5 +511,4 @@ better position than today even if nothing else lands.
   being replaced
 - `src/avc/avc_core0/cmake/mcuxpresso_debug.cmake` — the 310-line generated source list
 - `AGENTS.md` — the current documented build and flash flow
-- `docs/research/AVC_USB_Debug_Transport_Protocol.md` — what the SDL viewer consumes
 - `docs/research/AVC_Competition_Overview.md` — who the audience is and why it matters
