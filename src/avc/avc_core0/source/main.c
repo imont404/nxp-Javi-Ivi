@@ -2,6 +2,8 @@
 
 #include "avc__io.h"
 #include "avc__line_processor.h"
+#include "avc_student_algorithm.h"
+#include "avc_system.h"
 
 #if CONFIG__USB_DEBUG_STREAM_ENABLE
 #include "avc_usb_debug_stream.h"
@@ -22,11 +24,6 @@ float servo_position;
 bool testmode__motors_enable = 0;
 
 /*
- * Test mode gates the LCD refresh path. Normally it follows the TEST switch;
- * diagnostic builds can force it so the display path can be measured without
- * someone at the bench. See CONFIG__FORCE_TEST_MODE.
- */
-/*
  * Scope marker bracketing the whole per-frame LCD dump. See
  * CONFIG__DISPLAY_SCOPE_MARKER_ENABLE. Independent of the cycle counter, which
  * avc__next_frame() resets.
@@ -38,13 +35,6 @@ bool testmode__motors_enable = 0;
 #define AVC_SCOPE_DUMP_BEGIN() do { } while (0)
 #define AVC_SCOPE_DUMP_END()   do { } while (0)
 #endif
-
-#if CONFIG__FORCE_TEST_MODE
-#define AVC_TEST_MODE_ACTIVE() (1)
-#else
-#define AVC_TEST_MODE_ACTIVE() (GPIO_PinRead(GPIO3, TEST_SW_PIN) == 0)
-#endif
-
 
 uint32_t line_to_process;
 
@@ -113,6 +103,10 @@ bool pots_reset;
 bool motors_on;
 
 void avc__update_overlay();
+static void avc__render_system_banner_if_changed(void);
+static void avc__handle_mode_transition(void);
+static void avc__race_waiting_service(void);
+static void avc__student_mode_service(void);
 
 /*
  * This is called by the camera interface when we get a new frame.
@@ -125,6 +119,10 @@ void avc__next_frame(uint16_t *buf)
 	next_frame_ready = true;
 
 	raw_camera_frame = buf;
+	avc_system__notify_camera_frame();
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    avc_usb_debug_stream__notify_camera_frame();
+#endif
 
 	frame_timer = CYCLE_COUNTER;
 
@@ -137,7 +135,7 @@ void avc__next_frame(uint16_t *buf)
 int main(void)
 {
 
-	avc__init();
+	avc_system__init();
 
 #if CONFIG__MOTOR_ENCODER_DIAG_ENABLE
     avc__motor_encoder_qdc_diag_run();
@@ -164,7 +162,7 @@ int main(void)
 	camera_view.SizeY = CONFIG__CAMERA_RESOLUTION_Y;
 	camera_view.Type = eGFX_IMAGE_PLANE_16BPP_RGB565;
 
-
+	avc__render_system_banner_if_changed();
 
     while (1)
     {
@@ -181,9 +179,14 @@ int main(void)
         bat = avc__read_battery_voltage();
         //Alpha, beta and gamma will be -1.0f to 1.0f
 
-        // Test mode enable
-        if(AVC_TEST_MODE_ACTIVE())
-        {   
+        avc_system__service();
+        avc__handle_mode_transition();
+        avc__render_system_banner_if_changed();
+
+        switch (avc_system__mode())
+        {
+        case AVC_SYSTEM_MODE_TEST:
+        {
 
             if(next_frame_ready)
             {
@@ -341,18 +344,163 @@ int main(void)
 
 
 
-        }//end test most
-        else
-        {
-        	//This is where we put code if we are not it test mode
-        	  if(button__up(&center_btn))
-        	  {
-        		  //Start the car!
-        	  }
+        }
+        break;
 
+        case AVC_SYSTEM_MODE_RACE_WAITING:
+            /* The host may preview the latest camera frame, but USB remains
+             * independent of the physical start request and vehicle mode. */
+            avc__race_waiting_service();
+            break;
+
+        case AVC_SYSTEM_MODE_STUDENT_RUNNING:
+            avc__student_mode_service();
+            break;
+
+        case AVC_SYSTEM_MODE_SAFE_FAULT:
+        case AVC_SYSTEM_MODE_STARTUP:
+        default:
+            avc__disable_motor_control();
+            break;
         }
     }
 
+}
+
+static void avc__handle_mode_transition(void)
+{
+    static bool initialized;
+    static avc_system_mode_t previous_mode;
+    avc_system_mode_t current_mode = avc_system__mode();
+
+    if (initialized && (current_mode == previous_mode))
+    {
+        return;
+    }
+
+    if (current_mode != AVC_SYSTEM_MODE_TEST)
+    {
+        testmode__motors_enable = false;
+        motors_on = false;
+        pots_reset = false;
+        avc__disable_motor_control();
+    }
+
+    previous_mode = current_mode;
+    initialized = true;
+}
+
+static void avc__render_system_banner_if_changed(void)
+{
+    static bool initialized;
+    static bool previous_camera_frame_seen;
+    static avc_system_mode_t previous_mode;
+    avc_system_mode_t mode = avc_system__mode();
+    bool camera_frame_seen = avc_system__camera_frame_seen();
+    uint32_t mode_color = eGFX_COLOR_RGB888_TO_RGB565(0xFF, 0xFF, 0);
+    char banner_text[64];
+
+    if (initialized && (mode == previous_mode) &&
+        (camera_frame_seen == previous_camera_frame_seen))
+    {
+        return;
+    }
+
+    if ((mode == AVC_SYSTEM_MODE_TEST) ||
+        (mode == AVC_SYSTEM_MODE_STUDENT_RUNNING))
+    {
+        mode_color = eGFX_COLOR_RGB888_TO_RGB565(0, 0xFF, 0);
+    }
+    else if (mode == AVC_SYSTEM_MODE_SAFE_FAULT)
+    {
+        mode_color = eGFX_COLOR_RGB888_TO_RGB565(0xFF, 0, 0);
+    }
+
+    eGFX_ImagePlane_Clear(&top_info);
+
+    sprintf(banner_text, "%s", avc_system__mode_label(mode));
+    eGFX_DrawStringColored(&top_info,
+                           banner_text,
+                           5,
+                           1,
+                           &FONT_10_14_1BPP,
+                           mode_color);
+
+    sprintf(banner_text, "CAMERA: %s", camera_frame_seen ? "FRAME OK" : "WAITING");
+    eGFX_DrawStringColored(&top_info,
+                           banner_text,
+                           5,
+                           22,
+                           &FONT_5_7_1BPP,
+                           camera_frame_seen ? eGFX_COLOR_RGB888_TO_RGB565(0, 0xFF, 0)
+                                             : eGFX_COLOR_RGB888_TO_RGB565(0xFF, 0xFF, 0));
+
+    if (mode == AVC_SYSTEM_MODE_RACE_WAITING)
+    {
+        sprintf(banner_text, "%s", camera_frame_seen ? "CENTER: START" : "START LOCKED");
+        eGFX_DrawStringColored(&top_info,
+                               banner_text,
+                               190,
+                               22,
+                               &FONT_5_7_1BPP,
+                               mode_color);
+    }
+    else if (mode == AVC_SYSTEM_MODE_SAFE_FAULT)
+    {
+        sprintf(banner_text, "MOTORS DISABLED");
+        eGFX_DrawStringColored(&top_info,
+                               banner_text,
+                               190,
+                               22,
+                               &FONT_5_7_1BPP,
+                               mode_color);
+    }
+
+    eGFX_DumpRaw((uint8_t *)top_info.Data,
+                 320 * 40 * 2,
+                 0,
+                 319,
+                 0,
+                 39);
+
+    previous_mode = mode;
+    previous_camera_frame_seen = camera_frame_seen;
+    initialized = true;
+}
+
+static void avc__student_mode_service(void)
+{
+    uint16_t *frame;
+
+    if (!next_frame_ready)
+    {
+        return;
+    }
+
+    next_frame_ready = false;
+    frame = raw_camera_frame;
+    avc_camera__prepare_frame(frame);
+    avc_student_algorithm__process_frame(frame);
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    (void)avc_usb_debug_stream__publish_frame(frame);
+#endif
+}
+
+static void avc__race_waiting_service(void)
+{
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    uint16_t *frame;
+
+    if (!avc_usb_debug_stream__camera_frames_active() || !next_frame_ready)
+    {
+        return;
+    }
+
+    next_frame_ready = false;
+    frame = raw_camera_frame;
+    avc_camera__prepare_frame(frame);
+    (void)avc_usb_debug_stream__publish_frame(frame);
+#endif
 }
 
 void avc__update_overlay()
@@ -486,6 +634,11 @@ void avc__update_overlay()
 	   						pot_text,3,3,
 							&FONT_5_7_1BPP,
 		 					eGFX_COLOR_RGB888_TO_RGB565(0,192,0));
+
+    eGFX_DrawStringColored(&top_info,
+                           "TEST", 55, 3,
+                           &FONT_5_7_1BPP,
+                           eGFX_COLOR_RGB888_TO_RGB565(0, 0xFF, 0));
 
 }
 

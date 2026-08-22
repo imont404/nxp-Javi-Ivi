@@ -182,8 +182,9 @@ status = "pending"
 
 The CMake/preset migration, repository-local toolchain, student setup page, Ozone flash
 path, and maintainer flash/RTT helpers are implemented. The competition preset built and
-flashed successfully again on 2026-08-21 after the splash removal. This plan is parked
-while camera assemblies are screened.
+flashed successfully again on 2026-08-21 after the splash removal. The camera-screening
+workflow and Android relay no longer block this work; the clean-machine proof remains
+part of the student-handoff closeout.
 
 Resume on Monday/Tuesday before the first Wednesday class. The next decisive step is a
 clean-machine student run from `docs/setup.html`: provision, build `competition`, and

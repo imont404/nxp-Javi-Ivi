@@ -43,10 +43,11 @@ The plan that drove this has been retired; its bring-up logs are in git history,
 
 **The goal is to free the EZH, not to raise the frame rate.**
 
-FlexIO camera capture **already works** in this firmware, at the existing frame rate, on
-the Port 4 pin group (`CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA`, `P4_12..P4_22`). That path is
-proven. What it needs is eleven fly-wires, because Port 4 is not where the camera is
-routed.
+FlexIO camera capture was first bench-proven at the existing frame rate on the Port 4 pin
+group (`CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA`, `P4_12..P4_22`). That historical path needs
+eleven fly-wires because Port 4 is not where the camera is routed. The later pin-group
+refactor was hardware-verified on Port 1; the current Port 4 preset remains build-verified
+but has not been hardware-reverified.
 
 Two things come out of moving capture off the EZH, and the second matters more than it
 first appears:
@@ -82,8 +83,9 @@ So this investigation is about **wiring, not throughput**:
 **Frame rate is not a success criterion.** Matching the current rate is sufficient. Any
 improvement is incidental and must not be claimed from a jumpered setup anyway.
 
-**Both FlexIO pin groups stay selectable.** The Port 4 path is working and must not be
-regressed — this adds a second option behind a `#define`, it does not replace anything.
+**Both FlexIO pin groups stay selectable.** Port 1 is the hardware-verified Rev A path.
+Port 4 preserves the historically working eleven-wire option, but its current preset is
+not claimed as hardware-verified after the refactor.
 
 ---
 
@@ -203,7 +205,8 @@ shipped SPI panel (`CONFIG__DISPLAY_PANEL = DISPLAY_PANEL_ER_TFT020_3`).
 | 2 | pin 11 (`P3_5`, cam D5) | pin 30 (`P1_9`) |
 | 3 | pin 15 (`P0_5`, PCLK) | pin 2 (`P1_14`) |
 
-Contingent: remove **R173**.
+Verified disposition: leave **R173** fitted. Its 330 ohm series resistance caused no
+observable D4 problem in either EZH or FlexIO Port 1 testing.
 
 **No cuts.** The camera signal stays on its original net; the old pin is simply muxed off
 in firmware, so both pins see the signal and only the new one is read. Each jumper adds a
@@ -218,11 +221,14 @@ until Rev B routes it properly.
 - Mux `P3_4`, `P3_5`, `P0_5` to disabled
 - Drop the three `INPUTMUX_AttachSignal` calls on the FlexIO path
 
-## 7. Code analysis — what has to change
+## 7. Historical Implementation Rationale
+
+This section records the structure encountered before the Port 1 implementation landed
+and the shape of the resulting refactor. It is rationale, not an open work list.
 
 Source: `src/avc/avc_core0/source/avc_io/bv_camera__interface.c`.
 
-The working FlexIO path is **already partly parameterised**, which helps:
+The original Port 4 FlexIO path was **already partly parameterised**, which helped:
 
 ```c
 #define CAMERA_FLEXIO_DATA_GPIO_START_PIN (12U)  /* PORT pin index of camera D0     */
@@ -234,7 +240,7 @@ The working FlexIO path is **already partly parameterised**, which helps:
 #define CAMERA_DIAG_VSYNC_PIN             (22U)  /* PORT4 pin index                 */
 ```
 
-### What blocks a second pin group
+### What originally blocked a second pin group
 
 | Coupling | Where | Why it blocks Port 1 |
 |---|---|---|
@@ -255,14 +261,15 @@ The working FlexIO path is **already partly parameterised**, which helps:
 - `camera__flexio_timer_trigger_sel_pininput()` derives the timer trigger from the PCLK
   FlexIO index, so PCLK moving from `D28` to `D22` is a constant change.
 
-### Required shape
+### Implemented shape
 
-Add a pin-group selector alongside the existing backend selector, defaulting to the
-proven Port 4 group:
+The implementation added a pin-group selector alongside the existing backend selector.
+The comments below describe the historical status at the time of the refactor; the
+competition default remains EZH, and the verified diagnostic FlexIO choice is Port 1:
 
 ```c
-#define CAMERA_FLEXIO_PIN_GROUP_PORT4  1   /* proven, needs 11 fly-wires   */
-#define CAMERA_FLEXIO_PIN_GROUP_PORT1  2   /* Rev A camera wiring + 3 jumpers */
+#define CAMERA_FLEXIO_PIN_GROUP_PORT4  1   /* historical, needs 11 fly-wires */
+#define CAMERA_FLEXIO_PIN_GROUP_PORT1  2   /* verified Rev A wiring + 3 jumpers */
 
 #ifndef CONFIG__CAMERA_FLEXIO_PIN_GROUP
 #define CONFIG__CAMERA_FLEXIO_PIN_GROUP (CAMERA_FLEXIO_PIN_GROUP_PORT4)
@@ -274,12 +281,12 @@ port+pin+FlexIO index, HREF port+pin+FlexIO index, VSYNC port+GPIO+pin+IRQn. And
 the one contiguous loop into a data loop plus explicit PCLK and HREF configuration, since
 they are no longer guaranteed to be adjacent or even on the same port.
 
-**This is a prove-it-is-possible exercise.** A tidy build-system-wide cleanup comes later;
-the near-term requirement is only that the Port 4 group remains selectable and unbroken.
+This was deliberately a prove-it-is-possible exercise rather than a broad build-system
+cleanup. Port 4 remains selectable for regression or post-competition work.
 
 ### Group constants
 
-| | Port 4 group (proven) | Port 1 group (proposed) |
+| | Port 4 group (historically proven; current preset unverified) | Port 1 group (hardware-verified) |
 |---|---|---|
 | Data D0–D7 | `P4_12..P4_19` → `D20..D27` | `P1_4..P1_11` → `D12..D19` |
 | PCLK | `P4_20` → `D28` | `P1_14` → `D22` |
@@ -290,8 +297,9 @@ the near-term requirement is only that the Port 4 group remains selectable and u
 ## 8. Relationship to the earlier FlexIO work
 
 `FlexIO_Camera_Test_Plan.md` and `MCXN947/flexio_camera_io_pin_map.md` target
-`P4_12..P4_23`. **That path works and is not being replaced.** It simply is not where the
-camera is routed, so it costs eleven fly-wires. The `P1_4..P1_11` group **is** the
+`P4_12..P4_23`. That original path produced a live image before the pin-group refactor,
+but the current Port 4 build has not been re-verified on hardware. It also is not where
+the camera is routed, so it costs eleven fly-wires. The `P1_4..P1_11` group **is** the
 existing camera wiring — three jumpers, and EZH keeps working on the same harness.
 
 ## 9. Rev B — recommended
@@ -471,9 +479,14 @@ probes and one belonged to unrelated work.
 ### Build commands
 
 ```powershell
-.\build_cmake.ps1                              # Rev A competition default, EZH
-.\build_flexio_camera.ps1 -PinGroup Port1      # FlexIO on the Rev A camera wiring
-.\build_flexio_camera.ps1 -PinGroup Port4      # original group, needs 11 fly-wires
+cmake --preset competition
+cmake --build --preset competition              # Rev A competition default, EZH
+
+cmake --preset flexio-port1
+cmake --build --preset flexio-port1              # Rev A camera wiring, 3 jumpers
+
+cmake --preset flexio-port4
+cmake --build --preset flexio-port4              # original group, 11 fly-wires
 ```
 
 ## 12. Related

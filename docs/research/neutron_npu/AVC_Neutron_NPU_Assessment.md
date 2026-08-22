@@ -8,6 +8,13 @@ students touching the ML toolchain?
 **Status:** Research complete. No hardware prototype run.
 **Scope:** The late-August 2026 FIT race. See `../AVC_Competition_Overview.md`.
 
+> **2026-08-22 disposition update:** The conclusion that Neutron is the wrong race-week
+> tool still stands. The YUY2/chroma-LUT recommendation below is historical and has been
+> superseded by the implemented packed RGB565-to-Y/H/S/V flash LUT documented in
+> [`../AVC_Vision_Pipeline_Design.md`](../AVC_Vision_Pipeline_Design.md). RGB565 is locked
+> for the competition because the camera, LCD, USB viewer, and Android relay are already
+> proven end to end; YUY2 is post-competition work.
+
 ---
 
 ## Bottom line
@@ -211,7 +218,7 @@ deliverable.
 
 ## Recommendation
 
-### For the 2026 race — do this instead of the NPU
+### Historical recommendation for the 2026 race
 
 **Switch the sensor to YUY2 and classify color from a chroma-indexed lookup table.**
 

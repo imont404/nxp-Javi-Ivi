@@ -19,10 +19,12 @@ The toolchain is real and the runtime is already on this machine, but **the NPU 
 wrong tool for this year's problem.** NPU execution blocks the calling core (verified by
 disassembly — the non-blocking API is stubbed), and the int8 tensor marshalling needed to
 feed it costs more than doing per-pixel color classification on the CM33 outright. The
-recommended alternative is **YUY2 capture plus a 64 KB chroma-indexed lookup table**:
-faster, illumination-invariant, more expressive than the 1×1 convolution the NPU would
-give you, no new toolchain, and a far better teaching artifact. Keep Neutron as an opt-in,
-off-critical-path build. Go/no-go by **2026-08-07**.
+implemented competition alternative is a packed **RGB565-to-Y/H/S/V flash lookup
+table**: one generic table access exposes luminance plus teachable hue/saturation/value
+features without adding a toolchain or a finished classifier. The earlier YUY2/chroma-LUT
+recommendation in the assessment is retained as historical analysis but is superseded for
+2026 because RGB565 is already proven through the LCD, USB viewer, and Android relay.
+Keep Neutron as an opt-in, off-critical-path post-race exploration.
 
 ## Folder contents
 
@@ -59,3 +61,5 @@ sdk_extract/                      pulled from the installed SDK 26.6.0 package
 
 - [`../AVC_Competition_Overview.md`](../AVC_Competition_Overview.md) — the constraints this
   assessment is judged against.
+- [`../AVC_Vision_Pipeline_Design.md`](../AVC_Vision_Pipeline_Design.md) — implemented
+  RGB565 Y/H/S/V LUT and the current competition disposition.

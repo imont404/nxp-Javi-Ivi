@@ -1,17 +1,16 @@
-# AVC USB Debug Transport Protocol Draft
+# AVC USB Debug Transport Protocol
 
-Status: draft
+Status: implemented core with reserved extensions
 
-This protocol is the planned durable shape for the AVC USB debug-display
-transport. The first working firmware/host proof now uses the shared `AVCU`
-envelope plus RUI `WRITE_FRAME_BUFFER_RAW` chunks. This draft keeps that
-working direction but makes the protocol extensible enough to support remote
-display operations, text/log messages, stats, controls, and later embedded
-display nodes.
+This document describes the durable AVC USB debug-display transport. The Rev A
+competition firmware, native Windows receiver, Python receiver, and standalone
+Web Serial viewer use the shared `AVCU` envelope, framed control, RUI raw-frame
+chunks, statistics, bounded log records, and typed named telemetry. Additional
+RUI/RIO operations remain reserved design space rather than implemented claims.
 
-See `AVC_USB_Debug_Display_Current_State.md` for the parked implementation
-state, measured rates, host-tool paths, and next backlog after the PCB-revision
-viability milestone.
+See `AVC_USB_Debug_Display_Current_State.md` for the proven implementation
+state, measured rates, and host-tool paths. Active protocol, telemetry, and Web
+viewer work is owned by `docs/plans/usb-debug-telemetry/plan.md`.
 
 ## Design Lineage
 
@@ -56,6 +55,7 @@ Use class ranges inspired by the older RUI/RIO values:
 #define AVC_DBG_MSG_CLASS_LOG      0x01000200u
 #define AVC_DBG_MSG_CLASS_STATS    0x01000300u
 #define AVC_DBG_MSG_CLASS_CONTROL  0x01000400u
+#define AVC_DBG_MSG_CLASS_TELEMETRY 0x01000500u
 ```
 
 Initial RUI messages:
@@ -76,6 +76,12 @@ Initial log/stats/control messages:
 #define AVC_DBG_CONTROL_START_STREAM        (AVC_DBG_MSG_CLASS_CONTROL + 0u)
 #define AVC_DBG_CONTROL_STOP_STREAM         (AVC_DBG_MSG_CLASS_CONTROL + 1u)
 #define AVC_DBG_CONTROL_SET_STREAM_MODE     (AVC_DBG_MSG_CLASS_CONTROL + 2u)
+#define AVC_DBG_CONTROL_HELLO               (AVC_DBG_MSG_CLASS_CONTROL + 3u)
+#define AVC_DBG_CONTROL_SET_CHANNELS        (AVC_DBG_MSG_CLASS_CONTROL + 4u)
+#define AVC_DBG_CONTROL_PING                (AVC_DBG_MSG_CLASS_CONTROL + 5u)
+#define AVC_DBG_CONTROL_CLOSE               (AVC_DBG_MSG_CLASS_CONTROL + 6u)
+#define AVC_DBG_CONTROL_ERROR               (AVC_DBG_MSG_CLASS_CONTROL + 7u)
+#define AVC_DBG_TELEMETRY_SCALAR            (AVC_DBG_MSG_CLASS_TELEMETRY + 0u)
 ```
 
 RIO remains reserved for future host-to-device or embedded-node I/O operations.
@@ -236,6 +242,13 @@ typedef struct __attribute__((packed))
     uint32_t endpoint_busy_count;
     uint32_t send_error_count;
     uint32_t rx_command_count;
+    uint32_t control_response_drop_count;
+    uint32_t control_response_queue_high_water;
+    uint32_t log_drop_count;
+    uint32_t log_queue_high_water;
+    uint32_t telemetry_drop_count;
+    uint32_t telemetry_queue_high_water;
+    uint32_t telemetry_coalesce_count;
 } avc_dbg_stats_report_t;
 ```
 
@@ -273,48 +286,129 @@ typedef struct __attribute__((packed))
 } avc_dbg_rui_text_t;
 ```
 
-Log text can be simpler:
+Log records carry bounded UTF-8 category and text bytes immediately after a
+fixed header. Neither string is NUL-terminated on the wire:
 
 ```c
 typedef struct __attribute__((packed))
 {
-    uint32_t level;
-    uint32_t source;
-    uint8_t  utf8[];
-} avc_dbg_log_text_t;
+    uint32_t timestamp_ms;
+    uint32_t record_id;
+    uint16_t text_bytes;
+    uint8_t  level;
+    uint8_t  category_bytes;
+} avc_dbg_log_record_t;
 ```
+
+The current firmware accepts at most 15 category bytes and 160 text bytes per
+record, queues eight fixed records, truncates longer input, and drops rather
+than blocks when the queue is full. Levels are TRACE, DEBUG, INFO, WARNING, and
+ERROR. Formatting is skipped completely when no recognized session subscribes
+to logs. The API is main-loop/thread context only; camera and USB ISRs must not
+format log strings.
+
+## Named Scalar Telemetry
+
+Scalar records carry one typed value plus bounded UTF-8 name and units bytes.
+The name immediately follows the fixed header, then the optional units; neither
+string is NUL-terminated on the wire:
+
+```c
+typedef struct __attribute__((packed))
+{
+    uint32_t timestamp_ms;
+    uint32_t sample_id;
+    uint32_t value_bits;
+    uint16_t name_bytes;
+    uint8_t  value_type;
+    uint8_t  units_bytes;
+} avc_dbg_telemetry_scalar_t;
+```
+
+Initial types are signed 32-bit integer, unsigned 32-bit integer, IEEE-754
+32-bit float, and boolean. `value_bits` always carries the little-endian 32-bit
+representation. Firmware accepts at most 31 name bytes and 15 units bytes.
+
+The sixteen-entry fixed queue is keyed by name. Publishing a name already
+pending replaces that queued record with the newest type, value, units,
+timestamp, and sample ID; this is counted as a coalesce rather than a drop. A
+new name is dropped when the queue is full. Calls return before inspecting names
+or values unless a recognized session subscribes to telemetry.
+
+Public framework helpers are `AVC_DBG_VALUE_I32`, `AVC_DBG_VALUE_U32`,
+`AVC_DBG_VALUE_F32`, and `AVC_DBG_VALUE_BOOL`. They provide infrastructure only;
+students choose which algorithm variables to publish.
 
 ## Control Direction
 
-Host-to-device control can use the same envelope over CDC bulk OUT:
+Host-to-device control uses the same envelope over CDC bulk OUT. The competition
+firmware implements `HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`. `HELLO`
+establishes a recognized telemetry session and reports capabilities and geometry;
+`SET_CHANNELS` independently selects frames, stats, logs, and telemetry. These
+commands affect diagnostic output only and cannot select vehicle mode or enable
+motors.
 
-- start stream
-- stop stream
-- select synthetic/camera/composed mode
-- request stats
-- request geometry
+Legacy `START_STREAM`, `STOP_STREAM`, and `SET_STREAM_MODE` IDs remain allocated
+for compatibility with older proof images and synthetic ceiling tools, but the
+competition firmware does not accept the old ASCII control path. New hosts should
+use the framed session commands.
 
-The current ASCII `START`/`STOP` commands are acceptable during bring-up, but
-should become control messages once this protocol is implemented.
+The Web Serial viewer, Python receiver, and native receiver use framed control. A
+response sets `AVC_DBG_PACKET_FLAG_RESPONSE`; `arg0` is the request sequence,
+`arg1` is a stable control status, and `arg2` is the current session ID.
 
-Current bring-up commands:
+## Transmit Arbitration
 
-- `START`: enable camera-frame streaming. Frames are published from the AVC
-  main loop after the existing marker/overlay drawing, not from the camera ISR.
-- `START_SYNTH` or `SYNTH`: enable the synthetic maximum-rate frame source used
-  for transport ceiling tests.
-- `STOP` or `0`: disable either source.
+The CDC bulk-IN endpoint has exactly one transfer and one aligned staging buffer
+in flight. A single bounded dispatcher owns both. Transfer completion schedules
+at most one next packet; the main-loop service uses the same dispatcher and
+returns immediately when the endpoint is busy.
+
+Current arbitration rules are:
+
+- Control responses use a fixed four-entry FIFO and preempt bulk data between
+  packets. The queue never allocates memory or overwrites an unsent response.
+- At most four consecutive control responses may pass an already-pending
+  non-control packet. This prevents a command burst from starving frame or
+  diagnostic traffic while retaining bounded response latency.
+- Stream statistics are a coalescing one-slot source. Repeated due events remain
+  one pending report carrying the newest cumulative counters.
+- Camera frames use latest-frame semantics. A newly published frame is dropped
+  while another frame is active, and buffer-generation checks can abort an
+  unsafe active frame.
+- Every source submits through the same endpoint-busy, sequence, byte-count,
+  busy-count, and send-error bookkeeping.
+- The log source is an eight-record FIFO and yields to a pending frame after at
+  most two consecutive diagnostic packets.
+- Named telemetry adds its own fixed-depth/drop-policy source to this dispatcher;
+  it does not call the CDC send API directly. Log and telemetry sources alternate
+  when both are pending and together yield to a pending frame after two packets.
+
+Queue overflow is observable through `control_response_drop_count`; the highest
+observed response depth is `control_response_queue_high_water`. Logs expose the
+equivalent `log_drop_count` and `log_queue_high_water` counters.
+Telemetry exposes drop, queue high-water, and coalesce counters.
+
+Opening CDC does not establish a telemetry session and never changes vehicle
+mode. `HELLO` recognizes the client and returns implemented capabilities and
+frame geometry. `SET_CHANNELS` controls diagnostic output only. `CLOSE` stops
+output and invalidates the session. Hosts should wait for the correlated
+`SET_CHANNELS(0)` and `CLOSE` responses before closing the CDC handle; this
+drains the last in-flight frame chunk and prevents stale bytes from crossing
+into a rapid reopen. Legacy ASCII start/stop commands are not accepted.
+
+Bulk OUT remains armed even if a generic host writes with DTR low. Those bytes
+are discarded while the session is closed, then the endpoint is immediately
+re-armed so a later framed `HELLO` does not require a USB bus reset.
 
 ## Implementation Notes
 
-- Put the final wire constants and structs in a shared protocol header, likely
-  under `src/common`, so firmware and native host tooling can include the same
-  source of truth.
-- Python and JavaScript receivers may keep mirrored constants initially, but
-  once framing is locked they should either be generated from the shared header
-  or have a small conformance test against captured packets.
-- Keep the existing working `AVCU` proof until the protocol transition is
-  implemented on both firmware and host.
+- Final wire constants and structs live in
+  `src/common/avc_usb_debug/avc_usb_debug_protocol.h`; firmware and native host
+  tooling include that source of truth.
+- Python, JavaScript, and Kotlin receivers mirror the constants and are exercised against
+  conformance fixtures plus real framed traffic. The Android bridge deliberately avoids
+  an NDK dependency solely to include a small packed C header.
 - Do not send from camera ISR context. Queue or drop frames from main-loop or
   USB service context.
 - The first AVC integration copies each camera chunk into one aligned 16 KiB
@@ -325,5 +419,25 @@ Current bring-up commands:
   chunked, the new frame is dropped. The packet header `DROPPED_BEFORE` flag is
   set on the next successfully queued packet after any such drop. The stats
   report carries the cumulative dropped-frame count.
+- The two camera buffers have a separate generation guard. If capture reaches
+  the reuse horizon during an active USB frame, firmware checks again after the
+  staging copy, discards that copy, aborts the incomplete frame, and guarantees
+  `DROPPED_BEFORE` on the next `FRAME_START`. Receivers reset partial frame
+  assembly at that marker and never present the aborted frame.
 - If CDC ACM's one-transfer-per-endpoint abstraction becomes limiting, replace
   it with a thinner endpoint layer while keeping this message protocol.
+
+## Android Relay Boundary
+
+Android consumes `AVCU` directly from the car; firmware has no phone-specific mode or
+message ID. The phone's one-browser relay preserves generic telemetry as `AVCU` and uses
+separate 32-byte little-endian video envelopes only on the Wi-Fi side:
+
+- `AVCJ`: one complete independently decodable JPEG per WebSocket message;
+- `AVC4`: ISO BMFF initialization or one fragmented-MP4 H.264 media fragment;
+- `AVCR`: one complete 320x200 RGB565 little-endian diagnostic frame.
+
+The sole browser client selects `jpeg`, `h264`, or `raw`; JPEG is the default. These
+representations are intentionally downstream of the durable firmware protocol. Their
+wire details and measured behavior live in `src/android/avc_bridge/README.md` and
+`docs/plans/android-telemetry-bridge/plan.md`.

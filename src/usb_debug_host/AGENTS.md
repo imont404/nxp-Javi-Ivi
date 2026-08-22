@@ -44,10 +44,20 @@ new host path is revalidated.
 
 ## Browser Viewer
 
-Serve the static viewer from localhost:
+`avc_usb_debug_viewer.html` is the standalone handoff. It must contain no
+external assets and must work from a direct `file://` origin in Chrome/Edge.
+Regenerate and test it after changing the readable HTML/CSS/JS sources:
 
 ```powershell
-.\src\usb_debug_host\serve_webserial_viewer.ps1
+.\src\usb_debug_host\build_standalone_viewer.ps1
+npm test --prefix .\src\usb_debug_host
 ```
 
-Record durable findings in `docs/plans/usb-debug-display-transport/logs`.
+The Playwright simulator covers handshake, control, stats, logs, a complete
+camera frame, DOM updates, page errors, file-origin Web Serial availability,
+rolling telemetry plots and their history bound, and absence of asset requests.
+The localhost server remains optional maintainer tooling only.
+
+Record execution findings against `docs/plans/usb-debug-telemetry` and move stable
+protocol/measurement conclusions into the corresponding durable documents under
+`docs/research`.

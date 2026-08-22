@@ -122,7 +122,9 @@ A partially-seated 18-pin header is deceptive: it makes contact on enough pins t
 - **§0.3 termination:** confirm whether 330 Ω was intentional; revisit before raising PCLK.
 - Flex **stackup / measured differential impedance** is not recorded here (2-layer, signals over ground plane per §5).
 - The OV5640 `XCLK` divider is unchanged — firmware still runs `CLOCK_SetClkDiv(kCLOCK_DivClkOut, 12U)` for the 320x200 mode (`bv_camera__interface.c`, `camera__configure_xclk()`). Now that the cable is clean, **the cable is no longer what caps frame rate** — the SmartDMA/EZH capture engine is (`AVC_Camera_Interface_Research.md` §1).
-- **SCCB robustness** is planned but not implemented: I2C rate reduction, retries, and on-screen diagnostics. See plan `camera-sccb-robustness`.
+- **Camera startup diagnosis** is planned but not implemented: explicit SCCB status,
+  returned-sync and first-frame classification, bounded retries, and an always-visible
+  mode/fault screen. See plan `camera-startup-diagnostics`.
 
 ---
 

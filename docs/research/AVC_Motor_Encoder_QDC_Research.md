@@ -58,14 +58,34 @@ float avc__wheel_rpm(avc_motor_encoder_id_t wheel);          /* + is forward */
 float avc__wheel_velocity_mps(avc_motor_encoder_id_t wheel); /* + is forward */
 ```
 
+### Student-facing API boundary
+
+The organizer-supplied framework stops at a clean feedback and actuator boundary.
+Students implement their own speed-control law. Framework/API cleanup may improve the
+names, comments, timing contract, safety clamps, and telemetry around these functions,
+but must not add a completed PID controller.
+
+The intended teaching surface provides:
+
+- independent left/right wheel speed with explicit units and positive-forward polarity;
+- motor and servo commands with documented ranges and framework-owned safety limits;
+- an explicit update cadence rather than control timing hidden in the camera frame loop;
+- named USB telemetry so setpoint, measurement, output, and student-computed error can
+  be plotted without placing the control law in platform code.
+
+Potentiometers or host commands may later expose live tuning values, but mode ownership
+must be explicit because the pots are also used by the existing local test mode. Any
+motors-on teaching diagnostic remains a chassis-on-blocks activity.
+
 Both wheels are shown on the LCD overlay. Per-wheel rather than combined,
 deliberately — a single figure hides the mismatch above.
 
 ## Scope
 
 Research the Rev A motor encoder wiring and the MCXN947 hardware path needed to
-use the on-chip quadrature decoder blocks for future per-motor speed feedback
-and PID speed control.
+use the on-chip quadrature decoder blocks for per-motor speed feedback. Closed-loop
+control is a student exercise; the platform supplies measurements, safe actuator APIs,
+and diagnostics rather than a completed controller.
 
 Primary local inputs:
 
@@ -181,7 +201,7 @@ Reference links:
 - <https://github.com/nxp-mcuxpresso/mcuxsdk-core/tree/main/drivers/qdc>
 - <https://raw.githubusercontent.com/nxp-mcuxpresso/mcuxsdk-examples/main/_boards/frdmmcxn947/driver_examples/qdc/basic/example_board_readme.md>
 
-## Firmware Conflicts And Risks
+## Firmware Conflicts And Remaining Risks
 
 - `P2_0` is also named `EZH_LCD_WR`; `P1_22` is also named `EZH_LCD_DC`.
   Encoder mode and alternate parallel LCD/EZH display experiments must be
@@ -195,13 +215,17 @@ Reference links:
   `PORT2_3..PORT2_7`. That does not collide with the encoder phase pins, but
   `P2_0` also has a `PWM1_A3` alternate function and should stay reserved for
   `TRIG_IN5` in encoder builds.
-- Need to confirm encoder electrical behavior on the bench: output type,
-  voltage level, idle state, pull-ups/pull-downs, and noise. The QDC input
-  filter should be enabled only after seeing the real signal quality.
-- Counts-per-revolution and gear ratio are still unknown. PID work should not
-  start until those are measured or specified.
+- Bench testing confirmed clean 3.3 V quadrature signals with the implemented
+  QDC path. Keep filter changes evidence-driven; do not retune them during race
+  week without a captured signal-quality problem.
+- The measured conversion is 1320 counts per wheel revolution. The framework
+  exposes that feedback but deliberately does not provide a finished PID
+  controller; control design and tuning remain student work.
 
-## Bring-Up Recommendation
+## Historical Bring-Up Sequence
+
+The hardware bring-up below is complete and retained as durable rationale for the
+implemented path. It is not an open PID implementation plan.
 
 1. Add an explicit motor-encoder configuration profile:
    `CONFIG__MOTOR_ENCODER_BACKEND_DISABLED`,
@@ -220,8 +244,8 @@ Reference links:
    per-motor counts per control interval.
 6. Once counts-per-revolution, gear ratio, and wheel diameter/circumference are
    measured or confirmed, convert QDC rate to wheel RPM and vehicle speed.
-7. Only after speed telemetry is stable, add fixed-rate PID speed control and
-   keep tunables/reporting on the existing debug transport path.
+7. Keep the framework at the feedback/actuator boundary. Students may add fixed-rate
+   closed-loop control in their algorithm code, using generic telemetry for tuning.
 
 ## EZH/FlexIO Camera Carry-Forward Note
 

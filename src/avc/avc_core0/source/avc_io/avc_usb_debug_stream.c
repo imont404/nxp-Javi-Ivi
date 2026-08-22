@@ -1,12 +1,15 @@
 #include "avc_usb_debug_stream.h"
 
+#include <stdarg.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "avc_usb_debug_protocol.h"
 #include "avc__master_config.h"
 #include "board.h"
 #include "clock_config.h"
+#include "e.h"
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
 #include "fsl_device_registers.h"
@@ -36,6 +39,24 @@
 #define AVC_USB_STREAM_PAYLOAD_MAX_BYTES (AVC_USB_STREAM_TX_BYTES - AVC_USB_STREAM_DATA_OFFSET)
 #define AVC_USB_STREAM_STATS_INTERVAL_CAMERA_FRAMES (24U)
 #define AVC_USB_STREAM_STATS_INTERVAL_SYNTHETIC_FRAMES (0U)
+#define AVC_USB_CONTROL_RX_BYTES (1024U)
+#define AVC_USB_CONTROL_MAX_PAYLOAD_BYTES (128U)
+#define AVC_USB_CONTROL_RESPONSE_PAYLOAD_BYTES (AVC_DBG_CONTROL_HELLO_RESPONSE_BYTES)
+#define AVC_USB_CONTROL_RESPONSE_QUEUE_DEPTH (4U)
+#define AVC_USB_TX_CONTROL_BURST_MAX (4U)
+#define AVC_USB_LOG_QUEUE_DEPTH (8U)
+#define AVC_USB_LOG_CATEGORY_MAX_BYTES (15U)
+#define AVC_USB_LOG_TEXT_MAX_BYTES (160U)
+#define AVC_USB_TELEMETRY_QUEUE_DEPTH (16U)
+#define AVC_USB_TELEMETRY_NAME_MAX_BYTES (31U)
+#define AVC_USB_TELEMETRY_UNITS_MAX_BYTES (15U)
+#define AVC_USB_TX_DIAGNOSTIC_BURST_MAX (2U)
+#define AVC_USB_CONTROL_CAPABILITIES                                                                                \
+    (AVC_DBG_CAPABILITY_FRAMED_CONTROL | AVC_DBG_CAPABILITY_CAMERA_FRAMES |                                        \
+     AVC_DBG_CAPABILITY_SYNTHETIC_FRAMES | AVC_DBG_CAPABILITY_STREAM_STATS | AVC_DBG_CAPABILITY_LOG_TEXT |         \
+     AVC_DBG_CAPABILITY_NAMED_TELEMETRY)
+#define AVC_USB_CONTROL_SUPPORTED_CHANNELS \
+    (AVC_DBG_CHANNEL_FRAMES | AVC_DBG_CHANNEL_STATS | AVC_DBG_CHANNEL_LOGS | AVC_DBG_CHANNEL_TELEMETRY)
 
 #define AVC_USB_LINE_CODING_SIZE (0x07U)
 #define AVC_USB_LINE_CODING_DTERATE (115200U)
@@ -78,10 +99,44 @@ typedef enum avc_usb_debug_stream_source
     AVC_USB_DEBUG_STREAM_SOURCE_SYNTHETIC = AVC_DBG_STREAM_SOURCE_SYNTHETIC,
 } avc_usb_debug_stream_source_t;
 
+typedef struct avc_usb_control_response
+{
+    uint32_t msgId;
+    uint32_t requestSequence;
+    uint32_t status;
+    uint32_t sessionId;
+    uint32_t payloadLength;
+    uint8_t payload[AVC_USB_CONTROL_RESPONSE_PAYLOAD_BYTES];
+} avc_usb_control_response_t;
+
+typedef struct avc_usb_log_record
+{
+    uint32_t timestampMs;
+    uint32_t recordId;
+    uint16_t textLength;
+    uint8_t level;
+    uint8_t categoryLength;
+    char category[AVC_USB_LOG_CATEGORY_MAX_BYTES];
+    char text[AVC_USB_LOG_TEXT_MAX_BYTES];
+} avc_usb_log_record_t;
+
+typedef struct avc_usb_telemetry_scalar
+{
+    uint32_t timestampMs;
+    uint32_t sampleId;
+    uint32_t valueBits;
+    uint16_t nameLength;
+    uint8_t valueType;
+    uint8_t unitsLength;
+    char name[AVC_USB_TELEMETRY_NAME_MAX_BYTES];
+    char units[AVC_USB_TELEMETRY_UNITS_MAX_BYTES];
+} avc_usb_telemetry_scalar_t;
+
 extern usb_device_endpoint_struct_t g_UsbDeviceCdcVcomDicEndpoints[];
 extern usb_device_class_struct_t g_UsbDeviceCdcVcomConfig;
 
-static void avc_usb_debug_stream__send_next_chunk(void);
+static void avc_usb_debug_stream__schedule_tx(void);
+static void avc_usb_debug_stream__handle_received_data(const uint8_t *data, uint32_t length);
 static usb_status_t avc_usb_debug_stream__cdc_callback(class_handle_t handle, uint32_t event, void *param);
 static usb_status_t avc_usb_debug_stream__device_callback(usb_device_handle handle, uint32_t event, void *param);
 
@@ -118,6 +173,8 @@ static volatile uint8_t s_streamEnabled;
 static volatile uint8_t s_streamTxBusy;
 static volatile uint8_t s_streamFrameActive;
 static uint8_t s_usbInitialized;
+static volatile uint8_t s_sessionActive;
+static uint8_t s_statsEnabled;
 static avc_usb_debug_stream_source_t s_streamSource;
 static const uint8_t *s_streamFrameData;
 static uint32_t s_streamFrameId;
@@ -134,6 +191,45 @@ static uint32_t s_streamBytesSent;
 static uint32_t s_streamRxCommandCount;
 static volatile uint8_t s_streamStatsDue;
 static volatile uint8_t s_streamDroppedBeforePacket;
+static volatile uint8_t s_streamFrameResyncPending;
+static volatile uint32_t s_cameraFrameGeneration;
+static uint32_t s_streamFrameGeneration;
+static uint32_t s_sessionId;
+static uint32_t s_controlRxLength;
+static uint8_t s_controlRxBuffer[AVC_USB_CONTROL_RX_BYTES];
+static avc_usb_control_response_t s_controlResponseQueue[AVC_USB_CONTROL_RESPONSE_QUEUE_DEPTH];
+static volatile uint8_t s_controlResponseHead;
+static volatile uint8_t s_controlResponseCount;
+static uint8_t s_txControlBurst;
+static uint32_t s_controlResponseDropCount;
+static uint32_t s_controlResponseQueueHighWater;
+static avc_usb_log_record_t s_logQueue[AVC_USB_LOG_QUEUE_DEPTH];
+static volatile uint8_t s_logHead;
+static volatile uint8_t s_logCount;
+static uint8_t s_logEnabled;
+static uint8_t s_txDiagnosticBurst;
+static uint32_t s_logNextRecordId;
+static uint32_t s_logDropCount;
+static uint32_t s_logQueueHighWater;
+static avc_usb_telemetry_scalar_t s_telemetryQueue[AVC_USB_TELEMETRY_QUEUE_DEPTH];
+static volatile uint8_t s_telemetryHead;
+static volatile uint8_t s_telemetryCount;
+static uint8_t s_telemetryEnabled;
+static uint8_t s_txPreferTelemetry;
+static uint32_t s_telemetryNextSampleId;
+static uint32_t s_telemetryDropCount;
+static uint32_t s_telemetryQueueHighWater;
+static uint32_t s_telemetryCoalesceCount;
+
+#if CONFIG__USB_DEBUG_PROFILE_ENABLE
+static uint32_t s_profileReportTick;
+static uint32_t s_profileCalls;
+static uint32_t s_profileOpenCalls;
+static uint32_t s_profileValidSamples;
+static uint32_t s_profileInterruptedSamples;
+static uint32_t s_profileTotalCycles;
+static uint32_t s_profileMaxCycles;
+#endif
 
 static usb_device_class_config_struct_t s_cdcAcmConfig[1] = {{
     avc_usb_debug_stream__cdc_callback,
@@ -147,44 +243,55 @@ static usb_device_class_config_list_struct_t s_cdcAcmConfigList = {
     1,
 };
 
-static uint8_t avc_usb_debug_stream__upper(uint8_t value)
+#if CONFIG__USB_DEBUG_PROFILE_ENABLE
+static void avc_usb_debug_stream__profile_service(uint32_t startCycles, uint8_t open)
 {
-    if ((value >= (uint8_t)'a') && (value <= (uint8_t)'z'))
-    {
-        return (uint8_t)(value - ((uint8_t)'a' - (uint8_t)'A'));
-    }
-    return value;
-}
+    uint32_t endCycles = DWT->CYCCNT;
+    uint32_t elapsedCycles;
+    uint32_t averageCycles;
 
-static uint8_t avc_usb_debug_stream__command_matches(const uint8_t *data, uint32_t length, const char *command)
-{
-    uint32_t index = 0U;
-    uint32_t commandIndex = 0U;
-
-    while ((index < length) && ((data[index] == (uint8_t)' ') || (data[index] == (uint8_t)'\r') ||
-                                (data[index] == (uint8_t)'\n') || (data[index] == (uint8_t)'\t')))
+    s_profileCalls++;
+    if (open != 0U)
     {
-        index++;
+        s_profileOpenCalls++;
     }
 
-    while (command[commandIndex] != '\0')
+    if (endCycles >= startCycles)
     {
-        if (index >= length)
+        elapsedCycles = endCycles - startCycles;
+        s_profileValidSamples++;
+        s_profileTotalCycles += elapsedCycles;
+        if (elapsedCycles > s_profileMaxCycles)
         {
-            return 0U;
+            s_profileMaxCycles = elapsedCycles;
         }
-
-        if (avc_usb_debug_stream__upper(data[index]) != (uint8_t)command[commandIndex])
-        {
-            return 0U;
-        }
-
-        index++;
-        commandIndex++;
+    }
+    else
+    {
+        /* The camera callback resets DWT->CYCCNT; discard that crossing sample. */
+        s_profileInterruptedSamples++;
     }
 
-    return 1U;
+    if (e_tick__timeout(&s_profileReportTick, 1000U))
+    {
+        averageCycles = (s_profileValidSamples != 0U)
+                            ? (s_profileTotalCycles / s_profileValidSamples)
+                            : 0U;
+        (void)DEBUG("avc_usb_profile: calls=%u open=%u avg_cycles=%u max_cycles=%u reset_samples=%u\r\n",
+                    s_profileCalls,
+                    s_profileOpenCalls,
+                    averageCycles,
+                    s_profileMaxCycles,
+                    s_profileInterruptedSamples);
+        s_profileCalls = 0U;
+        s_profileOpenCalls = 0U;
+        s_profileValidSamples = 0U;
+        s_profileInterruptedSamples = 0U;
+        s_profileTotalCycles = 0U;
+        s_profileMaxCycles = 0U;
+    }
 }
+#endif
 
 static void avc_usb_debug_stream__fill_static_payload(void)
 {
@@ -216,11 +323,52 @@ static void avc_usb_debug_stream__mark_frame_completed(void)
     uint32_t interval;
 
     s_streamCompletedFrameCount++;
+    if (s_statsEnabled == 0U)
+    {
+        return;
+    }
+
     interval = avc_usb_debug_stream__stats_interval_frames();
     if ((interval != 0U) && ((s_streamCompletedFrameCount % interval) == 0U))
     {
         s_streamStatsDue = 1U;
     }
+}
+
+static uint8_t avc_usb_debug_stream__submit_packet(uint32_t packetBytes)
+{
+    uint32_t packetSequence = s_streamSequence;
+    usb_status_t error;
+
+    /* Claim the one CDC IN transfer before calling the driver. This keeps the
+     * main-loop service and the completion callback on the same ownership rule.
+     * Reserve the sequence too: a short packet can complete before this call
+     * returns, and the callback may immediately submit the next packet. */
+    s_streamTxBusy = 1U;
+    s_streamSequence = packetSequence + 1U;
+    error = USB_DeviceCdcAcmSend(s_cdcVcom.cdcAcmHandle,
+                                 USB_CDC_VCOM_BULK_IN_ENDPOINT,
+                                 s_streamTxBuf,
+                                 packetBytes);
+    if (error == kStatus_USB_Success)
+    {
+        s_streamPacketsSent++;
+        s_streamBytesSent += packetBytes;
+        return 1U;
+    }
+
+    s_streamTxBusy = 0U;
+    s_streamSequence = packetSequence;
+    if (error == kStatus_USB_Busy)
+    {
+        s_streamBusyCount++;
+    }
+    else
+    {
+        s_streamSendErrorCount++;
+    }
+
+    return 0U;
 }
 
 static uint8_t avc_usb_debug_stream__send_stats_report(void)
@@ -229,14 +377,8 @@ static uint8_t avc_usb_debug_stream__send_stats_report(void)
     avc_dbg_stats_report_t *stats;
     uint32_t streamFlags = 0U;
     uint32_t packetBytes = AVC_DBG_PACKET_HEADER_BYTES + AVC_DBG_STATS_REPORT_BYTES;
-    usb_status_t error;
 
     if (s_streamStatsDue == 0U)
-    {
-        return 0U;
-    }
-
-    if ((s_streamSource == AVC_USB_DEBUG_STREAM_SOURCE_CAMERA) && (s_streamFrameActive != 0U))
     {
         return 0U;
     }
@@ -279,28 +421,19 @@ static uint8_t avc_usb_debug_stream__send_stats_report(void)
     stats->endpoint_busy_count = s_streamBusyCount;
     stats->send_error_count = s_streamSendErrorCount;
     stats->rx_command_count = s_streamRxCommandCount;
+    stats->control_response_drop_count = s_controlResponseDropCount;
+    stats->control_response_queue_high_water = s_controlResponseQueueHighWater;
+    stats->log_drop_count = s_logDropCount;
+    stats->log_queue_high_water = s_logQueueHighWater;
+    stats->telemetry_drop_count = s_telemetryDropCount;
+    stats->telemetry_queue_high_water = s_telemetryQueueHighWater;
+    stats->telemetry_coalesce_count = s_telemetryCoalesceCount;
 
-    error = USB_DeviceCdcAcmSend(s_cdcVcom.cdcAcmHandle,
-                                 USB_CDC_VCOM_BULK_IN_ENDPOINT,
-                                 s_streamTxBuf,
-                                 packetBytes);
-    if (error == kStatus_USB_Success)
+    if (avc_usb_debug_stream__submit_packet(packetBytes) != 0U)
     {
-        s_streamTxBusy = 1U;
-        s_streamSequence++;
-        s_streamPacketsSent++;
-        s_streamBytesSent += packetBytes;
         s_streamStatsDue = 0U;
         s_streamDroppedBeforePacket = 0U;
         return 1U;
-    }
-    else if (error == kStatus_USB_Busy)
-    {
-        s_streamBusyCount++;
-    }
-    else
-    {
-        s_streamSendErrorCount++;
     }
 
     return 0U;
@@ -315,7 +448,6 @@ static void avc_usb_debug_stream__start_source(avc_usb_debug_stream_source_t sou
     s_streamFrameActive = 0U;
     s_streamFrameId = 0U;
     s_streamNextFrameId = 0U;
-    s_streamSequence = 0U;
     s_streamOffset = 0U;
     s_streamDroppedFrameCount = 0U;
     s_streamStartedFrameCount = 0U;
@@ -324,8 +456,9 @@ static void avc_usb_debug_stream__start_source(avc_usb_debug_stream_source_t sou
     s_streamBytesSent = 0U;
     s_streamBusyCount = 0U;
     s_streamSendErrorCount = 0U;
-    s_streamStatsDue = (source == AVC_USB_DEBUG_STREAM_SOURCE_CAMERA) ? 1U : 0U;
+    s_streamStatsDue = ((s_statsEnabled != 0U) && (source == AVC_USB_DEBUG_STREAM_SOURCE_CAMERA)) ? 1U : 0U;
     s_streamDroppedBeforePacket = 0U;
+    s_streamFrameResyncPending = 0U;
     s_streamEnabled = 1U;
 
     EnableGlobalIRQ(usbOsaCurrentSr);
@@ -333,11 +466,15 @@ static void avc_usb_debug_stream__start_source(avc_usb_debug_stream_source_t sou
 
 void avc_usb_debug_stream__start(void)
 {
+    s_streamSequence = 0U;
+    s_statsEnabled = 1U;
     avc_usb_debug_stream__start_source(AVC_USB_DEBUG_STREAM_SOURCE_CAMERA);
 }
 
 static void avc_usb_debug_stream__start_synthetic(void)
 {
+    s_streamSequence = 0U;
+    s_statsEnabled = 0U;
     avc_usb_debug_stream__start_source(AVC_USB_DEBUG_STREAM_SOURCE_SYNTHETIC);
 }
 
@@ -351,6 +488,8 @@ void avc_usb_debug_stream__stop(void)
     s_streamOffset = 0U;
     s_streamStatsDue = 0U;
     s_streamDroppedBeforePacket = 0U;
+    s_streamFrameResyncPending = 0U;
+    s_statsEnabled = 0U;
 
     EnableGlobalIRQ(usbOsaCurrentSr);
 }
@@ -358,6 +497,232 @@ void avc_usb_debug_stream__stop(void)
 bool avc_usb_debug_stream__is_open(void)
 {
     return (s_cdcVcom.attach != 0U) && (s_cdcVcom.startTransactions != 0U);
+}
+
+bool avc_usb_debug_stream__session_active(void)
+{
+    return s_sessionActive != 0U;
+}
+
+bool avc_usb_debug_stream__camera_frames_active(void)
+{
+    return (s_sessionActive != 0U) && (s_streamEnabled != 0U) &&
+           (s_streamSource == AVC_USB_DEBUG_STREAM_SOURCE_CAMERA) && avc_usb_debug_stream__is_open();
+}
+
+static uint32_t avc_usb_debug_stream__bounded_text_length(const char *text, uint32_t maxLength)
+{
+    uint32_t length = 0U;
+
+    while ((length < maxLength) && (text[length] != '\0'))
+    {
+        length++;
+    }
+
+    return length;
+}
+
+bool avc_usb_debug_stream__log_text(uint8_t level, const char *category, const char *text)
+{
+    avc_usb_log_record_t record;
+    avc_usb_log_record_t *queuedRecord;
+    uint32_t usbOsaCurrentSr;
+    uint8_t queued = 0U;
+    uint8_t tail;
+
+    if ((s_logEnabled == 0U) || (s_sessionActive == 0U) || !avc_usb_debug_stream__is_open() ||
+        (level > AVC_DBG_LOG_LEVEL_ERROR) || (category == NULL) || (text == NULL))
+    {
+        return false;
+    }
+
+    record.timestampMs = e_tick__get_ms();
+    record.recordId = 0U;
+    record.level = level;
+    record.categoryLength = (uint8_t)avc_usb_debug_stream__bounded_text_length(
+        category,
+        AVC_USB_LOG_CATEGORY_MAX_BYTES);
+    record.textLength = (uint16_t)avc_usb_debug_stream__bounded_text_length(text, AVC_USB_LOG_TEXT_MAX_BYTES);
+    (void)memcpy(record.category, category, record.categoryLength);
+    (void)memcpy(record.text, text, record.textLength);
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if ((s_logEnabled != 0U) && (s_logCount < AVC_USB_LOG_QUEUE_DEPTH))
+    {
+        tail = (uint8_t)(s_logHead + s_logCount);
+        if (tail >= AVC_USB_LOG_QUEUE_DEPTH)
+        {
+            tail = (uint8_t)(tail - AVC_USB_LOG_QUEUE_DEPTH);
+        }
+
+        queuedRecord = &s_logQueue[tail];
+        (void)memcpy(queuedRecord, &record, sizeof(record));
+        queuedRecord->recordId = s_logNextRecordId;
+        s_logNextRecordId++;
+        s_logCount++;
+        if (s_logCount > s_logQueueHighWater)
+        {
+            s_logQueueHighWater = s_logCount;
+        }
+        queued = 1U;
+    }
+    else if (s_logEnabled != 0U)
+    {
+        s_logDropCount++;
+    }
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    if (queued != 0U)
+    {
+        avc_usb_debug_stream__schedule_tx();
+    }
+
+    return queued != 0U;
+}
+
+bool avc_usb_debug_stream__logf(uint8_t level, const char *category, const char *format, ...)
+{
+    char text[AVC_USB_LOG_TEXT_MAX_BYTES + 1U];
+    va_list arguments;
+    int result;
+
+    if ((s_logEnabled == 0U) || (s_sessionActive == 0U) || !avc_usb_debug_stream__is_open() ||
+        (format == NULL))
+    {
+        return false;
+    }
+
+    va_start(arguments, format);
+    result = vsnprintf(text, sizeof(text), format, arguments);
+    va_end(arguments);
+    if (result < 0)
+    {
+        return false;
+    }
+
+    return avc_usb_debug_stream__log_text(level, category, text);
+}
+
+static bool avc_usb_debug_stream__telemetry_scalar(const char *name,
+                                                   uint8_t valueType,
+                                                   uint32_t valueBits,
+                                                   const char *units)
+{
+    avc_usb_telemetry_scalar_t record;
+    avc_usb_telemetry_scalar_t *queuedRecord = NULL;
+    uint32_t usbOsaCurrentSr;
+    uint8_t index;
+    uint8_t queued = 0U;
+
+    if ((s_telemetryEnabled == 0U) || (s_sessionActive == 0U) || !avc_usb_debug_stream__is_open() ||
+        (name == NULL) || (name[0] == '\0') || (units == NULL) ||
+        (valueType < AVC_DBG_TELEMETRY_TYPE_I32) || (valueType > AVC_DBG_TELEMETRY_TYPE_BOOL))
+    {
+        return false;
+    }
+
+    record.timestampMs = e_tick__get_ms();
+    record.sampleId = 0U;
+    record.valueBits = valueBits;
+    record.valueType = valueType;
+    record.nameLength = (uint16_t)avc_usb_debug_stream__bounded_text_length(
+        name,
+        AVC_USB_TELEMETRY_NAME_MAX_BYTES);
+    record.unitsLength = (uint8_t)avc_usb_debug_stream__bounded_text_length(
+        units,
+        AVC_USB_TELEMETRY_UNITS_MAX_BYTES);
+    (void)memcpy(record.name, name, record.nameLength);
+    (void)memcpy(record.units, units, record.unitsLength);
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_telemetryEnabled != 0U)
+    {
+        for (uint8_t offset = 0U; offset < s_telemetryCount; offset++)
+        {
+            index = (uint8_t)(s_telemetryHead + offset);
+            if (index >= AVC_USB_TELEMETRY_QUEUE_DEPTH)
+            {
+                index = (uint8_t)(index - AVC_USB_TELEMETRY_QUEUE_DEPTH);
+            }
+
+            if ((s_telemetryQueue[index].nameLength == record.nameLength) &&
+                (memcmp(s_telemetryQueue[index].name, record.name, record.nameLength) == 0))
+            {
+                queuedRecord = &s_telemetryQueue[index];
+                s_telemetryCoalesceCount++;
+                break;
+            }
+        }
+
+        if ((queuedRecord == NULL) && (s_telemetryCount < AVC_USB_TELEMETRY_QUEUE_DEPTH))
+        {
+            index = (uint8_t)(s_telemetryHead + s_telemetryCount);
+            if (index >= AVC_USB_TELEMETRY_QUEUE_DEPTH)
+            {
+                index = (uint8_t)(index - AVC_USB_TELEMETRY_QUEUE_DEPTH);
+            }
+            queuedRecord = &s_telemetryQueue[index];
+            s_telemetryCount++;
+            if (s_telemetryCount > s_telemetryQueueHighWater)
+            {
+                s_telemetryQueueHighWater = s_telemetryCount;
+            }
+        }
+
+        if (queuedRecord != NULL)
+        {
+            (void)memcpy(queuedRecord, &record, sizeof(record));
+            queuedRecord->sampleId = s_telemetryNextSampleId;
+            s_telemetryNextSampleId++;
+            queued = 1U;
+        }
+        else
+        {
+            s_telemetryDropCount++;
+        }
+    }
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    if (queued != 0U)
+    {
+        avc_usb_debug_stream__schedule_tx();
+    }
+
+    return queued != 0U;
+}
+
+bool avc_usb_debug_stream__telemetry_i32(const char *name, int32_t value, const char *units)
+{
+    return avc_usb_debug_stream__telemetry_scalar(name,
+                                                  AVC_DBG_TELEMETRY_TYPE_I32,
+                                                  (uint32_t)value,
+                                                  units);
+}
+
+bool avc_usb_debug_stream__telemetry_u32(const char *name, uint32_t value, const char *units)
+{
+    return avc_usb_debug_stream__telemetry_scalar(name, AVC_DBG_TELEMETRY_TYPE_U32, value, units);
+}
+
+bool avc_usb_debug_stream__telemetry_f32(const char *name, float value, const char *units)
+{
+    uint32_t valueBits;
+
+    (void)memcpy(&valueBits, &value, sizeof(valueBits));
+    return avc_usb_debug_stream__telemetry_scalar(name, AVC_DBG_TELEMETRY_TYPE_F32, valueBits, units);
+}
+
+bool avc_usb_debug_stream__telemetry_bool(const char *name, bool value)
+{
+    return avc_usb_debug_stream__telemetry_scalar(name,
+                                                  AVC_DBG_TELEMETRY_TYPE_BOOL,
+                                                  value ? 1U : 0U,
+                                                  "");
+}
+
+void avc_usb_debug_stream__notify_camera_frame(void)
+{
+    s_cameraFrameGeneration++;
 }
 
 bool avc_usb_debug_stream__publish_frame(const uint16_t *frame)
@@ -375,6 +740,7 @@ bool avc_usb_debug_stream__publish_frame(const uint16_t *frame)
         (s_streamFrameActive == 0U))
     {
         s_streamFrameData = (const uint8_t *)frame;
+        s_streamFrameGeneration = s_cameraFrameGeneration;
         s_streamFrameId = s_streamNextFrameId;
         s_streamNextFrameId++;
         s_streamOffset = 0U;
@@ -391,42 +757,509 @@ bool avc_usb_debug_stream__publish_frame(const uint16_t *frame)
 
     if (accepted)
     {
-        avc_usb_debug_stream__send_next_chunk();
+        avc_usb_debug_stream__schedule_tx();
     }
 
     return accepted;
 }
 
-static void avc_usb_debug_stream__handle_command(const uint8_t *data, uint32_t length)
+static uint8_t avc_usb_debug_stream__queue_control_response(uint32_t msgId,
+                                                            uint32_t requestSequence,
+                                                            uint32_t status,
+                                                            const void *payload,
+                                                            uint32_t payloadLength)
 {
+    avc_usb_control_response_t *response;
+    uint8_t queued = 0U;
+    uint8_t tail;
+    uint32_t usbOsaCurrentSr;
+
+    if (payloadLength > AVC_USB_CONTROL_RESPONSE_PAYLOAD_BYTES)
+    {
+        return 0U;
+    }
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_controlResponseCount < AVC_USB_CONTROL_RESPONSE_QUEUE_DEPTH)
+    {
+        tail = (uint8_t)(s_controlResponseHead + s_controlResponseCount);
+        if (tail >= AVC_USB_CONTROL_RESPONSE_QUEUE_DEPTH)
+        {
+            tail = (uint8_t)(tail - AVC_USB_CONTROL_RESPONSE_QUEUE_DEPTH);
+        }
+
+        response = &s_controlResponseQueue[tail];
+        response->msgId = msgId;
+        response->requestSequence = requestSequence;
+        response->status = status;
+        response->sessionId = s_sessionId;
+        response->payloadLength = payloadLength;
+        if ((payload != NULL) && (payloadLength != 0U))
+        {
+            (void)memcpy(response->payload, payload, payloadLength);
+        }
+        s_controlResponseCount++;
+        if (s_controlResponseCount > s_controlResponseQueueHighWater)
+        {
+            s_controlResponseQueueHighWater = s_controlResponseCount;
+        }
+        queued = 1U;
+    }
+    else
+    {
+        s_controlResponseDropCount++;
+    }
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    return queued;
+}
+
+static uint8_t avc_usb_debug_stream__send_control_response(void)
+{
+    avc_usb_control_response_t response;
+    avc_dbg_packet_header_t *packetHeader;
+    uint32_t packetBytes;
+    uint32_t usbOsaCurrentSr;
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_controlResponseCount == 0U)
+    {
+        EnableGlobalIRQ(usbOsaCurrentSr);
+        return 0U;
+    }
+    (void)memcpy(&response, &s_controlResponseQueue[s_controlResponseHead], sizeof(response));
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    packetHeader = (avc_dbg_packet_header_t *)s_streamTxBuf;
+    packetHeader->magic = AVC_DBG_MAGIC;
+    packetHeader->version = AVC_DBG_VERSION;
+    packetHeader->header_bytes = AVC_DBG_PACKET_HEADER_BYTES;
+    packetHeader->flags = AVC_DBG_PACKET_FLAG_RESPONSE;
+    packetHeader->msg_id = response.msgId;
+    packetHeader->sequence = s_streamSequence;
+    packetHeader->payload_length = response.payloadLength;
+    packetHeader->arg0 = response.requestSequence;
+    packetHeader->arg1 = response.status;
+    packetHeader->arg2 = response.sessionId;
+
+    if (response.payloadLength != 0U)
+    {
+        (void)memcpy(&s_streamTxBuf[AVC_DBG_PACKET_HEADER_BYTES],
+                     response.payload,
+                     response.payloadLength);
+    }
+
+    packetBytes = AVC_DBG_PACKET_HEADER_BYTES + response.payloadLength;
+    if (avc_usb_debug_stream__submit_packet(packetBytes) != 0U)
+    {
+        usbOsaCurrentSr = DisableGlobalIRQ();
+        if (s_controlResponseCount != 0U)
+        {
+            s_controlResponseHead++;
+            if (s_controlResponseHead >= AVC_USB_CONTROL_RESPONSE_QUEUE_DEPTH)
+            {
+                s_controlResponseHead = 0U;
+            }
+            s_controlResponseCount--;
+        }
+        EnableGlobalIRQ(usbOsaCurrentSr);
+
+        if (s_txControlBurst < AVC_USB_TX_CONTROL_BURST_MAX)
+        {
+            s_txControlBurst++;
+        }
+        return 1U;
+    }
+
+    return 0U;
+}
+
+static uint8_t avc_usb_debug_stream__send_log_record(void)
+{
+    avc_usb_log_record_t record;
+    avc_dbg_log_record_t *wireRecord;
+    avc_dbg_packet_header_t *packetHeader;
+    uint32_t packetBytes;
+    uint32_t payloadBytes;
+    uint32_t usbOsaCurrentSr;
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_logCount == 0U)
+    {
+        EnableGlobalIRQ(usbOsaCurrentSr);
+        return 0U;
+    }
+    (void)memcpy(&record, &s_logQueue[s_logHead], sizeof(record));
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    payloadBytes = AVC_DBG_LOG_RECORD_HEADER_BYTES + record.categoryLength + record.textLength;
+    packetHeader = (avc_dbg_packet_header_t *)s_streamTxBuf;
+    packetHeader->magic = AVC_DBG_MAGIC;
+    packetHeader->version = AVC_DBG_VERSION;
+    packetHeader->header_bytes = AVC_DBG_PACKET_HEADER_BYTES;
+    packetHeader->flags = 0U;
+    packetHeader->msg_id = AVC_DBG_LOG_TEXT;
+    packetHeader->sequence = s_streamSequence;
+    packetHeader->payload_length = payloadBytes;
+    packetHeader->arg0 = record.level;
+    packetHeader->arg1 = record.recordId;
+    packetHeader->arg2 = record.timestampMs;
+
+    wireRecord = (avc_dbg_log_record_t *)&s_streamTxBuf[AVC_DBG_PACKET_HEADER_BYTES];
+    wireRecord->timestamp_ms = record.timestampMs;
+    wireRecord->record_id = record.recordId;
+    wireRecord->text_bytes = record.textLength;
+    wireRecord->level = record.level;
+    wireRecord->category_bytes = record.categoryLength;
+    (void)memcpy(&s_streamTxBuf[AVC_DBG_PACKET_HEADER_BYTES + AVC_DBG_LOG_RECORD_HEADER_BYTES],
+                 record.category,
+                 record.categoryLength);
+    (void)memcpy(&s_streamTxBuf[AVC_DBG_PACKET_HEADER_BYTES + AVC_DBG_LOG_RECORD_HEADER_BYTES +
+                               record.categoryLength],
+                 record.text,
+                 record.textLength);
+
+    packetBytes = AVC_DBG_PACKET_HEADER_BYTES + payloadBytes;
+    if (avc_usb_debug_stream__submit_packet(packetBytes) == 0U)
+    {
+        return 0U;
+    }
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_logCount != 0U)
+    {
+        s_logHead++;
+        if (s_logHead >= AVC_USB_LOG_QUEUE_DEPTH)
+        {
+            s_logHead = 0U;
+        }
+        s_logCount--;
+    }
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    if (s_txDiagnosticBurst < AVC_USB_TX_DIAGNOSTIC_BURST_MAX)
+    {
+        s_txDiagnosticBurst++;
+    }
+    return 1U;
+}
+
+static uint8_t avc_usb_debug_stream__send_telemetry_scalar(void)
+{
+    avc_usb_telemetry_scalar_t record;
+    avc_dbg_telemetry_scalar_t *wireRecord;
+    avc_dbg_packet_header_t *packetHeader;
+    uint32_t packetBytes;
+    uint32_t payloadBytes;
+    uint32_t usbOsaCurrentSr;
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_telemetryCount == 0U)
+    {
+        EnableGlobalIRQ(usbOsaCurrentSr);
+        return 0U;
+    }
+    (void)memcpy(&record, &s_telemetryQueue[s_telemetryHead], sizeof(record));
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    payloadBytes = AVC_DBG_TELEMETRY_SCALAR_HEADER_BYTES + record.nameLength + record.unitsLength;
+    packetHeader = (avc_dbg_packet_header_t *)s_streamTxBuf;
+    packetHeader->magic = AVC_DBG_MAGIC;
+    packetHeader->version = AVC_DBG_VERSION;
+    packetHeader->header_bytes = AVC_DBG_PACKET_HEADER_BYTES;
+    packetHeader->flags = 0U;
+    packetHeader->msg_id = AVC_DBG_TELEMETRY_SCALAR;
+    packetHeader->sequence = s_streamSequence;
+    packetHeader->payload_length = payloadBytes;
+    packetHeader->arg0 = record.valueType;
+    packetHeader->arg1 = record.sampleId;
+    packetHeader->arg2 = record.timestampMs;
+
+    wireRecord = (avc_dbg_telemetry_scalar_t *)&s_streamTxBuf[AVC_DBG_PACKET_HEADER_BYTES];
+    wireRecord->timestamp_ms = record.timestampMs;
+    wireRecord->sample_id = record.sampleId;
+    wireRecord->value_bits = record.valueBits;
+    wireRecord->name_bytes = record.nameLength;
+    wireRecord->value_type = record.valueType;
+    wireRecord->units_bytes = record.unitsLength;
+    (void)memcpy(&s_streamTxBuf[AVC_DBG_PACKET_HEADER_BYTES + AVC_DBG_TELEMETRY_SCALAR_HEADER_BYTES],
+                 record.name,
+                 record.nameLength);
+    (void)memcpy(&s_streamTxBuf[AVC_DBG_PACKET_HEADER_BYTES + AVC_DBG_TELEMETRY_SCALAR_HEADER_BYTES +
+                               record.nameLength],
+                 record.units,
+                 record.unitsLength);
+
+    packetBytes = AVC_DBG_PACKET_HEADER_BYTES + payloadBytes;
+    if (avc_usb_debug_stream__submit_packet(packetBytes) == 0U)
+    {
+        return 0U;
+    }
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_telemetryCount != 0U)
+    {
+        s_telemetryHead++;
+        if (s_telemetryHead >= AVC_USB_TELEMETRY_QUEUE_DEPTH)
+        {
+            s_telemetryHead = 0U;
+        }
+        s_telemetryCount--;
+    }
+    EnableGlobalIRQ(usbOsaCurrentSr);
+
+    if (s_txDiagnosticBurst < AVC_USB_TX_DIAGNOSTIC_BURST_MAX)
+    {
+        s_txDiagnosticBurst++;
+    }
+    return 1U;
+}
+
+static void avc_usb_debug_stream__handle_control_packet(const avc_dbg_packet_header_t *request)
+{
+    uint8_t logWasEnabled;
+    uint8_t telemetryWasEnabled;
+    uint32_t requestedChannels;
+    uint32_t requestedSource;
+
+    if ((request->flags & AVC_DBG_PACKET_FLAG_RESPONSE) != 0U)
+    {
+        return;
+    }
+
+    switch (request->msg_id)
+    {
+        case AVC_DBG_CONTROL_HELLO:
+        {
+            avc_dbg_control_hello_response_t hello;
+
+            avc_usb_debug_stream__stop();
+            s_logEnabled = 0U;
+            s_logHead = 0U;
+            s_logCount = 0U;
+            s_telemetryEnabled = 0U;
+            s_telemetryHead = 0U;
+            s_telemetryCount = 0U;
+            s_txDiagnosticBurst = 0U;
+            s_streamSequence = 0U;
+            s_sessionId++;
+            if (s_sessionId == 0U)
+            {
+                s_sessionId = 1U;
+            }
+            s_sessionActive = 1U;
+
+            hello.capability_flags = AVC_USB_CONTROL_CAPABILITIES;
+            hello.active_channel_flags = 0U;
+            hello.max_packet_bytes = AVC_USB_STREAM_TX_BYTES;
+            hello.frame_width = (uint16_t)AVC_USB_STREAM_FRAME_WIDTH;
+            hello.frame_height = (uint16_t)AVC_USB_STREAM_FRAME_HEIGHT;
+            hello.pixel_format = AVC_DBG_PIXEL_FORMAT_RGB565_LE;
+            hello.reserved = 0U;
+            hello.session_id = s_sessionId;
+
+            (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_HELLO,
+                                                               request->sequence,
+                                                               AVC_DBG_CONTROL_STATUS_OK,
+                                                               &hello,
+                                                               sizeof(hello));
+            break;
+        }
+
+        case AVC_DBG_CONTROL_SET_CHANNELS:
+            if (s_sessionActive == 0U)
+            {
+                (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_SET_CHANNELS,
+                                                                   request->sequence,
+                                                                   AVC_DBG_CONTROL_STATUS_SESSION_REQUIRED,
+                                                                   NULL,
+                                                                   0U);
+                break;
+            }
+
+            requestedChannels = request->arg0;
+            requestedSource = request->arg1;
+            if (((requestedChannels & ~AVC_USB_CONTROL_SUPPORTED_CHANNELS) != 0U) ||
+                (((requestedChannels & AVC_DBG_CHANNEL_STATS) != 0U) &&
+                 ((requestedChannels & AVC_DBG_CHANNEL_FRAMES) == 0U)) ||
+                (((requestedChannels & AVC_DBG_CHANNEL_STATS) != 0U) &&
+                 (requestedSource == AVC_DBG_STREAM_SOURCE_SYNTHETIC)) ||
+                (requestedSource > AVC_DBG_STREAM_SOURCE_SYNTHETIC))
+            {
+                (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_SET_CHANNELS,
+                                                                   request->sequence,
+                                                                   AVC_DBG_CONTROL_STATUS_BAD_ARGUMENT,
+                                                                   NULL,
+                                                                   0U);
+                break;
+            }
+
+            logWasEnabled = s_logEnabled;
+            telemetryWasEnabled = s_telemetryEnabled;
+            s_logEnabled = ((requestedChannels & AVC_DBG_CHANNEL_LOGS) != 0U) ? 1U : 0U;
+            s_telemetryEnabled = ((requestedChannels & AVC_DBG_CHANNEL_TELEMETRY) != 0U) ? 1U : 0U;
+            if (s_logEnabled == 0U)
+            {
+                s_logHead = 0U;
+                s_logCount = 0U;
+                s_txDiagnosticBurst = 0U;
+            }
+            if (s_telemetryEnabled == 0U)
+            {
+                s_telemetryHead = 0U;
+                s_telemetryCount = 0U;
+                s_txDiagnosticBurst = 0U;
+            }
+
+            if ((requestedChannels & AVC_DBG_CHANNEL_FRAMES) == 0U)
+            {
+                avc_usb_debug_stream__stop();
+            }
+            else
+            {
+                s_statsEnabled = ((requestedChannels & AVC_DBG_CHANNEL_STATS) != 0U) ? 1U : 0U;
+                avc_usb_debug_stream__start_source((avc_usb_debug_stream_source_t)requestedSource);
+            }
+
+            (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_SET_CHANNELS,
+                                                               request->sequence,
+                                                               AVC_DBG_CONTROL_STATUS_OK,
+                                                               NULL,
+                                                               0U);
+            if ((s_logEnabled != 0U) && (logWasEnabled == 0U))
+            {
+                (void)avc_usb_debug_stream__log_text(AVC_DBG_LOG_LEVEL_INFO,
+                                                     "system",
+                                                     "USB diagnostic log channel active");
+            }
+            if ((s_telemetryEnabled != 0U) && (telemetryWasEnabled == 0U))
+            {
+                (void)avc_usb_debug_stream__telemetry_u32("system.uptime", e_tick__get_ms(), "ms");
+            }
+            break;
+
+        case AVC_DBG_CONTROL_PING:
+            (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_PING,
+                                                               request->sequence,
+                                                               (s_sessionActive != 0U)
+                                                                   ? AVC_DBG_CONTROL_STATUS_OK
+                                                                   : AVC_DBG_CONTROL_STATUS_SESSION_REQUIRED,
+                                                               NULL,
+                                                               0U);
+            break;
+
+        case AVC_DBG_CONTROL_CLOSE:
+            avc_usb_debug_stream__stop();
+            (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_CLOSE,
+                                                               request->sequence,
+                                                               AVC_DBG_CONTROL_STATUS_OK,
+                                                               NULL,
+                                                               0U);
+            s_logEnabled = 0U;
+            s_logHead = 0U;
+            s_logCount = 0U;
+            s_telemetryEnabled = 0U;
+            s_telemetryHead = 0U;
+            s_telemetryCount = 0U;
+            s_txDiagnosticBurst = 0U;
+            s_sessionActive = 0U;
+            break;
+
+        default:
+            (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_ERROR,
+                                                               request->sequence,
+                                                               AVC_DBG_CONTROL_STATUS_UNSUPPORTED,
+                                                               NULL,
+                                                               0U);
+            break;
+    }
+}
+
+static void avc_usb_debug_stream__consume_control_rx(uint32_t bytes)
+{
+    if (bytes >= s_controlRxLength)
+    {
+        s_controlRxLength = 0U;
+        return;
+    }
+
+    (void)memmove(s_controlRxBuffer, &s_controlRxBuffer[bytes], s_controlRxLength - bytes);
+    s_controlRxLength -= bytes;
+}
+
+static void avc_usb_debug_stream__handle_received_data(const uint8_t *data, uint32_t length)
+{
+    avc_dbg_packet_header_t request;
+    uint32_t packetBytes;
+
     if ((data == NULL) || (length == 0U))
     {
         return;
     }
 
-    s_streamRxCommandCount++;
-
-    if ((data[0] == (uint8_t)'0') || avc_usb_debug_stream__command_matches(data, length, "STOP"))
+    if (length > (AVC_USB_CONTROL_RX_BYTES - s_controlRxLength))
     {
-        avc_usb_debug_stream__stop();
+        s_controlRxLength = 0U;
         return;
     }
 
-    if (avc_usb_debug_stream__command_matches(data, length, "START_SYNTH") ||
-        avc_usb_debug_stream__command_matches(data, length, "SYNTH"))
-    {
-        avc_usb_debug_stream__start_synthetic();
-        return;
-    }
+    (void)memcpy(&s_controlRxBuffer[s_controlRxLength], data, length);
+    s_controlRxLength += length;
 
-    if ((data[0] == (uint8_t)'1') || avc_usb_debug_stream__command_matches(data, length, "START") ||
-        avc_usb_debug_stream__command_matches(data, length, "GO"))
+    while (s_controlRxLength >= AVC_DBG_PACKET_HEADER_BYTES)
     {
-        avc_usb_debug_stream__start();
+        (void)memcpy(&request, s_controlRxBuffer, sizeof(request));
+        if (request.magic != AVC_DBG_MAGIC)
+        {
+            avc_usb_debug_stream__consume_control_rx(1U);
+            continue;
+        }
+
+        if ((request.version != AVC_DBG_VERSION) ||
+            (request.header_bytes != AVC_DBG_PACKET_HEADER_BYTES) ||
+            (request.payload_length > AVC_USB_CONTROL_MAX_PAYLOAD_BYTES))
+        {
+            avc_usb_debug_stream__consume_control_rx(1U);
+            continue;
+        }
+
+        packetBytes = AVC_DBG_PACKET_HEADER_BYTES + request.payload_length;
+        if (s_controlRxLength < packetBytes)
+        {
+            return;
+        }
+
+        s_streamRxCommandCount++;
+        avc_usb_debug_stream__handle_control_packet(&request);
+        avc_usb_debug_stream__consume_control_rx(packetBytes);
     }
 }
 
-static void avc_usb_debug_stream__send_next_chunk(void)
+static uint8_t avc_usb_debug_stream__send_next_diagnostic(void)
+{
+    if ((s_txPreferTelemetry != 0U) && (s_telemetryCount != 0U) &&
+        (avc_usb_debug_stream__send_telemetry_scalar() != 0U))
+    {
+        s_txPreferTelemetry = 0U;
+        return 1U;
+    }
+
+    if ((s_logCount != 0U) && (avc_usb_debug_stream__send_log_record() != 0U))
+    {
+        s_txPreferTelemetry = 1U;
+        return 1U;
+    }
+
+    if ((s_telemetryCount != 0U) && (avc_usb_debug_stream__send_telemetry_scalar() != 0U))
+    {
+        s_txPreferTelemetry = 0U;
+        return 1U;
+    }
+
+    return 0U;
+}
+
+static void avc_usb_debug_stream__schedule_tx(void)
 {
     uint32_t payloadBytes;
     uint32_t packetPayloadBytes;
@@ -435,9 +1268,10 @@ static void avc_usb_debug_stream__send_next_chunk(void)
     const uint8_t *sourceFrameData = NULL;
     avc_dbg_packet_header_t *packetHeader;
     avc_dbg_rui_write_frame_buffer_raw_t *frameChunk;
-    usb_status_t error;
+    uint8_t framePending;
+    uint8_t nonControlPending;
 
-    if ((s_streamEnabled == 0U) || !avc_usb_debug_stream__is_open())
+    if (!avc_usb_debug_stream__is_open())
     {
         return;
     }
@@ -447,7 +1281,44 @@ static void avc_usb_debug_stream__send_next_chunk(void)
         return;
     }
 
+    framePending = ((s_streamEnabled != 0U) &&
+                    ((s_streamSource == AVC_USB_DEBUG_STREAM_SOURCE_SYNTHETIC) ||
+                     (s_streamFrameActive != 0U)))
+                       ? 1U
+                       : 0U;
+    nonControlPending = ((s_streamStatsDue != 0U) || (s_logCount != 0U) || (s_telemetryCount != 0U) ||
+                         (framePending != 0U))
+                            ? 1U
+                            : 0U;
+
+    /* Control replies preempt bulk data between packets, but a command flood
+     * cannot indefinitely starve an already-pending diagnostic packet. */
+    if ((s_controlResponseCount != 0U) &&
+        ((s_txControlBurst < AVC_USB_TX_CONTROL_BURST_MAX) || (nonControlPending == 0U)) &&
+        (avc_usb_debug_stream__send_control_response() != 0U))
+    {
+        return;
+    }
+
     if (avc_usb_debug_stream__send_stats_report() != 0U)
+    {
+        s_txControlBurst = 0U;
+        if (s_txDiagnosticBurst < AVC_USB_TX_DIAGNOSTIC_BURST_MAX)
+        {
+            s_txDiagnosticBurst++;
+        }
+        return;
+    }
+
+    if (((s_logCount != 0U) || (s_telemetryCount != 0U)) &&
+        ((s_txDiagnosticBurst < AVC_USB_TX_DIAGNOSTIC_BURST_MAX) || (framePending == 0U)) &&
+        (avc_usb_debug_stream__send_next_diagnostic() != 0U))
+    {
+        s_txControlBurst = 0U;
+        return;
+    }
+
+    if (s_streamEnabled == 0U)
     {
         return;
     }
@@ -460,6 +1331,16 @@ static void avc_usb_debug_stream__send_next_chunk(void)
         }
 
         sourceFrameData = s_streamFrameData;
+        if ((s_cameraFrameGeneration - s_streamFrameGeneration) >= CONFIG__CAMERA_FRAME_BUFFER_COUNT)
+        {
+            s_streamFrameData = NULL;
+            s_streamFrameActive = 0U;
+            s_streamOffset = 0U;
+            s_streamDroppedFrameCount++;
+            s_streamDroppedBeforePacket = 1U;
+            s_streamFrameResyncPending = 1U;
+            return;
+        }
     }
 
     remaining = AVC_USB_STREAM_FRAME_BYTES - s_streamOffset;
@@ -476,6 +1357,16 @@ static void avc_usb_debug_stream__send_next_chunk(void)
     if (sourceFrameData != NULL)
     {
         (void)memcpy(&s_streamTxBuf[AVC_USB_STREAM_DATA_OFFSET], &sourceFrameData[s_streamOffset], payloadBytes);
+        if ((s_cameraFrameGeneration - s_streamFrameGeneration) >= CONFIG__CAMERA_FRAME_BUFFER_COUNT)
+        {
+            s_streamFrameData = NULL;
+            s_streamFrameActive = 0U;
+            s_streamOffset = 0U;
+            s_streamDroppedFrameCount++;
+            s_streamDroppedBeforePacket = 1U;
+            s_streamFrameResyncPending = 1U;
+            return;
+        }
     }
 
     packetPayloadBytes = AVC_DBG_RUI_WRITE_FRAME_BUFFER_RAW_HEADER_BYTES + payloadBytes;
@@ -484,7 +1375,9 @@ static void avc_usb_debug_stream__send_next_chunk(void)
     packetHeader->magic = AVC_DBG_MAGIC;
     packetHeader->version = AVC_DBG_VERSION;
     packetHeader->header_bytes = AVC_DBG_PACKET_HEADER_BYTES;
-    packetHeader->flags = (s_streamDroppedBeforePacket != 0U) ? AVC_DBG_PACKET_FLAG_DROPPED_BEFORE : 0U;
+    packetHeader->flags = ((s_streamDroppedBeforePacket != 0U) || (s_streamFrameResyncPending != 0U))
+                              ? AVC_DBG_PACKET_FLAG_DROPPED_BEFORE
+                              : 0U;
     packetHeader->msg_id = AVC_DBG_RUI_WRITE_FRAME_BUFFER_RAW;
     packetHeader->sequence = s_streamSequence;
     packetHeader->payload_length = packetPayloadBytes;
@@ -502,17 +1395,15 @@ static void avc_usb_debug_stream__send_next_chunk(void)
     frameChunk->buffer_id = 0U;
     frameChunk->chunk_flags = chunkFlags;
 
-    error = USB_DeviceCdcAcmSend(s_cdcVcom.cdcAcmHandle,
-                                 USB_CDC_VCOM_BULK_IN_ENDPOINT,
-                                 s_streamTxBuf,
-                                 AVC_DBG_PACKET_HEADER_BYTES + packetPayloadBytes);
-    if (error == kStatus_USB_Success)
+    if (avc_usb_debug_stream__submit_packet(AVC_DBG_PACKET_HEADER_BYTES + packetPayloadBytes) != 0U)
     {
-        s_streamTxBusy = 1U;
-        s_streamSequence++;
-        s_streamPacketsSent++;
-        s_streamBytesSent += AVC_DBG_PACKET_HEADER_BYTES + packetPayloadBytes;
+        s_txControlBurst = 0U;
+        s_txDiagnosticBurst = 0U;
         s_streamDroppedBeforePacket = 0U;
+        if ((chunkFlags & AVC_DBG_RUI_CHUNK_FRAME_START) != 0U)
+        {
+            s_streamFrameResyncPending = 0U;
+        }
         if ((chunkFlags & AVC_DBG_RUI_CHUNK_FRAME_END) != 0U)
         {
             s_streamOffset = 0U;
@@ -532,14 +1423,6 @@ static void avc_usb_debug_stream__send_next_chunk(void)
         {
             s_streamOffset += payloadBytes;
         }
-    }
-    else if (error == kStatus_USB_Busy)
-    {
-        s_streamBusyCount++;
-    }
-    else
-    {
-        s_streamSendErrorCount++;
     }
 }
 
@@ -621,6 +1504,8 @@ void avc_usb_debug_stream__init(void)
     s_streamEnabled = 0U;
     s_streamTxBusy = 0U;
     s_streamFrameActive = 0U;
+    s_sessionActive = 0U;
+    s_statsEnabled = 0U;
     s_streamSource = AVC_USB_DEBUG_STREAM_SOURCE_CAMERA;
     s_streamFrameData = NULL;
     s_streamFrameId = 0U;
@@ -637,6 +1522,43 @@ void avc_usb_debug_stream__init(void)
     s_streamRxCommandCount = 0U;
     s_streamStatsDue = 0U;
     s_streamDroppedBeforePacket = 0U;
+    s_streamFrameResyncPending = 0U;
+    s_cameraFrameGeneration = 0U;
+    s_streamFrameGeneration = 0U;
+    s_sessionId = 0U;
+    s_controlRxLength = 0U;
+    (void)memset(s_controlResponseQueue, 0, sizeof(s_controlResponseQueue));
+    s_controlResponseHead = 0U;
+    s_controlResponseCount = 0U;
+    s_txControlBurst = 0U;
+    s_controlResponseDropCount = 0U;
+    s_controlResponseQueueHighWater = 0U;
+    (void)memset(s_logQueue, 0, sizeof(s_logQueue));
+    s_logHead = 0U;
+    s_logCount = 0U;
+    s_logEnabled = 0U;
+    s_txDiagnosticBurst = 0U;
+    s_logNextRecordId = 0U;
+    s_logDropCount = 0U;
+    s_logQueueHighWater = 0U;
+    (void)memset(s_telemetryQueue, 0, sizeof(s_telemetryQueue));
+    s_telemetryHead = 0U;
+    s_telemetryCount = 0U;
+    s_telemetryEnabled = 0U;
+    s_txPreferTelemetry = 0U;
+    s_telemetryNextSampleId = 0U;
+    s_telemetryDropCount = 0U;
+    s_telemetryQueueHighWater = 0U;
+    s_telemetryCoalesceCount = 0U;
+#if CONFIG__USB_DEBUG_PROFILE_ENABLE
+    s_profileReportTick = e_tick__get_ms();
+    s_profileCalls = 0U;
+    s_profileOpenCalls = 0U;
+    s_profileValidSamples = 0U;
+    s_profileInterruptedSamples = 0U;
+    s_profileTotalCycles = 0U;
+    s_profileMaxCycles = 0U;
+#endif
     avc_usb_debug_stream__fill_static_payload();
 
     if (USB_DeviceClassInit(AVC_USB_CONTROLLER_ID, &s_cdcAcmConfigList, &s_cdcVcom.deviceHandle) !=
@@ -661,9 +1583,15 @@ void avc_usb_debug_stream__service(void)
     uint32_t usbOsaCurrentSr;
     uint32_t recvSize = 0U;
     usb_status_t error;
+#if CONFIG__USB_DEBUG_PROFILE_ENABLE
+    uint32_t profileStartCycles = DWT->CYCCNT;
+#endif
 
     if (!avc_usb_debug_stream__is_open())
     {
+#if CONFIG__USB_DEBUG_PROFILE_ENABLE
+        avc_usb_debug_stream__profile_service(profileStartCycles, 0U);
+#endif
         return;
     }
 
@@ -677,7 +1605,7 @@ void avc_usb_debug_stream__service(void)
         }
         EnableGlobalIRQ(usbOsaCurrentSr);
 
-        avc_usb_debug_stream__handle_command(s_currRecvBuf, recvSize);
+        avc_usb_debug_stream__handle_received_data(s_currRecvBuf, recvSize);
 
         error = USB_DeviceCdcAcmRecv(s_cdcVcom.cdcAcmHandle,
                                      USB_CDC_VCOM_BULK_OUT_ENDPOINT,
@@ -689,7 +1617,10 @@ void avc_usb_debug_stream__service(void)
         }
     }
 
-    avc_usb_debug_stream__send_next_chunk();
+    avc_usb_debug_stream__schedule_tx();
+#if CONFIG__USB_DEBUG_PROFILE_ENABLE
+    avc_usb_debug_stream__profile_service(profileStartCycles, 1U);
+#endif
 }
 
 static usb_status_t avc_usb_debug_stream__cdc_callback(class_handle_t handle, uint32_t event, void *param)
@@ -713,7 +1644,7 @@ static usb_status_t avc_usb_debug_stream__cdc_callback(class_handle_t handle, ui
             if (epCbParam->buffer == s_streamTxBuf)
             {
                 s_streamTxBusy = 0U;
-                avc_usb_debug_stream__send_next_chunk();
+                avc_usb_debug_stream__schedule_tx();
             }
             error = kStatus_USB_Success;
             break;
@@ -731,6 +1662,17 @@ static usb_status_t avc_usb_debug_stream__cdc_callback(class_handle_t handle, ui
                                                  s_currRecvBuf,
                                                  g_UsbDeviceCdcVcomDicEndpoints[1].maxPacketSize);
                 }
+            }
+            else
+            {
+                /* A generic host may write with DTR low. Discard that data and
+                 * keep bulk OUT armed so the next recognized session can send
+                 * HELLO without requiring a USB bus reset. */
+                s_recvSize = 0U;
+                error = USB_DeviceCdcAcmRecv(handle,
+                                             USB_CDC_VCOM_BULK_OUT_ENDPOINT,
+                                             s_currRecvBuf,
+                                             g_UsbDeviceCdcVcomDicEndpoints[1].maxPacketSize);
             }
             break;
 
@@ -847,7 +1789,30 @@ static usb_status_t avc_usb_debug_stream__cdc_callback(class_handle_t handle, ui
                 else
                 {
                     s_cdcVcom.startTransactions = 0U;
+                    s_recvSize = 0U;
                     avc_usb_debug_stream__stop();
+                    s_sessionActive = 0U;
+                    s_controlRxLength = 0U;
+                    s_controlResponseHead = 0U;
+                    s_controlResponseCount = 0U;
+                    s_txControlBurst = 0U;
+                    s_controlResponseDropCount = 0U;
+                    s_controlResponseQueueHighWater = 0U;
+                    s_logHead = 0U;
+                    s_logCount = 0U;
+                    s_logEnabled = 0U;
+                    s_txDiagnosticBurst = 0U;
+                    s_logNextRecordId = 0U;
+                    s_logDropCount = 0U;
+                    s_logQueueHighWater = 0U;
+                    s_telemetryHead = 0U;
+                    s_telemetryCount = 0U;
+                    s_telemetryEnabled = 0U;
+                    s_txPreferTelemetry = 0U;
+                    s_telemetryNextSampleId = 0U;
+                    s_telemetryDropCount = 0U;
+                    s_telemetryQueueHighWater = 0U;
+                    s_telemetryCoalesceCount = 0U;
                 }
             }
             error = kStatus_USB_Success;
@@ -874,6 +1839,28 @@ static usb_status_t avc_usb_debug_stream__device_callback(usb_device_handle hand
             s_cdcVcom.currentConfiguration = 0U;
             s_streamTxBusy = 0U;
             avc_usb_debug_stream__stop();
+            s_sessionActive = 0U;
+            s_controlRxLength = 0U;
+            s_controlResponseHead = 0U;
+            s_controlResponseCount = 0U;
+            s_txControlBurst = 0U;
+            s_controlResponseDropCount = 0U;
+            s_controlResponseQueueHighWater = 0U;
+            s_logHead = 0U;
+            s_logCount = 0U;
+            s_logEnabled = 0U;
+            s_txDiagnosticBurst = 0U;
+            s_logNextRecordId = 0U;
+            s_logDropCount = 0U;
+            s_logQueueHighWater = 0U;
+            s_telemetryHead = 0U;
+            s_telemetryCount = 0U;
+            s_telemetryEnabled = 0U;
+            s_txPreferTelemetry = 0U;
+            s_telemetryNextSampleId = 0U;
+            s_telemetryDropCount = 0U;
+            s_telemetryQueueHighWater = 0U;
+            s_telemetryCoalesceCount = 0U;
             error = kStatus_USB_Success;
 
             if (USB_DeviceClassGetSpeed(AVC_USB_CONTROLLER_ID, &s_cdcVcom.speed) == kStatus_USB_Success)
@@ -890,6 +1877,28 @@ static usb_status_t avc_usb_debug_stream__device_callback(usb_device_handle hand
                 s_cdcVcom.currentConfiguration = 0U;
                 s_streamTxBusy = 0U;
                 avc_usb_debug_stream__stop();
+                s_sessionActive = 0U;
+                s_controlRxLength = 0U;
+                s_controlResponseHead = 0U;
+                s_controlResponseCount = 0U;
+                s_txControlBurst = 0U;
+                s_controlResponseDropCount = 0U;
+                s_controlResponseQueueHighWater = 0U;
+                s_logHead = 0U;
+                s_logCount = 0U;
+                s_logEnabled = 0U;
+                s_txDiagnosticBurst = 0U;
+                s_logNextRecordId = 0U;
+                s_logDropCount = 0U;
+                s_logQueueHighWater = 0U;
+                s_telemetryHead = 0U;
+                s_telemetryCount = 0U;
+                s_telemetryEnabled = 0U;
+                s_txPreferTelemetry = 0U;
+                s_telemetryNextSampleId = 0U;
+                s_telemetryDropCount = 0U;
+                s_telemetryQueueHighWater = 0U;
+                s_telemetryCoalesceCount = 0U;
                 error = kStatus_USB_Success;
             }
             else if (*temp8 == USB_CDC_VCOM_CONFIGURE_INDEX)

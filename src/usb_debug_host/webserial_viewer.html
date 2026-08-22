@@ -73,6 +73,14 @@
             <dd id="statsPacketCount">0</dd>
           </div>
           <div>
+            <dt>Logs</dt>
+            <dd id="logRecordCount">0</dd>
+          </div>
+          <div>
+            <dt>Telemetry</dt>
+            <dd id="telemetrySampleCount">0</dd>
+          </div>
+          <div>
             <dt>Errors</dt>
             <dd id="errorCount">0</dd>
           </div>
@@ -102,6 +110,35 @@
           </div>
         </dl>
       </aside>
+    </section>
+
+    <section class="log-panel" aria-label="Device diagnostic log">
+      <h2>Device Log</h2>
+      <div id="logConsole" class="log-console" role="log" aria-live="polite"></div>
+    </section>
+
+    <section class="plot-panel" aria-label="Selected telemetry plots">
+      <div class="panel-heading">
+        <div>
+          <h2>Telemetry Plots</h2>
+          <p>Select signals in the telemetry table. Each signal auto-scales independently.</p>
+        </div>
+        <span id="plotStatus">Waiting for selected telemetry</span>
+      </div>
+      <div id="plotLegend" class="plot-legend" aria-label="Plot legend"></div>
+      <canvas id="telemetryPlotCanvas" width="1200" height="300" aria-label="Rolling telemetry plot"></canvas>
+    </section>
+
+    <section class="telemetry-panel" aria-label="Discovered device telemetry">
+      <h2>Telemetry</h2>
+      <div class="telemetry-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Plot</th><th>Name</th><th>Value</th><th>Units</th><th>Type</th><th>Time</th></tr>
+          </thead>
+          <tbody id="telemetryTableBody"></tbody>
+        </table>
+      </div>
     </section>
   </main>
 

@@ -66,12 +66,15 @@ void lpspi1_set_frame_size(uint8_t transaction_bits)
  *
  * LPSPI_MasterSetBaudRate searches for the closest achievable divider and does
  * not report when it cannot reach the request, so the configured
- * CONFIG__TRANSFER_BAUDRATE is a wish rather than a fact. The truth is in the
- * registers:
+ * CONFIG__TRANSFER_BAUDRATE is a wish rather than a fact. A register-derived
+ * diagnostic estimate is:
  *
  *     SCK = srcClock / (2^PRESCALE * (SCKDIV + 2))
  *
- * Reading it back answers the clock question exactly, with no scope needed.
+ * Do not treat this estimate as authoritative: the final divider experiment
+ * contradicted earlier register-derived clock conclusions. Use the P4_1 scope
+ * marker or measured transfer duration for timing claims. See
+ * docs/research/AVC_LCD_SPI_Design.md.
  */
 uint32_t lpspi1_get_actual_sck_hz(uint32_t *src_hz_out,
                                   uint8_t *sckdiv_out,
@@ -89,8 +92,9 @@ uint32_t lpspi1_get_actual_sck_hz(uint32_t *src_hz_out,
 }
 
 /*
- * Print the clock the hardware settled on, and the request it came from.
- * Lives here because CONFIG__TRANSFER_BAUDRATE is local to this file.
+ * Print the register-derived diagnostic estimate and the request it came from.
+ * Lives here because CONFIG__TRANSFER_BAUDRATE is local to this file; this is
+ * not a substitute for a measured transfer duration or scope observation.
  */
 void lpspi1_report_clock(void)
 {

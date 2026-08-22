@@ -2,7 +2,7 @@
 
 Status: viability proof complete; follow-up owned by `docs/plans/usb-debug-telemetry`
 
-Last updated: 2026-08-21
+Last updated: 2026-08-22
 
 ## Summary
 
@@ -20,10 +20,10 @@ The competition default now includes the session-gated transport; realistic
 mode/disconnect validation remains active-plan work. Basic feasibility does not
 need to be re-proven.
 
-This is also the stable host boundary for the Android bridge. Android feasibility
-does not require a new firmware mode or protocol: it can claim the CDC interface,
-complete the same framed session, and consume the same packets as the three existing
-hosts.
+This is also the implemented host boundary for the Android bridge. The Moto claims the
+CDC interface, completes the same framed session, and consumes the same packets as the
+native, Python, and Web Serial hosts. No Android-specific firmware mode or packet type
+was added.
 
 ## Implemented Path
 
@@ -51,6 +51,10 @@ Host tools:
   `src/usb_debug_host/webserial_viewer.html`,
   `src/usb_debug_host/webserial_viewer.js`,
   `src/usb_debug_host/webserial_viewer.css`.
+- Self-contained WebSerial handoff:
+  `src/usb_debug_host/avc_usb_debug_viewer.html`.
+- Native Android USB host and one-browser Wi-Fi relay:
+  `src/android/avc_bridge`.
 
 ## Wire Protocol
 
@@ -232,38 +236,34 @@ The active work is consolidated in
 - physical USB unplug/replug and additional host-only parser cases;
 - remaining realistic disconnected/connected mode validation.
 
-Native SDL tooling, an Android application, UVC, LCD removal, and general eGFX
-replacement are intentionally outside that race-week plan.
+Native SDL tooling, UVC, LCD removal, and general eGFX replacement are intentionally
+outside that race-week plan. The Android application is implemented and tracked by its
+separate plan.
 
-The Android consumer is implemented separately under
-`src/android/avc_bridge` and tracked by
-`docs/plans/android-telemetry-bridge/plan.md`. On 2026-08-21 the Moto G Power 5G
-(2023), Android 14/API 34, enumerated the real car as `WAVENUMBER AVC` (`1FC9:0094`)
-through a USB-C OTG adapter and USB-A-to-C data cable. The native app claimed the CDC
-bulk interface and repeatedly completed framed `HELLO`, `SET_CHANNELS(0)`, `PING`, and
-`CLOSE`. Its pinned command-line toolchain, eight JVM protocol fixtures, wireless adb
-deployment loop, structured health logging, and Android lint all pass. The bounded
-three-buffer phone preview now displays the live RGB565 camera at about 23.42 FPS and
-2.869 MiB/s with zero sequence or malformed-chunk errors in the recorded sustained run.
-Graceful close and immediate reopen pass. The phone now also serves a standalone page on
-port 8765 and preserves `AVCU` framing over a one-client binary WebSocket. Desktop Chrome
-on the controlled `yellow` 5 GHz network rendered decimated live video and generic
-`system.uptime` telemetry while the USB counters remained clean. The relay uses an
-independent fixed three-buffer latest-frame mailbox, and the unattended verification
-script validates complete contiguous frames without visual assistance. A two-second
-send watchdog contains stalled TCP writes as client-local failures. Six consecutive
-non-reading-client tests kept USB advancing, held warm app PSS around 56-59 MiB, and
-successfully reconnected to a recent complete frame after every forced close. Physical
-vehicle and race-network validation remain the next Android step. A separate six-cycle
-abrupt app-process test recovered distinct firmware sessions 27-32, clean USB video,
-telemetry, and recent relay frames without touching the cable. It also exposed and fixed
-an Android restart case that created an IPv6-only wildcard listener behind an IPv4 URL;
-the server now explicitly uses the IPv4 stack and active WLAN address.
-The bridge also runs a connected-device foreground service with CPU and Wi-Fi locks while
-the activity owns the session. With Android reporting `Dozing`, screen off, and light
-idle, the laptop still received recent complete frames and USB remained at 23.42 FPS and
-2.869 MiB/s. A 30-second loaded sample held 27 C, 49-60 MiB PSS, and approximately
-427-588 mA discharge. Longer battery/thermal and physical vehicle tests remain open.
+The Android consumer is implemented separately under `src/android/avc_bridge` and tracked
+by `docs/plans/android-telemetry-bridge/plan.md`. On the real Rev A car, the Moto G Power
+5G (2023), Android 14/API 34, enumerates `WAVENUMBER AVC` (`1FC9:0094`) through the proven
+OTG-adapter/A-to-C cable topology. Persistent USB association reopens sequential sessions
+after physical detach/attach without another prompt. The app repeatedly completes framed
+`HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`; sustained input remains about 23.42 FPS and
+2.869 MiB/s with zero sequence or malformed-chunk errors.
+
+The phone serves a self-contained one-browser page on port 8765 and forwards generic
+telemetry as normal `AVCU`. The browser selects full-rate JPEG (`AVCJ`), fragmented-MP4
+H.264 (`AVC4`), or diagnostic RGB565 (`AVCR`) without restarting the app; JPEG is the
+default. A same-process 120-frame run measured 23.706 FPS / 3.135 Mbit/s JPEG, 22.696 FPS
+/ 0.740 Mbit/s H.264, and 23.347 FPS / 23.907 Mbit/s raw while the USB parser stayed
+clean. These three downstream envelopes are phone-to-browser representations, not
+firmware protocol extensions.
+
+The phone UI is now limited to the live image, connection/mode, usable URL, and a large
+disconnected overlay. Detailed health remains in logcat and `/health`. Independent fixed
+mailboxes, latest-frame semantics, and a two-second send watchdog keep Wi-Fi work from
+blocking USB. Raw and compressed slow-client proofs, repeated app restarts, physical USB
+reconnects, Soft AP plus wireless adb, and screen-off `Dozing` operation have passed.
+Remaining Android work is secured 5 GHz/venue RF, race-duration battery and thermal
+validation, stale-session recovery after a power-only car restart, and the parked move of
+long-lived ownership from the activity into a foreground service.
 
 ## Hardware and Event Implication
 

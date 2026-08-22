@@ -14,18 +14,36 @@ import serial
 MAGIC = b"AVCU"
 PACKET_HEADER_SIZE = 32
 RUI_FRAME_CHUNK_HEADER_SIZE = 24
-STATS_REPORT_SIZE = 48
+LOG_RECORD_HEADER_SIZE = 12
+TELEMETRY_SCALAR_HEADER_SIZE = 16
+STATS_REPORT_SIZE = 76
+HELLO_RESPONSE_SIZE = 24
 FRAME_BYTES = 320 * 200 * 2
 PACKET_PAYLOAD_MAX_BYTES = (16 * 1024) - PACKET_HEADER_SIZE
 FRAME_DATA_MAX_BYTES = PACKET_PAYLOAD_MAX_BYTES - RUI_FRAME_CHUNK_HEADER_SIZE
 MSG_ID_RUI_WRITE_FRAME_BUFFER_RAW = 0x01000002
+MSG_ID_LOG_TEXT = 0x01000200
 MSG_ID_STATS_REPORT = 0x01000300
+MSG_ID_TELEMETRY_SCALAR = 0x01000500
+MSG_ID_CONTROL_HELLO = 0x01000403
+MSG_ID_CONTROL_SET_CHANNELS = 0x01000404
+MSG_ID_CONTROL_PING = 0x01000405
+MSG_ID_CONTROL_CLOSE = 0x01000406
+MSG_ID_CONTROL_ERROR = 0x01000407
 PACKET_FLAGS_KNOWN = 0x000F
+PACKET_FLAG_RESPONSE = 1 << 0
 PACKET_FLAG_DROPPED_BEFORE = 1 << 3
 PIXEL_FORMAT_RGB565_LE = 1
 CHUNK_FLAG_FRAME_START = 1
 CHUNK_FLAG_FRAME_END = 2
 CHUNK_FLAGS_KNOWN = CHUNK_FLAG_FRAME_START | CHUNK_FLAG_FRAME_END | 4
+CHANNEL_FRAMES = 1 << 0
+CHANNEL_STATS = 1 << 1
+CHANNEL_LOGS = 1 << 2
+CHANNEL_TELEMETRY = 1 << 3
+STREAM_SOURCE_CAMERA = 0
+STREAM_SOURCE_SYNTHETIC = 1
+CONTROL_STATUS_OK = 0
 
 
 def parse_args() -> argparse.Namespace:
@@ -37,7 +55,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--start-command",
         default="START",
-        help="Command sent before measurement. Use START_SYNTH for the synthetic max-rate source.",
+        help="Source selector. Use START_SYNTH for the synthetic max-rate source.",
+    )
+    parser.add_argument(
+        "--legacy-ascii",
+        action="store_true",
+        help="Use the pre-session ASCII START/STOP controls with older firmware.",
     )
     parser.add_argument(
         "--rx-buffer-size",
@@ -57,6 +80,18 @@ def parse_args() -> argparse.Namespace:
         default=0.2,
         help="Required quiet time before issuing START",
     )
+    parser.add_argument(
+        "--start-read-delay",
+        type=float,
+        default=0.0,
+        help="Delay reads after channel start to exercise device backpressure/drop recovery.",
+    )
+    parser.add_argument(
+        "--control-ping-burst",
+        type=int,
+        default=0,
+        help="Send this many framed PING requests in one write after stream start.",
+    )
     parser.add_argument("--error-limit", type=int, default=5, help="Number of parser anomaly summaries to retain")
     return parser.parse_args()
 
@@ -69,6 +104,8 @@ class StreamParser:
     parsed_headers: int = 0
     parsed_chunks: int = 0
     stats_packets: int = 0
+    log_records: list[tuple[int, int, int, str, str]] = field(default_factory=list)
+    telemetry_samples: list[tuple[int, int, int, str, str, object]] = field(default_factory=list)
     dropped_before_packets: int = 0
     initial_resync_bytes: int = 0
     malformed_headers: int = 0
@@ -83,6 +120,7 @@ class StreamParser:
     expected_frame_id: int | None = None
     expected_offset: int = 0
     last_stats: tuple[int, ...] | None = None
+    control_responses: list[tuple[int, int, int, int, bytes]] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
 
     def extend(self, data: bytes) -> None:
@@ -136,7 +174,20 @@ class StreamParser:
                 struct.unpack_from("<4sBBHIIIIII", header)
             )
             is_frame_packet = msg_id == MSG_ID_RUI_WRITE_FRAME_BUFFER_RAW
+            is_log_packet = msg_id == MSG_ID_LOG_TEXT
             is_stats_packet = msg_id == MSG_ID_STATS_REPORT
+            is_telemetry_packet = msg_id == MSG_ID_TELEMETRY_SCALAR
+            is_control_packet = (
+                msg_id
+                in {
+                    MSG_ID_CONTROL_HELLO,
+                    MSG_ID_CONTROL_SET_CHANNELS,
+                    MSG_ID_CONTROL_PING,
+                    MSG_ID_CONTROL_CLOSE,
+                    MSG_ID_CONTROL_ERROR,
+                }
+                and (packet_flags & PACKET_FLAG_RESPONSE) != 0
+            )
             valid_header = (
                 magic == MAGIC
                 and version == 1
@@ -145,7 +196,14 @@ class StreamParser:
                 and payload_len <= PACKET_PAYLOAD_MAX_BYTES
                 and (
                     (is_frame_packet and RUI_FRAME_CHUNK_HEADER_SIZE < payload_len)
+                    or (is_log_packet and payload_len >= LOG_RECORD_HEADER_SIZE)
                     or (is_stats_packet and payload_len == STATS_REPORT_SIZE)
+                    or (is_telemetry_packet and payload_len >= TELEMETRY_SCALAR_HEADER_SIZE)
+                    or (
+                        is_control_packet
+                        and payload_len <= HELLO_RESPONSE_SIZE
+                        and (msg_id != MSG_ID_CONTROL_HELLO or payload_len == HELLO_RESPONSE_SIZE)
+                    )
                 )
             )
             if not valid_header:
@@ -174,8 +232,65 @@ class StreamParser:
                 self.dropped_before_packets += 1
 
             if is_stats_packet:
-                self.last_stats = struct.unpack_from("<IIIIIIIIIIII", self.buffer, payload_start)
+                self.last_stats = struct.unpack_from("<IIIIIIIIIIIIIIIIIII", self.buffer, payload_start)
                 self.stats_packets += 1
+                self.parsed_headers += 1
+                self.cursor = packet_end
+                continue
+
+            if is_telemetry_packet:
+                timestamp_ms, sample_id, value_bits, name_bytes, value_type, units_bytes = struct.unpack_from(
+                    "<IIIHBB",
+                    self.buffer,
+                    payload_start,
+                )
+                name_start = payload_start + TELEMETRY_SCALAR_HEADER_SIZE
+                units_start = name_start + name_bytes
+                if units_start + units_bytes != packet_end or value_type not in {1, 2, 3, 4} or name_bytes == 0:
+                    self.invalid_headers += 1
+                    self._record_error(
+                        f"invalid_telemetry sample={sample_id} type={value_type} name={name_bytes} units={units_bytes}"
+                    )
+                else:
+                    name = bytes(self.buffer[name_start:units_start]).decode("utf-8", errors="replace")
+                    units = bytes(self.buffer[units_start:packet_end]).decode("utf-8", errors="replace")
+                    if value_type == 1:
+                        value = struct.unpack("<i", struct.pack("<I", value_bits))[0]
+                    elif value_type == 2:
+                        value = value_bits
+                    elif value_type == 3:
+                        value = struct.unpack("<f", struct.pack("<I", value_bits))[0]
+                    else:
+                        value = value_bits != 0
+                    self.telemetry_samples.append((timestamp_ms, sample_id, value_type, name, units, value))
+                self.parsed_headers += 1
+                self.cursor = packet_end
+                continue
+
+            if is_log_packet:
+                timestamp_ms, record_id, text_bytes, level, category_bytes = struct.unpack_from(
+                    "<IIHBB",
+                    self.buffer,
+                    payload_start,
+                )
+                category_start = payload_start + LOG_RECORD_HEADER_SIZE
+                text_start = category_start + category_bytes
+                if text_start + text_bytes != packet_end or level > 4:
+                    self.invalid_headers += 1
+                    self._record_error(
+                        f"invalid_log record={record_id} level={level} category={category_bytes} text={text_bytes}"
+                    )
+                else:
+                    category = bytes(self.buffer[category_start:text_start]).decode("utf-8", errors="replace")
+                    text = bytes(self.buffer[text_start:packet_end]).decode("utf-8", errors="replace")
+                    self.log_records.append((timestamp_ms, record_id, level, category, text))
+                self.parsed_headers += 1
+                self.cursor = packet_end
+                continue
+
+            if is_control_packet:
+                payload = bytes(self.buffer[payload_start:packet_end])
+                self.control_responses.append((msg_id, arg0, arg1, arg2, payload))
                 self.parsed_headers += 1
                 self.cursor = packet_end
                 continue
@@ -215,6 +330,13 @@ class StreamParser:
                     f"chunk_flags=0x{chunk_flags:08x}"
                 )
                 continue
+
+            if (
+                (packet_flags & PACKET_FLAG_DROPPED_BEFORE) != 0
+                and (chunk_flags & CHUNK_FLAG_FRAME_START) != 0
+            ):
+                self.expected_frame_id = frame_id
+                self.expected_offset = 0
 
             if self.expected_frame_id is not None:
                 if frame_id != self.expected_frame_id or offset != self.expected_offset:
@@ -270,6 +392,42 @@ def drain_input_until_quiet(port: serial.Serial, max_seconds: float, quiet_secon
     return drained
 
 
+def build_control_packet(sequence: int, msg_id: int, arg0: int = 0, arg1: int = 0, arg2: int = 0) -> bytes:
+    return struct.pack(
+        "<4sBBHIIIIII",
+        MAGIC,
+        1,
+        PACKET_HEADER_SIZE,
+        0,
+        msg_id,
+        sequence,
+        0,
+        arg0,
+        arg1,
+        arg2,
+    )
+
+
+def wait_for_control_response(
+    port: serial.Serial,
+    parser: StreamParser,
+    msg_id: int,
+    request_sequence: int,
+    timeout_seconds: float = 2.0,
+) -> tuple[int, int, int, int, bytes]:
+    deadline = time.perf_counter() + timeout_seconds
+    while time.perf_counter() < deadline:
+        for response in parser.control_responses:
+            if response[0] == msg_id and response[1] == request_sequence:
+                return response
+        data = port.read(65536)
+        if data:
+            parser.extend(data)
+    raise RuntimeError(
+        f"timed out waiting for control response msg_id=0x{msg_id:08x} request={request_sequence}"
+    )
+
+
 def main() -> int:
     args = parse_args()
     rx_total = 0
@@ -281,17 +439,51 @@ def main() -> int:
         port.dtr = True
         port.rts = True
         time.sleep(0.25)
-        port.reset_input_buffer()
-        port.write(b"STOP\n")
-        port.flush()
-        drain_input_until_quiet(
-            port,
-            max_seconds=args.prestart_drain_seconds,
-            quiet_seconds=args.prestart_quiet_seconds,
-            read_size=min(args.read_size, 65536),
-        )
-        port.reset_input_buffer()
-        port.write(args.start_command.encode("ascii") + b"\n")
+        if args.legacy_ascii:
+            port.reset_input_buffer()
+            port.write(b"STOP\n")
+            port.flush()
+            drain_input_until_quiet(
+                port,
+                max_seconds=args.prestart_drain_seconds,
+                quiet_seconds=args.prestart_quiet_seconds,
+                read_size=min(args.read_size, 65536),
+            )
+            port.reset_input_buffer()
+            port.write(args.start_command.encode("ascii") + b"\n")
+        else:
+            port.reset_input_buffer()
+            port.write(build_control_packet(0, MSG_ID_CONTROL_HELLO))
+            hello = wait_for_control_response(port, parser, MSG_ID_CONTROL_HELLO, 0)
+            if hello[2] != CONTROL_STATUS_OK:
+                raise RuntimeError(f"HELLO failed with status {hello[2]}")
+
+            stream_source = (
+                STREAM_SOURCE_SYNTHETIC
+                if args.start_command.upper() in {"START_SYNTH", "SYNTH"}
+                else STREAM_SOURCE_CAMERA
+            )
+            channels = CHANNEL_FRAMES | CHANNEL_LOGS | CHANNEL_TELEMETRY | (
+                CHANNEL_STATS if stream_source == STREAM_SOURCE_CAMERA else 0
+            )
+            port.write(
+                build_control_packet(
+                    1,
+                    MSG_ID_CONTROL_SET_CHANNELS,
+                    arg0=channels,
+                    arg1=stream_source,
+                )
+            )
+            if args.control_ping_burst > 0:
+                port.write(
+                    b"".join(
+                        build_control_packet(2 + index, MSG_ID_CONTROL_PING)
+                        for index in range(args.control_ping_burst)
+                    )
+                )
+
+        if args.start_read_delay > 0:
+            time.sleep(args.start_read_delay)
 
         start = time.perf_counter()
         deadline = start + args.seconds
@@ -303,7 +495,30 @@ def main() -> int:
             parser.extend(data)
 
         elapsed = time.perf_counter() - start
-        port.write(b"STOP\n")
+        if args.legacy_ascii:
+            port.write(b"STOP\n")
+        else:
+            stop_sequence = 2 + max(args.control_ping_burst, 0)
+            port.write(
+                build_control_packet(
+                    stop_sequence,
+                    MSG_ID_CONTROL_SET_CHANNELS,
+                )
+            )
+            wait_for_control_response(
+                port,
+                parser,
+                MSG_ID_CONTROL_SET_CHANNELS,
+                stop_sequence,
+            )
+            close_sequence = stop_sequence + 1
+            port.write(build_control_packet(close_sequence, MSG_ID_CONTROL_CLOSE))
+            wait_for_control_response(
+                port,
+                parser,
+                MSG_ID_CONTROL_CLOSE,
+                close_sequence,
+            )
         time.sleep(0.05)
 
     mbps = (rx_total / elapsed) / (1024.0 * 1024.0)
@@ -318,6 +533,9 @@ def main() -> int:
     print(f"parsed_packets={parser.parsed_headers}")
     print(f"parsed_chunks={parser.parsed_chunks}")
     print(f"stats_packets={parser.stats_packets}")
+    print(f"log_records={len(parser.log_records)}")
+    print(f"telemetry_samples={len(parser.telemetry_samples)}")
+    print(f"control_responses={len(parser.control_responses)}")
     print(f"dropped_before_packets={parser.dropped_before_packets}")
     print(f"initial_resync_bytes={parser.initial_resync_bytes}")
     print(f"last_frame_id={parser.last_frame_id}")
@@ -343,6 +561,13 @@ def main() -> int:
             endpoint_busy_count,
             send_error_count,
             rx_command_count,
+            control_response_drop_count,
+            control_response_queue_high_water,
+            log_drop_count,
+            log_queue_high_water,
+            telemetry_drop_count,
+            telemetry_queue_high_water,
+            telemetry_coalesce_count,
         ) = parser.last_stats
         print(f"stats_stream_source={stream_source}")
         print(f"stats_stream_flags=0x{stream_flags:08x}")
@@ -356,11 +581,24 @@ def main() -> int:
         print(f"stats_endpoint_busy_count={endpoint_busy_count}")
         print(f"stats_send_error_count={send_error_count}")
         print(f"stats_rx_command_count={rx_command_count}")
+        print(f"stats_control_response_drop_count={control_response_drop_count}")
+        print(f"stats_control_response_queue_high_water={control_response_queue_high_water}")
+        print(f"stats_log_drop_count={log_drop_count}")
+        print(f"stats_log_queue_high_water={log_queue_high_water}")
+        print(f"stats_telemetry_drop_count={telemetry_drop_count}")
+        print(f"stats_telemetry_queue_high_water={telemetry_queue_high_water}")
+        print(f"stats_telemetry_coalesce_count={telemetry_coalesce_count}")
+    for timestamp_ms, record_id, level, category, text in parser.log_records:
+        print(f"log_{record_id}={timestamp_ms},{level},{category},{text}")
+    for timestamp_ms, sample_id, value_type, name, units, value in parser.telemetry_samples:
+        print(f"telemetry_{sample_id}={timestamp_ms},{value_type},{name},{value},{units}")
     for index, error in enumerate(parser.errors, start=1):
         print(f"parser_error_{index}={error}")
 
     if rx_total == 0 or parser.parsed_chunks == 0:
         return 2
+    if not args.legacy_ascii and len(parser.control_responses) < (4 + max(args.control_ping_burst, 0)):
+        return 3
     return 0
 
 

@@ -107,7 +107,7 @@ depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
 
 [[exit_criteria]]
 id = "host-neutral-protocol"
-title = "The same framed protocol supports the Web viewer and a future Android bridge without firmware forks"
+title = "The same framed protocol supports the Web viewer and implemented Android bridge without firmware forks"
 status = "met"
 
 [[exit_criteria]]
@@ -170,11 +170,11 @@ status = "pending"
 
 ## Priority
 
-Implementation is feature-complete for camera-assembly testing and for the Android host.
-Park this plan while the operator screens the 24 camera assemblies. Resume it before
-student handoff for the remaining competition-image safety cases, the student-facing
-example, documentation/test audits, and external review. Viewer styling and dashboard
-polish remain parked.
+Implementation is feature-complete for camera-assembly testing and the Android host. The
+phone wrap-up is complete enough to park; student-firmware handoff is now the higher
+priority. Resume this plan only for the remaining competition-image safety cases, the
+student-facing telemetry example, documentation/test audits, and external review. Viewer
+styling and dashboard polish remain parked.
 
 Detailed SCCB and signal diagnostics remain deferred; once implemented, they should
 publish through this generic telemetry path.
@@ -189,8 +189,9 @@ browser viewer is also accepted for current use.
 
 The formal plan is **not yet closed**. Real-phone work has now exercised the same framed
 session through repeated app loss/restart, locked-screen operation, JPEG and H.264 load,
-slow-client backpressure, and USB-device reconnects while camera input stayed at about
-23.42 FPS with zero sequence or malformed-packet errors. `realistic-validation` still
+raw RGB565 relay, slow-client backpressure, and USB-device reconnects while camera input
+stayed at about 23.42 FPS with zero sequence or malformed-packet errors. Browser format
+selection changes only the phone's downstream representation. `realistic-validation` still
 owns explicit competition-image observation without a host, race-waiting/student load,
 partial-frame physical unplug/replug, and motor-safe disconnect behavior. The student
 example, complete design/test audit, and independent review also remain. None requires a
@@ -199,9 +200,9 @@ wire-contract change.
 ## Purpose
 
 Turn the proven high-speed USB CDC camera stream into the common debug transport for the
-Rev A competition firmware. The immediate host is the existing static Web Serial viewer.
-The durable protocol must also support a future wired Android bridge without a separate
-firmware implementation.
+Rev A competition firmware. The direct PC host is the static Web Serial viewer. The same
+durable protocol now also supports the implemented wired Android bridge without a
+separate firmware implementation.
 
 The completed plan leaves USB device support enabled in the normal competition image.
 Disconnected operation must be effectively dormant, and opening CDC alone must not start
@@ -243,8 +244,9 @@ or speed-control solution. Students decide what algorithm and telemetry values t
 - The self-contained browser viewer has been accepted for current camera work. Additional
   styling is deferred; the generic transport, parser, and discovered-data model are the
   durable deliverables.
-- The host-neutral slice required by `android-telemetry-bridge` is stable. Android must
-  reuse the current `AVCU` envelope and framed session without a firmware fork.
+- The host-neutral slice required by `android-telemetry-bridge` is stable and proven. The
+  Moto reuses the current `AVCU` envelope and framed session without a firmware fork, then
+  selects JPEG, H.264, or raw RGB565 only on its downstream browser relay.
 
 ## Architecture Boundaries
 
@@ -256,9 +258,9 @@ Keep these concepts separate even if the first implementation uses a simple poli
 3. **Vehicle operating mode:** safe, local/host test, or student algorithm.
 
 Opening CDC never selects a vehicle operating mode. The physical TEST input selects local
-test through the system state machine. The PC or future Android telemetry application
-identifies itself with a framed hello/session message and explicitly requests output
-channels; that session remains independent while TEST or student code runs.
+test through the system state machine. The PC or Android telemetry application identifies
+itself with a framed hello/session message and explicitly requests output channels; that
+session remains independent while TEST or student code runs.
 
 Never transition from a disconnected test session directly into a moving student mode.
 Mode transitions disable motors unless the destination deliberately and safely re-enables
@@ -395,7 +397,8 @@ separate USB-only race firmware is not part of the architecture.
 ## Explicitly Out of Scope
 
 - A native SDL/ImGui viewer.
-- Implementing the Android application; this plan only keeps the protocol host-neutral.
+- Android application implementation and lifecycle ownership; this plan only keeps the
+  firmware protocol host-neutral. That work lives in `android-telemetry-bridge`.
 - UVC/webcam mode.
 - Removing the onboard LCD or deciding its future BOM status.
 - General eGFX replacement or MCU graphics optimization.

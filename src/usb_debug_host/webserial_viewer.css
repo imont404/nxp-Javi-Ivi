@@ -136,7 +136,7 @@ h1 {
   overflow: hidden;
 }
 
-canvas {
+#frameCanvas {
   width: min(100%, calc((100vh - 120px) * 1.6));
   max-width: 960px;
   aspect-ratio: 16 / 10;
@@ -187,6 +187,131 @@ canvas {
   text-align: right;
 }
 
+.log-panel,
+.plot-panel,
+.telemetry-panel {
+  margin: 0 18px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 14px;
+}
+
+.log-panel h2,
+.plot-panel h2,
+.telemetry-panel h2 {
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.panel-heading h2 {
+  margin-bottom: 3px;
+}
+
+.panel-heading p,
+#plotStatus {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#plotStatus {
+  flex: 0 0 auto;
+}
+
+#telemetryPlotCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+.plot-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  min-height: 24px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.plot-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.plot-swatch {
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.log-console {
+  min-height: 72px;
+  max-height: 180px;
+  overflow: auto;
+  color: var(--text);
+  font-family: Consolas, "Cascadia Mono", monospace;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.log-entry-warning {
+  color: #b87800;
+}
+
+.log-entry-error {
+  color: var(--danger);
+}
+
+.telemetry-table-wrap {
+  overflow-x: auto;
+}
+
+.telemetry-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.telemetry-panel th,
+.telemetry-panel td {
+  border-bottom: 1px solid var(--line);
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.telemetry-panel th {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.telemetry-panel td:nth-child(3),
+.telemetry-panel td:nth-child(6) {
+  font-family: Consolas, "Cascadia Mono", monospace;
+}
+
+.telemetry-panel input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+
 @media (max-width: 780px) {
   .toolbar {
     align-items: stretch;
@@ -215,6 +340,12 @@ canvas {
     border-top: 1px solid var(--line);
     padding-left: 0;
     padding-top: 14px;
+  }
+
+  .log-panel,
+  .plot-panel,
+  .telemetry-panel {
+    margin: 0 12px 12px;
   }
 }
 

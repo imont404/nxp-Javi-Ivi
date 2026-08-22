@@ -107,7 +107,9 @@ not be committed.
 ### Diagnostic build variants
 
 The default build is the **Rev A competition image** and should stay that way:
-EZH camera capture, ER-TFT020-3 SPI LCD, USB stream off, encoders disabled.
+EZH camera capture, ER-TFT020-3 SPI LCD, session-gated USB telemetry available,
+encoders disabled. USB enumerates when attached, but sends nothing until a
+recognized framed host session explicitly subscribes.
 Everything else is a variant behind `CONFIG__` selection with `#error` guards.
 
 Prefer a preset:

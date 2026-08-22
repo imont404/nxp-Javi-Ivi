@@ -218,12 +218,12 @@ status = "pending"
 
 Execution was authorized on 2026-08-21. The native USB host, phone preview, and full-rate
 one-browser Wi-Fi relay are complete on the real Rev A car. The Moto G Power serves its
-embedded page at `http://<phone-address>:8765/`, sends each JPEG as one bounded `AVCJ`
-WebSocket message, and preserves generic telemetry as normal `AVCU` messages. A 240-frame
-end-to-end run delivered 23.493 FPS at 1.972 Mbit/s with a most-recent-frame age of about
-24 ms while USB remained at 23.42 FPS and 2.870 MiB/s with zero sequence or malformed-
-chunk errors. Headless Chrome decoded 120 frames in five seconds with no page errors and
-nonblack canvas pixels. A two-second network-send
+embedded page at `http://<phone-address>:8765/`, preserves generic telemetry as normal
+`AVCU`, and lets the sole browser select JPEG, H.264, or raw RGB565 while JPEG remains the
+default. The original 240-frame JPEG run delivered 23.493 FPS at 1.972 Mbit/s with a
+most-recent-frame age of about 24 ms while USB remained at 23.42 FPS and 2.870 MiB/s with
+zero sequence or malformed-chunk errors. Headless Chrome decoded 120 frames in five
+seconds with no page errors and nonblack canvas pixels. A two-second network-send
 deadline now closes a client that stops reading. Six consecutive forced stalls kept USB
 advancing, stayed near 56-59 MiB PSS after warm-up, and reconnected to a complete frame
 within one source frame in the final recorded run. Six subsequent abrupt app-process
@@ -289,8 +289,8 @@ at the two-second watchdog, kept USB healthy, and remained bounded at about 59 M
 
 The design audit confirms that firmware and the USB contract did not change: Android
 still sends only `HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`, and contains no actuator or
-vehicle-mode command. `AVCJ` exists only between the phone and its embedded browser;
-generic telemetry remains `AVCU`. The test/runtime audit covers new JVM framing and
+vehicle-mode command. `AVCJ`, `AVC4`, and `AVCR` exist only between the phone and its
+embedded browser; generic telemetry remains `AVCU`. The test/runtime audit covers JVM framing and
 RGB565-to-I420 fixtures plus real-phone JPEG, H.264, WebSocket payload, slow-reader,
 forced-restart, locked-screen, and Chrome decode proofs. With a live JPEG browser, a spot
 sample showed about 50 MiB PSS, 25.9 percent process CPU in Android's eight-core `top`,

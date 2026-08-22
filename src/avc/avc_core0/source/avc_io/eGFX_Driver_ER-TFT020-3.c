@@ -9,7 +9,7 @@
 #ifdef eGFX_DRIVER_ER_TFT020_3
 
 /*
- * Frame-dump timing instrumentation. See docs/plans/lcd-spi-throughput.
+ * Frame-dump timing instrumentation. See docs/research/AVC_LCD_SPI_Design.md.
  * Measurement only; compiles to nothing when the knob is off.
  */
 #if CONFIG__DISPLAY_TIMING_DIAG_ENABLE
@@ -89,9 +89,11 @@ extern void ST7789_Initial(void);
 void eGFX_InitDriver(eGFX_VSyncCallback_t VS)
 {
     /*
-     * PLLCLKDIV feeds the LPSPI and nothing else in this design, so setting
-     * it here - next to the only consumer - keeps the display's clock choice
-     * in one place. See CONFIG__DISPLAY_SPI_PLLCLKDIV.
+     * PLLCLKDIV feeds this LPSPI path. Divider 2 at 37.5 MHz is the only
+     * competition-verified configuration; changing the divider at runtime
+     * produced a black panel even when nominal SCK was restored. See
+     * CONFIG__DISPLAY_SPI_PLLCLKDIV and
+     * docs/research/AVC_LCD_SPI_Design.md.
      */
     CLOCK_SetClkDiv(kCLOCK_DivPllClk, CONFIG__DISPLAY_SPI_PLLCLKDIV);
     CLOCK_SetClkDiv(kCLOCK_DivFlexcom1Clk, 1u);

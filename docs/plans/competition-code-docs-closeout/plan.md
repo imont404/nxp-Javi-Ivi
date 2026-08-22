@@ -108,10 +108,11 @@ status = "pending"
 
 ## Scheduling
 
-Park this plan during camera-assembly screening and the Android hotspot experiment. Start
-it one or two days before the first Wednesday class, after the hardware count is known and
-the firmware/transport behavior has stopped moving. Translate only after the English
-student surface is frozen so corrections are made once.
+The camera-assembly screening workflow and Android relay foundation are complete enough
+to stop driving firmware architecture. This is now the next high-priority plan: freeze the small
+student algorithm/API surface, reconcile the competition image, and prove the clean
+handoff before the first Wednesday class. Translate only after the English student
+surface is frozen so corrections are made once.
 
 ## Scope and Ownership
 

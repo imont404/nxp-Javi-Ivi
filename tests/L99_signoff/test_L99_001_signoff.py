@@ -76,7 +76,7 @@ def test_competition_defaults_unchanged():
     expected = {
         "CONFIG__CAMERA_CAPTURE_BACKEND": "CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH",
         "CONFIG__DISPLAY_PANEL": "DISPLAY_PANEL_ER_TFT020_3",
-        "CONFIG__USB_DEBUG_STREAM_ENABLE": "(0)",
+        "CONFIG__USB_DEBUG_STREAM_ENABLE": "(1)",
         "CONFIG__MOTOR_ENCODER_BACKEND": "MOTOR_ENCODER_BACKEND_DISABLED",
     }
     for knob, value in expected.items():

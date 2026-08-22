@@ -1,9 +1,10 @@
 # Agent Guide
 
-This folder is the isolated FRDM-MCXN947 high-speed USB CDC test project used
-by the `usb-debug-display-transport` plan.
+This folder is the isolated FRDM-MCXN947 high-speed USB CDC project that was used
+for the completed transport proof. It is now comparison/reference material for
+`usb-debug-telemetry`.
 
-Treat this project as an active bench-test target only for USB transport work.
+Do not treat it as an active build target unless a plan explicitly adds that work.
 It is still derived from the imported NXP `dev_cdc_vcom_bm_cm33_core0` sample,
 so keep changes focused on USB enumeration, CDC bulk throughput, host-control
 commands, and synthetic-frame streaming. Do not integrate AVC camera or display
@@ -67,5 +68,5 @@ Use the shared static WebSerial viewer from a localhost server:
 ..\..\..\..\src\usb_debug_host\serve_webserial_viewer.ps1
 ```
 
-Record durable findings in
-`docs/plans/usb-debug-display-transport/logs`, not in this sample folder.
+Record execution findings against `docs/plans/usb-debug-telemetry`, not in this
+sample folder, and preserve stable conclusions under `docs/research`.

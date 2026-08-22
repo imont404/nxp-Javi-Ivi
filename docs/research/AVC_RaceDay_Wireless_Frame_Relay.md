@@ -117,12 +117,12 @@ the track, removed for the run, phone left aboard.
    powered car. Confirm there is no back-power path before considering a powered hub
    or charge-through adapter.
 
-### Recommendation
+### Implemented Direction
 
-Build the Moto path first. A native app is the reliable boundary: USB host APIs on one
-side, the existing `AVCU` protocol in the middle, and an embedded HTTP/WebSocket page
-on the other. Treat the boards below as contingency only if this specific phone fails
-the USB-host, sustained-throughput, power, or race-day RF tests.
+The Moto path is implemented. Its native app is the reliable boundary: USB host APIs on
+one side, the existing `AVCU` protocol in the middle, and an embedded HTTP/WebSocket page
+on the other. Treat the boards below as contingency only if this specific phone fails the
+remaining power or race-day RF tests.
 
 The available Moto already satisfies the published Android, storage, battery, USB-C,
 and dual-band Wi-Fi requirements, so there is no buying decision before the proof. No
@@ -586,8 +586,8 @@ enabling telemetry is no longer an unmeasured build fork.
 
 - `docs/research/AVC_USB_Debug_Transport_Protocol.md` - packet format
 - `docs/research/AVC_USB_Debug_Display_Current_State.md` - the measurements above
-- `docs/plans/android-telemetry-bridge/plan.md` - authorization-gated Moto MVP and
-  unattended development loop
+- `docs/plans/android-telemetry-bridge/plan.md` - implemented Moto bridge, unattended
+  development loop, measurements, and remaining vehicle checks
 - `docs/research/N947_USB_Host_Assessment.md` - prior host-side work on the car
 - [Moto G Power 5G (2023) specifications](https://en-ca.support.motorola.com/app/answers/detail/a_id/174789/~/moto-g-power-5g-%282023%29---specifications)
 - [Moto G Power 5G (2023) hotspot setup](https://en-us.support.motorola.com/app/answers/detail/a_id/173296/~/wi-fi-hotspot---moto-g-power-5g-%282023%29)

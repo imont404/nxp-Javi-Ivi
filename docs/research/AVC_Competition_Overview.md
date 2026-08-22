@@ -54,7 +54,7 @@ Concretely, that is why the codebase looks the way it does: `CONFIG__*` compile-
 with `#error` guards, RTT and on-screen diagnostics, a live LCD camera view, a small
 tunable starter algorithm rather than a clever opaque one. **Silent failure is the enemy**
 — the student cannot read the firmware to find out what went wrong. That framing is the
-whole justification for the `camera-sccb-robustness` plan.
+whole justification for the `camera-startup-diagnostics` plan.
 
 ---
 
@@ -229,11 +229,13 @@ motor/PWM drive and the camera interface.
   within on-chip RAM.
 - **24 FPS is limited by the EZH**, which is an I/O coprocessor and can only register the
   pixel clock so fast. It is not a sensor or algorithm limit.
-- **RGB565 was chosen for display convenience** — it blits straight to the LCD. Luminance
-  (Y) is extracted in software for edge detection. Moving to **YUY2** is under
-  consideration and would make Y free; see the NPU assessment for the tradeoff.
-- **Rev A hardware is wired for EZH and is currently in Guatemala.** A **Rev B** is
-  recommended to switch capture to FlexIO and free the EZH for other work.
+- **RGB565 is locked for the 2026 competition path.** It blits straight to the LCD and is
+  already proven through the PC and Android transports. A generated 65,536-entry flash
+  LUT maps each pixel to eight-bit Y/H/S/V with one table access; YUY2 is deferred rather
+  than destabilizing the display and host paths during race week.
+- **Rev A is the 2026 competition hardware.** The working default remains EZH; a
+  locally modified Rev A board can also use the proven FlexIO Port 1 path below.
+  Rev B boards were not available in time for this event.
 
 **FlexIO capture is proven on the Rev A camera wiring** (2026-07-25). Three jumpers on
 `J9_EXT` — camera D4 and D5 onto `P1_8`/`P1_9`, PCLK onto `P1_14` — make `P1_4..P1_11`
@@ -247,13 +249,18 @@ See [`AVC_Camera_FlexIO_Pin_Migration.md`](AVC_Camera_FlexIO_Pin_Migration.md).
 
 ### Display and debug
 
-- On-board **LCD** showing the live camera view with graphic overlays — the primary
-  student debugging surface.
+- On-board **LCD** showing the live camera view with lightweight graphic overlays. It is
+  the cable-free camera check, boot/fault surface, and local fallback.
 - **USB high-speed** streaming of frame data to a PC, tested against a Chrome **Web
-  Serial** page. Intent: students tweak software and draw overlays/lines on the PC view.
-- **eGFX** (Wavenumber graphics library, older version): general-purpose frame buffer,
-  pixel-put, line draw, text. Not heavily optimized — **text rendering in particular costs
-  real CPU time**.
+  Serial** page. The self-contained viewer is the direct-PC debug surface for camera,
+  logs, named telemetry, and rolling plots.
+- The **Moto G Power 5G (2023)** is a proven USB-host/Wi-Fi bridge for the large-screen
+  race view. Its one-browser page defaults to JPEG and can select H.264 or raw RGB565;
+  it reuses the same session-gated `AVCU` firmware stream without a phone-specific mode.
+- **eGFX** (Wavenumber graphics library, older version): currently supplies the local
+  frame-buffer, line, and text operations. Keep it for the working race image, but put a
+  small RGB565 AVC display API in front of it later and move complex visualization to the
+  host. Pixel, text, and line hot paths need specialization if they remain on the MCU.
 - Note the memory trick: `camera_view.Data` **aliases the live camera frame buffer**, so
   student overlays are drawn directly into the frame that gets DMA'd to the LCD. No extra
   128 KB buffer.
@@ -286,17 +293,20 @@ affordable if written carefully, but is rarely necessary.
 
 ## 6. Starter code and what students do
 
-Students receive a working line-following image and tune it. The starter algorithm is
-deliberately simple — center-of-mass style — and lives in
-`src/avc/avc_core0/source/avc__line_processor.c` with the per-frame loop in `main.c`.
+Students receive a framework, not a completed line-following solution. The platform
+initializes the hardware, captures frames, exposes actuator/input APIs, and provides test
+and visualization paths. Students build the track interpretation and vehicle-control
+algorithm themselves.
 
-What the starter demonstrates:
+The framework demonstrates the ingredients they can use:
 
 - Reading a chosen scanline from the RGB565 frame (`line_to_process`, selectable live via
   the alpha pot — a nice touch for bench exploration).
-- Color-space conversion — RGB→HSL is shown, and RGB→Y and RGB→HSV are discussed.
-- Thresholding luminance to a black/white mask; a red mask via hue/saturation already
-  exists in `main.c` and is the seed of the 2026 color work.
+- Color-space conversion through the generic RGB565→Y/H/S/V lookup table. The table
+  removes floating-point arithmetic without baking in a track or obstacle classifier.
+- Thresholding luminance to a black/white mask and using saturation/value as confidence
+  gates for a circular hue filter. The current test view demonstrates the ingredients;
+  students choose their own detection logic.
 - Drawing the detected mask back onto the live view as an overlay.
 
 **Students decide for themselves** how to find track center and what control algorithm to
@@ -312,7 +322,8 @@ identical duty**, so a car commanded straight in open loop visibly curves. A stu
 see that before writing any control code. The independent rear wheels and the
 active-differential idea pair naturally with it.
 
-See [`../plans/motor-speed-pid/`](../plans/motor-speed-pid/).
+See [`AVC_Motor_Encoder_QDC_Research.md`](AVC_Motor_Encoder_QDC_Research.md), especially
+the student-facing API boundary.
 
 Three tuning potentiometers (alpha, beta, gamma) and a center button give live, no-rebuild
 adjustment — with a pots-at-midpoint safety interlock before motors will enable.
@@ -331,7 +342,7 @@ Judge any proposed change against these:
 | **RAM** | ~512 KB, of which 256 KB is camera ping-pong — **RAM is the scarce resource** |
 | **Flash** | 2 MB, ~267 KB used — ample |
 | **Frame rate** | ~24 FPS, EZH-limited |
-| **Rev A hardware** | In Guatemala, wired for EZH |
+| **Competition hardware** | Rev A; EZH default, modified-board FlexIO option proven |
 | **Track** | Nominal 55 cm, built from local materials, dimensions approximate |
 | **Design bar** | Tunable by a novice; fails visibly, never silently |
 
@@ -343,7 +354,8 @@ Judge any proposed change against these:
 - **Resolve how the 55 cm is measured** — line-center to line-center, inner edge to inner
   edge, or outer to outer. A ±4 cm swing that matters for track construction.
 - **Confirm as-built track dimensions on-site** and record them here.
-- **Decide RGB565 vs YUY2**, including the cost of YUV→RGB565 for the LCD view.
+- **Measure LUT timing** on EZH and FlexIO if full-frame color processing becomes useful.
+  RGB565 remains the competition format; YUY2 is post-competition work.
 - **Rev B decision** — routing recommended and measured; needs a build decision. Also
   decide whether the MCU-Link VCOM should stay connected to `P1_8` at all.
 - **What the freed EZH is actually for** — capture no longer needs it, but nothing has
@@ -365,5 +377,8 @@ Judge any proposed change against these:
 - [`AVC_LVDS_Adapter.md`](AVC_LVDS_Adapter.md) — camera cabling; §0.6 documents the connector-seating
   incident that motivated the SCCB robustness work
 - [`AVC_Motor_Encoder_QDC_Research.md`](AVC_Motor_Encoder_QDC_Research.md) — encoder feedback for PID
-- [`AVC_USB_Debug_Transport_Protocol.md`](AVC_USB_Debug_Transport_Protocol.md) — PC streaming path
+- [`AVC_USB_Debug_Transport_Protocol.md`](AVC_USB_Debug_Transport_Protocol.md) — common
+  session-gated USB transport used by PC and Android hosts
+- [`AVC_RaceDay_Wireless_Frame_Relay.md`](AVC_RaceDay_Wireless_Frame_Relay.md) — proven
+  Moto USB-host/Wi-Fi relay and remaining race-network checks
 - `../plans/` — active execution plans

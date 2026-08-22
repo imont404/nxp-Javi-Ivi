@@ -18,7 +18,7 @@
     {
       "name": "competition",
       "displayName": "Competition image (Rev A default) - START HERE",
-      "description": "What the car runs on race day: EZH camera capture, ER-TFT020-3 SPI LCD, USB stream off, encoders disabled. Build this unless you have a reason not to.",
+      "description": "What the car runs on race day: EZH camera capture, ER-TFT020-3 SPI LCD, session-gated USB telemetry available, encoders disabled. Build this unless you have a reason not to.",
       "inherits": "base"
     },
 

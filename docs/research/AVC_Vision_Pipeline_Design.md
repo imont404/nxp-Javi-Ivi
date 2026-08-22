@@ -74,22 +74,22 @@ measured because the shared bus workload differs.
 
 **Budget:** 150 MHz ÷ 24 FPS = 6.25 M cycles/frame. Frame is 320 × 200 = 64,000 px.
 
-The current `rgb565_to_hsl()` in `avc__line_processor.c` does three float divides, several
-branches, and a float normalise per pixel — call it ~150 cycles. **Estimates, not
-measurements:**
+The pre-LUT `rgb565_to_hsl()` implementation did three float divides, several branches,
+and a float normalise per pixel — call it ~150 cycles. It has now been removed; the table
+below retains the estimate that motivated the replacement. **Estimates, not measurements:**
 
 | Work | Est. cycles | Est. time | % of frame |
 |---|---|---|---|
-| One line (320 px), float HSL — *what ships today* | ~48 k | ~0.32 ms | 0.8% |
+| One line (320 px), former float HSL | ~48 k | ~0.32 ms | 0.8% |
 | One line, LUT in flash | ~2.6 k | ~0.02 ms | ~0% |
 | **Full frame, float HSL** | **~9.6 M** | **~64 ms** | **154% — impossible** |
 | Full frame, LUT in flash (cache-miss every pixel) | ~600 k | ~4 ms | ~10% |
 | Full frame, LUT in SRAM | ~260 k | ~1.7 ms | ~4% |
 
-**The middle row is the argument.** Per-pixel HSV across a whole frame cannot be done at
-all today; it exceeds the entire frame budget by 50%. A lookup table turns it into a ~10%
-line item. That is the difference between "colour is a per-scanline trick" and "colour is
-something you can do everywhere."
+**The middle row was the argument.** Per-pixel HSV across a whole frame could not fit the
+budget in the former implementation; the implemented lookup table turns it into an
+estimated ~10% line item. That is the difference between "colour is a per-scanline trick"
+and "colour is something you can do everywhere."
 
 Note the flash-vs-SRAM gap is roughly 2×, not 10×. **Flash is a perfectly good home for
 these tables.** Reserve SRAM for a table only if measurement shows you need it.

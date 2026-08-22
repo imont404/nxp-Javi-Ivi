@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cstdint>
 #include <cstdlib>
@@ -40,6 +41,13 @@ struct Options
     double prestartQuietSeconds = 0.2;
     size_t errorLimit = 5U;
     std::string startCommand = "START";
+};
+
+struct ControlResponse
+{
+    uint32_t msgId;
+    uint32_t requestSequence;
+    uint32_t status;
 };
 
 struct Parser
@@ -159,12 +167,20 @@ struct Parser
             uint32_t arg2 = readLe32(header + 28);
             bool isFramePacket = msgId == AVC_DBG_RUI_WRITE_FRAME_BUFFER_RAW;
             bool isStatsPacket = msgId == AVC_DBG_STATS_REPORT;
+            bool isControlPacket =
+                ((packetFlags & AVC_DBG_PACKET_FLAG_RESPONSE) != 0U) &&
+                ((msgId == AVC_DBG_CONTROL_HELLO) || (msgId == AVC_DBG_CONTROL_SET_CHANNELS) ||
+                 (msgId == AVC_DBG_CONTROL_PING) || (msgId == AVC_DBG_CONTROL_CLOSE) ||
+                 (msgId == AVC_DBG_CONTROL_ERROR));
 
             bool validHeader = (std::memcmp(header, kMagic, sizeof(kMagic)) == 0) && (version == 1U) &&
                                (headerLen == kHeaderSize) && ((packetFlags & ~kKnownPacketFlags) == 0U) &&
                                (payloadLen <= kPacketPayloadMaxBytes) &&
                                ((isFramePacket && (payloadLen > kRuiFrameChunkHeaderSize)) ||
-                                (isStatsPacket && (payloadLen == kStatsReportSize)));
+                                (isStatsPacket && (payloadLen == kStatsReportSize)) ||
+                                (isControlPacket && (payloadLen <= AVC_DBG_CONTROL_HELLO_RESPONSE_BYTES) &&
+                                 ((msgId != AVC_DBG_CONTROL_HELLO) ||
+                                  (payloadLen == AVC_DBG_CONTROL_HELLO_RESPONSE_BYTES))));
             if (!validHeader)
             {
                 cursor++;
@@ -203,6 +219,14 @@ struct Parser
                 droppedBeforePackets++;
             }
 
+            if (isControlPacket)
+            {
+                controlResponses.push_back({msgId, arg0, arg1});
+                parsedHeaders++;
+                cursor = packetEnd;
+                continue;
+            }
+
             if (isStatsPacket)
             {
                 const uint8_t *payload = buffer.data() + cursor + kHeaderSize;
@@ -218,6 +242,13 @@ struct Parser
                 lastStats.endpoint_busy_count = readLe32(payload + 36);
                 lastStats.send_error_count = readLe32(payload + 40);
                 lastStats.rx_command_count = readLe32(payload + 44);
+                lastStats.control_response_drop_count = readLe32(payload + 48);
+                lastStats.control_response_queue_high_water = readLe32(payload + 52);
+                lastStats.log_drop_count = readLe32(payload + 56);
+                lastStats.log_queue_high_water = readLe32(payload + 60);
+                lastStats.telemetry_drop_count = readLe32(payload + 64);
+                lastStats.telemetry_queue_high_water = readLe32(payload + 68);
+                lastStats.telemetry_coalesce_count = readLe32(payload + 72);
                 haveStats = true;
                 statsPackets++;
                 parsedHeaders++;
@@ -254,6 +285,14 @@ struct Parser
                     << std::setw(8) << std::setfill('0') << chunkFlags;
                 recordError(msg.str());
                 continue;
+            }
+
+            if (((packetFlags & AVC_DBG_PACKET_FLAG_DROPPED_BEFORE) != 0U) &&
+                ((chunkFlags & AVC_DBG_RUI_CHUNK_FRAME_START) != 0U))
+            {
+                expectedFrameId = frameId;
+                expectedOffset = 0U;
+                haveExpected = true;
             }
 
             if (haveExpected)
@@ -339,6 +378,7 @@ struct Parser
     uint32_t expectedOffset = 0U;
     avc_dbg_stats_report_t lastStats{};
     bool haveStats = false;
+    std::vector<ControlResponse> controlResponses;
     std::vector<std::string> errors;
 };
 
@@ -571,6 +611,67 @@ private:
     HANDLE handle_ = INVALID_HANDLE_VALUE;
 };
 
+avc_dbg_packet_header_t buildControlPacket(uint32_t requestSequence,
+                                           uint32_t msgId,
+                                           uint32_t arg0 = 0U,
+                                           uint32_t arg1 = 0U,
+                                           uint32_t arg2 = 0U)
+{
+    avc_dbg_packet_header_t packet{};
+    packet.magic = AVC_DBG_MAGIC;
+    packet.version = AVC_DBG_VERSION;
+    packet.header_bytes = AVC_DBG_PACKET_HEADER_BYTES;
+    packet.msg_id = msgId;
+    packet.sequence = requestSequence;
+    packet.arg0 = arg0;
+    packet.arg1 = arg1;
+    packet.arg2 = arg2;
+    return packet;
+}
+
+void sendControl(SerialPort &port,
+                 uint32_t requestSequence,
+                 uint32_t msgId,
+                 uint32_t arg0 = 0U,
+                 uint32_t arg1 = 0U,
+                 uint32_t arg2 = 0U)
+{
+    avc_dbg_packet_header_t packet = buildControlPacket(requestSequence, msgId, arg0, arg1, arg2);
+    port.writeAll(reinterpret_cast<const char *>(&packet), sizeof(packet));
+}
+
+ControlResponse waitForControlResponse(SerialPort &port,
+                                       Parser &parser,
+                                       uint32_t msgId,
+                                       uint32_t requestSequence,
+                                       double timeoutSeconds = 2.0)
+{
+    std::array<uint8_t, 65536U> readBuffer{};
+    auto deadline = std::chrono::steady_clock::now() + std::chrono::duration<double>(timeoutSeconds);
+
+    while (std::chrono::steady_clock::now() < deadline)
+    {
+        for (const ControlResponse &response : parser.controlResponses)
+        {
+            if ((response.msgId == msgId) && (response.requestSequence == requestSequence))
+            {
+                return response;
+            }
+        }
+
+        DWORD received = port.read(readBuffer.data(), static_cast<DWORD>(readBuffer.size()));
+        if (received > 0U)
+        {
+            parser.extend(readBuffer.data(), received);
+        }
+    }
+
+    std::ostringstream message;
+    message << "control response timeout msg_id=0x" << std::hex << msgId << std::dec
+            << " request=" << requestSequence;
+    throw std::runtime_error(message.str());
+}
+
 uint64_t drainUntilQuiet(SerialPort &port, double maxSeconds, double quietSeconds, uint32_t readSize)
 {
     std::vector<uint8_t> buffer(std::min<uint32_t>(readSize, 65536U));
@@ -612,11 +713,24 @@ int main(int argc, char **argv)
 
         Sleep(250);
         port.clearInput();
-        port.writeAll("STOP\n", 5U);
-        drainUntilQuiet(port, options.prestartDrainSeconds, options.prestartQuietSeconds, options.readSize);
-        port.clearInput();
-        std::string startCommand = options.startCommand + "\n";
-        port.writeAll(startCommand.c_str(), startCommand.size());
+        sendControl(port, 0U, AVC_DBG_CONTROL_HELLO);
+        ControlResponse hello = waitForControlResponse(port, parser, AVC_DBG_CONTROL_HELLO, 0U);
+        if (hello.status != AVC_DBG_CONTROL_STATUS_OK)
+        {
+            throw std::runtime_error("HELLO rejected with status " + std::to_string(hello.status));
+        }
+
+        bool synthetic = (options.startCommand == "START_SYNTH") || (options.startCommand == "SYNTH");
+        uint32_t streamSource = synthetic ? AVC_DBG_STREAM_SOURCE_SYNTHETIC : AVC_DBG_STREAM_SOURCE_CAMERA;
+        uint32_t channels = AVC_DBG_CHANNEL_FRAMES | (synthetic ? 0U : AVC_DBG_CHANNEL_STATS);
+        sendControl(port, 1U, AVC_DBG_CONTROL_SET_CHANNELS, channels, streamSource);
+        ControlResponse startResponse =
+            waitForControlResponse(port, parser, AVC_DBG_CONTROL_SET_CHANNELS, 1U);
+        if (startResponse.status != AVC_DBG_CONTROL_STATUS_OK)
+        {
+            throw std::runtime_error("SET_CHANNELS rejected with status " +
+                                     std::to_string(startResponse.status));
+        }
 
         uint64_t rxTotal = 0U;
         auto start = std::chrono::steady_clock::now();
@@ -633,8 +747,10 @@ int main(int argc, char **argv)
         }
         auto end = std::chrono::steady_clock::now();
 
-        port.writeAll("STOP\n", 5U);
-        Sleep(50);
+        sendControl(port, 2U, AVC_DBG_CONTROL_SET_CHANNELS);
+        (void)waitForControlResponse(port, parser, AVC_DBG_CONTROL_SET_CHANNELS, 2U);
+        sendControl(port, 3U, AVC_DBG_CONTROL_CLOSE);
+        (void)waitForControlResponse(port, parser, AVC_DBG_CONTROL_CLOSE, 3U);
 
         double elapsed = std::chrono::duration<double>(end - start).count();
         double mibPerSecond = (static_cast<double>(rxTotal) / elapsed) / (1024.0 * 1024.0);
@@ -648,6 +764,7 @@ int main(int argc, char **argv)
         std::cout << "parsed_packets=" << parser.parsedHeaders << "\n";
         std::cout << "parsed_chunks=" << parser.parsedFrameChunks << "\n";
         std::cout << "stats_packets=" << parser.statsPackets << "\n";
+        std::cout << "control_responses=" << parser.controlResponses.size() << "\n";
         std::cout << "dropped_before_packets=" << parser.droppedBeforePackets << "\n";
         std::cout << "initial_resync_bytes=" << parser.initialResyncBytes << "\n";
         if (parser.haveLastFrame)
@@ -683,6 +800,17 @@ int main(int argc, char **argv)
             std::cout << "stats_endpoint_busy_count=" << parser.lastStats.endpoint_busy_count << "\n";
             std::cout << "stats_send_error_count=" << parser.lastStats.send_error_count << "\n";
             std::cout << "stats_rx_command_count=" << parser.lastStats.rx_command_count << "\n";
+            std::cout << "stats_control_response_drop_count="
+                      << parser.lastStats.control_response_drop_count << "\n";
+            std::cout << "stats_control_response_queue_high_water="
+                      << parser.lastStats.control_response_queue_high_water << "\n";
+            std::cout << "stats_log_drop_count=" << parser.lastStats.log_drop_count << "\n";
+            std::cout << "stats_log_queue_high_water=" << parser.lastStats.log_queue_high_water << "\n";
+            std::cout << "stats_telemetry_drop_count=" << parser.lastStats.telemetry_drop_count << "\n";
+            std::cout << "stats_telemetry_queue_high_water="
+                      << parser.lastStats.telemetry_queue_high_water << "\n";
+            std::cout << "stats_telemetry_coalesce_count="
+                      << parser.lastStats.telemetry_coalesce_count << "\n";
         }
         for (size_t index = 0U; index < parser.errors.size(); index++)
         {

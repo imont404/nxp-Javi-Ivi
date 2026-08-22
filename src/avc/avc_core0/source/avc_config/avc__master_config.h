@@ -155,15 +155,27 @@
 #endif
 
 #ifndef CONFIG__USB_DEBUG_STREAM_ENABLE
-#define CONFIG__USB_DEBUG_STREAM_ENABLE			(0)
+#define CONFIG__USB_DEBUG_STREAM_ENABLE			(1)
 #endif
+
+/* Bench-only DWT timing report for avc_usb_debug_stream__service(). */
+#ifndef CONFIG__USB_DEBUG_PROFILE_ENABLE
+#define CONFIG__USB_DEBUG_PROFILE_ENABLE			(0)
+#endif
+
+#if CONFIG__USB_DEBUG_PROFILE_ENABLE && !CONFIG__USB_DEBUG_STREAM_ENABLE
+#error CONFIG__USB_DEBUG_PROFILE_ENABLE requires CONFIG__USB_DEBUG_STREAM_ENABLE.
+#endif
+
+/* EZH and FlexIO camera capture both use the same ping-pong frame storage. */
+#define CONFIG__CAMERA_FRAME_BUFFER_COUNT		(2U)
 
 /*
  * Display SPI timing diagnostic:
  * Instruments eGFX_DumpRaw with the cycle counter and reports where the frame
  * dump time goes. Measurement only - it changes no behavior - but it costs a
  * few cycles per phase and prints over RTT, so it stays off in the competition
- * image. See docs/plans/lcd-spi-throughput.
+ * image. See docs/research/AVC_LCD_SPI_Design.md.
  */
 #ifndef CONFIG__DISPLAY_TIMING_DIAG_ENABLE
 #define CONFIG__DISPLAY_TIMING_DIAG_ENABLE		(0)
@@ -216,24 +228,20 @@
  *   PLLCLKDIV 2 -> 75 MHz source  -> SCK ceiling 37.5 MHz
  *   PLLCLKDIV 1 -> 150 MHz source -> SCK ceiling 75 MHz
  *
- * PLLCLKDIV is consumed by nothing except the display - the only
- * kPLL_DIV_to_* attach in the tree is FLEXCOMM1 in the display driver - so
- * changing it does not move any other peripheral's clock. The camera runs from
- * PLL0 directly (kPLL0_to_FLEXIO) and is unaffected.
- *
- * The default stays at the Rev A verified value. Raising it is a real risk to
- * signal integrity on the panel flex, and that failure looks like sparkle or
- * torn pixels rather than a clean error, so it needs someone looking at the
- * screen before it becomes the default.
+ * The source tree attaches PLLCLKDIV only to FLEXCOMM1 for this display, but a
+ * runtime change to divider 1 produced a black panel even when SCK was divided
+ * back to 37.5 MHz. The cause is unresolved. Divider 2 at 37.5 MHz is the only
+ * competition-verified configuration; do not change it without bench evidence.
+ * See docs/research/AVC_LCD_SPI_Design.md.
  */
 #ifndef CONFIG__DISPLAY_SPI_PLLCLKDIV
 #define CONFIG__DISPLAY_SPI_PLLCLKDIV			(2)
 #endif
 
 /*
- * Requested SCK. The achieved rate is srcClock / (2^PRESCALE * (SCKDIV + 2))
- * and the driver reports what it actually got - a request the divider cannot
- * reach is silently clamped, which is how 50 MHz became 37.5 MHz.
+ * Requested SCK. The driver reports a register-derived diagnostic estimate
+ * using srcClock / (2^PRESCALE * (SCKDIV + 2)). Validate timing claims with
+ * measured transfer duration or the P4_1 scope marker.
  */
 #ifndef CONFIG__DISPLAY_SPI_BAUD_HZ
 #define CONFIG__DISPLAY_SPI_BAUD_HZ			(50000000)
