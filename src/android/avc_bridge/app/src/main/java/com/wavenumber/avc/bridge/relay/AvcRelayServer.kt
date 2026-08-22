@@ -5,6 +5,8 @@ import com.wavenumber.avc.bridge.protocol.AvcProtocol
 import com.wavenumber.avc.bridge.usb.AvcUsbHealth
 import com.wavenumber.avc.bridge.usb.AvcUsbState
 import com.wavenumber.avc.bridge.video.AvcJpegFrameView
+import com.wavenumber.avc.bridge.video.AvcMp4Fragment
+import com.wavenumber.avc.bridge.video.AvcMp4Initialization
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
@@ -25,9 +27,20 @@ import java.util.Base64
 import java.util.Locale
 import java.util.concurrent.atomic.AtomicLong
 
+enum class AvcRelayVideoMode(val wireName: String) {
+    JPEG("jpeg"),
+    H264("h264");
+
+    companion object {
+        fun parse(value: String?): AvcRelayVideoMode? =
+            entries.firstOrNull { it.wireName.equals(value, ignoreCase = true) }
+    }
+}
+
 class AvcRelayServer(
     private val viewerHtml: ByteArray,
     private val port: Int = 8765,
+    private val videoMode: AvcRelayVideoMode = AvcRelayVideoMode.JPEG,
 ) {
     companion object {
         private const val MAX_HTTP_HEADER_BYTES = 8 * 1024
@@ -39,6 +52,7 @@ class AvcRelayServer(
     }
 
     private val mailbox = AvcRelayMailbox(maxFrameBytes = 320 * 200 * 4)
+    private val h264Mailbox = AvcH264RelayMailbox()
     private val clientLock = Any()
 
     @Volatile
@@ -70,6 +84,15 @@ class AvcRelayServer(
     fun noteSourceFrame(frameId: Long) = mailbox.noteSourceFrame(frameId)
 
     fun offerJpegFrame(frame: AvcJpegFrameView) = mailbox.offerJpegFrame(frame)
+
+    fun offerH264Initialization(initialization: AvcMp4Initialization) =
+        h264Mailbox.offerInitialization(initialization)
+
+    fun offerH264Fragment(fragment: AvcMp4Fragment) {
+        if (mailbox.snapshot().clients == 0) return
+        val dropped = h264Mailbox.offerFragment(fragment)
+        mailbox.noteEncodedFrameSelected(fragment.frameId, dropped)
+    }
 
     fun offerDiagnostic(packet: AvcPacket) {
         if (packet.header.messageId == AvcProtocol.MSG_TELEMETRY_SCALAR) {
@@ -168,6 +191,7 @@ class AvcRelayServer(
                 }
             }
             activeClient = socket
+            if (videoMode == AvcRelayVideoMode.H264) h264Mailbox.resetForViewer()
             mailbox.setClients(1)
         }
 
@@ -212,8 +236,9 @@ class AvcRelayServer(
             try {
                 while (running && !socket.isClosed) {
                     val diagnostics = mailbox.takeDiagnostics(4)
-                    val frame = mailbox.takeLatestFrame()
-                    if (diagnostics.isNotEmpty() || frame != null) {
+                    val frame = if (videoMode == AvcRelayVideoMode.JPEG) mailbox.takeLatestFrame() else null
+                    val h264Packet = if (videoMode == AvcRelayVideoMode.H264) h264Mailbox.takePacket() else null
+                    if (diagnostics.isNotEmpty() || frame != null || h264Packet != null) {
                         var frameSent = false
                         outboundWriteStartedNs.set(System.nanoTime())
                         try {
@@ -227,8 +252,18 @@ class AvcRelayServer(
                             if (frame != null) {
                                 writeWebSocketFrame(output, 0x2, AvcRelayProtocol.encodeJpegFrame(frame))
                             }
+                            if (h264Packet != null) {
+                                writeWebSocketFrame(output, 0x2, AvcRelayProtocol.encodeH264Packet(h264Packet))
+                            }
                             output.flush()
                             frameSent = frame != null
+                            if (h264Packet != null && !h264Packet.initialization) {
+                                mailbox.noteEncodedFrameSent(
+                                    h264Packet.frameId,
+                                    h264Packet.capturedNs,
+                                    h264Packet.bytes.size,
+                                )
+                            }
                         } finally {
                             outboundWriteStartedNs.set(0)
                             if (frame != null) mailbox.releaseSentFrame(frame, frameSent)
@@ -372,7 +407,7 @@ class AvcRelayServer(
         } else {
             0.0
         }
-        return """{"state":"${usb.state.wireName}","session_id":${usb.sessionId},"usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_mode":"jpeg","relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_sent_bytes":${relay.sentBytes},"relay_mbit_s":${format(relayMegabitsPerSecond)},"relay_last_sent_age_ms":${format(lastSentAgeMs)},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
+        return """{"state":"${usb.state.wireName}","session_id":${usb.sessionId},"usb_frames":${usb.frames},"usb_fps":${format(usb.framesPerSecond)},"usb_mib_s":${format(usb.mebibytesPerSecond)},"sequence_errors":${usb.sequenceErrors},"malformed_chunks":${usb.malformedChunks},"relay_mode":"${videoMode.wireName}","relay_source_frames":${relay.sourceFrames},"relay_selected_frames":${relay.selectedFrames},"relay_sent_frames":${relay.sentFrames},"relay_sent_bytes":${relay.sentBytes},"relay_mbit_s":${format(relayMegabitsPerSecond)},"relay_last_sent_age_ms":${format(lastSentAgeMs)},"relay_dropped_frames":${relay.droppedFrames},"diagnostic_drops":${relay.diagnosticDrops},"slow_client_disconnects":${relay.slowClientDisconnects},"clients":${relay.clients},"last_source_frame_id":${relay.lastSourceFrameId},"last_sent_frame_id":${relay.lastSentFrameId},"server_error":${serverError?.let { "\"${jsonEscape(it)}\"" } ?: "null"}}"""
     }
 
     private fun format(value: Double): String = String.format(Locale.US, "%.3f", value)

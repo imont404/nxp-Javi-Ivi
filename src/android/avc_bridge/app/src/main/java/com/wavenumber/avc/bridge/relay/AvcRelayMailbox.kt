@@ -111,6 +111,33 @@ class AvcRelayMailbox(
     }
 
     @Synchronized
+    fun noteEncodedFrameSelected(frameId: Long, dropped: Int) {
+        selectedFrames++
+        lastSelectedFrameId = frameId
+        if (dropped > 0) {
+            droppedFrames += dropped
+            dropPending = true
+        }
+    }
+
+    @Synchronized
+    fun noteEncodedFrameSent(frameId: Long, capturedNs: Long, bytes: Int) {
+        val nowNs = System.nanoTime()
+        sentFrames++
+        sentBytes += bytes
+        sentSamples.addLast(SentSample(nowNs, bytes))
+        rateWindowBytes += bytes
+        while (
+            sentSamples.size > 1 &&
+            nowNs - checkNotNull(sentSamples.peekFirst()).timestampNs > 5_000_000_000L
+        ) {
+            rateWindowBytes -= sentSamples.removeFirst().bytes
+        }
+        lastSentFrameId = frameId
+        lastSentCapturedNs = capturedNs
+    }
+
+    @Synchronized
     fun takeLatestFrame(): AvcRelayFrame? = latestFrame.also { latestFrame = null }
 
     @Synchronized

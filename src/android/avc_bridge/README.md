@@ -63,6 +63,15 @@ The app also serves a standalone viewer from the phone:
 http://<phone-address>:8765/
 ```
 
+JPEG remains the default. To start the measured hardware-H.264/MSE path explicitly:
+
+```powershell
+.\scripts\android\start_android_relay.ps1 -Mode h264 -Serial <phone-ip>:5555
+```
+
+The command prints the exact viewer URL. `-Mode jpeg` restores the default, and `-Port`
+can isolate a bench run from an already-open browser tab.
+
 The binary WebSocket at `/stream` carries full-rate JPEG frames in the small `AVCJ`
 envelope below and preserves telemetry as normal `AVCU` packets. A fixed three-buffer
 RGB565 encoder input and a separate fixed three-buffer JPEG relay mailbox keep only the
@@ -87,6 +96,15 @@ offset  size  field
 28      4     reserved
 32      N     complete JPEG (SOI through EOI)
 ```
+
+The optional H.264 path uses the same 32-byte shape with magic `AVC4`. Bit 0 identifies
+an ISO BMFF initialization segment (`ftyp` + `moov`), bit 1 identifies an IDR, bit 2
+marks a discontinuity, and offset 28 carries the three-byte AVC codec configuration used
+to construct the browser codec name (for example `avc1.42000d`). Media payloads are
+single-sample fragmented MP4 (`moof` + `mdat`). The relay queue is bounded; a new viewer
+or an overflow discards dependent frames until the next IDR, then sends a fresh
+initialization segment. The embedded page feeds those fragments to Media Source
+Extensions, bounds its own append queue, and trims old buffered media.
 
 `android_loop.ps1` now verifies this path without a person watching either screen. To
 check an already running app directly, use:
@@ -126,13 +144,22 @@ when the activity exits. The locked-screen test deliberately sleeps the phone, c
 `Dozing` plus screen-off state, verifies live frames, and wakes it again. The original
 one-minute screen timeout remains unchanged.
 
-Bounded JPEG quality 70 is the normal relay path. The H.264 comparison remains opt-in.
+Bounded JPEG quality 70 is the normal relay path. The H.264 browser relay remains opt-in.
 Both copy only the newest complete RGB565 frame into a fixed three-buffer worker, so
 compression cannot block the USB reader or create a growing queue. JPEG uses Android's
 bitmap encoder; H.264 converts RGB565 little-endian to I420 with fixed LUTs and feeds the
-phone's non-secure hardware AVC encoder through bounded byte buffers. The test script
+phone's non-secure hardware AVC encoder through bounded byte buffers. Its browser path
+packages the MediaTek encoder's Annex-B baseline stream as fragmented MP4 without
+transcoding. The test script
 launches one mode for a fixed interval, requires at least 20 encoded FPS and clean USB
 parser health, reports memory/battery data, then restores the normal JPEG bridge.
+
+On the Moto and real car, H.264 delivered 238 media fragments in a ten-second steady
+window (23.8 FPS) at roughly 0.6 Mbit/s. Chrome reported 320x200 playback with a 49 ms
+media-buffer lead; the USB side remained at 23.42 FPS and 2.869 MiB/s with zero sequence
+or malformed-chunk errors. A reconnect reached playable video at the next IDR in 399 ms
+in the recorded run. The non-reading-client watchdog also passed in H.264 mode while USB
+continued advancing. These are bench measurements on `yellow`, not venue RF validation.
 
 A short fully loaded, locked-screen sample held 27 C, 23.42 USB FPS, 2.869 MiB/s, and
 49-60 MiB PSS while current draw varied from roughly 427 to 588 mA. This is a development

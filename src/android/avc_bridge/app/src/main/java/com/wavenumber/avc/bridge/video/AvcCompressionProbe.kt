@@ -65,11 +65,26 @@ data class AvcJpegFrameView(
     val byteCount: Int,
 )
 
+data class AvcH264FormatView(
+    val csd0: ByteArray,
+    val csd1: ByteArray,
+)
+
+data class AvcH264AccessUnitView(
+    val frameId: Long,
+    val capturedNs: Long,
+    val presentationTimeUs: Long,
+    val keyFrame: Boolean,
+    val bytes: ByteArray,
+)
+
 class AvcCompressionProbe(
     private val mode: AvcCompressionMode,
     private val jpegQuality: Int = 70,
     private val h264Bitrate: Int = 750_000,
     private val onJpegFrame: ((AvcJpegFrameView) -> Unit)? = null,
+    private val onH264Format: ((AvcH264FormatView) -> Unit)? = null,
+    private val onH264AccessUnit: ((AvcH264AccessUnitView) -> Unit)? = null,
     private val onSnapshot: (AvcCompressionSnapshot) -> Unit,
 ) : AutoCloseable {
     companion object {
@@ -217,16 +232,46 @@ class AvcCompressionProbe(
             setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CBR)
         }
         measurements.encoder = "${capability.name} ${AvcCodecInventory.colorName(colorFormat)} bitrate=$h264Bitrate"
-        val pendingTimestamps = HashMap<Long, Long>()
+        data class PendingH264Frame(val frameId: Long, val capturedNs: Long)
+        val pendingFrames = HashMap<Long, PendingH264Frame>()
         val bufferInfo = MediaCodec.BufferInfo()
+        fun ByteBuffer.toByteArray(): ByteArray {
+            val copy = duplicate()
+            return ByteArray(copy.remaining()).also(copy::get)
+        }
         fun drainOutput() {
             while (true) {
                 val outputIndex = codec.dequeueOutputBuffer(bufferInfo, 0)
+                if (outputIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                    val outputFormat = codec.outputFormat
+                    val csd0 = outputFormat.getByteBuffer("csd-0")?.toByteArray()
+                    val csd1 = outputFormat.getByteBuffer("csd-1")?.toByteArray()
+                    if (csd0 != null && csd1 != null) {
+                        onH264Format?.invoke(AvcH264FormatView(csd0, csd1))
+                    }
+                    continue
+                }
                 if (outputIndex < 0) return
                 try {
                     if (bufferInfo.size > 0 && bufferInfo.flags and MediaCodec.BUFFER_FLAG_CODEC_CONFIG == 0) {
                         val doneNs = System.nanoTime()
-                        val capturedNs = pendingTimestamps.remove(bufferInfo.presentationTimeUs) ?: doneNs
+                        val pending = pendingFrames.remove(bufferInfo.presentationTimeUs)
+                        val capturedNs = pending?.capturedNs ?: doneNs
+                        if (onH264AccessUnit != null) {
+                            val output = checkNotNull(codec.getOutputBuffer(outputIndex)).duplicate().apply {
+                                position(bufferInfo.offset)
+                                limit(bufferInfo.offset + bufferInfo.size)
+                            }
+                            onH264AccessUnit.invoke(
+                                AvcH264AccessUnitView(
+                                    frameId = pending?.frameId ?: bufferInfo.presentationTimeUs,
+                                    capturedNs = capturedNs,
+                                    presentationTimeUs = bufferInfo.presentationTimeUs,
+                                    keyFrame = bufferInfo.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME != 0,
+                                    bytes = output.toByteArray(),
+                                ),
+                            )
+                        }
                         measurements.output(bufferInfo.size.toLong(), doneNs, capturedNs)
                     }
                 } finally {
@@ -255,7 +300,7 @@ class AvcCompressionProbe(
                     check(input.remaining() >= yuv.size) { "AVC input buffer is too small: ${input.remaining()}" }
                     input.put(yuv)
                     val presentationTimeUs = (frame.capturedNs - epochNs).coerceAtLeast(0) / 1_000
-                    pendingTimestamps[presentationTimeUs] = frame.capturedNs
+                    pendingFrames[presentationTimeUs] = PendingH264Frame(frame.frameId, frame.capturedNs)
                     codec.queueInputBuffer(inputIndex, 0, yuv.size, presentationTimeUs, 0)
                     measurements.submitted(System.nanoTime() - startNs)
                     drainOutput()
@@ -265,7 +310,7 @@ class AvcCompressionProbe(
             }
             repeat(10) {
                 drainOutput()
-                if (pendingTimestamps.isEmpty()) return@repeat
+                if (pendingFrames.isEmpty()) return@repeat
                 Thread.sleep(2)
             }
         } finally {

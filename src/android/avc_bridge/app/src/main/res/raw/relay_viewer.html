@@ -8,7 +8,7 @@
     :root { color-scheme: dark; font-family: system-ui, sans-serif; }
     body { margin: 0; background: #07151b; color: #e9f7fb; }
     main { max-width: 960px; margin: auto; padding: 16px; }
-    canvas { width: 100%; image-rendering: pixelated; background: #000; border: 1px solid #34778d; }
+    canvas, video { width: 100%; image-rendering: pixelated; background: #000; border: 1px solid #34778d; }
     #status { color: #63dcff; }
     pre { white-space: pre-wrap; background: #102a35; padding: 12px; }
     table { border-collapse: collapse; width: 100%; }
@@ -20,6 +20,7 @@
   <h1>AVC Camera Relay</h1>
   <p id="status">Connecting...</p>
   <canvas id="camera" width="320" height="200"></canvas>
+  <video id="h264" width="320" height="200" muted autoplay playsinline hidden></video>
   <pre id="metrics">Waiting for health...</pre>
   <h2>Telemetry</h2>
   <table><thead><tr><th>Name</th><th>Value</th><th>Units</th></tr></thead><tbody id="telemetry"></tbody></table>
@@ -29,12 +30,18 @@
   'use strict';
   const AVCU_MAGIC = 0x55435641;
   const JPEG_MAGIC = 0x4a435641;
+  const H264_MAGIC = 0x34435641;
   const JPEG_HEADER_BYTES = 32;
+  const H264_HEADER_BYTES = 32;
+  const H264_FLAG_INITIALIZATION = 1;
+  const MAX_MSE_QUEUE = 48;
   const MSG_TELEMETRY = 0x01000500;
   const status = document.querySelector('#status');
   const metrics = document.querySelector('#metrics');
   const telemetryBody = document.querySelector('#telemetry');
-  const context = document.querySelector('#camera').getContext('2d', { alpha: false });
+  const canvas = document.querySelector('#camera');
+  const video = document.querySelector('#h264');
+  const context = canvas.getContext('2d', { alpha: false });
   const telemetry = new Map();
   const decoder = new TextDecoder();
   let pendingJpeg = null;
@@ -42,6 +49,90 @@
   let lastFrameId = -1;
   let displayed = 0;
   let lastRateTime = performance.now();
+  let currentSocket = null;
+  let mediaSource = null;
+  let sourceBuffer = null;
+  let mediaUrl = null;
+  let mseQueue = [];
+
+  function codecName(codecConfig) {
+    return `avc1.${codecConfig.toString(16).padStart(6, '0')}`;
+  }
+
+  function closeForMseError(error) {
+    console.error('AVC H.264 MSE', error);
+    status.textContent = `H.264 playback error: ${error}`;
+    if (currentSocket) currentSocket.close();
+  }
+
+  function pumpMse() {
+    if (!sourceBuffer || sourceBuffer.updating) return;
+    if (sourceBuffer.buffered.length && video.currentTime < sourceBuffer.buffered.start(0)) {
+      video.currentTime = sourceBuffer.buffered.start(0);
+      void video.play().catch(() => {});
+    }
+    if (mseQueue.length > 0) {
+      try { sourceBuffer.appendBuffer(mseQueue.shift()); }
+      catch (error) { closeForMseError(error); }
+      return;
+    }
+    if (sourceBuffer.buffered.length && video.currentTime > 8) {
+      const removeBefore = video.currentTime - 4;
+      if (sourceBuffer.buffered.start(0) < removeBefore) {
+        try { sourceBuffer.remove(0, removeBefore); }
+        catch (error) { closeForMseError(error); }
+      }
+    }
+  }
+
+  function beginH264(initialization, codecConfig) {
+    mseQueue = [initialization];
+    sourceBuffer = null;
+    if (mediaSource && mediaSource.readyState === 'open') {
+      try { mediaSource.endOfStream(); } catch (_) {}
+    }
+    if (mediaUrl) URL.revokeObjectURL(mediaUrl);
+    mediaSource = new MediaSource();
+    mediaUrl = URL.createObjectURL(mediaSource);
+    video.src = mediaUrl;
+    video.hidden = false;
+    canvas.hidden = true;
+    mediaSource.addEventListener('sourceopen', () => {
+      try {
+        const mime = `video/mp4; codecs="${codecName(codecConfig)}"`;
+        if (!MediaSource.isTypeSupported(mime)) throw new Error(`unsupported ${mime}`);
+        sourceBuffer = mediaSource.addSourceBuffer(mime);
+        sourceBuffer.mode = 'segments';
+        sourceBuffer.addEventListener('updateend', pumpMse);
+        sourceBuffer.addEventListener('error', () => closeForMseError('SourceBuffer error'));
+        pumpMse();
+        void video.play().catch(() => {});
+      } catch (error) { closeForMseError(error); }
+    }, { once: true });
+  }
+
+  function queueH264(fragment) {
+    if (!mediaSource) return;
+    if (mseQueue.length >= MAX_MSE_QUEUE) {
+      closeForMseError('decoder queue exceeded its bounded limit');
+      return;
+    }
+    mseQueue.push(fragment);
+    pumpMse();
+  }
+
+  if ('requestVideoFrameCallback' in video) {
+    const countVideoFrame = () => {
+      displayed++;
+      const now = performance.now();
+      if (now - lastRateTime >= 1000) {
+        status.textContent = `Live H.264 - frame ${lastFrameId}, browser frames ${displayed}`;
+        lastRateTime = now;
+      }
+      video.requestVideoFrameCallback(countVideoFrame);
+    };
+    video.requestVideoFrameCallback(countVideoFrame);
+  }
 
   async function drainJpeg() {
     if (decodingJpeg) return;
@@ -110,8 +201,24 @@
         view.getUint8(JPEG_HEADER_BYTES) !== 0xff || view.getUint8(JPEG_HEADER_BYTES + 1) !== 0xd8 ||
         view.getUint8(view.byteLength - 2) !== 0xff || view.getUint8(view.byteLength - 1) !== 0xd9
       ) return;
+      video.hidden = true;
+      canvas.hidden = false;
       pendingJpeg = { buffer, jpegBytes, frameId: view.getUint32(8, true) };
       void drainJpeg();
+      return;
+    }
+    if (magic === H264_MAGIC) {
+      const flags = view.getUint16(6, true);
+      const payloadBytes = view.getUint32(16, true);
+      if (
+        view.getUint8(4) !== 1 || view.getUint8(5) !== H264_HEADER_BYTES ||
+        view.getUint16(12, true) !== 320 || view.getUint16(14, true) !== 200 ||
+        H264_HEADER_BYTES + payloadBytes !== view.byteLength
+      ) return;
+      lastFrameId = view.getUint32(8, true);
+      const payload = buffer.slice(H264_HEADER_BYTES);
+      if (flags & H264_FLAG_INITIALIZATION) beginH264(payload, view.getUint32(28, true));
+      else queueH264(payload);
       return;
     }
     if (magic !== AVCU_MAGIC || view.getUint8(4) !== 1 || view.getUint8(5) !== 32) return;
@@ -126,6 +233,7 @@
   function connect() {
     const replace = new URLSearchParams(location.search).has('replace') ? '?replace=1' : '';
     const socket = new WebSocket(`ws://${location.host}/stream${replace}`);
+    currentSocket = socket;
     socket.binaryType = 'arraybuffer';
     socket.onopen = () => { status.textContent = 'Connected; waiting for frame...'; };
     socket.onmessage = event => receivePacket(event.data);

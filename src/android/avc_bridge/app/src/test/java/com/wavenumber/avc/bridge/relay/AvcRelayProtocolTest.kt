@@ -71,4 +71,22 @@ class AvcRelayProtocolTest {
 
         assertTrue(requireNotNull(mailbox.takeLatestFrame()).droppedBefore)
     }
+
+    @Test
+    fun h264InitializationCarriesCodecAndFragmentedMp4() {
+        val mp4 = byteArrayOf(0, 0, 0, 8, 'f'.code.toByte(), 't'.code.toByte(), 'y'.code.toByte(), 'p'.code.toByte())
+        val encoded = AvcRelayProtocol.encodeH264Packet(
+            AvcH264RelayPacket(8, 123, true, true, true, 0x42000d, mp4),
+        )
+        val view = ByteBuffer.wrap(encoded).order(ByteOrder.LITTLE_ENDIAN)
+        assertEquals(AvcRelayProtocol.H264_MAGIC, view.getInt(0))
+        assertEquals(
+            AvcRelayProtocol.H264_FLAG_INITIALIZATION or
+                AvcRelayProtocol.H264_FLAG_KEY_FRAME or
+                AvcRelayProtocol.H264_FLAG_DISCONTINUITY,
+            view.getShort(6).toInt(),
+        )
+        assertEquals(0x42000d, view.getInt(28))
+        assertArrayEquals(mp4, encoded.copyOfRange(AvcRelayProtocol.H264_HEADER_BYTES, encoded.size))
+    }
 }

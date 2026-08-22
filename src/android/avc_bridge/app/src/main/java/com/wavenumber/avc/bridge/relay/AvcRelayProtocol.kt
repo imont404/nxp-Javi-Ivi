@@ -10,6 +10,12 @@ object AvcRelayProtocol {
     const val JPEG_VERSION = 1
     const val JPEG_HEADER_BYTES = 32
     const val JPEG_FLAG_DROPPED_BEFORE = 1
+    const val H264_MAGIC = 0x34435641
+    const val H264_VERSION = 1
+    const val H264_HEADER_BYTES = 32
+    const val H264_FLAG_INITIALIZATION = 1
+    const val H264_FLAG_KEY_FRAME = 2
+    const val H264_FLAG_DISCONTINUITY = 4
 
     fun encodeJpegFrame(frame: AvcRelayFrame): ByteArray =
         ByteBuffer.allocate(JPEG_HEADER_BYTES + frame.byteCount)
@@ -26,6 +32,27 @@ object AvcRelayProtocol {
             .putInt(0)
             .put(frame.bytes, 0, frame.byteCount)
             .array()
+
+    fun encodeH264Packet(packet: AvcH264RelayPacket): ByteArray {
+        var flags = 0
+        if (packet.initialization) flags = flags or H264_FLAG_INITIALIZATION
+        if (packet.keyFrame) flags = flags or H264_FLAG_KEY_FRAME
+        if (packet.discontinuity) flags = flags or H264_FLAG_DISCONTINUITY
+        return ByteBuffer.allocate(H264_HEADER_BYTES + packet.bytes.size)
+            .order(ByteOrder.LITTLE_ENDIAN)
+            .putInt(H264_MAGIC)
+            .put(H264_VERSION.toByte())
+            .put(H264_HEADER_BYTES.toByte())
+            .putShort(flags.toShort())
+            .putInt(packet.frameId.toInt())
+            .putShort(320.toShort())
+            .putShort(200.toShort())
+            .putInt(packet.bytes.size)
+            .putLong(packet.capturedNs)
+            .putInt(packet.codecConfig)
+            .put(packet.bytes)
+            .array()
+    }
 
     fun encodeDiagnostic(packet: AvcPacket, sequence: Int): ByteArray = encodePacket(
         sequence = sequence,

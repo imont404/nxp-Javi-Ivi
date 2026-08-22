@@ -88,6 +88,12 @@ status = "done"
 depends_on = ["full-rate-jpeg", "hardware-h264"]
 
 [[steps]]
+id = "h264-browser-proof"
+title = "Add an opt-in bounded H.264 fragmented-MP4 relay and prove playback in a normal browser"
+status = "done"
+depends_on = ["compressed-browser-delivery"]
+
+[[steps]]
 id = "vehicle-integration"
 title = "Validate battery life, heat, reconnects, RF behavior, and noninterference on the car; keep mounting and cable retention outside the software track"
 status = "active"
@@ -201,6 +207,16 @@ Android reported `Dozing`, screen off, and light idle. A 30-second loaded baseli
 integration remains parked; the active software work is documentation and test/runtime
 audit of the now-complete compressed relay.
 
+An opt-in H.264 browser proof is also complete without changing the default JPEG path.
+The MediaTek encoder supplies baseline Annex-B SPS/PPS and one access unit per output;
+the app packages it into a small ISO BMFF initialization segment and one-sample
+`moof`/`mdat` fragments. The bounded relay waits for an IDR after connect or loss and
+resends initialization before dependent frames. Chrome played 320x200 video at the
+source rate: the measured ten-second steady window sent 238 frames (23.8 FPS) at about
+0.6 Mbit/s with roughly 49 ms of browser buffer lead. USB stayed at 23.42 FPS and
+2.869 MiB/s with zero sequence or malformed chunks. A recorded reconnect became
+playable in 399 ms, and the H.264 non-reading-client watchdog proof passed.
+
 The Android codec inventory reports the MediaTek `c2.mtk.avc.encoder` as a hardware,
 vendor AVC encoder. At 320x200 it accepts planar, semiplanar, and flexible YUV420 byte
 buffers as well as surface input, so the first H.264 proof can use a bounded RGB565-to-
@@ -215,9 +231,9 @@ startup, and 48 MiB PSS. MediaTek hardware H.264 at a 750 kbit/s target measured
 FPS, 0.752 Mbit/s, about 50.8 ms mean latency, four bounded startup drops, and 74 MiB PSS.
 The measured RF saving from H.264 is real, but full-rate JPEG is already only about eight
 percent of raw RGB565 bandwidth and is much simpler for an ordinary browser to consume.
-Use JPEG for the next one-browser MVP; retain H.264 as a proven option if race-network
-measurements justify its added framing, initialization, and browser-decoder complexity.
-That JPEG browser path is now implemented. An initial 75 ms inbound WebSocket poll capped
+Use JPEG as the default one-browser path; H.264 is now a working opt-in if race-network
+measurements justify its added framing and browser-decoder lifecycle. An initial 75 ms
+inbound WebSocket poll capped the JPEG path
 delivery at 13.2 FPS; reducing the bounded client-control poll to 5 ms removed the cap and
 produced the 23.493 FPS result above. A repeated slow-reader test still closed the client
 at the two-second watchdog, kept USB healthy, and remained bounded at about 59 MiB PSS.
@@ -294,9 +310,11 @@ fourth frame, about 5.9 FPS and 6.0 Mbit/s, while continuing to drain USB at ful
 The next experiment keeps the firmware and RGB565 camera mode fixed and compares bounded
 full-rate JPEG with Android hardware H.264. Measure achieved encode FPS, encoded bitrate,
 frame age/latency, drops, USB health, CPU time, memory, temperature, and battery current.
-The measured result selected JPEG: it sustains the full 23.4 FPS in the browser at about
-1.97 Mbit/s. H.264 remains the lower-bitrate option, but does not justify its additional
-browser transport and decoder lifecycle for the current controlled 5 GHz link. Recording,
+The initial measured result selected JPEG: it sustains the full 23.4 FPS in the browser
+at about 1.97 Mbit/s. The subsequent opt-in H.264/MSE proof also sustains the source rate
+at about 0.6 Mbit/s, but its dependent-frame recovery and decoder lifecycle remain more
+complex. Keep JPEG as the default until venue RF testing makes the bandwidth reduction
+valuable. Recording,
 multi-client support, and a polished race dashboard remain deferred.
 
 WebSocket uses TCP because an ordinary browser cannot consume arbitrary UDP datagrams.

@@ -25,10 +25,12 @@ import com.wavenumber.avc.bridge.usb.AvcUsbHealth
 import com.wavenumber.avc.bridge.usb.AvcUsbSession
 import com.wavenumber.avc.bridge.usb.AvcUsbState
 import com.wavenumber.avc.bridge.relay.AvcRelayServer
+import com.wavenumber.avc.bridge.relay.AvcRelayVideoMode
 import com.wavenumber.avc.bridge.video.AvcCodecInventory
 import com.wavenumber.avc.bridge.video.AvcCompressionMode
 import com.wavenumber.avc.bridge.video.AvcCompressionProbe
 import com.wavenumber.avc.bridge.video.AvcCompressionSnapshot
+import com.wavenumber.avc.bridge.video.AvcFragmentedMp4Muxer
 import java.nio.ByteBuffer
 import java.util.Locale
 
@@ -100,7 +102,13 @@ class MainActivity : Activity() {
 
         usbManager = getSystemService(Context.USB_SERVICE) as UsbManager
         val relayViewer = resources.openRawResource(R.raw.relay_viewer).use { it.readBytes() }
-        relayServer = AvcRelayServer(relayViewer)
+        val relayVideoMode = AvcRelayVideoMode.parse(intent.getStringExtra("relay_video"))
+            ?: AvcRelayVideoMode.JPEG
+        relayServer = AvcRelayServer(
+            relayViewer,
+            port = intent.getIntExtra("relay_port", 8765),
+            videoMode = relayVideoMode,
+        )
         relayServer.start()
         val avcEncoders = AvcCodecInventory.encoders()
         if (avcEncoders.isEmpty()) {
@@ -109,12 +117,22 @@ class MainActivity : Activity() {
             avcEncoders.forEach { Log.i("AVC_CODEC_INVENTORY", AvcCodecInventory.logLine(it)) }
         }
         val compressionMode = AvcCompressionMode.parse(intent.getStringExtra("compression_probe"))
-            ?: AvcCompressionMode.JPEG
+            ?: when (relayVideoMode) {
+                AvcRelayVideoMode.JPEG -> AvcCompressionMode.JPEG
+                AvcRelayVideoMode.H264 -> AvcCompressionMode.H264
+            }
+        val h264Muxer = if (relayVideoMode == AvcRelayVideoMode.H264) AvcFragmentedMp4Muxer() else null
         compressionProbe = AvcCompressionProbe(
             mode = compressionMode,
             jpegQuality = intent.getIntExtra("jpeg_quality", 70),
             h264Bitrate = intent.getIntExtra("h264_bitrate", 750_000),
             onJpegFrame = if (compressionMode == AvcCompressionMode.JPEG) relayServer::offerJpegFrame else null,
+            onH264Format = h264Muxer?.let { muxer ->
+                { format -> relayServer.offerH264Initialization(muxer.initialization(format)) }
+            },
+            onH264AccessUnit = h264Muxer?.let { muxer ->
+                { accessUnit -> relayServer.offerH264Fragment(muxer.fragment(accessUnit)) }
+            },
         ) { snapshot ->
             compressionSnapshot = snapshot
             Log.i(COMPRESSION_TAG, snapshot.logLine())

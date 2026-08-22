@@ -32,6 +32,8 @@ $telemetryPackets = 0
 $lastFrameId = $null
 $expectedSequence = $null
 $jpegBytesReceived = 0L
+$h264BytesReceived = 0L
+$h264InitializationSeen = $false
 $receiveTimer = [Diagnostics.Stopwatch]::new()
 
 try {
@@ -85,6 +87,40 @@ try {
             $completedFrames++
             continue
         }
+        if ($magic -eq 0x34435641) {
+            $version = $packet[4]
+            $headerBytes = $packet[5]
+            $flags = [BitConverter]::ToUInt16($packet, 6)
+            $frameId = [BitConverter]::ToUInt32($packet, 8)
+            $width = [BitConverter]::ToUInt16($packet, 12)
+            $height = [BitConverter]::ToUInt16($packet, 14)
+            $mp4Bytes = [BitConverter]::ToUInt32($packet, 16)
+            if (
+                $version -ne 1 -or $headerBytes -ne 32 -or
+                $width -ne 320 -or $height -ne 200 -or
+                $packet.Length -ne 32 + $mp4Bytes -or $mp4Bytes -lt 8
+            ) {
+                throw "Relay emitted a malformed AVC4 packet."
+            }
+            $boxType = [Text.Encoding]::ASCII.GetString($packet, 36, 4)
+            if (($flags -band 1) -ne 0) {
+                if ($boxType -ne "ftyp") { throw "AVC4 initialization does not begin with ftyp." }
+                $h264InitializationSeen = $true
+                continue
+            }
+            if (-not $h264InitializationSeen) { throw "AVC4 media arrived before initialization." }
+            if ($boxType -ne "moof") { throw "AVC4 media does not begin with moof." }
+            if ($completedFrames -eq 0 -and ($flags -band 2) -eq 0) {
+                throw "The first AVC4 media packet is not an IDR."
+            }
+            if ($null -ne $lastFrameId -and $frameId -le $lastFrameId) {
+                throw "Relay H.264 frame IDs did not advance: previous $lastFrameId, received $frameId."
+            }
+            $lastFrameId = $frameId
+            $h264BytesReceived += $mp4Bytes
+            $completedFrames++
+            continue
+        }
         if ($magic -ne 0x55435641) {
             throw "Relay emitted an unknown message magic 0x$('{0:X8}' -f $magic)."
         }
@@ -120,8 +156,8 @@ $healthAfter = Invoke-RestMethod -Uri "$baseUri/health" -TimeoutSec 5
 if ($healthAfter.sequence_errors -ne 0 -or $healthAfter.malformed_chunks -ne 0) {
     throw "USB health degraded during relay: sequence=$($healthAfter.sequence_errors), malformed=$($healthAfter.malformed_chunks)."
 }
-if ($healthAfter.relay_mode -ne "jpeg") {
-    throw "Relay mode is '$($healthAfter.relay_mode)', expected full-rate JPEG."
+if ($healthAfter.relay_mode -ne $healthBefore.relay_mode) {
+    throw "Relay mode changed from '$($healthBefore.relay_mode)' to '$($healthAfter.relay_mode)'."
 }
 $frameAge = $healthAfter.last_source_frame_id - $healthAfter.last_sent_frame_id
 if ($frameAge -lt 0 -or $frameAge -gt 8) {
@@ -131,11 +167,12 @@ $receivedFps = if ($receiveTimer.Elapsed.TotalSeconds -gt 0) {
     $completedFrames / $receiveTimer.Elapsed.TotalSeconds
 } else { 0 }
 $receivedMegabitsPerSecond = if ($receiveTimer.Elapsed.TotalSeconds -gt 0) {
-    $jpegBytesReceived * 8 / $receiveTimer.Elapsed.TotalSeconds / 1000000
+    ($jpegBytesReceived + $h264BytesReceived) * 8 / $receiveTimer.Elapsed.TotalSeconds / 1000000
 } else { 0 }
 
 [PSCustomObject]@{
     url = "$baseUri/"
+    relay_mode = $healthAfter.relay_mode
     frames = $completedFrames
     received_fps = [Math]::Round($receivedFps, 3)
     received_mbit_s = [Math]::Round($receivedMegabitsPerSecond, 3)
