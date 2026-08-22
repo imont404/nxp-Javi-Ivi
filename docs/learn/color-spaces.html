@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>From RGB565 to HSV | Wavenumber AVC</title>
+  <style>
+    :root {
+      --ink: #f5f7fb;
+      --muted: #aeb9ca;
+      --panel: rgba(15, 23, 39, .91);
+      --line: #34445f;
+      --cyan: #67e8f9;
+      --amber: #fbbf24;
+      --green: #6ee7b7;
+      --red: #fb7185;
+      --page: #08101e;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, #193253 0, transparent 33rem),
+        radial-gradient(circle at 90% 35%, #261c4f 0, transparent 34rem),
+        var(--page);
+      line-height: 1.5;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: var(--cyan); }
+    code { color: #d8b4fe; }
+    .shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; }
+    .hero { padding: clamp(2.5rem, 8vw, 6rem) 0 2rem; }
+    .eyebrow {
+      margin: 0 0 .5rem;
+      color: var(--cyan);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 8vw, 6.7rem); line-height: .92; letter-spacing: -.055em; }
+    h2 { margin: 0 0 .7rem; font-size: clamp(1.55rem, 3vw, 2.35rem); line-height: 1.05; }
+    h3 { margin: 0 0 .4rem; font-size: 1.05rem; }
+    .lead { max-width: 68ch; margin: 1.5rem 0 0; color: #d5dceb; font-size: clamp(1.05rem, 2vw, 1.3rem); }
+    .hero-note { margin-top: 1.2rem; color: var(--muted); font-size: .94rem; }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(9, auto);
+      align-items: center;
+      gap: .55rem;
+      margin: 2rem 0;
+      overflow-x: auto;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: rgba(7, 12, 24, .58);
+    }
+    .pipeline .stage { min-width: max-content; padding: .65rem .8rem; border-radius: .65rem; background: #172238; text-align: center; }
+    .pipeline .arrow { color: var(--amber); font-weight: 800; }
+    .pipeline small { display: block; color: var(--muted); }
+
+    .lab {
+      display: grid;
+      grid-template-columns: minmax(260px, 340px) 1fr;
+      gap: 1rem;
+      margin: 1rem 0 3rem;
+      align-items: start;
+    }
+    .panel { border: 1px solid var(--line); border-radius: 1rem; background: var(--panel); box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+    .controls { position: sticky; top: 1rem; padding: 1.1rem; }
+    .visuals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .visual-card { padding: 1rem; min-width: 0; }
+    .visual-card.wide { grid-column: 1 / -1; }
+    .visual-card p, .controls p { color: var(--muted); font-size: .9rem; }
+    canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: .65rem; background: #050914; touch-action: none; }
+    #rgbSlice { cursor: crosshair; }
+    #hsvDisk { cursor: crosshair; }
+
+    .swatch-row { display: grid; grid-template-columns: 4.5rem 1fr; gap: .9rem; align-items: center; margin-bottom: 1rem; }
+    #swatch { width: 4.5rem; aspect-ratio: 1; border-radius: .8rem; border: 1px solid rgba(255,255,255,.25); box-shadow: inset 0 0 0 1px rgba(0,0,0,.3); }
+    #hexValue { font: 800 1.25rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    #colorPicker { width: 100%; height: 2.4rem; padding: .15rem; border: 1px solid var(--line); border-radius: .45rem; background: #0c1425; }
+
+    fieldset { margin: 1rem 0; padding: 0; border: 0; }
+    legend { margin-bottom: .55rem; color: var(--muted); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .slider { display: grid; grid-template-columns: 1.4rem 1fr 3.4rem; gap: .55rem; align-items: center; margin: .45rem 0; }
+    .slider output { text-align: right; color: #dce5f3; font: .82rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    input[type="range"] { width: 100%; accent-color: var(--cyan); }
+    .preset-row { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .preset-row button, .mode-button {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .35rem .65rem;
+      background: #121d31;
+      cursor: pointer;
+    }
+    button:hover, button:focus-visible { border-color: var(--cyan); outline: none; }
+
+    .readout { display: grid; grid-template-columns: 1fr auto; gap: .3rem 1rem; margin: 1rem 0 0; font-size: .84rem; }
+    .readout dt { color: var(--muted); }
+    .readout dd { margin: 0; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; text-align: right; }
+    .confidence { margin-top: 1rem; padding: .7rem; border-radius: .6rem; background: rgba(251,191,36,.12); color: #fde68a; }
+    .confidence.good { background: rgba(110,231,183,.12); color: var(--green); }
+
+    .concepts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0 4rem; }
+    .concept { padding: 1.1rem; }
+    .formula { display: block; margin: .8rem 0; padding: .7rem; overflow-x: auto; border-radius: .55rem; background: #080e1a; color: #e9d5ff; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .example-result { font-weight: 750; }
+    .pass { color: var(--green); }
+    .fail { color: var(--red); }
+    .footer { padding: 2rem 0 4rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .9rem; }
+
+    @media (max-width: 840px) {
+      .lab { grid-template-columns: 1fr; }
+      .controls { position: static; }
+      .concepts { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 580px) { .visuals { grid-template-columns: 1fr; } .visual-card.wide { grid-column: auto; } }
+    @media print {
+      body { color: #111; background: #fff; }
+      .panel, .pipeline { color: #111; background: #fff; box-shadow: none; }
+      .controls { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Wavenumber AVC · interactive lesson seed</p>
+      <h1>One pixel, three views.</h1>
+      <p class="lead">A camera gives us numbers. A color-space transform lets us choose numbers that match the question we want to ask. Move one color below and watch the same pixel travel through RGB, RGB565, and HSV.</p>
+      <p class="hero-note">This page works from a downloaded file—no server, package install, or internet connection required.</p>
+    </header>
+
+    <section aria-labelledby="pipeline-title">
+      <h2 id="pipeline-title">Where this fits in the car</h2>
+      <div class="pipeline" aria-label="Camera pixel processing pipeline">
+        <div class="stage">Bayer sensor<small>photodiodes</small></div><div class="arrow">→</div>
+        <div class="stage">Camera ISP<small>demosaic + color</small></div><div class="arrow">→</div>
+        <div class="stage">RGB565<small>16 bits / pixel</small></div><div class="arrow">→</div>
+        <div class="stage">65,536-entry LUT<small>one indexed load</small></div><div class="arrow">→</div>
+        <div class="stage">Y · H · S · V<small>features for your code</small></div>
+      </div>
+    </section>
+
+    <section class="lab" aria-label="Interactive color laboratory">
+      <aside class="panel controls">
+        <div class="swatch-row">
+          <div id="swatch" aria-label="Selected color swatch"></div>
+          <div><div id="hexValue">#E53935</div><input id="colorPicker" type="color" value="#e53935" aria-label="Choose a color"></div>
+        </div>
+
+        <fieldset>
+          <legend>RGB coordinates</legend>
+          <label class="slider"><span>R</span><input id="r" type="range" min="0" max="255" value="229"><output id="rOut">229</output></label>
+          <label class="slider"><span>G</span><input id="g" type="range" min="0" max="255" value="57"><output id="gOut">57</output></label>
+          <label class="slider"><span>B</span><input id="b" type="range" min="0" max="255" value="53"><output id="bOut">53</output></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>HSV coordinates</legend>
+          <label class="slider"><span>H</span><input id="h" type="range" min="0" max="359" value="1"><output id="hOut">1°</output></label>
+          <label class="slider"><span>S</span><input id="s" type="range" min="0" max="100" value="77"><output id="sOut">77%</output></label>
+          <label class="slider"><span>V</span><input id="v" type="range" min="0" max="100" value="90"><output id="vOut">90%</output></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Try a comparison</legend>
+          <div class="preset-row">
+            <button type="button" data-color="#e53935">red</button>
+            <button type="button" data-color="#561816">dark red</button>
+            <button type="button" data-color="#e5b8b6">pale red</button>
+            <button type="button" data-color="#fff1de">warm white</button>
+            <button type="button" data-color="#111111">near black</button>
+            <button type="button" data-color="#26a269">green</button>
+          </div>
+        </fieldset>
+
+        <dl class="readout">
+          <dt>RGB888 requested</dt><dd id="rgb888">229, 57, 53</dd>
+          <dt>RGB565 word</dt><dd id="rgb565">0xE1C6</dd>
+          <dt>RGB565 expanded</dt><dd id="expanded">231, 57, 49</dd>
+          <dt>firmware Y/H/S/V</dt><dd id="yhsv">108 / 1 / 201 / 231</dd>
+          <dt>packed LUT word</dt><dd id="packed">0xE7C9016C</dd>
+          <dt>cone radius S × V</dt><dd id="chroma">0.695</dd>
+        </dl>
+        <div id="confidence" class="confidence good" role="status">Hue is useful here: this pixel has enough color and light.</div>
+      </aside>
+
+      <div class="visuals">
+        <article class="panel visual-card">
+          <h2>RGB is a cube</h2>
+          <p>R, G, and B are Cartesian axes. The point is simple; the volume that means “red under many lighting conditions” is not.</p>
+          <canvas id="rgbCube" width="620" height="620" aria-label="RGB cube with the selected color plotted"></canvas>
+        </article>
+
+        <article class="panel visual-card">
+          <h2>Explore one RGB slice</h2>
+          <p>Drag across red and green while blue stays fixed at <strong id="blueFixed">53</strong>. A slice makes a 3-D cube editable on a 2-D screen.</p>
+          <canvas id="rgbSlice" width="620" height="620" aria-label="Interactive red-green plane at the selected blue value"></canvas>
+        </article>
+
+        <article class="panel visual-card">
+          <h2>HSV as a teaching cone</h2>
+          <p>Hue is an angle. Saturation moves away from gray. Value moves upward. Here radius is <strong>S × V</strong>, so the available chroma visibly collapses near black.</p>
+          <canvas id="hsvCone" width="620" height="620" aria-label="HSV cone with the selected color plotted"></canvas>
+        </article>
+
+        <article class="panel visual-card">
+          <h2>Hue–saturation disk</h2>
+          <p>Drag on the disk to choose hue and saturation. Its radius shrinks with V: at low light many nominal hues produce nearly the same dark RGB values.</p>
+          <canvas id="hsvDisk" width="620" height="620" aria-label="Interactive hue and saturation disk whose size follows value"></canvas>
+        </article>
+
+        <article class="panel visual-card wide">
+          <h2>Two important failure regions</h2>
+          <div class="concepts" style="margin-bottom:0">
+            <div>
+              <h3>Low saturation</h3>
+              <p>Near the gray axis, tiny sensor or lighting changes can swing the reported hue. Use S to decide whether H carries meaning.</p>
+            </div>
+            <div>
+              <h3>Low value</h3>
+              <p>Near black, the channels have few useful levels. The cone squeezes because the maximum possible RGB channel difference is small.</p>
+            </div>
+            <div>
+              <h3>RGB565 quantization</h3>
+              <p>The firmware receives 5 red bits, 6 green bits, and 5 blue bits—not the exact color selected above. The readouts show both.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="questions-title">
+      <p class="eyebrow">From a picture to a predicate</p>
+      <h2 id="questions-title">Ask simpler questions of better coordinates</h2>
+      <div class="concepts">
+        <article class="panel concept">
+          <h3>A deliberately crude RGB question</h3>
+          <span class="formula">R &gt; 96<br>R &gt; 1.35 × G<br>R &gt; 1.35 × B</span>
+          <p id="rgbExample" class="example-result"></p>
+          <p>This is difficult to tune across shade, glare, and tinted illumination. It is an illustration, not a recommended detector.</p>
+        </article>
+        <article class="panel concept">
+          <h3>An HSV composition</h3>
+          <span class="formula">angle(H, red) &lt; 30°<br>S &gt; 30%<br>V &gt; 25%</span>
+          <p id="hsvExample" class="example-result"></p>
+          <p>Hue describes the family; S and V reject places where hue is weak evidence. Red is merely today's example.</p>
+        </article>
+        <article class="panel concept">
+          <h3>The embedded transform</h3>
+          <span class="formula">features = rgb565_to_yhsv[pixel]</span>
+          <p>Every possible 16-bit pixel already has one packed Y/H/S/V answer. Memory replaces repeated per-pixel divisions and floating-point work.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">Lesson seed for the Wavenumber AVC student framework. HSV is commonly drawn as a cylinder; this page deliberately uses a chroma cone to expose the loss of color range near black. HSL is a different transform and is often drawn as a double cone.</div>
+  </footer>
+
+  <script>
+    "use strict";
+    const $ = (id) => document.getElementById(id);
+    const state = { r: 229, g: 57, b: 53, h: 1, s: .77, v: .90 };
+    const controls = { r: $("r"), g: $("g"), b: $("b"), h: $("h"), s: $("s"), v: $("v") };
+
+    function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+    function pad2(x) { return x.toString(16).padStart(2, "0").toUpperCase(); }
+    function pad4(x) { return x.toString(16).padStart(4, "0").toUpperCase(); }
+    function pad8(x) { return (x >>> 0).toString(16).padStart(8, "0").toUpperCase(); }
+    function cssRgb(r, g, b) { return `rgb(${Math.round(r)} ${Math.round(g)} ${Math.round(b)})`; }
+
+    function rgbToHsv(r, g, b) {
+      const rn = r / 255, gn = g / 255, bn = b / 255;
+      const max = Math.max(rn, gn, bn), min = Math.min(rn, gn, bn), d = max - min;
+      let h = 0;
+      if (d !== 0) {
+        if (max === rn) h = 60 * (((gn - bn) / d) % 6);
+        else if (max === gn) h = 60 * (((bn - rn) / d) + 2);
+        else h = 60 * (((rn - gn) / d) + 4);
+      }
+      if (h < 0) h += 360;
+      return { h, s: max === 0 ? 0 : d / max, v: max };
+    }
+
+    Object.assign(state, rgbToHsv(state.r, state.g, state.b));
+
+    function hsvToRgb(h, s, v) {
+      const c = v * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = v - c;
+      let p = [0, 0, 0];
+      if (h < 60) p = [c, x, 0]; else if (h < 120) p = [x, c, 0];
+      else if (h < 180) p = [0, c, x]; else if (h < 240) p = [0, x, c];
+      else if (h < 300) p = [x, 0, c]; else p = [c, 0, x];
+      return p.map((q) => Math.round((q + m) * 255));
+    }
+
+    function rgb565(r, g, b) {
+      const r5 = r >> 3, g6 = g >> 2, b5 = b >> 3;
+      const word = (r5 << 11) | (g6 << 5) | b5;
+      return { word, r: (r5 << 3) | (r5 >> 2), g: (g6 << 2) | (g6 >> 4), b: (b5 << 3) | (b5 >> 2) };
+    }
+
+    function firmwareFeatures(r, g, b) {
+      const hsv = rgbToHsv(r, g, b);
+      const y = ((r * 77 + g * 150 + b * 29 + 128) >> 8) & 255;
+      const h = Math.floor(hsv.h * 256 / 360) & 255;
+      const s = Math.floor(hsv.s * 255 + .5);
+      const v = Math.floor(hsv.v * 255 + .5);
+      return { y, h, s, v, packed: (y | (h << 8) | (s << 16) | (v << 24)) >>> 0 };
+    }
+
+    function setFromRgb(r, g, b) {
+      state.r = clamp(Math.round(r), 0, 255); state.g = clamp(Math.round(g), 0, 255); state.b = clamp(Math.round(b), 0, 255);
+      Object.assign(state, rgbToHsv(state.r, state.g, state.b));
+      render();
+    }
+
+    function setFromHsv(h, s, v) {
+      state.h = (h + 360) % 360; state.s = clamp(s, 0, 1); state.v = clamp(v, 0, 1);
+      [state.r, state.g, state.b] = hsvToRgb(state.h, state.s, state.v);
+      render();
+    }
+
+    function fitCanvas(canvas) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2), px = Math.max(280, Math.round(canvas.clientWidth * dpr));
+      if (canvas.width !== px || canvas.height !== px) { canvas.width = px; canvas.height = px; }
+      return { ctx: canvas.getContext("2d"), n: px };
+    }
+
+    function drawRgbCube() {
+      const { ctx, n } = fitCanvas($("rgbCube")); ctx.clearRect(0, 0, n, n);
+      const o = [n*.18, n*.76], ex = [n*.57, 0], ey = [n*.18, -n*.22], ez = [0, -n*.52];
+      const project = (r,g,b) => [o[0] + ex[0]*r + ey[0]*g + ez[0]*b, o[1] + ex[1]*r + ey[1]*g + ez[1]*b];
+      const vertices = [[0,0,0],[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[1,1,1]];
+      const edges = [[0,1],[0,2],[0,3],[1,4],[1,5],[2,4],[2,6],[3,5],[3,6],[4,7],[5,7],[6,7]];
+      ctx.lineWidth = n*.004;
+      for (const [a,b] of edges) { const p=project(...vertices[a]), q=project(...vertices[b]); ctx.strokeStyle="#52627a"; ctx.beginPath(); ctx.moveTo(...p); ctx.lineTo(...q); ctx.stroke(); }
+      for (const v of vertices) { const p=project(...v); ctx.fillStyle=cssRgb(v[0]*255,v[1]*255,v[2]*255); ctx.beginPath(); ctx.arc(...p,n*.018,0,Math.PI*2); ctx.fill(); ctx.strokeStyle="#fff"; ctx.stroke(); }
+      const p = project(state.r/255,state.g/255,state.b/255);
+      ctx.shadowColor="#fff"; ctx.shadowBlur=n*.035; ctx.fillStyle=cssRgb(state.r,state.g,state.b); ctx.beginPath(); ctx.arc(...p,n*.035,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.strokeStyle="#fff"; ctx.lineWidth=n*.007; ctx.stroke();
+      ctx.font=`700 ${n*.038}px system-ui`; ctx.fillStyle="#fb7185"; ctx.fillText("R",o[0]+ex[0]+n*.03,o[1]+n*.01); ctx.fillStyle="#6ee7b7"; ctx.fillText("G",o[0]+ey[0]+n*.01,o[1]+ey[1]); ctx.fillStyle="#93c5fd"; ctx.fillText("B",o[0]+n*.01,o[1]+ez[1]-n*.02);
+    }
+
+    function drawRgbSlice() {
+      const { ctx, n } = fitCanvas($("rgbSlice")), pad=n*.09, size=n-2*pad;
+      const image=ctx.createImageData(Math.max(1,Math.floor(size)),Math.max(1,Math.floor(size)));
+      for(let y=0;y<image.height;y++) for(let x=0;x<image.width;x++) { const i=(y*image.width+x)*4; image.data[i]=x/(image.width-1)*255; image.data[i+1]=(1-y/(image.height-1))*255; image.data[i+2]=state.b; image.data[i+3]=255; }
+      ctx.clearRect(0,0,n,n); ctx.putImageData(image,pad,pad); ctx.strokeStyle="#9aa8bd"; ctx.lineWidth=n*.003; ctx.strokeRect(pad,pad,size,size);
+      const x=pad+state.r/255*size,y=pad+(1-state.g/255)*size; ctx.strokeStyle="#fff"; ctx.lineWidth=n*.006; ctx.beginPath();ctx.arc(x,y,n*.027,0,Math.PI*2);ctx.stroke(); ctx.beginPath();ctx.moveTo(x-n*.045,y);ctx.lineTo(x+n*.045,y);ctx.moveTo(x,y-n*.045);ctx.lineTo(x,y+n*.045);ctx.stroke();
+      ctx.font=`700 ${n*.035}px system-ui`; ctx.fillStyle="#fb7185";ctx.fillText("R →",pad,n*.975);ctx.fillStyle="#6ee7b7";ctx.fillText("G ↑",n*.01,pad*.7);
+    }
+
+    function drawHsvCone() {
+      const { ctx, n }=fitCanvas($("hsvCone")); ctx.clearRect(0,0,n,n);
+      const topY=n*.17,bottomY=n*.83,rx=n*.36,ry=n*.11,cx=n*.5;
+      const grad=ctx.createConicGradient(-Math.PI/2,cx,topY); for(let i=0;i<=12;i++) grad.addColorStop(i/12,`hsl(${i*30} 100% 50%)`);
+      ctx.save();ctx.beginPath();ctx.ellipse(cx,topY,rx,ry,0,0,Math.PI*2);ctx.fillStyle=grad;ctx.globalAlpha=.82;ctx.fill();ctx.restore();
+      ctx.beginPath();ctx.moveTo(cx-rx,topY);ctx.lineTo(cx,bottomY);ctx.lineTo(cx+rx,topY);ctx.strokeStyle="#73839b";ctx.lineWidth=n*.004;ctx.stroke();
+      ctx.beginPath();ctx.ellipse(cx,topY,rx,ry,0,0,Math.PI*2);ctx.stroke();
+      const a=(state.h-90)*Math.PI/180, localRx=rx*state.s*state.v, localRy=ry*state.s*state.v, baseY=bottomY-(bottomY-topY)*state.v;
+      const x=cx+Math.cos(a)*localRx,y=baseY+Math.sin(a)*localRy;
+      ctx.setLineDash([n*.012,n*.012]);ctx.strokeStyle="rgba(255,255,255,.45)";ctx.beginPath();ctx.moveTo(cx,bottomY);ctx.lineTo(x,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.shadowColor="#fff";ctx.shadowBlur=n*.035;ctx.fillStyle=cssRgb(state.r,state.g,state.b);ctx.beginPath();ctx.arc(x,y,n*.035,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle="#fff";ctx.lineWidth=n*.006;ctx.stroke();
+      ctx.font=`700 ${n*.034}px system-ui`;ctx.fillStyle="#dce5f3";ctx.fillText("V = 100%",n*.68,n*.12);ctx.fillText("V = 0%",n*.54,n*.9);
+    }
+
+    function drawHsvDisk() {
+      const { ctx,n }=fitCanvas($("hsvDisk"));ctx.clearRect(0,0,n,n);const cx=n/2,cy=n/2,max=n*.40,radius=max*state.v;
+      if(radius>1){const image=ctx.createImageData(n,n);for(let y=0;y<n;y++)for(let x=0;x<n;x++){const dx=x-cx,dy=y-cy,d=Math.hypot(dx,dy);if(d<=radius){const sat=d/radius,h=(Math.atan2(dy,dx)*180/Math.PI+90+360)%360,[r,g,b]=hsvToRgb(h,sat,state.v),i=(y*n+x)*4;image.data[i]=r;image.data[i+1]=g;image.data[i+2]=b;image.data[i+3]=255;}}ctx.putImageData(image,0,0);}
+      ctx.strokeStyle="#9aa8bd";ctx.lineWidth=n*.004;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.stroke();
+      const a=(state.h-90)*Math.PI/180,x=cx+Math.cos(a)*radius*state.s,y=cy+Math.sin(a)*radius*state.s;ctx.strokeStyle="#fff";ctx.lineWidth=n*.006;ctx.beginPath();ctx.arc(x,y,n*.027,0,Math.PI*2);ctx.stroke();
+      ctx.font=`700 ${n*.033}px system-ui`;ctx.fillStyle="#dce5f3";ctx.fillText(`disk radius = V = ${Math.round(state.v*100)}%`,n*.05,n*.95);
+    }
+
+    function render() {
+      const color=`#${pad2(state.r)}${pad2(state.g)}${pad2(state.b)}`, q=rgb565(state.r,state.g,state.b), f=firmwareFeatures(q.r,q.g,q.b);
+      controls.r.value=state.r;controls.g.value=state.g;controls.b.value=state.b;controls.h.value=Math.round(state.h)%360;controls.s.value=Math.round(state.s*100);controls.v.value=Math.round(state.v*100);
+      $("rOut").value=state.r;$("gOut").value=state.g;$("bOut").value=state.b;$("hOut").value=`${Math.round(state.h)}°`;$("sOut").value=`${Math.round(state.s*100)}%`;$("vOut").value=`${Math.round(state.v*100)}%`;
+      $("swatch").style.background=color;$("hexValue").textContent=color;$("colorPicker").value=color.toLowerCase();$("blueFixed").textContent=state.b;
+      $("rgb888").textContent=`${state.r}, ${state.g}, ${state.b}`;$("rgb565").textContent=`0x${pad4(q.word)}`;$("expanded").textContent=`${q.r}, ${q.g}, ${q.b}`;$("yhsv").textContent=`${f.y} / ${f.h} / ${f.s} / ${f.v}`;$("packed").textContent=`0x${pad8(f.packed)}`;$("chroma").textContent=(state.s*state.v).toFixed(3);
+      const reliable=state.s>=.30&&state.v>=.25, confidence=$("confidence");confidence.className=`confidence ${reliable?"good":""}`;confidence.textContent=reliable?"Hue is useful here: this pixel has enough color and light.":state.v<.25?"Hue is weak evidence here: the pixel is near black.":"Hue is weak evidence here: the pixel is close to gray.";
+      const rgbPass=state.r>96&&state.r>1.35*state.g&&state.r>1.35*state.b, hueDistance=Math.min(state.h,360-state.h),hsvPass=hueDistance<30&&state.s>.30&&state.v>.25;
+      $("rgbExample").className=`example-result ${rgbPass?"pass":"fail"}`;$("rgbExample").textContent=`Selected pixel: ${rgbPass?"passes":"does not pass"}`;$("hsvExample").className=`example-result ${hsvPass?"pass":"fail"}`;$("hsvExample").textContent=`Selected pixel: ${hsvPass?"passes":"does not pass"}`;
+      drawRgbCube();drawRgbSlice();drawHsvCone();drawHsvDisk();
+    }
+
+    ["r","g","b"].forEach((id)=>controls[id].addEventListener("input",()=>setFromRgb(+controls.r.value,+controls.g.value,+controls.b.value)));
+    ["h","s","v"].forEach((id)=>controls[id].addEventListener("input",()=>setFromHsv(+controls.h.value,+controls.s.value/100,+controls.v.value/100)));
+    $("colorPicker").addEventListener("input",(event)=>{const value=event.target.value;setFromRgb(parseInt(value.slice(1,3),16),parseInt(value.slice(3,5),16),parseInt(value.slice(5,7),16));});
+    document.querySelectorAll("[data-color]").forEach((button)=>button.addEventListener("click",()=>{const value=button.dataset.color;setFromRgb(parseInt(value.slice(1,3),16),parseInt(value.slice(3,5),16),parseInt(value.slice(5,7),16));}));
+
+    function pointerPosition(canvas,event){const rect=canvas.getBoundingClientRect();return{x:(event.clientX-rect.left)/rect.width,y:(event.clientY-rect.top)/rect.height};}
+    function dragSurface(canvas,handler){let active=false;canvas.addEventListener("pointerdown",(e)=>{active=true;canvas.setPointerCapture(e.pointerId);handler(e);});canvas.addEventListener("pointermove",(e)=>{if(active)handler(e);});canvas.addEventListener("pointerup",()=>active=false);canvas.addEventListener("pointercancel",()=>active=false);}
+    dragSurface($("rgbSlice"),(e)=>{const p=pointerPosition($("rgbSlice"),e),pad=.09,size=.82;setFromRgb(clamp((p.x-pad)/size,0,1)*255,(1-clamp((p.y-pad)/size,0,1))*255,state.b);});
+    dragSurface($("hsvDisk"),(e)=>{const p=pointerPosition($("hsvDisk"),e),dx=p.x-.5,dy=p.y-.5,radius=.40*state.v;if(radius<.005)return;const s=clamp(Math.hypot(dx,dy)/radius,0,1),h=(Math.atan2(dy,dx)*180/Math.PI+90+360)%360;setFromHsv(h,s,state.v);});
+    let resizeTimer;window.addEventListener("resize",()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(render,80);});
+    render();
+  </script>
+</body>
+</html>
