@@ -191,6 +191,13 @@ status = "pending"
 
 # One-Cable AVC Host Viewer and ROM ISP Programmer
 
+## Integration ownership
+
+This plan retains native viewer, ROM-HID programming, reconnect/recovery, host dependencies,
+and host validation. `docs/plans/nxp-cup-framework-migration` owns final product/package
+naming plus the canonical `flash.ps1` backend interface. This plan supplies backend evidence
+and must not independently rename the wire contract or public firmware facade.
+
 ## Priority
 
 Make the one-cable development loop work before spending time on an installer or polished

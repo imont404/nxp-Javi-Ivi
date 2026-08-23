@@ -178,6 +178,14 @@ status = "pending"
 
 # CMake Build System and Student Toolchain
 
+## Integration ownership
+
+This plan retains CMake generation, provisioning, preset behavior, clean-machine proof
+mechanics, and MCUXpresso drift tooling. `docs/plans/nxp-cup-framework-migration` owns the
+final `build.ps1` / `flash.ps1` command contract, NXP Cup artifact names, and checkpoint
+sequencing. Build changes land here only when they implement that frozen contract; they do
+not establish a competing workflow.
+
 ## Current Competition-Week Status
 
 The CMake/preset migration, repository-local toolchain, student setup page, Ozone flash

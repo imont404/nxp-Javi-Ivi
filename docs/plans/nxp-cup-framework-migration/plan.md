@@ -12,13 +12,13 @@ status = "done"
 [[steps]]
 id = "plan-ownership-reconcile"
 title = "Assign framework, build, telemetry, host, documentation, and regression ownership across the existing active plans"
-status = "active"
+status = "done"
 depends_on = ["lock-contract"]
 
 [[steps]]
 id = "state-machine-contract"
 title = "Freeze STARTUP, TEST, RACE_WAITING, RACE_RUNNING, ENTERING_ISP, and SAFE_FAULT behavior with framework-owned safety"
-status = "pending"
+status = "active"
 depends_on = ["lock-contract", "plan-ownership-reconcile"]
 
 [[steps]]

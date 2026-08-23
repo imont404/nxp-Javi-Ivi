@@ -6,12 +6,12 @@ created = "2026-08-21"
 
 [[steps]]
 id = "freeze-student-surface"
-title = "Inventory the framework APIs students actually need and freeze the race-week public surface"
+title = "Consume the nxp-cup-framework-migration firmware-contract checkpoint and frozen public surface"
 status = "pending"
 
 [[steps]]
 id = "code-api-cleanup"
-title = "Remove dead paths and clarify camera, motor, servo, encoder, mode, and telemetry APIs without adding a race solution"
+title = "Audit the frozen camera, motor, servo, encoder, mode, and telemetry facade without creating a second API"
 status = "pending"
 depends_on = ["freeze-student-surface"]
 
@@ -41,7 +41,7 @@ depends_on = ["english-doc-freeze"]
 
 [[steps]]
 id = "competition-regression"
-title = "Build and bench the frozen Rev A competition image with camera, display, safe modes, USB disconnected, and USB connected"
+title = "Consume the framework plan's Rev A regression evidence and verify the documentation describes it"
 status = "pending"
 depends_on = ["code-api-cleanup", "clean-machine-handoff"]
 
@@ -105,6 +105,14 @@ status = "pending"
 +++
 
 # Competition Code, API, and Documentation Closeout
+
+## Integration ownership
+
+`docs/plans/nxp-cup-framework-migration` owns the framework implementation, public API,
+editable mode files, NXP Cup naming, canonical commands, and Rev A regression. This plan
+starts from its named firmware/tooling checkpoints and owns English/Spanish instructional
+content and final curriculum coherence. It must not create another API, rename frozen
+paths, or repeat the firmware migration.
 
 ## Scheduling
 

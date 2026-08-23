@@ -168,6 +168,13 @@ status = "pending"
 
 # USB Debug Telemetry and Web Viewer
 
+## Integration ownership
+
+This plan retains the proven USB transport, `AVCU` v1 wire contract, arbitration, telemetry
+implementation, browser viewer, and protocol fixtures. `docs/plans/nxp-cup-framework-migration`
+owns the small public telemetry facade and repository-wide symbol/path migration. Preserve
+wire bytes and validate every producer/consumer rather than inventing a renamed protocol.
+
 ## Priority
 
 Implementation is feature-complete for camera-assembly testing and the Android host. The

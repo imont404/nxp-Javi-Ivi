@@ -214,6 +214,13 @@ status = "pending"
 
 # Android Telemetry Bridge
 
+## Integration ownership
+
+This plan retains Android USB-host, relay, compression, lifecycle, and device validation.
+`docs/plans/nxp-cup-framework-migration` owns final package/product naming and the preserved
+`AVCU` compatibility contract. Android changes consume the migration manifest and fixtures;
+they do not independently rename protocol bytes or public firmware APIs.
+
 ## Current Status
 
 Execution was authorized on 2026-08-21. The native USB host, phone preview, and full-rate

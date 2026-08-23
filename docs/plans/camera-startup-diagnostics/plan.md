@@ -157,6 +157,13 @@ status = "pending"
 
 # Camera Startup Diagnostics and State Machine
 
+## Integration ownership
+
+This plan retains SCCB/camera fault diagnosis, signal classification, retry behavior, and
+assembly-test evidence. Its completed startup dispatch is input to
+`docs/plans/nxp-cup-framework-migration`, which owns the final public mode names, editable
+callbacks, main-loop shape, and safety integration. Do not create a second dispatcher here.
+
 ## Priority
 
 **Park the deeper diagnostics unless assembly screening exposes a repeatable failure.**
