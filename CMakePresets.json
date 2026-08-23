@@ -18,7 +18,7 @@
     {
       "name": "competition",
       "displayName": "Competition image (Rev A default) - START HERE",
-      "description": "What the car runs on race day: EZH camera capture, ER-TFT020-3 SPI LCD, session-gated USB telemetry available, encoders disabled. Build this unless you have a reason not to.",
+      "description": "What the car runs on race day: EZH camera capture, ER-TFT020-3 SPI LCD, session-gated USB telemetry, and QDC wheel-speed feedback. Build this unless you have a reason not to.",
       "inherits": "base"
     },
 
@@ -28,7 +28,7 @@
       "description": "Maintainer diagnostic for a directly wired camera: EZH capture, LCD disabled, forced non-moving race-waiting mode, session-gated USB telemetry, motors and encoders disabled.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__DISPLAY_ENABLE=0;CONFIG__FORCE_RACE_WAITING_MODE=1"
+        "AVC_EXTRA_DEFINES": "CONFIG__DISPLAY_ENABLE=0;CONFIG__FORCE_RACE_WAITING_MODE=1;CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_DISABLED"
       }
     },
 

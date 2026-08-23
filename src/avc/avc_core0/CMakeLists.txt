@@ -21,6 +21,9 @@ set_target_properties(avc_core0 PROPERTIES
 )
 
 target_compile_definitions(avc_core0 PRIVATE ${MCUX_DEFINES})
+set_source_files_properties(${AVC_SHARED_SOURCES} PROPERTIES
+    COMPILE_OPTIONS "${MCUX_C_FLAGS}"
+)
 set(AVC_EXTRA_DEFINES "" CACHE STRING "Additional AVC compile definitions")
 if(AVC_EXTRA_DEFINES)
     target_compile_definitions(avc_core0 PRIVATE ${AVC_EXTRA_DEFINES})

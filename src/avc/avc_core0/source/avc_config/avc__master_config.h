@@ -285,16 +285,15 @@
 #endif
 
 /*
- * Motor encoder bring-up:
- * Default firmware leaves the encoder hardware disabled. The QDC path is
- * selected by a separate diagnostic build so the normal competition image keeps
- * the verified EZH camera + SPI LCD behavior.
+ * Rev A wheel feedback is enabled in the competition image. The QDC path was
+ * bench-proven with the EZH camera, SPI LCD, and USB telemetry. It conflicts
+ * only with the parked parallel-LCD experiment guarded below.
  */
 #define MOTOR_ENCODER_BACKEND_DISABLED			0
 #define MOTOR_ENCODER_BACKEND_QDC				1
 
 #ifndef CONFIG__MOTOR_ENCODER_BACKEND
-#define CONFIG__MOTOR_ENCODER_BACKEND			(MOTOR_ENCODER_BACKEND_DISABLED)
+#define CONFIG__MOTOR_ENCODER_BACKEND			(MOTOR_ENCODER_BACKEND_QDC)
 #endif
 
 #ifndef CONFIG__MOTOR_ENCODER_DIAG_ENABLE

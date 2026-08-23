@@ -18,6 +18,8 @@ typedef struct
     volatile bool camera_frame_seen;
     bool camera_frame_reported;
     bool platform_ready;
+    bool test_outputs_armed;
+    bool test_arm_pending;
     avc_system_mode_t mode;
     avc_system_fault_t fault;
     uint32_t isp_entry_tick;
@@ -48,6 +50,8 @@ static void avc_system__set_mode(avc_system_mode_t mode)
     {
         avc__disable_motor_control();
     }
+    g_avc_system.test_outputs_armed = false;
+    g_avc_system.test_arm_pending = false;
     g_avc_system.mode = mode;
 
     if (g_avc_system.platform_ready)
@@ -61,6 +65,8 @@ void avc_system__init(void)
     g_avc_system.camera_frame_seen = false;
     g_avc_system.camera_frame_reported = false;
     g_avc_system.platform_ready = false;
+    g_avc_system.test_outputs_armed = false;
+    g_avc_system.test_arm_pending = false;
     g_avc_system.mode = AVC_SYSTEM_MODE_STARTUP;
     g_avc_system.fault = AVC_SYSTEM_FAULT_NONE;
     g_avc_system.isp_entry_tick = 0U;
@@ -139,6 +145,30 @@ void avc_system__service(void)
         {
             avc_system__set_mode(AVC_SYSTEM_MODE_TEST);
         }
+
+        if (button__up(&center_btn) != 0U)
+        {
+            if (g_avc_system.test_outputs_armed || g_avc_system.test_arm_pending)
+            {
+                g_avc_system.test_outputs_armed = false;
+                g_avc_system.test_arm_pending = false;
+                avc__disable_motor_control();
+            }
+            else
+            {
+                g_avc_system.test_arm_pending = true;
+            }
+        }
+
+        if (g_avc_system.test_arm_pending &&
+            (avc__read_alpha() > 0.45f) && (avc__read_alpha() < 0.55f) &&
+            (avc__read_beta() > 0.45f) && (avc__read_beta() < 0.55f) &&
+            (avc__read_gamma() > 0.45f) && (avc__read_gamma() < 0.55f))
+        {
+            g_avc_system.test_arm_pending = false;
+            g_avc_system.test_outputs_armed = true;
+            DEBUG("TEST outputs armed.\r\n");
+        }
         return;
     }
 
@@ -156,11 +186,11 @@ void avc_system__service(void)
     {
         if (g_avc_system.camera_frame_seen)
         {
-            avc_system__set_mode(AVC_SYSTEM_MODE_STUDENT_RUNNING);
+            avc_system__set_mode(AVC_SYSTEM_MODE_RACE_RUNNING);
         }
         else
         {
-            DEBUG("Student start rejected: no camera frame received.\r\n");
+            DEBUG("Race start rejected: no camera frame received.\r\n");
         }
     }
 }
@@ -191,6 +221,22 @@ bool avc_system__camera_frame_seen(void)
     return g_avc_system.camera_frame_seen;
 }
 
+bool avc_system__outputs_allowed(void)
+{
+    return (g_avc_system.mode == AVC_SYSTEM_MODE_RACE_RUNNING) ||
+           ((g_avc_system.mode == AVC_SYSTEM_MODE_TEST) && g_avc_system.test_outputs_armed);
+}
+
+bool avc_system__test_outputs_armed(void)
+{
+    return g_avc_system.test_outputs_armed;
+}
+
+bool avc_system__test_arm_pending(void)
+{
+    return g_avc_system.test_arm_pending;
+}
+
 const char *avc_system__mode_label(avc_system_mode_t mode)
 {
     switch (mode)
@@ -204,8 +250,8 @@ const char *avc_system__mode_label(avc_system_mode_t mode)
         case AVC_SYSTEM_MODE_RACE_WAITING:
             return "RACE / WAITING";
 
-        case AVC_SYSTEM_MODE_STUDENT_RUNNING:
-            return "STUDENT / RUNNING";
+        case AVC_SYSTEM_MODE_RACE_RUNNING:
+            return "RACE RUNNING";
 
         case AVC_SYSTEM_MODE_ENTERING_ISP:
             return "ENTERING USB ISP";

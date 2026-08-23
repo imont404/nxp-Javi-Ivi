@@ -8,7 +8,7 @@ typedef enum
     AVC_SYSTEM_MODE_STARTUP = 0,
     AVC_SYSTEM_MODE_TEST,
     AVC_SYSTEM_MODE_RACE_WAITING,
-    AVC_SYSTEM_MODE_STUDENT_RUNNING,
+    AVC_SYSTEM_MODE_RACE_RUNNING,
     AVC_SYSTEM_MODE_ENTERING_ISP,
     AVC_SYSTEM_MODE_SAFE_FAULT
 } avc_system_mode_t;
@@ -17,6 +17,8 @@ typedef enum
 {
     AVC_SYSTEM_FAULT_NONE = 0,
     AVC_SYSTEM_FAULT_CAMERA_STARTUP,
+    AVC_SYSTEM_FAULT_CAMERA_LOST,
+    AVC_SYSTEM_FAULT_CALLBACK_OVERRUN,
     AVC_SYSTEM_FAULT_BOOTLOADER_RETURNED
 } avc_system_fault_t;
 
@@ -39,6 +41,9 @@ void avc_system__enter_fault(avc_system_fault_t fault);
 avc_system_mode_t avc_system__mode(void);
 avc_system_fault_t avc_system__fault(void);
 bool avc_system__camera_frame_seen(void);
+bool avc_system__outputs_allowed(void);
+bool avc_system__test_outputs_armed(void);
+bool avc_system__test_arm_pending(void);
 const char *avc_system__mode_label(avc_system_mode_t mode);
 
 #endif /* AVC_SYSTEM_H_ */

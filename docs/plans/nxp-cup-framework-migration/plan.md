@@ -18,31 +18,31 @@ depends_on = ["lock-contract"]
 [[steps]]
 id = "state-machine-contract"
 title = "Freeze STARTUP, TEST, RACE_WAITING, RACE_RUNNING, ENTERING_ISP, and SAFE_FAULT behavior with framework-owned safety"
-status = "active"
+status = "done"
 depends_on = ["lock-contract", "plan-ownership-reconcile"]
 
 [[steps]]
 id = "frame-contract"
 title = "Hide camera-buffer ownership behind one callback-lifetime RGB565 pointer with latest-frame-only drop behavior"
-status = "pending"
+status = "done"
 depends_on = ["lock-contract", "state-machine-contract"]
 
 [[steps]]
 id = "public-api-contract"
 title = "Define one small umbrella public API with simple frame, vision, input, actuator, wheel, telemetry, timing, unit, and error contracts"
-status = "pending"
+status = "done"
 depends_on = ["lock-contract", "frame-contract", "state-machine-contract"]
 
 [[steps]]
 id = "background-services"
 title = "Move bounded camera, button, encoder, USB, ISP, and mode work behind the cooperative system service"
-status = "pending"
+status = "done"
 depends_on = ["state-machine-contract", "frame-contract"]
 
 [[steps]]
 id = "asynchronous-output-lease"
 title = "Implement and bench-prove a timer/watchdog motor-command lease that safe-stops even when participant code stalls"
-status = "pending"
+status = "active"
 depends_on = ["state-machine-contract"]
 
 [[steps]]
@@ -60,13 +60,13 @@ depends_on = ["public-api-contract", "background-services", "asynchronous-output
 [[steps]]
 id = "vision-facade"
 title = "Expose RGB565/YHSV, scanline, and TEST-overlay primitives; review edge/segment helpers separately for solution leakage"
-status = "pending"
+status = "done"
 depends_on = ["public-api-contract"]
 
 [[steps]]
 id = "telemetry-facade"
 title = "Expose bounded log and named-value helpers that remain optional and session-gated"
-status = "pending"
+status = "done"
 depends_on = ["public-api-contract"]
 
 [[steps]]

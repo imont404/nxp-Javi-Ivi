@@ -10,8 +10,8 @@ typedef struct
     bool invert_right_motor_direction;
     bool outputs_enable;
 
-    int8_t left_intensity;
-    int8_t right_intensity;
+    float left_intensity;
+    float right_intensity;
 
 } motor_ctrl_info_t;
 
