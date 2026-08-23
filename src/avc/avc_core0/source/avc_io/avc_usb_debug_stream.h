@@ -13,6 +13,9 @@ void avc_usb_debug_stream__stop(void);
 bool avc_usb_debug_stream__is_open(void);
 bool avc_usb_debug_stream__session_active(void);
 bool avc_usb_debug_stream__camera_frames_active(void);
+/* Main-loop-only handoff for a validated, acknowledged ENTER_ISP request. */
+bool avc_usb_debug_stream__take_enter_isp_request(void);
+bool avc_usb_debug_stream__tx_idle(void);
 /* Camera callback generation marker; safe to call from interrupt context. */
 void avc_usb_debug_stream__notify_camera_frame(void);
 bool avc_usb_debug_stream__publish_frame(const uint16_t *frame);

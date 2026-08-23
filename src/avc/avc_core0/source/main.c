@@ -28,7 +28,7 @@ bool testmode__motors_enable = 0;
  * CONFIG__DISPLAY_SCOPE_MARKER_ENABLE. Independent of the cycle counter, which
  * avc__next_frame() resets.
  */
-#if CONFIG__DISPLAY_SCOPE_MARKER_ENABLE
+#if CONFIG__DISPLAY_ENABLE && CONFIG__DISPLAY_SCOPE_MARKER_ENABLE
 #define AVC_SCOPE_DUMP_BEGIN() GPIO_PinWrite(GPIO4, 1U, 1U)
 #define AVC_SCOPE_DUMP_END()   GPIO_PinWrite(GPIO4, 1U, 0U)
 #else
@@ -314,13 +314,14 @@ int main(void)
 #endif
 
 
-            	/*
-            	 * Dump the overlay graphic to the LCD
-            	 *
-            	 */
+				/*
+				 * Dump the overlay graphic to the LCD
+				 *
+				 */
 
-            	AVC_SCOPE_DUMP_BEGIN();
-            	eGFX_DumpRaw((uint8_t *)top_info.Data,
+#if CONFIG__DISPLAY_ENABLE
+				AVC_SCOPE_DUMP_BEGIN();
+				eGFX_DumpRaw((uint8_t *)top_info.Data,
                 					  320*40*2,
                 					  0,
                 					  319,
@@ -338,7 +339,8 @@ int main(void)
             					  40,
             					  39+200);
 
-            	AVC_SCOPE_DUMP_END();
+				AVC_SCOPE_DUMP_END();
+#endif
 
             }
 
@@ -456,12 +458,14 @@ static void avc__render_system_banner_if_changed(void)
                                mode_color);
     }
 
+#if CONFIG__DISPLAY_ENABLE
     eGFX_DumpRaw((uint8_t *)top_info.Data,
                  320 * 40 * 2,
                  0,
                  319,
                  0,
                  39);
+#endif
 
     previous_mode = mode;
     previous_camera_frame_seen = camera_frame_seen;

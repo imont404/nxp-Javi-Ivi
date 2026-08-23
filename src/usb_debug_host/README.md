@@ -23,7 +23,83 @@ firmware drop, endpoint-busy, send-error, and fixed-queue counters. The framed
 receiver also subscribes to bounded UTF-8 device logs and typed named telemetry
 and prints each record.
 
-## Native Windows Receiver
+## Native AVC Host Probe
+
+The developing one-cable host core has a small native protocol probe. It
+enumerates Windows serial devices by VID/PID, refuses to guess when multiple
+AVC boards are present, completes the framed session, and can require one
+complete camera frame:
+
+```powershell
+.\src\usb_debug_host\build_avc_tool.ps1
+.\src\usb_debug_host\bin\avc_tool.exe selftest
+.\src\usb_debug_host\bin\avc_tool.exe devices
+.\src\usb_debug_host\bin\avc_tool.exe probe
+.\src\usb_debug_host\bin\avc_tool.exe probe --frame --seconds 3
+.\src\usb_debug_host\bin\avc_tool.exe enter-isp
+```
+
+`probe` auto-selects only an exact `VID_1FC9/PID_0094` match and only when
+there is exactly one. `--port COMx` is an explicit override, but it is still
+validated against that USB identity.
+
+`enter-isp` is a deliberate maintainer command. It requires the firmware to
+advertise the capability, sends the framed confirmation value after HELLO,
+requires a correlated successful response, closes CDC, and succeeds only after
+exactly one MCXN947 ROM HID (`VID_1FC9/PID_014F`) appears. It does not erase or
+write flash by itself.
+
+The bounded one-command programming path uses that same transition and shared
+host core:
+
+```powershell
+.\build\host\usb_debug_host\Release\avc_tool.exe program `
+    --image .\build\cmake\camera-usb-bench\avc_core0.bin
+```
+
+It validates the `.bin` size, MCXN947 stack/reset vectors, and SHA-256; pins
+`blhost` 3.10.0; requires exactly one runtime CDC or ROM HID target; reports
+query, erase, write, and reset separately; then reconnects and requires a
+complete camera frame. It never invokes fuse, CMPA, security, or program-once
+commands. `--blhost <path>` or `AVC_BLHOST_PATH` may select the pinned tool;
+the later distribution step will place it beside the viewer.
+
+## Native Camera Viewer
+
+Build the first SDL2/Dear ImGui viewer with:
+
+```powershell
+.\src\usb_debug_host\build_avc_viewer.ps1
+.\build\host\usb_debug_host\Release\avc_viewer.exe
+```
+
+The viewer establishes the framed session, requests raw RGB565 camera frames
+plus stats/logs/telemetry, and reconnects after a runtime disconnect. The video
+is rendered inside its own Dear ImGui `Camera` panel rather than painted behind
+the host UI.
+
+The `Program firmware` panel selects an existing `avc_core0.bin` with a native
+file dialog. Programming remains disabled until exactly one supported runtime
+CDC or ROM HID target is present and the erase confirmation is checked. The
+background connection worker validates the image and pinned `blhost`, requests
+safe ISP entry through its existing CDC session, reports query/erase/write/reset
+stages, and reconnects the preview after reset. It uses the same programmer
+backend and exact-device/no-guessing rules as `avc_tool`; the GUI does not build
+firmware and exposes no fuse, CMPA, security, or program-once operation.
+
+A bounded hidden bench smoke test exercises the same GUI receive/render path
+and exits nonzero unless it receives complete, well-formed frames:
+
+```powershell
+.\build\host\usb_debug_host\Release\avc_viewer.exe --test-seconds 5
+```
+
+The first proof uses the repository's existing SDL2 package and fetches pinned
+Dear ImGui `v1.91.9b` at configure time. The one-cable plan's dependency
+hardening step will retain ImGui locally and prove an offline build. The build
+already copies the pinned `SDL2.dll` beside the executable.
+
+## Native Windows Throughput Receiver
 
 Use the native receiver when measuring maximum sustained throughput. It avoids
 Python parser overhead and uses Win32 serial APIs directly. It uses the same

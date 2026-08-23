@@ -116,6 +116,8 @@ Prefer a preset:
 
 ```powershell
 cmake --build --preset competition           # Rev A competition default
+cmake --build --preset camera-usb-bench      # bare FRDM, direct EZH camera,
+                                             #   USB preview, no shield/LCD
 cmake --build --preset flexio-port1          # FlexIO capture on the Rev A camera
                                              #   pins (needs 3 J9_EXT jumpers),
                                              #   frees the EZH

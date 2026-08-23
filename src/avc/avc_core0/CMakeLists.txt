@@ -66,5 +66,12 @@ target_link_libraries(avc_core0 PRIVATE
 
 add_custom_command(TARGET avc_core0 POST_BUILD
     COMMAND "${CMAKE_SIZE}" "$<TARGET_FILE:avc_core0>"
+    # The MCXN947 ROM ISP write-memory command consumes a flat binary starting
+    # at address 0. Keep it beside the AXF so every preset has one unambiguous
+    # debugger artifact and one unambiguous ROM-programmer artifact.
+    COMMAND "${CMAKE_OBJCOPY}" -O binary --gap-fill 0xFF
+        "$<TARGET_FILE:avc_core0>"
+        "${CMAKE_BINARY_DIR}/avc_core0.bin"
+    BYPRODUCTS "${CMAKE_BINARY_DIR}/avc_core0.bin"
     VERBATIM
 )

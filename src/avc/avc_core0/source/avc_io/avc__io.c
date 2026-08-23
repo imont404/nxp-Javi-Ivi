@@ -246,7 +246,9 @@ void avc__init()
 #endif
 
     avc_camera__init();
+#if CONFIG__DISPLAY_ENABLE
     eGFX_InitDriver(0);
+#endif
 
     avc__adc_init();
     avc__motor_control_init();

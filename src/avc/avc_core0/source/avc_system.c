@@ -2,6 +2,17 @@
 
 #include "avc__io.h"
 
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+#include "avc_usb_debug_stream.h"
+#include "fsl_runbootloader.h"
+#endif
+
+#define AVC_SYSTEM_ISP_ACK_SETTLE_MS (100U)
+#define AVC_SYSTEM_ISP_MAX_WAIT_MS (500U)
+#define AVC_SYSTEM_ROM_ENTER_BOOT_TAG (0xEBU)
+#define AVC_SYSTEM_ROM_ISP_MODE (1U)
+#define AVC_SYSTEM_ROM_USB_HS_HID_INTERFACE (5U)
+
 typedef struct
 {
     volatile bool camera_frame_seen;
@@ -9,6 +20,7 @@ typedef struct
     bool platform_ready;
     avc_system_mode_t mode;
     avc_system_fault_t fault;
+    uint32_t isp_entry_tick;
 } avc_system_state_t;
 
 static avc_system_state_t g_avc_system;
@@ -17,6 +29,8 @@ static bool avc_system__test_requested(void)
 {
 #if CONFIG__FORCE_TEST_MODE
     return true;
+#elif CONFIG__FORCE_RACE_WAITING_MODE
+    return false;
 #else
     return GPIO_PinRead(GPIO3, TEST_SW_PIN) == 0U;
 #endif
@@ -49,6 +63,7 @@ void avc_system__init(void)
     g_avc_system.platform_ready = false;
     g_avc_system.mode = AVC_SYSTEM_MODE_STARTUP;
     g_avc_system.fault = AVC_SYSTEM_FAULT_NONE;
+    g_avc_system.isp_entry_tick = 0U;
 
     /* Preserve the verified one-time camera/LCD/platform initialization order. */
     avc__init();
@@ -87,6 +102,37 @@ void avc_system__service(void)
         return;
     }
 
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    if (avc_usb_debug_stream__take_enter_isp_request())
+    {
+        avc_system__set_mode(AVC_SYSTEM_MODE_ENTERING_ISP);
+        avc__disable_motor_control();
+        avc__set_servo(0.0f);
+        g_avc_system.isp_entry_tick = e_tick__get_ms();
+    }
+
+    if (g_avc_system.mode == AVC_SYSTEM_MODE_ENTERING_ISP)
+    {
+        uint32_t elapsed = e_tick__delta(&g_avc_system.isp_entry_tick);
+
+        avc__disable_motor_control();
+        avc__set_servo(0.0f);
+        if ((elapsed >= AVC_SYSTEM_ISP_ACK_SETTLE_MS) &&
+            (avc_usb_debug_stream__tx_idle() || (elapsed >= AVC_SYSTEM_ISP_MAX_WAIT_MS)))
+        {
+            user_app_boot_invoke_option_t argument = {.option = {.B = {
+                .tag = AVC_SYSTEM_ROM_ENTER_BOOT_TAG,
+                .mode = AVC_SYSTEM_ROM_ISP_MODE,
+                .boot_interface = AVC_SYSTEM_ROM_USB_HS_HID_INTERFACE,
+            }}};
+
+            bootloader_user_entry(&argument);
+            avc_system__enter_fault(AVC_SYSTEM_FAULT_BOOTLOADER_RETURNED);
+        }
+        return;
+    }
+#endif
+
     if (test_requested)
     {
         if (g_avc_system.mode != AVC_SYSTEM_MODE_TEST)
@@ -100,6 +146,10 @@ void avc_system__service(void)
     {
         avc_system__set_mode(AVC_SYSTEM_MODE_RACE_WAITING);
     }
+
+#if CONFIG__FORCE_RACE_WAITING_MODE
+    return;
+#endif
 
     if ((g_avc_system.mode == AVC_SYSTEM_MODE_RACE_WAITING) &&
         (button__up(&center_btn) != 0U))
@@ -156,6 +206,9 @@ const char *avc_system__mode_label(avc_system_mode_t mode)
 
         case AVC_SYSTEM_MODE_STUDENT_RUNNING:
             return "STUDENT / RUNNING";
+
+        case AVC_SYSTEM_MODE_ENTERING_ISP:
+            return "ENTERING USB ISP";
 
         case AVC_SYSTEM_MODE_SAFE_FAULT:
             return "SAFE / FAULT";

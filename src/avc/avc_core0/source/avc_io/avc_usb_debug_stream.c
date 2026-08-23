@@ -54,7 +54,7 @@
 #define AVC_USB_CONTROL_CAPABILITIES                                                                                \
     (AVC_DBG_CAPABILITY_FRAMED_CONTROL | AVC_DBG_CAPABILITY_CAMERA_FRAMES |                                        \
      AVC_DBG_CAPABILITY_SYNTHETIC_FRAMES | AVC_DBG_CAPABILITY_STREAM_STATS | AVC_DBG_CAPABILITY_LOG_TEXT |         \
-     AVC_DBG_CAPABILITY_NAMED_TELEMETRY)
+     AVC_DBG_CAPABILITY_NAMED_TELEMETRY | AVC_DBG_CAPABILITY_ENTER_ISP)
 #define AVC_USB_CONTROL_SUPPORTED_CHANNELS \
     (AVC_DBG_CHANNEL_FRAMES | AVC_DBG_CHANNEL_STATS | AVC_DBG_CHANNEL_LOGS | AVC_DBG_CHANNEL_TELEMETRY)
 
@@ -220,6 +220,7 @@ static uint32_t s_telemetryNextSampleId;
 static uint32_t s_telemetryDropCount;
 static uint32_t s_telemetryQueueHighWater;
 static uint32_t s_telemetryCoalesceCount;
+static volatile uint8_t s_enterIspRequested;
 
 #if CONFIG__USB_DEBUG_PROFILE_ENABLE
 static uint32_t s_profileReportTick;
@@ -508,6 +509,21 @@ bool avc_usb_debug_stream__camera_frames_active(void)
 {
     return (s_sessionActive != 0U) && (s_streamEnabled != 0U) &&
            (s_streamSource == AVC_USB_DEBUG_STREAM_SOURCE_CAMERA) && avc_usb_debug_stream__is_open();
+}
+
+bool avc_usb_debug_stream__take_enter_isp_request(void)
+{
+    uint32_t usbOsaCurrentSr = DisableGlobalIRQ();
+    bool requested = s_enterIspRequested != 0U;
+
+    s_enterIspRequested = 0U;
+    EnableGlobalIRQ(usbOsaCurrentSr);
+    return requested;
+}
+
+bool avc_usb_debug_stream__tx_idle(void)
+{
+    return (s_streamTxBusy == 0U) && (s_controlResponseCount == 0U);
 }
 
 static uint32_t avc_usb_debug_stream__bounded_text_length(const char *text, uint32_t maxLength)
@@ -1165,6 +1181,56 @@ static void avc_usb_debug_stream__handle_control_packet(const avc_dbg_packet_hea
             s_sessionActive = 0U;
             break;
 
+        case AVC_DBG_CONTROL_ENTER_ISP:
+            if (s_sessionActive == 0U)
+            {
+                (void)avc_usb_debug_stream__queue_control_response(
+                    AVC_DBG_CONTROL_ENTER_ISP,
+                    request->sequence,
+                    AVC_DBG_CONTROL_STATUS_SESSION_REQUIRED,
+                    NULL,
+                    0U);
+                break;
+            }
+            if ((request->arg0 != AVC_DBG_ENTER_ISP_CONFIRMATION) ||
+                (request->arg1 != 0U) || (request->arg2 != 0U))
+            {
+                (void)avc_usb_debug_stream__queue_control_response(
+                    AVC_DBG_CONTROL_ENTER_ISP,
+                    request->sequence,
+                    AVC_DBG_CONTROL_STATUS_BAD_ARGUMENT,
+                    NULL,
+                    0U);
+                break;
+            }
+            if (s_enterIspRequested != 0U)
+            {
+                (void)avc_usb_debug_stream__queue_control_response(
+                    AVC_DBG_CONTROL_ENTER_ISP,
+                    request->sequence,
+                    AVC_DBG_CONTROL_STATUS_BUSY,
+                    NULL,
+                    0U);
+                break;
+            }
+            if (avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_ENTER_ISP,
+                                                              request->sequence,
+                                                              AVC_DBG_CONTROL_STATUS_OK,
+                                                              NULL,
+                                                              0U) != 0U)
+            {
+                avc_usb_debug_stream__stop();
+                s_logEnabled = 0U;
+                s_logHead = 0U;
+                s_logCount = 0U;
+                s_telemetryEnabled = 0U;
+                s_telemetryHead = 0U;
+                s_telemetryCount = 0U;
+                s_txDiagnosticBurst = 0U;
+                s_enterIspRequested = 1U;
+            }
+            break;
+
         default:
             (void)avc_usb_debug_stream__queue_control_response(AVC_DBG_CONTROL_ERROR,
                                                                request->sequence,
@@ -1550,6 +1616,7 @@ void avc_usb_debug_stream__init(void)
     s_telemetryDropCount = 0U;
     s_telemetryQueueHighWater = 0U;
     s_telemetryCoalesceCount = 0U;
+    s_enterIspRequested = 0U;
 #if CONFIG__USB_DEBUG_PROFILE_ENABLE
     s_profileReportTick = e_tick__get_ms();
     s_profileCalls = 0U;

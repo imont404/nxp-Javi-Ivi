@@ -89,6 +89,10 @@
 #define DISPLAY_PANEL_ER_TFT020_3				1
 #define DISPLAY_PANEL_ER_TFT020_7				2
 
+#ifndef CONFIG__DISPLAY_ENABLE
+#define CONFIG__DISPLAY_ENABLE					(1)
+#endif
+
 #ifndef CONFIG__DISPLAY_PANEL
 #define CONFIG__DISPLAY_PANEL					(DISPLAY_PANEL_ER_TFT020_3)
 #endif
@@ -115,6 +119,17 @@
 
 #if CONFIG__DISPLAY_PANEL != DISPLAY_PANEL_ER_TFT020_3 && CONFIG__DISPLAY_PANEL != DISPLAY_PANEL_ER_TFT020_7
 #error Invalid CONFIG__DISPLAY_PANEL.
+#endif
+
+#if CONFIG__DISPLAY_ENABLE != 0 && CONFIG__DISPLAY_ENABLE != 1
+#error CONFIG__DISPLAY_ENABLE must be 0 or 1.
+#endif
+
+#if !CONFIG__DISPLAY_ENABLE && (CONFIG__DISPLAY_TEST_MODE || CONFIG__DISPLAY_TE_ENABLE || \
+                                CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE || \
+                                CONFIG__DISPLAY_TIMING_DIAG_ENABLE || \
+                                CONFIG__DISPLAY_SCOPE_MARKER_ENABLE)
+#error Display diagnostics require CONFIG__DISPLAY_ENABLE=1.
 #endif
 
 #if CONFIG__DISPLAY_TE_ENABLE && CONFIG__DISPLAY_PANEL != DISPLAY_PANEL_ER_TFT020_7
@@ -217,6 +232,20 @@
  */
 #ifndef CONFIG__FORCE_TEST_MODE
 #define CONFIG__FORCE_TEST_MODE				(0)
+#endif
+
+/*
+ * Bench-only deterministic non-moving mode for a bare FRDM board. The shield's
+ * TEST and center-button inputs are otherwise electrically absent and may float.
+ * This keeps the system in RACE_WAITING while a recognized USB session previews
+ * the camera. It must never be selected by the competition preset.
+ */
+#ifndef CONFIG__FORCE_RACE_WAITING_MODE
+#define CONFIG__FORCE_RACE_WAITING_MODE		(0)
+#endif
+
+#if CONFIG__FORCE_TEST_MODE && CONFIG__FORCE_RACE_WAITING_MODE
+#error Test mode and race-waiting mode cannot both be forced.
 #endif
 
 /*

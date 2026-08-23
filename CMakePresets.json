@@ -23,6 +23,16 @@
     },
 
     {
+      "name": "camera-usb-bench",
+      "displayName": "Bare FRDM EZH camera + USB preview (no shield/LCD)",
+      "description": "Maintainer diagnostic for a directly wired camera: EZH capture, LCD disabled, forced non-moving race-waiting mode, session-gated USB telemetry, motors and encoders disabled.",
+      "inherits": "base",
+      "cacheVariables": {
+        "AVC_EXTRA_DEFINES": "CONFIG__DISPLAY_ENABLE=0;CONFIG__FORCE_RACE_WAITING_MODE=1"
+      }
+    },
+
+    {
       "name": "encoders",
       "displayName": "Competition image + wheel encoders",
       "description": "Adds QDC wheel-speed feedback and the on-screen RPM readout. Same camera and display as the competition image.",
@@ -85,6 +95,7 @@
 
   "buildPresets": [
     { "name": "competition",          "configurePreset": "competition" },
+    { "name": "camera-usb-bench",     "configurePreset": "camera-usb-bench" },
     { "name": "encoders",             "configurePreset": "encoders" },
     { "name": "flexio-port1",         "configurePreset": "flexio-port1" },
     { "name": "flexio-port4",         "configurePreset": "flexio-port4" },

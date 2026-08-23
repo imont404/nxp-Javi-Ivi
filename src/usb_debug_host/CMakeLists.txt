@@ -1,0 +1,69 @@
+cmake_minimum_required(VERSION 3.24)
+
+project(avc_usb_debug_host LANGUAGES CXX)
+
+set(AVC_HOST_IMGUI_DIR "" CACHE PATH "Optional local Dear ImGui v1.91.9b source directory")
+set(AVC_HOST_SDL2_DIR
+    "${CMAKE_CURRENT_LIST_DIR}/../common/egfx/test/sdl/sdl2/cmake"
+    CACHE PATH
+    "SDL2 CMake package directory")
+
+add_library(avc_host_core STATIC avc_host_core.cpp)
+target_compile_features(avc_host_core PUBLIC cxx_std_17)
+target_include_directories(avc_host_core PUBLIC "${CMAKE_CURRENT_LIST_DIR}")
+target_sources(avc_host_core PRIVATE avc_programmer.cpp)
+target_link_libraries(avc_host_core PUBLIC setupapi advapi32 hid bcrypt)
+
+add_executable(avc_tool avc_tool.cpp)
+target_compile_features(avc_tool PRIVATE cxx_std_17)
+target_link_libraries(avc_tool PRIVATE avc_host_core)
+
+find_package(SDL2 CONFIG REQUIRED PATHS "${AVC_HOST_SDL2_DIR}" NO_DEFAULT_PATH)
+
+if(AVC_HOST_IMGUI_DIR)
+    set(IMGUI_DIR "${AVC_HOST_IMGUI_DIR}")
+else()
+    include(FetchContent)
+    FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG v1.91.9b
+        GIT_SHALLOW TRUE
+    )
+    FetchContent_MakeAvailable(imgui)
+    set(IMGUI_DIR "${imgui_SOURCE_DIR}")
+endif()
+
+if(NOT EXISTS "${IMGUI_DIR}/imgui.h")
+    message(FATAL_ERROR "Dear ImGui v1.91.9b not found at ${IMGUI_DIR}")
+endif()
+
+add_executable(avc_viewer
+    avc_viewer.cpp
+    "${IMGUI_DIR}/imgui.cpp"
+    "${IMGUI_DIR}/imgui_draw.cpp"
+    "${IMGUI_DIR}/imgui_tables.cpp"
+    "${IMGUI_DIR}/imgui_widgets.cpp"
+    "${IMGUI_DIR}/backends/imgui_impl_sdl2.cpp"
+    "${IMGUI_DIR}/backends/imgui_impl_sdlrenderer2.cpp"
+)
+target_compile_features(avc_viewer PRIVATE cxx_std_17)
+target_compile_definitions(avc_viewer PRIVATE SDL_MAIN_HANDLED=1)
+target_include_directories(avc_viewer PRIVATE
+    "${IMGUI_DIR}"
+    "${IMGUI_DIR}/backends"
+    ${SDL2_INCLUDE_DIRS}
+)
+target_link_libraries(avc_viewer PRIVATE avc_host_core ${SDL2_LIBRARIES} comdlg32)
+
+if(MSVC)
+    target_compile_options(avc_host_core PRIVATE /W4 /WX /permissive-)
+    target_compile_options(avc_tool PRIVATE /W4 /WX /permissive-)
+    set_source_files_properties(avc_viewer.cpp PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-")
+endif()
+
+add_custom_command(TARGET avc_viewer POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${SDL2_BINDIR}/SDL2.dll"
+        "$<TARGET_FILE_DIR:avc_viewer>/SDL2.dll"
+)
