@@ -41,20 +41,20 @@ depends_on = ["state-machine-contract", "frame-contract"]
 
 [[steps]]
 id = "asynchronous-output-lease"
-title = "Implement and bench-prove a timer/watchdog motor-command lease that safe-stops even when participant code stalls"
-status = "active"
+title = "Implement a timer-driven motor-command lease that safe-stops even when participant code stalls; bench proof is owned by competition-regression"
+status = "done"
 depends_on = ["state-machine-contract"]
 
 [[steps]]
 id = "mode-files"
 title = "Make test_mode.c and race_mode.c the only normally edited files and move the TEST experiment out of main.c"
-status = "pending"
+status = "done"
 depends_on = ["public-api-contract", "background-services", "asynchronous-output-lease"]
 
 [[steps]]
 id = "actuator-feedback-facade"
 title = "Expose clamped motor duty, steering, measured wheel speed, and tuning inputs without supplying closed-loop control"
-status = "pending"
+status = "done"
 depends_on = ["public-api-contract", "background-services", "asynchronous-output-lease"]
 
 [[steps]]
@@ -72,25 +72,25 @@ depends_on = ["public-api-contract"]
 [[steps]]
 id = "minimal-main"
 title = "Reduce main.c to initialization, bounded service, latest-frame acquisition, and a readable mode switch"
-status = "pending"
+status = "done"
 depends_on = ["mode-files", "state-machine-contract", "background-services", "frame-contract"]
 
 [[steps]]
 id = "rename-inventory"
 title = "Classify product names, code symbols, paths, artifacts, USB text, documentation links, third-party content, and H.264 AVC terminology"
-status = "pending"
+status = "done"
 depends_on = ["lock-contract"]
 
 [[steps]]
 id = "rename-tool"
 title = "Create a manifest-driven Python refactor tool with dry-run, apply, collision, exclusion, and stale-name check modes"
-status = "pending"
+status = "done"
 depends_on = ["rename-inventory"]
 
 [[steps]]
 id = "pre-refactor-baseline"
 title = "Commit the reviewed tool/manifest, record its exact clean hash, and prove all firmware/host consumers before the AVC rename"
-status = "pending"
+status = "active"
 depends_on = ["rename-tool", "minimal-main", "actuator-feedback-facade", "vision-facade", "telemetry-facade"]
 
 [[steps]]

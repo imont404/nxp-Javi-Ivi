@@ -1,0 +1,93 @@
+{
+  "baseline_ref": "nxpc-pre-refactor",
+  "excluded_prefixes": [
+    "docs/examples/",
+    "docs/research/",
+    "docs/plans/nxp-cup-framework-migration/logs/",
+    "scripts/tools/product_identity_refactor.json",
+    "tests/L0_foundation/test_L0_006_product_identity_refactor.py",
+    "src/nxp_cup/nxp_cup_core0/CMSIS/",
+    "src/nxp_cup/nxp_cup_core0/component/",
+    "src/nxp_cup/nxp_cup_core0/device/",
+    "src/nxp_cup/nxp_cup_core0/drivers/",
+    "src/nxp_cup/nxp_cup_core0/mcmgr/doc/",
+    "src/nxp_cup/nxp_cup_core0/part-support/",
+    "src/nxp_cup/nxp_cup_core0/startup/",
+    "src/nxp_cup/nxp_cup_core0/usb/",
+    "src/nxp_cup/nxp_cup_core0/utilities/",
+    "src/nxp_cup/nxp_cup_core0/video/",
+    "src/nxp_cup_host/vendor/"
+  ],
+  "excluded_globs": [
+    "docs/car_chassis/web/**",
+    "docs/plans/*/logs/**",
+    "src/avc/avc_core0/CMSIS/**",
+    "src/avc/avc_core0/component/**",
+    "src/avc/avc_core0/device/**",
+    "src/avc/avc_core0/drivers/**",
+    "src/avc/avc_core0/mcmgr/doc/**",
+    "src/avc/avc_core0/part-support/**",
+    "src/avc/avc_core0/startup/**",
+    "src/avc/avc_core0/usb/**",
+    "src/avc/avc_core0/utilities/**",
+    "src/avc/avc_core0/video/**",
+    "src/usb_debug_host/vendor/**"
+  ],
+  "binary_suffixes": [
+    ".a", ".axf", ".bin", ".bmp", ".dll", ".exe", ".gif", ".ico",
+    ".jar", ".jpg", ".jpeg", ".pdf", ".png", ".so", ".zip"
+  ],
+  "path_rules": [
+    {"from": "src/android/avc_bridge", "to": "src/android/nxp_cup_bridge"},
+    {"from": "src/avc/avc_core0", "to": "src/nxp_cup/nxp_cup_core0"},
+    {"from": "src/common/avc_usb_debug", "to": "src/common/nxpc_usb_debug"},
+    {"from": "src/usb_debug_host", "to": "src/nxp_cup_host"},
+    {"from": "com/wavenumber/avc", "to": "com/wavenumber/nxpc"},
+    {"from": "avc_core0", "to": "nxp_cup_core0"},
+    {"from": "avc_usb_debug", "to": "nxpc_usb_debug"},
+    {"from": "avc_bridge", "to": "nxp_cup_bridge"},
+    {"from": "avc__", "to": "nxpc__"},
+    {"from": "avc_", "to": "nxpc_"},
+    {"from": "Avc", "to": "NxpCup"},
+    {"from": "docs/avc.css", "to": "docs/nxp_cup.css"}
+  ],
+  "text_rules": [
+    {"from": "src\\avc\\avc_core0", "to": "src\\nxp_cup\\nxp_cup_core0"},
+    {"from": "src/avc/avc_core0", "to": "src/nxp_cup/nxp_cup_core0"},
+    {"from": "src\\usb_debug_host", "to": "src\\nxp_cup_host"},
+    {"from": "src/usb_debug_host", "to": "src/nxp_cup_host"},
+    {"from": "src\\android\\avc_bridge", "to": "src\\android\\nxp_cup_bridge"},
+    {"from": "src/android/avc_bridge", "to": "src/android/nxp_cup_bridge"},
+    {"from": "com.wavenumber.avc", "to": "com.wavenumber.nxpc"},
+    {"from": "avc_core0", "to": "nxp_cup_core0"},
+    {"from": "AVC_CORE0", "to": "NXP_CUP_CORE0"},
+    {"from": "avc_usb_debug", "to": "nxpc_usb_debug"},
+    {"from": "AVC_USB_DEBUG", "to": "NXPC_USB_DEBUG"},
+    {"from": "avc_bridge", "to": "nxp_cup_bridge"},
+    {"from": "AVC_BRIDGE", "to": "NXP_CUP_BRIDGE"},
+    {"from": "avc__", "to": "nxpc__"},
+    {"from": "AVC__", "to": "NXPC__"},
+    {"from": "avc_", "to": "nxpc_"},
+    {"from": "AVC_", "to": "NXPC_"},
+    {"from": "Avc", "to": "NxpCup"},
+    {"from": "Wavenumber AVC", "to": "Wavenumber NXP Cup"},
+    {"from": "AVC firmware", "to": "NXP Cup firmware"},
+    {"from": "AVC project", "to": "NXP Cup project"},
+    {"from": "AVC USB", "to": "NXP Cup USB"},
+    {"from": "docs/avc.css", "to": "docs/nxp_cup.css"}
+  ],
+  "stale_path_patterns": [
+    "(^|/)src/avc(/|$)",
+    "(^|/)avc_core0([./]|$)",
+    "(^|/)avc_usb_debug([./]|$)",
+    "(^|/)avc_bridge([./]|$)",
+    "(^|/)usb_debug_host([./]|$)"
+  ],
+  "stale_text_patterns": [
+    "\\bavc__?[A-Za-z0-9_]",
+    "\\bAVC__?[A-Za-z0-9_]",
+    "com\\.wavenumber\\.avc\\b",
+    "src[/\\\\]avc[/\\\\]avc_core0",
+    "src[/\\\\]usb_debug_host"
+  ]
+}
