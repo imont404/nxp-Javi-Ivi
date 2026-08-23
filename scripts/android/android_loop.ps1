@@ -31,4 +31,4 @@ if (-not $SkipRelay) {
     & (Join-Path $PSScriptRoot "verify_android_relay.ps1") -Serial $Serial
 }
 
-Write-Host "AVC Android loop passed for $Serial" -ForegroundColor Green
+Write-Host "NXP Cup Android loop passed for $Serial" -ForegroundColor Green

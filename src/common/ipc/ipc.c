@@ -5,9 +5,9 @@
 
 
  #if defined(FSL_FEATURE_MAILBOX_SIDE_A)
-__BSS(IPC_MEM) volatile ipc_t avc_ipc;
+__BSS(IPC_MEM) volatile ipc_t nxpc_ipc;
 #else
-__NOINIT(IPC_MEM) volatile ipc_t avc_ipc;
+__NOINIT(IPC_MEM) volatile ipc_t nxpc_ipc;
 #endif
 
  void MAILBOX_IRQHandler(void)

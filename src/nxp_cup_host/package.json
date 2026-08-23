@@ -1,0 +1,12 @@
+{
+  "name": "nxp-cup-host-tests",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "build:standalone": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build_standalone_viewer.ps1",
+    "test": "npm run build:standalone && playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

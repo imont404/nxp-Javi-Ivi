@@ -38,6 +38,10 @@ dist/
 # Compiled Java class files
 *.class
 
+# Compiled C/C++ and debugger artifact files
+*.obj
+*.pdb
+
 # Compiled Python bytecode
 *.py[cod]
 *.dat
@@ -49,7 +53,7 @@ __pycache__/
 
 # Package files
 *.jar
-!src/android/avc_bridge/gradle/wrapper/gradle-wrapper.jar
+!src/android/nxp_cup_bridge/gradle/wrapper/gradle-wrapper.jar
 
 # Maven
 target/
@@ -75,7 +79,7 @@ Thumbs.db
 # Applications
 *.app
 *.exe
-!src/usb_debug_host/vendor/rblhost/rblhost.exe
+!src/nxp_cup_host/vendor/rblhost/rblhost.exe
 *.war
 
 # Large media files

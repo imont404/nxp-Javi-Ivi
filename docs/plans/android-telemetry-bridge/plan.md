@@ -41,7 +41,7 @@ depends_on = ["device-inventory", "android-foundation"]
 
 [[steps]]
 id = "android-usb-host-proof"
-title = "Open the AVC CDC interface from the phone and complete HELLO, SET_CHANNELS, PING, and CLOSE on real hardware"
+title = "Open the NXP Cup CDC interface from the phone and complete HELLO, SET_CHANNELS, PING, and CLOSE on real hardware"
 status = "done"
 depends_on = ["wireless-adb-loop"]
 
@@ -355,7 +355,7 @@ USB session and relay policy; it never selects vehicle mode or enables an actuat
 
 The first executable slice is deliberately small:
 
-1. Detect the attached AVC CDC device, obtain user permission, open it, and complete
+1. Detect the attached NXP Cup CDC device, obtain user permission, open it, and complete
    `HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`.
 2. Parse fragmented `AVCU` packets on a dedicated worker and show live RGB565 frames,
    connection state, and the usable viewer URL on the phone. Keep detailed counters in
@@ -444,7 +444,7 @@ tools remain replaceable local state.
 One-time attended setup is unavoidable:
 
 1. Enable developer options and USB debugging, authorize the workstation RSA key, and
-   grant the app permission for the AVC USB device.
+   grant the app permission for the NXP Cup USB device.
 2. Establish wireless debugging. If Motorola's Android 13 wireless-pairing UI is not
    reliable, use the Android-documented fallback: connect to the workstation once,
    run `adb tcpip 5555`, then `adb connect <phone-address>:5555` after moving the phone's
@@ -455,7 +455,7 @@ One-time attended setup is unavoidable:
 After that setup, `scripts/android/android_loop.ps1` builds, tests, installs, starts,
 waits for a healthy framed session, verifies complete frames through the phone's
 WebSocket, captures diagnostics, and exits nonzero on failure. Structured
-`AVC_BRIDGE_HEALTH` logcat records and the HTTP `/health` endpoint make the proof
+`NXP_CUP_BRIDGE_HEALTH` logcat records and the HTTP `/health` endpoint make the proof
 independent of a person looking at either screen. Use `-SkipRelay` only for a deliberate
 USB-only diagnostic run.
 
@@ -522,8 +522,8 @@ existing phone browser spike in older notes as stale unless an artifact is found
 - `docs/research/AVC_USB_Debug_Display_Current_State.md`
 - `docs/research/AVC_USB_Debug_Transport_Protocol.md`
 - `docs/research/AVC_RaceDay_Wireless_Frame_Relay.md`
-- `src/common/avc_usb_debug/avc_usb_debug_protocol.h`
-- `src/usb_debug_host/`
+- `src/common/nxpc_usb_debug/nxpc_usb_debug_protocol.h`
+- `src/nxp_cup_host/`
 - Android USB host documentation:
   <https://developer.android.com/develop/connectivity/usb/host>
 - Android USB-host debugging over network:

@@ -12,33 +12,6 @@ wheels = [
 ]
 
 [[package]]
-name = "avc"
-version = "0.0.0"
-source = { virtual = "." }
-
-[package.dev-dependencies]
-dev = [
-    { name = "lizard" },
-    { name = "openpyxl" },
-    { name = "pylink-square" },
-    { name = "pymupdf" },
-    { name = "pytest" },
-    { name = "wn-dev-std" },
-]
-
-[package.metadata]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "lizard", specifier = ">=1.23.0" },
-    { name = "openpyxl", specifier = ">=3.1.5" },
-    { name = "pylink-square", specifier = ">=2.0.0" },
-    { name = "pymupdf", specifier = ">=1.28.0" },
-    { name = "pytest", specifier = ">=8.0" },
-    { name = "wn-dev-std", specifier = "==2026.7.18" },
-]
-
-[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -103,6 +76,33 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5b/94/4967d0868e7db39a72fa2dbef9a798c4d661178f3836bfec58091606f0f3/lizard-1.23.0.tar.gz", hash = "sha256:ed75cd45f086a2f51d6be64b0149b71bda820f92f95e30898254528bb949f795", size = 92659, upload-time = "2026-06-02T06:17:27.383Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3b/d9/25e62cbb9c4077a2dabc73e5f34dc947887f4fe1526f53d2c0489abfc186/lizard-1.23.0-py2.py3-none-any.whl", hash = "sha256:e9111e35c8a5f2e00d55cab318fca3504622991417411ea16cf46874fb752f42", size = 100830, upload-time = "2026-06-02T06:17:26.076Z" },
+]
+
+[[package]]
+name = "nxp-cup"
+version = "0.0.0"
+source = { virtual = "." }
+
+[package.dev-dependencies]
+dev = [
+    { name = "lizard" },
+    { name = "openpyxl" },
+    { name = "pylink-square" },
+    { name = "pymupdf" },
+    { name = "pytest" },
+    { name = "wn-dev-std" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "lizard", specifier = ">=1.23.0" },
+    { name = "openpyxl", specifier = ">=3.1.5" },
+    { name = "pylink-square", specifier = ">=2.0.0" },
+    { name = "pymupdf", specifier = ">=1.28.0" },
+    { name = "pytest", specifier = ">=8.0" },
+    { name = "wn-dev-std", specifier = "==2026.7.18" },
 ]
 
 [[package]]

@@ -5,10 +5,12 @@ from pathlib import Path
 
 
 REPO = Path(__file__).resolve().parents[2]
-SOURCE = REPO / "src/avc/avc_core0/source"
+SOURCE = REPO / "src/nxp_cup/nxp_cup_core0/source"
 PUBLIC_HEADER = SOURCE / "nxp_cup.h"
 MAIN = SOURCE / "main.c"
 MODE_FILES = (SOURCE / "app/test_mode.c", SOURCE / "app/race_mode.c")
+PROTOCOL_HEADER = REPO / "src/common/nxpc_usb_debug/nxpc_usb_debug_protocol.h"
+USB_DESCRIPTOR = SOURCE / "usb_device_descriptor.c"
 
 
 def test_public_header_has_the_small_domain_api():
@@ -29,7 +31,8 @@ def test_public_header_has_the_small_domain_api():
 
     lowered = text.lower()
     assert "student" not in lowered, "audience role leaked into the public API"
-    assert "avc_" not in lowered, "legacy/internal AVC namespace leaked into the public API"
+    assert "nxpc_" not in lowered, "internal NXP Cup namespace leaked into the public API"
+    assert "avc_" not in lowered, "legacy AVC namespace leaked into the public API"
     assert "buffer_owner" not in lowered, "camera ownership internals leaked into the public API"
 
 
@@ -56,5 +59,25 @@ def test_no_prebuilt_race_solution_is_supplied():
 
 
 def test_old_algorithm_boundary_was_retired():
-    assert not (SOURCE / "avc_student_algorithm.c").exists()
-    assert not (SOURCE / "avc_student_algorithm.h").exists()
+    assert not (SOURCE / "nxpc_student_algorithm.c").exists()
+    assert not (SOURCE / "nxpc_student_algorithm.h").exists()
+
+
+def test_usb_wire_identity_remains_backward_compatible():
+    protocol = PROTOCOL_HEADER.read_text(encoding="utf-8")
+    assert "NXPC_DBG_MAGIC (0x55435641u)" in protocol, (
+        "changing the deployed AVCU wire magic would break existing viewers and the Android bridge"
+    )
+
+
+def test_usb_product_name_is_nxp_cup_telemetry():
+    descriptor = USB_DESCRIPTOR.read_text(encoding="utf-8")
+    assert "2U + 2U * 17U" in descriptor
+    product = re.search(
+        r"g_UsbDeviceString2\[\].*?=\s*\{(.*?)\};",
+        descriptor,
+        re.DOTALL,
+    )
+    assert product is not None
+    characters = re.findall(r"'([^'])',\s*0(?:x00U|U)?", product.group(1))
+    assert "".join(characters) == "NXP CUP TELEMETRY"

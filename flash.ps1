@@ -1,4 +1,7 @@
 param(
+    [ValidateSet("Ozone", "Rom", "JLink")]
+    [string]$Backend = "",
+
     [switch]$NoReset,
 
     # Which image to flash. The CMake preset flow is the default; the preset
@@ -16,13 +19,14 @@ param(
     [ValidateSet("Debug")]
     [string]$Configuration = "Debug",
     [string]$File,
+    [string]$OzonePath = "",
     [string]$JLinkPath = "C:\Program Files\SEGGER\JLink_V940\JLink.exe",
     [string]$Device = "MCXN947_M33_0",
     [string]$Interface = "SWD",
     [int]$SpeedKHz = 4000,
 
     # J-Link probe serial. Leave empty to resolve automatically:
-    # AVC_JLINK_SERIAL, else auto-detect when exactly one probe is attached.
+    # NXPC_JLINK_SERIAL, else auto-detect when exactly one probe is attached.
     # Not hardcoded - every kit has a different serial.
     # See scripts\tools\jlink_common.ps1.
     [string]$UsbSerial = ""
@@ -30,9 +34,11 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-. (Join-Path $PSScriptRoot "scripts\tools\jlink_common.ps1")
-. (Join-Path $PSScriptRoot "scripts\tools\avc_image_common.ps1")
-$UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
+. (Join-Path $PSScriptRoot "scripts\tools\nxpc_image_common.ps1")
+
+if ([string]::IsNullOrWhiteSpace($Backend)) {
+    throw "Choose a flash backend explicitly: -Backend Ozone, -Backend Rom, or -Backend JLink."
+}
 
 function Resolve-SeggerTool {
     param(
@@ -63,8 +69,53 @@ function Resolve-SeggerTool {
 }
 
 $projectDir = $PSScriptRoot
-$axfFile = Resolve-AvcImage -RepoRoot $projectDir -Preset $Preset -File $File `
+$axfFile = Resolve-NxpCupImage -RepoRoot $projectDir -Preset $Preset -File $File `
                             -Mcux:$Mcux -Configuration $Configuration
+
+if ($Backend -eq "Ozone") {
+    if ($File -or $Mcux -or ($Preset -ne "competition")) {
+        throw "The Ozone project is pinned to the competition preset. Use -Backend Rom or JLink for another image."
+    }
+
+    $ozoneProject = Join-Path $projectDir "src\nxp_cup\nxp_cup_core0\ozone__core0.jdebug"
+    if ([string]::IsNullOrWhiteSpace($OzonePath)) {
+        $OzonePath = Get-ChildItem -LiteralPath "C:\Program Files\SEGGER" -Directory -Filter "Ozone*" `
+            -ErrorAction SilentlyContinue |
+            Sort-Object Name -Descending |
+            ForEach-Object { Join-Path $_.FullName "Ozone.exe" } |
+            Where-Object { Test-Path -LiteralPath $_ } |
+            Select-Object -First 1
+    }
+    if (-not $OzonePath -or -not (Test-Path -LiteralPath $OzonePath)) {
+        throw "SEGGER Ozone was not found. Install it or pass -OzonePath."
+    }
+
+    Write-Host "Opening the NXP Cup competition image in Ozone: $axfFile" -ForegroundColor Cyan
+    Start-Process -FilePath $OzonePath -ArgumentList @($ozoneProject)
+    return
+}
+
+if ($Backend -eq "Rom") {
+    $binFile = if ([IO.Path]::GetExtension($axfFile) -ieq ".bin") {
+        $axfFile
+    } else {
+        [IO.Path]::ChangeExtension($axfFile, ".bin")
+    }
+    if (-not (Test-Path -LiteralPath $binFile)) {
+        throw "ROM image not found: $binFile. Rebuild preset '$Preset' to create it."
+    }
+
+    $hostTool = Join-Path $projectDir "build\host\nxp_cup_host\Release\nxpc_tool.exe"
+    if (-not (Test-Path -LiteralPath $hostTool)) {
+        throw "NXP Cup host tool not found. Run .\src\nxp_cup_host\build_nxpc_viewer.ps1 first."
+    }
+
+    & $hostTool program --image $binFile
+    exit $LASTEXITCODE
+}
+
+. (Join-Path $PSScriptRoot "scripts\tools\jlink_common.ps1")
+$UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
 $JLinkPath = Resolve-SeggerTool -ConfiguredPath $JLinkPath -ToolName "JLink.exe"
 
 if (-not (Test-Path -LiteralPath $JLinkPath)) {
@@ -74,7 +125,7 @@ if (-not (Test-Path -LiteralPath $JLinkPath)) {
 $fileInfo = Get-Item -LiteralPath $axfFile
 
 Write-Host ("=" * 50)
-Write-Host " AVC MCXN947 - Flash"
+Write-Host " NXP Cup MCXN947 - Flash"
 Write-Host ("=" * 50)
 Write-Host "Device: $Device"
 Write-Host "J-Link S/N: $UsbSerial"
@@ -84,7 +135,7 @@ Write-Host "Size: $($fileInfo.Length) bytes"
 Write-Host "Modified: $($fileInfo.LastWriteTime)"
 Write-Host ""
 
-$cmdFile = Join-Path $env:TEMP "jlink_flash_avc.jlink"
+$cmdFile = Join-Path $env:TEMP "jlink_flash_nxpc.jlink"
 $postLoadCommands = if ($NoReset) {
     @()
 } else {

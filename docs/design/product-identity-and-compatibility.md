@@ -16,7 +16,7 @@ checks for stale owned identifiers and paths afterward.
 | Occurrence | Treatment |
 | --- | --- |
 | Owned firmware identifiers and paths | Rename from `avc`/`AVC` to `nxpc`/`NXPC` |
-| Firmware project and artifacts | Rename from `avc_core0` to `nxp_cup_core0` |
+| Firmware project and artifacts | Use `nxp_cup_core0`; the legacy name exists only in baseline/tag history |
 | Public API | Keep short domain names in `nxp_cup.h`; do not expose internal prefixes |
 | Host and Android products | Rename to NXP Cup names with all in-repository consumers moved together |
 | Protocol source identifiers | Rename to `nxpc`, preserving every numeric value and packed layout |

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Provision the pinned command-line Android toolchain used by the AVC bridge.
+    Provision the pinned command-line Android toolchain used by the NXP Cup bridge.
 
 .DESCRIPTION
     Downloads verified archives into out\toolchains\android and installs the

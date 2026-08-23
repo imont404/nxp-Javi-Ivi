@@ -1,5 +1,5 @@
 {
-  "// note": "Shared editor settings for the AVC project. VS Code is the editor and nothing more - students build from the command line and flash with Ozone, so there are deliberately no tasks or launch configurations here.",
+  "// note": "Shared editor settings for the NXP Cup project. VS Code is the editor and nothing more - students build from the command line and flash with Ozone, so there are deliberately no tasks or launch configurations here.",
 
   "// cmake": "CMake Tools reads CMakePresets.json directly. Do not configure on open - a student opening the folder should not trigger a build they did not ask for.",
   "cmake.useCMakePresets": "always",

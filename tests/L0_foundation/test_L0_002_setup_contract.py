@@ -87,7 +87,7 @@ def test_docs_name_ozone_as_the_flashing_route():
     assert re.search(r"(?i)ozone", html), (
         "setup page does not say how to flash the board"
     )
-    assert "build\\cmake\\competition\\avc_core0.axf" in html, (
+    assert "build\\cmake\\competition\\nxp_cup_core0.axf" in html, (
         "setup page does not name the image the competition preset produces"
     )
 
@@ -114,10 +114,10 @@ def test_docs_warn_about_motors():
 def test_toolchain_discovery_prefers_local():
     """MCUXpresso must be a fallback, not the first choice, or the one-script
     install is decorative."""
-    toolchain = REPO / "src/avc/avc_core0/cmake/mcuxpresso-toolchain.cmake"
+    toolchain = REPO / "src/nxp_cup/nxp_cup_core0/cmake/mcuxpresso-toolchain.cmake"
     assert toolchain.is_file(), "toolchain file is missing"
     text = toolchain.read_text(encoding="utf-8")
-    assert "AVC_ARM_TOOLCHAIN_DIR" in text, "toolchain file has no override hook"
+    assert "NXPC_ARM_TOOLCHAIN_DIR" in text, "toolchain file has no override hook"
     assert "out/toolchains" in text, "toolchain file does not look for the provisioned toolchain"
     local_at = text.index("out/toolchains")
     mcux_at = text.index("MCUXpressoIDE")

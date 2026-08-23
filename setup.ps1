@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Provision everything needed to build, flash, and check the AVC firmware.
+    Provision everything needed to build, flash, and check the NXP Cup firmware.
 
 .DESCRIPTION
     One script, run once, on a machine with nothing installed. It provisions:
@@ -223,7 +223,7 @@ Write-Host ""
 Write-Host "  Next:" -ForegroundColor White
 Write-Host "    cmake --preset competition           # configure" -ForegroundColor Green
 Write-Host "    cmake --build --preset competition   # build" -ForegroundColor Green
-Write-Host "    .\flash.ps1 -File build\cmake\competition\avc_core0.axf" -ForegroundColor Green
+Write-Host "    .\flash.ps1 -File build\cmake\competition\nxp_cup_core0.axf" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Full instructions:    docs\setup.html" -ForegroundColor White
 Write-Host "  Other build variants: cmake --list-presets" -ForegroundColor White

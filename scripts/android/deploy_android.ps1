@@ -6,8 +6,8 @@ param(
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "android_env.ps1")
 $adb = Join-Path $env:ANDROID_HOME "platform-tools\adb.exe"
-$apk = Join-Path $script:AvcAndroidRepoRoot "src\android\avc_bridge\app\build\outputs\apk\debug\app-debug.apk"
-$packageName = "com.wavenumber.avc.bridge"
+$apk = Join-Path $script:NxpCupAndroidRepoRoot "src\android\nxp_cup_bridge\app\build\outputs\apk\debug\app-debug.apk"
+$packageName = "com.wavenumber.nxpc.bridge"
 $activityName = "$packageName/.MainActivity"
 
 if (-not (Test-Path -LiteralPath $apk)) {
@@ -32,7 +32,7 @@ if ($LASTEXITCODE -ne 0) { throw "App start failed with exit code $LASTEXITCODE"
 
 for ($attempt = 0; $attempt -lt 60; $attempt++) {
     Start-Sleep -Milliseconds 500
-    $health = & $adb -s $Serial logcat -d -s "AVC_BRIDGE_HEALTH:I" "*:S"
+    $health = & $adb -s $Serial logcat -d -s "NXP_CUP_BRIDGE_HEALTH:I" "*:S"
     if (
         $health |
             Where-Object {
@@ -56,6 +56,6 @@ if (
     )
 ) {
     $health | Write-Host
-    throw "AVC bridge did not reach an error-free live-frame state. Check USB permission and AVC_BRIDGE_HEALTH."
+    throw "NXP Cup bridge did not reach an error-free live-frame state. Check USB permission and NXP_CUP_BRIDGE_HEALTH."
 }
 $health | Write-Host

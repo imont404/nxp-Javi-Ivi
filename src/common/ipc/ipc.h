@@ -14,10 +14,10 @@ typedef struct {
 }ipc_t;
 
 
-//this value will be set in avc_ipc.core1_magic_boot_value once it is ready
+//this value will be set in nxpc_ipc.core1_magic_boot_value once it is ready
 #define CORE1__MAGIC_BOOT_VALUE 	0x12345689
 
-extern volatile ipc_t avc_ipc;
+extern volatile ipc_t nxpc_ipc;
 
 
 #define CORE0__MAILBOX___CORE1_READY	(1<<0)

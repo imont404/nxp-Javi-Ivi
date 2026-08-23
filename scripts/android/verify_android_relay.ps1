@@ -41,7 +41,7 @@ $h264InitializationSeen = $false
 $receiveTimer = [Diagnostics.Stopwatch]::new()
 
 try {
-    $socket.Options.SetRequestHeader("X-AVC-Replace-Viewer", "1")
+    $socket.Options.SetRequestHeader("X-NXPC-Replace-Viewer", "1")
     $socket.ConnectAsync(
         [Uri]"ws://${phoneAddress}:$Port/stream?video=$requestedMode",
         $deadline.Token
@@ -211,4 +211,4 @@ $receivedMegabitsPerSecond = if ($receiveTimer.Elapsed.TotalSeconds -gt 0) {
     source_sent_frame_gap = $frameAge
 } | Format-List
 
-Write-Host "AVC Android relay verification passed." -ForegroundColor Green
+Write-Host "NXP Cup Android relay verification passed." -ForegroundColor Green

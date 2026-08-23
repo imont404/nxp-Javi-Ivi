@@ -190,11 +190,11 @@ remained on the FIT splash image. The physical TEST jumper had been removed.
 
 That symptom did **not** isolate SCCB:
 
-- `avc__init()` calls `avc_camera__init()` before initializing the LCD and drawing the
+- `nxpc__init()` calls `nxpc_camera__init()` before initializing the LCD and drawing the
   splash. Seeing the splash proves the monolithic camera-init call returned; it does not
   prove that it succeeded, because `CAMERA_DEVICE_Init()`'s return value is discarded.
 - The splash is replaced only inside the TEST-mode branch and only after
-  `avc__next_frame()` sets `next_frame_ready`. The removed TEST jumper therefore fully
+  `nxpc__next_frame()` sets `next_frame_ready`. The removed TEST jumper therefore fully
   explains why the screen stayed on the splash even if frames were arriving. Camera-init
   failure remains possible but is **not established by this symptom**.
 - If TEST mode is active, the remaining possibilities include sensor configuration
@@ -252,12 +252,12 @@ LOW_LEVEL_INIT (one pass, motors safe)
 Any failed or timed-out transition -> CAMERA_FAULT -> SAFE
 ```
 
-`avc_system__init()` should contain only one-time, bounded platform setup: clocks, pins,
+`nxpc_system__init()` should contain only one-time, bounded platform setup: clocks, pins,
 debug output, inputs, an early diagnostic display surface, and safe actuator defaults.
 Before reordering LCD and camera initialization, explicitly check shared DMA and clock
 dependencies; preserve the current order until the alternative is proven safe.
 
-`avc_system__service()` should advance bounded state transitions and service platform
+`nxpc_system__service()` should advance bounded state transitions and service platform
 work. It must not hide the student algorithm. A clear top-level switch eventually calls
 the local assembly/test service, student algorithm service, or safe fault service.
 
@@ -350,7 +350,7 @@ Validate with a known-good assembly first, then introduce one fault at a time:
 
 Students receive a clear `camera ready / frame available / health` framework API and a
 simple operational-mode dispatch point. They do not receive the line-following solution,
-steering policy, speed controller, or a hidden algorithm inside `avc_system__service()`.
+steering policy, speed controller, or a hidden algorithm inside `nxpc_system__service()`.
 
 ## Deferred Until Evidence
 
@@ -361,12 +361,12 @@ steering policy, speed controller, or a hidden algorithm inside `avc_system__ser
 
 ## Source Material
 
-- `src/avc/avc_core0/source/main.c`
-- `src/avc/avc_core0/source/avc_io/avc__io.c`
-- `src/avc/avc_core0/source/avc_io/bv_camera__interface.c`
-- `src/avc/avc_core0/board/board.c`
-- `src/avc/avc_core0/video/fsl_sccb.c`
-- `src/avc/avc_core0/video/fsl_ov5640.c`
-- `src/avc/avc_core0/drivers/fsl_lpi2c.h`
+- `src/nxp_cup/nxp_cup_core0/source/main.c`
+- `src/nxp_cup/nxp_cup_core0/source/nxpc_io/nxpc__io.c`
+- `src/nxp_cup/nxp_cup_core0/source/nxpc_io/bv_camera__interface.c`
+- `src/nxp_cup/nxp_cup_core0/board/board.c`
+- `src/nxp_cup/nxp_cup_core0/video/fsl_sccb.c`
+- `src/nxp_cup/nxp_cup_core0/video/fsl_ov5640.c`
+- `src/nxp_cup/nxp_cup_core0/drivers/fsl_lpi2c.h`
 - `docs/research/AVC_LVDS_Adapter.md`
 - `docs/research/AVC_Camera_FlexIO_Pin_Migration.md`

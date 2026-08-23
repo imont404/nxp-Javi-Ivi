@@ -45,7 +45,7 @@ if (
     -not ($usbState | Where-Object { $_ -match "^\s+power_role=source$" }) -or
     -not ($usbState | Where-Object { $_ -match "^\s+data_role=host$" })
 ) {
-    throw "USB-C role swap failed. Use the OTG adapter topology documented in src\android\avc_bridge\README.md."
+    throw "USB-C role swap failed. Use the OTG adapter topology documented in src\android\nxp_cup_bridge\README.md."
 }
 
 Write-Host "Phone USB port $portId is now source/host." -ForegroundColor Green

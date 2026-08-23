@@ -1,0 +1,7 @@
+ExitOnError 1
+r
+h
+loadfile "C:\companies\wavenumber\nxpc_code\avc\src\nxp_cup\nxp_cup_core0\Debug\nxp_cup_core0.hex"
+qc
+
+qc

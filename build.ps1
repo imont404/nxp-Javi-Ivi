@@ -1,38 +1,42 @@
 param(
-    [ValidateSet("Debug", "Release")]
-    [string]$Configuration = "Debug",
-
-    [switch]$Clean,
-    [switch]$ResetWorkspace,
-
-    [string]$IdePath = "C:\nxp\MCUXpressoIDE_25.6.136\ide\mcuxpressoidec.exe",
-    [string]$Workspace = (Join-Path $PSScriptRoot ".mcux_workspace_headless"),
-    [string]$ProjectPath = (Join-Path $PSScriptRoot "src\avc\avc_core0")
+    [string]$Preset = "competition",
+    [switch]$Clean
 )
 
 $ErrorActionPreference = "Stop"
 
-if (-not (Test-Path -LiteralPath $IdePath)) {
-    throw "MCUXpresso headless executable not found: $IdePath"
+$presetData = Get-Content -LiteralPath (Join-Path $PSScriptRoot "CMakePresets.json") -Raw |
+    ConvertFrom-Json
+$knownPresets = @(
+    $presetData.configurePresets |
+        Where-Object { -not ($_.PSObject.Properties.Name -contains "hidden" -and $_.hidden) } |
+        ForEach-Object { $_.name }
+)
+
+if ($knownPresets -notcontains $Preset) {
+    throw "Unknown preset '$Preset'. Available: $($knownPresets -join ', ')"
 }
 
-if (-not (Test-Path -LiteralPath $ProjectPath)) {
-    throw "MCUXpresso project not found: $ProjectPath"
+$configureArguments = @("--preset", $Preset)
+if ($Clean) {
+    $configureArguments += "--fresh"
 }
 
-if ($ResetWorkspace -and (Test-Path -LiteralPath $Workspace)) {
-    Remove-Item -LiteralPath $Workspace -Recurse -Force
+Write-Host "Configuring NXP Cup firmware preset '$Preset'..." -ForegroundColor Cyan
+& cmake @configureArguments
+if ($LASTEXITCODE -ne 0) {
+    throw "CMake configure failed with exit code $LASTEXITCODE"
 }
 
-$buildVerb = if ($Clean) { "-cleanBuild" } else { "-build" }
-$target = "avc_core0/$Configuration"
+Write-Host "Building NXP Cup firmware preset '$Preset'..." -ForegroundColor Cyan
+& cmake --build --preset $Preset
+if ($LASTEXITCODE -ne 0) {
+    throw "CMake build failed with exit code $LASTEXITCODE"
+}
 
-& $IdePath `
-    -nosplash `
-    --launcher.suppressErrors `
-    -application org.eclipse.cdt.managedbuilder.core.headlessbuild `
-    -data $Workspace `
-    -import $ProjectPath `
-    $buildVerb $target
+$output = Join-Path $PSScriptRoot "build\cmake\$Preset\nxp_cup_core0.axf"
+if (-not (Test-Path -LiteralPath $output)) {
+    throw "Build completed but the expected image is missing: $output"
+}
 
-exit $LASTEXITCODE
+Write-Host "Built: $output" -ForegroundColor Green

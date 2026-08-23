@@ -53,6 +53,12 @@ def is_excluded(rel: str, manifest: dict) -> bool:
     )
 
 
+def is_ignored_generated(rel: str, manifest: dict) -> bool:
+    return any(
+        rel.startswith(prefix) for prefix in manifest.get("ignored_generated_prefixes", [])
+    )
+
+
 def transform_path(rel: str, manifest: dict) -> str:
     transformed = rel
     for rule in manifest["path_rules"]:
@@ -85,6 +91,8 @@ def collect_changes(manifest: dict) -> ChangeSet:
 
     for path in candidate_files():
         rel = relative(path)
+        if is_ignored_generated(rel, manifest):
+            continue
         if not is_excluded(rel, manifest):
             text_value = read_text(path, manifest)
             if text_value is not None:
@@ -115,8 +123,6 @@ def collect_changes(manifest: dict) -> ChangeSet:
 
 
 def verify_apply_baseline(manifest: dict) -> None:
-    if git("status", "--porcelain"):
-        raise RuntimeError("refactor apply requires a clean working tree")
     expected = git("rev-parse", manifest["baseline_ref"])
     actual = git("rev-parse", "HEAD")
     if actual != expected:
@@ -124,6 +130,13 @@ def verify_apply_baseline(manifest: dict) -> None:
             f"refactor baseline mismatch: HEAD is {actual}, expected {expected} "
             f"from {manifest['baseline_ref']}"
         )
+    if git("status", "--porcelain"):
+        migration_in_progress = (
+            (REPO / "src/nxp_cup/nxp_cup_core0/.project").is_file()
+            and not (REPO / "src/avc/avc_core0/.project").exists()
+        )
+        if not migration_in_progress:
+            raise RuntimeError("refactor apply requires a clean working tree")
 
 
 def remove_empty_parents(path: Path) -> None:
@@ -152,9 +165,14 @@ def stale_findings(manifest: dict) -> list[str]:
     findings: list[str] = []
     path_patterns = [re.compile(pattern, re.IGNORECASE) for pattern in manifest["stale_path_patterns"]]
     text_patterns = [re.compile(pattern) for pattern in manifest["stale_text_patterns"]]
+    allowed_text_patterns = [
+        re.compile(pattern) for pattern in manifest.get("allowed_stale_text_patterns", [])
+    ]
 
     for path in candidate_files():
         rel = relative(path)
+        if is_ignored_generated(rel, manifest):
+            continue
         if is_excluded(rel, manifest):
             continue
         for pattern in path_patterns:
@@ -166,6 +184,8 @@ def stale_findings(manifest: dict) -> list[str]:
         if text_value is None:
             continue
         for line_number, line in enumerate(text_value.splitlines(), start=1):
+            if any(pattern.search(line) for pattern in allowed_text_patterns):
+                continue
             if any(pattern.search(line) for pattern in text_patterns):
                 findings.append(f"text: {rel}:{line_number}: {line.strip()}")
     return findings

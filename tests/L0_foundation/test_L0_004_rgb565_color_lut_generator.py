@@ -52,7 +52,7 @@ def test_committed_table_is_current():
 
 def test_generated_include_is_reproducible_and_checkable(tmp_path):
     generator = load_generator()
-    output = tmp_path / "avc_rgb565_yhsv_lut.inc"
+    output = tmp_path / "nxpc_rgb565_yhsv_lut.inc"
     arguments = ["--output", str(output)]
 
     assert generator.main(arguments) == 0

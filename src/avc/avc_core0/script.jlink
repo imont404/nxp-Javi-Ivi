@@ -1,7 +1,0 @@
-ExitOnError 1
-r
-h
-loadfile "C:\companies\wavenumber\avc_code\avc\src\avc\avc_core0\Debug\avc_core0.hex"
-qc
-
-qc

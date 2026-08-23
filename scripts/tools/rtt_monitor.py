@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read SEGGER RTT output from the AVC MCXN947 target using PyLink."""
+"""Read SEGGER RTT output from the NXP Cup MCXN947 target using PyLink."""
 
 from __future__ import annotations
 

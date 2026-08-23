@@ -90,31 +90,31 @@ depends_on = ["rename-inventory"]
 [[steps]]
 id = "pre-refactor-baseline"
 title = "Commit the reviewed tool/manifest, record its exact clean hash, and prove all firmware/host consumers before the AVC rename"
-status = "active"
+status = "done"
 depends_on = ["rename-tool", "minimal-main", "actuator-feedback-facade", "vision-facade", "telemetry-facade"]
 
 [[steps]]
 id = "repository-avc-refactor"
 title = "From the exact clean baseline, use the checked manifest for every owned AVC identifier, path, target, package, artifact, and label rename"
-status = "pending"
+status = "done"
 depends_on = ["rename-tool", "pre-refactor-baseline"]
 
 [[steps]]
 id = "firmware-public-layout"
 title = "Validate and freeze the manifest-produced public header, facade symbols, editable paths, firmware artifacts, USB text, and source links"
-status = "pending"
+status = "done"
 depends_on = ["repository-avc-refactor"]
 
 [[steps]]
 id = "mcuxpresso-sync"
 title = "After final firmware moves, prove a fresh MCUXpresso headless import/build, CMake drift/build, linker inputs, artifacts, and Ozone paths"
-status = "pending"
+status = "done"
 depends_on = ["firmware-public-layout"]
 
 [[steps]]
 id = "cross-consumer-rename-validation"
 title = "Prove the stale-name scan, native host, browser, Android, and golden protocol fixtures after the repository-wide rename"
-status = "pending"
+status = "done"
 depends_on = ["firmware-public-layout"]
 
 [[steps]]
@@ -125,32 +125,32 @@ depends_on = ["mcuxpresso-sync"]
 
 [[steps]]
 id = "firmware-contract-checkpoint"
-title = "Bench-prove and publish immutable public header, editable paths, frame/mode/safety contracts, Rev A image, and compile-only exercises"
-status = "pending"
-depends_on = ["mode-files", "mcuxpresso-sync", "mcuxpresso-gui-smoke", "cross-consumer-rename-validation"]
+title = "Publish the headless-proven public header, editable paths, frame/mode/safety contracts, Rev A image, and compile-only exercises; physical proof remains in competition-regression"
+status = "done"
+depends_on = ["mode-files", "mcuxpresso-sync", "cross-consumer-rename-validation"]
 
 [[steps]]
 id = "host-branding-layout"
 title = "Validate manifest-produced Windows, WebSerial, and Android labels/packages while preserving USB identities and AVCU v1 wire bytes"
-status = "pending"
+status = "done"
 depends_on = ["firmware-contract-checkpoint", "rename-inventory"]
 
 [[steps]]
 id = "post-branding-consumer-validation"
 title = "Rebuild native/browser/Android consumers and retest install, USB permission, packages, artifacts, fixtures, and final stale-name checks"
-status = "pending"
+status = "active"
 depends_on = ["host-branding-layout"]
 
 [[steps]]
 id = "canonical-build-flash"
 title = "Make setup.ps1, build.ps1, and flash.ps1 the conventional entry points; require an explicit flash backend during evaluation"
-status = "pending"
+status = "done"
 depends_on = ["firmware-contract-checkpoint"]
 
 [[steps]]
 id = "retire-wrapper-clutter"
 title = "Remove obsolete root build variants and relocate necessary diagnostics and drift tooling under maintainer scripts"
-status = "pending"
+status = "done"
 depends_on = ["canonical-build-flash"]
 
 [[steps]]
@@ -380,8 +380,8 @@ public facade, wire contract, or canonical commands independently.
 | New framework C namespace | `nxpc_*` / `NXPC_*` where a prefix prevents collisions |
 | Public API | short domain names: `camera_*`, `vision_*`, `motors_*`, `steering_*`, `wheel_*`, `telemetry_*` |
 | Audience term `student` | prose only; never part of an API symbol, header, source path, target, artifact, package, or command |
-| Firmware outputs | `nxp_cup.axf`, `nxp_cup.bin` |
-| Host outputs | `nxp_cup_viewer.exe`, `nxp_cup_tool.exe`, `nxp-cup-host-<version>.zip` |
+| Firmware outputs | `nxp_cup_core0.axf`, `nxp_cup_core0.bin` |
+| Host outputs | `nxpc_viewer.exe`, `nxpc_tool.exe`, `nxp-cup-host-<version>.zip` |
 | Former event name | `AVC` only in explicit historical context |
 | Video codec | retain `AVC` where it means H.264 Advanced Video Coding |
 
@@ -483,28 +483,30 @@ handoff, and an obvious switch:
 ```c
 int main(void)
 {
-    nxpc_system_init();
+    nxpc_framework__init();
     for (;;)
     {
-        nxpc_system_service();
-        uint16_t *frame = nxpc_camera_take_latest_frame();
+        nxpc_framework__service();
+        uint16_t *frame = nxpc_framework__take_latest_frame();
         if (frame == NULL) { continue; }
 
-        switch (nxpc_system_mode())
+        nxpc_framework__begin_callback();
+        switch (nxpc_system__mode())
         {
-            case NXPC_MODE_TEST:         test_mode_on_frame(frame); break;
-            case NXPC_MODE_RACE_RUNNING: race_mode_on_frame(frame); break;
+            case NXPC_SYSTEM_MODE_TEST:         test_mode_on_frame(frame); break;
+            case NXPC_SYSTEM_MODE_RACE_RUNNING: race_mode_on_frame(frame); break;
             default: break;
         }
-        nxpc_camera_finish_frame(frame);
+        nxpc_framework__end_callback();
+        nxpc_framework__finish_frame(frame);
     }
 }
 ```
 
-This is illustrative until `lock-contract` closes. Waiting-mode host preview may be hidden
-inside service/finalize, but the visible concepts must remain.
+This is the frozen runtime shape. Waiting-mode host preview is hidden inside
+service/finalize, but the visible concepts remain.
 
-`nxpc_system_service()` owns bounded button debounce, TEST jumper observation, safe mode
+`nxpc_framework__service()` owns bounded button debounce, TEST jumper observation, safe mode
 transitions, encoder sampling, USB session/telemetry service, and confirmed ISP entry.
 This is a cooperative loop: it does not execute while a mode callback is running.
 Callbacks must return within the 41 ms frame period. Instrument callback duration,
@@ -591,8 +593,8 @@ current MCUXpresso-only `build.ps1` behavior to an explicit maintainer command s
 
 `flash.ps1` accepts `-Preset` and an explicit backend rather than spawning per-variant
 wrappers. During backend evaluation, omitting `-Backend` is an error. `-Backend Ozone`
-launches/opens the validated `.jdebug` project for the selected preset; it does not claim
-unattended programming. `-Backend RomHid` performs the bounded one-cable ROM programming
+launches/opens the validated `.jdebug` project for the competition preset; it does not claim
+unattended programming. `-Backend Rom` performs the bounded one-cable ROM programming
 flow, and `-Backend JLink` retains direct maintainer programming. Compare recovery and
 environment evidence, select the no-argument default, and then rerun that exact documented
 default on the clean machine. The viewer remains its own application; it does not need to
@@ -615,7 +617,7 @@ After every source or path move:
 2. delete/create only the disposable generated headless workspace, import from durable
    project metadata, and build the settled renamed core target without relying on cached
    Eclipse state;
-3. run `build_cmake.ps1 -CheckDrift`, regenerate only when the durable metadata changed,
+3. run `scripts/maintainer/build_cmake.ps1 -CheckDrift`, regenerate only when the durable metadata changed,
    and build the equivalent CMake preset;
 4. compare source roots, includes, defines, linker scripts, and expected AXF/BIN artifacts;
 5. open/validate the Ozone project against the resulting artifact and source paths.
@@ -623,8 +625,9 @@ After every source or path move:
 The headless MCUXpresso wrapper can move under `scripts/maintainer`, but it remains a
 required repeatable validation tool. After it passes, provide the exact project path and
 short checklist for the owner's GUI import/build, source-navigation, and Ozone smoke test.
-`mcuxpresso-sync` and `mcuxpresso-gui-smoke` block the firmware-contract checkpoint; no
-documentation branch should inherit paths that only one build system understands.
+`mcuxpresso-sync` blocks the firmware-contract checkpoint. The owner GUI smoke remains a
+separate physical handoff after the fresh headless build has proved the project metadata;
+no documentation branch should inherit paths that only one build system understands.
 
 ## Repository and Parallel-Agent Cutover
 
@@ -710,21 +713,19 @@ Rev A bench checks:
 Clean-machine proof begins from the participant clone/zip and uses only documented commands.
 Do not count workstation PATH state, caches, SDKs, or build directories as prerequisites.
 
-## Decisions Needed Before Execution
+## Locked Execution Decisions
 
-1. **Encoder default:** recommended **yes**, enable QDC in `competition`; alternative is a
-   speed-capable preset participants must remember to select.
-2. **EXE while running:** recommended for current schedule: preserve start-only behavior;
-   TEST insertion, reset, or fault stops. Alternative: a second press or long press stops.
-3. **TEST motor arming:** recommended: preserve the proven center-button arm/disarm plus
+1. **Encoder default:** QDC is enabled in `competition` so measured wheel speed is available.
+2. **EXE while running:** preserve start-only behavior; TEST insertion, reset, or fault stops.
+3. **TEST motor arming:** preserve the center-button arm/disarm plus
    potentiometer-midpoint interlock; the framework, not mode code, owns arming.
-4. **Flash default:** keep canonical `build.ps1` and `flash.ps1` now; require `-Backend`
+4. **Flash default:** keep canonical `build.ps1` and `flash.ps1`; require `-Backend`
    while collecting candidate recovery evidence, select Ozone versus J11 ROM-HID, then
    validate that no-argument default on the clean machine. Both and maintainer J-Link
    remain available.
-5. **Mode-file location:** recommended: use the least fragile settled `app/` path supported
-   by clean CMake, MCUXpresso, and Ozone validation; do not force a root path for aesthetics.
-6. **Wire name:** recommended: preserve `AVCU` v1 bytes this year while all visible naming
+5. **Mode-file location:** use the settled firmware `source/app/` path validated by CMake
+   and MCUXpresso; do not force a repository-root path for aesthetics.
+6. **Wire name:** preserve `AVCU` v1 bytes this year while all visible naming
    becomes NXP Cup.
 
 ## Explicitly Out of Scope
@@ -750,12 +751,14 @@ Do not count workstation PATH state, caches, SDKs, or build directories as prere
 - `docs/plans/camera-startup-diagnostics/plan.md`
 - `docs/plans/usb-debug-telemetry/plan.md`
 - `docs/plans/one-cable-host-tool/plan.md`
-- `src/avc/avc_core0/source/main.c`
-- `src/avc/avc_core0/source/avc_system.c`
-- `src/avc/avc_core0/source/avc_student_algorithm.c`
-- `src/avc/avc_core0/source/avc__line_processor.c`
-- `src/avc/avc_core0/source/avc_io/`
-- `src/common/avc_usb_debug/avc_usb_debug_protocol.h`
-- `src/usb_debug_host/`
-- `src/android/avc_bridge/`
+- `src/nxp_cup/nxp_cup_core0/source/main.c`
+- `src/nxp_cup/nxp_cup_core0/source/nxpc_system.c`
+- `src/nxp_cup/nxp_cup_core0/source/nxpc_framework.c`
+- `src/nxp_cup/nxp_cup_core0/source/app/test_mode.c`
+- `src/nxp_cup/nxp_cup_core0/source/app/race_mode.c`
+- `src/nxp_cup/nxp_cup_core0/source/nxpc__line_processor.c`
+- `src/nxp_cup/nxp_cup_core0/source/nxpc_io/`
+- `src/common/nxpc_usb_debug/nxpc_usb_debug_protocol.h`
+- `src/nxp_cup_host/`
+- `src/android/nxp_cup_bridge/`
 - `CMakeLists.txt`, `CMakePresets.json`, `setup.ps1`, and root wrappers

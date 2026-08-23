@@ -8,7 +8,7 @@
       "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/cmake/${presetName}",
-      "toolchainFile": "${sourceDir}/src/avc/avc_core0/cmake/mcuxpresso-toolchain.cmake",
+      "toolchainFile": "${sourceDir}/src/nxp_cup/nxp_cup_core0/cmake/mcuxpresso-toolchain.cmake",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
@@ -28,7 +28,7 @@
       "description": "Maintainer diagnostic for a directly wired camera: EZH capture, LCD disabled, forced non-moving race-waiting mode, session-gated USB telemetry, motors and encoders disabled.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__DISPLAY_ENABLE=0;CONFIG__FORCE_RACE_WAITING_MODE=1;CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_DISABLED"
+        "NXPC_EXTRA_DEFINES": "CONFIG__DISPLAY_ENABLE=0;CONFIG__FORCE_RACE_WAITING_MODE=1;CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_DISABLED"
       }
     },
 
@@ -38,7 +38,7 @@
       "description": "Adds QDC wheel-speed feedback and the on-screen RPM readout. Same camera and display as the competition image.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC"
+        "NXPC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC"
       }
     },
 
@@ -48,7 +48,7 @@
       "description": "Frees the EZH. Requires the three J9_EXT jumpers: 12->32, 11->30, 15->2. See docs/research/AVC_Camera_FlexIO_Pin_Migration.md.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__CAMERA_CAPTURE_BACKEND=3;CONFIG__CAMERA_FLEXIO_PIN_GROUP=2"
+        "NXPC_EXTRA_DEFINES": "CONFIG__CAMERA_CAPTURE_BACKEND=3;CONFIG__CAMERA_FLEXIO_PIN_GROUP=2"
       }
     },
 
@@ -58,7 +58,7 @@
       "description": "The original FlexIO pin group. Build-verified but not hardware-verified since the pin-group refactor.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__CAMERA_CAPTURE_BACKEND=3"
+        "NXPC_EXTRA_DEFINES": "CONFIG__CAMERA_CAPTURE_BACKEND=3"
       }
     },
 
@@ -68,7 +68,7 @@
       "description": "Drives the servo from P3_20/PWM1_A3 on shield J1.5 instead of P2_3. For scoping the Rev B candidate.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__SERVO_PWM_OUTPUT=SERVO_PWM_OUTPUT_P3_20_A3"
+        "NXPC_EXTRA_DEFINES": "CONFIG__SERVO_PWM_OUTPUT=SERVO_PWM_OUTPUT_P3_20_A3"
       }
     },
 
@@ -78,7 +78,7 @@
       "description": "RTT-only encoder diagnostic. Skips camera and LCD startup. Safe to turn wheels by hand.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC;CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1"
+        "NXPC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC;CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1"
       }
     },
 
@@ -88,7 +88,7 @@
       "description": "Drives both motors at 10 percent duty, auto-starting 4s after boot. Duty is capped at 20 percent by an #error. Put the car on blocks.",
       "inherits": "base",
       "cacheVariables": {
-        "AVC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC;CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1;CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE=1;CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT=10;CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS=4000"
+        "NXPC_EXTRA_DEFINES": "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC;CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1;CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE=1;CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT=10;CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS=4000"
       }
     }
   ],

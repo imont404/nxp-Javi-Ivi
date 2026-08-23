@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Shared J-Link probe selection for the AVC flash and RTT wrappers.
+    Shared J-Link probe selection for the NXP Cup flash and RTT wrappers.
 
 .DESCRIPTION
     Dot-source this and call Resolve-JLinkSerial.
@@ -9,7 +9,7 @@
     hardcoded to one board. Resolution order:
 
       1. An explicit -UsbSerial argument.
-      2. $env:AVC_JLINK_SERIAL.
+      2. $env:NXPC_JLINK_SERIAL.
       3. Auto-detect, if exactly one SEGGER probe is attached.
 
     If more than one probe is attached and none was specified, this throws and
@@ -60,9 +60,9 @@ function Resolve-JLinkSerial {
         return $Requested.Trim()
     }
 
-    if (-not [string]::IsNullOrWhiteSpace($env:AVC_JLINK_SERIAL)) {
-        Write-Host "J-Link serial from AVC_JLINK_SERIAL" -ForegroundColor DarkGray
-        return $env:AVC_JLINK_SERIAL.Trim()
+    if (-not [string]::IsNullOrWhiteSpace($env:NXPC_JLINK_SERIAL)) {
+        Write-Host "J-Link serial from NXPC_JLINK_SERIAL" -ForegroundColor DarkGray
+        return $env:NXPC_JLINK_SERIAL.Trim()
     }
 
     $found = @(Get-AttachedJLinkSerial)
@@ -93,6 +93,6 @@ else's board. Choose one explicitly:
 
 or set it once for the session:
 
-  `$env:AVC_JLINK_SERIAL = "<serial>"
+  `$env:NXPC_JLINK_SERIAL = "<serial>"
 "@
 }

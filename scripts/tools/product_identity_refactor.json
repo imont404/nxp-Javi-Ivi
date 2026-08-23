@@ -5,6 +5,8 @@
     "docs/research/",
     "docs/plans/nxp-cup-framework-migration/logs/",
     "scripts/tools/product_identity_refactor.json",
+    "scripts/tools/refactor_product_identity.py",
+    "tests/L0_foundation/test_L0_005_firmware_framework_contract.py",
     "tests/L0_foundation/test_L0_006_product_identity_refactor.py",
     "src/nxp_cup/nxp_cup_core0/CMSIS/",
     "src/nxp_cup/nxp_cup_core0/component/",
@@ -33,6 +35,11 @@
     "src/avc/avc_core0/video/**",
     "src/usb_debug_host/vendor/**"
   ],
+  "ignored_generated_prefixes": [
+    "build/",
+    "out/",
+    "src/usb_debug_host/bin/"
+  ],
   "binary_suffixes": [
     ".a", ".axf", ".bin", ".bmp", ".dll", ".exe", ".gif", ".ico",
     ".jar", ".jpg", ".jpeg", ".pdf", ".png", ".so", ".zip"
@@ -49,7 +56,8 @@
     {"from": "avc__", "to": "nxpc__"},
     {"from": "avc_", "to": "nxpc_"},
     {"from": "Avc", "to": "NxpCup"},
-    {"from": "docs/avc.css", "to": "docs/nxp_cup.css"}
+    {"from": "docs/avc.css", "to": "docs/nxp_cup.css"},
+    {"from": "research/NXPC_", "to": "research/AVC_"}
   ],
   "text_rules": [
     {"from": "src\\avc\\avc_core0", "to": "src\\nxp_cup\\nxp_cup_core0"},
@@ -69,12 +77,33 @@
     {"from": "AVC__", "to": "NXPC__"},
     {"from": "avc_", "to": "nxpc_"},
     {"from": "AVC_", "to": "NXPC_"},
+    {"from": "avc::host", "to": "nxpc::host"},
+    {"from": "avc-rblhost", "to": "nxp-cup-rblhost"},
+    {"from": "avc-usb-debug-host-tests", "to": "nxp-cup-host-tests"},
+    {"from": "avc-bridge", "to": "nxp-cup-bridge"},
     {"from": "Avc", "to": "NxpCup"},
+    {"from": "AVC TELEMETRY", "to": "NXP CUP TELEMETRY"},
+    {"from": "AVC Camera Relay", "to": "NXP Cup Camera Relay"},
+    {"from": "AVC Android", "to": "NXP Cup Android"},
+    {"from": "AVC native", "to": "NXP Cup native"},
+    {"from": "AVC runtime", "to": "NXP Cup runtime"},
+    {"from": "AVC boards", "to": "NXP Cup boards"},
+    {"from": "AVC status", "to": "NXP Cup status"},
+    {"from": "AVC CDC", "to": "NXP Cup CDC"},
+    {"from": "AVC Web", "to": "NXP Cup Web"},
+    {"from": "AVC debug", "to": "NXP Cup debug"},
+    {"from": "AVC Bridge", "to": "NXP Cup Bridge"},
+    {"from": "AVC bridge", "to": "NXP Cup bridge"},
+    {"from": "AVC RGB565", "to": "NXP Cup RGB565"},
+    {"from": "AVC LCD", "to": "NXP Cup LCD"},
+    {"from": "the AVC MCXN947", "to": "the NXP Cup MCXN947"},
+    {"from": "Nothing in AVC calls", "to": "Nothing in NXP Cup calls"},
     {"from": "Wavenumber AVC", "to": "Wavenumber NXP Cup"},
     {"from": "AVC firmware", "to": "NXP Cup firmware"},
     {"from": "AVC project", "to": "NXP Cup project"},
     {"from": "AVC USB", "to": "NXP Cup USB"},
-    {"from": "docs/avc.css", "to": "docs/nxp_cup.css"}
+    {"from": "docs/avc.css", "to": "docs/nxp_cup.css"},
+    {"from": "research/NXPC_", "to": "research/AVC_"}
   ],
   "stale_path_patterns": [
     "(^|/)src/avc(/|$)",
@@ -86,8 +115,12 @@
   "stale_text_patterns": [
     "\\bavc__?[A-Za-z0-9_]",
     "\\bAVC__?[A-Za-z0-9_]",
+    "\\bavc::host\\b",
     "com\\.wavenumber\\.avc\\b",
     "src[/\\\\]avc[/\\\\]avc_core0",
     "src[/\\\\]usb_debug_host"
+  ],
+  "allowed_stale_text_patterns": [
+    "research[/\\\\]AVC_"
   ]
 }

@@ -70,14 +70,14 @@ def test_student_entry_points_exist():
 def test_competition_defaults_unchanged():
     """The Rev A competition configuration is what runs on race day. Any change
     to these defaults should be deliberate enough to update this test."""
-    config = (REPO / "src/avc/avc_core0/source/avc_config/avc__master_config.h").read_text(
+    config = (REPO / "src/nxp_cup/nxp_cup_core0/source/nxpc_config/nxpc__master_config.h").read_text(
         encoding="utf-8"
     )
     expected = {
         "CONFIG__CAMERA_CAPTURE_BACKEND": "CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH",
         "CONFIG__DISPLAY_PANEL": "DISPLAY_PANEL_ER_TFT020_3",
         "CONFIG__USB_DEBUG_STREAM_ENABLE": "(1)",
-        "CONFIG__MOTOR_ENCODER_BACKEND": "MOTOR_ENCODER_BACKEND_DISABLED",
+        "CONFIG__MOTOR_ENCODER_BACKEND": "MOTOR_ENCODER_BACKEND_QDC",
     }
     for knob, value in expected.items():
         # Match the #define that follows the #ifndef guard for this knob.

@@ -1,4 +1,4 @@
-# clang-format for the AVC firmware.
+# clang-format for the NXP Cup firmware.
 #
 # NOT applied wholesale. The tree carries a mix of tabs and spaces inherited
 # from the NXP SDK, and reformatting 179 SDK files would bury every real change
@@ -8,7 +8,7 @@
 # to "how should this look" rather than several.
 #
 # Format a single file you are already changing:
-#   clang-format -i src/avc/avc_core0/source/<file>.c
+#   clang-format -i src/nxp_cup/nxp_cup_core0/source/<file>.c
 BasedOnStyle: LLVM
 
 # The existing hand-written AVC code uses 4 spaces and Allman braces; match it

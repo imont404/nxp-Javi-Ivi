@@ -31,4 +31,4 @@ try {
     & $adb -s $Serial shell input keyevent KEYCODE_WAKEUP
 }
 
-Write-Host "AVC Android locked-screen relay proof passed." -ForegroundColor Green
+Write-Host "NXP Cup Android locked-screen relay proof passed." -ForegroundColor Green

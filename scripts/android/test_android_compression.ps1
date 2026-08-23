@@ -16,7 +16,7 @@ param(
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "android_env.ps1")
 $adb = Join-Path $env:ANDROID_HOME "platform-tools\adb.exe"
-$packageName = "com.wavenumber.avc.bridge"
+$packageName = "com.wavenumber.nxpc.bridge"
 $activityName = "$packageName/.MainActivity"
 
 if ([string]::IsNullOrWhiteSpace($Serial)) {
@@ -47,7 +47,7 @@ try {
 
     Start-Sleep -Seconds $Seconds
 
-    $compressionLines = @(& $adb -s $Serial logcat -d -s "AVC_COMPRESSION:I" "*:S")
+    $compressionLines = @(& $adb -s $Serial logcat -d -s "NXPC_COMPRESSION:I" "*:S")
     $result = $compressionLines |
         Where-Object { $_ -match "mode=$Mode state=running" } |
         Select-Object -Last 1
@@ -66,7 +66,7 @@ try {
         throw "The $Mode probe fell below 20 FPS: $result"
     }
 
-    $health = @(& $adb -s $Serial logcat -d -s "AVC_BRIDGE_HEALTH:I" "*:S") |
+    $health = @(& $adb -s $Serial logcat -d -s "NXP_CUP_BRIDGE_HEALTH:I" "*:S") |
         Where-Object { $_ -match "state=streaming" } |
         Select-Object -Last 1
     if ($null -eq $health -or $health -notmatch "seq_errors=0" -or $health -notmatch "malformed=0") {

@@ -29,7 +29,7 @@ depends_on = ["lock-scope"]
 
 [[steps]]
 id = "device-discovery"
-title = "Discover runtime AVC CDC and MCXN947 ROM HID devices without guessing when multiple matching boards are present"
+title = "Discover runtime NXP Cup CDC and MCXN947 ROM HID devices without guessing when multiple matching boards are present"
 status = "done"
 depends_on = ["host-core", "manual-rom-isp-proof"]
 
@@ -202,7 +202,7 @@ and must not independently rename the wire contract or public firmware facade.
 
 Make the one-cable development loop work before spending time on an installer or polished
 distribution. The first proof uses the high-speed J11 USB connection for both the running
-AVC CDC protocol and the MCXN947 ROM USB-HID programmer. A native Windows viewer then
+NXP Cup CDC protocol and the MCXN947 ROM USB-HID programmer. A native Windows viewer then
 combines automatic device discovery, the already-proven raw camera stream, basic telemetry,
 and deliberate firmware programming controls.
 
@@ -229,7 +229,7 @@ PID tuning, or any other completed race solution.
   statistics, logs, named telemetry, ping, and close.
 - Sustained 320x200 RGB565 receive has already been measured at about 23.43 FPS, so the
   native PC viewer does not need JPEG or H.264 for this workflow.
-- `src/usb_debug_host/usb_cdc_stream_read.cpp` already proves native Win32 CDC read/write
+- `src/nxp_cup_host/usb_cdc_stream_read.cpp` already proves native Win32 CDC read/write
   and framed session setup, but currently requires a COM port argument and is structured as
   a test executable rather than a reusable library.
 - Bunny Vision provides a read-only reference for SDL2/Dear ImGui rendering, background
@@ -283,7 +283,7 @@ run without a sibling runtime tree, and bench-proven against `1FC9:014F` for pro
 internal-flash erase, write at address zero, full-length readback, reset, and recovered camera
 preview. Full readback size and SHA-256 must match the selected image before reset. The pinned
 binary, SHA-256, source record, and BSD-3-Clause license are retained under
-`src/usb_debug_host/vendor/rblhost`.
+`src/nxp_cup_host/vendor/rblhost`.
 
 Do not reimplement the Mboot protocol for the first working version. The selected backend
 must remain behind a narrow process-runner interface so it can be replaced without changing
@@ -324,11 +324,11 @@ The MVP UI is intentionally small:
 - selected device and firmware artifact;
 - frame rate and basic named telemetry;
 - a bounded firmware debug-log view using the existing timestamped
-  `AVC_DBG_LOG_TEXT` records;
+  `NXPC_DBG_LOG_TEXT` records;
 - one deliberate program action with confirmation and visible progress.
 
 The accepted 2026-08-23 layout uses a black SDL workspace with independently
-movable and resizable Dear ImGui `Camera`, `AVC status`, `Program firmware`, and
+movable and resizable Dear ImGui `Camera`, `NXP Cup status`, `Program firmware`, and
 `Debug log` panels. Initial placement remains useful at 1000x720, but it is not
 reapplied every frame, so the operator can rearrange and resize panels. This is
 a host-only presentation change; subscription, framing, bounded parser storage,
@@ -409,7 +409,7 @@ host architecture:
 
 The master setup documentation remains authoritative. The generated zip is deliberately
 ignored by Git; copy it separately or regenerate it from
-`src/usb_debug_host/package_avc_host.ps1`. A packaging follow-up may implement an NSIS or
+`src/nxp_cup_host/package_nxpc_host.ps1`. A packaging follow-up may implement an NSIS or
 equivalent installer after race-week behavior is accepted.
 
 ## Explicitly Out of Scope
@@ -429,9 +429,9 @@ equivalent installer after race-week behavior is accepted.
 - `docs/plans/usb-debug-telemetry/plan.md`
 - `docs/plans/cmake-build-and-toolchain/plan.md`
 - `docs/setup.html`
-- `src/common/avc_usb_debug/avc_usb_debug_protocol.h`
-- `src/avc/avc_core0/source/usb_device_descriptor.c`
-- `src/usb_debug_host/usb_cdc_stream_read.cpp`
+- `src/common/nxpc_usb_debug/nxpc_usb_debug_protocol.h`
+- `src/nxp_cup/nxp_cup_core0/source/usb_device_descriptor.c`
+- `src/nxp_cup_host/usb_cdc_stream_read.cpp`
 - Bunny Vision host reference:
   `D:/prj/wavenumber/bunny_vision/bunny_vision_firmware-west/bunny_vision_sw`
 - NXP AN14460, *How to program MCX N series internal flash through ISP*

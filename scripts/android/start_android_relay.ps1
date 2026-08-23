@@ -15,7 +15,7 @@ param(
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "android_env.ps1")
 $adb = Join-Path $env:ANDROID_HOME "platform-tools\adb.exe"
-$packageName = "com.wavenumber.avc.bridge"
+$packageName = "com.wavenumber.nxpc.bridge"
 $activityName = "$packageName/.MainActivity"
 
 if ([string]::IsNullOrWhiteSpace($Serial)) {

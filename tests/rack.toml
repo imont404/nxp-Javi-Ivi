@@ -1,7 +1,7 @@
 [rack]
-name = "AVC Firmware Suite"
+name = "NXP Cup Firmware Suite"
 version = "1.0"
-description = "Governance and build-verification strata for the FRDM-MCXN947 AVC firmware"
+description = "Governance and build-verification strata for the FRDM-MCXN947 NXP Cup firmware"
 
 [strata]
 order = ["L0_foundation", "L1_build", "L2_quality", "L99_signoff"]

@@ -16,6 +16,6 @@ test_case_type = "algorithmic"
 module = "CMakePresets.json"
 
 [subtests.test_functions]
-test_competition_builds = "the competition preset produces avc_core0.axf"
+test_competition_builds = "the competition preset produces nxp_cup_core0.axf"
 test_all_presets_build = "every non-hidden preset configures and builds"
 test_source_list_has_not_drifted = "the committed source list matches MCUXpresso project metadata"

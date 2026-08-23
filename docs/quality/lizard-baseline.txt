@@ -1,6 +1,6 @@
-﻿# Lizard complexity baseline for the AVC firmware.
+﻿# Lizard complexity baseline for the NXP Cup firmware.
 #
-# Generated 2026-07-25 from src/avc/avc_core0/source with -CCN 15.
+# Generated 2026-07-25 from src/nxp_cup/nxp_cup_core0/source with -CCN 15.
 # This is a TRACKED BASELINE, not a pass/fail cliff: L2_001 asserts nothing
 # gets worse than what is recorded here, so existing debt does not block work
 # but new debt is visible.
@@ -8,12 +8,12 @@
 # Note that main() and the line processor are the code students read and edit
 # most. Complexity there costs more than the number suggests.
 #
-# Regenerate:  uv run lizard src/avc/avc_core0/source --CCN 15 -w
-src/avc/avc_core0/source/avc_io/avc_usb_debug_stream.c:429: warning: avc_usb_debug_stream__send_next_chunk has 105 NLOC, 17 CCN, 440 token, 0 PARAM, 116 length, 0 ND
-src/avc/avc_core0/source/avc_io/avc_usb_debug_stream.c:695: warning: avc_usb_debug_stream__cdc_callback has 144 NLOC, 27 CCN, 726 token, 3 PARAM, 167 length, 0 ND
-src/avc/avc_core0/source/avc_io/avc_usb_debug_stream.c:863: warning: avc_usb_debug_stream__device_callback has 102 NLOC, 23 CCN, 471 token, 3 PARAM, 114 length, 0 ND
-src/avc/avc_core0/source/avc_io/bv_camera__interface.c:1347: warning: avc_camera__service has 159 NLOC, 20 CCN, 658 token, 0 PARAM, 174 length, 0 ND
-src/avc/avc_core0/source/avc__line_processor.c:296: warning: avc__find_segments_from_hsl_gradient has 52 NLOC, 17 CCN, 329 token, 7 PARAM, 71 length, 0 ND
-src/avc/avc_core0/source/avc__line_processor.c:412: warning: avc__find_segments_from_hsl_hybrid has 79 NLOC, 28 CCN, 491 token, 7 PARAM, 97 length, 0 ND
-src/avc/avc_core0/source/main.c:112: warning: main has 129 NLOC, 28 CCN, 611 token, 0 PARAM, 224 length, 0 ND
-src/avc/avc_core0/source/usb_device_descriptor.c:403: warning: USB_DeviceSetSpeed has 110 NLOC, 25 CCN, 543 token, 2 PARAM, 124 length, 0 ND
+# Regenerate:  uv run lizard src/nxp_cup/nxp_cup_core0/source --CCN 15 -w
+src/nxp_cup/nxp_cup_core0/source/nxpc_io/nxpc_usb_debug_stream.c:429: warning: nxpc_usb_debug_stream__send_next_chunk has 105 NLOC, 17 CCN, 440 token, 0 PARAM, 116 length, 0 ND
+src/nxp_cup/nxp_cup_core0/source/nxpc_io/nxpc_usb_debug_stream.c:695: warning: nxpc_usb_debug_stream__cdc_callback has 144 NLOC, 27 CCN, 726 token, 3 PARAM, 167 length, 0 ND
+src/nxp_cup/nxp_cup_core0/source/nxpc_io/nxpc_usb_debug_stream.c:863: warning: nxpc_usb_debug_stream__device_callback has 102 NLOC, 23 CCN, 471 token, 3 PARAM, 114 length, 0 ND
+src/nxp_cup/nxp_cup_core0/source/nxpc_io/bv_camera__interface.c:1347: warning: nxpc_camera__service has 159 NLOC, 20 CCN, 658 token, 0 PARAM, 174 length, 0 ND
+src/nxp_cup/nxp_cup_core0/source/nxpc__line_processor.c:296: warning: nxpc__find_segments_from_hsl_gradient has 52 NLOC, 17 CCN, 329 token, 7 PARAM, 71 length, 0 ND
+src/nxp_cup/nxp_cup_core0/source/nxpc__line_processor.c:412: warning: nxpc__find_segments_from_hsl_hybrid has 79 NLOC, 28 CCN, 491 token, 7 PARAM, 97 length, 0 ND
+src/nxp_cup/nxp_cup_core0/source/main.c:112: warning: main has 129 NLOC, 28 CCN, 611 token, 0 PARAM, 224 length, 0 ND
+src/nxp_cup/nxp_cup_core0/source/usb_device_descriptor.c:403: warning: USB_DeviceSetSpeed has 110 NLOC, 25 CCN, 543 token, 2 PARAM, 124 length, 0 ND

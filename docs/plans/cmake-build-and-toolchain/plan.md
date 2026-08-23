@@ -253,7 +253,7 @@ new build seems fine" and "the new build is the same build."
 
 ## Where the work actually is
 
-`build_cmake.ps1` generates `src\avc\avc_core0\cmake\mcuxpresso_debug.cmake` from
+`scripts/maintainer/build_cmake.ps1` generates `src\nxp_cup\nxp_cup_core0\cmake\mcuxpresso_debug.cmake` from
 `.cproject` source roots and options plus `.project` linked resources. **That file is 310
 lines listing 179 source files, derived from MCUXpresso project metadata.**
 
@@ -271,7 +271,7 @@ fixes are known.
 
 ### 1. The linker pulls an NXP-IDE-only library
 
-`src/avc/avc_core0/link/avc_core0_Debug_library.ld:16` has:
+`src/nxp_cup/nxp_cup_core0/link/nxp_cup_core0_Debug_library.ld:16` has:
 
 ```
 GROUP (
@@ -309,7 +309,7 @@ be more.
 
 ### Static linker scripts — mostly already done
 
-AVC already copies its linker scripts into `src/avc/avc_core0/link/`, so the scripted build
+AVC already copies its linker scripts into `src/nxp_cup/nxp_cup_core0/link/`, so the scripted build
 does not depend on MCUXpresso regenerating `Debug/`. That is the same move the reference
 made, and it is the reason only the two items above remain.
 
@@ -432,7 +432,8 @@ The riskiest step. Suggested approach: generate the list once from the current
 `.cproject`-derived output, check it in, then **diff every later regeneration against it**
 so drift is visible rather than silent. Do not hand-curate 179 paths in one pass.
 
-Keep `build.ps1`, the MCUXpresso headless fallback, working until `byte-parity` passes.
+Keep `scripts/maintainer/build_mcuxpresso.ps1`, the MCUXpresso headless fallback,
+working while `build.ps1` remains the canonical CMake preset entry point.
 
 ### byte-parity
 
@@ -450,7 +451,7 @@ not one option among many.
 
 Absorbed from `build-system-cleanup`: decide which variant combinations are actually
 supported, and make illegal combinations fail at configure or compile time rather than at
-runtime. The `#error` guards in `avc__master_config.h` already do much of this.
+runtime. The `#error` guards in `nxpc__master_config.h` already do much of this.
 
 ### vscode-integration
 
@@ -459,7 +460,7 @@ decision is now fixed: `.vscode/` contains recommendations and settings only, In
 resolves the SDK includes, and flashing stays in Ozone rather than adding a second VS Code
 debug/build workflow.
 
-Students edit here. **If IntelliSense cannot resolve `avc__line_processor.h`, they will
+Students edit here. **If IntelliSense cannot resolve `nxpc__line_processor.h`, they will
 assume the code is broken**, and they will be right to.
 
 ### student-onboarding
@@ -516,8 +517,8 @@ the last minute.
 
 - `bunny_vision_sw/src/` — the reference: `setup.ps1`, `verify.ps1`, `CMakePresets.json`,
   `cmake/arm-none-eabi.cmake`, `bunny_cam/CMakeLists.txt`, and the two sim tools
-- `build_cmake.ps1` and `src/avc/avc_core0/cmake/generate_mcuxpresso_cmake.py` — what is
+- `scripts/maintainer/build_cmake.ps1` and `src/nxp_cup/nxp_cup_core0/cmake/generate_mcuxpresso_cmake.py` — what is
   being replaced
-- `src/avc/avc_core0/cmake/mcuxpresso_debug.cmake` — the 310-line generated source list
+- `src/nxp_cup/nxp_cup_core0/cmake/mcuxpresso_debug.cmake` — the 310-line generated source list
 - `AGENTS.md` — the current documented build and flash flow
 - `docs/research/AVC_Competition_Overview.md` — who the audience is and why it matters

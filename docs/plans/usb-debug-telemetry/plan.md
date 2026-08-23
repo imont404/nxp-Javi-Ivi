@@ -236,13 +236,13 @@ or speed-control solution. Students decide what algorithm and telemetry values t
   longer accepted by the competition firmware.
 - USB readiness is currently `attach && startTransactions`: configured/enumerated and a
   host that has opened the CDC interface.
-- `avc_usb_debug_stream__publish_frame()` retains a pointer to the live camera buffer,
+- `nxpc_usb_debug_stream__publish_frame()` retains a pointer to the live camera buffer,
   but records its camera generation. Before and after every 16 KiB staging copy, the
   transport checks the two-buffer reuse horizon. If capture catches up, the incomplete
   USB frame is aborted and the next frame carries explicit resynchronization evidence;
   the host never presents the partial frame.
 - The transfer-complete callback already calls the bounded transmit dispatcher.
-  `avc_usb_debug_stream__service()` handles received commands and also attempts transmit
+  `nxpc_usb_debug_stream__service()` handles received commands and also attempts transmit
   progression. Both paths submit through the same one-transfer ownership rule; no interrupt
   rewrite is currently justified.
 - `main.c` uses explicit TEST, race-waiting, student-running, and safe/startup dispatch.
@@ -253,7 +253,7 @@ or speed-control solution. Students decide what algorithm and telemetry values t
   durable deliverables.
 - The separately owned native one-cable viewer consumes the same frame, statistics, log,
   and named-telemetry messages without a protocol fork. Its floating `Debug log` panel now
-  displays the existing bounded `AVC_DBG_LOG_TEXT` records; no firmware work was required.
+  displays the existing bounded `NXPC_DBG_LOG_TEXT` records; no firmware work was required.
 - The host-neutral slice required by `android-telemetry-bridge` is stable and proven. The
   Moto reuses the current `AVCU` envelope and framed session without a firmware fork, then
   selects JPEG, H.264, or raw RGB565 only on its downstream browser relay.
@@ -280,31 +280,31 @@ not permanently imply test mode.
 The intended top-level shape is deliberately obvious:
 
 ```c
-avc_system__init();
+nxpc_system__init();
 
 while (1)
 {
-    avc_system__service();
+    nxpc_system__service();
 
-    switch (avc_system__mode())
+    switch (nxpc_system__mode())
     {
-        case AVC_SYSTEM_MODE_TEST:
-            avc_test__service();
+        case NXPC_SYSTEM_MODE_TEST:
+            nxpc_test__service();
             break;
 
-        case AVC_SYSTEM_MODE_STUDENT:
-            avc_student_algorithm__service();
+        case NXPC_SYSTEM_MODE_STUDENT:
+            nxpc_student_algorithm__service();
             break;
 
-        case AVC_SYSTEM_MODE_SAFE:
+        case NXPC_SYSTEM_MODE_SAFE:
         default:
-            avc_system__safe_stop();
+            nxpc_system__safe_stop();
             break;
     }
 }
 ```
 
-`avc_system__service()` may hide bounded platform maintenance: camera service, USB
+`nxpc_system__service()` may hide bounded platform maintenance: camera service, USB
 enumeration/RX/TX, encoder sampling, input updates, battery/health checks, telemetry
 scheduling, and safe mode-transition requests. It must not hide the student algorithm,
 blocking waits, or unexpected actuator commands.
@@ -337,9 +337,9 @@ Use two outbound diagnostic concepts:
 Example API shape, subject to the `lock-boundaries` design step:
 
 ```c
-AVC_DBG_LOG_INFO("camera initialized");
-AVC_DBG_VALUE_F32("servo.position", servo_position, "normalized");
-AVC_DBG_VALUE_F32("wheel.left.speed", left_speed, "m/s");
+NXPC_DBG_LOG_INFO("camera initialized");
+NXPC_DBG_VALUE_F32("servo.position", servo_position, "normalized");
+NXPC_DBG_VALUE_F32("wheel.left.speed", left_speed, "m/s");
 ```
 
 Calls must be cheap when no telemetry session subscribes, bounded when connected, and
@@ -419,11 +419,11 @@ separate USB-only race firmware is not part of the architecture.
 
 - `docs/research/AVC_USB_Debug_Display_Current_State.md`
 - `docs/research/AVC_USB_Debug_Transport_Protocol.md`
-- `src/common/avc_usb_debug/avc_usb_debug_protocol.h`
-- `src/avc/avc_core0/source/avc_io/avc_usb_debug_stream.c`
-- `src/avc/avc_core0/source/main.c`
-- `src/usb_debug_host/webserial_viewer.html`
-- `src/usb_debug_host/webserial_viewer.js`
+- `src/common/nxpc_usb_debug/nxpc_usb_debug_protocol.h`
+- `src/nxp_cup/nxp_cup_core0/source/nxpc_io/nxpc_usb_debug_stream.c`
+- `src/nxp_cup/nxp_cup_core0/source/main.c`
+- `src/nxp_cup_host/webserial_viewer.html`
+- `src/nxp_cup_host/webserial_viewer.js`
 - Bunny Vision host architecture, read-only reference:
   `D:/prj/wavenumber/bunny_vision/bunny_vision_firmware-west/bunny_vision_sw`
 - `docs/plans/android-telemetry-bridge/plan.md`

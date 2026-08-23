@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>AVC - Setup and Build</title>
-<link rel="stylesheet" href="avc.css">
+<title>NXP Cup - Setup and Build</title>
+<link rel="stylesheet" href="nxp_cup.css">
 </head>
 <body>
 
-<h1>AVC &ndash; Setup and Build</h1>
+<h1>NXP Cup &ndash; Setup and Build</h1>
 <p>Updated 2026-07-25. This is the page to read first. It assumes you have never
 seen this repository and have nothing installed.</p>
 
@@ -21,10 +21,10 @@ cmake --build --preset competition       <em>build</em></pre>
 
 <p>That produces the firmware image here:</p>
 
-<pre>build\cmake\competition\avc_core0.axf</pre>
+<pre>build\cmake\competition\nxp_cup_core0.axf</pre>
 
 <p><strong>Flashing is done with Segger Ozone</strong>, using the project in
-<code>src\avc\avc_core0\ozone__core0.jdebug</code>. See the Ozone section of
+<code>src\nxp_cup\nxp_cup_core0\ozone__core0.jdebug</code>. See the Ozone section of
 <code>README.md</code> for installing it and connecting to the board.</p>
 
 <p>The car should come up with live camera on the LCD. That is the loop you will
@@ -112,7 +112,7 @@ honest about what exists, not because you need them.</p>
 <pre>cmake --preset &lt;name&gt;
 cmake --build --preset &lt;name&gt;</pre>
 
-<p>The image always lands at <code>build\cmake\&lt;name&gt;\avc_core0.axf</code>.</p>
+<p>The image always lands at <code>build\cmake\&lt;name&gt;\nxp_cup_core0.axf</code>.</p>
 
 <div class="warn">
 <strong><code>encoder-diag-motors</code> spins the wheels</strong> four seconds
@@ -146,8 +146,8 @@ rather than two that can disagree.</p>
 <p>The build finds a compiler in this order:</p>
 
 <ol>
-<li><code>-DAVC_ARM_TOOLCHAIN_DIR=&lt;path to bin&gt;</code></li>
-<li>the <code>AVC_ARM_TOOLCHAIN_DIR</code> environment variable</li>
+<li><code>-DNXPC_ARM_TOOLCHAIN_DIR=&lt;path to bin&gt;</code></li>
+<li>the <code>NXPC_ARM_TOOLCHAIN_DIR</code> environment variable</li>
 <li>the toolchain <code>setup.ps1</code> put in <code>out\toolchains\</code></li>
 <li>the compiler bundled with MCUXpresso, if it happens to be installed</li>
 </ol>
@@ -180,7 +180,7 @@ uv run rack run L99      <em>the signoff gate only</em></pre>
 
 <p>Building every preset is slow, so it is opt-in:</p>
 
-<pre>$env:AVC_TEST_ALL_PRESETS = "1"
+<pre>$env:NXPC_TEST_ALL_PRESETS = "1"
 uv run rack run L1</pre>
 
 <div class="note">
@@ -200,13 +200,13 @@ a more complex function, regenerate
 tree &ndash; reformatting the NXP SDK sources would bury every real change in
 whitespace. Use it on files you are already editing:</p>
 
-<pre>clang-format -i src\avc\avc_core0\source\&lt;file&gt;.c</pre>
+<pre>clang-format -i src\nxp_cup\nxp_cup_core0\source\&lt;file&gt;.c</pre>
 
 <h2>Conventions worth knowing</h2>
 
 <h3>The source list is checked in</h3>
 
-<p><code>src\avc\avc_core0\cmake\mcuxpresso_debug.cmake</code> lists every source
+<p><code>src\nxp_cup\nxp_cup_core0\cmake\mcuxpresso_debug.cmake</code> lists every source
 file. It was originally generated from the MCUXpresso project files, but it is
 committed and used as-is, so a normal build needs neither Python nor
 MCUXpresso.</p>
@@ -214,12 +214,12 @@ MCUXpresso.</p>
 <p>If you change the project settings in MCUXpresso, that file can fall out of
 date. Check and update it explicitly:</p>
 
-<pre>.\build_cmake.ps1 -CheckDrift    <em>show what changed, write nothing</em>
-.\build_cmake.ps1 -Regenerate    <em>accept it, then review and commit</em></pre>
+<pre>.\scripts\maintainer\build_cmake.ps1 -CheckDrift    <em>show what changed, write nothing</em>
+.\scripts\maintainer\build_cmake.ps1 -Regenerate    <em>accept it, then review and commit</em></pre>
 
 <h3>The linker scripts are captures</h3>
 
-<p><code>src\avc\avc_core0\link\</code> holds copies of the linker scripts
+<p><code>src\nxp_cup\nxp_cup_core0\link\</code> holds copies of the linker scripts
 MCUXpresso would otherwise generate into <code>Debug\</code>. They are the source
 of truth, and each carries a header saying so.</p>
 
@@ -227,7 +227,7 @@ of truth, and each carries a header saying so.</p>
 <code>libcr_newlib_nohost.a</code>, which ships only with the IDE. It was
 replaced with the standard <code>libnosys.a</code>. That change removed the
 bounded heap NXP's library provided, so
-<code>source\shared\avc__sbrk.c</code> restores it. If you regenerate and diff,
+<code>source\shared\nxpc__sbrk.c</code> restores it. If you regenerate and diff,
 expect to see exactly that one library line differ.</p>
 
 <h3>Vendored headers</h3>
@@ -238,12 +238,15 @@ puts the camera frame buffers where they belong. Do not edit it.</p>
 
 <h2>Older scripts</h2>
 
-<p><code>build_cmake.ps1</code> still works and does the same thing as the
+<p><code>scripts\maintainer\build_cmake.ps1</code> still works and does the same thing as the
 <code>competition</code> preset. It remains for the drift check and for anything
 that already referenced it. New work should use presets.</p>
 
-<p><code>build.ps1</code> drives MCUXpresso headlessly and is the fallback if the
-CMake build ever fails in a way that needs the IDE to diagnose.</p>
+<p><code>build.ps1</code> is a thin wrapper around the same presets: run
+<code>.\build.ps1</code> for the competition image or pass
+<code>-Preset &lt;name&gt;</code>. Maintainers can run
+<code>scripts\maintainer\build_mcuxpresso.ps1</code> when an IDE comparison is
+needed.</p>
 
 </body>
 </html>

@@ -36,7 +36,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 . (Join-Path $PSScriptRoot "scripts\tools\jlink_common.ps1")
-. (Join-Path $PSScriptRoot "scripts\tools\avc_image_common.ps1")
+. (Join-Path $PSScriptRoot "scripts\tools\nxpc_image_common.ps1")
 $UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
 
 function Resolve-SeggerTool {
@@ -68,11 +68,11 @@ function Resolve-SeggerTool {
 }
 
 $projectDir = $PSScriptRoot
-$axfFile = Resolve-AvcImage -RepoRoot $projectDir -Preset $Preset -File $File `
+$axfFile = Resolve-NxpCupImage -RepoRoot $projectDir -Preset $Preset -File $File `
                             -Mcux:$Mcux -Configuration $Configuration
 $JLinkDllPath = Resolve-SeggerTool -ConfiguredPath $JLinkDllPath -ToolName "JLink_x64.dll"
 $JLinkRTTLoggerPath = Resolve-SeggerTool -ConfiguredPath $JLinkRTTLoggerPath -ToolName "JLinkRTTLogger.exe"
-$NmPath = Resolve-AvcArmTool -RepoRoot $projectDir -ToolName "arm-none-eabi-nm" -ConfiguredPath $NmPath
+$NmPath = Resolve-NxpCupArmTool -RepoRoot $projectDir -ToolName "arm-none-eabi-nm" -ConfiguredPath $NmPath
 
 if (-not (Test-Path -LiteralPath $axfFile)) {
     throw "Firmware not found: $axfFile. Build first with .\build.ps1"
@@ -147,11 +147,11 @@ $rttAddress = "0x$($Matches[1])"
 $logFile = if ($OutFile) {
     $OutFile
 } else {
-    Join-Path $env:TEMP ("avc_rtt_{0}.log" -f (Get-Date -Format "yyyyMMdd_HHmmss"))
+    Join-Path $env:TEMP ("nxpc_rtt_{0}.log" -f (Get-Date -Format "yyyyMMdd_HHmmss"))
 }
 
-$loggerStdout = Join-Path $env:TEMP "avc_rtt_logger_stdout.txt"
-$loggerStderr = Join-Path $env:TEMP "avc_rtt_logger_stderr.txt"
+$loggerStdout = Join-Path $env:TEMP "nxpc_rtt_logger_stdout.txt"
+$loggerStderr = Join-Path $env:TEMP "nxpc_rtt_logger_stderr.txt"
 Remove-Item -LiteralPath $logFile, $loggerStdout, $loggerStderr -Force -ErrorAction SilentlyContinue
 
 Write-Host "Device: $Device"

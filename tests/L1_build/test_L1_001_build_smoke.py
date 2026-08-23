@@ -3,7 +3,7 @@
 This is the gate that makes changes to the source list, the linker scripts, or
 the capture backends safe to attempt. It needs no board.
 
-Builds are slow, so the full sweep is opt-in via AVC_TEST_ALL_PRESETS=1;
+Builds are slow, so the full sweep is opt-in via NXPC_TEST_ALL_PRESETS=1;
 the competition image always builds because it is the one that matters.
 """
 
@@ -54,8 +54,8 @@ def _build(preset: str) -> Path:
     assert cfg.returncode == 0, f"configure failed for {preset}:\n{cfg.stdout}\n{cfg.stderr}"
     build = _cmake("--build", "--preset", preset)
     assert build.returncode == 0, f"build failed for {preset}:\n{build.stdout}\n{build.stderr}"
-    axf = REPO / "build" / "cmake" / preset / "avc_core0.axf"
-    assert axf.is_file(), f"{preset} produced no avc_core0.axf at {axf}"
+    axf = REPO / "build" / "cmake" / preset / "nxp_cup_core0.axf"
+    assert axf.is_file(), f"{preset} produced no nxp_cup_core0.axf at {axf}"
     return axf
 
 
@@ -65,8 +65,8 @@ def test_competition_builds():
     assert axf.stat().st_size > 0
 
 
-@pytest.mark.skipif(os.environ.get("AVC_TEST_ALL_PRESETS") != "1",
-                    reason="set AVC_TEST_ALL_PRESETS=1 to build every preset (slow)")
+@pytest.mark.skipif(os.environ.get("NXPC_TEST_ALL_PRESETS") != "1",
+                    reason="set NXPC_TEST_ALL_PRESETS=1 to build every preset (slow)")
 def test_all_presets_build():
     failures = []
     for preset in _preset_names():
@@ -84,11 +84,11 @@ def test_source_list_has_not_drifted():
     the difference sit unnoticed."""
     result = subprocess.run(
         ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
-         str(REPO / "build_cmake.ps1"), "-CheckDrift",
+         str(REPO / "scripts/maintainer/build_cmake.ps1"), "-CheckDrift",
          "-BuildDir", str(REPO / "build" / "cmake" / "drift-check")],
         cwd=REPO, capture_output=True, text=True, timeout=1800,
     )
     assert "[DRIFT]" not in result.stdout, (
         "the committed source list differs from MCUXpresso project metadata; "
-        "run .\\build_cmake.ps1 -Regenerate, then review and commit\n" + result.stdout
+        "run .\\scripts\\maintainer\\build_cmake.ps1 -Regenerate, then review and commit\n" + result.stdout
     )

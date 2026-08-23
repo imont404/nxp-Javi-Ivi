@@ -5,9 +5,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "android_env.ps1")
-$projectRoot = Join-Path $script:AvcAndroidRepoRoot "src\android\avc_bridge"
+$projectRoot = Join-Path $script:NxpCupAndroidRepoRoot "src\android\nxp_cup_bridge"
 $gradleWrapper = Join-Path $projectRoot "gradlew.bat"
-$env:GRADLE_USER_HOME = Join-Path $script:AvcAndroidToolsRoot "gradle-user-home"
+$env:GRADLE_USER_HOME = Join-Path $script:NxpCupAndroidToolsRoot "gradle-user-home"
 
 if (-not (Test-Path -LiteralPath $gradleWrapper)) {
     throw "Gradle wrapper is missing. Run scripts\android\setup_android.ps1 and regenerate it."

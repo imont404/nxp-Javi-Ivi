@@ -1,7 +1,7 @@
 # Agent Guide
 
-This repository contains FRDM-MCXN947 firmware for the Wavenumber AVC project.
-Treat `src/avc/avc_core0` as the active firmware project and `src/common` as
+This repository contains FRDM-MCXN947 firmware for the Wavenumber NXP Cup project.
+Treat `src/nxp_cup/nxp_cup_core0` as the active firmware project and `src/common` as
 linked shared source used by the MCUXpresso project.
 
 ## Setup
@@ -36,20 +36,19 @@ research files are durable/reference material during the current migration.
 first; it covers provisioning a machine from nothing, the preset list, and the
 conventions below.
 
-**CMake presets are the default flow.** Use them for new work; the wrapper
-scripts below are legacy and kept only for the cases noted against each one.
+**CMake presets are the default flow.** `build.ps1` is the canonical thin
+wrapper; direct CMake remains supported.
 
 ```powershell
 .\setup.ps1                              # once per machine; no MCUXpresso needed
-cmake --preset competition
-cmake --build --preset competition
-.\flash.ps1                              # defaults to the competition preset
+.\build.ps1                              # competition preset
+.\flash.ps1 -Backend JLink               # maintainer example; backend is explicit
 .\rtt.ps1 -Reset -Seconds 10
 ```
 
 **`flash.ps1` and `rtt.ps1` are maintainer tooling, not a student workflow.**
 The student path is: build with a CMake preset, flash with **Segger Ozone**
-(`src\avc\avc_core0\ozone__core0.jdebug`), observe through the on-board LCD and
+(`src\nxp_cup\nxp_cup_core0\ozone__core0.jdebug`), observe through the on-board LCD and
 the USB frame stream. Students are not given a J-Link and do not run these
 scripts. Keep both out of `docs/setup.html` — an L0 test enforces it, because
 they are the fastest way for an agent to put an image on a board and so they
@@ -62,14 +61,15 @@ Nothing here is load-bearing: if it is wrong the student gets unresolved
 includes, not a broken build, so it is not worth a test.
 
 `flash.ps1` and `rtt.ps1` take `-Preset <name>` to pick any other image, and
-resolve it to `build\cmake\<preset>\avc_core0.axf`:
+resolve it to `build\cmake\<preset>\nxp_cup_core0.axf`:
 
 ```powershell
-.\flash.ps1 -Preset flexio-port1
+.\flash.ps1 -Backend JLink -Preset flexio-port1
 .\rtt.ps1   -Preset encoder-diag -Seconds 30
 ```
 
-They refuse an unknown preset by name rather than reporting a missing file, and
+The flash command requires `-Backend Ozone`, `Rom`, or `JLink` until the
+clean-machine evaluation selects a default. It and RTT refuse an unknown preset by name rather than reporting a missing file, and
 they refuse an image that has not been built rather than silently flashing a
 stale one. `cmake --list-presets` is the authoritative list. `-File` still takes
 an explicit path, and `-Mcux` selects the MCUXpresso output directory for the
@@ -78,14 +78,14 @@ rare case of comparing the two build systems. `-CMake` is a deprecated no-op.
 Both scripts find `arm-none-eabi-*` the same way the build does: the toolchain
 `setup.ps1` provisioned under `out\toolchains`, before any MCUXpresso install.
 
-`.\build_cmake.ps1` remains for ad-hoc `-Define` builds and for `-CheckDrift`
+`.\scripts\maintainer\build_cmake.ps1` remains for ad-hoc `-Define` builds and for `-CheckDrift`
 and `-Regenerate` against MCUXpresso project metadata. The CMake flow is adapted
 from the W71 project. It generates
-`src\avc\avc_core0\cmake\mcuxpresso_debug.cmake` from durable MCUXpresso
+`src\nxp_cup\nxp_cup_core0\cmake\mcuxpresso_debug.cmake` from durable MCUXpresso
 project metadata: `.cproject` source roots/options plus `.project` linked
 resources. Do not read or depend on generated `Debug` makefiles for scripted
 build source lists; those files are transient and MCUXpresso recreates them.
-The linker scripts are copied into `src\avc\avc_core0\link` so the scripted
+The linker scripts are copied into `src\nxp_cup\nxp_cup_core0\link` so the scripted
 build does not depend on MCUXpresso regenerating files under `Debug`.
 
 MCUXpresso is **not required to build**. The headless wrapper exists only to
@@ -93,14 +93,14 @@ refresh generated makefiles after changing project settings in the IDE, whose
 result is then carried into the committed source list by `-Regenerate`:
 
 ```powershell
-.\build.ps1
-.\build.ps1 -Clean -ResetWorkspace
-.\flash.ps1 -Mcux
+.\scripts\maintainer\build_mcuxpresso.ps1
+.\scripts\maintainer\build_mcuxpresso.ps1 -Clean -ResetWorkspace
+.\flash.ps1 -Backend JLink -Mcux
 ```
 
 The MCUXpresso wrapper defaults to
 `C:\nxp\MCUXpressoIDE_25.6.136\ide\mcuxpressoidec.exe`, imports
-`src\avc\avc_core0`, and builds `avc_core0/Debug` in a generated headless
+`src\nxp_cup\nxp_cup_core0`, and builds `nxp_cup_core0/Debug` in a generated headless
 workspace. Generated `.mcux_workspace*` folders are local build state and should
 not be committed.
 
@@ -108,7 +108,7 @@ not be committed.
 
 The default build is the **Rev A competition image** and should stay that way:
 EZH camera capture, ER-TFT020-3 SPI LCD, session-gated USB telemetry available,
-encoders disabled. USB enumerates when attached, but sends nothing until a
+and QDC wheel feedback enabled. USB enumerates when attached, but sends nothing until a
 recognized framed host session explicitly subscribes.
 Everything else is a variant behind `CONFIG__` selection with `#error` guards.
 
@@ -130,9 +130,9 @@ The wrapper scripts remain where they do something a fixed preset cannot,
 namely tuning the diagnostic at build time:
 
 ```powershell
-.\build_motor_encoder_diag.ps1 -EnableMotors -PwmPercentM0 10 -PwmPercentM1 20 -AutoStartMs 4000
-.\flash_motor_encoder_diag.ps1 -EnableMotors       # must match how it was built
-.\rtt_motor_encoder_diag.ps1 -EnableMotors -Seconds 30
+.\scripts\maintainer\build_motor_encoder_diag.ps1 -EnableMotors -PwmPercentM0 10 -PwmPercentM1 20 -AutoStartMs 4000
+.\scripts\maintainer\flash_motor_encoder_diag.ps1 -EnableMotors       # must match how it was built
+.\scripts\maintainer\rtt_motor_encoder_diag.ps1 -EnableMotors -Seconds 30
 ```
 
 Driving the two motors at *different* duties is deliberate: equal duty would
@@ -141,7 +141,7 @@ hide a cross-wiring or duplicate-read fault between the two QDC channels.
 Ad-hoc variants go through `-Define`, e.g.:
 
 ```powershell
-.\build_cmake.ps1 -BuildDir "build\cmake\avc_core0-Encoders" `
+.\scripts\maintainer\build_cmake.ps1 -BuildDir "build\cmake\nxp_cup_core0-Encoders" `
     -Define "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC"
 ```
 
@@ -160,7 +160,7 @@ and SWD at 4 MHz.
 `scripts\tools\jlink_common.ps1` resolves it in this order:
 
 1. An explicit `-UsbSerial` argument.
-2. `$env:AVC_JLINK_SERIAL`.
+2. `$env:NXPC_JLINK_SERIAL`.
 3. Auto-detect, when exactly one SEGGER probe is attached.
 
 If more than one probe is attached and none was specified, the wrappers **throw

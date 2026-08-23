@@ -17,7 +17,8 @@ REPO = Path(__file__).resolve().parents[2]
 
 FLASH = REPO / "flash.ps1"
 RTT = REPO / "rtt.ps1"
-SHARED = REPO / "scripts/tools/avc_image_common.ps1"
+BUILD = REPO / "build.ps1"
+SHARED = REPO / "scripts/tools/nxpc_image_common.ps1"
 PRESETS = REPO / "CMakePresets.json"
 
 ENTRY_POINTS = pytest.mark.parametrize("script", [FLASH, RTT], ids=["flash", "rtt"])
@@ -32,8 +33,24 @@ def test_shared_resolver_exists():
     """One resolver, so the two scripts cannot drift apart on what a preset
     name means."""
     text = _text(SHARED)
-    for func in ("Resolve-AvcImage", "Resolve-AvcArmTool", "Get-AvcPresetNames"):
+    for func in ("Resolve-NxpCupImage", "Resolve-NxpCupArmTool", "Get-NxpCupPresetNames"):
         assert f"function {func}" in text, f"{func} is missing from the shared resolver"
+
+
+def test_canonical_build_is_the_competition_preset_wrapper():
+    text = _text(BUILD)
+    assert re.search(r'\[string\]\$Preset\s*=\s*"competition"', text)
+    assert 'cmake @configureArguments' in text
+    assert 'cmake --build --preset $Preset' in text
+    assert 'mcuxpressoidec' not in text.lower()
+
+
+def test_flash_backend_is_explicit_until_evaluation_finishes():
+    text = _text(FLASH)
+    assert '[ValidateSet("Ozone", "Rom", "JLink")]' in text
+    assert 'Choose a flash backend explicitly' in text
+    assert 'nxpc_tool.exe' in text, "ROM-HID backend is missing"
+    assert 'jlink_common.ps1' in text, "maintainer J-Link backend is missing"
 
 
 @ENTRY_POINTS
@@ -42,7 +59,7 @@ def test_defaults_to_competition_preset(script):
     assert re.search(r'\[string\]\$Preset\s*=\s*"competition"', text), (
         f"{script.name} does not default to the competition preset"
     )
-    assert "Resolve-AvcImage" in text, (
+    assert "Resolve-NxpCupImage" in text, (
         f"{script.name} does not use the shared image resolver"
     )
 
@@ -56,7 +73,7 @@ def test_no_legacy_default_path(script):
         line.strip()
         for line in text.splitlines()
         if not line.lstrip().startswith("#")
-        and re.search(r"defaultAxf|avc_core0-\$Configuration", line)
+        and re.search(r"defaultAxf|nxp_cup_core0-\$Configuration", line)
     ]
     assert not offenders, (
         f"{script.name} still resolves a default image itself: {offenders}"
@@ -92,7 +109,7 @@ def test_rtt_does_not_hardcode_mcuxpresso_tools():
         and re.search(r"(?i)mcuxpressoide_", line)
     ]
     assert not offenders, f"rtt.ps1 hard-codes an MCUXpresso tool path: {offenders}"
-    assert "Resolve-AvcArmTool" in text, (
+    assert "Resolve-NxpCupArmTool" in text, (
         "rtt.ps1 does not resolve arm-none-eabi-nm from the provisioned toolchain"
     )
 

@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parents[2]
-SOURCE = REPO / "src/avc/avc_core0/source"
+SOURCE = REPO / "src/nxp_cup/nxp_cup_core0/source"
 BASELINE = REPO / "docs/quality/lizard-baseline.txt"
 
 CCN_THRESHOLD = 15

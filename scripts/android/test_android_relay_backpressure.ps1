@@ -19,7 +19,7 @@ $baseUri = "http://${phoneAddress}:$Port"
 $adb = Join-Path $env:ANDROID_HOME "platform-tools\adb.exe"
 
 function Get-AppPssKb {
-    $meminfo = & $adb -s $Serial shell dumpsys meminfo com.wavenumber.avc.bridge
+    $meminfo = & $adb -s $Serial shell dumpsys meminfo com.wavenumber.nxpc.bridge
     $total = $meminfo | Select-String "TOTAL PSS:\s+(?<kb>[0-9]+)" | Select-Object -First 1
     if ($null -eq $total) { throw "Could not read app TOTAL PSS through adb." }
     return [int]$total.Matches[0].Groups["kb"].Value
@@ -51,7 +51,7 @@ try {
         "Connection: Upgrade"
         "Sec-WebSocket-Key: $webSocketKey"
         "Sec-WebSocket-Version: 13"
-        "X-AVC-Replace-Viewer: 1"
+        "X-NXPC-Replace-Viewer: 1"
         ""
         ""
     ) -join "`r`n"
@@ -114,4 +114,4 @@ $pssAfterKb = Get-AppPssKb
     relay_mode = $Mode
 } | Format-List
 
-Write-Host "AVC Android relay backpressure proof passed." -ForegroundColor Green
+Write-Host "NXP Cup Android relay backpressure proof passed." -ForegroundColor Green

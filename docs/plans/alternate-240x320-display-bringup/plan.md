@@ -11,7 +11,7 @@ status = "done"
 
 [[steps]]
 id = "spi-pin-strategy"
-title = "Map ER-TFT020-7 4-wire SPI mode onto the existing AVC LCD pins"
+title = "Map ER-TFT020-7 4-wire SPI mode onto the existing NXP Cup LCD pins"
 status = "done"
 depends_on = ["collateral-intake"]
 
@@ -158,12 +158,12 @@ display updates or correlate display timing with camera VSYNC.
 - Dev-board user guide:
   `https://www.buydisplay.com/download/manual/ER-DBT020-7_UserGuide.pdf`
 - Current AVC ST7789 SPI driver:
-  `src/avc/avc_core0/source/avc_io/st7789.c`,
-  `src/avc/avc_core0/source/avc_io/st7789.h`
+  `src/nxp_cup/nxp_cup_core0/source/nxpc_io/st7789.c`,
+  `src/nxp_cup/nxp_cup_core0/source/nxpc_io/st7789.h`
 - Current AVC LPSPI1 path:
-  `src/avc/avc_core0/source/avc_io/lpspi1.c`
+  `src/nxp_cup/nxp_cup_core0/source/nxpc_io/lpspi1.c`
 - Current LCD pin mux:
-  `src/avc/avc_core0/board/pin_mux.c`
+  `src/nxp_cup/nxp_cup_core0/board/pin_mux.c`
 - Local research folder:
   `docs/research/ER-TFT020-7`
 
@@ -195,7 +195,7 @@ bringup.
 
 ### Phase 1: SPI proof on the existing display path
 
-Keep the current AVC LCD architecture intact. The current code already drives
+Keep the current NXP Cup LCD architecture intact. The current code already drives
 an ST7789-class display over LPSPI1 with a GPIO D/C line, a GPIO reset line,
 EDMA-backed transfers, RGB565 data, and a landscape 320x240 logical display.
 Use that as the first test path.
@@ -207,7 +207,7 @@ The early SPI bringup should answer only these questions:
 - Does the current ST7789 initialization produce visible RGB565 color bars or
   a known synthetic frame?
 - Are orientation, row/column offsets, color order, and byte order compatible
-  with the current AVC LCD path?
+  with the current NXP Cup LCD path?
 
 Tentative MCU-side reuse map from the current firmware:
 
@@ -421,14 +421,14 @@ The likely first questions are:
   and CMake source lists currently include only `bunny_build.c` and
   `ezh_init.c`.
 - Upstream also added a generic `include/bunny_build__config.h`. AVC currently
-  relies on the project-specific config in `source/avc_config`, so the update
+  relies on the project-specific config in `source/nxpc_config`, so the update
   must avoid accidentally shadowing AVC's logging and target configuration.
 - The gibbon PSRAM example demonstrates the bounded-command pattern we want for
   LCD work: build EZH programs into RAM, boot one command program at a time,
   write `EZH2ARM` to raise the ARM interrupt, then hold/stop the EZH.
 - On 2026-07-12 the AVC bunny_build copy was updated to the upstream
   source-refactor layout while leaving the project-local
-  `source/avc_config/bunny_build__config.h` in control. The scripted CMake
+  `source/nxpc_config/bunny_build__config.h` in control. The scripted CMake
   source discovery was also changed to use durable `.cproject` source
   roots/options plus `.project` linked resources, not generated `Debug`
   makefiles. The generated `Debug` makefiles are transient MCUXpresso output and
@@ -483,7 +483,7 @@ The likely first questions are:
   green, and blue vertical bands and emits `parallel_lcd frame=` RTT messages.
 - Verification passed for the default CMake build with the proof disabled and
   for the separate test image in
-  `build/cmake/avc_core0-Debug-parallel-bitbang` using
+  `build/cmake/nxp_cup_core0-Debug-parallel-bitbang` using
   `-DCONFIG__DISPLAY_PANEL=2 -DCONFIG__DISPLAY_TEST_MODE=1
   -DCONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE=1`.
 - On 2026-07-12 the parallel-bitbang image was flashed with SEGGER J-Link V9.54
@@ -505,7 +505,7 @@ The likely first questions are:
 2. Wire the 8080 proof bus with `RD` held inactive high:
    D0-D7 on the shared camera/LCD data pins, `WR=P0_4`, `RS=P0_11`,
    `CS=P4_4`, and `RST=P1_19`.
-3. Flash `build/cmake/avc_core0-Debug-parallel-bitbang/avc_core0.axf`, then
+3. Flash `build/cmake/nxp_cup_core0-Debug-parallel-bitbang/nxp_cup_core0.axf`, then
    scope `WR`, `RS`, `CS`, reset, and at least one data line before judging the
    display image.
 4. Confirm the expected fixed red/green/blue vertical bands and log any

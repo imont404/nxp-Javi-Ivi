@@ -1,4 +1,4 @@
-# avc
+# NXP Cup
 
 This repository has source code for use with FRDM-MCXN947 and the FRDM-AVC shield.
 
@@ -10,7 +10,7 @@ This repository has source code for use with FRDM-MCXN947 and the FRDM-AVC shiel
 .\setup.ps1                              # provisions the compiler and build tools
 cmake --preset competition
 cmake --build --preset competition
-.\flash.ps1 -File build\cmake\competition\avc_core0.axf
+.\flash.ps1 -Backend Ozone
 ```
 
 Full instructions, the list of build variants, and the conventions are in
@@ -51,7 +51,7 @@ https://www.segger.com/products/development-tools/ozone-j-link-debugger/
 
 # 2 Building the Starter Project
 
-The starter project is located in **src/avc/avc_core**
+The starter project is located in **src/nxp_cup/nxp_cup_core0**.
 
 <img width="1134" height="738" alt="image" src="https://github.com/user-attachments/assets/8a6c15cb-3d05-4fbb-95c0-f6978d66cd22" />
 
@@ -59,7 +59,7 @@ The starter project is located in **src/avc/avc_core**
 
 <img width="1134" height="738" alt="image" src="https://github.com/user-attachments/assets/4e7865b8-b981-4ff3-b827-e3157d6aa2e3" />
 
-You can make a new workspace **avc** (or you can leave the default)
+You can make a new workspace **nxp_cup** (or leave the default).
 
 <img width="891" height="470" alt="image" src="https://github.com/user-attachments/assets/1bfd6189-c7a3-4b44-aac5-1e145a13395f" />
 
@@ -74,9 +74,9 @@ Search on *MCXN947* and select the **frdmmcxn947**
 
 <img width="1902" height="1180" alt="image" src="https://github.com/user-attachments/assets/7ff9bbf6-95fa-48ab-a4df-97c249accfb9" />
 
-## C Import the avc_core0 project
+## C Import the nxp_cup_core0 project
 
-After you download/clone this repository,  you need to import the avc_core0 project:
+After you download/clone this repository,  you need to import the nxp_cup_core0 project:
 
 ![import](https://github.com/user-attachments/assets/0771909c-a20b-4c25-9d27-2d0dab00ed6d)
 
@@ -89,7 +89,7 @@ There are two USB ports on the FRDM-MCXN947:  Connect via this one
 
 <img width="1772" height="689" alt="image" src="https://github.com/user-attachments/assets/8567c978-2b9e-4901-a3cb-e183004bdb03" />
 
-There is a Segger Ozone project  in the folder **src/avc/avc_core0/ozone__core0.jdebug**
+There is a Segger Ozone project  in the folder **src/nxp_cup/nxp_cup_core0/ozone__core0.jdebug**
 
 Once the USB-C is connected you can open the .jdebug file and flash:
 

@@ -1,0 +1,266 @@
+#include "nxpc__io.h"
+
+#if CONFIG__DISPLAY_TEST_MODE && CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
+#include "st7789_parallel_bitbang.h"
+#endif
+
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+#include "nxpc_usb_debug_stream.h"
+#endif
+
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+#include "nxpc__motor_encoder_qdc.h"
+#endif
+
+#ifndef CONFIG__NXPC_UART_TX_Q_SIZE_BYTES
+	#define CONFIG__NXPC_UART_TX_Q_SIZE_BYTES 2048
+#endif
+
+#ifndef CONFIG__NXPC_UART_RX_Q_SIZE_BYTES
+	#define CONFIG__NXPC_UART_RX_Q_SIZE_BYTES 2048
+#endif
+
+BYTE_QUEUE__MAKE(UART4_TX_Q , CONFIG__NXPC_UART_TX_Q_SIZE_BYTES);
+BYTE_QUEUE__MAKE(UART4_RX_Q , CONFIG__NXPC_UART_TX_Q_SIZE_BYTES);
+
+
+
+button_t left_btn, right_btn, center_btn;
+
+
+void nxpc_io__uart_init();
+
+#if CONFIG__DISPLAY_TEST_MODE && !CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
+static uint16_t display_test_rows[eGFX_PHYSICAL_SCREEN_SIZE_X * 16U];
+
+static uint16_t nxpc__display_test_color(uint32_t x)
+{
+    uint32_t band = (x * 3U) / eGFX_PHYSICAL_SCREEN_SIZE_X;
+
+    switch (band)
+    {
+        case 0:
+            return 0xF800; /* red */
+        case 1:
+            return 0x07E0; /* green */
+        default:
+            return 0x001F; /* blue */
+    }
+}
+
+static void nxpc__display_test_draw(void)
+{
+    const uint32_t rows_per_chunk = 16U;
+
+    for (uint32_t y0 = 0U; y0 < eGFX_PHYSICAL_SCREEN_SIZE_Y; y0 += rows_per_chunk)
+    {
+        uint32_t rows = eGFX_PHYSICAL_SCREEN_SIZE_Y - y0;
+        if (rows > rows_per_chunk)
+        {
+            rows = rows_per_chunk;
+        }
+
+        for (uint32_t y = 0U; y < rows; y++)
+        {
+            for (uint32_t x = 0U; x < eGFX_PHYSICAL_SCREEN_SIZE_X; x++)
+            {
+                display_test_rows[(y * eGFX_PHYSICAL_SCREEN_SIZE_X) + x] =
+                    nxpc__display_test_color(x);
+            }
+        }
+
+        eGFX_DumpRaw((uint8_t *)display_test_rows,
+                     rows * eGFX_PHYSICAL_SCREEN_SIZE_X * sizeof(display_test_rows[0]),
+                     0,
+                     eGFX_PHYSICAL_SCREEN_SIZE_X - 1U,
+                     y0,
+                     y0 + rows - 1U);
+    }
+}
+#endif
+
+#if CONFIG__DISPLAY_TEST_MODE
+static void nxpc__display_test_mode_run(void)
+{
+#if CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
+    (void)DEBUG("Display parallel bitbang test mode active: panel=%u wr_delay=%u frame_delay_ms=%u\r\n",
+                CONFIG__DISPLAY_PANEL,
+                CONFIG__DISPLAY_PARALLEL_BITBANG_WR_DELAY_CYCLES,
+                CONFIG__DISPLAY_PARALLEL_BITBANG_FRAME_DELAY_MS);
+
+    st7789_parallel_bitbang__run_test();
+#else
+    uint32_t phase = 0U;
+
+    (void)DEBUG("Display test mode active: panel=%u test=%u te=%u\r\n",
+                CONFIG__DISPLAY_PANEL,
+                CONFIG__DISPLAY_TEST_MODE,
+                CONFIG__DISPLAY_TE_ENABLE);
+
+    eGFX_InitDriver(0);
+
+    while (1)
+    {
+        nxpc__display_test_draw();
+        phase++;
+        (void)DEBUG("display_test frame=%u\r\n", phase);
+        e_tick__delay_ms(1000);
+    }
+#endif
+}
+#endif
+
+
+void LP_FLEXCOMM4_IRQHandler(void)
+{
+    /* If new data arrived. */
+    if ((kLPUART_RxDataRegFullFlag)&LPUART_GetStatusFlags(LPUART4))
+    {
+    	bq__enqueue(&UART4_RX_Q, LPUART4->DATA);
+    }
+
+    if ((kLPUART_TxDataRegEmptyFlag)&LPUART_GetStatusFlags(LPUART4))
+    {
+        if(bq__bytes_available_to_write(&UART4_TX_Q))
+    	{
+    		LPUART4->DATA = bq__dequeue_next(&UART4_TX_Q);
+    	}
+    	else
+    	{
+    		 LPUART_DisableInterrupts(LPUART4, kLPUART_TxDataRegEmptyInterruptEnable);
+    	}
+    }
+
+    SDK_ISR_EXIT_BARRIER;
+}
+
+void nxpc_io__uart_enqueue_hook(void *arg)
+{
+	LPUART_EnableInterrupts((LPUART_Type *)arg, kLPUART_TxDataRegEmptyInterruptEnable);
+}
+
+void nxpc_io__uart_init()
+{
+	    CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1u);
+	    CLOCK_AttachClk(kFRO12M_to_FLEXCOMM4);
+
+	UART4_TX_Q.enqueue_hook = nxpc_io__uart_enqueue_hook;
+    	UART4_TX_Q.hook_arg = (void *)LPUART4;
+
+    	lpuart_config_t config;
+
+    	/*
+    	 *
+    	 * UART 4
+    	 *
+    	 */
+
+        RESET_ClearPeripheralReset(kFC4_RST_SHIFT_RSTn);
+        LPUART_GetDefaultConfig(&config);
+	    config.baudRate_Bps = 115200;
+	    config.enableTx     = true;
+	    config.enableRx     = true;
+
+	    LPUART_Init(LPUART4, &config, 12000000);
+
+	    LPUART_GetDefaultConfig(&config);
+
+	    LPUART_EnableInterrupts(LPUART4, kLPUART_RxDataRegFullInterruptEnable);
+
+	    EnableIRQ(LP_FLEXCOMM4_IRQn);
+
+}
+
+
+
+/*
+ * Enable the instruction and flash data caches.
+ *
+ * These were previously set inside nxpc_camera__init_smartdma_ezh(), so any
+ * build not using the EZH capture backend ran with the flash data cache
+ * disabled. Nothing about them is camera-specific, and flash-resident lookup
+ * tables in particular depend on the data cache, so they belong in common
+ * startup.
+ *
+ * SystemInit() already enables LPCAC; repeating it is harmless and keeps the
+ * two related settings together and greppable.
+ */
+static void nxpc__flash_cache_init(void)
+{
+    SYSCON->LPCAC_CTRL &= ~SYSCON_LPCAC_CTRL_DIS_LPCAC_MASK;
+
+    SYSCON->NVM_CTRL &= ~(SYSCON_NVM_CTRL_DIS_FLASH_CACHE_MASK |
+                          SYSCON_NVM_CTRL_DIS_FLASH_DATA_MASK);
+}
+
+void nxpc__init()
+{
+    BOARD_InitBootPins();
+    BOARD_InitBootClocks();
+
+    nxpc__flash_cache_init();
+
+    CLOCK_EnableClock(kCLOCK_Gpio0);
+    CLOCK_EnableClock(kCLOCK_Dma0);
+
+	INIT_CYCLE_COUNTER;
+
+    nxpc_io__uart_init();
+
+    e__init();
+
+    MAILBOX_Init(MAILBOX);
+
+    button__init(&left_btn, IN_PORT, LEFT_BTN_PIN, BUTTON_POLARITY_LOW_ACTIVE, 50);
+    button__init(&right_btn, IN_PORT, RIGHT_BTN_PIN, BUTTON_POLARITY_LOW_ACTIVE, 50);
+    button__init(&center_btn, IN_PORT, CENTER_BTN_PIN, BUTTON_POLARITY_LOW_ACTIVE, 50);
+
+    /* Print the initial banner from Primary core */
+    (void)DEBUG("\r\nHello World from core 0!\r\n");
+
+    /* Boot Secondary core application */
+    (void)DEBUG("Starting Secondary core.\r\n");
+
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    nxpc_usb_debug_stream__init();
+#endif
+
+	#if defined(FSL_FEATURE_MAILBOX_SIDE_A)
+		NVIC_SetPriority(MAILBOX_IRQn, 5);
+	#else
+		NVIC_SetPriority(MAILBOX_IRQn, 2);
+	#endif
+
+	NVIC_EnableIRQ(MAILBOX_IRQn);
+
+
+#if CONFIG__DISPLAY_TEST_MODE
+    nxpc__display_test_mode_run();
+#endif
+
+#if CONFIG__MOTOR_ENCODER_DIAG_ENABLE
+    nxpc__motor_control_init();
+    nxpc__motor_encoder_qdc_init();
+    DEBUG("Motor encoder diagnostic init complete; camera and LCD startup skipped for this build.\r\n");
+    return;
+#endif
+
+    nxpc_camera__init();
+#if CONFIG__DISPLAY_ENABLE
+    eGFX_InitDriver(0);
+#endif
+
+    nxpc__adc_init();
+    nxpc__motor_control_init();
+    nxpc__servo_control_init();
+
+#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
+    /*
+     * Normal build with encoders selected: camera and LCD are up, so wheel
+     * speed can be read alongside the vision loop and shown on the overlay.
+     * The separate diagnostic build above returns before this point.
+     */
+    nxpc__motor_encoder_qdc_init();
+#endif
+
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the packed AVC RGB565 to Y/H/S/V lookup table.
+"""Generate the packed NXP Cup RGB565 to Y/H/S/V lookup table.
 
 Every possible RGB565 value indexes one 32-bit entry:
 
@@ -29,10 +29,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = (
     REPO_ROOT
     / "src"
-    / "avc"
-    / "avc_core0"
+    / "nxp_cup"
+    / "nxp_cup_core0"
     / "source"
-    / "avc_rgb565_yhsv_lut.inc"
+    / "nxpc_rgb565_yhsv_lut.inc"
 )
 
 

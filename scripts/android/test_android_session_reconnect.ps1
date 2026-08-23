@@ -8,7 +8,7 @@ param(
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "android_env.ps1")
 $adb = Join-Path $env:ANDROID_HOME "platform-tools\adb.exe"
-$packageName = "com.wavenumber.avc.bridge"
+$packageName = "com.wavenumber.nxpc.bridge"
 $activityName = "$packageName/.MainActivity"
 $sessionIds = [System.Collections.Generic.List[long]]::new()
 
@@ -44,7 +44,7 @@ for ($iteration = 1; $iteration -le $Iterations; $iteration++) {
         $health.sequence_errors -ne 0 -or
         $health.malformed_chunks -ne 0
     ) {
-        & $adb -s $Serial logcat -d -s "AVC_BRIDGE_HEALTH:I" "*:S" | Write-Host
+        & $adb -s $Serial logcat -d -s "NXP_CUP_BRIDGE_HEALTH:I" "*:S" | Write-Host
         throw "Iteration $iteration did not recover an error-free USB stream after forced process loss."
     }
     if ($sessionIds.Contains([long]$health.session_id)) {
@@ -64,4 +64,4 @@ for ($iteration = 1; $iteration -le $Iterations; $iteration++) {
     session_ids = $sessionIds -join ","
 } | Format-List
 
-Write-Host "AVC Android session reconnect proof passed." -ForegroundColor Green
+Write-Host "NXP Cup Android session reconnect proof passed." -ForegroundColor Green

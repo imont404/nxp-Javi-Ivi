@@ -12,9 +12,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 
 PRESETS = REPO / "CMakePresets.json"
-SOURCE_LIST = REPO / "src/avc/avc_core0/cmake/mcuxpresso_debug.cmake"
-LINK_DIR = REPO / "src/avc/avc_core0/link"
-VENDORED_HEADER = REPO / "src/avc/avc_core0/source/shared/cr_section_macros.h"
+SOURCE_LIST = REPO / "src/nxp_cup/nxp_cup_core0/cmake/mcuxpresso_debug.cmake"
+LINK_DIR = REPO / "src/nxp_cup/nxp_cup_core0/link"
+VENDORED_HEADER = REPO / "src/nxp_cup/nxp_cup_core0/source/shared/cr_section_macros.h"
 
 
 def test_presets_exist():
@@ -73,7 +73,7 @@ def test_linker_capture_documented():
     """The edited linker script must say it is a capture and why it differs,
     so a drift diff against a regenerated script is expected rather than
     alarming."""
-    library_ld = LINK_DIR / "avc_core0_Debug_library.ld"
+    library_ld = LINK_DIR / "nxp_cup_core0_Debug_library.ld"
     assert library_ld.is_file(), "library linker script missing"
     text = library_ld.read_text(encoding="utf-8")
     assert "STATIC CAPTURE" in text, "linker script does not identify itself as a capture"
@@ -83,7 +83,7 @@ def test_linker_capture_documented():
 def test_bounded_sbrk_present():
     """Swapping to libnosys removed the heap bound NXP's library enforced, so
     the firmware provides its own _sbrk. Without it the heap grows unchecked."""
-    sbrk = REPO / "src/avc/avc_core0/source/shared/avc__sbrk.c"
+    sbrk = REPO / "src/nxp_cup/nxp_cup_core0/source/shared/nxpc__sbrk.c"
     assert sbrk.is_file(), "bounded _sbrk is missing; the heap would be unbounded"
     text = sbrk.read_text(encoding="utf-8")
     assert "_pvHeapLimit" in text, "_sbrk does not honour the linker-defined heap limit"

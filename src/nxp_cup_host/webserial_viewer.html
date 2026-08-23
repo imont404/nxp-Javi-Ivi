@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NXP Cup USB Debug Display</title>
+  <link rel="stylesheet" href="./webserial_viewer.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="toolbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <div>
+          <h1>NXP Cup USB Debug Display</h1>
+          <p id="connectionState">Disconnected</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="connectButton" type="button">Connect</button>
+        <button id="startButton" type="button" disabled>Start</button>
+        <button id="stopButton" type="button" disabled>Stop</button>
+        <button id="resetButton" type="button" disabled>Reset Stats</button>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <div class="display-surface">
+        <canvas id="frameCanvas" width="320" height="200" aria-label="RGB565 camera frame"></canvas>
+      </div>
+
+      <aside class="stats-panel">
+        <h2>Stream</h2>
+        <dl>
+          <div>
+            <dt>Rate</dt>
+            <dd id="byteRate">0.000 MiB/s</dd>
+          </div>
+          <div>
+            <dt>Frame Rate</dt>
+            <dd id="frameRate">0.00 fps</dd>
+          </div>
+          <div>
+            <dt>Rendered</dt>
+            <dd id="renderRate">0.00 fps</dd>
+          </div>
+          <div>
+            <dt>Bytes</dt>
+            <dd id="byteCount">0</dd>
+          </div>
+          <div>
+            <dt>Frames</dt>
+            <dd id="frameCount">0</dd>
+          </div>
+          <div>
+            <dt>Chunks</dt>
+            <dd id="chunkCount">0</dd>
+          </div>
+          <div>
+            <dt>Last Frame</dt>
+            <dd id="lastFrame">-</dd>
+          </div>
+          <div>
+            <dt>Drop Flags</dt>
+            <dd id="droppedBeforeCount">0</dd>
+          </div>
+          <div>
+            <dt>MCU Drops</dt>
+            <dd id="firmwareDropCount">0</dd>
+          </div>
+          <div>
+            <dt>Stats</dt>
+            <dd id="statsPacketCount">0</dd>
+          </div>
+          <div>
+            <dt>Logs</dt>
+            <dd id="logRecordCount">0</dd>
+          </div>
+          <div>
+            <dt>Telemetry</dt>
+            <dd id="telemetrySampleCount">0</dd>
+          </div>
+          <div>
+            <dt>Errors</dt>
+            <dd id="errorCount">0</dd>
+          </div>
+        </dl>
+
+        <h2>Parser</h2>
+        <dl>
+          <div>
+            <dt>Resyncs</dt>
+            <dd id="resyncCount">0</dd>
+          </div>
+          <div>
+            <dt>Resync Bytes</dt>
+            <dd id="resyncBytes">0</dd>
+          </div>
+          <div>
+            <dt>Sequence</dt>
+            <dd id="sequenceErrors">0</dd>
+          </div>
+          <div>
+            <dt>Endpoint Busy</dt>
+            <dd id="endpointBusyCount">0</dd>
+          </div>
+          <div>
+            <dt>Send Errors</dt>
+            <dd id="sendErrorCount">0</dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="log-panel" aria-label="Device diagnostic log">
+      <h2>Device Log</h2>
+      <div id="logConsole" class="log-console" role="log" aria-live="polite"></div>
+    </section>
+
+    <section class="plot-panel" aria-label="Selected telemetry plots">
+      <div class="panel-heading">
+        <div>
+          <h2>Telemetry Plots</h2>
+          <p>Select signals in the telemetry table. Each signal auto-scales independently.</p>
+        </div>
+        <span id="plotStatus">Waiting for selected telemetry</span>
+      </div>
+      <div id="plotLegend" class="plot-legend" aria-label="Plot legend"></div>
+      <canvas id="telemetryPlotCanvas" width="1200" height="300" aria-label="Rolling telemetry plot"></canvas>
+    </section>
+
+    <section class="telemetry-panel" aria-label="Discovered device telemetry">
+      <h2>Telemetry</h2>
+      <div class="telemetry-table-wrap">
+        <table>
+          <thead>
+            <tr><th>Plot</th><th>Name</th><th>Value</th><th>Units</th><th>Type</th><th>Time</th></tr>
+          </thead>
+          <tbody id="telemetryTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="./webserial_viewer.js"></script>
+</body>
+</html>
