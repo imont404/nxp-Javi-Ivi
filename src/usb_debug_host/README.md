@@ -81,9 +81,12 @@ Build the first SDL2/Dear ImGui viewer with:
 ```
 
 The viewer establishes the framed session, requests raw RGB565 camera frames
-plus stats/logs/telemetry, and reconnects after a runtime disconnect. The video
-is rendered inside its own Dear ImGui `Camera` panel rather than painted behind
-the host UI.
+plus stats/logs/telemetry, and reconnects after a runtime disconnect. The SDL
+workspace clears to black. Its `Camera`, `AVC status`, `Program firmware`, and
+`Debug log` Dear ImGui panels are independently movable and resizable. The
+debug panel shows retained `AVC_DBG_LOG_TEXT` records with device timestamp,
+severity, category, and text; named scalar telemetry remains in the status
+panel. The video is never painted behind the host UI.
 
 The `Program firmware` panel selects an existing `avc_core0.bin` with a native
 file dialog. Programming remains disabled until exactly one supported runtime

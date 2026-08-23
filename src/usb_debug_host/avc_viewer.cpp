@@ -49,6 +49,7 @@ struct SharedState
     avc::host::ParserCounters counters;
     avc_dbg_stats_report_t stats{};
     bool has_stats = false;
+    std::vector<avc::host::LogRecord> logs;
     std::vector<avc::host::TelemetrySample> telemetry;
     bool rom_connected = false;
     bool program_requested = false;
@@ -485,6 +486,7 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
                 shared.stats = stats;
                 shared.has_stats = true;
             }
+            shared.logs = parser.logs();
             shared.telemetry = parser.telemetry();
         }
     }
@@ -602,6 +604,25 @@ std::string telemetry_value(const avc::host::TelemetrySample &sample)
     }
 }
 
+const char *log_level_name(uint8_t level)
+{
+    switch (level)
+    {
+        case AVC_DBG_LOG_LEVEL_TRACE:
+            return "TRACE";
+        case AVC_DBG_LOG_LEVEL_DEBUG:
+            return "DEBUG";
+        case AVC_DBG_LOG_LEVEL_INFO:
+            return "INFO";
+        case AVC_DBG_LOG_LEVEL_WARNING:
+            return "WARN";
+        case AVC_DBG_LOG_LEVEL_ERROR:
+            return "ERROR";
+        default:
+            return "?";
+    }
+}
+
 void choose_firmware_image(std::array<char, 1024> &path)
 {
     OPENFILENAMEA dialog{};
@@ -672,6 +693,8 @@ int viewer_main(const Options &options)
     bool erase_confirmation = false;
     double display_fps = 0.0;
     unsigned fps_frames = 0u;
+    uint32_t displayed_last_log_id = 0u;
+    uint64_t displayed_log_session = 0u;
     auto fps_epoch = std::chrono::steady_clock::now();
     const auto test_deadline = fps_epoch + std::chrono::seconds(options.test_seconds);
 
@@ -707,6 +730,7 @@ int viewer_main(const Options &options)
         avc::host::ParserCounters counters;
         avc_dbg_stats_report_t stats{};
         bool has_stats = false;
+        std::vector<avc::host::LogRecord> logs;
         std::vector<avc::host::TelemetrySample> telemetry;
         {
             std::lock_guard<std::mutex> lock(shared.mutex);
@@ -725,6 +749,7 @@ int viewer_main(const Options &options)
             counters = shared.counters;
             stats = shared.stats;
             has_stats = shared.has_stats;
+            logs = shared.logs;
             telemetry = shared.telemetry;
             if (shared.frame.generation > rendered_generation)
             {
@@ -779,7 +804,7 @@ int viewer_main(const Options &options)
             fps_epoch = now;
         }
 
-        SDL_SetRenderDrawColor(renderer, 248, 248, 248, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
         ImGui_ImplSDLRenderer2_NewFrame();
@@ -791,14 +816,12 @@ int viewer_main(const Options &options)
         const float sidebar_width = std::min(340.0f, display_size.x * 0.36f);
         const float camera_width = std::max(250.0f, display_size.x - sidebar_width - 3.0f * margin);
         const float panel_height = std::max(250.0f, display_size.y - 2.0f * margin);
-        const float status_height = std::max(230.0f, panel_height * 0.44f);
+        const float status_height = std::max(180.0f, panel_height * 0.32f);
+        const float program_height = std::max(170.0f, panel_height * 0.30f);
 
-        ImGui::SetNextWindowPos(ImVec2(margin, margin), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(camera_width, panel_height), ImGuiCond_Always);
-        ImGui::Begin("Camera",
-                     nullptr,
-                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
-                         ImGuiWindowFlags_NoCollapse);
+        ImGui::SetNextWindowPos(ImVec2(margin, margin), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(camera_width, panel_height), ImGuiCond_FirstUseEver);
+        ImGui::Begin("Camera");
         if (connected && (texture != nullptr) && (texture_width > 0) && (texture_height > 0))
         {
             const ImVec2 available = ImGui::GetContentRegionAvail();
@@ -827,12 +850,9 @@ int viewer_main(const Options &options)
         ImGui::End();
 
         const float sidebar_x = camera_width + 2.0f * margin;
-        ImGui::SetNextWindowPos(ImVec2(sidebar_x, margin), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(sidebar_width, status_height), ImGuiCond_Always);
-        ImGui::Begin("AVC status",
-                     nullptr,
-                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
-                         ImGuiWindowFlags_NoCollapse);
+        ImGui::SetNextWindowPos(ImVec2(sidebar_x, margin), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(sidebar_width, status_height), ImGuiCond_FirstUseEver);
+        ImGui::Begin("AVC status");
         if (connected)
         {
             ImGui::TextColored(ImVec4(0.35f, 1.0f, 0.45f, 1.0f), "%s", status.c_str());
@@ -867,14 +887,10 @@ int viewer_main(const Options &options)
         ImGui::End();
 
         ImGui::SetNextWindowPos(ImVec2(sidebar_x, status_height + 2.0f * margin),
-                                ImGuiCond_Always);
-        ImGui::SetNextWindowSize(
-            ImVec2(sidebar_width, std::max(100.0f, panel_height - status_height - margin)),
-            ImGuiCond_Always);
-        ImGui::Begin("Program firmware",
-                     nullptr,
-                     ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
-                         ImGuiWindowFlags_NoCollapse);
+                                ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(sidebar_width, program_height),
+                                 ImGuiCond_FirstUseEver);
+        ImGui::Begin("Program firmware");
         ImGui::TextWrapped("Build first, then select the generated avc_core0.bin image.");
         ImGui::SetNextItemWidth(-78.0f);
         ImGui::InputText("##Image", image_path.data(), image_path.size());
@@ -930,6 +946,34 @@ int viewer_main(const Options &options)
                                "Error: %s",
                                program_error.c_str());
         }
+        ImGui::End();
+
+        const float debug_y = status_height + program_height + 3.0f * margin;
+        ImGui::SetNextWindowPos(ImVec2(sidebar_x, debug_y), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(
+            ImVec2(sidebar_width, std::max(120.0f, display_size.y - debug_y - margin)),
+            ImGuiCond_FirstUseEver);
+        ImGui::Begin("Debug log");
+        ImGui::TextDisabled("Firmware AVC_DBG_LOG_TEXT (%zu retained)", logs.size());
+        ImGui::Separator();
+        ImGui::BeginChild("Debug log records", ImVec2(0.0f, 0.0f));
+        for (const avc::host::LogRecord &record : logs)
+        {
+            ImGui::TextWrapped("%8lu  %-5s  [%s]  %s",
+                               static_cast<unsigned long>(record.timestamp_ms),
+                               log_level_name(record.level),
+                               record.category.c_str(),
+                               record.text.c_str());
+        }
+        const uint32_t last_log_id = logs.empty() ? 0u : logs.back().record_id;
+        if ((last_log_id != displayed_last_log_id) ||
+            (connection_count != displayed_log_session))
+        {
+            ImGui::SetScrollHereY(1.0f);
+            displayed_last_log_id = last_log_id;
+            displayed_log_session = connection_count;
+        }
+        ImGui::EndChild();
         ImGui::End();
 
         ImGui::Render();

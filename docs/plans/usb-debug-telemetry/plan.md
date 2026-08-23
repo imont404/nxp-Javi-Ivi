@@ -244,6 +244,9 @@ or speed-control solution. Students decide what algorithm and telemetry values t
 - The self-contained browser viewer has been accepted for current camera work. Additional
   styling is deferred; the generic transport, parser, and discovered-data model are the
   durable deliverables.
+- The separately owned native one-cable viewer consumes the same frame, statistics, log,
+  and named-telemetry messages without a protocol fork. Its floating `Debug log` panel now
+  displays the existing bounded `AVC_DBG_LOG_TEXT` records; no firmware work was required.
 - The host-neutral slice required by `android-telemetry-bridge` is stable and proven. The
   Moto reuses the current `AVCU` envelope and framed session without a firmware fork, then
   selects JPEG, H.264, or raw RGB565 only on its downstream browser relay.

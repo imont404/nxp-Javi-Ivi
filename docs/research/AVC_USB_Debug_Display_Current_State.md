@@ -27,11 +27,13 @@ native, Python, and Web Serial hosts. No Android-specific firmware mode or packe
 was added.
 
 A native SDL2/Dear ImGui Windows viewer now consumes the same protocol. The
-camera is contained in its own responsive panel, with separate connection,
-telemetry, and deliberate firmware-programming controls. The running firmware
-can safe-stop and enter MCXN947 ROM USB-HS HID through the framed session, after
-which the shared host backend validates, erases, writes, resets, reconnects, and
-resumes preview using only J11.
+black workspace contains independently movable and resizable `Camera`, `AVC
+status`, `Program firmware`, and `Debug log` panels. The status panel shows
+named telemetry; the debug panel renders the bounded timestamp, severity,
+category, and text records already carried by `AVC_DBG_LOG_TEXT`. The running
+firmware can safe-stop and enter MCXN947 ROM USB-HS HID through the framed
+session, after which the shared host backend validates, erases, writes, resets,
+reconnects, and resumes preview using only J11.
 
 ## Implemented Path
 
@@ -198,6 +200,10 @@ Camera stream:
 - The WebSerial/CDC path was then observed running live for about 15 minutes.
 - The native viewer sustained 113 complete frames in five seconds with zero
   malformed packets after its final UI build.
+- After the floating-panel and debug-log update, the native build passed strict
+  MSVC compilation and host self-test. The packaged viewer then received 114
+  complete frames in five seconds with zero malformed packets while displaying
+  a live firmware `AVC_DBG_LOG_TEXT` record.
 - The native viewer worker completed application preview, safe ISP entry,
   ROM query/erase/write/reset, application reconnect, and resumed preview with
   186 complete frames and zero malformed packets.
@@ -272,10 +278,9 @@ board with a directly connected camera and no LCD. Both produce an
 `src/usb_debug_host/package_avc_host.ps1` creates a portable zip containing the
 viewer, CLI, SDL runtime, pinned `rblhost`, licenses, and checksum manifest. The
 zip is a generated, ignored build artifact, so copy it to the travel machine or
-regenerate it there; Git alone does not carry it. The package made from commit
-`513a921` is
-`build/dist/avc-host-one-cable-20260823-094408.zip` (SHA-256
-`26E642FBB7009AED39A099328A59D6B9DCE9D747A76640206605255816B73B2D`).
+regenerate it there; Git alone does not carry it. The current travel package is
+`build/dist/avc-host-one-cable-20260823-101457.zip` (SHA-256
+`68AA97A762CFA9AC710D8BE2AFFE82E2953E67F087C29E33D184DC8AFFE8292C`).
 
 ## eGFX Relationship
 

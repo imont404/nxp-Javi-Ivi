@@ -316,7 +316,16 @@ The MVP UI is intentionally small:
   reconnecting, and error states;
 - selected device and firmware artifact;
 - frame rate and basic named telemetry;
+- a bounded firmware debug-log view using the existing timestamped
+  `AVC_DBG_LOG_TEXT` records;
 - one deliberate program action with confirmation and visible progress.
+
+The accepted 2026-08-23 layout uses a black SDL workspace with independently
+movable and resizable Dear ImGui `Camera`, `AVC status`, `Program firmware`, and
+`Debug log` panels. Initial placement remains useful at 1000x720, but it is not
+reapplied every frame, so the operator can rearrange and resize panels. This is
+a host-only presentation change; subscription, framing, bounded parser storage,
+and firmware runtime behavior are unchanged.
 
 Do not add dashboard styling, compression, native plotting libraries, actuator controls, or
 a simulator to the critical path. Those can consume the shared host core later.
@@ -379,8 +388,9 @@ The interim portable distribution handoff is complete even though the remaining
 destructive `failure-recovery` cases are still active. The repository retains pinned
 Dear ImGui source/license and standalone `rblhost` binary/license, uses its existing SDL2
 package, and builds a versioned zip with a SHA-256 manifest. A fresh extraction passed
-self-test and live preview. This gives the trip a reproducible tool without changing the
-student Ozone workflow.
+self-test and live preview. The 2026-08-23 travel build with floating panels and the
+firmware debug-log view received 114 complete frames in five seconds with zero malformed
+packets. This gives the trip a reproducible tool without changing the student Ozone workflow.
 
 Later master-setup or installer work may still choose one of these without changing the
 host architecture:
