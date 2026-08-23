@@ -1,6 +1,6 @@
 # AVC USB Debug Display Current State
 
-Status: native preview and one-cable ROM programming proven; recovery validation active
+Status: native preview, physical reconnect, and one-cable ROM programming proven; destructive interruption validation pending
 
 Last updated: 2026-08-23
 
@@ -16,9 +16,10 @@ Transport correctness, framed bidirectional control, fixed-memory arbitration,
 generic logs, typed named telemetry, automatic browser discovery, and standalone
 viewer packaging are implemented. The standalone viewer also has selectable,
 independently auto-scaled rolling plots with fixed history and selection bounds.
-The competition default now includes the session-gated transport; realistic
-mode/disconnect validation remains active-plan work. Basic feasibility does not
-need to be re-proven.
+The competition default now includes the session-gated transport. Native-viewer
+disconnect/reconnect behavior is bench-proven; race-waiting mode and destructive
+mid-program interruption cases remain active-plan work. Basic feasibility does
+not need to be re-proven.
 
 This is also the implemented host boundary for the Android bridge. The Moto claims the
 CDC interface, completes the same framed session, and consumes the same packets as the
@@ -206,14 +207,20 @@ Camera stream:
   remains a proven fallback.
 - Missing, wrong-extension, invalid-vector, and nonexistent-port program
   requests were rejected before ISP; a complete camera frame arrived after each
-  refusal. Physical application-stream unplug/replug remains pending bench input.
+  refusal.
+- Physical J11 detach/reattach was exercised repeatedly with the native viewer
+  on 2026-08-23. While detached, the viewer hid the stale texture and reported
+  the video disconnect. After Windows re-enumerated the application as `COM34`,
+  it negotiated a new framed session and resumed live camera frames without a
+  restart. The independent final capture showed four successful connections,
+  821 complete host frames, and zero malformed packets.
 
 RTT remains available while USB/WebSerial is running. A live attach without
 reset showed the RTT control block and camera telemetry around `23.39 FPS`.
 
 ## WebSerial Viewer State
 
-The race-week viewer is the self-contained
+The zero-install browser viewer is the self-contained
 `src/usb_debug_host/avc_usb_debug_viewer.html`. Open it directly in Chrome or
 Edge; no server, install, build step, or external asset is required. The local
 server remains optional maintainer tooling for source-file iteration.
@@ -235,6 +242,40 @@ signals retain at most 300 samples and render as independently auto-scaled
 rolling plots, with at most six plots active. Browser tests exercise fragmented
 reads, mixed packets, log and telemetry DOM updates, two full frames, Stop/Start,
 history truncation, direct file-origin Web Serial, and zero external asset loads.
+
+## Race-Week Travel Handoff
+
+The native one-cable path is usable as the current maintainer/organizer tool;
+it has not replaced the documented student Ozone workflow. From a fresh clone
+with the documented toolchain installed:
+
+```powershell
+cmake --preset competition
+cmake --build --preset competition
+cmake --preset camera-usb-bench
+cmake --build --preset camera-usb-bench
+.\src\usb_debug_host\build_avc_viewer.ps1
+.\build\host\usb_debug_host\Release\avc_viewer.exe
+```
+
+Use `competition` for the Rev A car. Use `camera-usb-bench` for a bare FRDM
+board with a directly connected camera and no LCD. Both produce an
+`avc_core0.bin` beside the AXF. The viewer and programmer use only J11:
+
+- application CDC: VID/PID `1FC9:0094`;
+- ROM USB-HID: VID/PID `1FC9:014F`;
+- application-controlled entry: the viewer's confirmed `Program firmware`
+  flow;
+- physical recovery: hold ISP `SW3`, press and release reset `SW1`, then
+  release `SW3` while J11 remains attached.
+
+`src/usb_debug_host/package_avc_host.ps1` creates a portable zip containing the
+viewer, CLI, SDL runtime, pinned `rblhost`, licenses, and checksum manifest. The
+zip is a generated, ignored build artifact, so copy it to the travel machine or
+regenerate it there; Git alone does not carry it. The package made from commit
+`513a921` is
+`build/dist/avc-host-one-cable-20260823-094408.zip` (SHA-256
+`26E642FBB7009AED39A099328A59D6B9DCE9D747A76640206605255816B73B2D`).
 
 ## eGFX Relationship
 
@@ -260,7 +301,8 @@ Generic browser telemetry work remains in
 - framed bidirectional hello, control, and response messages;
 - bounded arbitration among frames, logs, telemetry, stats, and responses;
 - separate USB-link, recognized-session, and vehicle-mode state;
-- remaining browser-specific unplug/replug and host-only parser cases;
+- remaining browser-specific unplug/replug and host-only parser cases (native
+  viewer physical unplug/replug is proven);
 - remaining realistic disconnected/connected mode validation.
 
 Native SDL tooling and the one-cable ROM programmer are implemented and tracked

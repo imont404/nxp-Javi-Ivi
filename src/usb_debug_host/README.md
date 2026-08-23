@@ -96,6 +96,10 @@ firmware and exposes no fuse, CMPA, security, or program-once operation.
 On disconnect, the camera panel hides its last texture and shows a prominent
 message; after re-enumeration the worker negotiates a new session and increments
 the successful-connection count before displaying new frames.
+Repeated physical J11 detach/reattach was bench-validated on 2026-08-23: the
+same running viewer recovered the re-enumerated `COM34` session and resumed live
+preview, reaching four successful connections and 821 complete frames with zero
+malformed packets.
 
 A bounded hidden bench smoke test exercises the same GUI receive/render path
 and exits nonzero unless it receives complete, well-formed frames:
@@ -119,7 +123,9 @@ Create a portable, checksummed runtime zip after a successful build with:
 
 The zip contains `avc_viewer.exe`, `avc_tool.exe`, `SDL2.dll`, the pinned
 standalone `rblhost.exe`, the relevant third-party licenses, and a SHA-256
-manifest. It does not contain a compiler or build the student firmware.
+manifest. It does not contain a compiler or build the student firmware. The zip
+is generated under `build/dist` and is intentionally not tracked by Git; copy it
+separately to another machine or regenerate it after building there.
 
 ## Native Windows Throughput Receiver
 

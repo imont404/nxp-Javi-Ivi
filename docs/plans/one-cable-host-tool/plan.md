@@ -90,13 +90,13 @@ depends_on = ["one-cable-cycle", "cli-program-path"]
 [[steps]]
 id = "dependency-hardening"
 title = "Pin and locally retain all host build and runtime dependencies, preferring static SDL and compiled-in ImGui, then prove offline rebuild and execution"
-status = "pending"
-depends_on = ["failure-recovery"]
+status = "done"
+depends_on = ["native-preview", "programmer-backend-selection"]
 
 [[steps]]
 id = "distribution-handoff"
 title = "After the working proof, choose repository copies, pinned downloads, zip, or master setup integration for the programmer and host artifacts"
-status = "pending"
+status = "done"
 depends_on = ["dependency-hardening"]
 
 [[steps]]
@@ -114,8 +114,8 @@ depends_on = ["student-workflow-docs"]
 [[steps]]
 id = "test-runtime-impact-audit"
 title = "Audit host tests, firmware validation, build time, binary size, and competition-loop runtime impact"
-status = "pending"
-depends_on = ["failure-recovery"]
+status = "done"
+depends_on = ["one-cable-cycle"]
 
 [[steps]]
 id = "external-review"
@@ -126,22 +126,22 @@ depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
 [[exit_criteria]]
 id = "single-cable"
 title = "A Windows host can view, program, reset, and resume an AVC board through J11 without moving the cable to the debug connector"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "native-viewer"
 title = "The native tool automatically establishes an AVC session and displays live 320x200 RGB565 frames and basic telemetry"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "safe-programming"
 title = "Software ISP entry safe-stops the vehicle, validates the selected target and image, and reports each programming stage"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "recovery"
 title = "Physical SW3/reset entry through J11 recovers a board whose application cannot service USB or ENTER_ISP"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "no-device-guessing"
@@ -151,22 +151,22 @@ status = "pending"
 [[exit_criteria]]
 id = "shared-core"
 title = "GUI and command-line programming use the same tested discovery, protocol, and programmer implementation"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "browser-fallback"
 title = "The existing standalone Web Serial viewer remains functional and the wire protocol does not fork for the native tool"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "offline-dependencies"
 title = "The accepted host tool rebuilds and runs without fetching SDL, ImGui, or programmer components from the network"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "distribution-decision"
 title = "The proven tool has a recorded programmer and dependency acquisition strategy suitable for later master setup or packaging work"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "student-boundary"
@@ -181,7 +181,7 @@ status = "pending"
 [[exit_criteria]]
 id = "test-runtime-impact-audit"
 title = "New tests and their host, build, firmware-size, and runtime costs are recorded"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "external-review"
@@ -361,19 +361,39 @@ Bench validation must cover:
 - exactly one board and multiple attached matching boards;
 - proof that motors remain safe throughout every transition and failure.
 
+Current 2026-08-23 bench state: the normal application-stream unplug/replug
+case has passed repeated physical J11 detach/attach cycles. The running viewer
+hid its stale image, re-enumerated `COM34`, negotiated a new session, and
+resumed live preview; the final captured state showed four successful
+connections, 821 complete frames, and zero malformed packets. Invalid image and
+target requests are also proven to fail before ISP, and repeated complete
+program/reset/reconnect cycles have passed. Keep `failure-recovery` active:
+mid-erase/write cable removal, cancellation, application-crash simulation,
+multi-board selection, and repeated destructive cycles remain. Those tests are
+deferred until a suitable bench board is available rather than risk the travel
+hardware immediately before departure.
+
 ## Distribution Handoff
 
-Distribution is deliberately after `failure-recovery` and `dependency-hardening`. Record
-the pinned programmer version, license notices, checksums, SDL2/Dear ImGui versions, and
-clean-machine prerequisites. Then choose one of these without changing the host architecture:
+The interim portable distribution handoff is complete even though the remaining
+destructive `failure-recovery` cases are still active. The repository retains pinned
+Dear ImGui source/license and standalone `rblhost` binary/license, uses its existing SDL2
+package, and builds a versioned zip with a SHA-256 manifest. A fresh extraction passed
+self-test and live preview. This gives the trip a reproducible tool without changing the
+student Ozone workflow.
+
+Later master-setup or installer work may still choose one of these without changing the
+host architecture:
 
 - keep approved tool and runtime artifacts in the repository;
 - download pinned, checksummed artifacts during master setup;
 - install a pinned tool through the existing `uv`-based setup;
 - publish a versioned zip or later NSIS installer containing the native tool and dependencies.
 
-The master setup documentation remains authoritative. A packaging follow-up may implement
-the chosen installer once the working one-cable path is accepted.
+The master setup documentation remains authoritative. The generated zip is deliberately
+ignored by Git; copy it separately or regenerate it from
+`src/usb_debug_host/package_avc_host.ps1`. A packaging follow-up may implement an NSIS or
+equivalent installer after race-week behavior is accepted.
 
 ## Explicitly Out of Scope
 
