@@ -43,6 +43,7 @@ struct SharedState
     std::string error;
     std::string port;
     bool connected = false;
+    uint64_t connection_count = 0u;
     avc_dbg_control_hello_response_t hello{};
     avc::host::Frame frame;
     avc::host::ParserCounters counters;
@@ -211,8 +212,8 @@ bool run_programmer(const std::string &requested_image, SharedState &shared, std
         return false;
     }
 
-    std::string blhost;
-    if (!avc::host::resolve_blhost({}, blhost, error))
+    avc::host::ProgrammerTool programmer;
+    if (!avc::host::resolve_programmer({}, programmer, error))
     {
         return false;
     }
@@ -222,8 +223,8 @@ bool run_programmer(const std::string &requested_image, SharedState &shared, std
         shared.program_detail = std::to_string(image.bytes) + " bytes, SHA-256 " + image.sha256;
     }
 
-    if (!avc::host::program_rom_with_blhost(
-            blhost,
+    if (!avc::host::program_rom(
+            programmer,
             image,
             [&](avc::host::ProgramStage stage, const std::string &detail) {
                 publish_program_status(shared,
@@ -263,8 +264,8 @@ bool handle_runtime_program_request(avc::host::SerialPort &port,
         return false;
     }
 
-    std::string blhost;
-    if (!avc::host::resolve_blhost({}, blhost, error))
+    avc::host::ProgrammerTool programmer;
+    if (!avc::host::resolve_programmer({}, programmer, error))
     {
         fail_program(shared, error);
         return false;
@@ -307,8 +308,8 @@ bool handle_runtime_program_request(avc::host::SerialPort &port,
         return false;
     }
 
-    if (!avc::host::program_rom_with_blhost(
-            blhost,
+    if (!avc::host::program_rom(
+            programmer,
             image,
             [&](avc::host::ProgramStage stage, const std::string &detail) {
                 publish_program_status(shared,
@@ -429,6 +430,7 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
         shared.error.clear();
         shared.port = device.port_name;
         shared.connected = true;
+        ++shared.connection_count;
         shared.rom_connected = false;
         shared.hello = hello;
         if (shared.program_waiting_reconnect)
@@ -694,6 +696,7 @@ int viewer_main(const Options &options)
         std::string error;
         std::string port;
         bool connected = false;
+        uint64_t connection_count = 0u;
         bool rom_connected = false;
         bool program_busy = false;
         bool program_succeeded = false;
@@ -711,6 +714,7 @@ int viewer_main(const Options &options)
             error = shared.error;
             port = shared.port;
             connected = shared.connected;
+            connection_count = shared.connection_count;
             rom_connected = shared.rom_connected;
             program_busy = shared.program_busy;
             program_succeeded = shared.program_succeeded;
@@ -726,6 +730,14 @@ int viewer_main(const Options &options)
             {
                 display_frame = shared.frame;
             }
+        }
+
+        if (!connected && (texture != nullptr))
+        {
+            SDL_DestroyTexture(texture);
+            texture = nullptr;
+            texture_width = 0;
+            texture_height = 0;
         }
 
         if (display_frame.generation > rendered_generation)
@@ -787,7 +799,7 @@ int viewer_main(const Options &options)
                      nullptr,
                      ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
                          ImGuiWindowFlags_NoCollapse);
-        if ((texture != nullptr) && (texture_width > 0) && (texture_height > 0))
+        if (connected && (texture != nullptr) && (texture_width > 0) && (texture_height > 0))
         {
             const ImVec2 available = ImGui::GetContentRegionAvail();
             const float scale = std::min(available.x / static_cast<float>(texture_width),
@@ -802,7 +814,15 @@ int viewer_main(const Options &options)
         }
         else
         {
-            ImGui::TextWrapped("No camera frame is available. %s", status.c_str());
+            ImGui::SetWindowFontScale(1.5f);
+            ImGui::TextWrapped("VIDEO DISCONNECTED");
+            ImGui::SetWindowFontScale(1.0f);
+            ImGui::Spacing();
+            ImGui::TextWrapped("%s", status.c_str());
+            if (!error.empty())
+            {
+                ImGui::TextWrapped("%s", error.c_str());
+            }
         }
         ImGui::End();
 
@@ -828,6 +848,8 @@ int viewer_main(const Options &options)
             }
         }
         ImGui::Separator();
+        ImGui::Text("Successful connections %llu",
+                    static_cast<unsigned long long>(connection_count));
         ImGui::Text("Frames %llu  malformed %llu",
                     static_cast<unsigned long long>(counters.frames),
                     static_cast<unsigned long long>(counters.malformed));
@@ -925,8 +947,9 @@ int viewer_main(const Options &options)
     {
         std::lock_guard<std::mutex> lock(shared.mutex);
         test_passed = (shared.counters.frames > 0u) && (shared.counters.malformed == 0u);
-        std::printf("viewer_test=%s frames=%llu malformed=%llu\n",
+        std::printf("viewer_test=%s connections=%llu frames=%llu malformed=%llu\n",
                     test_passed ? "ok" : "failed",
+                    static_cast<unsigned long long>(shared.connection_count),
                     static_cast<unsigned long long>(shared.counters.frames),
                     static_cast<unsigned long long>(shared.counters.malformed));
     }

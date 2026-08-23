@@ -17,10 +17,11 @@ $configureArgs = @(
     "-G", "Visual Studio 17 2022",
     "-A", "x64"
 )
-if (![string]::IsNullOrWhiteSpace($ImGuiDir)) {
-    $resolvedImGui = Resolve-Path -LiteralPath $ImGuiDir
-    $configureArgs += "-DAVC_HOST_IMGUI_DIR=$resolvedImGui"
+if ([string]::IsNullOrWhiteSpace($ImGuiDir)) {
+    $ImGuiDir = Join-Path $scriptDir "vendor/imgui"
 }
+$resolvedImGui = Resolve-Path -LiteralPath $ImGuiDir
+$configureArgs += "-DAVC_HOST_IMGUI_DIR=$resolvedImGui"
 
 Write-Host "Configuring AVC native viewer..."
 & cmake @configureArgs

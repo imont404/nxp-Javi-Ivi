@@ -75,6 +75,7 @@ Thumbs.db
 # Applications
 *.app
 *.exe
+!src/usb_debug_host/vendor/rblhost/rblhost.exe
 *.war
 
 # Large media files

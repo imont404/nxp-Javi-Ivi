@@ -22,23 +22,38 @@ enum class ProgramStage
     query,
     erase,
     write,
+    verify,
     reset,
     complete,
+};
+
+enum class ProgrammerBackend
+{
+    rblhost,
+    blhost,
+};
+
+struct ProgrammerTool
+{
+    ProgrammerBackend backend = ProgrammerBackend::rblhost;
+    std::string path;
+    std::string version;
 };
 
 using ProgramProgress = std::function<void(ProgramStage stage, const std::string &detail)>;
 
 const char *program_stage_name(ProgramStage stage);
+const char *programmer_backend_name(ProgrammerBackend backend);
 bool validate_firmware_image(const std::string &requested_path,
                              FirmwareImage &image,
                              std::string &error);
-bool resolve_blhost(const std::string &requested_path,
-                    std::string &resolved_path,
-                    std::string &error);
-bool program_rom_with_blhost(const std::string &blhost_path,
-                             const FirmwareImage &image,
-                             const ProgramProgress &progress,
-                             std::string &error);
+bool resolve_programmer(const std::string &requested_path,
+                        ProgrammerTool &programmer,
+                        std::string &error);
+bool program_rom(const ProgrammerTool &programmer,
+                 const FirmwareImage &image,
+                 const ProgramProgress &progress,
+                 std::string &error);
 bool run_programmer_self_test(std::string &error);
 
 } // namespace avc::host

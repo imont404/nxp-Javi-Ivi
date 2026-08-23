@@ -269,13 +269,14 @@ tool consumes the same protocol and must not introduce a firmware fork.
 
 ## Programmer Backend Decision
 
-NXP SPSDK `blhost` is the baseline because its MCXN947 USB-HID flow and required commands
-are documented and an installed 3.10.0 executable is already available for bench work.
-Before host integration, consume the separate `rblhost` investigation and compare it against
-the same acceptance tests. An alternative is acceptable only if it proves Windows USB-HID
-discovery and communication with `1FC9:014F`, internal-flash erase/write at address zero,
-reset, useful machine-readable errors, stable licensing, and a reproducible pinned build.
-Command-line similarity alone is not sufficient.
+NXP SPSDK `blhost` 3.10.0 established the first MCXN947 USB-HID proof and remains a tested
+installed fallback. The packaged default is now NXP Rust `rblhost` 0.2.0. Its Windows x64
+release was built from tagged commit `7a775dde2c44bd345a1ac067698afa999bd71be0`, copied and
+run without a sibling runtime tree, and bench-proven against `1FC9:014F` for property query,
+internal-flash erase, write at address zero, full-length readback, reset, and recovered camera
+preview. Full readback size and SHA-256 must match the selected image before reset. The pinned
+binary, SHA-256, source record, and BSD-3-Clause license are retained under
+`src/usb_debug_host/vendor/rblhost`.
 
 Do not reimplement the Mboot protocol for the first working version. The selected backend
 must remain behind a narrow process-runner interface so it can be replaced without changing

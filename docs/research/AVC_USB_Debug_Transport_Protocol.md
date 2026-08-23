@@ -1,6 +1,6 @@
 # AVC USB Debug Transport Protocol
 
-Status: implemented core with reserved extensions
+Status: implemented core, named telemetry, and safe ROM-ISP extension
 
 This document describes the durable AVC USB debug-display transport. The Rev A
 competition firmware, native Windows receiver, Python receiver, and standalone
@@ -9,8 +9,9 @@ chunks, statistics, bounded log records, and typed named telemetry. Additional
 RUI/RIO operations remain reserved design space rather than implemented claims.
 
 See `AVC_USB_Debug_Display_Current_State.md` for the proven implementation
-state, measured rates, and host-tool paths. Active protocol, telemetry, and Web
-viewer work is owned by `docs/plans/usb-debug-telemetry/plan.md`.
+state, measured rates, and host-tool paths. The native one-cable viewer/programmer
+is owned by `docs/plans/one-cable-host-tool/plan.md`; remaining browser telemetry
+work is owned by `docs/plans/usb-debug-telemetry/plan.md`.
 
 ## Design Lineage
 
@@ -81,6 +82,7 @@ Initial log/stats/control messages:
 #define AVC_DBG_CONTROL_PING                (AVC_DBG_MSG_CLASS_CONTROL + 5u)
 #define AVC_DBG_CONTROL_CLOSE               (AVC_DBG_MSG_CLASS_CONTROL + 6u)
 #define AVC_DBG_CONTROL_ERROR               (AVC_DBG_MSG_CLASS_CONTROL + 7u)
+#define AVC_DBG_CONTROL_ENTER_ISP           (AVC_DBG_MSG_CLASS_CONTROL + 8u)
 #define AVC_DBG_TELEMETRY_SCALAR            (AVC_DBG_MSG_CLASS_TELEMETRY + 0u)
 ```
 
@@ -357,6 +359,16 @@ The Web Serial viewer, Python receiver, and native receiver use framed control. 
 response sets `AVC_DBG_PACKET_FLAG_RESPONSE`; `arg0` is the request sequence,
 `arg1` is a stable control status, and `arg2` is the current session ID.
 
+`ENTER_ISP` is the deliberately narrow exception to diagnostic-only control. It
+is accepted only in a recognized session, requires confirmation value
+`0x21505349` (`"ISP!"`) in `arg0` and zero in the other arguments, and returns a
+correlated status before handoff. Firmware advertises capability bit 6 only when
+this path is present. After it can queue the successful response, firmware stops
+new diagnostic publication, disconnects zero-duty motor outputs, centers the
+servo, permits at least 100 ms for the response and actuator settling, bounds the
+wait at 500 ms, and invokes the MCXN947 ROM API for USB-HS HID interface 5. It is
+not a general remote actuator or vehicle-mode command.
+
 ## Transmit Arbitration
 
 The CDC bulk-IN endpoint has exactly one transfer and one aligned staging buffer
@@ -426,6 +438,9 @@ re-armed so a later framed `HELLO` does not require a USB bus reset.
   assembly at that marker and never present the aborted frame.
 - If CDC ACM's one-transfer-per-endpoint abstraction becomes limiting, replace
   it with a thinner endpoint layer while keeping this message protocol.
+- Native programming discovers application CDC as `1FC9:0094` and ROM HID as
+  `1FC9:014F`. It never treats COM-port disappearance alone as successful ISP
+  entry and never exposes fuse, CMPA, security, or program-once commands.
 
 ## Android Relay Boundary
 

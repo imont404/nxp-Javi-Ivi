@@ -57,12 +57,19 @@ host core:
     --image .\build\cmake\camera-usb-bench\avc_core0.bin
 ```
 
-It validates the `.bin` size, MCXN947 stack/reset vectors, and SHA-256; pins
-`blhost` 3.10.0; requires exactly one runtime CDC or ROM HID target; reports
-query, erase, write, and reset separately; then reconnects and requires a
+It validates the `.bin` size, MCXN947 stack/reset vectors, and SHA-256; requires
+exactly one runtime CDC or ROM HID target; reports query, erase, write, full
+readback verification, and reset separately; then reconnects and requires a
 complete camera frame. It never invokes fuse, CMPA, security, or program-once
-commands. `--blhost <path>` or `AVC_BLHOST_PATH` may select the pinned tool;
-the later distribution step will place it beside the viewer.
+commands.
+
+The default backend is the colocated NXP `rblhost` 0.2.0 executable. After
+writing, it reads the selected byte range back from flash and requires the size
+and SHA-256 to match before reset. NXP SPSDK `blhost` 3.10.0 remains a proven
+fallback and requires its write response to report the exact image length.
+`--programmer <path>` or `AVC_PROGRAMMER_PATH` selects either pinned tool;
+`--blhost` and the older backend-specific environment variables remain accepted
+for maintainer compatibility.
 
 ## Native Camera Viewer
 
@@ -81,11 +88,14 @@ the host UI.
 The `Program firmware` panel selects an existing `avc_core0.bin` with a native
 file dialog. Programming remains disabled until exactly one supported runtime
 CDC or ROM HID target is present and the erase confirmation is checked. The
-background connection worker validates the image and pinned `blhost`, requests
+background connection worker validates the image and pinned programmer, requests
 safe ISP entry through its existing CDC session, reports query/erase/write/reset
 stages, and reconnects the preview after reset. It uses the same programmer
 backend and exact-device/no-guessing rules as `avc_tool`; the GUI does not build
 firmware and exposes no fuse, CMPA, security, or program-once operation.
+On disconnect, the camera panel hides its last texture and shows a prominent
+message; after re-enumeration the worker negotiates a new session and increments
+the successful-connection count before displaying new frames.
 
 A bounded hidden bench smoke test exercises the same GUI receive/render path
 and exits nonzero unless it receives complete, well-formed frames:
@@ -94,10 +104,22 @@ and exits nonzero unless it receives complete, well-formed frames:
 .\build\host\usb_debug_host\Release\avc_viewer.exe --test-seconds 5
 ```
 
-The first proof uses the repository's existing SDL2 package and fetches pinned
-Dear ImGui `v1.91.9b` at configure time. The one-cable plan's dependency
-hardening step will retain ImGui locally and prove an offline build. The build
-already copies the pinned `SDL2.dll` beside the executable.
+The build uses the repository's existing SDL2 package and the locally retained
+Dear ImGui `v1.91.9b` sources under `vendor/imgui`; configuration makes no
+network request and does not depend on Bunny Vision or another checkout. ImGui's
+license is retained with its sources. The build copies the pinned repository
+`SDL2.dll` beside the executable so the preview runs without a separate SDL
+installation.
+
+Create a portable, checksummed runtime zip after a successful build with:
+
+```powershell
+.\src\usb_debug_host\package_avc_host.ps1
+```
+
+The zip contains `avc_viewer.exe`, `avc_tool.exe`, `SDL2.dll`, the pinned
+standalone `rblhost.exe`, the relevant third-party licenses, and a SHA-256
+manifest. It does not contain a compiler or build the student firmware.
 
 ## Native Windows Throughput Receiver
 

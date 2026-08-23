@@ -21,7 +21,7 @@ struct Options
     std::string command = "probe";
     std::string port;
     std::string image;
-    std::string blhost;
+    std::string programmer;
     uint32_t baud = 115200u;
     uint32_t seconds = 2u;
     bool request_frame = false;
@@ -36,7 +36,7 @@ void usage()
               << "  avc_tool.exe probe [--port COM34] [--frame] [--seconds 2]\n"
               << "  avc_tool.exe enter-isp [--port COM34]\n\n"
               << "  avc_tool.exe program --image <avc_core0.bin> [--port COM34]\n"
-              << "                       [--blhost <path>]\n\n"
+              << "                       [--programmer <path>]\n\n"
               << "probe auto-selects only when exactly one VID_1FC9/PID_0094 CDC device is present.\n";
 }
 
@@ -84,9 +84,9 @@ Options parse_args(int argc, char **argv)
         {
             options.image = value("--image");
         }
-        else if (argument == "--blhost")
+        else if ((argument == "--programmer") || (argument == "--blhost"))
         {
-            options.blhost = value("--blhost");
+            options.programmer = value(argument.c_str());
         }
         else if (argument == "--baud")
         {
@@ -494,8 +494,8 @@ int program(const Options &options)
     {
         throw std::runtime_error(error);
     }
-    std::string blhost;
-    if (!avc::host::resolve_blhost(options.blhost, blhost, error))
+    avc::host::ProgrammerTool programmer;
+    if (!avc::host::resolve_programmer(options.programmer, programmer, error))
     {
         throw std::runtime_error(error);
     }
@@ -504,7 +504,9 @@ int program(const Options &options)
               << "sha256=" << image.sha256 << "\n"
               << "initial_sp=0x" << std::hex << image.initial_sp << "\n"
               << "reset_pc=0x" << image.reset_pc << std::dec << "\n"
-              << "blhost=" << blhost << "\n";
+              << "programmer_backend="
+              << avc::host::programmer_backend_name(programmer.backend) << "\n"
+              << "programmer=" << programmer.path << "\n";
 
     const std::vector<avc::host::HidDevice> rom_devices =
         avc::host::find_hid_devices(avc::host::kAvcUsbVid,
@@ -526,8 +528,13 @@ int program(const Options &options)
     {
         std::cout << "target=existing_rom_hid\n";
     }
-    else if (rom_devices.empty() && (runtime_devices.size() == 1u))
+    else if (rom_devices.empty() && !runtime_devices.empty())
     {
+        avc::host::SerialDevice selected_runtime;
+        if (!avc::host::select_unique_runtime_port(options.port, selected_runtime, error))
+        {
+            throw std::runtime_error(error);
+        }
         std::cout << "target=runtime_cdc\n";
         if (enter_isp(options) != 0)
         {
@@ -541,8 +548,8 @@ int program(const Options &options)
                                  std::to_string(rom_devices.size()));
     }
 
-    if (!avc::host::program_rom_with_blhost(
-            blhost,
+    if (!avc::host::program_rom(
+            programmer,
             image,
             [](avc::host::ProgramStage stage, const std::string &detail) {
                 std::cout << "program_stage=" << avc::host::program_stage_name(stage)
@@ -553,32 +560,36 @@ int program(const Options &options)
         throw std::runtime_error(error);
     }
 
-    const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
-    for (;;)
-    {
-        avc::host::SerialDevice runtime;
-        error.clear();
-        if (avc::host::select_unique_runtime_port(options.port, runtime, error))
-        {
-            break;
-        }
-        if (std::chrono::steady_clock::now() >= deadline)
-        {
-            throw std::runtime_error("programming completed, but application did not reconnect: " + error);
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-
     Options verification = options;
     verification.command = "probe";
     verification.request_frame = true;
     verification.seconds = 3u;
-    const int result = probe(verification);
-    if (result == 0)
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(15);
+    std::string reconnect_error = "runtime CDC has not appeared";
+    for (;;)
     {
-        std::cout << "program=ok\n";
+        try
+        {
+            const int result = probe(verification);
+            if (result == 0)
+            {
+                std::cout << "program=ok\n";
+                return 0;
+            }
+            reconnect_error = "runtime verification returned " + std::to_string(result);
+        }
+        catch (const std::exception &exception)
+        {
+            reconnect_error = exception.what();
+        }
+        if (std::chrono::steady_clock::now() >= deadline)
+        {
+            throw std::runtime_error(
+                "programming completed, but application did not become ready: " +
+                reconnect_error);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }
-    return result;
 }
 
 } // namespace

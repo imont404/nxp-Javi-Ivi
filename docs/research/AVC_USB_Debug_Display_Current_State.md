@@ -1,8 +1,8 @@
 # AVC USB Debug Display Current State
 
-Status: viability proof complete; follow-up owned by `docs/plans/usb-debug-telemetry`
+Status: native preview and one-cable ROM programming proven; recovery validation active
 
-Last updated: 2026-08-22
+Last updated: 2026-08-23
 
 ## Summary
 
@@ -25,6 +25,13 @@ CDC interface, completes the same framed session, and consumes the same packets 
 native, Python, and Web Serial hosts. No Android-specific firmware mode or packet type
 was added.
 
+A native SDL2/Dear ImGui Windows viewer now consumes the same protocol. The
+camera is contained in its own responsive panel, with separate connection,
+telemetry, and deliberate firmware-programming controls. The running firmware
+can safe-stop and enter MCXN947 ROM USB-HS HID through the framed session, after
+which the shared host backend validates, erases, writes, resets, reconnects, and
+resumes preview using only J11.
+
 ## Implemented Path
 
 Firmware:
@@ -45,6 +52,12 @@ Host tools:
 - Shared host tooling root: `src/usb_debug_host`.
 - Native Windows receiver:
   `src/usb_debug_host/usb_cdc_stream_read.cpp`.
+- Shared native host/parser and programmer:
+  `src/usb_debug_host/avc_host_core.cpp` and
+  `src/usb_debug_host/avc_programmer.cpp`.
+- Native SDL2/Dear ImGui viewer and bounded CLI:
+  `src/usb_debug_host/avc_viewer.cpp` and
+  `src/usb_debug_host/avc_tool.cpp`.
 - Python receiver:
   `src/usb_debug_host/usb_cdc_stream_read.py`.
 - Static WebSerial viewer:
@@ -79,6 +92,8 @@ Implemented messages:
 - `AVC_DBG_CONTROL_SET_CHANNELS`: independently request frame, stats, and log
   output or stop them.
 - `AVC_DBG_CONTROL_PING` and `AVC_DBG_CONTROL_CLOSE`: check or close a session.
+- `AVC_DBG_CONTROL_ENTER_ISP`: confirmed, session-bound safe transition to the
+  MCXN947 ROM USB-HS HID bootloader.
 
 Reserved message classes already exist for:
 
@@ -180,6 +195,18 @@ Camera stream:
   source for one second with zero parser or sequence errors.
 - Chrome WebSerial viewer rendered the live camera feed on 2026-07-21.
 - The WebSerial/CDC path was then observed running live for about 15 minutes.
+- The native viewer sustained 113 complete frames in five seconds with zero
+  malformed packets after its final UI build.
+- The native viewer worker completed application preview, safe ISP entry,
+  ROM query/erase/write/reset, application reconnect, and resumed preview with
+  186 complete frames and zero malformed packets.
+- The hardened CLI repeated that cycle with a 370,740-byte image. Its packaged
+  NXP `rblhost` 0.2.0 backend performs a full readback and requires the byte
+  count and SHA-256 to match before reset; installed SPSDK `blhost` 3.10.0
+  remains a proven fallback.
+- Missing, wrong-extension, invalid-vector, and nonexistent-port program
+  requests were rejected before ISP; a complete camera frame arrived after each
+  refusal. Physical application-stream unplug/replug remains pending bench input.
 
 RTT remains available while USB/WebSerial is running. A live attach without
 reset showed the RTT control block and camera telemetry around `23.39 FPS`.
@@ -226,19 +253,20 @@ buffer after the existing drawing operations.
 
 ## Follow-Up Ownership
 
-The active work is consolidated in
+Generic browser telemetry work remains in
 `docs/plans/usb-debug-telemetry/plan.md`. It owns:
 
 - explicit frame-buffer ownership and measured main-loop cost;
 - framed bidirectional hello, control, and response messages;
 - bounded arbitration among frames, logs, telemetry, stats, and responses;
 - separate USB-link, recognized-session, and vehicle-mode state;
-- physical USB unplug/replug and additional host-only parser cases;
+- remaining browser-specific unplug/replug and host-only parser cases;
 - remaining realistic disconnected/connected mode validation.
 
-Native SDL tooling, UVC, LCD removal, and general eGFX replacement are intentionally
-outside that race-week plan. The Android application is implemented and tracked by its
-separate plan.
+Native SDL tooling and the one-cable ROM programmer are implemented and tracked
+by `docs/plans/one-cable-host-tool/plan.md`. UVC, LCD removal, and general eGFX
+replacement remain outside the race-week transport work. The Android application
+is implemented and tracked by its separate plan.
 
 The Android consumer is implemented separately under `src/android/avc_bridge` and tracked
 by `docs/plans/android-telemetry-bridge/plan.md`. On the real Rev A car, the Moto G Power
