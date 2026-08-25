@@ -323,13 +323,17 @@ void nxpc_graphics__fill_rectangle(const nxpc_rgb565_surface_t *surface, int32_t
     }
 }
 
-void nxpc_graphics__text(const nxpc_rgb565_surface_t *surface, int32_t x, int32_t y,
-                         const char *text, uint16_t color)
+static void nxpc_graphics__font_text(const nxpc_rgb565_surface_t *surface,
+                                     int32_t x,
+                                     int32_t y,
+                                     const char *text,
+                                     uint16_t color,
+                                     const eGFX_Font *font)
 {
     uint32_t character_index;
     int32_t cursor_x = x;
 
-    if (!nxpc_graphics__valid(surface) || (text == NULL))
+    if (!nxpc_graphics__valid(surface) || (text == NULL) || (font == NULL))
     {
         return;
     }
@@ -353,7 +357,7 @@ void nxpc_graphics__text(const nxpc_rgb565_surface_t *surface, int32_t x, int32_
             return;
         }
 
-        glyph = FONT_5_7_1BPP.CharacterSprites[character - 0x20U];
+        glyph = font->CharacterSprites[character - 0x20U];
         if (character != 0x20U)
         {
             row_bytes = (glyph->SizeX + 7U) / 8U;
@@ -379,6 +383,52 @@ void nxpc_graphics__text(const nxpc_rgb565_surface_t *surface, int32_t x, int32_
             return;
         }
     }
+}
+
+static int32_t nxpc_graphics__font_text_width(const char *text, const eGFX_Font *font)
+{
+    uint32_t character_index;
+    int32_t width = 0;
+
+    if ((text == NULL) || (font == NULL))
+    {
+        return 0;
+    }
+
+    for (character_index = 0U; character_index < NXPC_GRAPHICS_TEXT_MAX_BYTES; character_index++)
+    {
+        uint8_t character = (uint8_t)text[character_index];
+        const eGFX_ImagePlane *glyph;
+
+        if ((character == 0U) || (character < 0x20U) || (character > 0x7EU))
+        {
+            return width;
+        }
+        glyph = font->CharacterSprites[character - 0x20U];
+        if (character_index != 0U)
+        {
+            width++;
+        }
+        width += (int32_t)glyph->SizeX;
+    }
+    return width;
+}
+
+void nxpc_graphics__text(const nxpc_rgb565_surface_t *surface, int32_t x, int32_t y,
+                         const char *text, uint16_t color)
+{
+    nxpc_graphics__font_text(surface, x, y, text, color, &FONT_5_7_1BPP);
+}
+
+void nxpc_graphics__text_large(const nxpc_rgb565_surface_t *surface, int32_t x, int32_t y,
+                               const char *text, uint16_t color)
+{
+    nxpc_graphics__font_text(surface, x, y, text, color, &FONT_10_14_1BPP);
+}
+
+int32_t nxpc_graphics__text_large_width(const char *text)
+{
+    return nxpc_graphics__font_text_width(text, &FONT_10_14_1BPP);
 }
 
 static nxpc_rgb565_surface_t nxpc_graphics__camera_surface(uint16_t *frame)

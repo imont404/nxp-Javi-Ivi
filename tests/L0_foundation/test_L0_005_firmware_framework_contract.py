@@ -236,12 +236,15 @@ def test_test_and_race_presentation_cannot_leave_stale_camera_data():
 
     assert "nxpc_test_page_t" in SYSTEM_HEADER.read_text(encoding="utf-8")
     assert "const char *nxpc_system__test_page_label" in system
+    assert 'return "MOTORS";' in system
     assert '"system.test_page"' in framework
     assert '"NOT ACTIVE"' in framework
     assert "g_last_camera_seen && !camera_seen" in framework
     assert "nxpc__clear_camera_display();" in framework
-    assert '"LEFT/RIGHT: PAGE  CAM: %s"' in framework
-    assert '"ALGO: %lu.%03lums %lu%% OF FRAME"' in framework
+    assert '"TEST MODE"' in framework
+    assert '"RACE MODE"' in framework
+    assert '"< CAMERA / IO >"' in framework
+    assert '"< VISION >  %lu.%lums  %lu%%"' in framework
 
 
 def test_remote_race_actions_are_typed_and_firmware_validated():

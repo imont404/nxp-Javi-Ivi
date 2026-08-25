@@ -23,5 +23,8 @@ void nxpc_graphics__fill_rectangle(const nxpc_rgb565_surface_t *surface, int32_t
                                    int32_t x1, int32_t y1, uint16_t color);
 void nxpc_graphics__text(const nxpc_rgb565_surface_t *surface, int32_t x, int32_t y,
                          const char *text, uint16_t color);
+void nxpc_graphics__text_large(const nxpc_rgb565_surface_t *surface, int32_t x, int32_t y,
+                               const char *text, uint16_t color);
+int32_t nxpc_graphics__text_large_width(const char *text);
 
 #endif /* NXPC_GRAPHICS_H_ */

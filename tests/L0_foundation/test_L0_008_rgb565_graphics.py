@@ -11,6 +11,7 @@ REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / "src/embedded/nxp_cup_core0/source"
 GRAPHICS = SOURCE / "nxpc_graphics.c"
 FONT = REPO / "src/common/egfx/src/Core/Fonts/FONT_5_7_1BPP.c"
+LARGE_FONT = REPO / "src/common/egfx/src/Core/Fonts/FONT_10_14_1BPP.c"
 EGFX_INCLUDE = REPO / "src/common/egfx/src"
 NXPC_CONFIG_INCLUDE = SOURCE / "nxpc_config"
 
@@ -192,7 +193,58 @@ int main(void)
         if (text_surface.pixels[2] != COLOR)
             return fail("text did not render before a non-printable byte");
         if (text_surface.pixels[14] != CANARY)
-            return fail("text continued after a non-printable byte");
+                return fail("text continued after a non-printable byte");
+    }
+
+    {
+        uint16_t text_storage[8 + (322 * 16) + 8];
+        nxpc_rgb565_surface_t text_surface = {
+            .pixels = &text_storage[8],
+            .width = 320,
+            .height = 16,
+            .stride_pixels = 322,
+        };
+        unsigned index;
+
+        for (index = 0; index < sizeof(text_storage) / sizeof(text_storage[0]); index++)
+            text_storage[index] = CANARY;
+        if (nxpc_graphics__text_large_width("!!") != 21)
+            return fail("large text width did not include one character gap");
+        {
+            const char *layout_text[] = {
+                "TEST MODE",
+                "< CAMERA / IO >",
+                "< MOTORS >  CENTER POTS",
+                "< VISION >  999.9ms  999%",
+                "A1.00 B1.00 G1.00 BAT655.4V",
+                "POT L 100  S 100  R 100",
+                "CMD L-100% S-100% R-100%",
+                "RPM L -9999  R -9999",
+            };
+            unsigned text_index;
+            for (text_index = 0; text_index < sizeof(layout_text) / sizeof(layout_text[0]);
+                 text_index++)
+                if (nxpc_graphics__text_large_width(layout_text[text_index]) > 320)
+                    return fail("a worst-case presentation string exceeds the LCD width");
+        }
+        nxpc_graphics__text_large(&text_surface, 315, 10, "EDGE", COLOR);
+        {
+            int visible_pixel = 0;
+            for (y = 0; y < 16; y++)
+                for (x = 0; x < 320; x++)
+                    if (text_surface.pixels[(y * 322) + x] == COLOR)
+                        visible_pixel = 1;
+            if (!visible_pixel)
+                return fail("clipped large text did not render an in-bounds pixel");
+        }
+        for (index = 0; index < 8; index++)
+            if ((text_storage[index] != CANARY) ||
+                (text_storage[8 + (322 * 16) + index] != CANARY))
+                return fail("large text changed an outer canary");
+        for (y = 0; y < 16; y++)
+            if ((text_surface.pixels[(y * 322) + 320] != CANARY) ||
+                (text_surface.pixels[(y * 322) + 321] != CANARY))
+                return fail("large text changed row padding");
     }
 
     for (x = 0; x < sizeof(camera_storage) / sizeof(camera_storage[0]); x++)
@@ -229,6 +281,7 @@ def test_rgb565_rasterizer_is_clipped_and_bounded(tmp_path: Path):
             str(harness),
             str(GRAPHICS),
             str(FONT),
+            str(LARGE_FONT),
             f"-I{SOURCE}",
             f"-I{EGFX_INCLUDE}",
             f"-I{NXPC_CONFIG_INCLUDE}",

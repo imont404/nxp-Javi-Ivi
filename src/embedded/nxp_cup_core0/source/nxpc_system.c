@@ -642,7 +642,7 @@ const char *nxpc_system__test_page_label(nxpc_test_page_t page)
         case NXPC_TEST_PAGE_VISION:
             return "VISION LAB";
         case NXPC_TEST_PAGE_ACTUATORS:
-            return "ACTUATORS";
+            return "MOTORS";
         default:
             return "UNKNOWN";
     }

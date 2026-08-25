@@ -331,8 +331,10 @@ def test_navigation_is_frame_independent_and_vision_owns_the_participant_callbac
     assert service.index("nxpc__test_navigation_service();") < service.index(
         "nxpc__render_banner_if_changed();"
     )
-    assert "LEFT/RIGHT: PAGE" in framework
-    assert '"TEST < %s > %u/3"' in framework
+    assert '"TEST MODE"' in framework
+    for label in ('"< CAMERA / IO >"', '"< VISION LAB >"', '"< MOTORS >  EXE: ARM"'):
+        assert label in framework
+    assert "nxpc__draw_large_centered" in framework
     assert "(left_release != NXPC_RELEASE_NONE)" in framework
     assert "(right_release != NXPC_RELEASE_NONE)" in framework
     assert "nxpc__baseline_test_navigation();" in framework
@@ -351,9 +353,13 @@ def test_camera_io_samples_without_frames_and_overlays_before_publication():
     assert "NXPC_TEST_IO_SAMPLE_MS (100U)" in framework
     assert "nxpc__test_io_service();" in service
     assert "nxpc__camera_live()" in framework
-    assert "POTS A:%03u B:%03u G:%03u" in framework
-    assert "BTN L:%u R:%u EXE:%u  BAT:%u.%02uV" in framework
-    assert "FRAME:%lums WORK:%luus %lu%% DROP:%lu" in framework
+    for label, x in (("A", 2), ("B", 78), ("G", 154), ("BAT", 228)):
+        assert f'&g_status_surface, {x}, 22, "{label}"' in framework
+    assert "nxpc__refresh_camera_io_status();" in finish
+    assert "nxpc__overlay_camera_io(frame);" not in finish
+    assert "alpha_thousandths" in framework
+    assert "BTN L:" not in framework
+    assert "FRAME:%lums WORK:" not in framework
     assert finish.index("nxpc__overlay_camera_io(frame);") < finish.index(
         "nxpc_usb_debug_stream__publish_frame(frame)"
     )
@@ -391,7 +397,9 @@ def test_actuator_page_control_is_bounded_and_frame_independent():
     assert service.index("nxpc_system__notify_test_motor_lease_expired();") < service.index(
         "nxpc__test_actuator_service();"
     )
-    assert "WHEEL RPM LEFT:%ld RIGHT:%ld" in framework
+    assert '"RPM L %ld  R %ld"' in framework
+    assert "OUTPUTS SAFE" not in framework
+    assert "OUTPUTS ARMED" not in framework
     assert finish.index("nxpc__overlay_test_actuators(frame);") < finish.index(
         "nxpc_usb_debug_stream__publish_frame(frame)"
     )
