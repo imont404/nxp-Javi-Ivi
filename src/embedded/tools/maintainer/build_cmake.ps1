@@ -129,7 +129,12 @@ if (Test-Path -LiteralPath $cachePath) {
 }
 
 Write-Host "Configuring CMake/Ninja build..." -ForegroundColor Cyan
-$configureArgs = @("-S", $ProjectPath, "-B", $BuildDir, "-G", "Ninja")
+$configureArgs = @(
+    "-S", $ProjectPath,
+    "-B", $BuildDir,
+    "-G", "Ninja",
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+)
 if (-not (Test-Path -LiteralPath $cachePath)) {
     $configureArgs += "-DCMAKE_TOOLCHAIN_FILE=$toolchain"
 }
@@ -145,5 +150,9 @@ Write-Host "Building with Ninja..." -ForegroundColor Cyan
 Invoke-Checked {
     cmake --build $BuildDir
 } "CMake build"
+
+$compileCommands = Join-Path $BuildDir "compile_commands.json"
+$flagCheck = Join-Path $PSScriptRoot "check_compile_flags.ps1"
+& $flagCheck -CompileCommands $compileCommands -ExpectedOptimization "-O2"
 
 Write-Host "CMake build output: $BuildDir" -ForegroundColor Green

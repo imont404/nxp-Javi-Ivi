@@ -171,9 +171,7 @@ void CONFIG__E_TICK_IRQ_HANDLER_NAME()
 
 	e_tick__trigger_exe(e_tick__trigger_list__irq);
 
-	button__process(&left_btn, CONFIG__E_TICK_PERIOD__MS);
-	button__process(&right_btn, CONFIG__E_TICK_PERIOD__MS);
-	button__process(&center_btn, CONFIG__E_TICK_PERIOD__MS);
+	button__process_all(CONFIG__E_TICK_PERIOD__MS);
 }
 
 

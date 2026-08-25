@@ -26,22 +26,32 @@ int main(void)
             continue;
         }
 
-        nxpc_framework__begin_callback();
         switch (nxpc_system__mode())
         {
             case NXPC_SYSTEM_MODE_TEST:
-                test_mode_on_frame(frame);
+                if (nxpc_system__test_page() == NXPC_TEST_PAGE_VISION)
+                {
+                    nxpc_framework__begin_callback();
+                    test_mode_on_frame(frame);
+                    nxpc_framework__end_callback();
+                }
+                else
+                {
+                    nxpc_framework__no_callback();
+                }
                 break;
 
             case NXPC_SYSTEM_MODE_RACE_RUNNING:
+                nxpc_framework__begin_callback();
                 race_mode_on_frame(frame);
+                nxpc_framework__end_callback();
                 break;
 
             case NXPC_SYSTEM_MODE_RACE_WAITING:
             default:
+                nxpc_framework__no_callback();
                 break;
         }
-        nxpc_framework__end_callback();
         nxpc_framework__finish_frame(frame);
     }
 }

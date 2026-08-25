@@ -47,7 +47,9 @@ def test_canonical_build_has_no_variant_selector():
     assert "$Preset" not in text
     assert '$preset = "competition"' in text
     assert "cmake @configureArguments" in text
-    assert "cmake --build --preset $preset" in text
+    assert '$buildArguments = @("--build", "--preset", $preset)' in text
+    assert '$buildArguments += "--clean-first"' in text
+    assert "cmake @buildArguments" in text
     assert "mcuxpressoidec" not in text.lower()
 
 

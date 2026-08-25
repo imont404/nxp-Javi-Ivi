@@ -11,45 +11,93 @@ status = "done"
 
 [[steps]]
 id = "test-substate-contract"
-title = "Define separate TEST_CAMERA and TEST_ACTUATORS substates, their button selection, pot meanings, LCD labels, telemetry, and safe entry/exit behavior"
-status = "active"
+title = "Freeze the three-page TEST lab contract: TEST_CAMERA_IO, TEST_VISION, and TEST_ACTUATORS, with framework-owned navigation, presentation, output permissions, and safe entry/exit behavior"
+status = "done"
 depends_on = ["resume-checkpoint"]
 
 [[steps]]
-id = "test-camera"
-title = "Implement the camera/algorithm test with motors disabled and simple pot-controlled scan-line and threshold experiments"
-status = "pending"
+id = "competition-optimization"
+title = "Normalize CMake and MCUXpresso competition builds to global -O2 with debug symbols and no unmeasured per-file overrides; audit -fno-builtin, ISR-shared state, and effective last-option-wins commands"
+status = "done"
+depends_on = ["race-state-closeout"]
+
+[[steps]]
+id = "optimized-baseline-regression"
+title = "After the functional framework is standing, rebuild and physically smoke-test the optimized image for boot, camera, LCD, USB, every TEST/RACE state, neutral outputs, EXE stop, and unchanged wire behavior"
+status = "active"
+depends_on = ["competition-optimization"]
+
+[[steps]]
+id = "button-input-normalization"
+title = "Clean the 1 ms debouncer and implement sole-producer press/release sequence counters plus held snapshots, defined simultaneous-button behavior, and inherited-release suppression without exposing button_t"
+status = "done"
 depends_on = ["test-substate-contract"]
+
+[[steps]]
+id = "rgb565-graphics-surface"
+title = "Implement canary-tested RGB565 pixel, horizontal/vertical/general line, rectangle fill, and bounded fixed-font text with signed clipped coordinates, fixed surfaces, no allocation, and reviewed worst-case timing"
+status = "done"
+depends_on = ["button-input-normalization"]
+
+[[steps]]
+id = "test-page-safety-core"
+title = "Before page implementations, add typed TEST page state, an atomic safe-transition operation, page-aware output gating, CAMERA/IO reset on TEST entry, bounded deliberate arming, and ACTUATORS-only capped motor permission"
+status = "done"
+depends_on = ["button-input-normalization"]
+
+[[steps]]
+id = "test-page-navigation"
+title = "Implement framework-owned left/right release-event navigation across CAMERA / IO, VISION LAB, and ACTUATORS with a persistent page name, arrows, page count, and contextual EXE hint in the 320x40 status strip"
+status = "done"
+depends_on = ["test-page-safety-core", "rgb565-graphics-surface"]
+
+[[steps]]
+id = "test-camera-io"
+title = "Implement the safe default CAMERA / IO page with live image, camera health, pots, buttons, battery, frame timing, and drop indications while actuator output is impossible"
+status = "done"
+depends_on = ["test-page-navigation"]
+
+[[steps]]
+id = "test-vision-lab"
+title = "Invoke participant-owned test_mode.c only from motor-prohibited VISION LAB as the editable camera-processing and overlay sandbox; defer its exact reference algorithm and pot meanings until organizer discussion"
+status = "done"
+depends_on = ["test-page-navigation"]
 
 [[steps]]
 id = "test-actuators"
-title = "Move the existing motor and steering exercise into TEST_ACTUATORS with EXE arming, the three-pot midpoint interlock, command telemetry, and QDC wheel-speed feedback"
-status = "pending"
-depends_on = ["test-substate-contract"]
+title = "Move the motor and steering exercise into ACTUATORS with alpha=left motor, beta=steering, gamma=right motor, EXE arming, midpoint interlock, command telemetry, and QDC wheel feedback"
+status = "done"
+depends_on = ["test-page-navigation"]
 
 [[steps]]
 id = "test-transition-safety"
-title = "Make every TEST substate change immediately disable motors, clear the motor lease, center steering, and require deliberate re-arming"
-status = "pending"
-depends_on = ["test-camera", "test-actuators"]
+title = "Run pure trace and fake-actuator regression over every TEST entry/page/arming/lease transition, including forbidden participant motor calls, bounce, hold, simultaneous buttons, wraparound, and entry while held"
+status = "done"
+depends_on = ["test-camera-io", "test-vision-lab", "test-actuators"]
+
+[[steps]]
+id = "student-api-teaching-surface"
+title = "Give race_mode.c a concise camera-to-analysis-to-steering-and-speed scaffold, document the common API in nxp_cup.h, and remove obsolete private processing or graphics paths without supplying a race solution"
+status = "done"
+depends_on = ["test-transition-safety"]
 
 [[steps]]
 id = "embedded-state-presentation"
 title = "Give every TEST and RACE state an unambiguous typed state, framework telemetry label, and LCD presentation without stale camera data"
-status = "pending"
-depends_on = ["test-transition-safety"]
+status = "done"
+depends_on = ["student-api-teaching-surface"]
 
 [[steps]]
 id = "race-state-closeout"
 title = "Re-audit RACE_WAITING, RACE_RUNNING, EXE start/stop, zero-duty audible arming, camera loss, callback overrun, and the 100 ms command lease"
-status = "pending"
+status = "done"
 depends_on = ["embedded-state-presentation"]
 
 [[steps]]
 id = "firmware-bench-regression"
-title = "Manually validate cold boot, both TEST substates, every transition, actuator signs, wheel RPM, race start/stop, lease expiration, faults, LCD, and USB behavior on Rev A hardware"
+title = "Manually validate cold boot, all three TEST pages, navigation indicators, every transition, actuator signs, wheel RPM, race start/stop, lease expiration, faults, LCD, USB, and optimized timing on Rev A hardware"
 status = "pending"
-depends_on = ["race-state-closeout"]
+depends_on = ["optimized-baseline-regression"]
 
 [[steps]]
 id = "interface-freeze"
@@ -101,7 +149,7 @@ depends_on = ["external-review"]
 
 [[exit_criteria]]
 id = "test-separation"
-title = "Camera/algorithm testing cannot command actuators, and actuator testing cannot silently inherit camera-test pot meanings"
+title = "CAMERA / IO and VISION LAB cannot command actuators, and ACTUATORS cannot silently inherit another page's pot meanings or arming state"
 status = "pending"
 
 [[exit_criteria]]
@@ -111,7 +159,12 @@ status = "pending"
 
 [[exit_criteria]]
 id = "state-observability"
-title = "LCD, Windows, WebSerial, and Android consumers show the same stable typed mode/state and framework-owned actuator telemetry"
+title = "The LCD persistently shows TEST page navigation and safety state, while Windows, WebSerial, and Android receive the same stable typed page/state and framework-owned actuator telemetry"
+status = "pending"
+
+[[exit_criteria]]
+id = "optimized-teaching-loop"
+title = "The competition image uses reviewed optimized flags; algorithm, overlay, LCD, and USB costs are measured separately; bounded RGB565 drawing and timing indicators remain understandable to students"
 status = "pending"
 
 [[exit_criteria]]
@@ -163,23 +216,133 @@ the motor PWM at neutral, the neutral-write defect found during physical testing
 was corrected, and cold race entry clears stale LCD camera data. This is bench
 evidence for those narrow behaviors, not proof of the remaining regression list.
 
-## Intended TEST flow
+## Intended TEST lab
 
-TEST mode should teach and diagnose two concepts separately:
+Installing the TEST jumper enters a framework-owned three-page lab. Left and right
+button release events move one page at a time and wrap across:
 
-- `TEST_CAMERA` is the safe default. Motors remain disabled. The camera image and
-  a small amount of processing are visible, with pots controlling simple concepts
-  such as scan-line position and a brightness/edge threshold. It must remain an
-  experiment, not a completed lane detector.
-- `TEST_ACTUATORS` demonstrates left motor, steering, and right motor commands.
-  It retains framework-owned EXE arming and the three-pot midpoint interlock.
-  Framework telemetry reports commanded outputs, and standard QDC feedback reports
-  measured left/right wheel speed.
+1. `TEST_CAMERA_IO` is the safe default. It shows the live image, camera health,
+   pot and button inputs, battery voltage, callback timing, and frame drops. Motors
+   are prohibited regardless of participant callback behavior.
+2. `TEST_VISION` combines line, edge, color, pixel drawing, fixed-font text, and
+   student algorithm experimentation in one motor-prohibited page. The exact
+   reference algorithm and page-specific pot meanings remain deliberately open
+   until the organizer discussion; it must not become a completed lane detector,
+   steering decision, PID controller, or race solution.
+3. `TEST_ACTUATORS` demonstrates alpha as left motor, beta as steering, and gamma
+   as right motor. EXE requests arming, all three pots must be centered before
+   outputs become live, and framework telemetry plus QDC feedback make commands
+   and measured wheel motion visible.
 
-Left/right buttons are the leading candidate for selecting the two substates, but
-the exact interaction and the final meaning of every camera-test pot remain open
-until tried on the car. EXE should remain the arm/disarm control inside the actuator
-test. Any substate switch must safe-stop and require a new deliberate arm.
+The 320x40 framework-owned status strip persistently shows a presentation such as
+`TEST  < VISION LAB >  2/3` and `LEFT/RIGHT: PAGE`; ACTUATORS additionally shows
+`EXE: ARM` or its current arming state. A page change always disables motors,
+clears the command lease, centers steering, cancels pending arming, and requires a
+fresh deliberate arm. The framework owns navigation and output permission; the
+participant callback cannot weaken them.
+
+Use real typed TEST substates for safety, presentation, and telemetry. The framework
+owns the TEST dispatcher plus CAMERA / IO and ACTUATORS implementations. Invoke the
+participant-owned `test_mode.c` callback only while `TEST_VISION` is selected; it is
+the single editable vision/overlay sandbox. Expose the selected page, if needed, as
+a read-only value. Participant code cannot select pages, arm outputs, or implement
+the hardware-check pages.
+
+## Buttons and participant inputs
+
+Retain the existing button state-machine debouncer, sampled every 1 ms and
+configured for approximately 50 ms stability. Normalize its naming, formatting,
+types, and comments; remove obsolete duplicate entry points; and keep `button_t`
+private. The debouncer is the sole producer of monotonic press and release sequence
+counters plus held state. Framework service captures one coherent snapshot;
+consumers compare epochs and never clear a shared event. Public queries provide a
+non-destructive per-callback view. If left and right releases arrive in one snapshot,
+ignore both. TEST entry and each page change establish new baselines and suppress
+releases inherited from buttons that were already held. Framework navigation and
+EXE handling have priority over participant observation.
+
+## Graphics and timing
+
+The competition/student surface needs only bounded RGB565 pixels, horizontal and
+vertical lines, a general line, a filled rectangle, and simple fixed-font text.
+Coordinates are signed; null input is a no-op; all operations clip to strict surface
+bounds; general-line work is bounded after clipping; text accepts at most 48
+printable ASCII bytes; and no operation allocates memory. Do not expose eGFX image
+planes, fonts, sprites, or drivers. Internally preserve the useful two-surface
+separation: a framework-owned 320x40 status buffer and a 320x200 camera surface that
+aliases the current captured frame rather than allocating another camera-sized
+buffer.
+
+Implement and benchmark the narrow primitives directly, with canary-buffer host
+tests around every edge and worst-case timing checks. Keep the working eGFX/LCD path
+until the replacement is proven equivalent on hardware, then remove only
+competition-path code that is demonstrably unused. Participant overlays modify the
+live camera buffer and therefore appear in both the later LCD dump and USB frame.
+Navigation and safety text remain framework-owned.
+
+The reviewed `competition` preset now uses one global `-O2` setting with `-g3` /
+DWARF-4 debug symbols and no per-file optimization overrides. Both build entry
+points validate every effective C compile command so last-option-wins drift cannot
+silently restore `-O0` or `-O3`. `-fno-builtin` remains explicit pending a measured
+reason to change the established SDK/project behavior. ISR-written ADC, camera
+frame-pointer, button, motor-lease, and DMA-completion state is volatile and/or
+captured in bounded IRQ-disabled snapshots.
+
+The first `-O2` gate on 2026-08-25 regressed the physical LCD because the legacy
+ST7789 reset/sleep timing used an empty software loop that optimization legally
+deleted. It now uses `SDK_DelayAtLeastUs`. LCD byte/word helpers and legacy display
+helpers wait for DMA before local or caller-owned source storage can change, while
+the current raw block path retains pipelining and waits after its final submission.
+The optimized image builds and passes native regression, but physical LCD/camera/USB/actuator
+validation remains mandatory in `optimized-baseline-regression` before the
+interface is frozen. Report participant algorithm time in milliseconds and as a
+percentage of the 41 ms frame budget; benchmark overlay, LCD transfer, and USB
+publication separately rather than calling their sum an ambiguous CPU percentage.
+
+The 2026-08-25 optimized ROM-HID flash completed full readback verification,
+rebooted into TEST / CAMERA / IO, published USB telemetry and camera frames, and
+the organizer confirmed the LCD is operating. The other TEST pages, actuator
+signs/feedback, RACE transitions, and fault behavior remain to be checked manually.
+
+## TEST safety contract
+
+Page state, output gating, and a single atomic safe-transition operation must exist
+before any page or navigation implementation. The safe transition first commands
+zero/disable, clears the motor lease, centers steering, clears pending and armed
+state, suppresses inherited button releases, and only then changes the page. TEST
+entry always selects CAMERA / IO. `motors_set_duty()` and `steering_set()` reject
+participant output throughout CAMERA / IO and VISION LAB even if participant code
+calls them.
+
+The TEST control plane is frame-independent. `nxpc_framework__service()` processes
+navigation, EXE arming/disarming, safe transitions, and bounded dirty/status refresh
+even when the camera produces no frame. CAMERA / IO health and ACTUATORS commands
+also run at explicit bounded service intervals rather than depending on a camera
+callback. Only VISION processing and camera-buffer overlays require a frame. Camera
+loss must therefore remain diagnosable and must never freeze page navigation or EXE
+stop behavior.
+
+EXE arming is processed only in ACTUATORS. One EXE release opens a five-second
+arming window; all three pots must remain within the midpoint band continuously for
+250 ms before outputs arm. Leaving the midpoint during the dwell restarts it;
+timeout, another EXE release, a page change, TEST exit, lease expiry, or fault
+cancels the request and safe-stops. ACTUATORS motor duty is capped to +/-25 percent
+inside the framework; race-mode range remains unchanged. Confirm or lower that cap
+during the first actuator bench test. In ACTUATORS, motor-lease expiry explicitly
+clears pending and armed state, centers steering, and requires a new EXE release;
+RACE_RUNNING retains its separate dead-man behavior in which the next valid race
+command may resume output.
+
+## Teaching surface
+
+Keep `nxp_cup.h` as the only participant-facing header. The TEST implementation
+should demonstrate the commonly used API, and declarations should contain enough
+usage guidance that students can follow calls into the header. `race_mode.c` should
+show the intended flow in comments--choose/read camera rows, extract features, run
+student decision logic, command steering and speed, and publish optional telemetry--
+without providing the decision algorithm. Audit the old private line-processing and
+general graphics code; retain generic color conversion, but remove obsolete or
+unused experiments after their replacements are proven.
 
 ## Sequencing rule
 
@@ -195,13 +358,15 @@ documentation.
 Compile-only evidence is insufficient. Before interface freeze, manually exercise:
 
 1. Cold boot into TEST and RACE with correct LCD content and no stale pixels.
-2. Both TEST substates and every button transition.
+2. All three TEST pages, persistent navigation hints, one-page-per-press behavior,
+   and every page transition.
 3. Midpoint interlock, arm/disarm, actuator signs, neutral behavior, and QDC signs.
 4. RACE_WAITING and RACE_RUNNING from physical EXE and framed host actions.
 5. Immediate EXE/host stop and 100 ms lease expiration during a deliberate stall.
 6. Camera-loss and callback-overrun safe faults.
 7. Camera-buffer stability with slow callbacks plus USB/LCD load.
-8. USB absent, attached, subscribed, disconnected, and reconnected.
+8. Algorithm/overlay/LCD/USB timing under the optimized competition image.
+9. USB absent, attached, subscribed, disconnected, and reconnected.
 
 Record what was physically observed. Do not promote a test or exit criterion from
 compile, unit-test, or telemetry-only evidence.
@@ -211,5 +376,6 @@ compile, unit-test, or telemetry-only evidence.
 QDC wheel feedback remains standard in the competition image. Do not add build
 options for ordinary use. Do not supply lane following, PID, active differential,
 or a completed race solution. Keep normal participant edits confined to
-`source/app/test_mode.c` and `source/app/race_mode.c`; framework-owned safety and
-protected telemetry must not depend on participant callbacks.
+`source/app/test_mode.c` (VISION LAB only) and `source/app/race_mode.c`;
+framework-owned safety, CAMERA / IO, ACTUATORS, navigation, and protected telemetry
+must not depend on participant callbacks.

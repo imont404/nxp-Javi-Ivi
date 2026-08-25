@@ -65,10 +65,10 @@ set(MCUX_C_SOURCES
     "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_StringOps.c"
     "${MCUX_PROJECT_ROOT}/source/app/race_mode.c"
     "${MCUX_PROJECT_ROOT}/source/app/test_mode.c"
-    "${MCUX_PROJECT_ROOT}/source/assets/Sprites_16BPP_RGB565.c"
     "${MCUX_PROJECT_ROOT}/source/main.c"
-    "${MCUX_PROJECT_ROOT}/source/nxpc__line_processor.c"
+    "${MCUX_PROJECT_ROOT}/source/nxpc_color.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_framework.c"
+    "${MCUX_PROJECT_ROOT}/source/nxpc_graphics.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_io/button.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_io/bv_camera__interface.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_io/eGFX_Driver_ER-TFT020-3.c"
@@ -161,10 +161,10 @@ set(MCUX_SOURCES
     "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_StringOps.c"
     "${MCUX_PROJECT_ROOT}/source/app/race_mode.c"
     "${MCUX_PROJECT_ROOT}/source/app/test_mode.c"
-    "${MCUX_PROJECT_ROOT}/source/assets/Sprites_16BPP_RGB565.c"
     "${MCUX_PROJECT_ROOT}/source/main.c"
-    "${MCUX_PROJECT_ROOT}/source/nxpc__line_processor.c"
+    "${MCUX_PROJECT_ROOT}/source/nxpc_color.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_framework.c"
+    "${MCUX_PROJECT_ROOT}/source/nxpc_graphics.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_io/button.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_io/bv_camera__interface.c"
     "${MCUX_PROJECT_ROOT}/source/nxpc_io/eGFX_Driver_ER-TFT020-3.c"
@@ -258,7 +258,7 @@ set(MCUX_INCLUDE_DIRS
 
 set(MCUX_C_FLAGS
     "-std=gnu99"
-    "-O0"
+    "-O2"
     "-fno-common"
     "-g3"
     "-gdwarf-4"
@@ -317,17 +317,4 @@ set(MCUX_LIBRARIES
 )
 
 set(MCUX_SOURCE_OPTIONS_CODE [=[
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/Fonts/FONT_10_14_1BPP.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/Fonts/FONT_3_5_1BPP.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/Fonts/FONT_5_7_1BPP.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/Utilities/eGFX_BMP.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_Animator.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_Blit.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_PixelOps.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_Plane.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_PrimitiveOps.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/../../common/egfx/src/Core/eGFX_StringOps.c" APPEND PROPERTY COMPILE_OPTIONS "-O3" "-flto" "-ffat-lto-objects")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/source/main.c" APPEND PROPERTY COMPILE_OPTIONS "-O3")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/source/nxpc__line_processor.c" APPEND PROPERTY COMPILE_OPTIONS "-O3")
-set_property(SOURCE "${MCUX_PROJECT_ROOT}/source/nxpc_io/eGFX_Driver_ER-TFT020-3.c" APPEND PROPERTY COMPILE_OPTIONS "-O3")
 ]=])

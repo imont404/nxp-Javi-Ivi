@@ -1,9 +1,7 @@
-#include "e.h"
-
 #ifndef NXPC__IO_H_
 #define NXPC__IO_H_
 
-
+#include "e.h"
 #include "nxpc__master_config.h"
 #include "fsl_debug_console.h"
 #include "pin_mux.h"
@@ -15,13 +13,11 @@
 #include "fsl_lpuart.h"
 #include "ipc.h"
 #include "fsl_lpspi_edma.h"
-#include "e.h"
 #include "button.h"
 
 #include "st7789.h"
 #include "lpspi1.h"
 #include "eGFX_Driver_ER-TFT020-3.h"
-#include "assets/Sprites_16BPP_RGB565.h"
 
 #include "nxpc__adc.h"
 #include "nxpc__motor_control.h"
@@ -38,8 +34,6 @@
 
 extern byte_queue_t UART4_TX_Q;
 extern byte_queue_t UART4_RX_Q;
-
-extern button_t left_btn, right_btn, center_btn;
 
 void nxpc__init();
 

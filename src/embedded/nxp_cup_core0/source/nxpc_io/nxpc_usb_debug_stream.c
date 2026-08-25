@@ -48,7 +48,7 @@
 #define NXPC_USB_LOG_CATEGORY_MAX_BYTES (15U)
 #define NXPC_USB_LOG_TEXT_MAX_BYTES (160U)
 #define NXPC_USB_TELEMETRY_QUEUE_DEPTH (16U)
-#define NXPC_USB_TELEMETRY_FRAMEWORK_RESERVE (6U)
+#define NXPC_USB_TELEMETRY_FRAMEWORK_RESERVE (7U)
 #define NXPC_USB_TELEMETRY_PARTICIPANT_LIMIT \
     (NXPC_USB_TELEMETRY_QUEUE_DEPTH - NXPC_USB_TELEMETRY_FRAMEWORK_RESERVE)
 #define NXPC_USB_TELEMETRY_NAME_MAX_BYTES (31U)
@@ -578,6 +578,7 @@ static bool nxpc_usb_debug_stream__framework_telemetry_name(const char *name)
         "steering.command",
         "system.mode",
         "system.state",
+        "system.test_page",
     };
 
     for (uint32_t index = 0U; index < (sizeof(protectedNames) / sizeof(protectedNames[0])); index++)

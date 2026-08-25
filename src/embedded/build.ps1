@@ -20,13 +20,21 @@ try {
     }
 
     Write-Host "Building NXP Cup competition firmware..." -ForegroundColor Cyan
-    & cmake --build --preset $preset
+    $buildArguments = @("--build", "--preset", $preset)
+    if ($Clean) {
+        $buildArguments += "--clean-first"
+    }
+    & cmake @buildArguments
     if ($LASTEXITCODE -ne 0) {
         throw "CMake build failed with exit code $LASTEXITCODE"
     }
 } finally {
     Pop-Location
 }
+
+$compileCommands = Join-Path $repoRoot "out\build\embedded\competition\compile_commands.json"
+$flagCheck = Join-Path $PSScriptRoot "tools\maintainer\check_compile_flags.ps1"
+& $flagCheck -CompileCommands $compileCommands -ExpectedOptimization "-O2"
 
 $output = Join-Path $repoRoot "out\build\embedded\competition\nxp_cup_core0.axf"
 if (-not (Test-Path -LiteralPath $output)) {

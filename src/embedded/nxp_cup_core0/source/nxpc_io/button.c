@@ -1,252 +1,187 @@
 #include "button.h"
+
+#include <stddef.h>
+
+#include "fsl_common.h"
 #include "fsl_gpio.h"
-#include "MCXN947_cm33_core0.h"
 
 typedef enum
 {
-    
-    BUTTON_STATE_WAIT_FOR_PRESS                        =     0,
-    BUTTON_STATE_WAIT_FOR_WAIT_FOR_PRESS_STABLE        =     1,
-    BUTTON_STATE_WAIT_FOR_RELEASE                     =      2,
-    BUTTON_STATE_WAIT_FOR_STABLE                       =     3,
-    BUTTON_STATE_WAIT_FOR_STABLE_GENERATE_NO_CODES    =      4
+    BUTTON_DEBOUNCE_WAIT_FOR_PRESS = 0,
+    BUTTON_DEBOUNCE_PRESS_STABLE,
+    BUTTON_DEBOUNCE_WAIT_FOR_RELEASE,
+    BUTTON_DEBOUNCE_RELEASE_STABLE
+} button_debounce_state_t;
 
-} button_state_t;
-
-#ifndef NULL
-    #define NULL 0
-#endif
-
-
-void button__init(button_t *B,
-                  uint8_t io_port,
-                  uint8_t bit,
-                  uint8_t polarity,
-                  uint8_t debounce_time_ms
-                  )
+typedef struct
 {
-    if(B!=NULL)
-    {
+    uint8_t io_port;
+    uint8_t io_bit;
+    uint8_t polarity;
+    uint32_t debounce_time_ms;
+    uint32_t debounce_timer_ms;
+    uint32_t hold_time_ms;
+    button_debounce_state_t state;
+    volatile bool held;
+    volatile bool release_pending;
+    volatile uint32_t press_sequence;
+    volatile uint32_t release_sequence;
+    volatile uint32_t release_hold_ms;
+} button_t;
 
-        B->io_port = io_port;
-        B->io_bit = bit;
-        B->polarity = polarity;
-        B->debounce_time_ms = debounce_time_ms;
-        B->down = 0;
-        B->up = 0;
-        B->hold_time = 0;
+static button_t g_buttons[BUTTON_ID_COUNT];
 
-        B->state = BUTTON_STATE_WAIT_FOR_PRESS;
-        B->debounce_timer = 0;
-    }
-}
- 
-uint32_t button__hal(button_t *B)
+static bool button__valid_id(button_id_t id)
 {
-   uint32_t output;
-   uint32_t p;
-     
-   output = button__hal_read_port_pin(B->io_port,B->io_bit); 
-
-   if(B->polarity == BUTTON_POLARITY_LOW_ACTIVE)
-    {
-        if(output > 0)
-        {
-            p = BUTTON_NOT_PRESSED;
-        }
-        else
-        {
-            p = BUTTON_PRESSED;
-        }
-    }
-    else
-    {
-        if(output == 0)
-        {
-            p = BUTTON_NOT_PRESSED;
-        }
-        else
-        {
-            p = BUTTON_PRESSED;
-        }
-    }
-
-  return p;
-
+    return ((uint32_t)id < (uint32_t)BUTTON_ID_COUNT);
 }
 
-void button__process(button_t *B, uint32_t process_time_ms)
+static bool button__read_pin(const button_t *button)
 {
+    uint32_t pin_high = 0U;
 
-    switch(B->state)
+    if (button->io_port == 3U)
     {
-        default:
-        case BUTTON_STATE_WAIT_FOR_PRESS:
+        pin_high = GPIO_PinRead(GPIO3, button->io_bit);
+    }
 
-            if(button__hal(B) == BUTTON_PRESSED)
-            {
-                B->state = BUTTON_STATE_WAIT_FOR_WAIT_FOR_PRESS_STABLE;
-                B->debounce_timer = 0;
-            }
+    if (button->polarity == BUTTON_POLARITY_LOW_ACTIVE)
+    {
+        return (pin_high == 0U);
+    }
+    return (pin_high != 0U);
+}
 
+static void button__process_one(button_t *button, uint32_t process_time_ms)
+{
+    bool pressed = button__read_pin(button);
+
+    switch (button->state)
+    {
+    case BUTTON_DEBOUNCE_WAIT_FOR_PRESS:
+        if (pressed)
+        {
+            button->debounce_timer_ms = 0U;
+            button->state = BUTTON_DEBOUNCE_PRESS_STABLE;
+        }
+        break;
+
+    case BUTTON_DEBOUNCE_PRESS_STABLE:
+        if (!pressed)
+        {
+            button->state = BUTTON_DEBOUNCE_WAIT_FOR_PRESS;
             break;
+        }
 
-        case BUTTON_STATE_WAIT_FOR_WAIT_FOR_PRESS_STABLE:
+        button->debounce_timer_ms += process_time_ms;
+        if (button->debounce_timer_ms >= button->debounce_time_ms)
+        {
+            button->hold_time_ms = button->debounce_timer_ms;
+            button->held = true;
+            button->press_sequence++;
+            button->state = BUTTON_DEBOUNCE_WAIT_FOR_RELEASE;
+        }
+        break;
 
-            if(button__hal(B) == BUTTON_PRESSED)
+    case BUTTON_DEBOUNCE_WAIT_FOR_RELEASE:
+        if (pressed)
+        {
+            if (button->hold_time_ms <= (UINT32_MAX - process_time_ms))
             {
-                B->debounce_timer += process_time_ms;
-
-                if(B->debounce_timer > B->debounce_time_ms)
-                {
-                    B->state = BUTTON_STATE_WAIT_FOR_RELEASE;
-                    B->hold_time = B->debounce_timer;
-                    B->down = true;
-                }
+                button->hold_time_ms += process_time_ms;
             }
-
             else
             {
-                B->state = BUTTON_STATE_WAIT_FOR_PRESS;
+                button->hold_time_ms = UINT32_MAX;
             }
-
             break;
+        }
 
-        case BUTTON_STATE_WAIT_FOR_RELEASE:
+        button->debounce_timer_ms = 0U;
+        button->state = BUTTON_DEBOUNCE_RELEASE_STABLE;
+        break;
 
-            if(button__hal(B) == BUTTON_PRESSED)
-            {
-                if(B->hold_time<0xFFFFFFFF)
-                    B->hold_time += process_time_ms;
-            }
-
-            else
-            {
-            
-                B->state = BUTTON_STATE_WAIT_FOR_STABLE;
-                B->debounce_timer = 0;
-            }
-
+    case BUTTON_DEBOUNCE_RELEASE_STABLE:
+    default:
+        if (pressed)
+        {
+            button->debounce_timer_ms = 0U;
+            button->state = BUTTON_DEBOUNCE_WAIT_FOR_RELEASE;
             break;
+        }
 
-        case BUTTON_STATE_WAIT_FOR_STABLE:
-
-            if(button__hal(B) == BUTTON_NOT_PRESSED)
-            {
-
-                B->debounce_timer+= process_time_ms;
-
-                if(B->debounce_timer > B->debounce_time_ms)
-                {
-                    B->state = BUTTON_STATE_WAIT_FOR_PRESS;
-                    B->up = true;
-
-                }
-            }
-
-            else
-            {
-                B->debounce_timer = 0;
-            }
-
-            break;
-
-        case BUTTON_STATE_WAIT_FOR_STABLE_GENERATE_NO_CODES:
-
-                if(button__hal(B) == BUTTON_NOT_PRESSED)
-                {
-                    B->debounce_timer += process_time_ms;
-
-                    if(B->debounce_timer > B->debounce_time_ms)
-                    {
-                        B->state = BUTTON_STATE_WAIT_FOR_PRESS;
-                    }
-                }
-                else
-                {
-                    B->debounce_timer = 0;
-                }
-            break;
-
-
+        button->debounce_timer_ms += process_time_ms;
+        if (button->debounce_timer_ms >= button->debounce_time_ms)
+        {
+            button->held = false;
+            button->release_hold_ms = button->hold_time_ms;
+            button->release_sequence++;
+            button->state = BUTTON_DEBOUNCE_WAIT_FOR_PRESS;
+        }
+        break;
     }
 
+    /*
+     * A transition must suppress the eventual release even when the press is
+     * still inside its debounce window. Keep this separate from participant-
+     * facing held, which remains true only after a qualified press.
+     */
+    button->release_pending = pressed || (button->state != BUTTON_DEBOUNCE_WAIT_FOR_PRESS);
 }
 
-uint32_t button__is_active(button_t *B)
+void button__configure(button_id_t id, uint8_t io_port, uint8_t io_bit, uint8_t polarity,
+                       uint32_t debounce_time_ms)
 {
-    if(B->state == BUTTON_STATE_WAIT_FOR_RELEASE)
-        return true;
-    else
-        return false;
-}
+    button_t *button;
 
-uint32_t button__down(button_t *B)
-{
-    uint32_t P = 0;
-
-    if(B->down == true)
+    if (!button__valid_id(id))
     {
-        P = true;
-        B->down = false;
+        return;
     }
 
-    return P;
+    button = &g_buttons[id];
+    button->io_port = io_port;
+    button->io_bit = io_bit;
+    button->polarity = polarity;
+    button->debounce_time_ms = debounce_time_ms;
+    button->debounce_timer_ms = 0U;
+    button->hold_time_ms = 0U;
+    button->state = BUTTON_DEBOUNCE_WAIT_FOR_PRESS;
+    button->held = false;
+    button->release_pending = false;
+    button->press_sequence = 0U;
+    button->release_sequence = 0U;
+    button->release_hold_ms = 0U;
 }
 
-uint32_t button__up(button_t *B)
+void button__process_all(uint32_t process_time_ms)
 {
-    uint32_t P = 0;
+    uint32_t index;
 
-    if(B->up == true)
+    for (index = 0U; index < (uint32_t)BUTTON_ID_COUNT; index++)
     {
-        P = B->hold_time;
-        B->up = false;
+        button__process_one(&g_buttons[index], process_time_ms);
     }
-   
-    return P;
 }
 
-void button__programmatic_down(button_t *B)
+void button__snapshot(button_snapshot_t *snapshot)
 {
-    B->state = BUTTON_STATE_WAIT_FOR_RELEASE;
-    B->hold_time = 0;
-    B->down = true;
+    uint32_t index;
+    uint32_t interrupt_state;
 
-}
-
-void button__programmatic_up(button_t *B)
-{
-    B->state = BUTTON_STATE_WAIT_FOR_PRESS;
-    B->up = true;
-}
-
-uint32_t button__get_current_hold_time(button_t *B)
-{
-    uint32_t P = 0;
-
-    if(B->state == BUTTON_STATE_WAIT_FOR_RELEASE)
+    if (snapshot == NULL)
     {
-            P = B->hold_time;
+        return;
     }
 
-    return P;
-}
-
-void button__reset_state(button_t *B)
-{
-        B->state = BUTTON_STATE_WAIT_FOR_STABLE_GENERATE_NO_CODES;
-        B->up = 0;
-        B->down = 0;
-        B->hold_time = 0;
-}
-
-
-// Probably a brute implementation, but not to modify a lot of code
-uint32_t button__hal_read_port_pin(uint8_t io_port, uint8_t io_bit){
-
-    if(io_port == 3)
-        return  GPIO_PinRead(GPIO3, io_bit);
-
-    return 0;
+    interrupt_state = DisableGlobalIRQ();
+    for (index = 0U; index < (uint32_t)BUTTON_ID_COUNT; index++)
+    {
+        snapshot->button[index].held = g_buttons[index].held;
+        snapshot->button[index].release_pending = g_buttons[index].release_pending;
+        snapshot->button[index].press_sequence = g_buttons[index].press_sequence;
+        snapshot->button[index].release_sequence = g_buttons[index].release_sequence;
+        snapshot->button[index].release_hold_ms = g_buttons[index].release_hold_ms;
+    }
+    EnableGlobalIRQ(interrupt_state);
 }

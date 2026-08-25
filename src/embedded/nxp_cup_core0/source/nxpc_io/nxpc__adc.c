@@ -8,38 +8,35 @@
 #include "fsl_inputmux.h"
 
 // ******************* ADC0 required channels *******************
-#define BATT_ADC_CHANNEL    0U
-#define ALPHA_ADC_CHANNEL   14U
-#define BETA_ADC_CHANNEL    10U
-#define GAMMA_ADC_CHANNEL   13U
+#define BATT_ADC_CHANNEL 0U
+#define ALPHA_ADC_CHANNEL 14U
+#define BETA_ADC_CHANNEL 10U
+#define GAMMA_ADC_CHANNEL 13U
 
-#define LPADC_VREF_SOURCE           kLPADC_ReferenceVoltageAlt3
-#define VREF_BASE                   VREF0
+#define LPADC_VREF_SOURCE kLPADC_ReferenceVoltageAlt3
+#define VREF_BASE VREF0
 
-#define ADC_MAX_VALUE   4095
-
+#define ADC_MAX_VALUE 4095
 
 // *************************** CTIMER ***************************
-#define CTIMER          CTIMER0         /* Timer 0 */
-#define CTIMER_MAT_OUT  kCTIMER_Match_3 /* Match output 0 */
-#define CTIMER_EMT_OUT  (1u << kCTIMER_Match_3)
+#define CTIMER CTIMER0                 /* Timer 0 */
+#define CTIMER_MAT_OUT kCTIMER_Match_3 /* Match output 0 */
+#define CTIMER_EMT_OUT (1u << kCTIMER_Match_3)
 #define CTIMER_CLK_FREQ CLOCK_GetCTimerClkFreq(0U)
 
+static ctimer_config_t config;
+static ctimer_match_config_t matchConfig;
+static lpadc_conv_result_t mLpadcResultConfigStruct;
 
-
-ctimer_config_t config;
-ctimer_match_config_t matchConfig;
-lpadc_conv_result_t mLpadcResultConfigStruct;
-
-const uint32_t g_LpadcFullRange   = 4096U;
+const uint32_t g_LpadcFullRange = 4096U;
 const uint32_t g_LpadcResultShift = 3U;
 
 #define FILTER_SIZE 16
-uint16_t adc_values [4][FILTER_SIZE];
-uint32_t filter_idx[4];
+/* Written by ADC0_IRQHandler and sampled by foreground code. */
+static volatile uint16_t adc_values[NUM_ADC_CH][FILTER_SIZE];
+static uint32_t filter_idx[NUM_ADC_CH];
 
-
-void nxpc__adc_init()
+void nxpc__adc_init(void)
 {
     lpadc_config_t mLpadcConfigStruct;
     lpadc_conv_trigger_config_t mLpadcTriggerConfigStruct;
@@ -54,13 +51,12 @@ void nxpc__adc_init()
     CLOCK_SetClkDiv(kCLOCK_DivCtimer0Clk, 1u);
     CLOCK_AttachClk(kFRO_HF_to_CTIMER0);
 
-
-     /* enable VREF */
+    /* enable VREF */
     SPC_EnableActiveModeAnalogModules(SPC0, kSPC_controlVref);
     VREF_GetDefaultConfig(&vrefConfig);
     vrefConfig.bufferMode = kVREF_ModeBandgapOnly;
-    VREF_Init(VREF_BASE, &vrefConfig);     // The VREF module is only used to supply the bias current for LPADC
-
+    VREF_Init(VREF_BASE,
+              &vrefConfig); // The VREF module is only used to supply the bias current for LPADC
 
     LPADC_GetDefaultConfig(&mLpadcConfigStruct);
     mLpadcConfigStruct.enableAnalogPreliminary = true;
@@ -68,9 +64,9 @@ void nxpc__adc_init()
     mLpadcConfigStruct.conversionAverageMode = kLPADC_ConversionAverage1024;
 
     LPADC_Init(ADC0, &mLpadcConfigStruct);
-    LPADC_DoOffsetCalibration(ADC0); /* Request offset calibration, automatic update OFSTRIM register. */
+    LPADC_DoOffsetCalibration(
+        ADC0); /* Request offset calibration, automatic update OFSTRIM register. */
     LPADC_DoAutoCalibration(ADC0);
-
 
     /* Set conversion CMD configuration. */
     LPADC_GetDefaultConvCommandConfig(&mLpadcCommandConfigStruct[0]);
@@ -97,27 +93,25 @@ void nxpc__adc_init()
     LPADC_SetConvCommandConfig(ADC0, 3, &mLpadcCommandConfigStruct[BETA_ADC_CH]);
     LPADC_SetConvCommandConfig(ADC0, 4, &mLpadcCommandConfigStruct[GAMMA_ADC_CH]);
 
-
-    // Set trigger configuration. 
+    // Set trigger configuration.
     LPADC_GetDefaultConvTriggerConfig(&mLpadcTriggerConfigStruct);
-    mLpadcTriggerConfigStruct.targetCommandId       = 1;
+    mLpadcTriggerConfigStruct.targetCommandId = 1;
     mLpadcTriggerConfigStruct.enableHardwareTrigger = 1;
-    LPADC_SetConvTriggerConfig(ADC0, 0U, &mLpadcTriggerConfigStruct); 
+    LPADC_SetConvTriggerConfig(ADC0, 0U, &mLpadcTriggerConfigStruct);
 
     // ADC enable interrupts
     LPADC_EnableInterrupts(ADC0, kLPADC_FIFOWatermarkInterruptEnable);
     EnableIRQ(ADC0_IRQn);
 
-
     CTIMER_GetDefaultConfig(&config);
     CTIMER_Init(CTIMER, &config);
 
     matchConfig.enableCounterReset = true;
-    matchConfig.enableCounterStop  = false;
-    matchConfig.matchValue         = CTIMER_CLK_FREQ / 250 / 2;
-    matchConfig.outControl         = kCTIMER_Output_Toggle;
-    matchConfig.outPinInitState    = true;
-    matchConfig.enableInterrupt    = false;
+    matchConfig.enableCounterStop = false;
+    matchConfig.matchValue = CTIMER_CLK_FREQ / 250 / 2;
+    matchConfig.outControl = kCTIMER_Output_Toggle;
+    matchConfig.outPinInitState = true;
+    matchConfig.enableInterrupt = false;
     CTIMER_SetupMatch(CTIMER, CTIMER_MAT_OUT, &matchConfig);
     CTIMER_StartTimer(CTIMER);
 
@@ -125,59 +119,70 @@ void nxpc__adc_init()
     INPUTMUX_AttachSignal(INPUTMUX, 0, kINPUTMUX_Ctimer0M3ToAdc0Trigger);
 }
 
-#define ADC_NORMALIZE(x) (1.0f  - (((float)(x)/(float)ADC_MAX_VALUE)))
+#define ADC_NORMALIZE(x) (1.0f - (((float)(x) / (float)ADC_MAX_VALUE)))
 
-
-uint32_t filter_channel(uint32_t ch)
+static uint32_t filter_channel(adc_channels_e channel)
 {
-	uint32_t sum=0;
-	for(int i=0;i<FILTER_SIZE;i++)
-	{
-		sum+=adc_values[ch][i];
-	}
+    uint32_t interrupt_state;
+    uint32_t sum = 0U;
 
-	return sum/FILTER_SIZE;
+    /* Take one coherent rolling-window snapshot. The 16 reads keep this
+     * critical section
+     * bounded while preventing O2 from caching ISR data. */
+    interrupt_state = DisableGlobalIRQ();
+    for (uint32_t i = 0U; i < FILTER_SIZE; i++)
+    {
+        sum += adc_values[channel][i];
+    }
+    EnableGlobalIRQ(interrupt_state);
+
+    return sum / FILTER_SIZE;
 }
 // Return a [0 to 1.0]
-float nxpc__read_alpha()
+float nxpc__read_alpha(void)
 {
     return ADC_NORMALIZE(filter_channel(ALPHA_ADC_CH));
 }
 
 // Return a [0 to 1.0]
-float nxpc__read_beta()
+float nxpc__read_beta(void)
 {
-	 return ADC_NORMALIZE(filter_channel(BETA_ADC_CH));
+    return ADC_NORMALIZE(filter_channel(BETA_ADC_CH));
 }
 
 // Return a [0 to 1.0]
-float nxpc__read_gamma()
+float nxpc__read_gamma(void)
 {
-	 return ADC_NORMALIZE(filter_channel(GAMMA_ADC_CH));
+    return ADC_NORMALIZE(filter_channel(GAMMA_ADC_CH));
 }
 
-uint16_t nxpc__read_battery_voltage()
+uint16_t nxpc__read_battery_voltage(void)
 {
     uint16_t v_adc;
     uint16_t v_batt;
 
-    v_adc = (filter_channel(BATT_ADC_CH)  *  330) / 4095;  // Adc voltage multiplied by 100
+    v_adc = (filter_channel(BATT_ADC_CH) * 330) / 4095; // Adc voltage multiplied by 100
     v_batt = v_adc * 11;                                // Because of voltag divider
 
     return v_batt;
 }
 
-
 void ADC0_IRQHandler(void)
 {
-	uint32_t ch;
-    if(LPADC_GetConvResult(ADC0, &mLpadcResultConfigStruct, 0))
+    uint32_t channel;
+    if (LPADC_GetConvResult(ADC0, &mLpadcResultConfigStruct, 0))
     {
-    	ch = mLpadcResultConfigStruct.commandIdSource - 1;
-        adc_values[ch][filter_idx[ch]] = ((mLpadcResultConfigStruct.convValue) >> g_LpadcResultShift);
-        filter_idx[ch]++;
-        if(filter_idx[ch]>=FILTER_SIZE)
-        	filter_idx[ch]=0;
+        channel = mLpadcResultConfigStruct.commandIdSource - 1U;
+        if (channel < NUM_ADC_CH)
+        {
+            adc_values[channel][filter_idx[channel]] =
+                (uint16_t)(mLpadcResultConfigStruct.convValue >> g_LpadcResultShift);
+            filter_idx[channel]++;
+            if (filter_idx[channel] >= FILTER_SIZE)
+            {
+                filter_idx[channel] = 0U;
+            }
+        }
     }
 
     SDK_ISR_EXIT_BARRIER;
