@@ -21,6 +21,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <filesystem>
 #include <functional>
 #include <mutex>
 #include <stdexcept>
@@ -705,6 +706,50 @@ void choose_firmware_image(std::array<char, 1024> &path)
     (void)GetOpenFileNameA(&dialog);
 }
 
+std::string default_firmware_image_path()
+{
+    namespace fs = std::filesystem;
+    const fs::path published_image =
+        fs::path("out") / "artifacts" / "embedded" / "nxp_cup_core0.bin";
+
+    std::error_code error;
+    const fs::path working_directory = fs::current_path(error);
+    if (!error)
+    {
+        const fs::path candidate = working_directory / published_image;
+        if (fs::is_regular_file(candidate, error) && !error)
+        {
+            return candidate.string();
+        }
+    }
+
+    std::array<char, 32768> executable_path{};
+    const DWORD path_length = GetModuleFileNameA(
+        nullptr, executable_path.data(), static_cast<DWORD>(executable_path.size()));
+    if ((path_length > 0u) && (path_length < executable_path.size()))
+    {
+        fs::path directory = fs::path(executable_path.data()).parent_path();
+        for (size_t level = 0u; level < 8u; ++level)
+        {
+            error.clear();
+            const fs::path candidate = directory / published_image;
+            if (fs::is_regular_file(candidate, error) && !error)
+            {
+                return candidate.string();
+            }
+
+            const fs::path parent = directory.parent_path();
+            if (parent == directory)
+            {
+                break;
+            }
+            directory = parent;
+        }
+    }
+
+    return published_image.string();
+}
+
 int viewer_main(const Options &options)
 {
     SDL_SetMainReady();
@@ -775,10 +820,11 @@ int viewer_main(const Options &options)
     std::vector<uint8_t> rgba;
     nxpc::host::Frame display_frame;
     std::array<char, 1024> image_path{};
+    const std::string default_image = default_firmware_image_path();
     std::snprintf(image_path.data(),
                   image_path.size(),
                   "%s",
-                  "out\\build\\embedded\\competition\\nxp_cup_core0.bin");
+                  default_image.c_str());
     bool erase_confirmation = false;
     double stream_fps = 0.0;
     uint64_t rate_frame_count = 0u;

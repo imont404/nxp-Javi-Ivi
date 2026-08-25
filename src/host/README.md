@@ -21,11 +21,14 @@ Useful commands:
 .\out\artifacts\host\nxpc_tool.exe selftest
 .\out\artifacts\host\nxpc_tool.exe devices
 .\out\artifacts\host\nxpc_tool.exe probe --frame --seconds 3
+.\out\artifacts\host\nxpc_tool.exe program --image .\out\artifacts\embedded\nxp_cup_core0.bin
 .\out\artifacts\host\nxpc_viewer.exe --test-seconds 5
 ```
 
 The viewer test command expects a connected telemetry device; the CLI
-`selftest` is the bench-free host smoke test.
+`selftest` is the bench-free host smoke test. The viewer's firmware field
+automatically resolves the published embedded image even when the viewer is
+launched from `out\artifacts\host` instead of the repository root.
 
 Create a timestamped portable zip with:
 

@@ -13,6 +13,7 @@ FIRMWARE_BUILD = REPO / "src/embedded/build.ps1"
 HOST_BUILD = REPO / "src/host/build.ps1"
 ANDROID_BUILD = REPO / "src/android/build.ps1"
 ANDROID_TOOL_BUILD = REPO / "src/android/tools/build-project.ps1"
+HOST_VIEWER = REPO / "src/host/nxpc_viewer.cpp"
 ANDROID_RELAY_VIEWER = (
     REPO / "src/android/nxp_cup_bridge/app/src/main/res/raw/relay_viewer.html"
 )
@@ -60,6 +61,13 @@ def test_component_builds_publish_under_out():
     assert '"nxp_cup_bridge.apk"' in android
     assert "app-debug.apk" in android
     assert "out/" in ignore
+
+
+def test_host_viewer_uses_published_firmware_location():
+    viewer = HOST_VIEWER.read_text(encoding="utf-8")
+    assert 'fs::path("out") / "artifacts" / "embedded" / "nxp_cup_core0.bin"' in viewer
+    assert "GetModuleFileNameA" in viewer
+    assert "out\\build\\embedded\\competition\\nxp_cup_core0.bin" not in viewer
 
 
 def test_android_build_uses_provisioned_gradle_and_supports_offline_builds():
