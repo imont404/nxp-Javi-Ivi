@@ -13,6 +13,7 @@ REPO = Path(__file__).resolve().parents[2]
 
 PRESETS = REPO / "src/embedded/CMakePresets.json"
 SOURCE_LIST = REPO / "src/embedded/nxp_cup_core0/cmake/mcuxpresso_debug.cmake"
+PROJECT_CMAKE = REPO / "src/embedded/nxp_cup_core0/CMakeLists.txt"
 LINK_DIR = REPO / "src/embedded/nxp_cup_core0/link"
 VENDORED_HEADER = REPO / "src/embedded/nxp_cup_core0/source/shared/cr_section_macros.h"
 
@@ -41,6 +42,14 @@ def test_source_list_is_self_contained():
         and re.search(r"(?i)(c:/nxp|mcuxpressoide_)", line)
     ]
     assert not offenders, f"source list references an MCUXpresso install path: {offenders}"
+
+
+def test_student_app_c_files_are_discovered_automatically():
+    text = PROJECT_CMAKE.read_text(encoding="utf-8")
+    assert "file(GLOB NXPC_APP_SOURCES CONFIGURE_DEPENDS" in text
+    assert 'source/app/*.c' in text
+    assert "list(APPEND MCUX_SOURCES ${NXPC_APP_SOURCES})" in text
+    assert "list(APPEND MCUX_C_SOURCES ${NXPC_APP_SOURCES})" in text
 
 
 def test_vendored_header_present():

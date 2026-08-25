@@ -3,6 +3,10 @@
 
 #include <stdbool.h>
 
+#include "button.h"
+
+#define NXPC_SYSTEM_CAMERA_FRESH_MS (250U)
+
 typedef enum
 {
     NXPC_SYSTEM_MODE_STARTUP = 0,
@@ -12,6 +16,14 @@ typedef enum
     NXPC_SYSTEM_MODE_ENTERING_ISP,
     NXPC_SYSTEM_MODE_SAFE_FAULT
 } nxpc_system_mode_t;
+
+typedef enum
+{
+    NXPC_TEST_PAGE_CAMERA_IO = 0,
+    NXPC_TEST_PAGE_VISION,
+    NXPC_TEST_PAGE_MOTORS,
+    NXPC_TEST_PAGE_COUNT
+} nxpc_test_page_t;
 
 typedef enum
 {
@@ -64,7 +76,11 @@ typedef enum
 void nxpc_system__init(void);
 
 /* Advance bounded mode transitions and enforce safe actuator transitions. */
-void nxpc_system__service(void);
+void nxpc_system__service(const button_snapshot_t *buttons);
+
+/* Framework-only TEST page transition. Hardware is made safe before page changes. */
+bool nxpc_system__select_test_page(nxpc_test_page_t page,
+                                   const button_snapshot_t *buttons);
 
 /* Request a validated high-level action; callers cannot assign modes directly. */
 nxpc_system_action_result_t nxpc_system__request_action(nxpc_system_action_t action);
@@ -79,9 +95,13 @@ nxpc_system_mode_t nxpc_system__mode(void);
 nxpc_system_fault_t nxpc_system__fault(void);
 nxpc_system_state_t nxpc_system__state(void);
 bool nxpc_system__camera_frame_seen(void);
+bool nxpc_system__camera_live(void);
 bool nxpc_system__outputs_allowed(void);
 bool nxpc_system__test_outputs_armed(void);
 bool nxpc_system__test_arm_pending(void);
+nxpc_test_page_t nxpc_system__test_page(void);
+const char *nxpc_system__test_page_label(nxpc_test_page_t page);
+void nxpc_system__notify_test_motor_lease_expired(void);
 const char *nxpc_system__mode_label(nxpc_system_mode_t mode);
 const char *nxpc_system__state_label(nxpc_system_state_t state);
 

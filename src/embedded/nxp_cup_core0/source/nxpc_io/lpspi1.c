@@ -226,6 +226,8 @@ void lpspi1_transfer_block(void *block, uint32_t block_size)
 void lpspi1_transfer_byte(uint8_t next_byte)
 {
     lpspi1_transfer_block(&next_byte, 1);
+    /* DMA reads next_byte after submit, so its stack storage must stay alive. */
+    lpspi1_wait_idle();
 }
 
 /*

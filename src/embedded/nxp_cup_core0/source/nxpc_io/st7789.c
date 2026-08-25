@@ -1,4 +1,5 @@
 #include "st7789.h"
+#include "fsl_common.h"
 #include "fsl_gpio.h"
 #include "lpspi1.h"
 
@@ -257,12 +258,14 @@ void  Write_Data_U16(uint16_t y)
 
 	LCD_RS__SET;
 	lpspi1_transfer_block(&y, 2);
+	lpspi1_wait_idle();
 
 }
 
 inline void  Write_Data_U32(uint32_t y)
 {
 	lpspi1_transfer_block(&y, 4);
+	lpspi1_wait_idle();
 }
 //=============================================================
 //write command
@@ -282,6 +285,7 @@ void Write_Data(unsigned char DH,unsigned char DL)
 
 	LCD_RS__SET;
 	lpspi1_transfer_block(block, 2);
+	lpspi1_wait_idle();
 
 }
 
@@ -292,11 +296,11 @@ void Write_Data(unsigned char DH,unsigned char DL)
 //delay 
 void delayms(unsigned int count)
 {
-    int i,j;                                                                                
-    for(i=0;i<count;i++)                                                                    
-       {
-	     for(j=0;j<16000;j++);
-       }                                                                                     
+    while (count != 0U)
+    {
+        SDK_DelayAtLeastUs(1000U, SystemCoreClock);
+        count--;
+    }
 }
 
 
@@ -485,12 +489,14 @@ void ST7789__display_img(uint8_t * image_buff)
     {
         lpspi1_transfer_block(image_buff + (640 * i * 16), 320* 2 * 16);
     }
+    lpspi1_wait_idle();
 }
 
 void ST7789__display_row(uint8_t * image_buff, uint32_t row_size)
 {
 	LCD_RS__SET;
     lpspi1_transfer_block(image_buff, row_size * 2);
+    lpspi1_wait_idle();
 }
 	    
 void Enter_Sleep(void) 

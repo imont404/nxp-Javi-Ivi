@@ -23,9 +23,6 @@ BYTE_QUEUE__MAKE(UART4_RX_Q , CONFIG__NXPC_UART_TX_Q_SIZE_BYTES);
 
 
 
-button_t left_btn, right_btn, center_btn;
-
-
 void nxpc_io__uart_init();
 
 #if CONFIG__DISPLAY_TEST_MODE && !CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
@@ -205,13 +202,25 @@ void nxpc__init()
 
     nxpc_io__uart_init();
 
-    e__init();
+    button__configure(BUTTON_ID_LEFT,
+                      IN_PORT,
+                      LEFT_BTN_PIN,
+                      BUTTON_POLARITY_LOW_ACTIVE,
+                      50U);
+    button__configure(BUTTON_ID_RIGHT,
+                      IN_PORT,
+                      RIGHT_BTN_PIN,
+                      BUTTON_POLARITY_LOW_ACTIVE,
+                      50U);
+    button__configure(BUTTON_ID_CENTER,
+                      IN_PORT,
+                      CENTER_BTN_PIN,
+                      BUTTON_POLARITY_LOW_ACTIVE,
+                      50U);
+
+	e__init();
 
     MAILBOX_Init(MAILBOX);
-
-    button__init(&left_btn, IN_PORT, LEFT_BTN_PIN, BUTTON_POLARITY_LOW_ACTIVE, 50);
-    button__init(&right_btn, IN_PORT, RIGHT_BTN_PIN, BUTTON_POLARITY_LOW_ACTIVE, 50);
-    button__init(&center_btn, IN_PORT, CENTER_BTN_PIN, BUTTON_POLARITY_LOW_ACTIVE, 50);
 
     /* Print the initial banner from Primary core */
     (void)DEBUG("\r\nHello World from core 0!\r\n");

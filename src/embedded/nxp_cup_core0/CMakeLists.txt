@@ -4,6 +4,18 @@ project(nxp_cup_core0 C ASM)
 
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/mcuxpresso_debug.cmake")
 
+# Student application sources are intentionally plug-and-play. A new .c file
+# placed directly in source/app is compiled by the next normal build; matching
+# headers need no build-system entry. Replace the two checked-in app entries
+# from the captured MCUXpresso list so they are not compiled twice.
+file(GLOB NXPC_APP_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_LIST_DIR}/source/app/*.c"
+)
+list(FILTER MCUX_SOURCES EXCLUDE REGEX "/source/app/[^/]+\\.c$")
+list(FILTER MCUX_C_SOURCES EXCLUDE REGEX "/source/app/[^/]+\\.c$")
+list(APPEND MCUX_SOURCES ${NXPC_APP_SOURCES})
+list(APPEND MCUX_C_SOURCES ${NXPC_APP_SOURCES})
+
 # Sources owned by this repository rather than derived from MCUXpresso project
 # metadata. See source/shared/ for why each exists.
 set(NXPC_SHARED_SOURCES

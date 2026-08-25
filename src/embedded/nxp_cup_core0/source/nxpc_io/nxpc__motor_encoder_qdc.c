@@ -192,7 +192,14 @@ static void nxpc__motor_encoder_qdc_diag_set_motors(bool enable)
 void nxpc__motor_encoder_qdc_diag_run(void)
 {
     uint32_t last_report_ms = e_tick__get_ms();
+    uint32_t center_release_sequence;
+    bool suppress_center_release;
+    button_snapshot_t buttons;
     nxpc_motor_encoder_sample_t samples[NXPC_MOTOR_ENCODER_COUNT];
+
+    button__snapshot(&buttons);
+    center_release_sequence = buttons.button[BUTTON_ID_CENTER].release_sequence;
+    suppress_center_release = buttons.button[BUTTON_ID_CENTER].release_pending;
 
     nxpc__motor_encoder_qdc_zero();
     nxpc__motor_encoder_qdc_diag_set_motors(false);
@@ -229,10 +236,36 @@ void nxpc__motor_encoder_qdc_diag_run(void)
         }
 #endif
 
-        if (button__up(&center_btn))
+        button__snapshot(&buttons);
+        if (suppress_center_release)
         {
-            nxpc__motor_encoder_qdc_diag_set_motors(!s_diag_motors_enabled);
-            DEBUG("motor_encoder_diag motors=%u\r\n", s_diag_motors_enabled ? 1U : 0U);
+            if (!buttons.button[BUTTON_ID_CENTER].release_pending)
+            {
+                center_release_sequence =
+                    buttons.button[BUTTON_ID_CENTER].release_sequence;
+                suppress_center_release = false;
+            }
+        }
+        else
+        {
+            uint32_t release_delta =
+                buttons.button[BUTTON_ID_CENTER].release_sequence - center_release_sequence;
+
+            if (release_delta == 1U)
+            {
+                center_release_sequence =
+                    buttons.button[BUTTON_ID_CENTER].release_sequence;
+                nxpc__motor_encoder_qdc_diag_set_motors(!s_diag_motors_enabled);
+                DEBUG("motor_encoder_diag motors=%u\r\n", s_diag_motors_enabled ? 1U : 0U);
+            }
+            else if (release_delta != 0U)
+            {
+                center_release_sequence =
+                    buttons.button[BUTTON_ID_CENTER].release_sequence;
+                nxpc__motor_encoder_qdc_diag_set_motors(false);
+                DEBUG("motor_encoder_diag ambiguous center releases=%u; motors disabled\r\n",
+                      release_delta);
+            }
         }
 
         if (e_tick__timeout(&last_report_ms, CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS))

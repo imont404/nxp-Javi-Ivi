@@ -10,7 +10,9 @@ extern volatile bool mem_transfer_done;
 extern volatile bool request_frame_for_display;
 
 extern void lpspi1_init(uint8_t transaction_bits);
+/* Asynchronous: the source must remain unchanged until lpspi1_wait_idle(). */
 extern void lpspi1_transfer_block(void *block, uint32_t block_size);
+/* Synchronous because next_byte is local to the helper. */
 extern void lpspi1_transfer_byte(uint8_t next_byte);
 extern void lpspi1_wait_idle(void);
 extern void lpspi1_set_frame_size(uint8_t transaction_bits);
