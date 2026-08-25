@@ -93,6 +93,7 @@ HARNESS = r"""
 #include "nxpc_color.h"
 #include "nxpc__motor_encoder_qdc.h"
 #include "nxp_cup.h"
+#include "app/test_mode.h"
 
 void nxpc__next_frame(uint16_t *buffer);
 
@@ -322,13 +323,14 @@ static void complete_center_dwell(void)
     }
 }
 
-static void arm_actuators(void)
+static void arm_motors(uint16_t *frame)
 {
     alpha = 0.5f;
     beta = 0.5f;
     gamma = 0.5f;
     release_button(BUTTON_ID_CENTER);
     complete_center_dwell();
+    test_mode_on_frame(frame);
 }
 
 static int enter_race(uint16_t *frame)
@@ -526,11 +528,11 @@ int main(int argc, char **argv)
     nxpc_framework__select_test_page(NXPC_TEST_PAGE_CAMERA_IO);
 
     release_button(BUTTON_ID_LEFT);
-    if (nxpc_system__test_page() != NXPC_TEST_PAGE_ACTUATORS)
-        return fail("left did not wrap CAMERA / IO to ACTUATORS");
+    if (nxpc_system__test_page() != NXPC_TEST_PAGE_MOTORS)
+        return fail("left did not wrap CAMERA / IO to MOTORS");
     release_button(BUTTON_ID_RIGHT);
     if (nxpc_system__test_page() != NXPC_TEST_PAGE_CAMERA_IO)
-        return fail("right did not wrap ACTUATORS to CAMERA / IO");
+        return fail("right did not wrap MOTORS to CAMERA / IO");
 
     release_button(BUTTON_ID_RIGHT);
     if (nxpc_system__test_page() != NXPC_TEST_PAGE_VISION)
@@ -558,8 +560,8 @@ int main(int argc, char **argv)
 
     release_button(BUTTON_ID_RIGHT);
     release_button(BUTTON_ID_RIGHT);
-    if (nxpc_system__test_page() != NXPC_TEST_PAGE_ACTUATORS)
-        return fail("right did not wrap through VISION to ACTUATORS");
+    if (nxpc_system__test_page() != NXPC_TEST_PAGE_MOTORS)
+        return fail("right did not wrap through VISION to MOTORS");
 
     alpha = 0.5f;
     beta = 0.5f;
@@ -574,15 +576,20 @@ int main(int argc, char **argv)
         return fail("wrapped EXE release did not open arming");
     complete_center_dwell();
     if (!nxpc_system__outputs_allowed() || !motor_enabled)
-        return fail("ACTUATORS did not arm at centered controls");
+        return fail("MOTORS did not arm at centered controls");
     if (!near(motor_left, 0.0f) || !near(motor_right, 0.0f) || !near(servo_position, 0.0f))
-        return fail("first armed command was not neutral");
+        return fail("framework did not issue a neutral first armed command");
 
+    /* No frame is accepted here: moving the pots must not change the neutral
+     * hardware command until the student MOTORS callback actually runs. */
     alpha = 1.0f;
     beta = 1.0f;
     gamma = 0.0f;
     advance_ms(20U);
     nxpc_framework__service();
+    if (!near(motor_left, 0.0f) || !near(motor_right, 0.0f) || !near(servo_position, 0.0f))
+        return fail("off-center pots changed outputs before the first MOTORS frame");
+    test_mode_on_frame(&dummy_frame);
     if (!near(motor_left, 0.25f) || !near(motor_right, -0.25f))
         return fail("TEST motor cap or pot mapping failed");
     if (!near(servo_position, 1.0f))
@@ -596,20 +603,22 @@ int main(int argc, char **argv)
         return fail("lease expiry did not disarm and center TEST");
 
     nxpc_framework__service();
-    arm_actuators();
+    arm_motors(&dummy_frame);
     if (!nxpc_system__outputs_allowed())
         return fail("fresh EXE did not re-arm after expiry");
     inject_expiry_on_irq_disable = true;
     advance_ms(20U);
     nxpc_framework__service();
+    test_mode_on_frame(&dummy_frame);
     if (nxpc_system__outputs_allowed() || motor_enabled)
         return fail("transaction-boundary expiry renewed TEST without EXE");
 
     nxpc_framework__service();
-    arm_actuators();
+    arm_motors(&dummy_frame);
     alpha = 1.0f;
     advance_ms(20U);
     nxpc_framework__service();
+    test_mode_on_frame(&dummy_frame);
     record_transition_order = true;
     buttons.button[BUTTON_ID_CENTER].release_sequence++;
     buttons.button[BUTTON_ID_RIGHT].release_sequence++;
@@ -618,8 +627,8 @@ int main(int argc, char **argv)
     if ((nxpc_system__test_page() != NXPC_TEST_PAGE_CAMERA_IO) || motor_enabled ||
         !near(servo_position, 0.0f))
         return fail("page exit did not safe-stop before wrapping");
-    if ((page_seen_at_disable != NXPC_TEST_PAGE_ACTUATORS) ||
-        (page_seen_at_center != NXPC_TEST_PAGE_ACTUATORS))
+    if ((page_seen_at_disable != NXPC_TEST_PAGE_MOTORS) ||
+        (page_seen_at_center != NXPC_TEST_PAGE_MOTORS))
         return fail("safe outputs did not observe old page before mutation");
 
     release_button(BUTTON_ID_RIGHT);
@@ -701,10 +710,11 @@ def test_framework_transition_trace(tmp_path: Path):
             "-Werror",
             "-include",
             str(stub),
-            str(harness),
-            str(SOURCE / "nxpc_framework.c"),
-            str(SOURCE / "nxpc_system.c"),
-            f"-I{SOURCE}",
+                str(harness),
+                str(SOURCE / "nxpc_framework.c"),
+                str(SOURCE / "nxpc_system.c"),
+                str(SOURCE / "app/test_mode.c"),
+                f"-I{SOURCE}",
             f"-I{BUTTON_INCLUDE}",
             "-o",
             str(executable),

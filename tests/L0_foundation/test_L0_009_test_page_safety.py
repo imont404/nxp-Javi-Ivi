@@ -104,8 +104,8 @@ int main(void)
         return fail("negative TEST page was accepted");
 
     safe_stop_count = disable_count;
-    if (!nxpc_system__select_test_page(NXPC_TEST_PAGE_ACTUATORS, &buttons))
-        return fail("ACTUATORS page selection failed");
+    if (!nxpc_system__select_test_page(NXPC_TEST_PAGE_MOTORS, &buttons))
+        return fail("MOTORS page selection failed");
     if ((disable_count <= safe_stop_count) || (center_count == 0U))
         return fail("page transition did not safe-stop hardware first");
 
@@ -138,10 +138,10 @@ int main(void)
     release_exe(&buttons);
     nxpc_system__service(&buttons);
     if (nxpc_system__test_arm_pending())
-        return fail("EXE armed outside ACTUATORS");
+        return fail("EXE armed outside MOTORS");
 
-    if (!nxpc_system__select_test_page(NXPC_TEST_PAGE_ACTUATORS, &buttons))
-        return fail("ACTUATORS re-entry failed");
+    if (!nxpc_system__select_test_page(NXPC_TEST_PAGE_MOTORS, &buttons))
+        return fail("MOTORS re-entry failed");
     alpha = 0.8f;
     now_ms = 1000U;
     release_exe(&buttons);
@@ -320,9 +320,10 @@ def test_framework_caps_test_motors_and_clears_the_lease_before_page_change():
     )
 
 
-def test_navigation_is_frame_independent_and_vision_owns_the_participant_callback():
+def test_navigation_is_frame_independent_and_test_mode_owns_page_callbacks():
     framework = (SOURCE / "nxpc_framework.c").read_text(encoding="utf-8")
     main = (SOURCE / "main.c").read_text(encoding="utf-8")
+    test_mode = (SOURCE / "app/test_mode.c").read_text(encoding="utf-8")
     service = framework.split("void nxpc_framework__service(void)", 1)[1].split(
         "bool nxpc_framework__select_test_page", 1
     )[0]
@@ -338,7 +339,12 @@ def test_navigation_is_frame_independent_and_vision_owns_the_participant_callbac
     assert "(left_release != NXPC_RELEASE_NONE)" in framework
     assert "(right_release != NXPC_RELEASE_NONE)" in framework
     assert "nxpc__baseline_test_navigation();" in framework
-    assert "nxpc_system__test_page() == NXPC_TEST_PAGE_VISION" in main
+    assert main.count("test_mode_on_frame(frame);") == 1
+    assert "switch (test_mode_page())" in test_mode
+    assert "nxpc__apply_test_arming_transition();" in framework
+    assert "motors_set_duty(0.0f, 0.0f);" in framework
+    for handler in ("camera_io_on_frame", "vision_on_frame", "motors_on_frame"):
+        assert f"{handler}(frame);" in test_mode
 
 
 def test_camera_io_samples_without_frames_and_overlays_before_publication():
@@ -365,38 +371,48 @@ def test_camera_io_samples_without_frames_and_overlays_before_publication():
     )
 
 
-def test_vision_sandbox_has_no_actuator_commands_or_race_solution():
-    vision = (SOURCE / "app/test_mode.c").read_text(encoding="utf-8")
+def test_safe_pages_have_no_actuator_commands_or_race_solution():
+    test_mode = (SOURCE / "app/test_mode.c").read_text(encoding="utf-8")
+    camera_io = test_mode.split("static void camera_io_on_frame", 1)[1].split(
+        "static void vision_on_frame", 1
+    )[0]
+    vision = test_mode.split("static void vision_on_frame", 1)[1].split(
+        "static void motors_on_frame", 1
+    )[0]
 
-    assert "motors_set_duty(" not in vision
-    assert "motors_stop(" not in vision
-    assert "steering_set(" not in vision
+    for safe_page in (camera_io, vision):
+        assert "motors_set_duty(" not in safe_page
+        assert "motors_stop(" not in safe_page
+        assert "steering_set(" not in safe_page
     assert "frame_draw_vertical_line(" in vision
     assert "frame_fill_rectangle(" not in vision
     assert "frame_draw_text(" not in vision
     assert "not a lane" in vision.lower()
 
 
-def test_actuator_page_control_is_bounded_and_frame_independent():
+def test_motors_page_control_is_student_visible_and_framework_bounded():
     framework = (SOURCE / "nxpc_framework.c").read_text(encoding="utf-8")
-    service = framework.split("void nxpc_framework__service(void)", 1)[1].split(
-        "bool nxpc_framework__select_test_page", 1
-    )[0]
+    test_mode = (SOURCE / "app/test_mode.c").read_text(encoding="utf-8")
     finish = framework.split("void nxpc_framework__finish_frame", 1)[1].split(
         "color_features_t color_rgb565_to_yhsv", 1
     )[0]
-    actuator_service = framework.split("static void nxpc__test_actuator_service", 1)[1].split(
-        "static void nxpc__motor_lease_tick", 1
+    motors_status = framework.split("static void nxpc__test_motors_status_service", 1)[1].split(
+        "static nxpc_test_page_t nxpc__previous_test_page", 1
+    )[0]
+    motors_page = test_mode.split("static void motors_on_frame", 1)[1].split(
+        "void test_mode_on_frame", 1
     )[0]
 
-    assert "NXPC_TEST_ACTUATOR_CONTROL_MS (20U)" in framework
-    assert "nxpc_system__test_page() != NXPC_TEST_PAGE_ACTUATORS" in actuator_service
-    assert "motors_set_duty((alpha * 2.0f) - 1.0f" in actuator_service
-    assert "(gamma * 2.0f) - 1.0f" in actuator_service
-    assert "steering_set((beta * 2.0f) - 1.0f)" in actuator_service
-    assert service.index("nxpc_system__notify_test_motor_lease_expired();") < service.index(
-        "nxpc__test_actuator_service();"
-    )
+    assert "NXPC_TEST_MOTORS_STATUS_MS (20U)" in framework
+    assert "nxpc_system__test_page() != NXPC_TEST_PAGE_MOTORS" in motors_status
+    assert "motors_set_duty(" not in motors_status
+    assert "steering_set(" not in motors_status
+    assert "signed_input(input_alpha())" in motors_page
+    assert "signed_input(input_beta())" in motors_page
+    assert "signed_input(input_gamma())" in motors_page
+    assert "motors_set_duty(left, right);" in motors_page
+    assert "steering_set(steering);" in motors_page
+    assert "switch (test_mode_page())" in test_mode
     assert '"PRESS EXE TO TEST"' in framework
     assert '"L%+ld%%  S%+ld%%  R%+ld%%"' in framework
     assert "OUTPUTS SAFE" not in framework

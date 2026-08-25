@@ -370,7 +370,7 @@ void nxpc_system__service(const button_snapshot_t *buttons)
             return;
         }
 
-        if (g_nxpc_system.test_page != NXPC_TEST_PAGE_ACTUATORS)
+        if (g_nxpc_system.test_page != NXPC_TEST_PAGE_MOTORS)
         {
             if ((center_release != NXPC_CENTER_RELEASE_NONE) ||
                 g_nxpc_system.test_outputs_armed || g_nxpc_system.test_arm_pending)
@@ -602,7 +602,7 @@ bool nxpc_system__outputs_allowed(void)
 {
     return (g_nxpc_system.mode == NXPC_SYSTEM_MODE_RACE_RUNNING) ||
            ((g_nxpc_system.mode == NXPC_SYSTEM_MODE_TEST) &&
-            (g_nxpc_system.test_page == NXPC_TEST_PAGE_ACTUATORS) &&
+            (g_nxpc_system.test_page == NXPC_TEST_PAGE_MOTORS) &&
             g_nxpc_system.test_outputs_armed);
 }
 
@@ -641,7 +641,7 @@ const char *nxpc_system__test_page_label(nxpc_test_page_t page)
             return "CAMERA / IO";
         case NXPC_TEST_PAGE_VISION:
             return "VISION";
-        case NXPC_TEST_PAGE_ACTUATORS:
+        case NXPC_TEST_PAGE_MOTORS:
             return "MOTORS";
         default:
             return "UNKNOWN";

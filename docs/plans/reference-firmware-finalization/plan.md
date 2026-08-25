@@ -59,7 +59,7 @@ depends_on = ["test-page-navigation"]
 
 [[steps]]
 id = "test-vision-lab"
-title = "Invoke participant-owned test_mode.c only from motor-prohibited VISION as the editable camera-processing and overlay sandbox; defer its exact reference algorithm and pot meanings until organizer discussion"
+title = "Keep the three student-readable TEST handlers together in test_mode.c while VISION remains the editable camera-processing sandbox and framework-owned gates retain all motion authority"
 status = "done"
 depends_on = ["test-page-navigation"]
 
@@ -233,7 +233,7 @@ button release events move one page at a time and wrap across:
    until the organizer discussion; it must not become a completed lane detector,
    steering decision, PID controller, or race solution. Its second status row reports
    `ALGO x.xms / 41ms FRAME`; it does not add explanatory text over the image.
-3. MOTORS (`NXPC_TEST_PAGE_ACTUATORS` internally) demonstrates alpha as left
+3. MOTORS (`NXPC_TEST_PAGE_MOTORS` internally) demonstrates alpha as left
    motor, beta as steering, and gamma as right motor. EXE requests arming, all three pots must be centered before
    outputs become live, and framework telemetry plus QDC feedback make commands
    and measured wheel motion visible.
@@ -247,12 +247,13 @@ clears the command lease, centers steering, cancels pending arming, and requires
 fresh deliberate arm. The framework owns navigation and output permission; the
 participant callback cannot weaken them.
 
-Use real typed TEST substates for safety, presentation, and telemetry. The framework
-owns the TEST dispatcher plus CAMERA / IO and MOTORS implementations. Invoke the
-participant-owned `test_mode.c` callback only while `TEST_VISION` is selected; it is
-the single editable vision/overlay sandbox. Expose the selected page, if needed, as
-a read-only value. Participant code cannot select pages, arm outputs, or implement
-the hardware-check pages.
+Use real typed TEST substates for safety, presentation, and telemetry. The
+participant-owned `test_mode.c` callback contains a short read-only dispatcher
+with CAMERA / IO, VISION, and MOTORS handlers so the common input, telemetry,
+graphics, motor, and steering APIs remain visible together. The framework owns
+page selection, all status rendering, deliberate arming, the centered-pot
+interlock, TEST duty caps, the motor lease, and safe transitions. Participant
+code can read but cannot select the current page or weaken those gates.
 
 ## Buttons and participant inputs
 
@@ -322,13 +323,13 @@ entry always selects CAMERA / IO. `motors_set_duty()` and `steering_set()` rejec
 participant output throughout CAMERA / IO and VISION even if participant code
 calls them.
 
-The TEST control plane is frame-independent. `nxpc_framework__service()` processes
-navigation, EXE arming/disarming, safe transitions, and bounded dirty/status refresh
-even when the camera produces no frame. CAMERA / IO health and MOTORS commands
-also run at explicit bounded service intervals rather than depending on a camera
-callback. Only VISION processing and camera-buffer overlays require a frame. Camera
-loss must therefore remain diagnosable and must never freeze page navigation or EXE
-stop behavior.
+The TEST safety control plane is frame-independent. `nxpc_framework__service()`
+processes navigation, EXE arming/disarming, safe transitions, and bounded
+dirty/status refresh even when the camera produces no frame. Arming issues a
+framework-owned neutral first command. Later MOTORS commands come from the
+student-readable frame handler, so a missing or slower-than-lease camera causes
+the 100 ms lease to expire and requires a fresh EXE arm. Camera loss remains
+diagnosable and never freezes page navigation or EXE stop behavior.
 
 EXE arming is processed only on MOTORS. One EXE release opens a five-second
 arming window; all three pots must remain within the midpoint band continuously for

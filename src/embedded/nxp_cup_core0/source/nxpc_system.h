@@ -21,7 +21,7 @@ typedef enum
 {
     NXPC_TEST_PAGE_CAMERA_IO = 0,
     NXPC_TEST_PAGE_VISION,
-    NXPC_TEST_PAGE_ACTUATORS,
+    NXPC_TEST_PAGE_MOTORS,
     NXPC_TEST_PAGE_COUNT
 } nxpc_test_page_t;
 

@@ -15,6 +15,13 @@ typedef enum
     WHEEL_RIGHT = 1
 } wheel_t;
 
+typedef enum
+{
+    TEST_MODE_CAMERA_IO = 0,
+    TEST_MODE_VISION,
+    TEST_MODE_MOTORS
+} test_mode_page_t;
+
 typedef struct
 {
     uint8_t y;
@@ -82,6 +89,9 @@ bool input_left_button(void);
 bool input_right_button(void);
 /* Battery voltage uses the board's filtered ADC input and divider scaling. */
 float battery_voltage(void);
+
+/* Read-only page selected by the framework while test_mode_on_frame() runs. */
+test_mode_page_t test_mode_page(void);
 
 /*
  * Motor duty and steering position are clamped to -1.0 through 1.0.

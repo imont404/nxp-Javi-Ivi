@@ -29,16 +29,9 @@ int main(void)
         switch (nxpc_system__mode())
         {
             case NXPC_SYSTEM_MODE_TEST:
-                if (nxpc_system__test_page() == NXPC_TEST_PAGE_VISION)
-                {
-                    nxpc_framework__begin_callback();
-                    test_mode_on_frame(frame);
-                    nxpc_framework__end_callback();
-                }
-                else
-                {
-                    nxpc_framework__no_callback();
-                }
+                nxpc_framework__begin_callback();
+                test_mode_on_frame(frame);
+                nxpc_framework__end_callback();
                 break;
 
             case NXPC_SYSTEM_MODE_RACE_RUNNING:

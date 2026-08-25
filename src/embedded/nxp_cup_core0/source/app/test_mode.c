@@ -17,7 +17,27 @@ static float clamp_input(float value)
     return value;
 }
 
-void test_mode_on_frame(uint16_t *frame)
+static float signed_input(float value)
+{
+    return (clamp_input(value) * 2.0f) - 1.0f;
+}
+
+static void camera_io_on_frame(uint16_t *frame)
+{
+    (void)frame;
+
+    /*
+     * CAMERA / IO is a safe place to inspect the common input API. The
+     * framework draws the camera and status strip; these values are also
+     * useful to host tools while checking a car.
+     */
+    (void)telemetry_f32("input.alpha", input_alpha(), "ratio");
+    (void)telemetry_f32("input.beta", input_beta(), "ratio");
+    (void)telemetry_f32("input.gamma", input_gamma(), "ratio");
+    (void)telemetry_f32("battery.voltage", battery_voltage(), "V");
+}
+
+static void vision_on_frame(uint16_t *frame)
 {
     float alpha = clamp_input(input_alpha());
     float beta = clamp_input(input_beta());
@@ -51,4 +71,43 @@ void test_mode_on_frame(uint16_t *frame)
     (void)telemetry_f32("battery.voltage", battery_voltage(), "V");
     (void)telemetry_u32("vision.scan_row", line, "pixel");
     (void)telemetry_u32("vision.dark_threshold", black_y_threshold, "Y");
+}
+
+static void motors_on_frame(uint16_t *frame)
+{
+    float left = signed_input(input_alpha());
+    float steering = signed_input(input_beta());
+    float right = signed_input(input_gamma());
+
+    (void)frame;
+
+    /*
+     * This is the same public actuator API used in race_mode.c. These calls
+     * cannot move the car until the framework has selected MOTORS, observed a
+     * deliberate EXE release, and confirmed that all three pots were centered.
+     * The framework also caps TEST motor duty and enforces the command lease.
+     */
+    motors_set_duty(left, right);
+    steering_set(steering);
+}
+
+void test_mode_on_frame(uint16_t *frame)
+{
+    switch (test_mode_page())
+    {
+        case TEST_MODE_CAMERA_IO:
+            camera_io_on_frame(frame);
+            break;
+
+        case TEST_MODE_VISION:
+            vision_on_frame(frame);
+            break;
+
+        case TEST_MODE_MOTORS:
+            motors_on_frame(frame);
+            break;
+
+        default:
+            break;
+    }
 }

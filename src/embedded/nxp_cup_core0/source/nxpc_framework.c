@@ -22,7 +22,7 @@
 #define NXPC_ACTUATOR_TELEMETRY_MS (100U)
 #define NXPC_TEST_MOTOR_DUTY_LIMIT (0.25f)
 #define NXPC_TEST_IO_SAMPLE_MS (100U)
-#define NXPC_TEST_ACTUATOR_CONTROL_MS (20U)
+#define NXPC_TEST_MOTORS_STATUS_MS (20U)
 
 #if CONFIG__DISPLAY_ENABLE && CONFIG__DISPLAY_SCOPE_MARKER_ENABLE
 #define NXPC_SCOPE_DUMP_BEGIN() GPIO_PinWrite(GPIO4, 1U, 1U)
@@ -72,6 +72,7 @@ static volatile uint32_t g_motor_lease_remaining_ms;
 static volatile bool g_motor_lease_expired;
 static e_tick__trigger_handler_t g_motor_lease_trigger;
 static nxpc_system_mode_t g_last_actuator_mode;
+static bool g_last_test_outputs_armed;
 
 static uint16_t g_status_buffer[320U * 40U];
 static const nxpc_rgb565_surface_t g_status_surface = {
@@ -117,7 +118,7 @@ typedef struct
 } nxpc_test_actuator_snapshot_t;
 
 static nxpc_test_actuator_snapshot_t g_test_actuator_snapshot;
-static uint32_t g_test_actuator_control_tick;
+static uint32_t g_test_motors_status_tick;
 
 static float nxpc__clamp_unit(float value)
 {
@@ -219,6 +220,26 @@ static void nxpc__apply_actuator_mode_transition(void)
     g_last_actuator_mode = mode;
 }
 
+static void nxpc__apply_test_arming_transition(void)
+{
+    bool armed = nxpc_system__test_outputs_armed();
+
+    if (armed == g_last_test_outputs_armed)
+    {
+        return;
+    }
+
+    if (armed)
+    {
+        /* Guarantee that the first armed hardware command is neutral. The
+         * student MOTORS handler may issue later commands on camera frames. */
+        motors_set_duty(0.0f, 0.0f);
+        steering_set(0.0f);
+    }
+
+    g_last_test_outputs_armed = armed;
+}
+
 static void nxpc__actuator_telemetry_service(void)
 {
 #if CONFIG__USB_DEBUG_STREAM_ENABLE
@@ -302,16 +323,6 @@ static int32_t nxpc__display_rpm(int32_t value)
     return value;
 }
 
-static uint32_t nxpc__frame_budget_percent(uint32_t callback_us)
-{
-    if (callback_us >= (NXPC_FRAME_BUDGET_US * 10U))
-    {
-        return 999U;
-    }
-    return (callback_us + (NXPC_FRAME_BUDGET_US / 200U)) /
-           (NXPC_FRAME_BUDGET_US / 100U);
-}
-
 static bool nxpc__camera_live(void)
 {
     return nxpc_system__camera_live();
@@ -349,7 +360,7 @@ static void nxpc__test_io_service(void)
     g_test_io_snapshot.battery_centivolts = nxpc__read_battery_voltage();
 }
 
-static void nxpc__test_actuator_service(void)
+static void nxpc__test_motors_status_service(void)
 {
     uint32_t now;
     float alpha;
@@ -357,18 +368,18 @@ static void nxpc__test_actuator_service(void)
     float gamma;
 
     if ((nxpc_system__mode() != NXPC_SYSTEM_MODE_TEST) ||
-        (nxpc_system__test_page() != NXPC_TEST_PAGE_ACTUATORS))
+        (nxpc_system__test_page() != NXPC_TEST_PAGE_MOTORS))
     {
         return;
     }
 
     now = e_tick__get_ms();
-    if ((uint32_t)(now - g_test_actuator_control_tick) <
-        NXPC_TEST_ACTUATOR_CONTROL_MS)
+    if ((uint32_t)(now - g_test_motors_status_tick) <
+        NXPC_TEST_MOTORS_STATUS_MS)
     {
         return;
     }
-    g_test_actuator_control_tick = now;
+    g_test_motors_status_tick = now;
 
     alpha = nxpc__clamp_unit(nxpc__read_alpha());
     beta = nxpc__clamp_unit(nxpc__read_beta());
@@ -389,13 +400,6 @@ static void nxpc__test_actuator_service(void)
     g_test_actuator_snapshot.left_pot_percent = nxpc__ratio_percent(alpha);
     g_test_actuator_snapshot.steering_pot_percent = nxpc__ratio_percent(beta);
     g_test_actuator_snapshot.right_pot_percent = nxpc__ratio_percent(gamma);
-
-    if (nxpc_system__outputs_allowed())
-    {
-        motors_set_duty((alpha * 2.0f) - 1.0f,
-                        (gamma * 2.0f) - 1.0f);
-        steering_set((beta * 2.0f) - 1.0f);
-    }
 
     g_test_actuator_snapshot.left_command_percent =
         nxpc__signed_ratio_percent(nxpc__motor_left_command());
@@ -423,10 +427,10 @@ static nxpc_test_page_t nxpc__previous_test_page(nxpc_test_page_t page)
     switch (page)
     {
         case NXPC_TEST_PAGE_CAMERA_IO:
-            return NXPC_TEST_PAGE_ACTUATORS;
+            return NXPC_TEST_PAGE_MOTORS;
         case NXPC_TEST_PAGE_VISION:
             return NXPC_TEST_PAGE_CAMERA_IO;
-        case NXPC_TEST_PAGE_ACTUATORS:
+        case NXPC_TEST_PAGE_MOTORS:
         default:
             return NXPC_TEST_PAGE_VISION;
     }
@@ -439,8 +443,8 @@ static nxpc_test_page_t nxpc__next_test_page(nxpc_test_page_t page)
         case NXPC_TEST_PAGE_CAMERA_IO:
             return NXPC_TEST_PAGE_VISION;
         case NXPC_TEST_PAGE_VISION:
-            return NXPC_TEST_PAGE_ACTUATORS;
-        case NXPC_TEST_PAGE_ACTUATORS:
+            return NXPC_TEST_PAGE_MOTORS;
+        case NXPC_TEST_PAGE_MOTORS:
         default:
             return NXPC_TEST_PAGE_CAMERA_IO;
     }
@@ -673,7 +677,7 @@ static void nxpc__render_banner_if_changed(void)
     {
         case NXPC_SYSTEM_MODE_TEST:
             nxpc__draw_status_text_left("TEST MODE", 0, green);
-            if (test_page == NXPC_TEST_PAGE_ACTUATORS)
+            if (test_page == NXPC_TEST_PAGE_MOTORS)
             {
                 nxpc__draw_status_text_right("< MOTORS >", 0,
                                              (state == NXPC_SYSTEM_STATE_TEST_ARMED) ? red : green);
@@ -761,6 +765,7 @@ void nxpc_framework__init(void)
     button__snapshot(&g_button_snapshot);
     nxpc__baseline_test_navigation();
     g_last_actuator_mode = nxpc_system__mode();
+    g_last_test_outputs_armed = nxpc_system__test_outputs_armed();
 
     /* Start with a known lower display in both TEST and RACE modes. */
     nxpc__clear_camera_display();
@@ -778,7 +783,7 @@ void nxpc_framework__init(void)
     g_encoder_sample_age_tick = g_encoder_sample_tick;
     g_actuator_telemetry_tick = g_encoder_sample_tick;
     g_test_io_sample_tick = g_encoder_sample_tick;
-    g_test_actuator_control_tick = g_encoder_sample_tick;
+    g_test_motors_status_tick = g_encoder_sample_tick;
 
     nxpc__render_banner_if_changed();
 }
@@ -795,6 +800,7 @@ void nxpc_framework__service(void)
 
     nxpc_system__service(&g_button_snapshot);
     nxpc__apply_actuator_mode_transition();
+    nxpc__apply_test_arming_transition();
     nxpc__test_navigation_service();
     nxpc__test_io_service();
 
@@ -817,7 +823,7 @@ void nxpc_framework__service(void)
         g_motor_lease_remaining_ms = 0U;
     }
 
-    nxpc__test_actuator_service();
+    nxpc__test_motors_status_service();
     nxpc__actuator_telemetry_service();
 
     nxpc__render_banner_if_changed();
@@ -967,7 +973,7 @@ void nxpc_framework__finish_frame(uint16_t *frame)
         nxpc__refresh_camera_io_status();
     }
     else if ((nxpc_system__mode() == NXPC_SYSTEM_MODE_TEST) &&
-             (nxpc_system__test_page() == NXPC_TEST_PAGE_ACTUATORS))
+             (nxpc_system__test_page() == NXPC_TEST_PAGE_MOTORS))
     {
         nxpc__refresh_motors_status();
     }
@@ -1027,6 +1033,22 @@ float input_gamma(void) { return nxpc__read_gamma(); }
 bool input_left_button(void) { return g_button_snapshot.button[BUTTON_ID_LEFT].held; }
 bool input_right_button(void) { return g_button_snapshot.button[BUTTON_ID_RIGHT].held; }
 float battery_voltage(void) { return (float)nxpc__read_battery_voltage() * 0.01f; }
+
+test_mode_page_t test_mode_page(void)
+{
+    switch (nxpc_system__test_page())
+    {
+        case NXPC_TEST_PAGE_VISION:
+            return TEST_MODE_VISION;
+
+        case NXPC_TEST_PAGE_MOTORS:
+            return TEST_MODE_MOTORS;
+
+        case NXPC_TEST_PAGE_CAMERA_IO:
+        default:
+            return TEST_MODE_CAMERA_IO;
+    }
+}
 
 void motors_set_duty(float left, float right)
 {

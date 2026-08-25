@@ -16,7 +16,7 @@ camera-driver, USB, display, PWM, QDC, or framework-private headers.
 | Mode | Entry and behavior | Actuators |
 | --- | --- | --- |
 | `STARTUP` | One-time board, camera, display, USB, encoder, and framework initialization | Disabled |
-| `TEST` | Selected by the installed test jumper; each accepted frame calls `test_mode_on_frame()` | Disabled until EXE is released and all three pots are centered; then command lease applies |
+| `TEST` | Selected by the installed test jumper; each accepted frame calls `test_mode_on_frame()`, which dispatches CAMERA / IO, VISION, or MOTORS | Disabled until MOTORS is selected, EXE is released, and all three pots are centered; then command lease applies |
 | `RACE_WAITING` | Selected without the jumper; LCD says `RACE MODE` and `PRESS EXE TO START` after a camera frame | Disabled |
 | `RACE_RUNNING` | EXE release after a valid camera frame; each accepted frame calls `race_mode_on_frame()`; another EXE release safe-stops and returns to `RACE_WAITING` | Enabled at zero for the audible armed cue, then subject to command lease and faults |
 | `ENTERING_ISP` | Confirmed USB control request transfers execution to ROM ISP | Disabled first |
@@ -45,6 +45,7 @@ publication occurs after the callback; RACE mode does not perform the full LCD f
 
 - RGB565 geometry, row access, RGB565/YHSV LUT conversion, and simple overlay primitives;
 - normalized alpha, beta, and gamma controls plus left/right buttons;
+- the current read-only TEST page for the student-facing TEST dispatcher;
 - clamped left/right motor duty and steering position;
 - left/right wheel speed in RPM or m/s, measurement age, and availability;
 - milliseconds, callback time, and frame-drop count;
@@ -56,6 +57,14 @@ suppress these protected diagnostics.
 
 It deliberately supplies no lane-center decision, steering controller, motor PID, active
 differential, completed edge detector, or race strategy.
+
+`test_mode.c` keeps three short page handlers together as executable API
+examples. CAMERA / IO reads controls and publishes telemetry, VISION owns the
+editable image-processing overlay, and MOTORS maps the three pots through
+`motors_set_duty()` and `steering_set()`. Those calls do not own permission:
+framework-private code still owns navigation, presentation, deliberate arming,
+the centered-pot interlock, TEST duty caps, the command lease, and every safe
+transition.
 
 ## Safety and timing
 
