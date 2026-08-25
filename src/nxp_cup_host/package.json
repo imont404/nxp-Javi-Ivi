@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "build:standalone": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build_standalone_viewer.ps1",
-    "test": "npm run build:standalone && playwright test"
+    "check:lessons": "python ../../scripts/tools/build_learning_pages.py --check",
+    "test": "npm run build:standalone && npm run check:lessons && playwright test"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1"

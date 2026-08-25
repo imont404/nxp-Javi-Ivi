@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Interactive RGB565 and YHSV lookup-table lesson for the Wavenumber NXP Cup.">
+  <title>RGB565 and the YHSV Lookup Table | Wavenumber NXP Cup</title>
+  <!-- __GENERATED_NOTICE__ -->
+  <!-- __LESSON_CSS__ -->
+</head>
+<body>
+  <header class="lesson-bar">
+    <span>NXP CUP · VISION · 02</span>
+    <span>RGB565 → LUT → YHSV</span>
+  </header>
+
+  <main>
+    <section class="lut-lab" aria-label="Interactive RGB565 lookup laboratory">
+      <aside class="control-panel lut-controls" aria-label="Selected RGB565 pixel">
+        <div class="selected-color">
+          <div id="selected-swatch" class="selected-swatch" aria-hidden="true"></div>
+          <div>
+            <label class="control-label" for="color-picker">Start with a color</label>
+            <input id="color-picker" type="color" value="#e53935">
+            <output id="hex-output" class="hex-output" for="color-picker">#E53935</output>
+          </div>
+        </div>
+
+        <div class="preset-row" aria-label="Example colors">
+          <button type="button" data-color="#ff0000">red</button>
+          <button type="button" data-color="#00ff00">green</button>
+          <button type="button" data-color="#0000ff">blue</button>
+          <button type="button" data-color="#f0c020">yellow</button>
+          <button type="button" data-color="#303030">dark</button>
+          <button type="button" data-color="#808080">gray</button>
+        </div>
+
+        <dl class="coordinate-readout lut-readout">
+          <dt>requested RGB888</dt><dd id="rgb888-output">229 / 57 / 53</dd>
+          <dt>stored RGB565</dt><dd id="rgb565-output">0xE1C6</dd>
+          <dt>expanded RGB888</dt><dd id="expanded-output">231 / 56 / 49</dd>
+          <dt>color error</dt><dd id="error-output">+2 / −1 / −4</dd>
+        </dl>
+
+        <p class="hue-confidence">The camera pixel is already 16 bits. The table uses that complete word directly as an address.</p>
+      </aside>
+
+      <article class="model-card word-card">
+        <div class="model-heading">
+          <div><p class="model-number">STEP 01</p><h2>One 16-bit pixel</h2></div>
+          <p>65,536 colors</p>
+        </div>
+        <p class="model-copy">RGB565 spends five bits on red, six on green, and five on blue. Green receives the extra bit because human vision is especially sensitive there.</p>
+
+        <div class="bit-scale" aria-hidden="true"><span>15</span><span>11</span><span>5</span><span>0</span></div>
+        <div id="rgb565-word" class="bit-word" aria-label="RGB565 bits"></div>
+        <div class="bit-legend" aria-label="RGB565 channel widths">
+          <span class="bit-legend-r">R · 5 bits</span>
+          <span class="bit-legend-g">G · 6 bits</span>
+          <span class="bit-legend-b">B · 5 bits</span>
+        </div>
+
+        <div class="address-arrow" aria-hidden="true"><span>the entire word is the index</span><b>↓</b></div>
+
+        <div class="lookup-stage">
+          <div>
+            <div class="lookup-heading"><span>65,536-entry table</span><output id="index-output">index 0xE1C6</output></div>
+            <div id="lut-map" class="lut-map" role="application" aria-label="Map of every RGB565 lookup-table index; drag to select an entry">
+              <canvas id="lut-canvas" width="256" height="256"></canvas>
+              <div id="lut-cursor" class="lut-cursor" aria-hidden="true"><i></i></div>
+            </div>
+            <p class="map-help">Each tiny square is one possible RGB565 word. Drag across the map to address a different row.</p>
+          </div>
+
+          <div class="entry-panel" aria-live="polite">
+            <p class="model-number">ONE 32-BIT ROW</p>
+            <output id="packed-output" class="packed-output">0xE7C50177</output>
+            <div class="byte-stack">
+              <div class="feature-byte"><span>V</span><output id="v-output">231</output><small>max channel</small></div>
+              <div class="feature-byte"><span>S</span><output id="s-output">197</output><small>distance from gray</small></div>
+              <div class="feature-byte"><span>H</span><output id="h-output">1</output><small>circular angle byte</small></div>
+              <div class="feature-byte"><span>Y</span><output id="y-output">119</output><small>BT.601 luma</small></div>
+            </div>
+            <p class="byte-order">packed high → low<br><code>0xVVSSHHYY</code></p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="luma-section" aria-labelledby="luma-title">
+      <div class="model-heading">
+        <div><p class="model-number">OUTPUT Y</p><h2 id="luma-title">A weighted brightness estimate</h2></div>
+        <p>BT.601 luma</p>
+      </div>
+      <div class="luma-layout">
+        <div class="luma-copy">
+          <p>Equal RGB numbers do not contribute equally to perceived brightness. Green carries the largest weight, red is next, and blue contributes the least.</p>
+          <p><strong>Strictly, Y is luma—not physical luminance.</strong> It is calculated directly from the encoded RGB bytes. For our vision filters, it is a fast brightness-like score from 0 to 255, not a calibrated measurement of light.</p>
+        </div>
+
+        <div class="luma-machine" aria-live="polite">
+          <div class="luma-channel luma-r">
+            <span>R</span><code id="luma-r-expression">231 × 77 / 256</code><div class="luma-track"><i id="luma-r-bar"></i></div><output id="luma-r-output">69.5</output>
+          </div>
+          <div class="luma-channel luma-g">
+            <span>G</span><code id="luma-g-expression">56 × 150 / 256</code><div class="luma-track"><i id="luma-g-bar"></i></div><output id="luma-g-output">32.8</output>
+          </div>
+          <div class="luma-channel luma-b">
+            <span>B</span><code id="luma-b-expression">49 × 29 / 256</code><div class="luma-track"><i id="luma-b-bar"></i></div><output id="luma-b-output">5.6</output>
+          </div>
+          <div class="luma-sum">
+            <div class="luma-sum-track" aria-label="Stacked channel contributions to luma">
+              <i id="luma-sum-r"></i><i id="luma-sum-g"></i><i id="luma-sum-b"></i>
+            </div>
+            <span>round the sum</span><b>→</b><output id="luma-y-output">Y = 108</output>
+          </div>
+          <p class="luma-formula"><code>Y = (77R + 150G + 29B + 128) &gt;&gt; 8</code></p>
+          <p class="luma-note"><code>+128</code> rounds; <code>&gt;&gt; 8</code> divides by 256.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="question-section" aria-labelledby="question-title">
+      <div class="model-heading">
+        <div><p class="model-number">STEP 02</p><h2 id="question-title">Move the work out of the frame loop</h2></div>
+        <p>precompute once</p>
+      </div>
+      <p class="question-intro">Without the table, every pixel must work through this question queue. The generator answers all of it ahead of time for every possible 16-bit word.</p>
+
+      <div class="path-comparison">
+        <div class="question-queue" aria-label="Runtime calculations replaced by the lookup table">
+          <p class="path-label">CALCULATE DURING EVERY FRAME</p>
+          <ol>
+            <li><b>Which bits are R, G, and B?</b><span>mask · shift · expand</span></li>
+            <li><b>How bright does it look?</b><span>3 multiplies · 2 adds · shift</span></li>
+            <li><b>Which channel is largest and smallest?</b><span>max · min · delta</span></li>
+            <li><b>Which hue sector owns the pixel?</b><span>branches around R / G / B</span></li>
+            <li><b>How far is it from gray?</b><span>divide delta by maximum</span></li>
+            <li><b>How do four results fit in bytes?</b><span>scale · round · pack</span></li>
+          </ol>
+        </div>
+
+        <div class="lookup-shortcut" aria-label="Lookup-table runtime path">
+          <p class="path-label">LOOK UP DURING EVERY FRAME</p>
+          <div class="shortcut-code"><span>pixel</span><b>→</b><code>table[pixel]</code><b>→</b><span>Y H S V</span></div>
+          <p class="code-caption">Student-facing API: read four 8-bit struct fields.</p>
+          <pre><code>color_features_t color =
+    color_rgb565_to_yhsv(pixel);
+
+uint8_t y = color.y;
+uint8_t h = color.h;
+uint8_t s = color.s;
+uint8_t v = color.v;</code></pre>
+          <p>The framework returns a struct, so student code needs no masks or shifts. It sees four ordinary byte fields.</p>
+
+          <details class="packed-details">
+            <summary>Inside the framework: unpack the 32-bit row</summary>
+            <pre><code>uint32_t packed = lut[pixel];
+color_features_t color = {
+    .y = (uint8_t)(packed &gt;&gt; 0),
+    .h = (uint8_t)(packed &gt;&gt; 8),
+    .s = (uint8_t)(packed &gt;&gt; 16),
+    .v = (uint8_t)(packed &gt;&gt; 24),
+};</code></pre>
+          </details>
+        </div>
+      </div>
+
+      <div class="generator-panel">
+        <div class="generator-heading">
+          <div><p class="path-label">ACTUAL BUILD-TIME WORK</p><h3>What one table row precomputes</h3></div>
+          <p>Runs on the PC—not inside the camera frame loop.</p>
+        </div>
+        <div class="generator-code-grid">
+          <pre><code># 1. Expand the stored 5/6/5 fields
+r5 = (pixel &gt;&gt; 11) &amp; 0x1F
+g6 = (pixel &gt;&gt;  5) &amp; 0x3F
+b5 =  pixel        &amp; 0x1F
+
+r = (r5 &lt;&lt; 3) | (r5 &gt;&gt; 2)
+g = (g6 &lt;&lt; 2) | (g6 &gt;&gt; 4)
+b = (b5 &lt;&lt; 3) | (b5 &gt;&gt; 2)
+
+# 2. Integer BT.601 luma
+y8 = (77*r + 150*g + 29*b + 128) &gt;&gt; 8</code></pre>
+          <pre><code># 3. Traditional HSV equations
+rn, gn, bn = r/255, g/255, b/255
+maximum = max(rn, gn, bn)
+minimum = min(rn, gn, bn)
+delta   = maximum - minimum
+
+v = maximum
+s = 0 if maximum == 0 else delta / maximum
+h = hue_sector(rn, gn, bn, maximum, delta) / 360
+
+# 4. Quantize and pack four bytes
+h8 = floor(h * 256) &amp; 0xFF
+s8 = floor(s * 255 + 0.5)
+v8 = floor(v * 255 + 0.5)
+packed = y8 | h8&lt;&lt;8 | s8&lt;&lt;16 | v8&lt;&lt;24</code></pre>
+        </div>
+        <div class="hue-equations" aria-label="Hue sector equations">
+          <span><b>max = R</b><code>H = 60 × (((G−B)/Δ) mod 6)</code></span>
+          <span><b>max = G</b><code>H = 60 × ((B−R)/Δ + 2)</code></span>
+          <span><b>max = B</b><code>H = 60 × ((R−G)/Δ + 4)</code></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="tradeoff-grid" aria-label="Lookup table costs and benefits">
+      <article><p class="model-number">EXHAUSTIVE</p><strong>65,536</strong><p>rows—one for every possible RGB565 word. Runtime does not interpolate or search.</p></article>
+      <article><p class="model-number">FLASH COST</p><strong>256 KiB</strong><p>65,536 rows × four bytes. <code>const</code> keeps the table out of camera-buffer SRAM.</p></article>
+      <article><p class="model-number">APPROXIMATION</p><strong>5 · 6 · 5</strong><p>RGB precision is reduced first. Y uses integer BT.601; H, S, and V are quantized to bytes.</p></article>
+      <article><p class="model-number">RUNTIME</p><strong>1 → 4</strong><p>One pixel index returns four measurements ready for inexpensive comparisons.</p></article>
+    </section>
+
+    <section class="measurement-section" aria-labelledby="measurements-title">
+      <div class="model-heading">
+        <div><p class="model-number">STEP 03</p><h2 id="measurements-title">The table supplies measurements—not race decisions</h2></div>
+        <p>student logic stays visible</p>
+      </div>
+      <div class="measurement-grid">
+        <article><span>Y</span><h3>Is it dark?</h3><p>Compare luma with a threshold for black tape or shadow.</p></article>
+        <article><span>H</span><h3>Is the hue nearby?</h3><p>Use circular distance—for red, a window can cross 255 → 0.</p></article>
+        <article><span>S</span><h3>Can hue be trusted?</h3><p>Low saturation means the pixel is close to gray.</p></article>
+        <article><span>V</span><h3>Is there enough signal?</h3><p>Low value means the pixel is close to black.</p></article>
+      </div>
+    </section>
+  </main>
+
+  <!-- __LESSON_JS__ -->
+</body>
+</html>
