@@ -129,7 +129,7 @@ function Install-ViaWinget($displayName, $wingetId, $probeCommand) {
     return $true
 }
 
-Write-Header "AVC Toolchain Setup"
+Write-Header "NXP Cup Windows Toolchain Setup"
 Write-Host "  Repository: $RepoRoot" -ForegroundColor DarkGray
 Write-Host "  Tools:      $ToolsDir  (git-ignored, safe to delete and re-run)" -ForegroundColor DarkGray
 
@@ -221,8 +221,8 @@ if ($warnings.Count -gt 0) {
 
 Write-Host ""
 Write-Host "  Next:" -ForegroundColor White
-Write-Host "    .\build.ps1                          # competition firmware" -ForegroundColor Green
-Write-Host "    .\build_viewer.ps1                   # optional USB viewer" -ForegroundColor Green
+Write-Host "    .\src\embedded\build.ps1             # competition firmware" -ForegroundColor Green
+Write-Host "    .\src\host\build.ps1                 # optional USB viewer and CLI" -ForegroundColor Green
 Write-Host ""
-Write-Host "  Full instructions:    docs\setup.html" -ForegroundColor White
+Write-Host "  Start with:           README.md" -ForegroundColor White
 Write-Host ""

@@ -13,7 +13,7 @@ description = "The competition preset, toolchain file, source list, linker captu
 test_case_type = "algorithmic"
 
 [subtests.code_under_test]
-module = "CMakePresets.json"
+module = "src/embedded/CMakePresets.json"
 
 [subtests.test_functions]
 test_presets_exist = "CMakePresets.json parses and defines the competition preset"
@@ -26,7 +26,7 @@ test_no_ide_only_library = "no linker script pulls libcr_newlib_nohost.a"
 id = "L0_002"
 file = "test_L0_002_setup_contract.py"
 name = "Setup contract"
-description = "setup.ps1 and docs/setup.html agree with each other and with the tree"
+description = "setup.ps1, root README, and component entry points agree with the tree"
 test_case_type = "algorithmic"
 
 [subtests.code_under_test]
@@ -34,5 +34,5 @@ module = "setup.ps1"
 
 [subtests.test_functions]
 test_setup_script_exists = "setup.ps1 is present and provisions the documented tools"
-test_docs_reference_real_presets = "the competition preset named in docs/setup.html exists in CMakePresets.json"
-test_docs_commands_are_current = "the documented build command matches the preset workflow"
+test_readmes_are_the_current_component_map = "the root README names each supported component build command"
+test_only_competition_preset_is_student_facing = "the embedded component exposes one normal preset"

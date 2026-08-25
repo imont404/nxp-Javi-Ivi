@@ -7,54 +7,54 @@ created = "2026-08-25"
 [[steps]]
 id = "preserve-learning-work"
 title = "Review, validate, and commit an explicit whitelist of the current lecture-pages lesson sources, generated standalone pages, pinned runtime assets, tests, plan updates, logs, and this cleanup plan without committing unrelated docs, caches, or node_modules"
-status = "pending"
+status = "done"
 
 [[steps]]
 id = "reconcile-target-baseline"
 title = "Bring the two post-split avc commits into local nxp_cup history and integrate the preserved learning commit on a dedicated cleanup branch without changing or pushing remotes"
-status = "pending"
+status = "done"
 depends_on = ["preserve-learning-work"]
 
 [[steps]]
 id = "component-layout"
 title = "Create src/README.md; establish src/embedded, src/host, src/android, and src/common component boundaries; keep src/common fixed and retain nxp_cup_core0 one level below embedded so MCUXpresso linked-resource depth remains stable"
-status = "pending"
+status = "done"
 depends_on = ["reconcile-target-baseline"]
 
 [[steps]]
 id = "embedded-build-relocation"
 title = "Move firmware CMake configuration, presets, build entry point, and maintainer flash, RTT, MCUXpresso, and diagnostic tools under src/embedded; explicitly repair repo-root, generator, toolchain, test, and Ozone paths while preserving the competition default"
-status = "pending"
+status = "done"
 depends_on = ["component-layout"]
 
 [[steps]]
 id = "consumer-build-cleanup"
 title = "Rename nxp_cup_host to src/host, make explicit LLVM-MinGW the canonical Windows host compiler, consolidate host build/package/serve entry points, and colocate Android setup/build plus bench/deploy tools under src/android"
-status = "pending"
+status = "done"
 depends_on = ["component-layout"]
 
 [[steps]]
 id = "root-and-output-cleanup"
 title = "Leave only repository-wide entry points and configuration at root, retain one Windows setup entry point, and converge repository-owned toolchains, build products, test output, and distributable artifacts under out while leaving ignored tool-managed component caches conventional"
-status = "pending"
+status = "done"
 depends_on = ["embedded-build-relocation", "consumer-build-cleanup"]
 
 [[steps]]
 id = "path-and-agent-contracts"
 title = "Update active code, tests, build metadata, AGENTS.md files, src component READMEs, and minimum live plan/design path references while deferring broad documentation reorganization"
-status = "pending"
+status = "done"
 depends_on = ["root-and-output-cleanup"]
 
 [[steps]]
 id = "build-regression"
 title = "Prove every retained firmware preset and artifact, CMake metadata drift, fresh reset MCUXpresso headless build, explicit LLVM host build/package/tests, learning-page generation/browser tests, Android unit/APK build, and full L0/L1/L2/L99/dev-standard gates"
-status = "pending"
+status = "done"
 depends_on = ["path-and-agent-contracts"]
 
 [[steps]]
 id = "structure-checkpoint"
 title = "Commit a clean local repository-structure checkpoint with no lost learning work, no stale active build paths, and recorded validation evidence; do not push or create downstream worktrees yet"
-status = "pending"
+status = "active"
 depends_on = ["build-regression"]
 
 [[steps]]

@@ -39,7 +39,7 @@ def test_competition_image_is_buildable():
     """The competition preset must exist and be the documented default. Whether
     it currently compiles is L1's job; this asserts it is still the thing we
     would hand over."""
-    presets = REPO / "CMakePresets.json"
+    presets = REPO / "src" / "embedded" / "CMakePresets.json"
     assert presets.is_file(), "CMakePresets.json is missing"
     data = json.loads(presets.read_text(encoding="utf-8"))
     competition = next(
@@ -57,20 +57,21 @@ def test_student_entry_points_exist():
     """A student arriving at this repository must find a way in."""
     for path, why in (
         (REPO / "setup.ps1", "the one-script install"),
-        (REPO / "docs/setup.html", "the page students read first"),
         (REPO / "README.md", "the repository front door"),
+        (REPO / "src/README.md", "the component map"),
+        (REPO / "src/embedded/README.md", "the firmware instructions"),
     ):
         assert path.is_file(), f"{path.name} is missing - {why}"
 
     readme = (REPO / "README.md").read_text(encoding="utf-8")
     assert "setup.ps1" in readme, "README does not point at the install script"
-    assert "docs/setup.html" in readme, "README does not point at the setup page"
+    assert "src/README.md" in readme, "README does not point at the component map"
 
 
 def test_competition_defaults_unchanged():
     """The Rev A competition configuration is what runs on race day. Any change
     to these defaults should be deliberate enough to update this test."""
-    config = (REPO / "src/nxp_cup/nxp_cup_core0/source/nxpc_config/nxpc__master_config.h").read_text(
+    config = (REPO / "src/embedded/nxp_cup_core0/source/nxpc_config/nxpc__master_config.h").read_text(
         encoding="utf-8"
     )
     expected = {
@@ -87,7 +88,7 @@ def test_competition_defaults_unchanged():
             f"competition default changed: {knob} is '{line.strip()}', expected {value}"
         )
 
-    io = (REPO / "src/nxp_cup/nxp_cup_core0/source/nxpc_io/nxpc__io.c").read_text(
+    io = (REPO / "src/embedded/nxp_cup_core0/source/nxpc_io/nxpc__io.c").read_text(
         encoding="utf-8"
     )
     assert "CONFIG__MOTOR_ENCODER_BACKEND" not in config

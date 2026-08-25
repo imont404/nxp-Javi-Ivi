@@ -6,20 +6,20 @@ It is not part of the student firmware build and does not contain a vehicle algo
 From a clean Windows checkout:
 
 ```powershell
-.\scripts\android\setup_android.ps1 -AcceptLicenses
-.\build_android.ps1
-.\scripts\android\phone_inventory.ps1
-.\scripts\android\enable_wireless_adb.ps1
-.\scripts\android\android_loop.ps1 -Serial <phone-ip>:5555
+.\src\android\setup.ps1 -AcceptLicenses
+.\src\android\build.ps1
+.\src\android\tools\phone_inventory.ps1
+.\src\android\tools\enable_wireless_adb.ps1
+.\src\android\tools\android_loop.ps1 -Serial <phone-ip>:5555
 ```
 
 The root build wrapper runs the debug unit tests, assembles the app, and copies
-the installable APK to the stable path `bin\android\nxp_cup_bridge.apk`. The Gradle
+the installable APK to the stable path `out\artifacts\android\nxp_cup_bridge.apk`. The Gradle
 project's authoritative output remains under `src\android\nxp_cup_bridge\app\build`.
 The current development build remains debug-signed; the convenient filename is
 independent of the Gradle variant and will not change for workshop users.
 After one connected build has populated the dependency cache, use
-`.\build_android.ps1 -Offline` on an unreliable or disconnected network.
+`.\src\android\build.ps1 -Offline` on an unreliable or disconnected network.
 
 The setup script provisions pinned, verified tools only under
 `out\toolchains\android`. Nothing is installed globally. The phone requires one-time
@@ -53,7 +53,7 @@ PTN5150A defaults to dual-role mode. For development, wireless adb can request
 the phone's host role after the cable is connected:
 
 ```powershell
-.\scripts\android\set_phone_usb_host.ps1 -Serial <phone-ip>:5555
+.\src\android\tools\set_phone_usb_host.ps1 -Serial <phone-ip>:5555
 ```
 
 That fallback was verified on this Moto G Power, but it requires adb and is not
@@ -100,7 +100,7 @@ disconnects, the app returns to its configured default (JPEG unless overridden b
 maintainer tooling). To change the default before opening a browser:
 
 ```powershell
-.\scripts\android\start_android_relay.ps1 -Mode h264 -Serial <phone-ip>:5555
+.\src\android\tools\start_android_relay.ps1 -Mode h264 -Serial <phone-ip>:5555
 ```
 
 The command prints the exact viewer URL. `-Mode raw` and `-Mode jpeg` are also accepted,
@@ -152,14 +152,14 @@ unbounded queue. Raw is useful for measuring the actual link, not the race-day d
 check an already running app directly, use:
 
 ```powershell
-.\scripts\android\verify_android_relay.ps1 -Serial <phone-ip>:5555
-.\scripts\android\verify_android_relay.ps1 -Mode raw -Serial <phone-ip>:5555
-.\scripts\android\verify_android_relay.ps1 -Mode h264 -Serial <phone-ip>:5555
-.\scripts\android\test_android_relay_backpressure.ps1 -Serial <phone-ip>:5555
-.\scripts\android\test_android_session_reconnect.ps1 -Serial <phone-ip>:5555
-.\scripts\android\test_android_locked_relay.ps1 -Serial <phone-ip>:5555
-.\scripts\android\test_android_compression.ps1 -Mode jpeg -Serial <phone-ip>:5555
-.\scripts\android\test_android_compression.ps1 -Mode h264 -Serial <phone-ip>:5555
+.\src\android\tools\verify_android_relay.ps1 -Serial <phone-ip>:5555
+.\src\android\tools\verify_android_relay.ps1 -Mode raw -Serial <phone-ip>:5555
+.\src\android\tools\verify_android_relay.ps1 -Mode h264 -Serial <phone-ip>:5555
+.\src\android\tools\test_android_relay_backpressure.ps1 -Serial <phone-ip>:5555
+.\src\android\tools\test_android_session_reconnect.ps1 -Serial <phone-ip>:5555
+.\src\android\tools\test_android_locked_relay.ps1 -Serial <phone-ip>:5555
+.\src\android\tools\test_android_compression.ps1 -Mode jpeg -Serial <phone-ip>:5555
+.\src\android\tools\test_android_compression.ps1 -Mode h264 -Serial <phone-ip>:5555
 ```
 
 The verified `yellow`-network proof delivered 240 consecutive JPEGs at 23.493 FPS and

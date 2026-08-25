@@ -32,7 +32,7 @@ def test_transform_order_prefers_full_product_paths():
     module = load_module()
     manifest = module.load_manifest(MANIFEST)
     assert module.transform_path("src/avc/avc_core0/source/avc_system.c", manifest) == (
-        "src/nxp_cup/nxp_cup_core0/source/nxpc_system.c"
+        "src/embedded/nxp_cup_core0/source/nxpc_system.c"
     )
     assert module.transform_path("src/android/avc_bridge/app/build.gradle", manifest) == (
         "src/android/nxp_cup_bridge/app/build.gradle"
@@ -44,6 +44,6 @@ def test_refactor_is_currently_a_clean_second_run_after_migration():
     module = load_module()
     manifest = module.load_manifest(MANIFEST)
     changes = module.collect_changes(manifest)
-    if (REPO / "src/nxp_cup/nxp_cup_core0").exists():
+    if (REPO / "src/embedded/nxp_cup_core0").exists():
         assert not changes.text_changes
         assert not changes.moves

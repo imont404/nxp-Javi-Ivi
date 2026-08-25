@@ -4,11 +4,11 @@ The competition image keeps platform initialization, camera-buffer handling, dis
 USB telemetry, wheel-speed sampling, and actuator safety inside the framework. The two
 normally edited implementation files are:
 
-- `src/nxp_cup/nxp_cup_core0/source/app/test_mode.c`
-- `src/nxp_cup/nxp_cup_core0/source/app/race_mode.c`
+- `src/embedded/nxp_cup_core0/source/app/test_mode.c`
+- `src/embedded/nxp_cup_core0/source/app/race_mode.c`
 
 Both include the single public header
-`src/nxp_cup/nxp_cup_core0/source/nxp_cup.h`. They do not include board, SDK,
+`src/embedded/nxp_cup_core0/source/nxp_cup.h`. They do not include board, SDK,
 camera-driver, USB, display, PWM, QDC, or framework-private headers.
 
 ## Mode flow

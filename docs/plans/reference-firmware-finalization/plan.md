@@ -76,10 +76,28 @@ status = "pending"
 depends_on = ["consumer-regression"]
 
 [[steps]]
+id = "design-doc-intent-audit"
+title = "Audit design, setup, participant, maintainer, telemetry, and validation documentation against the frozen implementation and organizer intent"
+status = "pending"
+depends_on = ["documentation-freeze"]
+
+[[steps]]
+id = "test-runtime-impact-audit"
+title = "Audit build and test duration plus firmware binary, RAM, frame-loop, service, LCD, encoder, and USB runtime impact"
+status = "pending"
+depends_on = ["consumer-regression"]
+
+[[steps]]
+id = "external-review"
+title = "Obtain independent review of firmware safety, public interfaces, consumer compatibility, documentation, validation evidence, and repository handoff readiness"
+status = "pending"
+depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
+
+[[steps]]
 id = "nxp-cup-repository-handoff"
 title = "After final audits and explicit authorization, reconcile this history with the separate nxp_cup work, then perform the repository cutover without silently changing the avc remote"
 status = "pending"
-depends_on = ["documentation-freeze"]
+depends_on = ["external-review"]
 
 [[exit_criteria]]
 id = "test-separation"
@@ -109,6 +127,21 @@ status = "pending"
 [[exit_criteria]]
 id = "repository-handoff"
 title = "The finalized implementation, tests, documentation, and history are reconciled into the authorized NXP Cup repository without losing work from either checkout"
+status = "pending"
+
+[[exit_criteria]]
+id = "design-doc-intent-audit"
+title = "Documentation matches the frozen implementation and organizer intent"
+status = "pending"
+
+[[exit_criteria]]
+id = "test-runtime-impact-audit"
+title = "Build, test, binary, memory, and competition-loop runtime impact are reviewed"
+status = "pending"
+
+[[exit_criteria]]
+id = "external-review"
+title = "Independent review is complete"
 status = "pending"
 +++
 

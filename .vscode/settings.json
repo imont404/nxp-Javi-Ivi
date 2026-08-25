@@ -3,11 +3,12 @@
 
   "// cmake": "CMake Tools reads CMakePresets.json directly. Do not configure on open - a student opening the folder should not trigger a build they did not ask for.",
   "cmake.useCMakePresets": "always",
+  "cmake.sourceDirectory": "${workspaceFolder}/src/embedded",
   "cmake.configureOnOpen": false,
   "cmake.configureOnEdit": false,
 
   "// intellisense": "compile_commands.json is emitted by every preset (CMAKE_EXPORT_COMPILE_COMMANDS). Point cpptools at the competition build so includes resolve without the student choosing anything. If you build a different preset, change the path or select it in CMake Tools.",
-  "C_Cpp.default.compileCommands": "${workspaceFolder}/build/cmake/competition/compile_commands.json",
+  "C_Cpp.default.compileCommands": "${workspaceFolder}/out/build/embedded/competition/compile_commands.json",
   "C_Cpp.default.compilerPath": "${workspaceFolder}/out/toolchains/arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-gcc.exe",
   "C_Cpp.default.cStandard": "c17",
   "C_Cpp.default.intelliSenseMode": "gcc-arm",

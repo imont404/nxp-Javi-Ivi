@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 REPO = Path(__file__).resolve().parents[2]
-SOURCE = REPO / "src/nxp_cup/nxp_cup_core0/source"
+SOURCE = REPO / "src/embedded/nxp_cup_core0/source"
 PUBLIC_HEADER = SOURCE / "nxp_cup.h"
 MAIN = SOURCE / "main.c"
 MODE_FILES = (SOURCE / "app/test_mode.c", SOURCE / "app/race_mode.c")

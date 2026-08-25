@@ -13,11 +13,11 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[2]
 
-FLASH = REPO / "flash.ps1"
-RTT = REPO / "rtt.ps1"
-BUILD = REPO / "build.ps1"
-SHARED = REPO / "scripts/tools/nxpc_image_common.ps1"
-PRESETS = REPO / "CMakePresets.json"
+FLASH = REPO / "src/embedded/tools/flash.ps1"
+RTT = REPO / "src/embedded/tools/rtt.ps1"
+BUILD = REPO / "src/embedded/build.ps1"
+SHARED = REPO / "src/embedded/tools/lib/nxpc_image_common.ps1"
+PRESETS = REPO / "src/embedded/CMakePresets.json"
 
 ENTRY_POINTS = pytest.mark.parametrize("script", [FLASH, RTT], ids=["flash", "rtt"])
 
@@ -68,7 +68,7 @@ def test_entry_points_use_fixed_competition_resolver(script):
 
 def test_resolver_defaults_to_competition_build():
     text = _text(SHARED)
-    assert "build\\cmake\\competition\\nxp_cup_core0.axf" in text
+    assert "out\\build\\embedded\\competition\\nxp_cup_core0.axf" in text
     assert "Unknown preset" not in text
     assert "-Preset" not in text
 

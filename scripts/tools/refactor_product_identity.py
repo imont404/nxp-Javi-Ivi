@@ -132,7 +132,7 @@ def verify_apply_baseline(manifest: dict) -> None:
         )
     if git("status", "--porcelain"):
         migration_in_progress = (
-            (REPO / "src/nxp_cup/nxp_cup_core0/.project").is_file()
+            (REPO / "src/embedded/nxp_cup_core0/.project").is_file()
             and not (REPO / "src/avc/avc_core0/.project").exists()
         )
         if not migration_in_progress:

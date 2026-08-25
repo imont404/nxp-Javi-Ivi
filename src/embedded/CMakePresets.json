@@ -1,0 +1,28 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
+
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/../../out/build/embedded/${presetName}",
+      "toolchainFile": "${sourceDir}/nxp_cup_core0/cmake/mcuxpresso-toolchain.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "competition",
+      "displayName": "NXP Cup competition firmware - START HERE",
+      "description": "The normal Rev A image: EZH camera, SPI LCD, session-gated USB telemetry, and QDC wheel-speed feedback.",
+      "inherits": "base"
+    }
+  ],
+
+  "buildPresets": [
+    { "name": "competition", "configurePreset": "competition" }
+  ]
+}

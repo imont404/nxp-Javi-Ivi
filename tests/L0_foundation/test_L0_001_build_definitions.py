@@ -11,10 +11,10 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 
-PRESETS = REPO / "CMakePresets.json"
-SOURCE_LIST = REPO / "src/nxp_cup/nxp_cup_core0/cmake/mcuxpresso_debug.cmake"
-LINK_DIR = REPO / "src/nxp_cup/nxp_cup_core0/link"
-VENDORED_HEADER = REPO / "src/nxp_cup/nxp_cup_core0/source/shared/cr_section_macros.h"
+PRESETS = REPO / "src/embedded/CMakePresets.json"
+SOURCE_LIST = REPO / "src/embedded/nxp_cup_core0/cmake/mcuxpresso_debug.cmake"
+LINK_DIR = REPO / "src/embedded/nxp_cup_core0/link"
+VENDORED_HEADER = REPO / "src/embedded/nxp_cup_core0/source/shared/cr_section_macros.h"
 
 
 def test_presets_exist():
@@ -83,7 +83,7 @@ def test_linker_capture_documented():
 def test_bounded_sbrk_present():
     """Swapping to libnosys removed the heap bound NXP's library enforced, so
     the firmware provides its own _sbrk. Without it the heap grows unchecked."""
-    sbrk = REPO / "src/nxp_cup/nxp_cup_core0/source/shared/nxpc__sbrk.c"
+    sbrk = REPO / "src/embedded/nxp_cup_core0/source/shared/nxpc__sbrk.c"
     assert sbrk.is_file(), "bounded _sbrk is missing; the heap would be unbounded"
     text = sbrk.read_text(encoding="utf-8")
     assert "_pvHeapLimit" in text, "_sbrk does not honour the linker-defined heap limit"

@@ -29,7 +29,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUTPUT = (
     REPO_ROOT
     / "src"
-    / "nxp_cup"
+    / "embedded"
     / "nxp_cup_core0"
     / "source"
     / "nxpc_rgb565_yhsv_lut.inc"

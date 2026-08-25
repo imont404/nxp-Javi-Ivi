@@ -13,7 +13,7 @@ description = "Firmware complexity is measured against docs/quality/lizard-basel
 test_case_type = "algorithmic"
 
 [subtests.code_under_test]
-module = "src/nxp_cup/nxp_cup_core0/source"
+module = "src/embedded/nxp_cup_core0/source"
 
 [subtests.test_functions]
 test_complexity_against_baseline = "no function exceeds the recorded baseline complexity"

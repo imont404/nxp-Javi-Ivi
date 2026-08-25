@@ -13,7 +13,7 @@ description = "The competition image configures and builds"
 test_case_type = "algorithmic"
 
 [subtests.code_under_test]
-module = "CMakePresets.json"
+module = "src/embedded/CMakePresets.json"
 
 [subtests.test_functions]
 test_competition_builds = "the competition preset produces nxp_cup_core0.axf"

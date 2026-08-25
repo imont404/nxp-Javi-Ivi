@@ -14,6 +14,7 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parents[2]
+EMBEDDED = REPO / "src" / "embedded"
 def _have(tool: str) -> bool:
     return shutil.which(tool) is not None
 
@@ -35,7 +36,7 @@ pytestmark = [
 
 
 def _cmake(*args: str) -> subprocess.CompletedProcess:
-    return subprocess.run(["cmake", *args], cwd=REPO,
+    return subprocess.run(["cmake", *args], cwd=EMBEDDED,
                           capture_output=True, text=True, timeout=1800)
 
 
@@ -44,7 +45,7 @@ def _build(preset: str) -> Path:
     assert cfg.returncode == 0, f"configure failed for {preset}:\n{cfg.stdout}\n{cfg.stderr}"
     build = _cmake("--build", "--preset", preset)
     assert build.returncode == 0, f"build failed for {preset}:\n{build.stdout}\n{build.stderr}"
-    axf = REPO / "build" / "cmake" / preset / "nxp_cup_core0.axf"
+    axf = REPO / "out" / "build" / "embedded" / preset / "nxp_cup_core0.axf"
     assert axf.is_file(), f"{preset} produced no nxp_cup_core0.axf at {axf}"
     return axf
 
@@ -62,11 +63,11 @@ def test_source_list_has_not_drifted():
     the difference sit unnoticed."""
     result = subprocess.run(
         ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
-         str(REPO / "scripts/maintainer/build_cmake.ps1"), "-CheckDrift",
-         "-BuildDir", str(REPO / "build" / "cmake" / "drift-check")],
+         str(REPO / "src/embedded/tools/maintainer/build_cmake.ps1"), "-CheckDrift",
+         "-BuildDir", str(REPO / "out" / "build" / "embedded" / "drift-check")],
         cwd=REPO, capture_output=True, text=True, timeout=1800,
     )
     assert "[DRIFT]" not in result.stdout, (
         "the committed source list differs from MCUXpresso project metadata; "
-        "run .\\scripts\\maintainer\\build_cmake.ps1 -Regenerate, then review and commit\n" + result.stdout
+        "run .\\src\\embedded\\tools\\maintainer\\build_cmake.ps1 -Regenerate, then review and commit\n" + result.stdout
     )
