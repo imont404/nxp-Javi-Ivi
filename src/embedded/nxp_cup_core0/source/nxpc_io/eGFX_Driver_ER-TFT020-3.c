@@ -9,7 +9,8 @@
 #ifdef eGFX_DRIVER_ER_TFT020_3
 
 /*
- * Frame-dump timing instrumentation. See docs/research/AVC_LCD_SPI_Design.md.
+ * Frame-dump timing instrumentation; its configuration is documented in
+ * nxpc__master_config.h.
  * Measurement only; compiles to nothing when the knob is off.
  */
 #if CONFIG__DISPLAY_TIMING_DIAG_ENABLE
@@ -92,8 +93,7 @@ void eGFX_InitDriver(eGFX_VSyncCallback_t VS)
      * PLLCLKDIV feeds this LPSPI path. Divider 2 at 37.5 MHz is the only
      * competition-verified configuration; changing the divider at runtime
      * produced a black panel even when nominal SCK was restored. See
-     * CONFIG__DISPLAY_SPI_PLLCLKDIV and
-     * docs/research/AVC_LCD_SPI_Design.md.
+     * CONFIG__DISPLAY_SPI_PLLCLKDIV and its adjacent bench notes.
      */
     CLOCK_SetClkDiv(kCLOCK_DivPllClk, CONFIG__DISPLAY_SPI_PLLCLKDIV);
     CLOCK_SetClkDiv(kCLOCK_DivFlexcom1Clk, 1u);

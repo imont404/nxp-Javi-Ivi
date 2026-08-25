@@ -51,8 +51,8 @@
  * FlexIO camera pin group.
  *
  * Everything below is expressed per group so the shifter, timer, and eDMA setup
- * stays identical between them. See CONFIG__CAMERA_FLEXIO_PIN_GROUP in
- * nxpc__master_config.h and docs/research/AVC_Camera_FlexIO_Pin_Migration.md.
+ * stays identical between them. See CONFIG__CAMERA_FLEXIO_PIN_GROUP and its
+ * pin-map notes in nxpc__master_config.h.
  *
  * Naming: *_GPIO_PIN is a PORT/GPIO bit index, *_PIN (and *_PIN_START) is a
  * FLEXIO0_Dnn index. That split already existed; it is now applied per signal

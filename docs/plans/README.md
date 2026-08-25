@@ -10,6 +10,5 @@ uvx --from wn-dev-std==2026.7.18 dev-std plan create flexio-camera --title "Flex
 uvx --from wn-dev-std==2026.7.18 dev-std plan show flexio-camera
 ```
 
-Reference material, imported SDK examples, and research notes stay outside this
-folder. In particular, `docs/research` and `docs/examples/frdmmcxn947` are
-source material for planning and implementation, not active plan roots.
+Reference material, design notes, and teaching material stay outside this
+folder. Only files under `docs/plans` are active plan roots.

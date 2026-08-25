@@ -73,8 +73,8 @@ void lpspi1_set_frame_size(uint8_t transaction_bits)
  *
  * Do not treat this estimate as authoritative: the final divider experiment
  * contradicted earlier register-derived clock conclusions. Use the P4_1 scope
- * marker or measured transfer duration for timing claims. See
- * docs/research/AVC_LCD_SPI_Design.md.
+ * marker or measured transfer duration for timing claims. The verified display
+ * clock settings are documented beside CONFIG__DISPLAY_SPI_PLLCLKDIV.
  */
 uint32_t lpspi1_get_actual_sck_hz(uint32_t *src_hz_out,
                                   uint8_t *sckdiv_out,

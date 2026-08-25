@@ -10,7 +10,7 @@ static float g_servo_command;
 
 /*
  * Servo PWM output selection. See CONFIG__SERVO_PWM_OUTPUT in
- * nxpc__master_config.h and docs/research/AVC_RevB_Servo_PWM_Options.md.
+ * nxpc__master_config.h.
  *
  * Only the submodule, channel, and pin differ; the timing setup below is
  * identical either way.

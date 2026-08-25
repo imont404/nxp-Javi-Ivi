@@ -39,7 +39,7 @@
  *   J9_EXT.15 (P0_5 PCLK)   -> J9_EXT.2  (P1_14)
  * After those jumpers P1_4..P1_11 is contiguous FLEXIO0_D12..D19 and contiguous
  * SMARTDMA_PIO0..PIO7, so EZH versus FlexIO becomes alt7 versus alt6 on one
- * harness. See docs/research/AVC_Camera_FlexIO_Pin_Migration.md.
+ * harness.
  *
  *                    | PORT4 group          | PORT1 group
  *   D0-D7            | P4_12..P4_19 D20..D27| P1_4..P1_11 D12..D19
@@ -153,8 +153,6 @@
  * Selecting it here drives that header pin so it can be verified with a scope
  * before committing to a board respin.
  *
- * See docs/research/AVC_RevB_Servo_PWM_Options.md.
- *
  *   P2_3_B2  PWM1 submodule 2, channel B, alt5 - as built on Rev A (shield J3.5)
  *   P3_20_A3 PWM1 submodule 3, channel A, alt5 - Rev B candidate (shield J1.5)
  */
@@ -190,7 +188,7 @@
  * Instruments eGFX_DumpRaw with the cycle counter and reports where the frame
  * dump time goes. Measurement only - it changes no behavior - but it costs a
  * few cycles per phase and prints over RTT, so it stays off in the competition
- * image. See docs/research/AVC_LCD_SPI_Design.md.
+ * image.
  */
 #ifndef CONFIG__DISPLAY_TIMING_DIAG_ENABLE
 #define CONFIG__DISPLAY_TIMING_DIAG_ENABLE		(0)
@@ -261,7 +259,6 @@
  * runtime change to divider 1 produced a black panel even when SCK was divided
  * back to 37.5 MHz. The cause is unresolved. Divider 2 at 37.5 MHz is the only
  * competition-verified configuration; do not change it without bench evidence.
- * See docs/research/AVC_LCD_SPI_Design.md.
  */
 #ifndef CONFIG__DISPLAY_SPI_PLLCLKDIV
 #define CONFIG__DISPLAY_SPI_PLLCLKDIV			(2)

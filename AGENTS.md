@@ -8,8 +8,9 @@ visible failures, bounded runtime behavior, and a small editable surface.
 
 - Read `README.md` and `src/README.md` for setup and component ownership.
 - Read the nearest component `AGENTS.md` before editing under `src`.
-- Read `docs/research/AVC_Competition_Overview.md` for event, track, vehicle,
-  timing, and teaching constraints.
+- Read `docs/design/firmware-framework.md` for the student API, runtime flow,
+  and safety boundaries; hardware reference material lives under
+  `docs/components` and `docs/car_chassis`.
 - Active execution plans live under `docs/plans`; broad documentation
   reorganization may occur independently, so avoid unrelated docs edits.
 

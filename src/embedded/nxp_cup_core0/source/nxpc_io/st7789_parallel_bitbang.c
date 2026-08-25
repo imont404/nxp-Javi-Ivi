@@ -12,7 +12,7 @@
 
 #define LCDP_PIN_MASK(pin) (1UL << (pin))
 
-/* ER-TFT020-7 8080 proof map, matching docs/research/ER-TFT020-7/parallel_ezh_io_map.md. */
+/* ER-TFT020-7 8080 proof map retained for the parallel-display experiment. */
 #define LCDP_D0_GPIO GPIO1
 #define LCDP_D0_PORT PORT1
 #define LCDP_D0_PIN  4U

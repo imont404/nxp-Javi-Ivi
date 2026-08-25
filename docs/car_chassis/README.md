@@ -127,5 +127,5 @@ MCXN947, which is expected.
 
 ## Related
 
-- [`../research/AVC_Competition_Overview.md`](../research/AVC_Competition_Overview.md) §3 — vehicle section
-- [`../research/AVC_Motor_Encoder_QDC_Research.md`](../research/AVC_Motor_Encoder_QDC_Research.md) — QDC routing
+- [`../../src/embedded/nxp_cup_core0/source/nxpc_config/nxpc__master_config.h`](../../src/embedded/nxp_cup_core0/source/nxpc_config/nxpc__master_config.h)
+  — competition encoder configuration
