@@ -79,7 +79,7 @@ Thumbs.db
 # Applications
 *.app
 *.exe
-!src/nxp_cup_host/vendor/rblhost/rblhost.exe
+!src/host/vendor/rblhost/rblhost.exe
 *.war
 
 # Large media files

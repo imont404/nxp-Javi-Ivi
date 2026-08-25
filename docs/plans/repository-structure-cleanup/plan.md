@@ -1,7 +1,7 @@
 +++
 type = "plan"
 id = "repository-structure-cleanup"
-status = "active"
+status = "pending"
 created = "2026-08-25"
 
 [[steps]]
@@ -54,71 +54,71 @@ depends_on = ["path-and-agent-contracts"]
 [[steps]]
 id = "structure-checkpoint"
 title = "Commit a clean local repository-structure checkpoint with no lost learning work, no stale active build paths, and recorded validation evidence; do not push or create downstream worktrees yet"
-status = "active"
+status = "done"
 depends_on = ["build-regression"]
 
 [[steps]]
 id = "design-doc-intent-audit"
 title = "Audit the new component boundaries, student/maintainer entry points, and deferred documentation scope against organizer intent"
-status = "pending"
+status = "done"
 depends_on = ["structure-checkpoint"]
 
 [[steps]]
 id = "test-runtime-impact-audit"
 title = "Record the validation commands, durations, generated-output locations, and any tests deliberately left hardware-dependent"
-status = "pending"
+status = "done"
 depends_on = ["build-regression"]
 
 [[steps]]
 id = "external-review"
 title = "Obtain independent review of the move map, build entry points, ignored/generated files, Git history preservation, and parallel-worktree readiness"
-status = "pending"
+status = "done"
 depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
 
 [[exit_criteria]]
 id = "learning-work-preserved"
 title = "The authored and generated learning tools are committed and reproducible, while node_modules, caches, and transient test output remain untracked"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "component-navigation"
 title = "A new contributor can identify embedded, host, Android, and shared code from src/README.md and find one normal build entry point in each buildable component"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "root-clean"
 title = "The repository root contains only project-wide configuration, README.md, AGENTS.md, and the intentional Windows setup entry point; component build and maintainer scripts live with their component"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "embedded-compatibility"
 title = "Every retained firmware preset builds after relocation and fresh MCUXpresso, CMake metadata drift, linked-resource, artifact, and Ozone path checks pass"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "consumer-builds"
 title = "The canonical LLVM-MinGW host build, learning-page checks, and Android unit/APK build pass from their documented component entry points"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "history-and-worktree-ready"
 title = "The post-split firmware work and lecture work are both present in clean local history, the old checkout remains recoverable, and the checkpoint can safely seed separate embedded, host, Android, and docs worktrees"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "design-doc-intent-audit"
 title = "Component boundaries and entry points match organizer intent without prematurely reorganizing documentation or changing the firmware API"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "test-runtime-impact-audit"
 title = "Validation coverage, duration, output locations, and hardware-dependent omissions are recorded"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "external-review"
 title = "Independent review is complete"
-status = "pending"
+status = "met"
 +++
 
 # Repository Structure and Build Cleanup

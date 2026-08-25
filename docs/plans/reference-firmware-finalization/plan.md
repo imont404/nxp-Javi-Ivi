@@ -6,7 +6,7 @@ created = "2026-08-24"
 
 [[steps]]
 id = "resume-checkpoint"
-title = "Resume from clean avc commit 76a0f2f with the physically proven race arming, EXE stop, neutral PWM, USB telemetry, and LCD race-entry behavior"
+title = "Resume from the nxp_cup cleanup branch, whose history contains clean avc checkpoint 76a0f2f and the physically proven race arming, EXE stop, neutral PWM, USB telemetry, and LCD race-entry behavior"
 status = "done"
 
 [[steps]]
@@ -95,7 +95,7 @@ depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
 
 [[steps]]
 id = "nxp-cup-repository-handoff"
-title = "After final audits and explicit authorization, reconcile this history with the separate nxp_cup work, then perform the repository cutover without silently changing the avc remote"
+title = "After final audits and explicit authorization, integrate the finalized branch within nxp_cup local history without changing or pushing its remote"
 status = "pending"
 depends_on = ["external-review"]
 
@@ -149,11 +149,13 @@ status = "pending"
 
 ## Resume point
 
-Work remains in `C:\ELI\fit2026\avc`. The durable starting point for the next
-session is clean commit `76a0f2f` (`feat: refine telemetry workflow and race
-controls`). The sibling `nxp_cup` checkout may contain lesson-plan work owned by
-another agent; do not overwrite it or change this repository's remote without
-explicit authorization.
+Work now resumes from `C:\ELI\fit2026\nxp_cup-worktrees\structure` on branch
+`cleanup/repository-structure`, after the repository-structure cleanup plan is
+closed. That branch contains clean firmware checkpoint `76a0f2f`, later local
+firmware planning, the preserved lesson work, and the component-layout
+checkpoint. Do not resume implementation in the legacy `avc` checkout. Keep the
+primary `nxp_cup` lecture checkout and both repository remotes unchanged until
+the owner explicitly authorizes branch integration or new component worktrees.
 
 The latest firmware was built, flashed through ROM-HID with full readback, and
 observed on Rev A hardware. EXE starts and stops race execution, race entry arms

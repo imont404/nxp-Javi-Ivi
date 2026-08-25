@@ -3,8 +3,8 @@
 This is the gate that makes changes to the source list, the linker scripts, or
 the capture backends safe to attempt. It needs no board.
 
-Maintainer diagnostics have dedicated scripts and separate build directories;
-they are not student-facing presets.
+Maintainer metadata checks and ad-hoc diagnostic builds use separate build
+directories; they are not student-facing presets.
 """
 
 import shutil
