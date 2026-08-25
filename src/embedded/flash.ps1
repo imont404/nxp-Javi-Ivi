@@ -1,5 +1,5 @@
 param(
-    [ValidateSet("Ozone", "Rom", "JLink")]
+    [ValidateSet("Rom", "JLink")]
     [string]$Backend = "",
 
     [switch]$NoReset,
@@ -15,7 +15,6 @@ param(
     [ValidateSet("Debug")]
     [string]$Configuration = "Debug",
     [string]$File,
-    [string]$OzonePath = "",
     # Optional override. Otherwise resolve NXPC_JLINK_PATH, then the newest
     # SEGGER installation under Program Files. Do not use the Java SDK's
     # unrelated jlink.exe from PATH.
@@ -112,29 +111,6 @@ Install the SEGGER J-Link Software and Documentation Pack, pass
 
 $axfFile = Resolve-NxpCupImage -RepoRoot $repoRoot -File $File `
                             -Mcux:$Mcux -Configuration $Configuration
-
-if ($Backend -eq "Ozone") {
-    if ($File -or $Mcux) {
-        throw "The Ozone project is pinned to the competition image. Use -Backend Rom or JLink for an explicit image."
-    }
-
-    $ozoneProject = Join-Path $repoRoot "src\embedded\nxp_cup_core0\ozone__core0.jdebug"
-    if ([string]::IsNullOrWhiteSpace($OzonePath)) {
-        $OzonePath = Get-ChildItem -LiteralPath "C:\Program Files\SEGGER" -Directory -Filter "Ozone*" `
-            -ErrorAction SilentlyContinue |
-            Sort-Object Name -Descending |
-            ForEach-Object { Join-Path $_.FullName "Ozone.exe" } |
-            Where-Object { Test-Path -LiteralPath $_ } |
-            Select-Object -First 1
-    }
-    if (-not $OzonePath -or -not (Test-Path -LiteralPath $OzonePath)) {
-        throw "SEGGER Ozone was not found. Install it or pass -OzonePath."
-    }
-
-    Write-Host "Opening the NXP Cup competition image in Ozone: $axfFile" -ForegroundColor Cyan
-    Start-Process -FilePath $OzonePath -ArgumentList @($ozoneProject)
-    return
-}
 
 if (($Backend -eq "Rom") -or $automaticBackend) {
     $binFile = if ([IO.Path]::GetExtension($axfFile) -ieq ".bin") {

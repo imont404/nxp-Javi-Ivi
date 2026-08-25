@@ -33,9 +33,8 @@ Android SDK licenses require a separate explicit setup:
 
 Generated artifacts are published under `out\artifacts`. The normal student
 firmware loop is edit, build, and run `flash.ps1`. Flashing prefers ROM-HID and
-automatically falls back to the command-line J-Link backend. SEGGER Ozone remains
-an explicit GUI option through `-Backend Ozone`; RTT and lower-level maintainer
-tools live under `src\embedded\tools`.
+automatically falls back to the command-line J-Link backend. RTT and lower-level
+maintainer tools live under `src\embedded\tools`.
 
 See [`src/README.md`](src/README.md) for the source-tree map. Students and LLM
 assistants should read the nearest `AGENTS.md` before editing a component.

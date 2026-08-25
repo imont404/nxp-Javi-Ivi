@@ -14,8 +14,7 @@ live under `out\build\embedded`. The MCUXpresso project remains in
 
 The adjacent `flash.ps1` wrapper first tries the preferred ROM-HID path and
 falls back to J-Link Commander when ROM flashing is unavailable. `-Backend Rom`
-and `-Backend JLink` force one command-line path; `-Backend Ozone` opens the GUI
-project at `nxp_cup_core0\ozone__core0.jdebug`. Scripts under `tools` contain
+and `-Backend JLink` force one command-line path. Scripts under `tools` contain
 maintainer-only RTT, metadata-drift, MCUXpresso, and diagnostic helpers.
 
 J-Link Commander is found automatically from the newest SEGGER installation

@@ -61,10 +61,8 @@ to reuse that provisioned directory without duplicating downloads.
 
 `src/embedded/flash.ps1` first tries the ROM-HID backend and falls back to
 command-line J-Link Commander when ROM flashing is unavailable. Passing
-`-Backend Rom` or `-Backend JLink` disables fallback and forces that path.
-`-Backend Ozone` opens the checked GUI project at
-`src/embedded/nxp_cup_core0/ozone__core0.jdebug`. The companion RTT command is
-maintainer tooling rather than part of student setup.
+`-Backend Rom` or `-Backend JLink` disables fallback and forces that path. The
+companion RTT command is maintainer tooling rather than part of student setup.
 
 ## Compatibility
 

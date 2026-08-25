@@ -40,8 +40,7 @@ student build/flash workflow.
 - The ordinary embedded build is the Rev A `competition` image: EZH camera,
   ER-TFT020-3 SPI LCD, session-gated USB telemetry, and QDC wheel feedback.
 - The normal flash command tries ROM-HID first and falls back to J-Link Commander.
-  SEGGER Ozone is an explicit GUI option; RTT scripts under `src/embedded/tools`
-  are maintainer tooling.
+  RTT scripts under `src/embedded/tools` are maintainer tooling.
 - Do not supply line following, PID, active differential, or a completed race
   solution. The framework supplies safe primitives; students write the algorithm.
 - Preserve the version-1 `AVCU` wire bytes and USB VID/PID unless a plan explicitly

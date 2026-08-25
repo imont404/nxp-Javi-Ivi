@@ -53,7 +53,9 @@ def test_canonical_build_has_no_variant_selector():
 
 def test_flash_defaults_to_rom_then_jlink_commander():
     text = _text(FLASH)
-    assert '[ValidateSet("Ozone", "Rom", "JLink")]' in text
+    assert '[ValidateSet("Rom", "JLink")]' in text
+    assert "OzonePath" not in text
+    assert '-Backend Ozone' not in text
     assert "nxpc_tool.exe" in text, "ROM-HID backend is missing"
     assert "jlink_common.ps1" in text, "maintainer J-Link backend is missing"
     assert '$automaticBackend = [string]::IsNullOrWhiteSpace($Backend)' in text

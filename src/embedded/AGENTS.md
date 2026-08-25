@@ -15,6 +15,6 @@ safe-stop, command leases, camera-buffer lifetime, mode transitions, and typed
 telemetry.
 
 Build with `.\src\embedded\build.ps1`. The adjacent `flash.ps1` defaults to
-ROM-HID and falls back to J-Link Commander. Ozone is an explicit GUI-only
-backend. Tools under `tools` are maintainer-only. Keep the Rev A competition
-configuration as the default and keep diagnostics explicit.
+ROM-HID and falls back to J-Link Commander. Tools under `tools` are
+maintainer-only. Keep the Rev A competition configuration as the default and
+keep diagnostics explicit.
