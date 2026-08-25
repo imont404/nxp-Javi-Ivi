@@ -68,6 +68,9 @@ def test_host_viewer_uses_published_firmware_location():
     assert 'fs::path("out") / "artifacts" / "embedded" / "nxp_cup_core0.bin"' in viewer
     assert "GetModuleFileNameA" in viewer
     assert "out\\build\\embedded\\competition\\nxp_cup_core0.bin" not in viewer
+    assert 'ImGui::Button("Program and reconnect"' in viewer
+    assert "Erase application flash" not in viewer
+    assert "erase_confirmation" not in viewer
 
 
 def test_android_build_uses_provisioned_gradle_and_supports_offline_builds():

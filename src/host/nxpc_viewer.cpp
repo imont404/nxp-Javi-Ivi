@@ -825,7 +825,6 @@ int viewer_main(const Options &options)
                   image_path.size(),
                   "%s",
                   default_image.c_str());
-    bool erase_confirmation = false;
     double stream_fps = 0.0;
     uint64_t rate_frame_count = 0u;
     uint64_t rate_session = 0u;
@@ -1074,13 +1073,11 @@ int viewer_main(const Options &options)
         {
             choose_firmware_image(image_path);
         }
-        ImGui::Checkbox("Erase application flash", &erase_confirmation);
-
         const bool enter_isp_supported =
             connected && ((hello.capability_flags & NXPC_DBG_CAPABILITY_ENTER_ISP) != 0u);
         const bool target_available = enter_isp_supported || rom_connected;
-        const bool can_program = target_available && erase_confirmation && !program_busy &&
-                                 (image_path[0] != '\0');
+        const bool can_program =
+            target_available && !program_busy && (image_path[0] != '\0');
         ImGui::BeginDisabled(!can_program);
         if (ImGui::Button("Program and reconnect", ImVec2(-1.0f, 0.0f)))
         {
@@ -1093,7 +1090,6 @@ int viewer_main(const Options &options)
             shared.program_status = "Programming request queued";
             shared.program_detail.clear();
             shared.program_error.clear();
-            erase_confirmation = false;
         }
         ImGui::EndDisabled();
 
