@@ -16,7 +16,10 @@ param(
     [string]$Configuration = "Debug",
     [string]$File,
     [string]$OzonePath = "",
-    [string]$JLinkPath = "C:\Program Files\SEGGER\JLink_V940\JLink.exe",
+    # Optional override. Otherwise resolve NXPC_JLINK_PATH, then the newest
+    # SEGGER installation under Program Files. Do not use the Java SDK's
+    # unrelated jlink.exe from PATH.
+    [string]$JLinkPath = "",
     [string]$Device = "MCXN947_M33_0",
     [string]$Interface = "SWD",
     [int]$SpeedKHz = 4000,
@@ -33,36 +36,78 @@ $ErrorActionPreference = "Stop"
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 . (Join-Path $PSScriptRoot "tools\lib\nxpc_image_common.ps1")
 
-if ([string]::IsNullOrWhiteSpace($Backend)) {
-    throw "Choose a flash backend explicitly: -Backend Ozone, -Backend Rom, or -Backend JLink."
-}
+$automaticBackend = [string]::IsNullOrWhiteSpace($Backend)
 
-function Resolve-SeggerTool {
+function Resolve-JLinkCommander {
     param(
-        [Parameter(Mandatory = $true)]
-        [string]$ConfiguredPath,
-        [Parameter(Mandatory = $true)]
-        [string]$ToolName
+        [string]$ConfiguredPath
     )
 
-    if (Test-Path -LiteralPath $ConfiguredPath) {
-        return $ConfiguredPath
+    $requestedPath = $ConfiguredPath
+    if ([string]::IsNullOrWhiteSpace($requestedPath)) {
+        $requestedPath = $env:NXPC_JLINK_PATH
     }
 
-    $seggerRoot = "C:\Program Files\SEGGER"
-    if (Test-Path -LiteralPath $seggerRoot) {
-        $candidate = Get-ChildItem -LiteralPath $seggerRoot -Directory -Filter "JLink_V*" |
-            Sort-Object -Property Name -Descending |
-            ForEach-Object { Join-Path $_.FullName $ToolName } |
-            Where-Object { Test-Path -LiteralPath $_ } |
+    if (-not [string]::IsNullOrWhiteSpace($requestedPath)) {
+        if (-not (Test-Path -LiteralPath $requestedPath -PathType Leaf)) {
+            throw "J-Link Commander not found at the configured path: $requestedPath"
+        }
+        return (Resolve-Path -LiteralPath $requestedPath).Path
+    }
+
+    $programFilesRoots = @($env:ProgramFiles, ${env:ProgramFiles(x86)}) |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        Select-Object -Unique
+
+    foreach ($programFilesRoot in $programFilesRoots) {
+        $seggerRoot = Join-Path $programFilesRoot "SEGGER"
+        if (-not (Test-Path -LiteralPath $seggerRoot -PathType Container)) {
+            continue
+        }
+
+        $unversioned = Join-Path $seggerRoot "JLink\JLink.exe"
+        if (Test-Path -LiteralPath $unversioned -PathType Leaf) {
+            return (Resolve-Path -LiteralPath $unversioned).Path
+        }
+
+        $versioned = Get-ChildItem -LiteralPath $seggerRoot -Directory -Filter "JLink_V*" |
+            Sort-Object -Property @{
+                Expression = {
+                    if ($_.Name -match '^JLink_V(?<VersionDigits>[0-9]+)') {
+                        [int64]$Matches.VersionDigits
+                    } else {
+                        0
+                    }
+                }
+                Descending = $true
+            } |
+            ForEach-Object { Join-Path $_.FullName "JLink.exe" } |
+            Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
             Select-Object -First 1
 
-        if ($candidate) {
-            return $candidate
+        if ($versioned) {
+            return (Resolve-Path -LiteralPath $versioned).Path
+        }
+
+        $rootCandidate = Join-Path $seggerRoot "JLink.exe"
+        if (Test-Path -LiteralPath $rootCandidate -PathType Leaf) {
+            return (Resolve-Path -LiteralPath $rootCandidate).Path
         }
     }
 
-    return $ConfiguredPath
+    $seggerOnPath = Get-Command JLink.exe -All -ErrorAction SilentlyContinue |
+        Where-Object { $_.Source -match '(?i)[\\/]SEGGER[\\/]' } |
+        Select-Object -First 1
+    if ($seggerOnPath) {
+        return $seggerOnPath.Source
+    }
+
+    throw @"
+J-Link Commander was not found.
+
+Install the SEGGER J-Link Software and Documentation Pack, pass
+-JLinkPath <path-to-JLink.exe>, or set NXPC_JLINK_PATH.
+"@
 }
 
 $axfFile = Resolve-NxpCupImage -RepoRoot $repoRoot -File $File `
@@ -91,38 +136,72 @@ if ($Backend -eq "Ozone") {
     return
 }
 
-if ($Backend -eq "Rom") {
+if (($Backend -eq "Rom") -or $automaticBackend) {
     $binFile = if ([IO.Path]::GetExtension($axfFile) -ieq ".bin") {
         $axfFile
     } else {
         [IO.Path]::ChangeExtension($axfFile, ".bin")
     }
+
     if (-not (Test-Path -LiteralPath $binFile)) {
-        throw "ROM image not found: $binFile. Run .\src\embedded\build.ps1 to create it."
+        $message = "ROM image not found: $binFile. Run .\src\embedded\build.ps1 to create it."
+        if (-not $automaticBackend) {
+            throw $message
+        }
+        Write-Warning "$message Falling back to J-Link Commander."
     }
 
     $hostTool = Join-Path $repoRoot "out\artifacts\host\nxpc_tool.exe"
-    if (-not (Test-Path -LiteralPath $hostTool)) {
-        throw "NXP Cup host tool not found. Run .\src\host\build.ps1 first."
+    if ((Test-Path -LiteralPath $binFile) -and -not (Test-Path -LiteralPath $hostTool)) {
+        $message = "NXP Cup host tool not found. Run .\src\host\build.ps1 first."
+        if (-not $automaticBackend) {
+            throw $message
+        }
+        Write-Warning "$message Falling back to J-Link Commander."
     }
 
-    & $hostTool program --image $binFile
-    exit $LASTEXITCODE
+    if ((Test-Path -LiteralPath $binFile) -and (Test-Path -LiteralPath $hostTool)) {
+        if ($automaticBackend) {
+            Write-Host "Trying the preferred ROM-HID flash path..." -ForegroundColor Cyan
+        }
+
+        $romExitCode = 1
+        try {
+            & $hostTool program --image $binFile
+            $romExitCode = $LASTEXITCODE
+        } catch {
+            if (-not $automaticBackend) {
+                throw
+            }
+            Write-Warning "ROM-HID flash could not start: $($_.Exception.Message)"
+        }
+
+        if ($romExitCode -eq 0) {
+            exit 0
+        }
+        if (-not $automaticBackend) {
+            exit $romExitCode
+        }
+        Write-Warning "ROM-HID flash failed with exit code $romExitCode. Falling back to J-Link Commander."
+    }
+
+    $Backend = "JLink"
 }
 
 . (Join-Path $PSScriptRoot "tools\lib\jlink_common.ps1")
+$JLinkPath = Resolve-JLinkCommander -ConfiguredPath $JLinkPath
 $UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
-$JLinkPath = Resolve-SeggerTool -ConfiguredPath $JLinkPath -ToolName "JLink.exe"
-
-if (-not (Test-Path -LiteralPath $JLinkPath)) {
-    throw "J-Link Commander not found: $JLinkPath"
-}
 
 $fileInfo = Get-Item -LiteralPath $axfFile
+
+if ($automaticBackend) {
+    Write-Host "Trying the J-Link Commander fallback..." -ForegroundColor Cyan
+}
 
 Write-Host ("=" * 50)
 Write-Host " NXP Cup MCXN947 - Flash"
 Write-Host ("=" * 50)
+Write-Host "J-Link Commander: $JLinkPath"
 Write-Host "Device: $Device"
 Write-Host "J-Link S/N: $UsbSerial"
 Write-Host "Interface: $Interface @ $SpeedKHz kHz"

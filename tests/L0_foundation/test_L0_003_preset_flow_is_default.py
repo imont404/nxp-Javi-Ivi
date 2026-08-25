@@ -51,12 +51,23 @@ def test_canonical_build_has_no_variant_selector():
     assert "mcuxpressoidec" not in text.lower()
 
 
-def test_flash_backend_is_explicit_until_evaluation_finishes():
+def test_flash_defaults_to_rom_then_jlink_commander():
     text = _text(FLASH)
     assert '[ValidateSet("Ozone", "Rom", "JLink")]' in text
-    assert "Choose a flash backend explicitly" in text
     assert "nxpc_tool.exe" in text, "ROM-HID backend is missing"
     assert "jlink_common.ps1" in text, "maintainer J-Link backend is missing"
+    assert '$automaticBackend = [string]::IsNullOrWhiteSpace($Backend)' in text
+    assert '$Backend = "JLink"' in text
+    assert "J-Link Commander fallback" in text
+    assert '[string]$JLinkPath = ""' in text
+    assert "NXPC_JLINK_PATH" in text
+    assert 'Join-Path $programFilesRoot "SEGGER"' in text
+    assert "VersionDigits" in text
+    assert "J-Link Commander: $JLinkPath" in text
+
+    rom_at = text.index("& $hostTool program --image $binFile")
+    jlink_at = text.index("& $JLinkPath @jlinkArgs")
+    assert rom_at < jlink_at, "the automatic flow must try ROM before J-Link"
 
 
 @ENTRY_POINTS
