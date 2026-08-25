@@ -4,14 +4,34 @@ This repository has source code for use with FRDM-MCXN947 and the FRDM-AVC shiel
 
 ## Quick start
 
-**No NXP software required.** On a fresh Windows machine:
+**No NXP software is required to build.** On a fresh Windows machine:
 
 ```powershell
 .\setup.ps1                              # provisions the compiler and build tools
-cmake --preset competition
-cmake --build --preset competition
+.\build.ps1                              # firmware -> bin\firmware
+.\build_viewer.ps1                       # USB viewer -> bin\host
 .\flash.ps1 -Backend Ozone
 ```
+
+Run `bin\host\nxpc_viewer.exe` for the native camera/telemetry viewer. The
+competition firmware AXF and BIN are copied to `bin\firmware`. The authoritative
+build outputs remain under `build`.
+
+The version-1 USB telemetry channel supports named i32, u32, f32, bool, and bounded
+48-byte UTF-8 text values. The framework reports its mode, state, and applied actuator
+commands even when participant callbacks publish no telemetry.
+
+Android maintainers provision and build the phone bridge separately:
+
+```powershell
+.\scripts\android\setup_android.ps1 -AcceptLicenses  # once per workstation
+.\build_android.ps1                                  # tests + APK -> bin\android
+.\build_android.ps1 -Offline                         # after one connected build
+```
+
+Repository-local toolchains and caches live under the git-ignored
+`out\toolchains`; easy-to-find runnable outputs live under the git-ignored
+`bin` directory. Neither setup script persists environment variables.
 
 Full instructions, the list of build variants, and the conventions are in
 **[docs/setup.html](docs/setup.html)**.

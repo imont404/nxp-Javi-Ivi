@@ -102,6 +102,7 @@ struct TelemetrySample
     uint8_t value_type = 0u;
     std::string name;
     std::string units;
+    std::string text_value;
 };
 
 struct ParserCounters

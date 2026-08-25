@@ -83,6 +83,7 @@ Initial log/stats/control messages:
 #define AVC_DBG_CONTROL_CLOSE               (AVC_DBG_MSG_CLASS_CONTROL + 6u)
 #define AVC_DBG_CONTROL_ERROR               (AVC_DBG_MSG_CLASS_CONTROL + 7u)
 #define AVC_DBG_CONTROL_ENTER_ISP           (AVC_DBG_MSG_CLASS_CONTROL + 8u)
+#define AVC_DBG_CONTROL_SYSTEM_ACTION       (AVC_DBG_MSG_CLASS_CONTROL + 9u)
 #define AVC_DBG_TELEMETRY_SCALAR            (AVC_DBG_MSG_CLASS_TELEMETRY + 0u)
 ```
 
@@ -309,11 +310,12 @@ ERROR. Formatting is skipped completely when no recognized session subscribes
 to logs. The API is main-loop/thread context only; camera and USB ISRs must not
 format log strings.
 
-## Named Scalar Telemetry
+## Named Telemetry
 
-Scalar records carry one typed value plus bounded UTF-8 name and units bytes.
-The name immediately follows the fixed header, then the optional units; neither
-string is NUL-terminated on the wire:
+Telemetry records carry one typed value plus bounded UTF-8 name and units bytes.
+The version-1 fixed header remains 16 bytes. The name immediately follows it,
+then the optional units. Scalar types end there. Text type 5 appends its value;
+none of the strings is NUL-terminated on the wire:
 
 ```c
 typedef struct __attribute__((packed))
@@ -327,9 +329,13 @@ typedef struct __attribute__((packed))
 } avc_dbg_telemetry_scalar_t;
 ```
 
-Initial types are signed 32-bit integer, unsigned 32-bit integer, IEEE-754
-32-bit float, and boolean. `value_bits` always carries the little-endian 32-bit
-representation. Firmware accepts at most 31 name bytes and 15 units bytes.
+Types 1 through 4 are signed 32-bit integer, unsigned 32-bit integer, IEEE-754
+32-bit float, and boolean. Their `value_bits` field carries the little-endian
+32-bit representation and their packet bytes are unchanged. Type 5 is a
+non-empty UTF-8 text value: `value_bits` is its trailing byte count, units must
+be empty, and payload size is `16 + name_bytes + text_bytes`. Firmware accepts
+at most 31 name bytes, 15 units bytes, and 48 text bytes. An oversized text value
+is rejected rather than truncated, so a sender cannot emit partial UTF-8 bytes.
 
 The sixteen-entry fixed queue is keyed by name. Publishing a name already
 pending replaces that queued record with the newest type, value, units,
@@ -337,18 +343,20 @@ timestamp, and sample ID; this is counted as a coalesce rather than a drop. A
 new name is dropped when the queue is full. Calls return before inspecting names
 or values unless a recognized session subscribes to telemetry.
 
-Public framework helpers are `AVC_DBG_VALUE_I32`, `AVC_DBG_VALUE_U32`,
-`AVC_DBG_VALUE_F32`, and `AVC_DBG_VALUE_BOOL`. They provide infrastructure only;
-students choose which algorithm variables to publish.
+The public API functions are `telemetry_i32`, `telemetry_u32`, `telemetry_f32`,
+`telemetry_bool`, and `telemetry_text`. Internal `NXPC_DBG_VALUE_*` macros remain
+available to framework code. Six queue positions and six names are reserved for
+framework mode, state, and actuator diagnostics, so participant telemetry cannot
+replace or starve them.
 
 ## Control Direction
 
 Host-to-device control uses the same envelope over CDC bulk OUT. The competition
-firmware implements `HELLO`, `SET_CHANNELS`, `PING`, and `CLOSE`. `HELLO`
+firmware implements `HELLO`, `SET_CHANNELS`, `PING`, `CLOSE`, and the narrow
+`SYSTEM_ACTION` operation. `HELLO`
 establishes a recognized telemetry session and reports capabilities and geometry;
 `SET_CHANNELS` independently selects frames, stats, logs, and telemetry. These
-commands affect diagnostic output only and cannot select vehicle mode or enable
-motors.
+diagnostic commands do not select vehicle mode or enable motors.
 
 Legacy `START_STREAM`, `STOP_STREAM`, and `SET_STREAM_MODE` IDs remain allocated
 for compatibility with older proof images and synthetic ceiling tools, but the
@@ -368,6 +376,18 @@ new diagnostic publication, disconnects zero-duty motor outputs, centers the
 servo, permits at least 100 ms for the response and actuator settling, bounds the
 wait at 500 ms, and invokes the MCXN947 ROM API for USB-HS HID interface 5. It is
 not a general remote actuator or vehicle-mode command.
+
+`SYSTEM_ACTION` carries a typed action in `arg0`; it never carries a target mode
+or raw actuator value. Action 1 is `RACE_START`, action 2 is `STOP`, and `arg2`
+must be zero. `RACE_START` additionally requires `0x21214F47` (`"GO!!"`) in
+`arg1`. The firmware advertises capability bit 7 when this operation is present.
+It accepts start only while the physical TEST input is inactive, the system is in
+`RACE_WAITING`, and at least one camera frame has arrived. It reports `NOT_READY`
+when the camera gate is unmet and `DENIED` when the requested transition is not
+permitted. `STOP` requires zero in `arg1`, is accepted from every system state,
+immediately disables both motors and centers steering, and returns
+`RACE_RUNNING` to `RACE_WAITING`. The successful response is queued only after
+the system state machine has applied the action.
 
 ## Transmit Arbitration
 

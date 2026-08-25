@@ -1,41 +1,13 @@
 # Shared image and toolchain resolution for flash.ps1 and rtt.ps1.
 #
-# The CMake preset flow is the default. A preset name is the normal way to say
-# which image you mean:
+# The competition CMake image is the default:
 #
 #     .\flash.ps1                       # the competition preset
-#     .\flash.ps1 -Preset flexio-port1
-#     .\rtt.ps1   -Preset encoder-diag
 #
 # -File still takes an explicit path and wins over everything, and -Mcux selects
 # the MCUXpresso output directory for the rare case of comparing the two.
 
 Set-StrictMode -Version Latest
-
-function Get-NxpCupPresetNames {
-    <#
-    .SYNOPSIS
-    Visible configure preset names, read from CMakePresets.json.
-    #>
-    param([Parameter(Mandatory)][string]$RepoRoot)
-
-    $presetFile = Join-Path $RepoRoot "CMakePresets.json"
-    if (-not (Test-Path -LiteralPath $presetFile)) {
-        return @()
-    }
-
-    try {
-        $data = Get-Content -LiteralPath $presetFile -Raw | ConvertFrom-Json
-    } catch {
-        return @()
-    }
-
-    return @(
-        $data.configurePresets |
-            Where-Object { -not ($_.PSObject.Properties.Name -contains "hidden" -and $_.hidden) } |
-            ForEach-Object { $_.name }
-    )
-}
 
 function Resolve-NxpCupImage {
     <#
@@ -46,14 +18,13 @@ function Resolve-NxpCupImage {
     Resolution order:
       1. -File, an explicit path
       2. -Mcux, the MCUXpresso output directory (legacy)
-      3. the named preset's build directory (the default)
+      3. the competition build directory (the default)
 
     Throws with the command to run when the image is not there, rather than
     letting a stale binary from an earlier build get flashed by accident.
     #>
     param(
         [Parameter(Mandatory)][string]$RepoRoot,
-        [string]$Preset = "competition",
         [string]$File,
         [switch]$Mcux,
         [string]$Configuration = "Debug"
@@ -75,27 +46,20 @@ Firmware not found: $axf
 That is the MCUXpresso output directory, selected by -Mcux. The default build
 flow is CMake:
 
-    cmake --preset $Preset
-    cmake --build --preset $Preset
+    .\build.ps1
 "@
         }
         return $axf
     }
 
-    $known = Get-NxpCupPresetNames -RepoRoot $RepoRoot
-    if ($known.Count -gt 0 -and $known -notcontains $Preset) {
-        throw "Unknown preset '$Preset'. Available: $($known -join ', ')"
-    }
-
-    $axf = Join-Path $RepoRoot "build\cmake\$Preset\nxp_cup_core0.axf"
+    $axf = Join-Path $RepoRoot "build\cmake\competition\nxp_cup_core0.axf"
     if (-not (Test-Path -LiteralPath $axf)) {
         throw @"
 Firmware not found: $axf
 
-Build the '$Preset' preset first:
+Build the competition firmware first:
 
-    cmake --preset $Preset
-    cmake --build --preset $Preset
+    .\build.ps1
 "@
     }
 

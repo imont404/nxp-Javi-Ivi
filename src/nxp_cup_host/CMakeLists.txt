@@ -69,6 +69,13 @@ if(MSVC)
     target_compile_options(nxpc_host_core PRIVATE /W4 /WX /permissive-)
     target_compile_options(nxpc_tool PRIVATE /W4 /WX /permissive-)
     set_source_files_properties(nxpc_viewer.cpp PROPERTIES COMPILE_OPTIONS "/W4;/WX;/permissive-")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+    target_compile_options(nxpc_host_core PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(nxpc_tool PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_link_options(nxpc_tool PRIVATE -static)
+    target_link_options(nxpc_viewer PRIVATE -static)
+    set_source_files_properties(nxpc_viewer.cpp PROPERTIES
+        COMPILE_OPTIONS "-Wall;-Wextra;-Wpedantic;-Werror")
 endif()
 
 add_custom_command(TARGET nxpc_viewer POST_BUILD

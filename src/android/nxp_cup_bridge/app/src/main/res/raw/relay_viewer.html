@@ -7,20 +7,49 @@
   <style>
     :root { color-scheme: dark; font-family: system-ui, sans-serif; }
     body { margin: 0; background: #07151b; color: #e9f7fb; }
-    main { max-width: 960px; margin: auto; padding: 16px; }
-    canvas, video { width: 100%; image-rendering: pixelated; background: #000; border: 1px solid #34778d; }
-    #status { color: #63dcff; }
+    main { max-width: 1280px; margin: auto; padding: clamp(10px, 2vw, 24px); }
+    h1 { margin: 0; font-size: clamp(1.35rem, 3vw, 2rem); }
+    .toolbar { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    #status { color: #63dcff; margin: 5px 0 0; }
+    .modes { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mode-button {
+      min-width: 4.5rem; padding: 9px 14px; border: 1px solid #34778d; border-radius: 7px;
+      background: #102a35; color: #e9f7fb; font-weight: 700; text-align: center; text-decoration: none;
+    }
+    .mode-button:hover { background: #174052; }
+    .mode-button.active { border-color: #63dcff; background: #14627d; color: #fff; }
+    .video-shell { width: 100%; aspect-ratio: 8 / 5; background: #000; }
+    canvas, video {
+      display: block; width: 100%; height: 100%; object-fit: contain;
+      image-rendering: pixelated; background: #000; border: 1px solid #34778d; box-sizing: border-box;
+    }
+    [hidden] { display: none !important; }
     pre { white-space: pre-wrap; background: #102a35; padding: 12px; }
     table { border-collapse: collapse; width: 100%; }
     td, th { padding: 5px 8px; border-bottom: 1px solid #214654; text-align: left; }
+    @media (max-width: 640px) {
+      .toolbar { align-items: stretch; flex-direction: column; }
+      .modes { display: grid; grid-template-columns: repeat(3, 1fr); }
+    }
   </style>
 </head>
 <body>
 <main>
-  <h1>NXP Cup Camera Relay</h1>
-  <p id="status">Connecting...</p>
-  <canvas id="camera" width="320" height="200"></canvas>
-  <video id="h264" width="320" height="200" muted autoplay playsinline hidden></video>
+  <div class="toolbar">
+    <div>
+      <h1>NXP Cup Camera Relay</h1>
+      <p id="status">Connecting...</p>
+    </div>
+    <nav class="modes" aria-label="Video mode">
+      <a class="mode-button" data-video="jpeg" href="?video=jpeg&amp;replace=1">JPEG</a>
+      <a class="mode-button" data-video="h264" href="?video=h264&amp;replace=1">H.264</a>
+      <a class="mode-button" data-video="raw" href="?video=raw&amp;replace=1">Raw</a>
+    </nav>
+  </div>
+  <div class="video-shell">
+    <canvas id="camera" width="320" height="200"></canvas>
+    <video id="h264" width="320" height="200" muted autoplay playsinline hidden></video>
+  </div>
   <pre id="metrics">Waiting for health...</pre>
   <h2>Telemetry</h2>
   <table><thead><tr><th>Name</th><th>Value</th><th>Units</th></tr></thead><tbody id="telemetry"></tbody></table>
@@ -39,6 +68,7 @@
   const H264_FLAG_INITIALIZATION = 1;
   const MAX_MSE_QUEUE = 48;
   const MSG_TELEMETRY = 0x01000500;
+  const TELEMETRY_TEXT_MAX_BYTES = 48;
   const status = document.querySelector('#status');
   const metrics = document.querySelector('#metrics');
   const telemetryBody = document.querySelector('#telemetry');
@@ -62,6 +92,11 @@
   const requestedVideo = ['raw', 'jpeg', 'h264'].includes(pageParameters.get('video'))
     ? pageParameters.get('video')
     : 'jpeg';
+  document.querySelectorAll('[data-video]').forEach(button => {
+    const active = button.dataset.video === requestedVideo;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-current', active ? 'page' : 'false');
+  });
 
   function codecName(codecConfig) {
     return `avc1.${codecConfig.toString(16).padStart(6, '0')}`;
@@ -196,16 +231,26 @@
     const nameBytes = view.getUint16(payloadStart + 12, true);
     const type = view.getUint8(payloadStart + 14);
     const unitsBytes = view.getUint8(payloadStart + 15);
-    if (16 + nameBytes + unitsBytes !== payloadLength || nameBytes === 0) return;
-    const bytes = new Uint8Array(view.buffer, view.byteOffset + payloadStart + 16, nameBytes + unitsBytes);
+    const textValue = type === 5;
+    const textBytes = textValue ? valueBits : 0;
+    if (
+      16 + nameBytes + unitsBytes + textBytes !== payloadLength || nameBytes === 0 ||
+      type < 1 || type > 5 ||
+      (textValue && (textBytes === 0 || textBytes > TELEMETRY_TEXT_MAX_BYTES || unitsBytes !== 0))
+    ) return;
+    const bytes = new Uint8Array(
+      view.buffer,
+      view.byteOffset + payloadStart + 16,
+      nameBytes + unitsBytes + textBytes,
+    );
     const name = decoder.decode(bytes.subarray(0, nameBytes));
-    const units = decoder.decode(bytes.subarray(nameBytes));
+    const units = decoder.decode(bytes.subarray(nameBytes, nameBytes + unitsBytes));
     let value;
     if (type === 1) value = view.getInt32(payloadStart + 8, true);
     else if (type === 2) value = valueBits;
     else if (type === 3) value = view.getFloat32(payloadStart + 8, true).toFixed(3);
     else if (type === 4) value = valueBits ? 'true' : 'false';
-    else return;
+    else value = decoder.decode(bytes.subarray(nameBytes + unitsBytes));
     telemetry.set(name, { value, units });
     telemetryBody.replaceChildren(...[...telemetry.entries()].map(([key, item]) => {
       const row = document.createElement('tr');

@@ -48,13 +48,16 @@
 #define NXPC_USB_LOG_CATEGORY_MAX_BYTES (15U)
 #define NXPC_USB_LOG_TEXT_MAX_BYTES (160U)
 #define NXPC_USB_TELEMETRY_QUEUE_DEPTH (16U)
+#define NXPC_USB_TELEMETRY_FRAMEWORK_RESERVE (6U)
+#define NXPC_USB_TELEMETRY_PARTICIPANT_LIMIT \
+    (NXPC_USB_TELEMETRY_QUEUE_DEPTH - NXPC_USB_TELEMETRY_FRAMEWORK_RESERVE)
 #define NXPC_USB_TELEMETRY_NAME_MAX_BYTES (31U)
 #define NXPC_USB_TELEMETRY_UNITS_MAX_BYTES (15U)
 #define NXPC_USB_TX_DIAGNOSTIC_BURST_MAX (2U)
 #define NXPC_USB_CONTROL_CAPABILITIES                                                                                \
     (NXPC_DBG_CAPABILITY_FRAMED_CONTROL | NXPC_DBG_CAPABILITY_CAMERA_FRAMES |                                        \
      NXPC_DBG_CAPABILITY_SYNTHETIC_FRAMES | NXPC_DBG_CAPABILITY_STREAM_STATS | NXPC_DBG_CAPABILITY_LOG_TEXT |         \
-     NXPC_DBG_CAPABILITY_NAMED_TELEMETRY | NXPC_DBG_CAPABILITY_ENTER_ISP)
+     NXPC_DBG_CAPABILITY_NAMED_TELEMETRY | NXPC_DBG_CAPABILITY_ENTER_ISP | NXPC_DBG_CAPABILITY_SYSTEM_ACTIONS)
 #define NXPC_USB_CONTROL_SUPPORTED_CHANNELS \
     (NXPC_DBG_CHANNEL_FRAMES | NXPC_DBG_CHANNEL_STATS | NXPC_DBG_CHANNEL_LOGS | NXPC_DBG_CHANNEL_TELEMETRY)
 
@@ -128,8 +131,11 @@ typedef struct nxpc_usb_telemetry_scalar
     uint16_t nameLength;
     uint8_t valueType;
     uint8_t unitsLength;
+    uint8_t textLength;
+    bool frameworkValue;
     char name[NXPC_USB_TELEMETRY_NAME_MAX_BYTES];
     char units[NXPC_USB_TELEMETRY_UNITS_MAX_BYTES];
+    char text[NXPC_DBG_TELEMETRY_TEXT_MAX_BYTES];
 } nxpc_usb_telemetry_scalar_t;
 
 extern usb_device_endpoint_struct_t g_UsbDeviceCdcVcomDicEndpoints[];
@@ -221,6 +227,9 @@ static uint32_t s_telemetryDropCount;
 static uint32_t s_telemetryQueueHighWater;
 static uint32_t s_telemetryCoalesceCount;
 static volatile uint8_t s_enterIspRequested;
+static volatile uint8_t s_systemActionPending;
+static uint32_t s_systemActionRequestSequence;
+static uint32_t s_systemAction;
 
 #if CONFIG__USB_DEBUG_PROFILE_ENABLE
 static uint32_t s_profileReportTick;
@@ -538,6 +547,49 @@ static uint32_t nxpc_usb_debug_stream__bounded_text_length(const char *text, uin
     return length;
 }
 
+bool nxpc_usb_debug_stream__take_system_action(nxpc_usb_system_action_request_t *request)
+{
+    uint32_t usbOsaCurrentSr;
+
+    if (request == NULL)
+    {
+        return false;
+    }
+
+    usbOsaCurrentSr = DisableGlobalIRQ();
+    if (s_systemActionPending == 0U)
+    {
+        EnableGlobalIRQ(usbOsaCurrentSr);
+        return false;
+    }
+    request->requestSequence = s_systemActionRequestSequence;
+    request->action = s_systemAction;
+    s_systemActionPending = 0U;
+    EnableGlobalIRQ(usbOsaCurrentSr);
+    return true;
+}
+
+static bool nxpc_usb_debug_stream__framework_telemetry_name(const char *name)
+{
+    static const char *const protectedNames[] = {
+        "motor.enabled",
+        "motor.left.command",
+        "motor.right.command",
+        "steering.command",
+        "system.mode",
+        "system.state",
+    };
+
+    for (uint32_t index = 0U; index < (sizeof(protectedNames) / sizeof(protectedNames[0])); index++)
+    {
+        if (strcmp(name, protectedNames[index]) == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool nxpc_usb_debug_stream__log_text(uint8_t level, const char *category, const char *text)
 {
     nxpc_usb_log_record_t record;
@@ -620,11 +672,13 @@ bool nxpc_usb_debug_stream__logf(uint8_t level, const char *category, const char
 }
 
 static bool nxpc_usb_debug_stream__telemetry_scalar(const char *name,
-                                                   uint8_t valueType,
-                                                   uint32_t valueBits,
-                                                   const char *units)
+                                                    uint8_t valueType,
+                                                    uint32_t valueBits,
+                                                    const char *units,
+                                                    const char *text,
+                                                    bool frameworkValue)
 {
-    nxpc_usb_telemetry_scalar_t record;
+    nxpc_usb_telemetry_scalar_t record = {0};
     nxpc_usb_telemetry_scalar_t *queuedRecord = NULL;
     uint32_t usbOsaCurrentSr;
     uint8_t index;
@@ -632,15 +686,42 @@ static bool nxpc_usb_debug_stream__telemetry_scalar(const char *name,
 
     if ((s_telemetryEnabled == 0U) || (s_sessionActive == 0U) || !nxpc_usb_debug_stream__is_open() ||
         (name == NULL) || (name[0] == '\0') || (units == NULL) ||
-        (valueType < NXPC_DBG_TELEMETRY_TYPE_I32) || (valueType > NXPC_DBG_TELEMETRY_TYPE_BOOL))
+        (valueType < NXPC_DBG_TELEMETRY_TYPE_I32) || (valueType > NXPC_DBG_TELEMETRY_TYPE_TEXT))
+    {
+        return false;
+    }
+    if (frameworkValue != nxpc_usb_debug_stream__framework_telemetry_name(name))
     {
         return false;
     }
 
+    if (valueType == NXPC_DBG_TELEMETRY_TYPE_TEXT)
+    {
+        uint32_t textLength;
+        if ((text == NULL) || (text[0] == '\0') || (units[0] != '\0'))
+        {
+            return false;
+        }
+        textLength = nxpc_usb_debug_stream__bounded_text_length(
+            text,
+            NXPC_DBG_TELEMETRY_TEXT_MAX_BYTES + 1U);
+        if (textLength > NXPC_DBG_TELEMETRY_TEXT_MAX_BYTES)
+        {
+            return false;
+        }
+        record.textLength = (uint8_t)textLength;
+        record.valueBits = textLength;
+        (void)memcpy(record.text, text, textLength);
+    }
+    else
+    {
+        record.valueBits = valueBits;
+    }
+
     record.timestampMs = e_tick__get_ms();
     record.sampleId = 0U;
-    record.valueBits = valueBits;
     record.valueType = valueType;
+    record.frameworkValue = frameworkValue;
     record.nameLength = (uint16_t)nxpc_usb_debug_stream__bounded_text_length(
         name,
         NXPC_USB_TELEMETRY_NAME_MAX_BYTES);
@@ -653,6 +734,8 @@ static bool nxpc_usb_debug_stream__telemetry_scalar(const char *name,
     usbOsaCurrentSr = DisableGlobalIRQ();
     if (s_telemetryEnabled != 0U)
     {
+        uint8_t participantCount = 0U;
+
         for (uint8_t offset = 0U; offset < s_telemetryCount; offset++)
         {
             index = (uint8_t)(s_telemetryHead + offset);
@@ -661,16 +744,23 @@ static bool nxpc_usb_debug_stream__telemetry_scalar(const char *name,
                 index = (uint8_t)(index - NXPC_USB_TELEMETRY_QUEUE_DEPTH);
             }
 
-            if ((s_telemetryQueue[index].nameLength == record.nameLength) &&
+            if (!s_telemetryQueue[index].frameworkValue)
+            {
+                participantCount++;
+            }
+
+            if ((queuedRecord == NULL) &&
+                (s_telemetryQueue[index].nameLength == record.nameLength) &&
                 (memcmp(s_telemetryQueue[index].name, record.name, record.nameLength) == 0))
             {
                 queuedRecord = &s_telemetryQueue[index];
                 s_telemetryCoalesceCount++;
-                break;
             }
         }
 
-        if ((queuedRecord == NULL) && (s_telemetryCount < NXPC_USB_TELEMETRY_QUEUE_DEPTH))
+        if ((queuedRecord == NULL) &&
+            (s_telemetryCount < NXPC_USB_TELEMETRY_QUEUE_DEPTH) &&
+            (frameworkValue || (participantCount < NXPC_USB_TELEMETRY_PARTICIPANT_LIMIT)))
         {
             index = (uint8_t)(s_telemetryHead + s_telemetryCount);
             if (index >= NXPC_USB_TELEMETRY_QUEUE_DEPTH)
@@ -710,14 +800,17 @@ static bool nxpc_usb_debug_stream__telemetry_scalar(const char *name,
 bool nxpc_usb_debug_stream__telemetry_i32(const char *name, int32_t value, const char *units)
 {
     return nxpc_usb_debug_stream__telemetry_scalar(name,
-                                                  NXPC_DBG_TELEMETRY_TYPE_I32,
-                                                  (uint32_t)value,
-                                                  units);
+                                                   NXPC_DBG_TELEMETRY_TYPE_I32,
+                                                   (uint32_t)value,
+                                                   units,
+                                                   NULL,
+                                                   false);
 }
 
 bool nxpc_usb_debug_stream__telemetry_u32(const char *name, uint32_t value, const char *units)
 {
-    return nxpc_usb_debug_stream__telemetry_scalar(name, NXPC_DBG_TELEMETRY_TYPE_U32, value, units);
+    return nxpc_usb_debug_stream__telemetry_scalar(
+        name, NXPC_DBG_TELEMETRY_TYPE_U32, value, units, NULL, false);
 }
 
 bool nxpc_usb_debug_stream__telemetry_f32(const char *name, float value, const char *units)
@@ -725,15 +818,47 @@ bool nxpc_usb_debug_stream__telemetry_f32(const char *name, float value, const c
     uint32_t valueBits;
 
     (void)memcpy(&valueBits, &value, sizeof(valueBits));
-    return nxpc_usb_debug_stream__telemetry_scalar(name, NXPC_DBG_TELEMETRY_TYPE_F32, valueBits, units);
+    return nxpc_usb_debug_stream__telemetry_scalar(
+        name, NXPC_DBG_TELEMETRY_TYPE_F32, valueBits, units, NULL, false);
 }
 
 bool nxpc_usb_debug_stream__telemetry_bool(const char *name, bool value)
 {
     return nxpc_usb_debug_stream__telemetry_scalar(name,
-                                                  NXPC_DBG_TELEMETRY_TYPE_BOOL,
-                                                  value ? 1U : 0U,
-                                                  "");
+                                                   NXPC_DBG_TELEMETRY_TYPE_BOOL,
+                                                   value ? 1U : 0U,
+                                                   "",
+                                                   NULL,
+                                                   false);
+}
+
+bool nxpc_usb_debug_stream__telemetry_text(const char *name, const char *value)
+{
+    return nxpc_usb_debug_stream__telemetry_scalar(
+        name, NXPC_DBG_TELEMETRY_TYPE_TEXT, 0U, "", value, false);
+}
+
+bool nxpc_usb_debug_stream__framework_telemetry_f32(const char *name,
+                                                    float value,
+                                                    const char *units)
+{
+    uint32_t valueBits;
+
+    (void)memcpy(&valueBits, &value, sizeof(valueBits));
+    return nxpc_usb_debug_stream__telemetry_scalar(
+        name, NXPC_DBG_TELEMETRY_TYPE_F32, valueBits, units, NULL, true);
+}
+
+bool nxpc_usb_debug_stream__framework_telemetry_bool(const char *name, bool value)
+{
+    return nxpc_usb_debug_stream__telemetry_scalar(
+        name, NXPC_DBG_TELEMETRY_TYPE_BOOL, value ? 1U : 0U, "", NULL, true);
+}
+
+bool nxpc_usb_debug_stream__framework_telemetry_text(const char *name, const char *value)
+{
+    return nxpc_usb_debug_stream__telemetry_scalar(
+        name, NXPC_DBG_TELEMETRY_TYPE_TEXT, 0U, "", value, true);
 }
 
 void nxpc_usb_debug_stream__notify_camera_frame(void)
@@ -828,6 +953,17 @@ static uint8_t nxpc_usb_debug_stream__queue_control_response(uint32_t msgId,
     EnableGlobalIRQ(usbOsaCurrentSr);
 
     return queued;
+}
+
+void nxpc_usb_debug_stream__complete_system_action(uint32_t requestSequence, uint32_t status)
+{
+    (void)nxpc_usb_debug_stream__queue_control_response(
+        NXPC_DBG_CONTROL_SYSTEM_ACTION,
+        requestSequence,
+        status,
+        NULL,
+        0U);
+    nxpc_usb_debug_stream__schedule_tx();
 }
 
 static uint8_t nxpc_usb_debug_stream__send_control_response(void)
@@ -978,7 +1114,8 @@ static uint8_t nxpc_usb_debug_stream__send_telemetry_scalar(void)
     (void)memcpy(&record, &s_telemetryQueue[s_telemetryHead], sizeof(record));
     EnableGlobalIRQ(usbOsaCurrentSr);
 
-    payloadBytes = NXPC_DBG_TELEMETRY_SCALAR_HEADER_BYTES + record.nameLength + record.unitsLength;
+    payloadBytes = NXPC_DBG_TELEMETRY_SCALAR_HEADER_BYTES + record.nameLength +
+                   record.unitsLength + record.textLength;
     packetHeader = (nxpc_dbg_packet_header_t *)s_streamTxBuf;
     packetHeader->magic = NXPC_DBG_MAGIC;
     packetHeader->version = NXPC_DBG_VERSION;
@@ -1002,9 +1139,13 @@ static uint8_t nxpc_usb_debug_stream__send_telemetry_scalar(void)
                  record.name,
                  record.nameLength);
     (void)memcpy(&s_streamTxBuf[NXPC_DBG_PACKET_HEADER_BYTES + NXPC_DBG_TELEMETRY_SCALAR_HEADER_BYTES +
-                               record.nameLength],
-                 record.units,
-                 record.unitsLength);
+                                record.nameLength],
+                  record.units,
+                  record.unitsLength);
+    (void)memcpy(&s_streamTxBuf[NXPC_DBG_PACKET_HEADER_BYTES + NXPC_DBG_TELEMETRY_SCALAR_HEADER_BYTES +
+                                record.nameLength + record.unitsLength],
+                 record.text,
+                 record.textLength);
 
     packetBytes = NXPC_DBG_PACKET_HEADER_BYTES + payloadBytes;
     if (nxpc_usb_debug_stream__submit_packet(packetBytes) == 0U)
@@ -1034,7 +1175,6 @@ static uint8_t nxpc_usb_debug_stream__send_telemetry_scalar(void)
 static void nxpc_usb_debug_stream__handle_control_packet(const nxpc_dbg_packet_header_t *request)
 {
     uint8_t logWasEnabled;
-    uint8_t telemetryWasEnabled;
     uint32_t requestedChannels;
     uint32_t requestedSource;
 
@@ -1064,6 +1204,7 @@ static void nxpc_usb_debug_stream__handle_control_packet(const nxpc_dbg_packet_h
                 s_sessionId = 1U;
             }
             s_sessionActive = 1U;
+            s_systemActionPending = 0U;
 
             hello.capability_flags = NXPC_USB_CONTROL_CAPABILITIES;
             hello.active_channel_flags = 0U;
@@ -1111,7 +1252,6 @@ static void nxpc_usb_debug_stream__handle_control_packet(const nxpc_dbg_packet_h
             }
 
             logWasEnabled = s_logEnabled;
-            telemetryWasEnabled = s_telemetryEnabled;
             s_logEnabled = ((requestedChannels & NXPC_DBG_CHANNEL_LOGS) != 0U) ? 1U : 0U;
             s_telemetryEnabled = ((requestedChannels & NXPC_DBG_CHANNEL_TELEMETRY) != 0U) ? 1U : 0U;
             if (s_logEnabled == 0U)
@@ -1148,10 +1288,6 @@ static void nxpc_usb_debug_stream__handle_control_packet(const nxpc_dbg_packet_h
                                                      "system",
                                                      "USB diagnostic log channel active");
             }
-            if ((s_telemetryEnabled != 0U) && (telemetryWasEnabled == 0U))
-            {
-                (void)nxpc_usb_debug_stream__telemetry_u32("system.uptime", e_tick__get_ms(), "ms");
-            }
             break;
 
         case NXPC_DBG_CONTROL_PING:
@@ -1179,6 +1315,7 @@ static void nxpc_usb_debug_stream__handle_control_packet(const nxpc_dbg_packet_h
             s_telemetryCount = 0U;
             s_txDiagnosticBurst = 0U;
             s_sessionActive = 0U;
+            s_systemActionPending = 0U;
             break;
 
         case NXPC_DBG_CONTROL_ENTER_ISP:
@@ -1229,6 +1366,47 @@ static void nxpc_usb_debug_stream__handle_control_packet(const nxpc_dbg_packet_h
                 s_txDiagnosticBurst = 0U;
                 s_enterIspRequested = 1U;
             }
+            break;
+
+        case NXPC_DBG_CONTROL_SYSTEM_ACTION:
+            if (s_sessionActive == 0U)
+            {
+                (void)nxpc_usb_debug_stream__queue_control_response(
+                    NXPC_DBG_CONTROL_SYSTEM_ACTION,
+                    request->sequence,
+                    NXPC_DBG_CONTROL_STATUS_SESSION_REQUIRED,
+                    NULL,
+                    0U);
+                break;
+            }
+            if (((request->arg0 != NXPC_DBG_SYSTEM_ACTION_RACE_START) &&
+                 (request->arg0 != NXPC_DBG_SYSTEM_ACTION_STOP)) ||
+                ((request->arg0 == NXPC_DBG_SYSTEM_ACTION_RACE_START) &&
+                 (request->arg1 != NXPC_DBG_RACE_START_CONFIRMATION)) ||
+                ((request->arg0 == NXPC_DBG_SYSTEM_ACTION_STOP) && (request->arg1 != 0U)) ||
+                (request->arg2 != 0U))
+            {
+                (void)nxpc_usb_debug_stream__queue_control_response(
+                    NXPC_DBG_CONTROL_SYSTEM_ACTION,
+                    request->sequence,
+                    NXPC_DBG_CONTROL_STATUS_BAD_ARGUMENT,
+                    NULL,
+                    0U);
+                break;
+            }
+            if (s_systemActionPending != 0U)
+            {
+                (void)nxpc_usb_debug_stream__queue_control_response(
+                    NXPC_DBG_CONTROL_SYSTEM_ACTION,
+                    request->sequence,
+                    NXPC_DBG_CONTROL_STATUS_BUSY,
+                    NULL,
+                    0U);
+                break;
+            }
+            s_systemActionRequestSequence = request->sequence;
+            s_systemAction = request->arg0;
+            s_systemActionPending = 1U;
             break;
 
         default:
@@ -1571,6 +1749,7 @@ void nxpc_usb_debug_stream__init(void)
     s_streamTxBusy = 0U;
     s_streamFrameActive = 0U;
     s_sessionActive = 0U;
+    s_systemActionPending = 0U;
     s_statsEnabled = 0U;
     s_streamSource = NXPC_USB_DEBUG_STREAM_SOURCE_CAMERA;
     s_streamFrameData = NULL;
@@ -1859,6 +2038,7 @@ static usb_status_t nxpc_usb_debug_stream__cdc_callback(class_handle_t handle, u
                     s_recvSize = 0U;
                     nxpc_usb_debug_stream__stop();
                     s_sessionActive = 0U;
+                    s_systemActionPending = 0U;
                     s_controlRxLength = 0U;
                     s_controlResponseHead = 0U;
                     s_controlResponseCount = 0U;
@@ -1907,6 +2087,7 @@ static usb_status_t nxpc_usb_debug_stream__device_callback(usb_device_handle han
             s_streamTxBusy = 0U;
             nxpc_usb_debug_stream__stop();
             s_sessionActive = 0U;
+            s_systemActionPending = 0U;
             s_controlRxLength = 0U;
             s_controlResponseHead = 0U;
             s_controlResponseCount = 0U;
@@ -1945,6 +2126,7 @@ static usb_status_t nxpc_usb_debug_stream__device_callback(usb_device_handle han
                 s_streamTxBusy = 0U;
                 nxpc_usb_debug_stream__stop();
                 s_sessionActive = 0U;
+                s_systemActionPending = 0U;
                 s_controlRxLength = 0U;
                 s_controlResponseHead = 0U;
                 s_controlResponseCount = 0U;

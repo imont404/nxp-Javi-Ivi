@@ -90,13 +90,15 @@ Implemented messages:
 - `AVC_DBG_RUI_WRITE_FRAME_BUFFER_RAW`: RUI-style raw framebuffer chunks.
 - `AVC_DBG_STATS_REPORT`: firmware stream counters.
 - `AVC_DBG_LOG_TEXT`: bounded UTF-8 severity/category/text records.
-- `AVC_DBG_TELEMETRY_SCALAR`: typed named values with timestamps and units.
+- `AVC_DBG_TELEMETRY_SCALAR`: typed named scalar or bounded text values with timestamps.
 - `AVC_DBG_CONTROL_HELLO`: recognize a telemetry client and report capabilities.
 - `AVC_DBG_CONTROL_SET_CHANNELS`: independently request frame, stats, and log
   output or stop them.
 - `AVC_DBG_CONTROL_PING` and `AVC_DBG_CONTROL_CLOSE`: check or close a session.
 - `AVC_DBG_CONTROL_ENTER_ISP`: confirmed, session-bound safe transition to the
   MCXN947 ROM USB-HS HID bootloader.
+- `AVC_DBG_CONTROL_SYSTEM_ACTION`: typed, confirmed race-start request and an
+  immediate safe-stop request, both validated by the firmware state machine.
 
 Reserved message classes already exist for:
 
@@ -109,9 +111,12 @@ The log path uses eight fixed records, 15-byte category and 160-byte text limits
 and observable drop/high-water counters. It does no formatting unless a
 recognized host session subscribes and never replaces the existing RTT path.
 
-The telemetry path supports i32, u32, f32, and bool values with 31-byte names
-and 15-byte units. Its sixteen fixed records coalesce repeated pending names to
-the newest value and expose drop, high-water, and coalesce counters.
+The telemetry path supports i32, u32, f32, bool, and non-empty UTF-8 text values
+with 31-byte names, 15-byte scalar units, and a 48-byte text limit. Text uses the
+unchanged version-1 telemetry header with type 5 and a trailing value. Existing
+scalar packets remain byte-for-byte unchanged. Its sixteen fixed records coalesce
+repeated pending names to the newest value and expose drop, high-water, and
+coalesce counters.
 
 ## Firmware Behavior
 
@@ -227,7 +232,7 @@ reset showed the RTT control block and camera telemetry around `23.39 FPS`.
 ## WebSerial Viewer State
 
 The zero-install browser viewer is the self-contained
-`src/usb_debug_host/avc_usb_debug_viewer.html`. Open it directly in Chrome or
+`src/nxp_cup_host/nxpc_usb_debug_viewer.html`. Open it directly in Chrome or
 Edge; no server, install, build step, or external asset is required. The local
 server remains optional maintainer tooling for source-file iteration.
 
@@ -243,7 +248,16 @@ camera channel and repeats the framed channel request. Camera publication now
 exists in TEST, race-waiting (only while the frame channel is active), and the
 student frame-service path. USB session state never selects a vehicle mode.
 
-Typed telemetry is discovered automatically in a name-keyed table. Selected
+The primary view is a projector-oriented camera dashboard with stable mode/state,
+battery, frame-rate, wheel-speed, motor-command, and steering-command positions.
+Its connection controls and detailed diagnostics collapse into small drawers.
+When capability bit 7 is present, the page exposes a 1.5-second hold-to-start
+race request and a one-click STOP. Start remains disabled until telemetry reports
+`RACE / WAITING` and `READY TO START`; the firmware independently rechecks the
+physical TEST input, camera readiness, and current state. STOP remains available
+throughout the recognized session.
+
+Typed telemetry is also discovered automatically in a name-keyed table. Selected
 signals retain at most 300 samples and render as independently auto-scaled
 rolling plots, with at most six plots active. Browser tests exercise fragmented
 reads, mixed packets, log and telemetry DOM updates, two full frames, Stop/Start,

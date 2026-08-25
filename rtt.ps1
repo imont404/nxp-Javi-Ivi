@@ -2,10 +2,6 @@ param(
     [int]$Seconds = 0,
     [switch]$NoTail,
 
-    # Which image to read symbols from. RTT needs the .axf that is actually on
-    # the board, to locate _SEGGER_RTT. Defaults to the CMake preset flow.
-    [string]$Preset = "competition",
-
     # Deprecated no-op. CMake is the default now.
     [switch]$CMake,
 
@@ -68,7 +64,7 @@ function Resolve-SeggerTool {
 }
 
 $projectDir = $PSScriptRoot
-$axfFile = Resolve-NxpCupImage -RepoRoot $projectDir -Preset $Preset -File $File `
+$axfFile = Resolve-NxpCupImage -RepoRoot $projectDir -File $File `
                             -Mcux:$Mcux -Configuration $Configuration
 $JLinkDllPath = Resolve-SeggerTool -ConfiguredPath $JLinkDllPath -ToolName "JLink_x64.dll"
 $JLinkRTTLoggerPath = Resolve-SeggerTool -ConfiguredPath $JLinkRTTLoggerPath -ToolName "JLinkRTTLogger.exe"

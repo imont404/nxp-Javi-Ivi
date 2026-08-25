@@ -7,6 +7,7 @@ const STREAM = {
   ruiFrameChunkHeaderBytes: 24,
   logRecordHeaderBytes: 12,
   telemetryScalarHeaderBytes: 16,
+  telemetryTextMaxBytes: 48,
   statsReportBytes: 76,
   frameWidth: 320,
   frameHeight: 200,
@@ -21,6 +22,7 @@ const STREAM = {
   msgIdControlPing: 0x01000405,
   msgIdControlClose: 0x01000406,
   msgIdControlError: 0x01000407,
+  msgIdControlSystemAction: 0x01000409,
   packetFlagsKnown: 0x000f,
   packetFlagResponse: 1,
   packetFlagDroppedBefore: 1 << 3,
@@ -36,12 +38,19 @@ const STREAM = {
   channelTelemetry: 8,
   streamSourceCamera: 0,
   controlStatusOk: 0,
+  controlStatusNotReady: 6,
+  controlStatusDenied: 7,
+  capabilitySystemActions: 1 << 7,
+  systemActionRaceStart: 1,
+  systemActionStop: 2,
+  raceStartConfirmation: 0x21214f47,
 };
 
 // LLM-assisted dashboards normally only need this list changed. Names match the
 // first argument to NXPC_DBG_VALUE_* in firmware; no protocol/parser edits are needed.
 const DASHBOARD = {
-  defaultPlots: ["system.uptime"],
+  defaultPlots: ["wheel.left.rpm", "wheel.right.rpm"],
+  wheelDiameterMeters: 0.075,
   historySamplesPerSignal: 300,
   maxTelemetrySignals: 32,
   maxSelectedPlots: 6,
@@ -78,6 +87,23 @@ const ui = {
   sequenceErrors: document.getElementById("sequenceErrors"),
   endpointBusyCount: document.getElementById("endpointBusyCount"),
   sendErrorCount: document.getElementById("sendErrorCount"),
+  dashboardState: document.getElementById("dashboardState"),
+  dashboardLive: document.getElementById("dashboardLive"),
+  dashboardBattery: document.getElementById("dashboardBattery"),
+  dashboardFrameRate: document.getElementById("dashboardFrameRate"),
+  dashboardSpeed: document.getElementById("dashboardSpeed"),
+  dashboardLeftRpm: document.getElementById("dashboardLeftRpm"),
+  dashboardRightRpm: document.getElementById("dashboardRightRpm"),
+  dashboardLeftCommand: document.getElementById("dashboardLeftCommand"),
+  dashboardRightCommand: document.getElementById("dashboardRightCommand"),
+  dashboardSteeringCommand: document.getElementById("dashboardSteeringCommand"),
+  dashboardLeftBar: document.getElementById("dashboardLeftBar"),
+  dashboardRightBar: document.getElementById("dashboardRightBar"),
+  dashboardSteeringMarker: document.getElementById("dashboardSteeringMarker"),
+  raceStartButton: document.getElementById("raceStartButton"),
+  raceStopButton: document.getElementById("raceStopButton"),
+  raceControls: document.getElementById("raceControls"),
+  raceControlStatus: document.getElementById("raceControlStatus"),
 };
 
 const context = ui.canvas.getContext("2d", { alpha: false });
@@ -91,6 +117,12 @@ let reader = null;
 let keepReading = false;
 let streaming = false;
 let sessionActive = false;
+let helloCapabilities = 0;
+let systemMode = "";
+let systemState = "";
+let raceStartHoldTimer = null;
+let leftWheelRpm = 0;
+let rightWheelRpm = 0;
 let lastRxAt = 0;
 let watchdogTimer = null;
 let nextControlSequence = 0;
@@ -297,6 +329,12 @@ class StreamParser {
     }
 
     this.telemetryValues.set(sample.name, sample);
+    if (sample.valueType === 5) {
+      this.telemetryHistory.delete(sample.name);
+      selectedTelemetryNames.delete(sample.name);
+      plotDirty = true;
+      return true;
+    }
     let history = this.telemetryHistory.get(sample.name);
     if (!history) {
       history = [];
@@ -439,9 +477,16 @@ class StreamParser {
     const unitsBytes = this.rxBuffer[base + 15];
     const nameStart = base + STREAM.telemetryScalarHeaderBytes;
     const unitsStart = nameStart + nameBytes;
+    const textStart = unitsStart + unitsBytes;
     const payloadEnd = base + header.payloadLength;
+    const textValue = valueType === 5;
+    const textBytes = textValue ? valueBits : 0;
 
-    if (nameBytes === 0 || valueType < 1 || valueType > 4 || unitsStart + unitsBytes !== payloadEnd) {
+    if (
+      nameBytes === 0 || valueType < 1 || valueType > 5 ||
+      (textValue && (textBytes === 0 || textBytes > STREAM.telemetryTextMaxBytes || unitsBytes !== 0)) ||
+      textStart + textBytes !== payloadEnd
+    ) {
       return null;
     }
 
@@ -455,8 +500,10 @@ class StreamParser {
       const view = new DataView(bits);
       view.setUint32(0, valueBits, true);
       value = view.getFloat32(0, true);
-    } else {
+    } else if (valueType === 4) {
       value = valueBits !== 0;
+    } else {
+      value = utf8Decoder.decode(this.rxBuffer.slice(textStart, payloadEnd));
     }
 
     return {
@@ -465,7 +512,7 @@ class StreamParser {
       valueType,
       value,
       name: utf8Decoder.decode(this.rxBuffer.slice(nameStart, unitsStart)),
-      units: utf8Decoder.decode(this.rxBuffer.slice(unitsStart, payloadEnd)),
+      units: utf8Decoder.decode(this.rxBuffer.slice(unitsStart, textStart)),
     };
   }
 
@@ -564,14 +611,111 @@ const parser = new StreamParser();
 
 function setConnectionState(text) {
   ui.connectionState.textContent = text;
+  ui.dashboardLive.textContent = streaming ? "LIVE" : port ? "CONNECTED" : "OFFLINE";
+  ui.dashboardLive.classList.toggle("offline", !streaming);
+  ui.dashboardState.hidden = !systemMode && !systemState;
+  if (!port) {
+    ui.dashboardState.textContent = "";
+    ui.dashboardState.hidden = true;
+  }
 }
 
 function setButtons() {
   const connected = port !== null;
+  const actionsSupported = sessionActive && (helloCapabilities & STREAM.capabilitySystemActions) !== 0;
+  const raceWaiting = systemMode === "RACE / WAITING";
+  const raceRunning = systemMode === "RACE RUNNING";
+  const raceMode = raceWaiting || raceRunning;
+  const raceReady = systemMode === "RACE / WAITING" && systemState === "READY TO START";
   ui.connectButton.textContent = connected ? "Disconnect" : "Connect";
   ui.startButton.disabled = !connected || !sessionActive || streaming;
   ui.stopButton.disabled = !connected || !sessionActive || !streaming;
   ui.resetButton.disabled = !connected;
+  ui.raceStartButton.disabled = !actionsSupported || !raceReady;
+  ui.raceStartButton.classList.toggle("ready", actionsSupported && raceReady);
+  ui.raceStopButton.disabled = !actionsSupported;
+  ui.raceControls.hidden = !raceMode;
+  ui.raceControls.classList.toggle("waiting", raceWaiting);
+  ui.raceControls.classList.toggle("running", raceRunning);
+  ui.raceStartButton.hidden = !raceWaiting;
+  ui.raceStopButton.hidden = !raceMode;
+  ui.raceControlStatus.textContent = "";
+}
+
+function setCommandBar(element, value) {
+  const normalized = Math.max(-1, Math.min(1, Number(value) || 0));
+  const magnitude = Math.abs(normalized);
+  element.style.left = "0%";
+  element.style.width = `${magnitude * 100}%`;
+  element.classList.toggle("medium", magnitude >= 0.5 && magnitude < 0.75);
+  element.classList.toggle("high", magnitude >= 0.75);
+}
+
+function updateDashboardSpeed() {
+  const averageRpm = (leftWheelRpm + rightWheelRpm) / 2;
+  const kilometersPerHour = Math.abs(averageRpm) * Math.PI * DASHBOARD.wheelDiameterMeters * 60 / 1000;
+  ui.dashboardSpeed.textContent = kilometersPerHour.toFixed(1);
+}
+
+function updateDashboardTelemetry(sample) {
+  const numeric = Number(sample.value);
+  switch (sample.name) {
+    case "system.mode":
+      systemMode = String(sample.value);
+      break;
+    case "system.state":
+      systemState = String(sample.value);
+      break;
+    case "battery.voltage":
+      if (Number.isFinite(numeric)) ui.dashboardBattery.textContent = numeric.toFixed(1);
+      break;
+    case "wheel.left.rpm":
+      if (Number.isFinite(numeric)) {
+        leftWheelRpm = numeric;
+        ui.dashboardLeftRpm.textContent = String(Math.round(numeric));
+        updateDashboardSpeed();
+      }
+      break;
+    case "wheel.right.rpm":
+      if (Number.isFinite(numeric)) {
+        rightWheelRpm = numeric;
+        ui.dashboardRightRpm.textContent = String(Math.round(numeric));
+        updateDashboardSpeed();
+      }
+      break;
+    case "motor.left.command":
+      if (Number.isFinite(numeric)) {
+        ui.dashboardLeftCommand.textContent = `${Math.round(numeric * 100)}%`;
+        setCommandBar(ui.dashboardLeftBar, numeric);
+      }
+      break;
+    case "motor.right.command":
+      if (Number.isFinite(numeric)) {
+        ui.dashboardRightCommand.textContent = `${Math.round(numeric * 100)}%`;
+        setCommandBar(ui.dashboardRightBar, numeric);
+      }
+      break;
+    case "steering.command":
+      if (Number.isFinite(numeric)) {
+        const normalized = Math.max(-1, Math.min(1, numeric));
+        const angleDegrees = Math.round(normalized * 30);
+        ui.dashboardSteeringCommand.textContent = angleDegrees > 0 ? `+${angleDegrees}` : String(angleDegrees);
+        ui.dashboardSteeringMarker.style.left = `${50 + normalized * 50}%`;
+      }
+      break;
+    default:
+      break;
+  }
+
+  if (sample.name === "system.mode" || sample.name === "system.state") {
+    const label = [systemMode, systemState].filter(Boolean).join(" / ") || "CONNECTED";
+    ui.dashboardState.textContent = label;
+    ui.dashboardState.hidden = false;
+    ui.dashboardState.className = "state";
+    ui.dashboardState.classList.toggle("disarmed", /DISARMED|WAITING|CENTER POTS/.test(systemState));
+    ui.dashboardState.classList.toggle("fault", /FAULT|LOST|OVERRUN/.test(systemState));
+    setButtons();
+  }
 }
 
 function formatNumber(value) {
@@ -746,6 +890,7 @@ function appendLogRecord(record) {
 }
 
 function updateTelemetryRow(sample) {
+  updateDashboardTelemetry(sample);
   let row = ui.telemetryTableBody.querySelector(`[data-telemetry-name="${CSS.escape(sample.name)}"]`);
   if (!row) {
     row = document.createElement("tr");
@@ -774,7 +919,14 @@ function updateTelemetryRow(sample) {
     ui.telemetryTableBody.appendChild(row);
   }
 
-  const typeNames = ["", "i32", "u32", "f32", "bool"];
+  const plotToggle = row.children[0].querySelector("input");
+  const textValue = sample.valueType === 5;
+  if (plotToggle) {
+    plotToggle.disabled = textValue;
+    if (textValue) plotToggle.checked = false;
+  }
+
+  const typeNames = ["", "i32", "u32", "f32", "bool", "text"];
   const formattedValue =
     sample.valueType === 3 && Number.isFinite(sample.value) ? sample.value.toPrecision(7) : String(sample.value);
   row.children[1].textContent = sample.name;
@@ -793,6 +945,7 @@ function updateStats() {
 
   ui.byteRate.textContent = formatRate(byteRate);
   ui.frameRate.textContent = `${frameRate.toFixed(2)} fps`;
+  ui.dashboardFrameRate.textContent = frameRate.toFixed(1);
   ui.renderRate.textContent = `${renderRate.toFixed(2)} fps`;
   ui.byteCount.textContent = formatNumber(parser.bytes);
   ui.frameCount.textContent = formatNumber(parser.frames);
@@ -951,6 +1104,12 @@ async function connect() {
   port = await navigator.serial.requestPort();
   await port.open({ baudRate: 115200, bufferSize: 4 * 1024 * 1024 });
   sessionActive = false;
+  helloCapabilities = 0;
+  systemMode = "";
+  systemState = "";
+  leftWheelRpm = 0;
+  rightWheelRpm = 0;
+  updateDashboardSpeed();
   streaming = false;
   nextControlSequence = 0;
   writeChain = Promise.resolve();
@@ -975,8 +1134,8 @@ async function connect() {
     throw new Error(`telemetry HELLO failed with status ${hello.status}`);
   }
   const helloView = new DataView(hello.payload.buffer, hello.payload.byteOffset, hello.payload.byteLength);
-  const capabilities = helloView.getUint32(0, true);
-  if ((capabilities & 1) === 0) {
+  helloCapabilities = helloView.getUint32(0, true);
+  if ((helloCapabilities & 1) === 0) {
     throw new Error("device does not advertise framed control");
   }
   sessionActive = true;
@@ -997,6 +1156,12 @@ async function disconnect() {
     }
     streaming = false;
     sessionActive = false;
+    helloCapabilities = 0;
+    systemMode = "";
+    systemState = "";
+    leftWheelRpm = 0;
+    rightWheelRpm = 0;
+    updateDashboardSpeed();
     keepReading = false;
     if (reader) {
       await reader.cancel();
@@ -1039,6 +1204,7 @@ async function startStream() {
   startWatchdog();
   setConnectionState("Streaming");
   setButtons();
+  document.querySelector("details.operator").open = false;
 }
 
 async function stopStream() {
@@ -1050,6 +1216,48 @@ async function stopStream() {
   stopWatchdog();
   setConnectionState(port ? "Telemetry session ready" : "Disconnected");
   setButtons();
+}
+
+async function requestSystemAction(action, confirmation = 0) {
+  ui.raceControlStatus.textContent = action === STREAM.systemActionStop ? "Sending STOP..." : "Requesting race start...";
+  const response = await requestControl(
+    STREAM.msgIdControlSystemAction,
+    action,
+    confirmation,
+    0,
+  );
+  if (response.status === STREAM.controlStatusOk) {
+    ui.raceControlStatus.textContent = action === STREAM.systemActionStop ? "STOP accepted; outputs disabled" : "Race start accepted; awaiting state telemetry";
+    return;
+  }
+  if (response.status === STREAM.controlStatusNotReady) {
+    ui.raceControlStatus.textContent = "Start rejected: the camera is not ready";
+    return;
+  }
+  if (response.status === STREAM.controlStatusDenied) {
+    ui.raceControlStatus.textContent = "Action denied by the firmware state machine";
+    return;
+  }
+  throw new Error(`system action failed with status ${response.status}`);
+}
+
+function cancelRaceStartHold() {
+  if (raceStartHoldTimer !== null) {
+    window.clearTimeout(raceStartHoldTimer);
+    raceStartHoldTimer = null;
+  }
+  ui.raceStartButton.classList.remove("holding");
+}
+
+function beginRaceStartHold() {
+  if (ui.raceStartButton.disabled || raceStartHoldTimer !== null) return;
+  ui.raceStartButton.classList.add("holding");
+  ui.raceControlStatus.textContent = "Keep holding to start the race...";
+  raceStartHoldTimer = window.setTimeout(() => {
+    raceStartHoldTimer = null;
+    ui.raceStartButton.classList.remove("holding");
+    runUiAction(() => requestSystemAction(STREAM.systemActionRaceStart, STREAM.raceStartConfirmation));
+  }, 1500);
 }
 
 function resetStats() {
@@ -1085,6 +1293,32 @@ ui.connectButton.addEventListener("click", () => {
 ui.startButton.addEventListener("click", () => runUiAction(startStream));
 ui.stopButton.addEventListener("click", () => runUiAction(stopStream));
 ui.resetButton.addEventListener("click", resetStats);
+ui.raceStartButton.addEventListener("pointerdown", (event) => {
+  if (event.button === 0) beginRaceStartHold();
+});
+for (const eventName of ["pointerup", "pointercancel", "pointerleave"]) {
+  ui.raceStartButton.addEventListener(eventName, cancelRaceStartHold);
+}
+ui.raceStartButton.addEventListener("keydown", (event) => {
+  if ((event.key === " " || event.key === "Enter") && !event.repeat) {
+    event.preventDefault();
+    beginRaceStartHold();
+  }
+});
+ui.raceStartButton.addEventListener("keyup", (event) => {
+  if (event.key === " " || event.key === "Enter") cancelRaceStartHold();
+});
+ui.raceStopButton.addEventListener("click", () => {
+  cancelRaceStartHold();
+  runUiAction(() => requestSystemAction(STREAM.systemActionStop));
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key.toLowerCase() === "f") document.documentElement.requestFullscreen?.();
+  if (event.key.toLowerCase() === "d") {
+    const diagnostics = document.querySelector("details.diagnostics");
+    diagnostics.open = !diagnostics.open;
+  }
+});
 
 if (!("serial" in navigator)) {
   setConnectionState("WebSerial unavailable");

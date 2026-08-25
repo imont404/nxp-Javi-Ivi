@@ -1,14 +1,12 @@
-"""L1_001 - every supported build variant still compiles.
+"""L1_001 - the supported competition image compiles.
 
 This is the gate that makes changes to the source list, the linker scripts, or
 the capture backends safe to attempt. It needs no board.
 
-Builds are slow, so the full sweep is opt-in via NXPC_TEST_ALL_PRESETS=1;
-the competition image always builds because it is the one that matters.
+Maintainer diagnostics have dedicated scripts and separate build directories;
+they are not student-facing presets.
 """
 
-import json
-import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -16,9 +14,6 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parents[2]
-PRESETS = REPO / "CMakePresets.json"
-
-
 def _have(tool: str) -> bool:
     return shutil.which(tool) is not None
 
@@ -44,11 +39,6 @@ def _cmake(*args: str) -> subprocess.CompletedProcess:
                           capture_output=True, text=True, timeout=1800)
 
 
-def _preset_names() -> list[str]:
-    data = json.loads(PRESETS.read_text(encoding="utf-8"))
-    return [p["name"] for p in data["configurePresets"] if not p.get("hidden")]
-
-
 def _build(preset: str) -> Path:
     cfg = _cmake("--preset", preset)
     assert cfg.returncode == 0, f"configure failed for {preset}:\n{cfg.stdout}\n{cfg.stderr}"
@@ -63,18 +53,6 @@ def test_competition_builds():
     """The race image. If only one thing builds, it is this one."""
     axf = _build("competition")
     assert axf.stat().st_size > 0
-
-
-@pytest.mark.skipif(os.environ.get("NXPC_TEST_ALL_PRESETS") != "1",
-                    reason="set NXPC_TEST_ALL_PRESETS=1 to build every preset (slow)")
-def test_all_presets_build():
-    failures = []
-    for preset in _preset_names():
-        try:
-            _build(preset)
-        except AssertionError as exc:  # collect all, so one failure does not hide the rest
-            failures.append(f"{preset}: {exc}")
-    assert not failures, "presets failed to build:\n" + "\n".join(failures)
 
 
 @pytest.mark.skipif(not _have("uv"), reason="uv not on PATH; run setup.ps1")

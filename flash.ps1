@@ -4,10 +4,6 @@ param(
 
     [switch]$NoReset,
 
-    # Which image to flash. The CMake preset flow is the default; the preset
-    # name is the normal way to choose. See CMakePresets.json for the list.
-    [string]$Preset = "competition",
-
     # Deprecated no-op. CMake is the default now; kept so existing commands and
     # notes do not break.
     [switch]$CMake,
@@ -69,12 +65,12 @@ function Resolve-SeggerTool {
 }
 
 $projectDir = $PSScriptRoot
-$axfFile = Resolve-NxpCupImage -RepoRoot $projectDir -Preset $Preset -File $File `
+$axfFile = Resolve-NxpCupImage -RepoRoot $projectDir -File $File `
                             -Mcux:$Mcux -Configuration $Configuration
 
 if ($Backend -eq "Ozone") {
-    if ($File -or $Mcux -or ($Preset -ne "competition")) {
-        throw "The Ozone project is pinned to the competition preset. Use -Backend Rom or JLink for another image."
+    if ($File -or $Mcux) {
+        throw "The Ozone project is pinned to the competition image. Use -Backend Rom or JLink for an explicit image."
     }
 
     $ozoneProject = Join-Path $projectDir "src\nxp_cup\nxp_cup_core0\ozone__core0.jdebug"
@@ -102,12 +98,12 @@ if ($Backend -eq "Rom") {
         [IO.Path]::ChangeExtension($axfFile, ".bin")
     }
     if (-not (Test-Path -LiteralPath $binFile)) {
-        throw "ROM image not found: $binFile. Rebuild preset '$Preset' to create it."
+        throw "ROM image not found: $binFile. Run .\build.ps1 to create it."
     }
 
     $hostTool = Join-Path $projectDir "build\host\nxp_cup_host\Release\nxpc_tool.exe"
     if (-not (Test-Path -LiteralPath $hostTool)) {
-        throw "NXP Cup host tool not found. Run .\src\nxp_cup_host\build_nxpc_viewer.ps1 first."
+        throw "NXP Cup host tool not found. Run .\build_viewer.ps1 first."
     }
 
     & $hostTool program --image $binFile

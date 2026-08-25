@@ -40,6 +40,7 @@ sealed interface NxpCupTelemetryValue {
     data class Unsigned(val value: Long) : NxpCupTelemetryValue
     data class Floating(val value: Float) : NxpCupTelemetryValue
     data class BooleanValue(val value: Boolean) : NxpCupTelemetryValue
+    data class Text(val value: String) : NxpCupTelemetryValue
 }
 
 data class NxpCupTelemetryScalar(
@@ -120,23 +121,32 @@ object NxpCupPayloadDecoder {
         val valueType = view.u8()
         val unitsBytes = view.u8()
         require(nameBytes > 0) { "telemetry name is empty" }
-        require(NxpCupProtocol.TELEMETRY_SCALAR_HEADER_BYTES + nameBytes + unitsBytes == payload.size) {
+        val textValue = valueType == NxpCupProtocol.TELEMETRY_TEXT
+        val textBytes = if (textValue) valueBits else 0
+        require(!textValue || (textBytes in 1..NxpCupProtocol.TELEMETRY_TEXT_MAX_BYTES && unitsBytes == 0)) {
+            "invalid telemetry text length"
+        }
+        require(NxpCupProtocol.TELEMETRY_SCALAR_HEADER_BYTES + nameBytes + unitsBytes + textBytes == payload.size) {
             "invalid telemetry string lengths"
         }
         val nameStart = NxpCupProtocol.TELEMETRY_SCALAR_HEADER_BYTES
         val unitsStart = nameStart + nameBytes
+        val textStart = unitsStart + unitsBytes
         val value = when (valueType) {
             NxpCupProtocol.TELEMETRY_I32 -> NxpCupTelemetryValue.Signed(valueBits)
             NxpCupProtocol.TELEMETRY_U32 -> NxpCupTelemetryValue.Unsigned(valueBits.toLong() and 0xFFFF_FFFFL)
             NxpCupProtocol.TELEMETRY_F32 -> NxpCupTelemetryValue.Floating(Float.fromBits(valueBits))
             NxpCupProtocol.TELEMETRY_BOOL -> NxpCupTelemetryValue.BooleanValue(valueBits != 0)
+            NxpCupProtocol.TELEMETRY_TEXT -> NxpCupTelemetryValue.Text(
+                payload.copyOfRange(textStart, payload.size).toString(Charsets.UTF_8),
+            )
             else -> throw IllegalArgumentException("unknown telemetry type")
         }
         return NxpCupTelemetryScalar(
             timestampMs,
             sampleId,
             payload.copyOfRange(nameStart, unitsStart).toString(Charsets.UTF_8),
-            payload.copyOfRange(unitsStart, payload.size).toString(Charsets.UTF_8),
+            payload.copyOfRange(unitsStart, textStart).toString(Charsets.UTF_8),
             value,
         )
     }

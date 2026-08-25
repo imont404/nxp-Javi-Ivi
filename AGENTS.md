@@ -33,21 +33,34 @@ research files are durable/reference material during the current migration.
 ## Build
 
 **Student-facing setup and build documentation is `docs/setup.html`.** Read that
-first; it covers provisioning a machine from nothing, the preset list, and the
-conventions below.
+first; it covers provisioning a machine from nothing and the conventions below.
 
-**CMake presets are the default flow.** `build.ps1` is the canonical thin
-wrapper; direct CMake remains supported.
+**`build.ps1` is the default firmware flow.** It always builds the competition
+image. CMake retains one visible `competition` preset for IDE and direct-CMake
+compatibility; diagnostic builds do not appear as student-facing presets.
 
 ```powershell
 .\setup.ps1                              # once per machine; no MCUXpresso needed
 .\build.ps1                              # competition preset
+.\build_viewer.ps1                       # native USB viewer and CLI
+.\scripts\android\setup_android.ps1 -AcceptLicenses  # once for Android tools
+.\build_android.ps1                      # Android bridge and unit tests
+.\build_android.ps1 -Offline             # uses the populated local cache
 .\flash.ps1 -Backend JLink               # maintainer example; backend is explicit
 .\rtt.ps1 -Reset -Seconds 10
 ```
 
+Successful wrapper builds publish convenient copies under `bin`: the most
+recent firmware build in `bin\firmware`, the runnable native host bundle in
+`bin\host`, and the Android debug APK in `bin\android`. The authoritative build
+trees remain under `build\cmake`, `build\host`, and the Android Gradle project.
+Firmware and Android toolchains/caches are durable within the checkout under
+the git-ignored `out\toolchains`; the setup scripts do not persist environment
+variables. Root `setup.ps1` provisions the firmware/native-host tools, while
+Android license acceptance and provisioning remain an explicit maintainer step.
+
 **`flash.ps1` and `rtt.ps1` are maintainer tooling, not a student workflow.**
-The student path is: build with a CMake preset, flash with **Segger Ozone**
+The student path is: run `build.ps1`, flash with **Segger Ozone**
 (`src\nxp_cup\nxp_cup_core0\ozone__core0.jdebug`), observe through the on-board LCD and
 the USB frame stream. Students are not given a J-Link and do not run these
 scripts. Keep both out of `docs/setup.html` — an L0 test enforces it, because
@@ -60,20 +73,12 @@ that can disagree. `.vscode/` carries only `settings.json` and `extensions.json`
 Nothing here is load-bearing: if it is wrong the student gets unresolved
 includes, not a broken build, so it is not worth a test.
 
-`flash.ps1` and `rtt.ps1` take `-Preset <name>` to pick any other image, and
-resolve it to `build\cmake\<preset>\nxp_cup_core0.axf`:
-
-```powershell
-.\flash.ps1 -Backend JLink -Preset flexio-port1
-.\rtt.ps1   -Preset encoder-diag -Seconds 30
-```
-
 The flash command requires `-Backend Ozone`, `Rom`, or `JLink` until the
-clean-machine evaluation selects a default. It and RTT refuse an unknown preset by name rather than reporting a missing file, and
-they refuse an image that has not been built rather than silently flashing a
-stale one. `cmake --list-presets` is the authoritative list. `-File` still takes
-an explicit path, and `-Mcux` selects the MCUXpresso output directory for the
-rare case of comparing the two build systems. `-CMake` is a deprecated no-op.
+clean-machine evaluation selects a default. It and RTT use the competition
+image by default and refuse to continue when it has not been built. `-File`
+takes an explicit maintainer-built image, and `-Mcux` selects the MCUXpresso
+output directory for the rare case of comparing the two build systems.
+`-CMake` is a deprecated no-op.
 
 Both scripts find `arm-none-eabi-*` the same way the build does: the toolchain
 `setup.ps1` provisioned under `out\toolchains`, before any MCUXpresso install.
@@ -104,32 +109,19 @@ The MCUXpresso wrapper defaults to
 workspace. Generated `.mcux_workspace*` folders are local build state and should
 not be committed.
 
-### Diagnostic build variants
+### Maintainer diagnostic builds
 
 The default build is the **Rev A competition image** and should stay that way:
 EZH camera capture, ER-TFT020-3 SPI LCD, session-gated USB telemetry available,
 and QDC wheel feedback enabled. USB enumerates when attached, but sends nothing until a
 recognized framed host session explicitly subscribes.
-Everything else is a variant behind `CONFIG__` selection with `#error` guards.
-
-Prefer a preset:
-
-```powershell
-cmake --build --preset competition           # Rev A competition default
-cmake --build --preset camera-usb-bench      # bare FRDM, direct EZH camera,
-                                             #   USB preview, no shield/LCD
-cmake --build --preset flexio-port1          # FlexIO capture on the Rev A camera
-                                             #   pins (needs 3 J9_EXT jumpers),
-                                             #   frees the EZH
-cmake --build --preset flexio-port4          # original FlexIO group, 11 fly-wires
-cmake --build --preset encoder-diag          # encoders, motors off, RTT only
-cmake --build --preset encoder-diag-motors   # spins the wheels. Car on blocks.
-```
-
-The wrapper scripts remain where they do something a fixed preset cannot,
-namely tuning the diagnostic at build time:
+QDC wheel feedback is standard operating procedure, not a build option. Special
+hardware experiments live only behind explicit maintainer scripts or ad-hoc
+`-Define` builds and write to separate output directories:
 
 ```powershell
+.\scripts\maintainer\build_flexio_camera.ps1 -PinGroup Port1
+.\scripts\maintainer\build_motor_encoder_diag.ps1
 .\scripts\maintainer\build_motor_encoder_diag.ps1 -EnableMotors -PwmPercentM0 10 -PwmPercentM1 20 -AutoStartMs 4000
 .\scripts\maintainer\flash_motor_encoder_diag.ps1 -EnableMotors       # must match how it was built
 .\scripts\maintainer\rtt_motor_encoder_diag.ps1 -EnableMotors -Seconds 30
@@ -138,18 +130,12 @@ namely tuning the diagnostic at build time:
 Driving the two motors at *different* duties is deliberate: equal duty would
 hide a cross-wiring or duplicate-read fault between the two QDC channels.
 
-Ad-hoc variants go through `-Define`, e.g.:
-
-```powershell
-.\scripts\maintainer\build_cmake.ps1 -BuildDir "build\cmake\nxp_cup_core0-Encoders" `
-    -Define "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC"
-```
-
 Motors-on encoder builds go to a **separate output directory** from motors-off,
 so the tree tells you which image is there. Duty is capped at 20 percent by an
 `#error`. Car on blocks.
 
-The wrapper proliferation is known debt — see `docs/plans/build-system-cleanup`.
+Keep new diagnostics out of `CMakePresets.json`; the public preset list is
+intentionally one item so the normal path cannot select the wrong image.
 
 ### Probe selection
 

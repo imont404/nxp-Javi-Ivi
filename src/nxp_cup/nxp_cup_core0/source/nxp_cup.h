@@ -45,8 +45,11 @@ float input_beta(void);
 float input_gamma(void);
 bool input_left_button(void);
 bool input_right_button(void);
+/* Battery voltage uses the board's filtered ADC input and divider scaling. */
+float battery_voltage(void);
 
-/* Motor duty and steering position are clamped to -1.0 through 1.0. */
+/* Motor duty and steering position are clamped to -1.0 through 1.0.
+ * Each motor command renews a 100 ms dead-man lease. */
 void motors_set_duty(float left, float right);
 void motors_stop(void);
 void steering_set(float position);
@@ -65,6 +68,8 @@ bool telemetry_i32(const char *name, int32_t value, const char *units);
 bool telemetry_u32(const char *name, uint32_t value, const char *units);
 bool telemetry_f32(const char *name, float value, const char *units);
 bool telemetry_bool(const char *name, bool value);
+/* Text values are non-empty UTF-8 strings of at most 48 bytes. */
+bool telemetry_text(const char *name, const char *value);
 bool telemetry_log(const char *category, const char *format, ...);
 
 #endif /* NXP_CUP_H_ */

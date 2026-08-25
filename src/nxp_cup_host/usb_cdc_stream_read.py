@@ -16,6 +16,7 @@ PACKET_HEADER_SIZE = 32
 RUI_FRAME_CHUNK_HEADER_SIZE = 24
 LOG_RECORD_HEADER_SIZE = 12
 TELEMETRY_SCALAR_HEADER_SIZE = 16
+TELEMETRY_TEXT_MAX_BYTES = 48
 STATS_REPORT_SIZE = 76
 HELLO_RESPONSE_SIZE = 24
 FRAME_BYTES = 320 * 200 * 2
@@ -246,22 +247,34 @@ class StreamParser:
                 )
                 name_start = payload_start + TELEMETRY_SCALAR_HEADER_SIZE
                 units_start = name_start + name_bytes
-                if units_start + units_bytes != packet_end or value_type not in {1, 2, 3, 4} or name_bytes == 0:
+                text_start = units_start + units_bytes
+                text_bytes = value_bits if value_type == 5 else 0
+                text_valid = value_type != 5 or (
+                    0 < text_bytes <= TELEMETRY_TEXT_MAX_BYTES and units_bytes == 0
+                )
+                if (
+                    text_start + text_bytes != packet_end
+                    or value_type not in {1, 2, 3, 4, 5}
+                    or name_bytes == 0
+                    or not text_valid
+                ):
                     self.invalid_headers += 1
                     self._record_error(
                         f"invalid_telemetry sample={sample_id} type={value_type} name={name_bytes} units={units_bytes}"
                     )
                 else:
                     name = bytes(self.buffer[name_start:units_start]).decode("utf-8", errors="replace")
-                    units = bytes(self.buffer[units_start:packet_end]).decode("utf-8", errors="replace")
+                    units = bytes(self.buffer[units_start:text_start]).decode("utf-8", errors="replace")
                     if value_type == 1:
                         value = struct.unpack("<i", struct.pack("<I", value_bits))[0]
                     elif value_type == 2:
                         value = value_bits
                     elif value_type == 3:
                         value = struct.unpack("<f", struct.pack("<I", value_bits))[0]
-                    else:
+                    elif value_type == 4:
                         value = value_bits != 0
+                    else:
+                        value = bytes(self.buffer[text_start:packet_end]).decode("utf-8", errors="replace")
                     self.telemetry_samples.append((timestamp_ms, sample_id, value_type, name, units, value))
                 self.parsed_headers += 1
                 self.cursor = packet_end

@@ -15,6 +15,8 @@
 #include <array>
 #include <atomic>
 #include <chrono>
+#include <cfloat>
+#include <cmath>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -47,8 +49,6 @@ struct SharedState
     nxpc_dbg_control_hello_response_t hello{};
     nxpc::host::Frame frame;
     nxpc::host::ParserCounters counters;
-    nxpc_dbg_stats_report_t stats{};
-    bool has_stats = false;
     std::vector<nxpc::host::LogRecord> logs;
     std::vector<nxpc::host::TelemetrySample> telemetry;
     bool rom_connected = false;
@@ -61,6 +61,80 @@ struct SharedState
     std::string program_detail;
     std::string program_error;
 };
+
+constexpr size_t kMaximumTelemetryRows = 128u;
+constexpr float kUiFontSizePixels = 18.0f;
+constexpr float kImGuiDefaultFontSizePixels = 13.0f;
+constexpr float kCameraAspectRatio = 320.0f / 200.0f;
+
+struct CameraAspectConstraint
+{
+    float title_height;
+    float minimum_content_width;
+    float minimum_content_height;
+};
+
+void constrain_camera_aspect(ImGuiSizeCallbackData *data)
+{
+    const auto *constraint = static_cast<const CameraAspectConstraint *>(data->UserData);
+    const bool width_changed =
+        std::fabs(data->DesiredSize.x - data->CurrentSize.x) > 0.5f;
+    const bool height_changed =
+        std::fabs(data->DesiredSize.y - data->CurrentSize.y) > 0.5f;
+
+    if (width_changed || !height_changed)
+    {
+        data->DesiredSize.x =
+            std::max(data->DesiredSize.x, constraint->minimum_content_width);
+        data->DesiredSize.y =
+            (data->DesiredSize.x / kCameraAspectRatio) + constraint->title_height;
+    }
+    else
+    {
+        const float content_height =
+            std::max(data->DesiredSize.y - constraint->title_height,
+                     constraint->minimum_content_height);
+        data->DesiredSize.y = content_height + constraint->title_height;
+        data->DesiredSize.x = content_height * kCameraAspectRatio;
+    }
+}
+
+float display_dpi_scale(int display_index)
+{
+    float diagonal_dpi = 96.0f;
+    float horizontal_dpi = 96.0f;
+    float vertical_dpi = 96.0f;
+    if (SDL_GetDisplayDPI(display_index,
+                          &diagonal_dpi,
+                          &horizontal_dpi,
+                          &vertical_dpi) != 0)
+    {
+        return 1.0f;
+    }
+
+    return std::clamp(std::max(horizontal_dpi, vertical_dpi) / 96.0f, 1.0f, 3.0f);
+}
+
+void update_telemetry_rows(
+    std::vector<nxpc::host::TelemetrySample> &rows,
+    const std::vector<nxpc::host::TelemetrySample> &samples)
+{
+    for (const nxpc::host::TelemetrySample &sample : samples)
+    {
+        const auto existing = std::find_if(
+            rows.begin(),
+            rows.end(),
+            [&](const nxpc::host::TelemetrySample &row) { return row.name == sample.name; });
+        if (existing != rows.end())
+        {
+            *existing = sample;
+        }
+        else if (rows.size() < kMaximumTelemetryRows)
+        {
+            rows.push_back(sample);
+        }
+    }
+}
 
 uint32_t parse_u32(const std::string &text, const char *name)
 {
@@ -404,8 +478,8 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
         return false;
     }
 
-    constexpr uint32_t channels = NXPC_DBG_CHANNEL_FRAMES | NXPC_DBG_CHANNEL_STATS |
-                                  NXPC_DBG_CHANNEL_LOGS | NXPC_DBG_CHANNEL_TELEMETRY;
+    constexpr uint32_t channels = NXPC_DBG_CHANNEL_FRAMES | NXPC_DBG_CHANNEL_LOGS |
+                                  NXPC_DBG_CHANNEL_TELEMETRY;
     if (!send_and_wait(port,
                        parser,
                        1u,
@@ -470,8 +544,6 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
         parser.feed(read_buffer.data(), static_cast<size_t>(received));
         nxpc::host::Frame frame;
         const bool has_new_frame = parser.latest_frame(published_generation, frame);
-        nxpc_dbg_stats_report_t stats{};
-        const bool has_stats = parser.latest_stats(stats);
         {
             std::lock_guard<std::mutex> lock(shared.mutex);
             if (has_new_frame)
@@ -481,11 +553,6 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
                 shared.frame = std::move(frame);
             }
             shared.counters = parser.counters();
-            if (has_stats)
-            {
-                shared.stats = stats;
-                shared.has_stats = true;
-            }
             shared.logs = parser.logs();
             shared.telemetry = parser.telemetry();
         }
@@ -594,12 +661,15 @@ std::string telemetry_value(const nxpc::host::TelemetrySample &sample)
             float value = 0.0f;
             std::memcpy(&value, &sample.value_bits, sizeof(value));
             char text[32]{};
-            std::snprintf(text, sizeof(text), "%.3f", static_cast<double>(value));
+            const char *format = (sample.units == "rpm") ? "%.0f" : "%.3f";
+            std::snprintf(text, sizeof(text), format, static_cast<double>(value));
             return text;
         }
-        case NXPC_DBG_TELEMETRY_TYPE_BOOL:
-            return sample.value_bits != 0u ? "true" : "false";
-        default:
+    case NXPC_DBG_TELEMETRY_TYPE_BOOL:
+        return sample.value_bits != 0u ? "true" : "false";
+    case NXPC_DBG_TELEMETRY_TYPE_TEXT:
+        return sample.text_value;
+    default:
             return "?";
     }
 }
@@ -638,9 +708,22 @@ void choose_firmware_image(std::array<char, 1024> &path)
 int viewer_main(const Options &options)
 {
     SDL_SetMainReady();
+    (void)SDL_SetHint(SDL_HINT_WINDOWS_DPI_AWARENESS, "permonitorv2");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
     {
         throw std::runtime_error(std::string("SDL_Init failed: ") + SDL_GetError());
+    }
+
+    constexpr int display_index = 0;
+    const float dpi_scale = display_dpi_scale(display_index);
+    SDL_Rect usable_bounds{};
+    const bool have_usable_bounds = SDL_GetDisplayUsableBounds(display_index, &usable_bounds) == 0;
+    int initial_width = static_cast<int>((1000.0f * dpi_scale) + 0.5f);
+    int initial_height = static_cast<int>((720.0f * dpi_scale) + 0.5f);
+    if (have_usable_bounds)
+    {
+        initial_width = std::min(initial_width, static_cast<int>(usable_bounds.w * 0.95f));
+        initial_height = std::min(initial_height, static_cast<int>(usable_bounds.h * 0.95f));
     }
 
     const uint32_t window_flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI |
@@ -648,8 +731,8 @@ int viewer_main(const Options &options)
     SDL_Window *window = SDL_CreateWindow("NXP CUP TELEMETRY",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                          1000,
-                                          720,
+                                          initial_width,
+                                          initial_height,
                                           window_flags);
     if (window == nullptr)
     {
@@ -670,8 +753,14 @@ int viewer_main(const Options &options)
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGui::GetIO().IniFilename = nullptr;
+    ImGuiIO &io = ImGui::GetIO();
+    io.IniFilename = nullptr;
+    ImFontConfig font_config;
+    font_config.SizePixels = kUiFontSizePixels * dpi_scale;
+    io.Fonts->AddFontDefault(&font_config);
     ImGui::StyleColorsDark();
+    ImGui::GetStyle().ScaleAllSizes((kUiFontSizePixels / kImGuiDefaultFontSizePixels) *
+                                    dpi_scale);
     ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
     ImGui_ImplSDLRenderer2_Init(renderer);
 
@@ -691,10 +780,12 @@ int viewer_main(const Options &options)
                   "%s",
                   "build\\cmake\\competition\\nxp_cup_core0.bin");
     bool erase_confirmation = false;
-    double display_fps = 0.0;
-    unsigned fps_frames = 0u;
+    double stream_fps = 0.0;
+    uint64_t rate_frame_count = 0u;
+    uint64_t rate_session = 0u;
     uint32_t displayed_last_log_id = 0u;
     uint64_t displayed_log_session = 0u;
+    std::vector<nxpc::host::TelemetrySample> telemetry_rows;
     auto fps_epoch = std::chrono::steady_clock::now();
     const auto test_deadline = fps_epoch + std::chrono::seconds(options.test_seconds);
 
@@ -728,8 +819,6 @@ int viewer_main(const Options &options)
         std::string program_error;
         nxpc_dbg_control_hello_response_t hello{};
         nxpc::host::ParserCounters counters;
-        nxpc_dbg_stats_report_t stats{};
-        bool has_stats = false;
         std::vector<nxpc::host::LogRecord> logs;
         std::vector<nxpc::host::TelemetrySample> telemetry;
         {
@@ -747,8 +836,6 @@ int viewer_main(const Options &options)
             program_error = shared.program_error;
             hello = shared.hello;
             counters = shared.counters;
-            stats = shared.stats;
-            has_stats = shared.has_stats;
             logs = shared.logs;
             telemetry = shared.telemetry;
             if (shared.frame.generation > rendered_generation)
@@ -756,6 +843,8 @@ int viewer_main(const Options &options)
                 display_frame = shared.frame;
             }
         }
+
+        update_telemetry_rows(telemetry_rows, telemetry);
 
         if (!connected && (texture != nullptr))
         {
@@ -768,7 +857,6 @@ int viewer_main(const Options &options)
         if (display_frame.generation > rendered_generation)
         {
             rendered_generation = display_frame.generation;
-            ++fps_frames;
             if ((display_frame.pixel_format == NXPC_DBG_PIXEL_FORMAT_RGB565_LE) &&
                 (display_frame.width > 0u) && (display_frame.height > 0u))
             {
@@ -797,10 +885,22 @@ int viewer_main(const Options &options)
 
         const auto now = std::chrono::steady_clock::now();
         const double fps_seconds = std::chrono::duration<double>(now - fps_epoch).count();
-        if (fps_seconds >= 1.0)
+        if (connection_count != rate_session)
         {
-            display_fps = static_cast<double>(fps_frames) / fps_seconds;
-            fps_frames = 0u;
+            rate_session = connection_count;
+            rate_frame_count = counters.frames;
+            stream_fps = 0.0;
+            fps_epoch = now;
+        }
+        else if (fps_seconds >= 1.0)
+        {
+            const uint64_t frame_delta =
+                (counters.frames >= rate_frame_count) ? (counters.frames - rate_frame_count)
+                                                      : counters.frames;
+            const double measured_fps = static_cast<double>(frame_delta) / fps_seconds;
+            stream_fps = (stream_fps == 0.0) ? measured_fps
+                                             : ((stream_fps * 0.75) + (measured_fps * 0.25));
+            rate_frame_count = counters.frames;
             fps_epoch = now;
         }
 
@@ -812,16 +912,33 @@ int viewer_main(const Options &options)
         ImGui::NewFrame();
 
         const ImVec2 display_size = ImGui::GetIO().DisplaySize;
-        constexpr float margin = 10.0f;
-        const float sidebar_width = std::min(340.0f, display_size.x * 0.36f);
-        const float camera_width = std::max(250.0f, display_size.x - sidebar_width - 3.0f * margin);
-        const float panel_height = std::max(250.0f, display_size.y - 2.0f * margin);
-        const float status_height = std::max(180.0f, panel_height * 0.32f);
-        const float program_height = std::max(170.0f, panel_height * 0.30f);
+        const float margin = 10.0f * dpi_scale;
+        const float minimum_camera_width = 320.0f * dpi_scale;
+        const float minimum_camera_height = 200.0f * dpi_scale;
+        const float sidebar_width = std::min(340.0f * dpi_scale, display_size.x * 0.36f);
+        const float camera_width =
+            std::max(minimum_camera_width,
+                     display_size.x - sidebar_width - (3.0f * margin));
+        const float panel_height =
+            std::max(250.0f * dpi_scale, display_size.y - (2.0f * margin));
+        const float status_height = std::max(260.0f * dpi_scale, panel_height * 0.44f);
+        const float program_height = std::max(170.0f * dpi_scale, panel_height * 0.27f);
+        const float camera_title_height =
+            ImGui::GetFontSize() + (2.0f * ImGui::GetStyle().FramePadding.y);
+        const float camera_height =
+            (camera_width / kCameraAspectRatio) + camera_title_height;
+        CameraAspectConstraint camera_constraint{
+            camera_title_height, minimum_camera_width, minimum_camera_height};
 
         ImGui::SetNextWindowPos(ImVec2(margin, margin), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize(ImVec2(camera_width, panel_height), ImGuiCond_FirstUseEver);
-        ImGui::Begin("Camera");
+        ImGui::SetNextWindowSize(ImVec2(camera_width, camera_height), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSizeConstraints(ImVec2(minimum_camera_width,
+                                                   minimum_camera_height + camera_title_height),
+                                            ImVec2(FLT_MAX, FLT_MAX),
+                                            constrain_camera_aspect,
+                                            &camera_constraint);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
         if (connected && (texture != nullptr) && (texture_width > 0) && (texture_height > 0))
         {
             const ImVec2 available = ImGui::GetContentRegionAvail();
@@ -848,6 +965,7 @@ int viewer_main(const Options &options)
             }
         }
         ImGui::End();
+        ImGui::PopStyleVar();
 
         const float sidebar_x = camera_width + 2.0f * margin;
         ImGui::SetNextWindowPos(ImVec2(sidebar_x, margin), ImGuiCond_FirstUseEver);
@@ -857,7 +975,7 @@ int viewer_main(const Options &options)
         {
             ImGui::TextColored(ImVec4(0.35f, 1.0f, 0.45f, 1.0f), "%s", status.c_str());
             ImGui::Text("%s  %u x %u RGB565", port.c_str(), hello.frame_width, hello.frame_height);
-            ImGui::Text("Preview %.1f FPS", display_fps);
+            ImGui::Text("USB stream %.1f FPS", stream_fps);
         }
         else
         {
@@ -870,19 +988,30 @@ int viewer_main(const Options &options)
         ImGui::Separator();
         ImGui::Text("Successful connections %llu",
                     static_cast<unsigned long long>(connection_count));
-        ImGui::Text("Frames %llu  malformed %llu",
-                    static_cast<unsigned long long>(counters.frames),
-                    static_cast<unsigned long long>(counters.malformed));
-        if (has_stats)
+        ImGui::Text("Frames %llu", static_cast<unsigned long long>(counters.frames));
+        ImGui::TextDisabled("Telemetry values (%zu)", telemetry_rows.size());
+        const ImGuiTableFlags telemetry_table_flags =
+            ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable |
+            ImGuiTableFlags_ScrollY | ImGuiTableFlags_SizingStretchProp;
+        if (ImGui::BeginTable("Telemetry values", 3, telemetry_table_flags, ImVec2(0.0f, 0.0f)))
         {
-            ImGui::Text("Device complete %lu  dropped %lu",
-                        static_cast<unsigned long>(stats.frames_completed),
-                        static_cast<unsigned long>(stats.frames_dropped));
-        }
-        for (const nxpc::host::TelemetrySample &sample : telemetry)
-        {
-            const std::string value = telemetry_value(sample);
-            ImGui::Text("%s: %s %s", sample.name.c_str(), value.c_str(), sample.units.c_str());
+            ImGui::TableSetupScrollFreeze(0, 1);
+            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch, 0.54f);
+            ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch, 0.29f);
+            ImGui::TableSetupColumn("Units", ImGuiTableColumnFlags_WidthStretch, 0.17f);
+            ImGui::TableHeadersRow();
+            for (const nxpc::host::TelemetrySample &sample : telemetry_rows)
+            {
+                const std::string value = telemetry_value(sample);
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::TextUnformatted(sample.name.c_str());
+                ImGui::TableSetColumnIndex(1);
+                ImGui::TextUnformatted(value.c_str());
+                ImGui::TableSetColumnIndex(2);
+                ImGui::TextUnformatted(sample.units.c_str());
+            }
+            ImGui::EndTable();
         }
         ImGui::End();
 

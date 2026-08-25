@@ -37,7 +37,6 @@ if ($EnableMotors) {
     Write-Host "Motors disabled - encoder read-only, safe to turn wheels by hand." -ForegroundColor Green
 }
 $defines = @(
-    "CONFIG__MOTOR_ENCODER_BACKEND=MOTOR_ENCODER_BACKEND_QDC",
     "CONFIG__MOTOR_ENCODER_DIAG_ENABLE=1",
     "CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE=$motorEnable",
     "CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT=$PwmPercent",

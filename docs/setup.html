@@ -8,20 +8,24 @@
 <body>
 
 <h1>NXP Cup &ndash; Setup and Build</h1>
-<p>Updated 2026-07-25. This is the page to read first. It assumes you have never
+<p>Updated 2026-08-24. This is the page to read first. It assumes you have never
 seen this repository and have nothing installed.</p>
 
 <h2>Getting started, from nothing</h2>
 
-<p>Three commands. The first one is slow; the other two are not.</p>
+<p>Two commands. The first one is slow; later builds reuse the installed tools.</p>
 
 <pre>.\setup.ps1                              <em>once per machine, ~5 minutes</em>
-cmake --preset competition               <em>configure</em>
-cmake --build --preset competition       <em>build</em></pre>
+.\build.ps1                              <em>configure and build the competition image</em></pre>
 
 <p>That produces the firmware image here:</p>
 
-<pre>build\cmake\competition\nxp_cup_core0.axf</pre>
+<pre>build\cmake\competition\nxp_cup_core0.axf
+bin\firmware\nxp_cup_core0.axf</pre>
+
+<p>The first path is the authoritative CMake output. The root
+<code>build.ps1</code> wrapper also copies the AXF and BIN into the shorter
+<code>bin\firmware</code> path.</p>
 
 <p><strong>Flashing is done with Segger Ozone</strong>, using the project in
 <code>src\nxp_cup\nxp_cup_core0\ozone__core0.jdebug</code>. See the Ozone section of
@@ -69,7 +73,7 @@ below.
 <tr><td>CMake</td><td>the build system</td><td>winget, system-wide</td></tr>
 <tr><td>Ninja</td><td>the thing that actually runs the compiler</td><td>winget, system-wide</td></tr>
 <tr><td>uv</td><td>Python tooling for the quality gates</td><td>winget, system-wide</td></tr>
-<tr><td>LLVM</td><td><code>clang-format</code> and <code>clang-tidy</code></td><td>winget, system-wide</td></tr>
+<tr><td>LLVM-MinGW</td><td>building the native USB viewer plus <code>clang-format</code> and <code>clang-tidy</code></td><td>winget, system-wide</td></tr>
 </table>
 
 <p>It is safe to run more than once &ndash; anything already present is skipped.
@@ -86,45 +90,65 @@ the firmware will still build as long as CMake and Ninja are available. Install
 the rest by hand and run <code>setup.ps1</code> again to confirm.
 </div>
 
-<h2>Build variants</h2>
+<h2>One firmware image</h2>
 
-<p>Variants are <strong>CMake presets</strong>, not separate scripts. List them:</p>
+<p>There is one normal build: <code>competition</code>. It includes the EZH
+camera, SPI LCD, session-gated scalar/text USB telemetry, and QDC wheel-speed feedback. QDC
+is standard operating procedure, not an optional build setting. Run
+<code>.\build.ps1</code>; students do not choose among hardware presets.</p>
 
-<pre>cmake --list-presets</pre>
+<p>Direct CMake remains available for IDE integration and automation:</p>
+
+<pre>cmake --preset competition
+cmake --build --preset competition</pre>
+
+<p>Organiser-only FlexIO and encoder diagnostics remain under
+<code>scripts\maintainer</code>. They use separate output directories and do not
+appear in the student preset list.</p>
+
+<h2>Optional PC and Android applications</h2>
+
+<p>To build the native SDL2/Dear ImGui USB camera/telemetry viewer, run:</p>
+
+<pre>.\build_viewer.ps1</pre>
+
+<p>The viewer displays framework-owned mode, state, actuator commands, and participant
+telemetry in stable named rows. Text telemetry values are limited to 48 UTF-8 bytes.</p>
+
+<p>The runnable viewer bundle is copied to
+<code>bin\host\</code>; start it with
+<code>.\bin\host\nxpc_viewer.exe</code>. Root <code>setup.ps1</code> installs
+LLVM-MinGW for this build; Visual Studio C++ is not required.</p>
+
+<p>The Android USB bridge has a separate, explicit maintainer setup because the
+Android SDK licenses must be accepted:</p>
+
+<pre>.\scripts\android\setup_android.ps1 -AcceptLicenses  <em>once per workstation</em>
+.\build_android.ps1                                  <em>unit tests + debug APK</em>
+.\build_android.ps1 -Offline                         <em>after one connected build</em></pre>
+
+<p>The setup script installs pinned JDK 17, Android SDK Platform 35, Build Tools
+35.0.0, ADB, and Gradle 8.9 under
+<code>out\toolchains\android</code>. Gradle dependencies are cached there as
+well. Nothing is installed globally and no environment variables are persisted.
+The APK is copied to <code>bin\android\nxp_cup_bridge.apk</code>.</p>
 
 <table>
-<tr><th>Preset</th><th>What it is</th><th>Hardware needed</th></tr>
-<tr><td><code>competition</code></td><td><strong>The race image. Start here.</strong> EZH camera capture, SPI LCD, session-gated USB telemetry available, encoders off.</td><td>the car as built</td></tr>
-<tr><td><code>encoders</code></td><td>Competition image plus wheel-speed feedback and the on-screen RPM readout.</td><td>the car as built</td></tr>
-<tr><td><code>flexio-port1</code></td><td>Camera capture through FlexIO instead of the EZH, on the existing camera wiring.</td><td>three jumpers on <code>J9_EXT</code></td></tr>
-<tr><td><code>flexio-port4</code></td><td>The original FlexIO pin group.</td><td>eleven fly-wires</td></tr>
-<tr><td><code>servo-p3-20</code></td><td>Competition image driving the servo from the Rev B candidate pin.</td><td>scope on shield <code>J1.5</code></td></tr>
-<tr><td><code>encoder-diag</code></td><td>Encoder bench diagnostic, motors off. No camera or LCD &ndash; it reports over a debugger connection.</td><td>turn the wheels by hand</td></tr>
-<tr><td><code>encoder-diag-motors</code></td><td>Same, but drives the motors at 10% and auto-starts.</td><td><strong>car on blocks</strong></td></tr>
+<tr><th>Root command</th><th>Convenient output</th><th>Authoritative output</th></tr>
+<tr><td><code>.\build.ps1</code></td><td><code>bin\firmware</code></td><td><code>build\cmake\competition</code></td></tr>
+<tr><td><code>.\build_viewer.ps1</code></td><td><code>bin\host</code></td><td><code>build\host\nxp_cup_host\Release</code></td></tr>
+<tr><td><code>.\build_android.ps1</code></td><td><code>bin\android</code></td><td><code>src\android\nxp_cup_bridge\app\build</code></td></tr>
 </table>
 
-<p>The first two are the ones you will use. The rest are bench and bring-up
-images the organisers use to check hardware; they are listed so the set is
-honest about what exists, not because you need them.</p>
-
-<p>Build any of them the same way:</p>
-
-<pre>cmake --preset &lt;name&gt;
-cmake --build --preset &lt;name&gt;</pre>
-
-<p>The image always lands at <code>build\cmake\&lt;name&gt;\nxp_cup_core0.axf</code>.</p>
-
-<div class="warn">
-<strong><code>encoder-diag-motors</code> spins the wheels</strong> four seconds
-after reset, without being asked. Put the car on blocks. Duty is capped at 20%
-by a compile-time check, but a car on the floor will still drive away.
-</div>
+<p>Both <code>out</code> and <code>bin</code> are git-ignored. Keep
+<code>out\toolchains</code> to avoid downloading tools again; delete it only when
+you intentionally want to reprovision the machine.</p>
 
 <h2>Editing: VS Code</h2>
 
 <p>Open the repository folder in VS Code. It will offer to install the C/C++ and
-CMake Tools extensions; accept. Pick a preset from the status bar and build from
-there if you prefer buttons to commands.</p>
+CMake Tools extensions; accept. Select the <code>competition</code> preset if the
+extension asks, or build with <code>.\build.ps1</code> in a terminal.</p>
 
 <p>IntelliSense reads <code>compile_commands.json</code> from the
 <code>competition</code> build, so <strong>configure that preset at least
@@ -242,9 +266,7 @@ puts the camera frame buffers where they belong. Do not edit it.</p>
 <code>competition</code> preset. It remains for the drift check and for anything
 that already referenced it. New work should use presets.</p>
 
-<p><code>build.ps1</code> is a thin wrapper around the same presets: run
-<code>.\build.ps1</code> for the competition image or pass
-<code>-Preset &lt;name&gt;</code>. Maintainers can run
+<p><code>build.ps1</code> is the competition build wrapper. Maintainers can run
 <code>scripts\maintainer\build_mcuxpresso.ps1</code> when an IDE comparison is
 needed.</p>
 

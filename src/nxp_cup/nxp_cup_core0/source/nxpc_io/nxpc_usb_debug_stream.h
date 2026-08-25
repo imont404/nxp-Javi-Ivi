@@ -15,6 +15,16 @@ bool nxpc_usb_debug_stream__session_active(void);
 bool nxpc_usb_debug_stream__camera_frames_active(void);
 /* Main-loop-only handoff for a validated, acknowledged ENTER_ISP request. */
 bool nxpc_usb_debug_stream__take_enter_isp_request(void);
+
+typedef struct
+{
+    uint32_t requestSequence;
+    uint32_t action;
+} nxpc_usb_system_action_request_t;
+
+/* Main-loop handoff: USB parsing never changes the vehicle state directly. */
+bool nxpc_usb_debug_stream__take_system_action(nxpc_usb_system_action_request_t *request);
+void nxpc_usb_debug_stream__complete_system_action(uint32_t requestSequence, uint32_t status);
 bool nxpc_usb_debug_stream__tx_idle(void);
 /* Camera callback generation marker; safe to call from interrupt context. */
 void nxpc_usb_debug_stream__notify_camera_frame(void);
@@ -28,6 +38,14 @@ bool nxpc_usb_debug_stream__telemetry_i32(const char *name, int32_t value, const
 bool nxpc_usb_debug_stream__telemetry_u32(const char *name, uint32_t value, const char *units);
 bool nxpc_usb_debug_stream__telemetry_f32(const char *name, float value, const char *units);
 bool nxpc_usb_debug_stream__telemetry_bool(const char *name, bool value);
+bool nxpc_usb_debug_stream__telemetry_text(const char *name, const char *value);
+
+/* Framework-only priority path. Six queue positions are reserved for these values. */
+bool nxpc_usb_debug_stream__framework_telemetry_f32(const char *name,
+                                                    float value,
+                                                    const char *units);
+bool nxpc_usb_debug_stream__framework_telemetry_bool(const char *name, bool value);
+bool nxpc_usb_debug_stream__framework_telemetry_text(const char *name, const char *value);
 
 #define NXPC_DBG_LOG_TRACE(category, ...) \
     nxpc_usb_debug_stream__logf(NXPC_DBG_LOG_LEVEL_TRACE, (category), __VA_ARGS__)
@@ -44,5 +62,6 @@ bool nxpc_usb_debug_stream__telemetry_bool(const char *name, bool value);
 #define NXPC_DBG_VALUE_U32(name, value, units) nxpc_usb_debug_stream__telemetry_u32((name), (value), (units))
 #define NXPC_DBG_VALUE_F32(name, value, units) nxpc_usb_debug_stream__telemetry_f32((name), (value), (units))
 #define NXPC_DBG_VALUE_BOOL(name, value) nxpc_usb_debug_stream__telemetry_bool((name), (value))
+#define NXPC_DBG_VALUE_TEXT(name, value) nxpc_usb_debug_stream__telemetry_text((name), (value))
 
 #endif /* NXPC_USB_DEBUG_STREAM_H_ */

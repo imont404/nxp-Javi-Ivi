@@ -1,42 +1,41 @@
 param(
-    [string]$Preset = "competition",
     [switch]$Clean
 )
 
 $ErrorActionPreference = "Stop"
+$preset = "competition"
 
-$presetData = Get-Content -LiteralPath (Join-Path $PSScriptRoot "CMakePresets.json") -Raw |
-    ConvertFrom-Json
-$knownPresets = @(
-    $presetData.configurePresets |
-        Where-Object { -not ($_.PSObject.Properties.Name -contains "hidden" -and $_.hidden) } |
-        ForEach-Object { $_.name }
-)
-
-if ($knownPresets -notcontains $Preset) {
-    throw "Unknown preset '$Preset'. Available: $($knownPresets -join ', ')"
-}
-
-$configureArguments = @("--preset", $Preset)
+$configureArguments = @("--preset", $preset)
 if ($Clean) {
     $configureArguments += "--fresh"
 }
 
-Write-Host "Configuring NXP Cup firmware preset '$Preset'..." -ForegroundColor Cyan
+Write-Host "Configuring NXP Cup competition firmware..." -ForegroundColor Cyan
 & cmake @configureArguments
 if ($LASTEXITCODE -ne 0) {
     throw "CMake configure failed with exit code $LASTEXITCODE"
 }
 
-Write-Host "Building NXP Cup firmware preset '$Preset'..." -ForegroundColor Cyan
-& cmake --build --preset $Preset
+Write-Host "Building NXP Cup competition firmware..." -ForegroundColor Cyan
+& cmake --build --preset $preset
 if ($LASTEXITCODE -ne 0) {
     throw "CMake build failed with exit code $LASTEXITCODE"
 }
 
-$output = Join-Path $PSScriptRoot "build\cmake\$Preset\nxp_cup_core0.axf"
+$output = Join-Path $PSScriptRoot "build\cmake\competition\nxp_cup_core0.axf"
 if (-not (Test-Path -LiteralPath $output)) {
     throw "Build completed but the expected image is missing: $output"
 }
 
+$binary = Join-Path $PSScriptRoot "build\cmake\competition\nxp_cup_core0.bin"
+if (-not (Test-Path -LiteralPath $binary)) {
+    throw "Build completed but the expected binary is missing: $binary"
+}
+
+$publishDir = Join-Path $PSScriptRoot "bin\firmware"
+New-Item -ItemType Directory -Force -Path $publishDir | Out-Null
+Copy-Item -LiteralPath $output -Destination (Join-Path $publishDir "nxp_cup_core0.axf") -Force
+Copy-Item -LiteralPath $binary -Destination (Join-Path $publishDir "nxp_cup_core0.bin") -Force
+
 Write-Host "Built: $output" -ForegroundColor Green
+Write-Host "Firmware bin: $publishDir" -ForegroundColor Green

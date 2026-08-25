@@ -92,6 +92,7 @@ Thumbs.db
 
 #build folders
 build/
+/bin/
 
 # MCUXpresso headless workspaces
 .mcux_workspace*/

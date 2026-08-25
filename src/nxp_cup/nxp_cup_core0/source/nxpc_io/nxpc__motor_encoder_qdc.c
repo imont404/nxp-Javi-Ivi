@@ -7,8 +7,6 @@
 #include "fsl_port.h"
 #include "fsl_reset.h"
 
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
-
 #define NXPC_QDC_CTRL_W1C_FLAGS \
     (QDC_CTRL_HIRQ_MASK | QDC_CTRL_XIRQ_MASK | QDC_CTRL_DIRQ_MASK | QDC_CTRL_CMPIRQ_MASK)
 
@@ -28,7 +26,6 @@ static uint32_t nxpc__qdc_read_position(QDC_Type *base)
 
     return position;
 }
-
 static void nxpc__qdc_clear_flags(QDC_Type *base)
 {
     base->CTRL = (uint16_t)((base->CTRL & (uint16_t)(~(uint16_t)NXPC_QDC_CTRL_W1C_FLAGS)) |
@@ -269,30 +266,3 @@ void nxpc__motor_encoder_qdc_diag_run(void)
         CONFIG__E_WFI;
     }
 }
-
-#else
-
-void nxpc__motor_encoder_qdc_init(void)
-{
-}
-
-void nxpc__motor_encoder_qdc_zero(void)
-{
-}
-
-void nxpc__motor_encoder_qdc_sample(uint32_t elapsed_ms,
-                                   nxpc_motor_encoder_sample_t samples[NXPC_MOTOR_ENCODER_COUNT])
-{
-    (void)elapsed_ms;
-    (void)samples;
-}
-
-void nxpc__motor_encoder_qdc_diag_run(void)
-{
-    while (1)
-    {
-        CONFIG__E_WFI;
-    }
-}
-
-#endif

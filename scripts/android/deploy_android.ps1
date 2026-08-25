@@ -11,7 +11,7 @@ $packageName = "com.wavenumber.nxpc.bridge"
 $activityName = "$packageName/.MainActivity"
 
 if (-not (Test-Path -LiteralPath $apk)) {
-    throw "Debug APK not found. Run scripts\android\build_android.ps1 first."
+    throw "Debug APK not found. Run .\build_android.ps1 first."
 }
 
 $devices = @(& $adb devices | Select-Object -Skip 1 | Where-Object { $_ -match "\tdevice$" })

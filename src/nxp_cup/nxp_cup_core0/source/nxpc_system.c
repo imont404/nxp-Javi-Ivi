@@ -23,9 +23,9 @@ typedef struct
     nxpc_system_mode_t mode;
     nxpc_system_fault_t fault;
     uint32_t isp_entry_tick;
-} nxpc_system_state_t;
+} nxpc_system_runtime_t;
 
-static nxpc_system_state_t g_nxpc_system;
+static nxpc_system_runtime_t g_nxpc_system;
 
 static bool nxpc_system__test_requested(void)
 {
@@ -60,6 +60,76 @@ static void nxpc_system__set_mode(nxpc_system_mode_t mode)
         DEBUG("System mode: %s\r\n", nxpc_system__mode_label(mode));
     }
 }
+
+nxpc_system_action_result_t nxpc_system__request_action(nxpc_system_action_t action)
+{
+    switch (action)
+    {
+        case NXPC_SYSTEM_ACTION_STOP:
+            nxpc__disable_motor_control();
+            nxpc__set_servo(0.0f);
+            g_nxpc_system.test_outputs_armed = false;
+            g_nxpc_system.test_arm_pending = false;
+            if (g_nxpc_system.mode == NXPC_SYSTEM_MODE_RACE_RUNNING)
+            {
+                nxpc_system__set_mode(NXPC_SYSTEM_MODE_RACE_WAITING);
+            }
+            return NXPC_SYSTEM_ACTION_ACCEPTED;
+
+        case NXPC_SYSTEM_ACTION_RACE_START:
+#if CONFIG__FORCE_RACE_WAITING_MODE
+            return NXPC_SYSTEM_ACTION_DENIED;
+#else
+            if (nxpc_system__test_requested())
+            {
+                return NXPC_SYSTEM_ACTION_DENIED;
+            }
+            if (g_nxpc_system.mode != NXPC_SYSTEM_MODE_RACE_WAITING)
+            {
+                return NXPC_SYSTEM_ACTION_DENIED;
+            }
+            if (!g_nxpc_system.camera_frame_seen)
+            {
+                return NXPC_SYSTEM_ACTION_NOT_READY;
+            }
+            nxpc_system__set_mode(NXPC_SYSTEM_MODE_RACE_RUNNING);
+            return NXPC_SYSTEM_ACTION_ACCEPTED;
+#endif
+
+        default:
+            return NXPC_SYSTEM_ACTION_DENIED;
+    }
+}
+
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+static bool nxpc_system__service_usb_action(void)
+{
+    nxpc_usb_system_action_request_t request;
+    nxpc_system_action_result_t result;
+    uint32_t status;
+
+    if (!nxpc_usb_debug_stream__take_system_action(&request))
+    {
+        return false;
+    }
+
+    result = nxpc_system__request_action((nxpc_system_action_t)request.action);
+    switch (result)
+    {
+        case NXPC_SYSTEM_ACTION_ACCEPTED:
+            status = NXPC_DBG_CONTROL_STATUS_OK;
+            break;
+        case NXPC_SYSTEM_ACTION_NOT_READY:
+            status = NXPC_DBG_CONTROL_STATUS_NOT_READY;
+            break;
+        default:
+            status = NXPC_DBG_CONTROL_STATUS_DENIED;
+            break;
+    }
+    nxpc_usb_debug_stream__complete_system_action(request.requestSequence, status);
+    return true;
+}
+#endif
 
 void nxpc_system__init(void)
 {
@@ -102,6 +172,14 @@ void nxpc_system__service(void)
         g_nxpc_system.camera_frame_reported = true;
         DEBUG("Camera first frame received.\r\n");
     }
+
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    /* Defer command completion until the system state machine validates it. */
+    if (nxpc_system__service_usb_action())
+    {
+        return;
+    }
+#endif
 
     if (g_nxpc_system.mode == NXPC_SYSTEM_MODE_SAFE_FAULT)
     {
@@ -182,6 +260,16 @@ void nxpc_system__service(void)
     return;
 #endif
 
+    if (g_nxpc_system.mode == NXPC_SYSTEM_MODE_RACE_RUNNING)
+    {
+        if (button__up(&center_btn) != 0U)
+        {
+            nxpc_system__set_mode(NXPC_SYSTEM_MODE_RACE_WAITING);
+            DEBUG("Race stopped by EXE; waiting for start.\r\n");
+        }
+        return;
+    }
+
     if ((g_nxpc_system.mode == NXPC_SYSTEM_MODE_RACE_WAITING) &&
         (button__up(&center_btn) != 0U))
     {
@@ -215,6 +303,53 @@ nxpc_system_mode_t nxpc_system__mode(void)
 nxpc_system_fault_t nxpc_system__fault(void)
 {
     return g_nxpc_system.fault;
+}
+
+nxpc_system_state_t nxpc_system__state(void)
+{
+    switch (g_nxpc_system.mode)
+    {
+        case NXPC_SYSTEM_MODE_TEST:
+            if (g_nxpc_system.test_outputs_armed)
+            {
+                return NXPC_SYSTEM_STATE_TEST_ARMED;
+            }
+            if (g_nxpc_system.test_arm_pending)
+            {
+                return NXPC_SYSTEM_STATE_TEST_CENTER_POTS;
+            }
+            return NXPC_SYSTEM_STATE_TEST_DISARMED;
+
+        case NXPC_SYSTEM_MODE_RACE_WAITING:
+            return g_nxpc_system.camera_frame_seen ? NXPC_SYSTEM_STATE_RACE_READY :
+                                                     NXPC_SYSTEM_STATE_RACE_WAITING_CAMERA;
+
+        case NXPC_SYSTEM_MODE_RACE_RUNNING:
+            return NXPC_SYSTEM_STATE_RACE_RUNNING;
+
+        case NXPC_SYSTEM_MODE_ENTERING_ISP:
+            return NXPC_SYSTEM_STATE_ENTERING_ISP;
+
+        case NXPC_SYSTEM_MODE_SAFE_FAULT:
+            switch (g_nxpc_system.fault)
+            {
+                case NXPC_SYSTEM_FAULT_CAMERA_STARTUP:
+                    return NXPC_SYSTEM_STATE_FAULT_CAMERA_STARTUP;
+                case NXPC_SYSTEM_FAULT_CAMERA_LOST:
+                    return NXPC_SYSTEM_STATE_FAULT_CAMERA_LOST;
+                case NXPC_SYSTEM_FAULT_CALLBACK_OVERRUN:
+                    return NXPC_SYSTEM_STATE_FAULT_CALLBACK_OVERRUN;
+                case NXPC_SYSTEM_FAULT_BOOTLOADER_RETURNED:
+                    return NXPC_SYSTEM_STATE_FAULT_BOOTLOADER_RETURNED;
+                case NXPC_SYSTEM_FAULT_NONE:
+                default:
+                    return NXPC_SYSTEM_STATE_SAFE_FAULT;
+            }
+
+        case NXPC_SYSTEM_MODE_STARTUP:
+        default:
+            return NXPC_SYSTEM_STATE_INITIALIZING;
+    }
 }
 
 bool nxpc_system__camera_frame_seen(void)
@@ -260,6 +395,41 @@ const char *nxpc_system__mode_label(nxpc_system_mode_t mode)
         case NXPC_SYSTEM_MODE_SAFE_FAULT:
             return "SAFE / FAULT";
 
+        default:
+            return "UNKNOWN";
+    }
+}
+
+const char *nxpc_system__state_label(nxpc_system_state_t state)
+{
+    switch (state)
+    {
+        case NXPC_SYSTEM_STATE_INITIALIZING:
+            return "INITIALIZING";
+        case NXPC_SYSTEM_STATE_TEST_DISARMED:
+            return "DISARMED";
+        case NXPC_SYSTEM_STATE_TEST_CENTER_POTS:
+            return "CENTER POTS";
+        case NXPC_SYSTEM_STATE_TEST_ARMED:
+            return "MOTORS ARMED";
+        case NXPC_SYSTEM_STATE_RACE_WAITING_CAMERA:
+            return "WAITING FOR CAMERA";
+        case NXPC_SYSTEM_STATE_RACE_READY:
+            return "READY TO START";
+        case NXPC_SYSTEM_STATE_RACE_RUNNING:
+            return "RUNNING";
+        case NXPC_SYSTEM_STATE_ENTERING_ISP:
+            return "PREPARING USB ISP";
+        case NXPC_SYSTEM_STATE_FAULT_CAMERA_STARTUP:
+            return "CAMERA STARTUP FAULT";
+        case NXPC_SYSTEM_STATE_FAULT_CAMERA_LOST:
+            return "CAMERA LOST";
+        case NXPC_SYSTEM_STATE_FAULT_CALLBACK_OVERRUN:
+            return "CALLBACK OVERRUN";
+        case NXPC_SYSTEM_STATE_FAULT_BOOTLOADER_RETURNED:
+            return "BOOTLOADER RETURNED";
+        case NXPC_SYSTEM_STATE_SAFE_FAULT:
+            return "SAFE FAULT";
         default:
             return "UNKNOWN";
     }

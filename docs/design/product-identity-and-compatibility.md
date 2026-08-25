@@ -19,7 +19,7 @@ checks for stale owned identifiers and paths afterward.
 | Firmware project and artifacts | Use `nxp_cup_core0`; the legacy name exists only in baseline/tag history |
 | Public API | Keep short domain names in `nxp_cup.h`; do not expose internal prefixes |
 | Host and Android products | Rename to NXP Cup names with all in-repository consumers moved together |
-| Protocol source identifiers | Rename to `nxpc`, preserving every numeric value and packed layout |
+| Protocol source identifiers | Use `nxpc`; additive version-1 extensions move every first-party consumer together |
 | Protocol wire magic | Preserve the four version-1 bytes `AVCU` (`0x55435641` little-endian) |
 | USB identities | Preserve runtime `1FC9:0094` and ROM-HID `1FC9:014F` |
 | H.264 Advanced Video Coding | Preserve standards terms such as `video/avc` |
@@ -30,3 +30,8 @@ The compatibility boundary is behavior and wire values, not legacy source names.
 firmware, browser viewer, native host tool, and Android bridge are rebuilt together so
 their private types and constants can be renamed without creating aliases in the small
 firmware API.
+
+Version 1 permits additive typed records when all first-party consumers move together.
+Telemetry text type 5 retains the existing 16-byte record header and leaves i32, u32,
+f32, and bool packets byte-for-byte unchanged. Its only additional bytes are the bounded
+trailing UTF-8 value.

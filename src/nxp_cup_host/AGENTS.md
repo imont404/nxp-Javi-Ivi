@@ -23,7 +23,21 @@ Run from the repository root:
 uvx --from pyserial python .\src\nxp_cup_host\usb_cdc_stream_read.py --port COM15 --seconds 10 --read-size 262144
 ```
 
-## Native Windows Receiver
+## Native Windows Applications
+
+Build the normal viewer and CLI from the repository root:
+
+```powershell
+.\build_viewer.ps1
+.\bin\host\nxpc_viewer.exe
+```
+
+Root `setup.ps1` provisions LLVM-MinGW, which is the preferred compiler. Visual
+Studio C++ is not required for the normal viewer or CLI. The root wrapper copies
+the complete runnable bundle to `bin\host`; authoritative CMake output remains
+under `build\host\nxp_cup_host\Release`.
+
+## Legacy Native Throughput Receiver
 
 The native receiver is for maximum-throughput measurement. Build from the
 repository root:
@@ -33,10 +47,9 @@ repository root:
 .\src\nxp_cup_host\bin\usb_cdc_stream_read.exe --port COM15 --seconds 10 --read-size 262144
 ```
 
-The current wrapper uses Visual Studio 2022 Build Tools discovered through
-`vswhere.exe` and `vcvars64.bat`. If a future machine requires LLVM/Clang or
-another compiler install, document the exact setup command and update the
-wrapper before recording plan results with that toolchain.
+This older, isolated throughput-receiver wrapper still uses Visual Studio 2022
+Build Tools discovered through `vswhere.exe` and `vcvars64.bat`. It is not part
+of the normal viewer build and is unnecessary for ordinary USB telemetry use.
 
 Generated files under `bin` are local build output and must not be committed.
 Use 256 KiB reads for sustained Windows CDC throughput measurements unless a

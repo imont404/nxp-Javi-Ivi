@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NXP Cup Telemetry Dashboard Mock</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Arial Narrow", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+      --accent: #f31d3b;
+      --cyan: #32d8ff;
+      --green: #58ef99;
+      --amber: #ffd166;
+      --panel: rgba(7, 9, 12, .88);
+      --line: rgba(255, 255, 255, .22);
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
+    body { margin: 0; overflow: hidden; background: #020304; color: #f7f8fa; }
+    button { font: inherit; }
+    .dashboard { height: 100%; display: grid; place-items: center; padding: clamp(8px, 1.2vw, 20px); }
+    .stage {
+      position: relative; width: min(100%, calc((100vh - clamp(16px, 2.4vw, 40px)) * 1.6));
+      aspect-ratio: 8 / 5; overflow: hidden; border: 1px solid rgba(255,255,255,.26);
+      border-top: 3px solid var(--accent); background: #000;
+      box-shadow: 0 18px 80px #000, 0 0 34px rgba(243,29,59,.1);
+    }
+    #camera { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+    .shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,.72), transparent 22%, transparent 54%, rgba(0,0,0,.94)); }
+    .shade::after { content: ""; position: absolute; inset: 0; opacity: .11; background: repeating-linear-gradient(0deg, transparent 0 3px, #000 4px); }
+    .topbar { position: absolute; inset: 0 0 auto; display: flex; align-items: start; justify-content: space-between; padding: clamp(11px,1.35vw,21px); }
+    .state { display: flex; align-items: center; gap: 9px; padding: 9px 17px; border-left: 5px solid var(--green); background: rgba(5,15,10,.88); color: #fff; font-size: clamp(.72rem,1vw,1rem); font-style: italic; font-weight: 950; letter-spacing: .06em; clip-path: polygon(0 0,100% 0,calc(100% - 11px) 100%,0 100%); }
+    .state::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
+    .state.disarmed { border-color: var(--amber); }
+    .state.disarmed::before { background: var(--amber); box-shadow: 0 0 12px var(--amber); }
+    .live { padding: 6px 14px 7px 20px; background: var(--accent); color: #fff; font-size: clamp(.62rem,.8vw,.82rem); font-style: italic; font-weight: 950; letter-spacing: .16em; clip-path: polygon(12px 0,100% 0,100% 100%,0 100%); }
+    .side-readout { position: absolute; right: 0; min-width: 180px; padding: 8px 14px 9px 30px; text-align: right; border-right: 4px solid var(--accent); background: linear-gradient(270deg,rgba(5,6,8,.94),rgba(5,6,8,.48),transparent); clip-path: polygon(12% 0,100% 0,100% 100%,0 100%); }
+    .side-readout.battery { top: 15%; }
+    .side-readout.fps { top: 24%; }
+    .side-readout .label { color: #aeb2b8; font-size: clamp(.62rem,.8vw,.82rem); font-style: italic; font-weight: 950; letter-spacing: .12em; text-transform: uppercase; }
+    .side-readout .value { margin-top: 1px; font-size: clamp(1rem,1.9vw,1.9rem); font-style: italic; font-weight: 950; font-variant-numeric: tabular-nums; }
+    .hud { position: absolute; inset: auto clamp(8px,1.2vw,18px) clamp(8px,1.2vw,18px); display: grid; grid-template-columns: 1fr 1.35fr 1fr; gap: clamp(6px,.8vw,11px); }
+    .card { position: relative; min-width: 0; padding: clamp(7px,.85vw,12px); border-top: 2px solid rgba(255,255,255,.8); background: var(--panel); backdrop-filter: blur(10px); clip-path: polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,11px 100%,0 calc(100% - 11px)); }
+    .card::before { content: ""; position: absolute; left: 0; inset-block: 0; width: 4px; background: var(--accent); }
+    .card-title { display: flex; align-items: center; justify-content: space-between; color: #afb3b8; font-size: clamp(.56rem,.62vw,.68rem); font-style: italic; font-weight: 950; letter-spacing: .12em; text-transform: uppercase; }
+    .rpm { margin: 2px 0 4px; font-size: clamp(1.2rem,2.4vw,2.5rem); line-height: .95; font-style: italic; font-weight: 950; font-variant-numeric: tabular-nums; text-shadow: 0 2px 12px #000; }
+    .rpm small,.steering-value small { color: #9ca1a7; font-size: .33em; letter-spacing: .08em; }
+    .command-track { position: relative; height: 6px; overflow: hidden; background: #292d31; transform: skewX(-12deg); }
+    .command-track::after { content: ""; position: absolute; left: 50%; inset-block: 0; width: 1px; background: rgba(255,255,255,.65); }
+    .command-fill { position: absolute; inset-block: 0; background: linear-gradient(90deg,var(--accent),#ff6579); box-shadow: 0 0 10px var(--accent); }
+    .command-caption { display: flex; justify-content: space-between; margin-top: 4px; color: #979ca2; font-size: clamp(.52rem,.58vw,.62rem); font-variant-numeric: tabular-nums; }
+    .steering-card { display: block; }
+    .steering-main { min-width: 0; }
+    .steering-value { margin-top: 2px; font-size: clamp(1.25rem,2.55vw,2.7rem); line-height: .95; font-style: italic; font-weight: 950; font-variant-numeric: tabular-nums; }
+    .steering-track { position: relative; height: 7px; margin-top: 7px; background: linear-gradient(90deg,var(--accent),#3b3e42 50%,var(--accent)); transform: skewX(-12deg); }
+    .steering-marker { position: absolute; top: 50%; width: 13px; height: 16px; background: #fff; border: 3px solid var(--accent); box-shadow: 0 0 13px var(--accent); transform: translate(-50%,-50%) skewX(12deg); }
+    .simulation { position: absolute; right: 14px; top: clamp(96px,7vw,124px); color: rgba(255,255,255,.32); font-size: .62rem; font-style: italic; font-weight: 950; letter-spacing: .15em; }
+    details { position: fixed; bottom: 10px; z-index: 3; max-width: min(440px,calc(100vw - 24px)); pointer-events: auto; }
+    details.operator { left: 12px; }
+    details.diagnostics { right: 12px; }
+    summary { cursor: pointer; color: #777d84; font-size: .72rem; font-style: italic; font-weight: 800; text-transform: uppercase; }
+    .operator-panel { margin-top: 6px; padding: 8px; border: 1px solid var(--line); background: #090b0e; }
+    .mode-select { display: flex; gap: 3px; }
+    .mode-select button { border: 0; padding: 8px 13px; background: #25282d; color: #b3b6ba; font-weight: 900; text-transform: uppercase; cursor: pointer; }
+    .mode-select button.active { background: var(--accent); color: #fff; }
+    pre { max-height: 45vh; overflow: auto; padding: 12px; border: 1px solid var(--line); background: #090b0e; color: #adb2b8; font-size: .7rem; }
+    @media (max-aspect-ratio:5 / 4) {
+      .hud { grid-template-columns: 1fr 1fr; }
+      .steering-card { grid-column: 1 / -1; grid-row: 1; }
+      .side-readout { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="dashboard">
+    <section class="stage" aria-label="Simulated NXP Cup telemetry dashboard">
+      <canvas id="camera" width="320" height="200"></canvas>
+      <div class="shade"></div>
+      <header class="topbar">
+        <div class="state" id="state">TEST / MOTORS ARMED</div>
+        <div class="live">LIVE</div>
+      </header>
+
+      <div class="side-readout battery"><div class="label">Battery</div><div class="value"><span id="battery">12.87</span> V</div></div>
+      <div class="side-readout fps"><div class="label">Frame rate</div><div class="value"><span id="fps">23.4</span> FPS</div></div>
+
+      <section class="hud">
+        <article class="card">
+          <div class="card-title"><span>Left wheel</span><span id="leftDirection">Forward</span></div>
+          <div class="rpm"><span id="leftRpm">0</span> <small>RPM</small></div>
+          <div class="command-track"><div class="command-fill" id="leftBar"></div></div>
+          <div class="command-caption"><span>Motor command</span><strong id="leftCommand">0%</strong></div>
+        </article>
+
+        <article class="card steering-card">
+          <div class="steering-main">
+            <div class="card-title"><span>Steering command</span><span id="steeringDirection">Center</span></div>
+            <div class="steering-value"><span id="steeringValue">0</span><small>%</small></div>
+            <div class="steering-track"><div class="steering-marker" id="steeringMarker"></div></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-title"><span>Right wheel</span><span id="rightDirection">Forward</span></div>
+          <div class="rpm"><span id="rightRpm">0</span> <small>RPM</small></div>
+          <div class="command-track"><div class="command-fill" id="rightBar"></div></div>
+          <div class="command-caption"><span>Motor command</span><strong id="rightCommand">0%</strong></div>
+        </article>
+      </section>
+
+      <div class="simulation">SIMULATED DATA</div>
+    </section>
+  </main>
+
+  <details class="operator">
+    <summary>View controls</summary>
+    <div class="operator-panel">
+      <div class="card-title" style="margin-bottom:6px">Input source</div>
+      <nav class="mode-select" aria-label="Input source" style="margin-bottom:8px">
+        <button class="active" data-source="direct">Direct USB</button>
+        <button data-source="relay">Phone relay</button>
+      </nav>
+      <div class="card-title" style="margin-bottom:6px">Relay video</div>
+      <nav class="mode-select" aria-label="Video transport">
+        <button class="active" data-mode="jpeg">JPEG</button>
+        <button data-mode="h264">H.264</button>
+        <button data-mode="raw">Raw</button>
+      </nav>
+    </div>
+  </details>
+
+  <details class="diagnostics">
+    <summary>Diagnostics</summary>
+    <pre id="diagnostics"></pre>
+  </details>
+
+  <script>
+  (() => {
+    'use strict';
+    const canvas = document.querySelector('#camera');
+    const context = canvas.getContext('2d');
+    let selectedMode = 'jpeg';
+
+    function setSignedBar(element, value) {
+      const percent = Math.max(-1, Math.min(1, value)) * 50;
+      element.style.left = `${50 + Math.min(0, percent)}%`;
+      element.style.width = `${Math.abs(percent)}%`;
+    }
+
+    function direction(value) {
+      if (value > .04) return 'Forward';
+      if (value < -.04) return 'Reverse';
+      return 'Stopped';
+    }
+
+    function drawCamera(time, steering) {
+      const width = canvas.width;
+      const height = canvas.height;
+      const sky = context.createLinearGradient(0, 0, 0, 118);
+      sky.addColorStop(0, '#294f63'); sky.addColorStop(1, '#8db2b7');
+      context.fillStyle = sky; context.fillRect(0, 0, width, 118);
+      context.fillStyle = '#426c43'; context.fillRect(0, 94, width, 106);
+      const bend = steering * 30;
+      context.fillStyle = '#252a2d'; context.beginPath();
+      context.moveTo(116 + bend * .15, 92); context.lineTo(204 + bend * .15, 92);
+      context.lineTo(306 + bend, 200); context.lineTo(14 + bend, 200); context.closePath(); context.fill();
+      context.strokeStyle = '#f5f7ec'; context.lineWidth = 4;
+      for (const side of [-1, 1]) {
+        context.beginPath(); context.moveTo(160 + side * 42 + bend * .15, 92);
+        context.lineTo(160 + side * 142 + bend, 200); context.stroke();
+      }
+      context.strokeStyle = '#ffd34e'; context.lineWidth = 3;
+      const phase = (time * 32) % 34;
+      for (let y = 102 - phase; y < 210; y += 34) {
+        const scale0 = (y - 88) / 112; const scale1 = (y + 16 - 88) / 112;
+        context.beginPath();
+        context.moveTo(160 + bend * scale0, y);
+        context.lineTo(160 + bend * scale1, y + 16); context.stroke();
+      }
+      context.fillStyle = 'rgba(83,220,255,.8)'; context.fillRect(0, 48, width, 1);
+    }
+
+    function update(now) {
+      const time = now / 1000;
+      const steering = Math.sin(time * .58) * .7;
+      const leftCommand = .56 - steering * .18;
+      const rightCommand = .56 + steering * .18;
+      const leftRpm = Math.round(leftCommand * 312 + Math.sin(time * 4) * 3);
+      const rightRpm = Math.round(rightCommand * 312 + Math.cos(time * 4.2) * 3);
+      drawCamera(time, steering);
+      document.querySelector('#leftRpm').textContent = leftRpm;
+      document.querySelector('#rightRpm').textContent = rightRpm;
+      document.querySelector('#leftCommand').textContent = `${Math.round(leftCommand * 100)}%`;
+      document.querySelector('#rightCommand').textContent = `${Math.round(rightCommand * 100)}%`;
+      document.querySelector('#leftDirection').textContent = direction(leftCommand);
+      document.querySelector('#rightDirection').textContent = direction(rightCommand);
+      setSignedBar(document.querySelector('#leftBar'), leftCommand);
+      setSignedBar(document.querySelector('#rightBar'), rightCommand);
+      const steeringPercent = Math.round(steering * 100);
+      document.querySelector('#steeringValue').textContent = Math.abs(steeringPercent);
+      document.querySelector('#steeringDirection').textContent = steeringPercent > 3 ? 'Right' : steeringPercent < -3 ? 'Left' : 'Center';
+      document.querySelector('#steeringMarker').style.left = `${50 + steering * 50}%`;
+      document.querySelector('#battery').textContent = (12.82 + Math.sin(time * .2) * .04).toFixed(2);
+      document.querySelector('#diagnostics').textContent = JSON.stringify({
+        state: 'streaming', system_mode: 'TEST', system_state: 'MOTORS ARMED',
+        video_mode: selectedMode, usb_fps: 23.42, sequence_errors: 0,
+        malformed_chunks: 0, battery_voltage: Number(document.querySelector('#battery').textContent),
+        steering_command: steering, motor_left_command: leftCommand,
+        motor_right_command: rightCommand, wheel_left_rpm: leftRpm, wheel_right_rpm: rightRpm,
+      }, null, 2);
+      requestAnimationFrame(update);
+    }
+
+    document.querySelectorAll('[data-mode]').forEach(button => {
+      button.addEventListener('click', () => {
+        selectedMode = button.dataset.mode;
+        document.querySelectorAll('[data-mode]').forEach(item => item.classList.toggle('active', item === button));
+      });
+    });
+    document.querySelectorAll('[data-source]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-source]').forEach(item => item.classList.toggle('active', item === button));
+      });
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key.toLowerCase() === 'f') document.documentElement.requestFullscreen?.();
+      if (event.key.toLowerCase() === 'd') {
+        const diagnostics = document.querySelector('details.diagnostics');
+        diagnostics.open = !diagnostics.open;
+      }
+    });
+    requestAnimationFrame(update);
+  })();
+  </script>
+</body>
+</html>

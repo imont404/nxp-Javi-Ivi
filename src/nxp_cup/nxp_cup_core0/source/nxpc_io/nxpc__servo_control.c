@@ -6,6 +6,8 @@
 #define PWM_SRC_CLK_FREQ            CLOCK_GetFreq(kCLOCK_BusClk)
 #define SERVO_DC_CURVE_SLOPE        (65535/4000)
 
+static float g_servo_command;
+
 /*
  * Servo PWM output selection. See CONFIG__SERVO_PWM_OUTPUT in
  * nxpc__master_config.h and docs/research/AVC_RevB_Servo_PWM_Options.md.
@@ -88,6 +90,8 @@ void nxpc__set_servo(float position)
 	else if(position<-1.0f)
 		position=-1.0f;
 
+    g_servo_command = position;
+
     uint16_t position_counts = (65535 * (((int32_t)(position*100.0f)) + 300)) / 4000;
 
     PWM_UpdatePwmDutycycleHighAccuracy(PWM1,
@@ -97,4 +101,9 @@ void nxpc__set_servo(float position)
                                         position_counts);
 
     PWM_SetPwmLdok(PWM1, SERVO_PWM_CONTROL_SUBMODULE, true);
+}
+
+float nxpc__servo_command(void)
+{
+    return g_servo_command;
 }

@@ -9,7 +9,7 @@
       2. CMake                        -> winget, if not already on PATH
       3. Ninja                        -> winget, if not already on PATH
       4. uv                           -> winget, if not already on PATH
-      5. LLVM (clang-format/tidy)     -> winget, if not already on PATH
+      5. LLVM-MinGW                   -> winget, native host build and C/C++ checks
 
     The Arm toolchain version deliberately matches the one MCUXpresso 25.6
     bundles, so a build using either is directly comparable.
@@ -203,9 +203,9 @@ elseif (-not (Install-ViaWinget "uv" "astral-sh.uv" "uv")) { $warnings += "uv" }
 
 # ------------------------------------------------------------------- 5. LLVM
 Write-Host ""
-Write-Host "[5/5] LLVM (clang-format and clang-tidy)" -ForegroundColor Yellow
+Write-Host "[5/5] LLVM-MinGW (native host compiler and C/C++ checks)" -ForegroundColor Yellow
 if ($SkipLlvm) { Write-Host "  [SKIP] -SkipLlvm" -ForegroundColor DarkGray }
-elseif (-not (Install-ViaWinget "LLVM" "LLVM.LLVM" "clang-format")) { $warnings += "LLVM" }
+elseif (-not (Install-ViaWinget "LLVM-MinGW" "MartinStorsjo.LLVM-MinGW.UCRT" "clang++")) { $warnings += "LLVM-MinGW" }
 
 # ----------------------------------------------------------------- Summary
 Write-Header "Setup Complete"
@@ -221,10 +221,8 @@ if ($warnings.Count -gt 0) {
 
 Write-Host ""
 Write-Host "  Next:" -ForegroundColor White
-Write-Host "    cmake --preset competition           # configure" -ForegroundColor Green
-Write-Host "    cmake --build --preset competition   # build" -ForegroundColor Green
-Write-Host "    .\flash.ps1 -File build\cmake\competition\nxp_cup_core0.axf" -ForegroundColor Green
+Write-Host "    .\build.ps1                          # competition firmware" -ForegroundColor Green
+Write-Host "    .\build_viewer.ps1                   # optional USB viewer" -ForegroundColor Green
 Write-Host ""
 Write-Host "  Full instructions:    docs\setup.html" -ForegroundColor White
-Write-Host "  Other build variants: cmake --list-presets" -ForegroundColor White
 Write-Host ""

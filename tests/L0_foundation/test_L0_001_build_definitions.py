@@ -20,10 +20,10 @@ VENDORED_HEADER = REPO / "src/nxp_cup/nxp_cup_core0/source/shared/cr_section_mac
 def test_presets_exist():
     assert PRESETS.is_file(), "CMakePresets.json is missing"
     data = json.loads(PRESETS.read_text(encoding="utf-8"))
-    names = {p["name"] for p in data["configurePresets"]}
-    assert "competition" in names, f"competition preset missing; found {sorted(names)}"
-    build_names = {p["name"] for p in data["buildPresets"]}
-    assert "competition" in build_names, "competition build preset missing"
+    visible = [p["name"] for p in data["configurePresets"] if not p.get("hidden")]
+    assert visible == ["competition"], f"expected one happy-path preset; found {visible}"
+    build_names = [p["name"] for p in data["buildPresets"]]
+    assert build_names == ["competition"], f"unexpected build presets: {build_names}"
 
 
 def test_source_list_is_self_contained():

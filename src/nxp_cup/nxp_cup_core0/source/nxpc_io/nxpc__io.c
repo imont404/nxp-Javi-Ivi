@@ -8,9 +8,7 @@
 #include "nxpc_usb_debug_stream.h"
 #endif
 
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
 #include "nxpc__motor_encoder_qdc.h"
-#endif
 
 #ifndef CONFIG__NXPC_UART_TX_Q_SIZE_BYTES
 	#define CONFIG__NXPC_UART_TX_Q_SIZE_BYTES 2048
@@ -254,13 +252,11 @@ void nxpc__init()
     nxpc__motor_control_init();
     nxpc__servo_control_init();
 
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
     /*
-     * Normal build with encoders selected: camera and LCD are up, so wheel
-     * speed can be read alongside the vision loop and shown on the overlay.
+     * QDC wheel feedback is standard: camera and LCD are up, so wheel speed can
+     * be read alongside the vision loop and shown on the overlay.
      * The separate diagnostic build above returns before this point.
      */
     nxpc__motor_encoder_qdc_init();
-#endif
 
 }

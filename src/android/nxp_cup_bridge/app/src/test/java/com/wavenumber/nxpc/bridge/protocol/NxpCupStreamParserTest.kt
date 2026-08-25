@@ -229,6 +229,47 @@ class NxpCupStreamParserTest {
     }
 
     @Test
+    fun textTelemetryAcceptsTheFortyEightByteBoundary() {
+        val name = "system.state".toByteArray()
+        val text = "x".repeat(NxpCupProtocol.TELEMETRY_TEXT_MAX_BYTES).toByteArray()
+        val payload = ByteBuffer.allocate(NxpCupProtocol.TELEMETRY_SCALAR_HEADER_BYTES + name.size + text.size)
+            .order(ByteOrder.LITTLE_ENDIAN)
+            .putInt(123)
+            .putInt(7)
+            .putInt(text.size)
+            .putShort(name.size.toShort())
+            .put(NxpCupProtocol.TELEMETRY_TEXT.toByte())
+            .put(0)
+            .put(name)
+            .put(text)
+            .array()
+
+        val decoded = NxpCupPayloadDecoder.telemetry(payload)
+        assertEquals("system.state", decoded.name)
+        assertEquals("", decoded.units)
+        assertEquals(NxpCupTelemetryValue.Text("x".repeat(48)), decoded.value)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun textTelemetryRejectsValuesOverFortyEightBytes() {
+        val name = "system.state".toByteArray()
+        val text = "x".repeat(NxpCupProtocol.TELEMETRY_TEXT_MAX_BYTES + 1).toByteArray()
+        val payload = ByteBuffer.allocate(NxpCupProtocol.TELEMETRY_SCALAR_HEADER_BYTES + name.size + text.size)
+            .order(ByteOrder.LITTLE_ENDIAN)
+            .putInt(123)
+            .putInt(7)
+            .putInt(text.size)
+            .putShort(name.size.toShort())
+            .put(NxpCupProtocol.TELEMETRY_TEXT.toByte())
+            .put(0)
+            .put(name)
+            .put(text)
+            .array()
+
+        NxpCupPayloadDecoder.telemetry(payload)
+    }
+
+    @Test
     fun newSequenceWindowExcludesPreSessionDiscontinuity() {
         val parsed = mutableListOf<NxpCupPacket>()
         val parser = NxpCupStreamParser(parsed::add)

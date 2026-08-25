@@ -285,16 +285,9 @@
 #endif
 
 /*
- * Rev A wheel feedback is enabled in the competition image. The QDC path was
- * bench-proven with the EZH camera, SPI LCD, and USB telemetry. It conflicts
- * only with the parked parallel-LCD experiment guarded below.
+ * Rev A QDC wheel feedback is standard firmware hardware, not a selectable
+ * backend. It was bench-proven with the EZH camera, SPI LCD, and USB telemetry.
  */
-#define MOTOR_ENCODER_BACKEND_DISABLED			0
-#define MOTOR_ENCODER_BACKEND_QDC				1
-
-#ifndef CONFIG__MOTOR_ENCODER_BACKEND
-#define CONFIG__MOTOR_ENCODER_BACKEND			(MOTOR_ENCODER_BACKEND_QDC)
-#endif
 
 #ifndef CONFIG__MOTOR_ENCODER_DIAG_ENABLE
 #define CONFIG__MOTOR_ENCODER_DIAG_ENABLE		(0)
@@ -394,16 +387,8 @@
 #define CONFIG__MOTOR_ENCODER_WHEEL_DIAMETER_MM		(75U)
 #endif
 
-#if CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_DISABLED && CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_QDC
-#error Invalid CONFIG__MOTOR_ENCODER_BACKEND.
-#endif
-
-#if CONFIG__MOTOR_ENCODER_DIAG_ENABLE && CONFIG__MOTOR_ENCODER_BACKEND != MOTOR_ENCODER_BACKEND_QDC
-#error CONFIG__MOTOR_ENCODER_DIAG_ENABLE requires CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC.
-#endif
-
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC && CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
-#error QDC encoder mode is mutually exclusive with alternate parallel LCD bit-bang mode.
+#if CONFIG__DISPLAY_PARALLEL_BITBANG_TEST_MODE
+#error Standard QDC wheel feedback is mutually exclusive with alternate parallel LCD bit-bang mode.
 #endif
 
 #if CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT < 0 || CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT > 20

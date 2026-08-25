@@ -7,9 +7,7 @@
 #include "nxpc__line_processor.h"
 #include "nxp_cup.h"
 
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
 #include "nxpc__motor_encoder_qdc.h"
-#endif
 
 #if CONFIG__USB_DEBUG_STREAM_ENABLE
 #include "nxpc_usb_debug_stream.h"
@@ -21,6 +19,7 @@
 #define NXPC_MOTOR_LEASE_MS (100U)
 #define NXPC_MOTOR_LEASE_TICK_MS (10U)
 #define NXPC_ENCODER_SAMPLE_MS (100U)
+#define NXPC_ACTUATOR_TELEMETRY_MS (100U)
 
 #if CONFIG__DISPLAY_ENABLE && CONFIG__DISPLAY_SCOPE_MARKER_ENABLE
 #define NXPC_SCOPE_DUMP_BEGIN() GPIO_PinWrite(GPIO4, 1U, 1U)
@@ -43,22 +42,21 @@ static uint32_t g_consecutive_overruns;
 static volatile uint32_t g_motor_lease_remaining_ms;
 static volatile bool g_motor_lease_expired;
 static e_tick__trigger_handler_t g_motor_lease_trigger;
+static nxpc_system_mode_t g_last_actuator_mode;
 
 static eGFX_ImagePlane g_status_plane;
 static eGFX_ImagePlane g_camera_plane;
 static uint8_t g_status_buffer[eGFX_CALCULATE_16BPP_IMAGE_STORAGE_SPACE_SIZE(320, 40)];
 static nxpc_system_mode_t g_last_rendered_mode;
+static nxpc_system_state_t g_last_rendered_state;
 static bool g_last_camera_seen;
-static bool g_last_test_armed;
-static bool g_last_test_pending;
 static bool g_banner_initialized;
 
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
 static nxpc_motor_encoder_sample_t g_encoder_samples[NXPC_MOTOR_ENCODER_COUNT];
 static uint32_t g_encoder_sample_tick;
 static uint32_t g_encoder_sample_age_tick;
 static bool g_encoder_sample_valid;
-#endif
+static uint32_t g_actuator_telemetry_tick;
 
 static float nxpc__clamp_unit(float value)
 {
@@ -99,13 +97,93 @@ static void nxpc__motor_lease_tick(void *argument)
 
 static void nxpc__encoder_service(void)
 {
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
     if (e_tick__timeout(&g_encoder_sample_tick, NXPC_ENCODER_SAMPLE_MS) != 0U)
     {
         nxpc__motor_encoder_qdc_sample(NXPC_ENCODER_SAMPLE_MS, g_encoder_samples);
         g_encoder_sample_age_tick = e_tick__get_ms();
         g_encoder_sample_valid = true;
     }
+}
+
+static void nxpc__clear_race_display(void)
+{
+#if CONFIG__DISPLAY_ENABLE
+    const uint32_t strip_height = 40U;
+
+    /* Reuse the status buffer as a black strip so race entry does not need
+     * another full camera-sized buffer. The banner is redrawn afterward. */
+    eGFX_ImagePlane_Clear(&g_status_plane);
+    for (uint32_t y = 40U; y < 240U; y += strip_height)
+    {
+        eGFX_DumpRaw((uint8_t *)g_status_plane.Data,
+                     sizeof(g_status_buffer),
+                     0U,
+                     319U,
+                     y,
+                     y + strip_height - 1U);
+    }
+#endif
+}
+
+static void nxpc__apply_actuator_mode_transition(void)
+{
+    nxpc_system_mode_t mode = nxpc_system__mode();
+    uint32_t interrupt_state;
+
+    if (mode == g_last_actuator_mode)
+    {
+        return;
+    }
+
+    interrupt_state = DisableGlobalIRQ();
+    g_motor_lease_remaining_ms = 0U;
+    g_motor_lease_expired = false;
+    EnableGlobalIRQ(interrupt_state);
+
+    if (mode == NXPC_SYSTEM_MODE_RACE_WAITING)
+    {
+        nxpc__clear_race_display();
+    }
+
+    if (mode == NXPC_SYSTEM_MODE_RACE_RUNNING)
+    {
+        /* Audible armed cue at zero duty; no command lease starts here. */
+        nxpc__enable_motor_control();
+    }
+
+    g_last_actuator_mode = mode;
+}
+
+static void nxpc__actuator_telemetry_service(void)
+{
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    if (e_tick__timeout(&g_actuator_telemetry_tick, NXPC_ACTUATOR_TELEMETRY_MS) == 0U)
+    {
+        return;
+    }
+
+    (void)nxpc_usb_debug_stream__framework_telemetry_bool(
+        "motor.enabled",
+        nxpc__motor_control_enabled());
+    (void)nxpc_usb_debug_stream__framework_telemetry_f32(
+        "motor.left.command",
+        nxpc__motor_left_command(),
+        "ratio");
+    (void)nxpc_usb_debug_stream__framework_telemetry_f32(
+        "motor.right.command",
+        nxpc__motor_right_command(),
+        "ratio");
+    (void)nxpc_usb_debug_stream__framework_telemetry_f32(
+        "steering.command",
+        nxpc__servo_command(),
+        "ratio");
+    (void)nxpc_usb_debug_stream__framework_telemetry_text(
+        "system.mode",
+        nxpc_system__mode_label(nxpc_system__mode()));
+
+    (void)nxpc_usb_debug_stream__framework_telemetry_text(
+        "system.state",
+        nxpc_system__state_label(nxpc_system__state()));
 #endif
 }
 
@@ -121,17 +199,15 @@ static void nxpc__draw_status_text(const char *text,
 static void nxpc__render_banner_if_changed(void)
 {
     nxpc_system_mode_t mode = nxpc_system__mode();
+    nxpc_system_state_t state = nxpc_system__state();
     bool camera_seen = nxpc_system__camera_frame_seen();
-    bool test_armed = nxpc_system__test_outputs_armed();
-    bool test_pending = nxpc_system__test_arm_pending();
     uint32_t green = eGFX_COLOR_RGB888_TO_RGB565(0U, 255U, 0U);
     uint32_t yellow = eGFX_COLOR_RGB888_TO_RGB565(255U, 255U, 0U);
     uint32_t red = eGFX_COLOR_RGB888_TO_RGB565(255U, 0U, 0U);
     char text[64];
 
     if (g_banner_initialized && (mode == g_last_rendered_mode) &&
-        (camera_seen == g_last_camera_seen) && (test_armed == g_last_test_armed) &&
-        (test_pending == g_last_test_pending))
+        (state == g_last_rendered_state) && (camera_seen == g_last_camera_seen))
     {
         return;
     }
@@ -142,20 +218,19 @@ static void nxpc__render_banner_if_changed(void)
     {
         case NXPC_SYSTEM_MODE_TEST:
             nxpc__draw_status_text("TEST MODE", 5, 1, green, &FONT_10_14_1BPP);
-            nxpc__draw_status_text(test_armed ? "MOTORS ARMED" :
-                                   (test_pending ? "CENTER POTS" : "EXE: ARM MOTORS"),
+            nxpc__draw_status_text(nxpc_system__state_label(state),
                                    145,
                                    4,
-                                   test_armed ? red : yellow,
+                                   (state == NXPC_SYSTEM_STATE_TEST_ARMED) ? red : yellow,
                                    &FONT_5_7_1BPP);
             break;
 
         case NXPC_SYSTEM_MODE_RACE_WAITING:
             nxpc__draw_status_text("RACE MODE", 5, 1, yellow, &FONT_10_14_1BPP);
-            nxpc__draw_status_text(camera_seen ? "PRESS EXE TO START" : "WAITING FOR CAMERA",
+            nxpc__draw_status_text(nxpc_system__state_label(state),
                                    5,
                                    22,
-                                   camera_seen ? green : yellow,
+                                   (state == NXPC_SYSTEM_STATE_RACE_READY) ? green : yellow,
                                    &FONT_5_7_1BPP);
             break;
 
@@ -165,7 +240,7 @@ static void nxpc__render_banner_if_changed(void)
 
         case NXPC_SYSTEM_MODE_SAFE_FAULT:
             nxpc__draw_status_text("SAFE FAULT", 5, 1, red, &FONT_10_14_1BPP);
-            nxpc__draw_status_text("MOTORS DISABLED", 5, 22, red, &FONT_5_7_1BPP);
+            nxpc__draw_status_text(nxpc_system__state_label(state), 5, 22, red, &FONT_5_7_1BPP);
             break;
 
         case NXPC_SYSTEM_MODE_ENTERING_ISP:
@@ -178,7 +253,7 @@ static void nxpc__render_banner_if_changed(void)
             break;
     }
 
-    if (mode != NXPC_SYSTEM_MODE_RACE_WAITING)
+    if ((mode == NXPC_SYSTEM_MODE_TEST) || (mode == NXPC_SYSTEM_MODE_RACE_RUNNING))
     {
         (void)snprintf(text, sizeof(text), "CAMERA: %s", camera_seen ? "FRAME OK" : "WAITING");
         nxpc__draw_status_text(text,
@@ -193,9 +268,8 @@ static void nxpc__render_banner_if_changed(void)
 #endif
 
     g_last_rendered_mode = mode;
+    g_last_rendered_state = state;
     g_last_camera_seen = camera_seen;
-    g_last_test_armed = test_armed;
-    g_last_test_pending = test_pending;
     g_banner_initialized = true;
 }
 
@@ -219,6 +293,7 @@ void nxpc__next_frame(uint16_t *buffer)
 void nxpc_framework__init(void)
 {
     nxpc_system__init();
+    g_last_actuator_mode = nxpc_system__mode();
 
     g_status_plane.Data = g_status_buffer;
     g_status_plane.SizeX = 320U;
@@ -229,6 +304,11 @@ void nxpc_framework__init(void)
     g_camera_plane.SizeY = CAMERA_HEIGHT;
     g_camera_plane.Type = eGFX_IMAGE_PLANE_16BPP_RGB565;
 
+    if (nxpc_system__mode() == NXPC_SYSTEM_MODE_RACE_WAITING)
+    {
+        nxpc__clear_race_display();
+    }
+
     g_motor_lease_trigger.interval__mS = NXPC_MOTOR_LEASE_TICK_MS;
     g_motor_lease_trigger.duration__mS = NXPC_MOTOR_LEASE_TICK_MS;
     g_motor_lease_trigger.count = E_TICK__TRIGGER_FOREVER;
@@ -238,10 +318,9 @@ void nxpc_framework__init(void)
     g_motor_lease_trigger.next_item = NULL;
     e_tick__register_trigger(&g_motor_lease_trigger, true);
 
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
     g_encoder_sample_tick = e_tick__get_ms();
     g_encoder_sample_age_tick = g_encoder_sample_tick;
-#endif
+    g_actuator_telemetry_tick = g_encoder_sample_tick;
 
     nxpc__render_banner_if_changed();
 }
@@ -256,6 +335,7 @@ void nxpc_framework__service(void)
 #endif
 
     nxpc_system__service();
+    nxpc__apply_actuator_mode_transition();
 
     if ((nxpc_system__mode() == NXPC_SYSTEM_MODE_RACE_RUNNING) &&
         ((e_tick__get_ms() - g_last_frame_ms) > NXPC_CAMERA_TIMEOUT_MS))
@@ -274,6 +354,9 @@ void nxpc_framework__service(void)
     {
         g_motor_lease_remaining_ms = 0U;
     }
+
+
+    nxpc__actuator_telemetry_service();
 
     nxpc__render_banner_if_changed();
 }
@@ -433,6 +516,7 @@ float input_beta(void) { return nxpc__read_beta(); }
 float input_gamma(void) { return nxpc__read_gamma(); }
 bool input_left_button(void) { return button__is_active(&left_btn) != 0U; }
 bool input_right_button(void) { return button__is_active(&right_btn) != 0U; }
+float battery_voltage(void) { return (float)nxpc__read_battery_voltage() * 0.01f; }
 
 void motors_set_duty(float left, float right)
 {
@@ -460,17 +544,12 @@ void steering_set(float position)
 
 float wheel_speed_rpm(wheel_t wheel)
 {
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
     uint32_t index = (wheel == WHEEL_RIGHT) ? NXPC_MOTOR_ENCODER_M1 : NXPC_MOTOR_ENCODER_M0;
     if (!wheel_speed_available())
     {
         return 0.0f;
     }
     return (float)g_encoder_samples[index].rpm_milli / 1000.0f;
-#else
-    (void)wheel;
-    return 0.0f;
-#endif
 }
 
 float wheel_speed_mps(wheel_t wheel)
@@ -482,21 +561,13 @@ float wheel_speed_mps(wheel_t wheel)
 
 uint32_t wheel_speed_age_ms(void)
 {
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
     return e_tick__delta(&g_encoder_sample_age_tick);
-#else
-    return UINT32_MAX;
-#endif
 }
 
 bool wheel_speed_available(void)
 {
-#if CONFIG__MOTOR_ENCODER_BACKEND == MOTOR_ENCODER_BACKEND_QDC
     return g_encoder_sample_valid &&
            (wheel_speed_age_ms() <= (NXPC_ENCODER_SAMPLE_MS * 3U));
-#else
-    return false;
-#endif
 }
 
 uint32_t time_milliseconds(void) { return e_tick__get_ms(); }
@@ -534,6 +605,15 @@ bool telemetry_bool(const char *name, bool value)
 {
 #if CONFIG__USB_DEBUG_STREAM_ENABLE
     return nxpc_usb_debug_stream__telemetry_bool(name, value);
+#else
+    (void)name; (void)value; return false;
+#endif
+}
+
+bool telemetry_text(const char *name, const char *value)
+{
+#if CONFIG__USB_DEBUG_STREAM_ENABLE
+    return nxpc_usb_debug_stream__telemetry_text(name, value);
 #else
     (void)name; (void)value; return false;
 #endif

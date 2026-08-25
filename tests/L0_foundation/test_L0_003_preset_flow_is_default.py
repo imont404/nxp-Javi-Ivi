@@ -1,10 +1,8 @@
-"""L0_003 - the CMake preset flow is the default path, not an alternative.
+"""L0_003 - one competition build is the normal path.
 
-flash.ps1 and rtt.ps1 used to default to the MCUXpresso output directory, which
-made the preset flow something you had to opt into with a hand-typed path. These
-assert the default stayed flipped, because the failure mode is silent: a script
-that quietly resolves to a stale image from a different build system still
-flashes something, and the board still runs.
+The root scripts must resolve to the CMake competition image unless a
+maintainer deliberately supplies -File or -Mcux. Keeping one visible preset
+prevents a student from silently building or flashing a diagnostic image.
 """
 
 import json
@@ -29,45 +27,54 @@ def _text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def test_only_competition_preset_is_visible():
+    data = json.loads(_text(PRESETS))
+    visible = [p["name"] for p in data["configurePresets"] if not p.get("hidden")]
+    build_names = [p["name"] for p in data["buildPresets"]]
+    assert visible == ["competition"]
+    assert build_names == ["competition"]
+
+
 def test_shared_resolver_exists():
-    """One resolver, so the two scripts cannot drift apart on what a preset
-    name means."""
     text = _text(SHARED)
-    for func in ("Resolve-NxpCupImage", "Resolve-NxpCupArmTool", "Get-NxpCupPresetNames"):
+    for func in ("Resolve-NxpCupImage", "Resolve-NxpCupArmTool"):
         assert f"function {func}" in text, f"{func} is missing from the shared resolver"
+    assert "Get-NxpCupPresetNames" not in text
 
 
-def test_canonical_build_is_the_competition_preset_wrapper():
+def test_canonical_build_has_no_variant_selector():
     text = _text(BUILD)
-    assert re.search(r'\[string\]\$Preset\s*=\s*"competition"', text)
-    assert 'cmake @configureArguments' in text
-    assert 'cmake --build --preset $Preset' in text
-    assert 'mcuxpressoidec' not in text.lower()
+    assert "$Preset" not in text
+    assert '$preset = "competition"' in text
+    assert "cmake @configureArguments" in text
+    assert "cmake --build --preset $preset" in text
+    assert "mcuxpressoidec" not in text.lower()
 
 
 def test_flash_backend_is_explicit_until_evaluation_finishes():
     text = _text(FLASH)
     assert '[ValidateSet("Ozone", "Rom", "JLink")]' in text
-    assert 'Choose a flash backend explicitly' in text
-    assert 'nxpc_tool.exe' in text, "ROM-HID backend is missing"
-    assert 'jlink_common.ps1' in text, "maintainer J-Link backend is missing"
+    assert "Choose a flash backend explicitly" in text
+    assert "nxpc_tool.exe" in text, "ROM-HID backend is missing"
+    assert "jlink_common.ps1" in text, "maintainer J-Link backend is missing"
 
 
 @ENTRY_POINTS
-def test_defaults_to_competition_preset(script):
+def test_entry_points_use_fixed_competition_resolver(script):
     text = _text(script)
-    assert re.search(r'\[string\]\$Preset\s*=\s*"competition"', text), (
-        f"{script.name} does not default to the competition preset"
-    )
-    assert "Resolve-NxpCupImage" in text, (
-        f"{script.name} does not use the shared image resolver"
-    )
+    assert "$Preset" not in text
+    assert "Resolve-NxpCupImage" in text
+
+
+def test_resolver_defaults_to_competition_build():
+    text = _text(SHARED)
+    assert "build\\cmake\\competition\\nxp_cup_core0.axf" in text
+    assert "Unknown preset" not in text
+    assert "-Preset" not in text
 
 
 @ENTRY_POINTS
 def test_no_legacy_default_path(script):
-    """The old default. If it comes back as a fallback, the preset flow stops
-    being the thing that actually runs."""
     text = _text(script)
     offenders = [
         line.strip()
@@ -82,12 +89,9 @@ def test_no_legacy_default_path(script):
 
 @ENTRY_POINTS
 def test_cmake_switch_is_a_no_op(script):
-    """-CMake selected the preset flow back when it was optional. It must survive
-    as an accepted no-op so old commands and notes do not break."""
+    """Keep old -CMake commands accepted while the fixed CMake path is normal."""
     text = _text(script)
-    assert "[switch]$CMake" in text, (
-        f"{script.name} no longer accepts -CMake; existing commands would fail"
-    )
+    assert "[switch]$CMake" in text
     used = [
         line.strip()
         for line in text.splitlines()
@@ -98,9 +102,6 @@ def test_cmake_switch_is_a_no_op(script):
 
 
 def test_rtt_does_not_hardcode_mcuxpresso_tools():
-    """rtt.ps1 needs arm-none-eabi-nm to find _SEGGER_RTT. Hard-coding the
-    MCUXpresso plugin path made the default flow depend on an install the
-    one-script setup never creates."""
     text = _text(RTT)
     offenders = [
         line.strip()
@@ -109,40 +110,13 @@ def test_rtt_does_not_hardcode_mcuxpresso_tools():
         and re.search(r"(?i)mcuxpressoide_", line)
     ]
     assert not offenders, f"rtt.ps1 hard-codes an MCUXpresso tool path: {offenders}"
-    assert "Resolve-NxpCupArmTool" in text, (
-        "rtt.ps1 does not resolve arm-none-eabi-nm from the provisioned toolchain"
-    )
+    assert "Resolve-NxpCupArmTool" in text
 
 
 def test_resolver_prefers_provisioned_toolchain():
-    """Same discovery order as the CMake toolchain file, or the scripts and the
-    build could disagree about which compiler produced the image."""
     text = _text(SHARED)
     local_at = text.index("out\\toolchains")
     path_at = text.index("Get-Command")
     assert local_at < path_at, (
         "the shared resolver searches PATH before the provisioned toolchain"
     )
-
-
-def test_resolver_rejects_unknown_presets():
-    """A typo must be reported as a typo. Falling through to 'file not found'
-    sends you looking at the build instead of the command."""
-    text = _text(SHARED)
-    assert "Unknown preset" in text, (
-        "the resolver does not validate preset names against CMakePresets.json"
-    )
-
-
-def test_documented_preset_examples_exist():
-    """Every preset AGENTS.md shows in a -Preset example must be real."""
-    agents = (REPO / "AGENTS.md").read_text(encoding="utf-8")
-    known = {
-        p["name"]
-        for p in json.loads(PRESETS.read_text(encoding="utf-8"))["configurePresets"]
-        if not p.get("hidden")
-    }
-    referenced = set(re.findall(r"-Preset\s+([a-z0-9][a-z0-9\-]*)", agents))
-    assert referenced, "AGENTS.md shows no -Preset examples"
-    unknown = referenced - known
-    assert not unknown, f"AGENTS.md uses presets that do not exist: {sorted(unknown)}"

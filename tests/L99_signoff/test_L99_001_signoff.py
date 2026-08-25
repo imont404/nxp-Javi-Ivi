@@ -77,7 +77,6 @@ def test_competition_defaults_unchanged():
         "CONFIG__CAMERA_CAPTURE_BACKEND": "CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH",
         "CONFIG__DISPLAY_PANEL": "DISPLAY_PANEL_ER_TFT020_3",
         "CONFIG__USB_DEBUG_STREAM_ENABLE": "(1)",
-        "CONFIG__MOTOR_ENCODER_BACKEND": "MOTOR_ENCODER_BACKEND_QDC",
     }
     for knob, value in expected.items():
         # Match the #define that follows the #ifndef guard for this knob.
@@ -87,3 +86,11 @@ def test_competition_defaults_unchanged():
         assert value in line, (
             f"competition default changed: {knob} is '{line.strip()}', expected {value}"
         )
+
+    io = (REPO / "src/nxp_cup/nxp_cup_core0/source/nxpc_io/nxpc__io.c").read_text(
+        encoding="utf-8"
+    )
+    assert "CONFIG__MOTOR_ENCODER_BACKEND" not in config
+    assert "nxpc__motor_encoder_qdc_init();" in io, (
+        "QDC wheel feedback is no longer standard initialization"
+    )

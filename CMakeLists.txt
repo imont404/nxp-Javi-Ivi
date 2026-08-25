@@ -4,11 +4,12 @@ cmake_minimum_required(VERSION 3.24)
 #
 # This exists so CMakePresets.json has a single source directory to point at,
 # and so PC-side host tools can be added alongside the firmware later without
-# moving anything. Build variants are presets, not scripts:
+# moving anything. The one normal firmware preset is:
 #
 #   cmake --preset competition && cmake --build --preset competition
 #
-# See CMakePresets.json for the list, or run: cmake --list-presets
+# Maintainer diagnostics use scripts under scripts/maintainer and separate
+# build directories instead of appearing as alternate public presets.
 
 project(nxp_cup NONE)
 

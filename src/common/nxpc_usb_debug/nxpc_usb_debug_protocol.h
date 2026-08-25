@@ -14,6 +14,7 @@ extern "C" {
 #define NXPC_DBG_RUI_WRITE_FRAME_BUFFER_RAW_HEADER_BYTES (24u)
 #define NXPC_DBG_LOG_RECORD_HEADER_BYTES (12u)
 #define NXPC_DBG_TELEMETRY_SCALAR_HEADER_BYTES (16u)
+#define NXPC_DBG_TELEMETRY_TEXT_MAX_BYTES (48u)
 #define NXPC_DBG_STATS_REPORT_BYTES (76u)
 #define NXPC_DBG_CONTROL_HELLO_RESPONSE_BYTES (24u)
 
@@ -43,9 +44,16 @@ extern "C" {
 #define NXPC_DBG_CONTROL_CLOSE (NXPC_DBG_MSG_CLASS_CONTROL + 6u)
 #define NXPC_DBG_CONTROL_ERROR (NXPC_DBG_MSG_CLASS_CONTROL + 7u)
 #define NXPC_DBG_CONTROL_ENTER_ISP (NXPC_DBG_MSG_CLASS_CONTROL + 8u)
+#define NXPC_DBG_CONTROL_SYSTEM_ACTION (NXPC_DBG_MSG_CLASS_CONTROL + 9u)
 
 /* Deliberate confirmation required in ENTER_ISP arg0 (ASCII "ISP!"). */
 #define NXPC_DBG_ENTER_ISP_CONFIRMATION (0x21505349u)
+
+/* Typed requests; firmware remains the sole owner of actual state transitions. */
+#define NXPC_DBG_SYSTEM_ACTION_RACE_START (1u)
+#define NXPC_DBG_SYSTEM_ACTION_STOP (2u)
+/* Deliberate confirmation required in SYSTEM_ACTION RACE_START arg1 (ASCII "GO!!"). */
+#define NXPC_DBG_RACE_START_CONFIRMATION (0x21214F47u)
 
 #define NXPC_DBG_CAPABILITY_FRAMED_CONTROL (1u << 0)
 #define NXPC_DBG_CAPABILITY_CAMERA_FRAMES (1u << 1)
@@ -54,6 +62,7 @@ extern "C" {
 #define NXPC_DBG_CAPABILITY_LOG_TEXT (1u << 4)
 #define NXPC_DBG_CAPABILITY_NAMED_TELEMETRY (1u << 5)
 #define NXPC_DBG_CAPABILITY_ENTER_ISP (1u << 6)
+#define NXPC_DBG_CAPABILITY_SYSTEM_ACTIONS (1u << 7)
 
 #define NXPC_DBG_CHANNEL_FRAMES (1u << 0)
 #define NXPC_DBG_CHANNEL_STATS (1u << 1)
@@ -66,6 +75,8 @@ extern "C" {
 #define NXPC_DBG_CONTROL_STATUS_SESSION_REQUIRED (3u)
 #define NXPC_DBG_CONTROL_STATUS_BUSY (4u)
 #define NXPC_DBG_CONTROL_STATUS_BAD_ARGUMENT (5u)
+#define NXPC_DBG_CONTROL_STATUS_NOT_READY (6u)
+#define NXPC_DBG_CONTROL_STATUS_DENIED (7u)
 
 #define NXPC_DBG_PACKET_FLAG_RESPONSE (1u << 0)
 #define NXPC_DBG_PACKET_FLAG_MORE (1u << 1)
@@ -95,6 +106,7 @@ extern "C" {
 #define NXPC_DBG_TELEMETRY_TYPE_U32 (2u)
 #define NXPC_DBG_TELEMETRY_TYPE_F32 (3u)
 #define NXPC_DBG_TELEMETRY_TYPE_BOOL (4u)
+#define NXPC_DBG_TELEMETRY_TYPE_TEXT (5u)
 
 #if defined(_MSC_VER)
 #define NXPC_DBG_PACKED_BEGIN __pragma(pack(push, 1))
@@ -188,6 +200,7 @@ typedef struct NXPC_DBG_PACKED nxpc_dbg_telemetry_scalar
 {
     uint32_t timestamp_ms;
     uint32_t sample_id;
+    /* Scalar bits for types 1-4; trailing text byte count for type 5. */
     uint32_t value_bits;
     uint16_t name_bytes;
     uint8_t value_type;

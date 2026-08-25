@@ -9,6 +9,26 @@
 
 motor_ctrl_info_t motor_ctrl_inst;
 
+static void nxpc__write_motor_pwm(float left, float right)
+{
+    PWM_UpdatePwmPeriodAndDutycycle(PWM1,
+                                    kPWM_Module_0,
+                                    kPWM_PwmA,
+                                    kPWM_EdgeAligned,
+                                    PERIOD_PULSE_CNT,
+                                    nxpc__dc_to_counts(left, motor_ctrl_inst.invert_left_motor_direction));
+    PWM_UpdatePwmPeriodAndDutycycle(PWM1,
+                                    kPWM_Module_1,
+                                    kPWM_PwmA,
+                                    kPWM_EdgeAligned,
+                                    PERIOD_PULSE_CNT,
+                                    nxpc__dc_to_counts(right, motor_ctrl_inst.invert_right_motor_direction));
+
+    motor_ctrl_inst.left_intensity = left;
+    motor_ctrl_inst.right_intensity = right;
+    PWM_SetPwmLdok(PWM1, kPWM_Control_Module_0 | kPWM_Control_Module_1, true);
+}
+
 /**
  * @brief Initialize the PWM module for motor control, but all PWM outputs as 0.
  * If you want to turn on the PWM outputs, call nxpc__enable_motor_control function.
@@ -70,8 +90,10 @@ void nxpc__motor_control_init()
 
     motor_ctrl_inst.invert_right_motor_direction = 1;
 
-    nxpc__set_motor_pwm(0, 0);
-
+    /* Load neutral while the output pins are still disconnected. Keep the
+     * counters running so later pin-mux changes expose a settled waveform. */
+    nxpc__write_motor_pwm(0.0f, 0.0f);
+    PWM_StartTimer(PWM1, kPWM_Control_Module_0 | kPWM_Control_Module_1);
     nxpc__disable_motor_control();
 }
 
@@ -83,14 +105,14 @@ void nxpc__enable_motor_control()
 {
     if(motor_ctrl_inst.outputs_enable == 0)
     {
+        /* This safety write must not be skipped when the tracked command is
+         * already zero. The running counters have already settled at neutral. */
+        nxpc__write_motor_pwm(0.0f, 0.0f);
         PORT_SetPinMux(PORT2, 3U, kPORT_MuxAlt5); /* PORT2_2 (pin H3) is configured as PWM1_A2 */
         PORT_SetPinMux(PORT2, 4U, kPORT_MuxAlt5); /* PORT2_4 (pin K3) is configured as PWM1_A1 */
         PORT_SetPinMux(PORT2, 5U, kPORT_MuxAlt5); /* PORT2_5 (pin K1) is configured as PWM1_B1 */
         PORT_SetPinMux(PORT2, 6U, kPORT_MuxAlt5); /* PORT2_6 (pin K2) is configured as PWM1_A0 */
         PORT_SetPinMux(PORT2, 7U, kPORT_MuxAlt5); /* PORT2_7 (pin L2) is configured as PWM1_B0 */
-
-        nxpc__set_motor_pwm(0, 0);
-        PWM_StartTimer(PWM1, kPWM_Control_Module_0 | kPWM_Control_Module_1);
         motor_ctrl_inst.outputs_enable = 1;
     }
     
@@ -153,6 +175,21 @@ void nxpc__set_motor_pwm(float left, float right)
         PWM_SetPwmLdok(PWM1, kPWM_Control_Module_1, true);
     }
     
+}
+
+bool nxpc__motor_control_enabled(void)
+{
+    return motor_ctrl_inst.outputs_enable;
+}
+
+float nxpc__motor_left_command(void)
+{
+    return motor_ctrl_inst.left_intensity;
+}
+
+float nxpc__motor_right_command(void)
+{
+    return motor_ctrl_inst.right_intensity;
 }
 
 // Return the number of counts to get the desired PWM duty cycle

@@ -181,9 +181,11 @@ std::string telemetry_value(const nxpc::host::TelemetrySample &sample)
             out << value;
             return out.str();
         }
-        case NXPC_DBG_TELEMETRY_TYPE_BOOL:
-            return sample.value_bits != 0u ? "true" : "false";
-        default:
+    case NXPC_DBG_TELEMETRY_TYPE_BOOL:
+        return sample.value_bits != 0u ? "true" : "false";
+    case NXPC_DBG_TELEMETRY_TYPE_TEXT:
+        return sample.text_value;
+    default:
             return "?";
     }
 }

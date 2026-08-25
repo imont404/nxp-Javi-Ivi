@@ -791,11 +791,18 @@ struct StreamParser::Impl
             }
             nxpc_dbg_telemetry_scalar_t wire{};
             std::memcpy(&wire, payload, sizeof(wire));
+            const bool text_value = wire.value_type == NXPC_DBG_TELEMETRY_TYPE_TEXT;
+            const uint32_t text_bytes = text_value ? wire.value_bits : 0u;
             const uint32_t expected = static_cast<uint32_t>(sizeof(wire)) +
-                                      wire.name_bytes + wire.units_bytes;
+                                       wire.name_bytes + wire.units_bytes + text_bytes;
             const bool type_valid = (wire.value_type >= NXPC_DBG_TELEMETRY_TYPE_I32) &&
-                                    (wire.value_type <= NXPC_DBG_TELEMETRY_TYPE_BOOL);
-            if ((expected != payload_bytes) || !type_valid || (wire.name_bytes == 0u))
+                                    (wire.value_type <= NXPC_DBG_TELEMETRY_TYPE_TEXT);
+            const bool text_valid = !text_value ||
+                                    ((text_bytes > 0u) &&
+                                     (text_bytes <= NXPC_DBG_TELEMETRY_TEXT_MAX_BYTES) &&
+                                     (wire.units_bytes == 0u));
+            if ((expected != payload_bytes) || !type_valid || !text_valid ||
+                (wire.name_bytes == 0u))
             {
                 set_error("invalid telemetry payload");
                 return;
@@ -809,6 +816,11 @@ struct StreamParser::Impl
             sample.name.assign(name, name + wire.name_bytes);
             const char *units = name + wire.name_bytes;
             sample.units.assign(units, units + wire.units_bytes);
+            if (text_value)
+            {
+                const char *text = units + wire.units_bytes;
+                sample.text_value.assign(text, text + text_bytes);
+            }
             telemetry_samples.push_back(std::move(sample));
             retain_bounded(telemetry_samples);
             ++count.telemetry;

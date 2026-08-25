@@ -7,16 +7,30 @@ From a clean Windows checkout:
 
 ```powershell
 .\scripts\android\setup_android.ps1 -AcceptLicenses
-.\scripts\android\build_android.ps1
+.\build_android.ps1
 .\scripts\android\phone_inventory.ps1
 .\scripts\android\enable_wireless_adb.ps1
 .\scripts\android\android_loop.ps1 -Serial <phone-ip>:5555
 ```
 
+The root build wrapper runs the debug unit tests, assembles the app, and copies
+the installable APK to the stable path `bin\android\nxp_cup_bridge.apk`. The Gradle
+project's authoritative output remains under `src\android\nxp_cup_bridge\app\build`.
+The current development build remains debug-signed; the convenient filename is
+independent of the Gradle variant and will not change for workshop users.
+After one connected build has populated the dependency cache, use
+`.\build_android.ps1 -Offline` on an unreliable or disconnected network.
+
 The setup script provisions pinned, verified tools only under
 `out\toolchains\android`. Nothing is installed globally. The phone requires one-time
 USB debugging authorization on each workstation. Wireless adb is used because the
 phone's USB-C port is occupied by the car during hardware development.
+
+On the 2026-08-24 clean-machine setup, pinned tool provisioning, the JVM unit
+tests, a clean APK build, and a second clean offline build all passed. The
+previously installed app also communicated with the car. The newly built APK
+still needs an attended reinstall plus USB-permission, reconnect, and SoftAP
+checks; unreliable room Wi-Fi is not evidence that those network checks passed.
 
 The verified bench topology is:
 
@@ -70,8 +84,9 @@ The phone display is intentionally appliance-like: live camera, connection state
 the browser URL. Detailed parser and relay health remains available in logcat and at
 `/health`; when the car is absent the preview is covered by a large disconnected message.
 
-The one browser client selects its video representation in the page URL. JPEG remains
-the default when `video` is omitted:
+The one browser client selects its video representation with the prominent JPEG, H.264,
+and Raw buttons on the page. The URL remains directly selectable and bookmarkable; JPEG
+is the default when `video` is omitted:
 
 ```text
 http://<phone-address>:8765/?video=jpeg
@@ -97,7 +112,7 @@ below. A fixed three-buffer RGB565 encoder input and a separate fixed three-buff
 mailbox keep only the newest complete frame; browser, network, and compression work never
 run on the USB reader.
 The embedded page has no server-side asset dependencies and renders generic named
-telemetry alongside the live camera. `/health` exposes USB, compression, relay bitrate,
+scalar or bounded text telemetry alongside the live camera. `/health` exposes USB, compression, relay bitrate,
 frame-age, drop, and client counters.
 
 `AVCJ` is little-endian and occupies one binary WebSocket message per JPEG:
