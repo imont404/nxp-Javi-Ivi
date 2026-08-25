@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<pinsmodel:signal_configuration xsi:schemaLocation="http://swtools.freescale.net/Pins/PinsModel http://swtools.freescale.net/XSD/pinsModel/12.0/PinModelSchema.xsd" xmlns:pinsmodel="http://swtools.freescale.net/Pins/PinsModel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <part_information>
-    <part_number id="MCXN947VNL" pins="100">
-      <package>HLQFP</package>
-    </part_number>
-  </part_information>
-  <reference file="MCXN947VKL/signal_configuration.xml"/>
-</pinsmodel:signal_configuration>
