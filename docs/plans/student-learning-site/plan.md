@@ -177,10 +177,17 @@ of representation can turn expensive arithmetic into a bounded lookup.
 
 ## Static and Offline Architecture
 
-Keep student pages dependency-free unless a later measured need justifies otherwise. They
-must open directly from disk and from ordinary static hosting. Do not depend on a CDN,
-server runtime, package installation, or live hardware for the core lesson. Optional live
-Web Serial input may enhance a page but must not replace bundled examples.
+Keep student pages free of runtime and network dependencies. They must open directly from
+disk and from ordinary static hosting. Do not depend on a CDN, server runtime, package
+installation, or live hardware for the core lesson. Pinned build-time dependencies are
+allowed when their runtime, license notice, lesson CSS, and page JavaScript are embedded
+into a reproducibly generated standalone HTML artifact. Three.js uses this model for the
+interactive coordinate solids. Optional live Web Serial input may enhance a page but must
+not replace bundled examples.
+
+Maintain one canonical lesson stylesheet in the authored source tree and inline that same
+stylesheet into each standalone output. Shared navigation and layout should grow from this
+source rather than allowing generated pages to become unrelated one-offs.
 
 Keep `docs/setup.html` authoritative until the information-architecture step explicitly
 defines a replacement. A static site may link or visually incorporate it, but must not

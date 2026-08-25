@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Interactive RGB and HSV coordinate models for the Wavenumber NXP Cup.">
+  <title>RGB and HSV Coordinates | Wavenumber NXP Cup</title>
+  <!-- __GENERATED_NOTICE__ -->
+  <!-- __LESSON_CSS__ -->
+</head>
+<body>
+  <header class="lesson-bar">
+    <span>NXP CUP · VISION · 01</span>
+    <span>RGB ↔ HSV</span>
+  </header>
+
+  <main>
+    <section class="coordinate-lab" aria-label="Interactive RGB and HSV coordinate laboratory">
+      <aside class="control-panel" aria-label="Selected color controls">
+        <div class="selected-color">
+          <div id="selected-swatch" class="selected-swatch" aria-hidden="true"></div>
+          <div>
+            <label class="control-label" for="color-picker">Selected pixel</label>
+            <input id="color-picker" type="color" value="#e53935">
+            <output id="hex-output" class="hex-output" for="color-picker">#E53935</output>
+          </div>
+        </div>
+
+        <fieldset>
+          <legend>RGB · cube coordinates</legend>
+          <label class="slider-row" for="red-input"><span>R</span><input id="red-input" type="range" min="0" max="255" value="229"><output id="red-output" for="red-input">229</output></label>
+          <label class="slider-row" for="green-input"><span>G</span><input id="green-input" type="range" min="0" max="255" value="57"><output id="green-output" for="green-input">57</output></label>
+          <label class="slider-row" for="blue-input"><span>B</span><input id="blue-input" type="range" min="0" max="255" value="53"><output id="blue-output" for="blue-input">53</output></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>HSV · cone coordinates</legend>
+          <label class="slider-row" for="hue-input"><span>H</span><input id="hue-input" type="range" min="-360" max="360" value="1"><output id="hue-output" for="hue-input">1°</output></label>
+          <label class="slider-row" for="saturation-input"><span>S</span><input id="saturation-input" type="range" min="0" max="100" value="77"><output id="saturation-output" for="saturation-input">77%</output></label>
+          <label class="slider-row" for="value-input"><span>V</span><input id="value-input" type="range" min="0" max="100" value="90"><output id="value-output" for="value-input">90%</output></label>
+        </fieldset>
+
+        <div class="preset-row" aria-label="Example colors">
+          <button type="button" data-color="#e53935">red</button>
+          <button type="button" data-color="#26a269">green</button>
+          <button type="button" data-color="#3584e4">blue</button>
+          <button type="button" data-color="#e5b8b6">pale</button>
+          <button type="button" data-color="#561816">dark</button>
+          <button type="button" data-color="#777777">gray</button>
+        </div>
+
+        <dl class="coordinate-readout">
+          <dt>24-bit RGB</dt><dd id="rgb-byte-output">229 / 57 / 53</dd>
+          <dt>HSV</dt><dd id="hsv-human-output">1° / 77% / 90%</dd>
+          <dt>wrapped hue</dt><dd id="hue-wrap-output">1°</dd>
+          <dt>cone radius</dt><dd id="chroma-output">S × V = 0.695</dd>
+        </dl>
+
+        <p id="hue-confidence" class="hue-confidence" role="status">Hue is useful here: the pixel has enough saturation and value.</p>
+      </aside>
+
+      <div class="model-grid">
+        <article class="model-card">
+          <div class="model-heading">
+            <div><p class="model-number">MODEL A</p><h2>RGB cube</h2></div>
+            <p>Cartesian</p>
+          </div>
+          <p class="model-copy">R, G, and B are three independent axes. Drag empty space to orbit the cube; scroll to zoom.</p>
+          <div id="rgb-scene" class="three-scene" aria-label="Rotatable RGB coordinate cube with selected color point">
+            <p class="render-fallback" hidden>WebGL is unavailable. Use the synchronized sliders to explore the coordinates.</p>
+          </div>
+          <p class="model-equation">point = (R, G, B)</p>
+        </article>
+
+        <article class="model-card">
+          <div class="model-heading">
+            <div><p class="model-number">MODEL B</p><h2>HSV cone</h2></div>
+            <p>Cylindrical</p>
+          </div>
+          <p class="model-copy">H rotates around the cone. S is the radial fraction from the gray axis to the disk edge. V moves from the black apex to the full-value base.</p>
+          <div id="hsv-scene" class="three-scene" aria-label="Rotatable HSV cone outline with selected color point">
+            <p class="render-fallback" hidden>WebGL is unavailable. Use the synchronized sliders to explore the coordinates.</p>
+          </div>
+          <p class="model-equation">S = radius / V · physical radius = S × V</p>
+        </article>
+
+        <article class="model-card model-card-wide">
+          <div class="model-heading">
+            <div><p class="model-number">MODEL C</p><h2>Current-V cross-section</h2></div>
+            <p>Top view</p>
+          </div>
+          <p class="model-copy">The colored disk is one horizontal slice through the cone. Its solid edge is the full-saturation radius at the selected V. The fixed dashed circle shows the full radius at V = 100%, and the center line locates the selected color.</p>
+          <div id="hsv-slice-scene" class="three-scene slice-scene" aria-label="Top-down HSV cross-section with full and selected saturation radii">
+            <p class="render-fallback" hidden>WebGL is unavailable. Use the synchronized sliders to explore the coordinates.</p>
+          </div>
+          <div class="radius-legend" aria-label="Cross-section radius legend">
+            <span><i class="legend-line legend-line-reference"></i><b>reference</b> V = 100%, radius = 1</span>
+            <span><i class="legend-line legend-line-outer"></i><b>disk edge</b> S = 100%, radius = V</span>
+            <span><i class="legend-line legend-line-selected"></i><b>selected line</b> length = S × V</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="explanation-grid" aria-label="RGB and HSV explanation">
+      <article>
+        <p class="model-number">01 · SAME COLOR</p>
+        <h2>A transform, not a recoloring</h2>
+        <p>Changing from RGB to HSV does not alter the pixel. It changes the questions that are easy to ask. The point on the left and the point on the right always describe the same color.</p>
+      </article>
+      <article>
+        <p class="model-number">02 · 24-BIT RGB</p>
+        <h2>Three 8-bit coordinates</h2>
+        <p>A conventional RGB pixel uses one byte for each channel. R, G, and B each range from 0 to 255, giving 24 bits—and more than 16 million possible coordinate combinations.</p>
+      </article>
+      <article>
+        <p class="model-number">03 · HSV GEOMETRY</p>
+        <h2>Hue is an angle</h2>
+        <p>Hue is periodic: −10° and 350° point in the same direction. The slider spans −360°…360° so a red filter can be expressed naturally as ±10°. Saturation measures distance from gray; value selects the height and maximum radius.</p>
+      </article>
+    </section>
+  </main>
+
+  <!-- __THREE_JS__ -->
+  <!-- __LESSON_JS__ -->
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "description": "Pinned Three.js IIFE build for standalone NXP Cup lessons",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "three": "0.183.2"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.0"
+  }
+}
