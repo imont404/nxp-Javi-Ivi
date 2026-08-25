@@ -48,5 +48,12 @@ npm test --prefix .\src\host
 depend on external assets. The browser and native tools consume the same
 session-gated `AVCU` v1 firmware protocol.
 
+Until the shared-dashboard extraction lands, `webserial_viewer.html`,
+`webserial_viewer.css`, and `webserial_viewer.js` are the authoritative Formula
+One-style WebSerial sources; do not hand-edit generated `nxpc_usb_debug_viewer.html`.
+The target structure in `docs/design/shared-web-dashboard.md` moves only presentation
+assets into `src/web`. Serial discovery, `AVCU` parsing, control requests, race-action
+gating, and direct RGB565 transport remain host-owned adapter behavior.
+
 Obsolete standalone USB receiver diagnostics and their one-off build wrappers
 have been removed; normal native development uses the CMake/LLVM build above.

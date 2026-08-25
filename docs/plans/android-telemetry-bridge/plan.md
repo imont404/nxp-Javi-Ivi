@@ -210,6 +210,18 @@ status = "met"
 id = "external-review"
 title = "Independent external review is complete"
 status = "pending"
+
+[[steps]]
+id = "shared-web-dashboard"
+title = "Extract the Formula One dashboard into src/web with shared presentation assets, separate WebSerial and Android relay adapters, generated standalone outputs, and drift/browser tests"
+status = "pending"
+depends_on = ["client-video-selection"]
+
+[[steps]]
+id = "android-app-role-structure"
+title = "Define a shared Kotlin core and choose one configurable app or separate viewer-only and relay app modules before parallel Android implementation"
+status = "pending"
+depends_on = ["shared-web-dashboard", "bridge-lifecycle-solidification"]
 +++
 
 # Android Telemetry Bridge
@@ -220,6 +232,31 @@ This plan retains Android USB-host, relay, compression, lifecycle, and device va
 `docs/plans/nxp-cup-framework-migration` owns final package/product naming and the preserved
 `AVCU` compatibility contract. Android changes consume the migration manifest and fixtures;
 they do not independently rename protocol bytes or public firmware APIs.
+
+## Shared Dashboard and App-Role Handoff
+
+The Formula One-style dashboard currently has three authored WebSerial inputs at
+`src/host/webserial_viewer.html`, `.css`, and `.js`; the checked
+`src/host/nxpc_usb_debug_viewer.html` is generated from them. The Android relay still
+loads its separate monolithic page from
+`src/android/nxp_cup_bridge/app/src/main/res/raw/relay_viewer.html`. Preserve both proven
+paths until the `shared-web-dashboard` step replaces duplication with an explicit build.
+
+That step creates `src/web` as the owner of transport-neutral dashboard markup, styling,
+and presentation logic. WebSerial connection, `AVCU` parsing, system actions, and direct
+RGB565 input stay in a host adapter. Android WebSocket connection, JPEG/H.264/raw mode
+selection, `AVCJ`/`AVC4`/`AVCR`, and relayed `AVCU` telemetry stay in an Android adapter.
+The build generates and drift-checks both committed standalone outputs; neither output
+may depend on a CDN, runtime package server, or repository-relative browser asset.
+
+Do not use this extraction as permission to rewrite the proven Android relay. After the
+shared dashboard and `bridge-lifecycle-solidification` are complete, the
+`android-app-role-structure` step first chooses between one configurable APK and separate
+viewer-only/relay application modules. Either choice reuses a shared Kotlin protocol,
+USB-session, and latest-frame core; a viewer-only application must not carry the relay
+server, compression workers, network permissions, or hotspot lifecycle by accident.
+`docs/design/shared-web-dashboard.md` is the detailed source/output and test contract for
+parallel agents.
 
 ## Current Status
 
@@ -452,7 +489,7 @@ One-time attended setup is unavoidable:
 3. Connect the phone to the car with a known data-capable USB-C OTG adapter/cable, power
    the car independently, and leave the vehicle in a safe non-moving mode.
 
-After that setup, `scripts/android/android_loop.ps1` builds, tests, installs, starts,
+After that setup, `src/android/tools/android_loop.ps1` builds, tests, installs, starts,
 waits for a healthy framed session, verifies complete frames through the phone's
 WebSocket, captures diagnostics, and exits nonzero on failure. Structured
 `NXP_CUP_BRIDGE_HEALTH` logcat records and the HTTP `/health` endpoint make the proof
@@ -499,7 +536,8 @@ choice.
 - No firmware fork and no Android-specific packet IDs for the MVP.
 - No dependency on Android Chrome Web Serial or WebUSB.
 - No app-store release, account system, cloud service, or venue network.
-- No polished telemetry styling; the generic data path and health evidence matter first.
+- Dashboard presentation polish is owned by `shared-web-dashboard`; the generic data
+  path and health evidence remain acceptance requirements.
 - No recording in the current relay. JPEG, hardware H.264, and raw diagnostics all consume
   the existing live RGB565 stream without changing the camera format.
 - No replacement of the standalone PC Web Serial viewer.
@@ -510,7 +548,8 @@ session, latest-frame hub, selected encoder, relay, network-address changes, and
 watchdog; the relay server owns one-client negotiation and bounded backpressure. Exactly
 one encoder may run, logcat and `/health` remain the machine-readable diagnostics, and
 the change must add lifecycle/reconnect tests before altering this proven race-week path.
-It does not include actuator commands, a polished dashboard, or student firmware changes.
+It does not include actuator commands, shared-dashboard implementation, or student
+firmware changes; those concerns retain their separate owners.
 
 The inspected Bunny Vision firmware/software tree contains useful CDC host-side lineage
 but no reusable Android/Gradle application or confirmed WebUSB spike. Treat claims of an
@@ -523,7 +562,7 @@ existing phone browser spike in older notes as stale unless an artifact is found
 - `docs/research/AVC_USB_Debug_Transport_Protocol.md`
 - `docs/research/AVC_RaceDay_Wireless_Frame_Relay.md`
 - `src/common/nxpc_usb_debug/nxpc_usb_debug_protocol.h`
-- `src/nxp_cup_host/`
+- `src/host/`
 - Android USB host documentation:
   <https://developer.android.com/develop/connectivity/usb/host>
 - Android USB-host debugging over network:

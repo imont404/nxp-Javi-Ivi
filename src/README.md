@@ -10,3 +10,8 @@
 Each buildable component owns its build entry point and detailed README. Read the
 nearest `AGENTS.md` before using an LLM to change component code.
 
+The direct WebSerial page and Android relay page currently belong to their respective
+consumers. The planned cross-consumer presentation extraction is specified in
+`docs/design/shared-web-dashboard.md`. Create `src/web` only together with its real
+`build.ps1`, README, agent guide, drift check, and generated-output contract; do not use
+`src/common` for browser assets because that folder has embedded linked-source ownership.
