@@ -332,7 +332,7 @@ def test_navigation_is_frame_independent_and_vision_owns_the_participant_callbac
         "nxpc__render_banner_if_changed();"
     )
     assert '"TEST MODE"' in framework
-    for label in ('"< CAMERA / IO >"', '"< VISION LAB >"', '"< MOTORS >  EXE: ARM"'):
+    for label in ('"< CAMERA / IO >"', '"< VISION >"', '"< MOTORS >"'):
         assert label in framework
     assert "nxpc__draw_large_centered" in framework
     assert "(left_release != NXPC_RELEASE_NONE)" in framework
@@ -360,7 +360,7 @@ def test_camera_io_samples_without_frames_and_overlays_before_publication():
     assert "alpha_thousandths" in framework
     assert "BTN L:" not in framework
     assert "FRAME:%lums WORK:" not in framework
-    assert finish.index("nxpc__overlay_camera_io(frame);") < finish.index(
+    assert finish.index("nxpc__refresh_camera_io_status();") < finish.index(
         "nxpc_usb_debug_stream__publish_frame(frame)"
     )
 
@@ -372,8 +372,8 @@ def test_vision_sandbox_has_no_actuator_commands_or_race_solution():
     assert "motors_stop(" not in vision
     assert "steering_set(" not in vision
     assert "frame_draw_vertical_line(" in vision
-    assert "frame_fill_rectangle(" in vision
-    assert "frame_draw_text(" in vision
+    assert "frame_fill_rectangle(" not in vision
+    assert "frame_draw_text(" not in vision
     assert "not a lane" in vision.lower()
 
 
@@ -397,10 +397,11 @@ def test_actuator_page_control_is_bounded_and_frame_independent():
     assert service.index("nxpc_system__notify_test_motor_lease_expired();") < service.index(
         "nxpc__test_actuator_service();"
     )
-    assert '"RPM L %ld  R %ld"' in framework
+    assert '"PRESS EXE TO TEST"' in framework
+    assert '"L%+ld%%  S%+ld%%  R%+ld%%"' in framework
     assert "OUTPUTS SAFE" not in framework
     assert "OUTPUTS ARMED" not in framework
-    assert finish.index("nxpc__overlay_test_actuators(frame);") < finish.index(
+    assert finish.index("nxpc__refresh_motors_status();") < finish.index(
         "nxpc_usb_debug_stream__publish_frame(frame)"
     )
 

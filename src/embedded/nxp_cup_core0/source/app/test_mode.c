@@ -45,13 +45,6 @@ void test_mode_on_frame(uint16_t *frame)
                                  dark ? dark_color : light_color);
     }
 
-    frame_fill_rectangle(frame, 0, 0, CAMERA_WIDTH - 1, 10, 0U);
-    frame_draw_text(frame,
-                    3,
-                    2,
-                    "VISION: ALPHA=ROW BETA=DARK",
-                    color_rgb565(255U, 255U, 0U));
-
     (void)telemetry_f32("input.alpha", alpha, "ratio");
     (void)telemetry_f32("input.beta", beta, "ratio");
     (void)telemetry_f32("input.gamma", gamma, "ratio");

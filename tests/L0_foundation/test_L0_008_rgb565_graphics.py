@@ -215,7 +215,7 @@ int main(void)
                 "TEST MODE",
                 "< CAMERA / IO >",
                 "< MOTORS >  CENTER POTS",
-                "< VISION >  999.9ms  999%",
+                "ALGO 999.9ms / 41ms FRAME",
                 "A1.00 B1.00 G1.00 BAT655.4V",
                 "POT L 100  S 100  R 100",
                 "CMD L-100% S-100% R-100%",

@@ -11,7 +11,7 @@ status = "done"
 
 [[steps]]
 id = "test-substate-contract"
-title = "Freeze the three-page TEST lab contract: CAMERA / IO, VISION LAB, and MOTORS, with framework-owned navigation, presentation, output permissions, and safe entry/exit behavior"
+title = "Freeze the three-page TEST lab contract: CAMERA / IO, VISION, and MOTORS, with framework-owned navigation, presentation, output permissions, and safe entry/exit behavior"
 status = "done"
 depends_on = ["resume-checkpoint"]
 
@@ -47,7 +47,7 @@ depends_on = ["button-input-normalization"]
 
 [[steps]]
 id = "test-page-navigation"
-title = "Implement framework-owned left/right release-event navigation across CAMERA / IO, VISION LAB, and MOTORS with a persistent page name, arrows, and contextual EXE hint in the 320x40 status strip"
+title = "Implement framework-owned left/right release-event navigation across CAMERA / IO, VISION, and MOTORS with a persistent page name, arrows, and contextual EXE hint in the 320x40 status strip"
 status = "done"
 depends_on = ["test-page-safety-core", "rgb565-graphics-surface"]
 
@@ -59,7 +59,7 @@ depends_on = ["test-page-navigation"]
 
 [[steps]]
 id = "test-vision-lab"
-title = "Invoke participant-owned test_mode.c only from motor-prohibited VISION LAB as the editable camera-processing and overlay sandbox; defer its exact reference algorithm and pot meanings until organizer discussion"
+title = "Invoke participant-owned test_mode.c only from motor-prohibited VISION as the editable camera-processing and overlay sandbox; defer its exact reference algorithm and pot meanings until organizer discussion"
 status = "done"
 depends_on = ["test-page-navigation"]
 
@@ -149,7 +149,7 @@ depends_on = ["external-review"]
 
 [[exit_criteria]]
 id = "test-separation"
-title = "CAMERA / IO and VISION LAB cannot command actuators, and MOTORS cannot silently inherit another page's pot meanings or arming state"
+title = "CAMERA / IO and VISION cannot command actuators, and MOTORS cannot silently inherit another page's pot meanings or arming state"
 status = "pending"
 
 [[exit_criteria]]
@@ -227,11 +227,12 @@ button release events move one page at a time and wrap across:
    framework-owned status strip: mode/page first, then spaced A/B/G/BAT groups;
    it does not draw diagnostics over the 200-row camera image. Motors are prohibited regardless of
    participant callback behavior.
-2. `TEST_VISION` combines line, edge, color, pixel drawing, fixed-font text, and
+2. VISION (`TEST_VISION` internally) combines line, edge, color, pixel drawing, fixed-font text, and
    student algorithm experimentation in one motor-prohibited page. The exact
    reference algorithm and page-specific pot meanings remain deliberately open
    until the organizer discussion; it must not become a completed lane detector,
-   steering decision, PID controller, or race solution.
+   steering decision, PID controller, or race solution. Its second status row reports
+   `ALGO x.xms / 41ms FRAME`; it does not add explanatory text over the image.
 3. MOTORS (`NXPC_TEST_PAGE_ACTUATORS` internally) demonstrates alpha as left
    motor, beta as steering, and gamma as right motor. EXE requests arming, all three pots must be centered before
    outputs become live, and framework telemetry plus QDC feedback make commands
@@ -240,7 +241,8 @@ button release events move one page at a time and wrap across:
 The 320x40 framework-owned status strip uses the 10x14 font and a two-line layout.
 In TEST, the top row places `TEST MODE` on the left and the current page with `<` /
 `>` on the right; the second row shows only the page's most useful values or concise
-MOTORS action such as `EXE: ARM`, `CENTER POTS`, or `EXE: STOP`. A page change always disables motors,
+MOTORS action such as `PRESS EXE TO TEST` or `CENTER POTS`; while armed it shows
+only the signed left/steering/right commands. A page change always disables motors,
 clears the command lease, centers steering, cancels pending arming, and requires a
 fresh deliberate arm. The framework owns navigation and output permission; the
 participant callback cannot weaken them.
@@ -317,7 +319,7 @@ before any page or navigation implementation. The safe transition first commands
 zero/disable, clears the motor lease, centers steering, clears pending and armed
 state, suppresses inherited button releases, and only then changes the page. TEST
 entry always selects CAMERA / IO. `motors_set_duty()` and `steering_set()` reject
-participant output throughout CAMERA / IO and VISION LAB even if participant code
+participant output throughout CAMERA / IO and VISION even if participant code
 calls them.
 
 The TEST control plane is frame-independent. `nxpc_framework__service()` processes
@@ -382,6 +384,6 @@ compile, unit-test, or telemetry-only evidence.
 QDC wheel feedback remains standard in the competition image. Do not add build
 options for ordinary use. Do not supply lane following, PID, active differential,
 or a completed race solution. Keep normal participant edits confined to
-`source/app/test_mode.c` (VISION LAB only) and `source/app/race_mode.c`;
+`source/app/test_mode.c` (VISION only) and `source/app/race_mode.c`;
 framework-owned safety, CAMERA / IO, MOTORS, navigation, and protected telemetry
 must not depend on participant callbacks.

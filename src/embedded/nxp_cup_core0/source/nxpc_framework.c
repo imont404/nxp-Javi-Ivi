@@ -481,17 +481,6 @@ static void nxpc__test_navigation_service(void)
     }
 }
 
-static nxpc_rgb565_surface_t nxpc__camera_surface(uint16_t *frame)
-{
-    nxpc_rgb565_surface_t surface = {
-        .pixels = frame,
-        .width = CAMERA_WIDTH,
-        .height = CAMERA_HEIGHT,
-        .stride_pixels = CAMERA_WIDTH,
-    };
-    return surface;
-}
-
 static void nxpc__draw_large_centered(const nxpc_rgb565_surface_t *surface,
                                       const char *text,
                                       int32_t y,
@@ -560,44 +549,31 @@ static void nxpc__refresh_camera_io_status(void)
     nxpc_graphics__text_large(&g_status_surface, 266, 22, text, white);
 }
 
-static void nxpc__overlay_test_actuators(uint16_t *frame)
+static void nxpc__refresh_motors_status(void)
 {
-    const uint16_t white = 0xFFFFU;
     const uint16_t cyan = 0x07FFU;
     const uint16_t yellow = 0xFFE0U;
-    nxpc_rgb565_surface_t surface = nxpc__camera_surface(frame);
     char text[64];
 
-    frame_fill_rectangle(frame, 0, 0, CAMERA_WIDTH - 1, 51, 0U);
-    (void)snprintf(text,
-                   sizeof(text),
-                   "POT L %03u  S %03u  R %03u",
-                   (unsigned)g_test_actuator_snapshot.left_pot_percent,
-                   (unsigned)g_test_actuator_snapshot.steering_pot_percent,
-                   (unsigned)g_test_actuator_snapshot.right_pot_percent);
-    nxpc__draw_large_centered(&surface, text, 1, cyan);
-
-    (void)snprintf(text,
-                   sizeof(text),
-                   "CMD L%+ld%% S%+ld%% R%+ld%%",
-                   (long)g_test_actuator_snapshot.left_command_percent,
-                   (long)g_test_actuator_snapshot.steering_command_percent,
-                   (long)g_test_actuator_snapshot.right_command_percent);
-    nxpc__draw_large_centered(&surface, text, 19, white);
-
-    if (g_test_actuator_snapshot.wheel_speed_valid)
+    nxpc_graphics__fill_rectangle(&g_status_surface, 0, 20, 319, 39, 0U);
+    if (nxpc_system__state() == NXPC_SYSTEM_STATE_TEST_ARMED)
     {
         (void)snprintf(text,
                        sizeof(text),
-                       "RPM L %ld  R %ld",
-                       (long)g_test_actuator_snapshot.left_rpm,
-                       (long)g_test_actuator_snapshot.right_rpm);
+                       "L%+ld%%  S%+ld%%  R%+ld%%",
+                       (long)g_test_actuator_snapshot.left_command_percent,
+                       (long)g_test_actuator_snapshot.steering_command_percent,
+                       (long)g_test_actuator_snapshot.right_command_percent);
+        nxpc__draw_status_text(text, 22, cyan);
+    }
+    else if (nxpc_system__state() == NXPC_SYSTEM_STATE_TEST_CENTER_POTS)
+    {
+        nxpc__draw_status_text("CENTER POTS", 22, yellow);
     }
     else
     {
-        (void)snprintf(text, sizeof(text), "RPM WAITING");
+        nxpc__draw_status_text("PRESS EXE TO TEST", 22, yellow);
     }
-    nxpc__draw_large_centered(&surface, text, 37, yellow);
 }
 
 static void nxpc__refresh_vision_timing_status(void)
@@ -613,10 +589,10 @@ static void nxpc__refresh_vision_timing_status(void)
     nxpc_graphics__fill_rectangle(&g_status_surface, 0, 20, 319, 39, 0U);
     (void)snprintf(text,
                    sizeof(text),
-                   "< VISION >  %lu.%lums  %lu%%",
+                   "ALGO %lu.%lums / %lums FRAME",
                    (unsigned long)(display_us / 1000U),
                    (unsigned long)((display_us % 1000U) / 100U),
-                   (unsigned long)nxpc__frame_budget_percent(g_callback_us));
+                   (unsigned long)(NXPC_FRAME_BUDGET_US / 1000U));
     nxpc__draw_status_text(text, 22, cyan);
 }
 
@@ -675,7 +651,6 @@ static void nxpc__render_banner_if_changed(void)
     const uint16_t green = 0x07E0U;
     const uint16_t yellow = 0xFFE0U;
     const uint16_t red = 0xF800U;
-    char text[64];
 
     if (g_banner_initialized && (mode == g_last_rendered_mode) &&
         (state == g_last_rendered_state) && (camera_seen == g_last_camera_seen))
@@ -700,21 +675,9 @@ static void nxpc__render_banner_if_changed(void)
             nxpc__draw_status_text_left("TEST MODE", 0, green);
             if (test_page == NXPC_TEST_PAGE_ACTUATORS)
             {
-                nxpc__draw_status_text_right("< MOTORS >", 0, green);
-                if (state == NXPC_SYSTEM_STATE_TEST_ARMED)
-                {
-                    (void)snprintf(text, sizeof(text), "< MOTORS >  EXE: STOP");
-                }
-                else if (state == NXPC_SYSTEM_STATE_TEST_CENTER_POTS)
-                {
-                    (void)snprintf(text, sizeof(text), "< MOTORS >  CENTER POTS");
-                }
-                else
-                {
-                    (void)snprintf(text, sizeof(text), "< MOTORS >  EXE: ARM");
-                }
-                nxpc__draw_status_text(text, 22,
-                                       (state == NXPC_SYSTEM_STATE_TEST_ARMED) ? red : yellow);
+                nxpc__draw_status_text_right("< MOTORS >", 0,
+                                             (state == NXPC_SYSTEM_STATE_TEST_ARMED) ? red : green);
+                nxpc__refresh_motors_status();
             }
             else if (test_page == NXPC_TEST_PAGE_CAMERA_IO)
             {
@@ -724,7 +687,7 @@ static void nxpc__render_banner_if_changed(void)
             }
             else
             {
-                nxpc__draw_status_text_right("< VISION LAB >", 0,
+                nxpc__draw_status_text_right("< VISION >", 0,
                                              camera_seen ? green : yellow);
             }
             break;
@@ -1006,7 +969,7 @@ void nxpc_framework__finish_frame(uint16_t *frame)
     else if ((nxpc_system__mode() == NXPC_SYSTEM_MODE_TEST) &&
              (nxpc_system__test_page() == NXPC_TEST_PAGE_ACTUATORS))
     {
-        nxpc__overlay_test_actuators(frame);
+        nxpc__refresh_motors_status();
     }
     else if ((nxpc_system__mode() == NXPC_SYSTEM_MODE_TEST) &&
              (nxpc_system__test_page() == NXPC_TEST_PAGE_VISION))

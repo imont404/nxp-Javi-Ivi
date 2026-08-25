@@ -244,7 +244,7 @@ def test_test_and_race_presentation_cannot_leave_stale_camera_data():
     assert '"TEST MODE"' in framework
     assert '"RACE MODE"' in framework
     assert '"< CAMERA / IO >"' in framework
-    assert '"< VISION >  %lu.%lums  %lu%%"' in framework
+    assert '"ALGO %lu.%lums / %lums FRAME"' in framework
 
 
 def test_remote_race_actions_are_typed_and_firmware_validated():
