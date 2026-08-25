@@ -30,8 +30,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
-. (Join-Path $PSScriptRoot "lib\nxpc_image_common.ps1")
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+. (Join-Path $PSScriptRoot "tools\lib\nxpc_image_common.ps1")
 
 if ([string]::IsNullOrWhiteSpace($Backend)) {
     throw "Choose a flash backend explicitly: -Backend Ozone, -Backend Rom, or -Backend JLink."
@@ -110,7 +110,7 @@ if ($Backend -eq "Rom") {
     exit $LASTEXITCODE
 }
 
-. (Join-Path $PSScriptRoot "lib\jlink_common.ps1")
+. (Join-Path $PSScriptRoot "tools\lib\jlink_common.ps1")
 $UsbSerial = Resolve-JLinkSerial -Requested $UsbSerial
 $JLinkPath = Resolve-SeggerTool -ConfiguredPath $JLinkPath -ToolName "JLink.exe"
 

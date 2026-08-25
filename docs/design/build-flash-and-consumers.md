@@ -61,7 +61,7 @@ to reuse that provisioned directory without duplicating downloads.
 
 Students use the checked SEGGER Ozone project at
 `src/embedded/nxp_cup_core0/ozone__core0.jdebug`. Until hardware evaluation
-selects a maintainer default, `src/embedded/tools/flash.ps1` requires an explicit
+selects a maintainer default, `src/embedded/flash.ps1` requires an explicit
 backend: Ozone, ROM-HID, or J-Link. The companion RTT command is also maintainer
 tooling rather than part of student setup.
 

@@ -1,8 +1,8 @@
-# Shared image and toolchain resolution for embedded tools/flash.ps1 and tools/rtt.ps1.
+# Shared image and toolchain resolution for embedded flash.ps1 and tools/rtt.ps1.
 #
 # The competition CMake image is the default:
 #
-#     .\src\embedded\tools\flash.ps1  # the competition preset
+#     .\src\embedded\flash.ps1  # the competition preset
 #
 # -File still takes an explicit path and wins over everything, and -Mcux selects
 # the MCUXpresso output directory for the rare case of comparing the two.

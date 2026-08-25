@@ -13,7 +13,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[2]
 
-FLASH = REPO / "src/embedded/tools/flash.ps1"
+FLASH = REPO / "src/embedded/flash.ps1"
 RTT = REPO / "src/embedded/tools/rtt.ps1"
 BUILD = REPO / "src/embedded/build.ps1"
 SHARED = REPO / "src/embedded/tools/lib/nxpc_image_common.ps1"
