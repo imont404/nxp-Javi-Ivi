@@ -214,6 +214,12 @@ id = "vision-scanline-low-pass"
 title = "Apply an in-place symmetric three-tap low-pass to scanline Y/S/V before edge and black/white classification to reduce orphan transitions from pixel noise"
 status = "done"
 depends_on = ["vision-black-white-validation"]
+
+[[steps]]
+id = "display-driver-cleanup"
+title = "Replace the active eGFX display-driver layer with a small owned ST7789 command boundary and bounded DMA-backed RGB565 region writer while retaining only the two generated font assets"
+status = "done"
+depends_on = ["competition-optimization"]
 +++
 
 # Reference Firmware Finalization
@@ -233,6 +239,22 @@ observed on Rev A hardware. EXE starts and stops race execution, race entry arms
 the motor PWM at neutral, the neutral-write defect found during physical testing
 was corrected, and cold race entry clears stale LCD camera data. This is bench
 evidence for those narrow behaviors, not proof of the remaining regression list.
+
+The display-driver cleanup was completed and physically checked on 2026-08-26.
+The active firmware now keeps ST7789 commands and GPIO private to `st7789.c`,
+owns pixel-window transfer and final-DMA completion in `nxpc_display.c`, and uses
+only the generated 5x7 and 10x14 eGFX font assets through a minimal compatibility
+header. Clean CMake and fresh-workspace MCUXpresso builds completed at `-O2` with
+zero compiler or linker warnings and identical flash/RAM section sizes. Focused
+display, optimization, graphics, vision, and safety tests passed; the complete L0
+run passed 68 tests and retained one unrelated product-identity failure in
+`docs/learn/camera_sim.html`. The 356136-byte competition image was ROM-HID
+flashed with full readback (SHA-256
+`0C7E5708B24F1E89B5D6EF45FEEEB390A40479597B32A4059F8642DE16842609`), rebooted
+on COM22, delivered live 320x200 camera frames and safe TEST telemetry, and was
+visually confirmed to show the camera and status strip with normal color and no
+tearing or corruption. This closes the display cleanup; it does not replace the
+broader TEST/RACE, actuator, encoder, fault, and timing bench regression.
 
 ## Intended TEST lab
 

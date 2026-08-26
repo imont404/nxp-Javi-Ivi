@@ -11,18 +11,12 @@ motor_ctrl_info_t motor_ctrl_inst;
 
 static void nxpc__write_motor_pwm(float left, float right)
 {
-    PWM_UpdatePwmPeriodAndDutycycle(PWM1,
-                                    kPWM_Module_0,
-                                    kPWM_PwmA,
-                                    kPWM_EdgeAligned,
-                                    PERIOD_PULSE_CNT,
-                                    nxpc__dc_to_counts(left, motor_ctrl_inst.invert_left_motor_direction));
-    PWM_UpdatePwmPeriodAndDutycycle(PWM1,
-                                    kPWM_Module_1,
-                                    kPWM_PwmA,
-                                    kPWM_EdgeAligned,
-                                    PERIOD_PULSE_CNT,
-                                    nxpc__dc_to_counts(right, motor_ctrl_inst.invert_right_motor_direction));
+    PWM_UpdatePwmPeriodAndDutycycle(
+        PWM1, kPWM_Module_0, kPWM_PwmA, kPWM_EdgeAligned, PERIOD_PULSE_CNT,
+        nxpc__dc_to_counts(left, motor_ctrl_inst.invert_left_motor_direction));
+    PWM_UpdatePwmPeriodAndDutycycle(
+        PWM1, kPWM_Module_1, kPWM_PwmA, kPWM_EdgeAligned, PERIOD_PULSE_CNT,
+        nxpc__dc_to_counts(right, motor_ctrl_inst.invert_right_motor_direction));
 
     motor_ctrl_inst.left_intensity = left;
     motor_ctrl_inst.right_intensity = right;
@@ -103,7 +97,7 @@ void nxpc__motor_control_init()
  */
 void nxpc__enable_motor_control()
 {
-    if(motor_ctrl_inst.outputs_enable == 0)
+    if (motor_ctrl_inst.outputs_enable == 0)
     {
         /* This safety write must not be skipped when the tracked command is
          * already zero. The running counters have already settled at neutral. */
@@ -115,7 +109,6 @@ void nxpc__enable_motor_control()
         PORT_SetPinMux(PORT2, 7U, kPORT_MuxAlt5); /* PORT2_7 (pin L2) is configured as PWM1_B0 */
         motor_ctrl_inst.outputs_enable = 1;
     }
-    
 }
 
 /**
@@ -124,13 +117,13 @@ void nxpc__enable_motor_control()
  */
 void nxpc__disable_motor_control()
 {
-        nxpc__set_motor_pwm(0, 0);
-        //PORT_SetPinMux(PORT2, 3U, kPORT_MuxAsGpio); /* PORT2_2 disconnected from PWM1_A2 */
-        PORT_SetPinMux(PORT2, 4U, kPORT_MuxAsGpio); /* PORT2_4 disconnected from PWM1_A1 */
-        PORT_SetPinMux(PORT2, 5U, kPORT_MuxAsGpio); /* PORT2_5 disconnected from PWM1_B1 */
-        PORT_SetPinMux(PORT2, 6U, kPORT_MuxAsGpio); /* PORT2_6 disconnected from PWM1_A0 */
-        PORT_SetPinMux(PORT2, 7U, kPORT_MuxAsGpio); /* PORT2_7 disconnected from PWM1_B0 */
-        motor_ctrl_inst.outputs_enable = 0;
+    nxpc__set_motor_pwm(0, 0);
+    // PORT_SetPinMux(PORT2, 3U, kPORT_MuxAsGpio); /* PORT2_2 disconnected from PWM1_A2 */
+    PORT_SetPinMux(PORT2, 4U, kPORT_MuxAsGpio); /* PORT2_4 disconnected from PWM1_A1 */
+    PORT_SetPinMux(PORT2, 5U, kPORT_MuxAsGpio); /* PORT2_5 disconnected from PWM1_B1 */
+    PORT_SetPinMux(PORT2, 6U, kPORT_MuxAsGpio); /* PORT2_6 disconnected from PWM1_A0 */
+    PORT_SetPinMux(PORT2, 7U, kPORT_MuxAsGpio); /* PORT2_7 disconnected from PWM1_B0 */
+    motor_ctrl_inst.outputs_enable = 0;
 }
 
 /**
@@ -150,12 +143,9 @@ void nxpc__set_motor_pwm(float left, float right)
     if (left != motor_ctrl_inst.left_intensity)
     {
         // Assuming PWM1_0 is connected to left motor
-        PWM_UpdatePwmPeriodAndDutycycle(PWM1,
-                                        kPWM_Module_0,
-                                        kPWM_PwmA,
-                                        kPWM_EdgeAligned,
-                                        PERIOD_PULSE_CNT,
-                                        nxpc__dc_to_counts(left, motor_ctrl_inst.invert_left_motor_direction));
+        PWM_UpdatePwmPeriodAndDutycycle(
+            PWM1, kPWM_Module_0, kPWM_PwmA, kPWM_EdgeAligned, PERIOD_PULSE_CNT,
+            nxpc__dc_to_counts(left, motor_ctrl_inst.invert_left_motor_direction));
 
         motor_ctrl_inst.left_intensity = left;
         PWM_SetPwmLdok(PWM1, kPWM_Control_Module_0, true);
@@ -164,17 +154,13 @@ void nxpc__set_motor_pwm(float left, float right)
     if (right != motor_ctrl_inst.right_intensity)
     {
         // Assuming PWM1_1 is connected to right motor
-        PWM_UpdatePwmPeriodAndDutycycle(PWM1,
-                                    kPWM_Module_1,
-                                    kPWM_PwmA,
-                                    kPWM_EdgeAligned,
-                                    PERIOD_PULSE_CNT,
-                                    nxpc__dc_to_counts(right, motor_ctrl_inst.invert_right_motor_direction));
+        PWM_UpdatePwmPeriodAndDutycycle(
+            PWM1, kPWM_Module_1, kPWM_PwmA, kPWM_EdgeAligned, PERIOD_PULSE_CNT,
+            nxpc__dc_to_counts(right, motor_ctrl_inst.invert_right_motor_direction));
 
         motor_ctrl_inst.right_intensity = right;
         PWM_SetPwmLdok(PWM1, kPWM_Control_Module_1, true);
     }
-    
 }
 
 bool nxpc__motor_control_enabled(void)
@@ -199,13 +185,12 @@ uint16_t nxpc__dc_to_counts(float new_dc, bool inverted_direction)
 {
     int32_t counts;
 
-    new_dc = new_dc +1.0f;
+    new_dc = new_dc + 1.0f;
 
-    if(new_dc > 2.0f)
-    	new_dc = 2.0f;
-    else if(new_dc<-2.0f)
-    	new_dc = 0.0f;
-
+    if (new_dc > 2.0f)
+        new_dc = 2.0f;
+    else if (new_dc < -2.0f)
+        new_dc = 0.0f;
 
     counts = (float)32767.5f * new_dc;
 

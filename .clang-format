@@ -1,17 +1,18 @@
 # clang-format for the NXP Cup firmware.
 #
-# NOT applied wholesale. The tree carries a mix of tabs and spaces inherited
-# from the NXP SDK, and reformatting 179 SDK files would bury every real change
-# in whitespace. VS Code has format-on-save disabled for the same reason.
+# Applied to all repository-owned C/C++ through scripts/tools/clang_format.ps1.
+# The tree also carries NXP SDK, generated, and imported library sources; those
+# remain excluded because reformatting dependencies would bury real changes in
+# whitespace. VS Code has format-on-save disabled for the same reason.
 #
-# This exists so new files, and code deliberately being tidied, have one answer
-# to "how should this look" rather than several.
+# Format all owned code, or verify it without changing files:
+#   .\scripts\tools\clang_format.ps1
+#   .\scripts\tools\clang_format.ps1 -Check
 #
-# Format a single file you are already changing:
-#   clang-format -i src/nxp_cup/nxp_cup_core0/source/<file>.c
+# A single file may still be formatted directly with clang-format -i.
 BasedOnStyle: LLVM
 
-# The existing hand-written AVC code uses 4 spaces and Allman braces; match it
+# The existing hand-written NXP Cup code uses 4 spaces and Allman braces; match it
 # rather than LLVM's defaults, so formatted code does not look foreign next to
 # the code students are reading.
 IndentWidth: 4

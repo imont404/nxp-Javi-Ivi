@@ -59,26 +59,14 @@ std::string narrow(const std::wstring &text)
     {
         return {};
     }
-    const int required = WideCharToMultiByte(CP_UTF8,
-                                              0,
-                                              text.c_str(),
-                                              -1,
-                                              nullptr,
-                                              0,
-                                              nullptr,
-                                              nullptr);
+    const int required =
+        WideCharToMultiByte(CP_UTF8, 0, text.c_str(), -1, nullptr, 0, nullptr, nullptr);
     if (required <= 0)
     {
         return {};
     }
     std::vector<char> buffer(static_cast<size_t>(required));
-    if (WideCharToMultiByte(CP_UTF8,
-                            0,
-                            text.c_str(),
-                            -1,
-                            buffer.data(),
-                            required,
-                            nullptr,
+    if (WideCharToMultiByte(CP_UTF8, 0, text.c_str(), -1, buffer.data(), required, nullptr,
                             nullptr) <= 0)
     {
         return {};
@@ -118,11 +106,8 @@ std::wstring quote_argument(const std::wstring &argument)
     return quoted;
 }
 
-bool run_process(const std::string &application,
-                 const std::vector<std::string> &arguments,
-                 uint32_t timeout_ms,
-                 ProcessResult &result,
-                 std::string &error)
+bool run_process(const std::string &application, const std::vector<std::string> &arguments,
+                 uint32_t timeout_ms, ProcessResult &result, std::string &error)
 {
     SECURITY_ATTRIBUTES security{};
     security.nLength = sizeof(security);
@@ -159,16 +144,9 @@ bool run_process(const std::string &application,
     startup.hStdError = write_pipe;
     startup.hStdInput = GetStdHandle(STD_INPUT_HANDLE);
     PROCESS_INFORMATION process{};
-    const BOOL started = CreateProcessW(wide_application.c_str(),
-                                        mutable_command.data(),
-                                        nullptr,
-                                        nullptr,
-                                        TRUE,
-                                        CREATE_NO_WINDOW,
-                                        nullptr,
-                                        nullptr,
-                                        &startup,
-                                        &process);
+    const BOOL started =
+        CreateProcessW(wide_application.c_str(), mutable_command.data(), nullptr, nullptr, TRUE,
+                       CREATE_NO_WINDOW, nullptr, nullptr, &startup, &process);
     CloseHandle(write_pipe);
     if (!started)
     {
@@ -191,8 +169,8 @@ bool run_process(const std::string &application,
             if (ReadFile(read_pipe, buffer.data(), wanted, &received, nullptr) && (received > 0u) &&
                 (result.output.size() < kMaximumProcessOutputBytes))
             {
-                const size_t retained = std::min<size_t>(received,
-                    kMaximumProcessOutputBytes - result.output.size());
+                const size_t retained =
+                    std::min<size_t>(received, kMaximumProcessOutputBytes - result.output.size());
                 result.output.append(buffer.data(), retained);
             }
         }
@@ -215,10 +193,7 @@ bool run_process(const std::string &application,
     {
         std::array<char, 4096> buffer{};
         DWORD received = 0u;
-        if (!ReadFile(read_pipe,
-                      buffer.data(),
-                      static_cast<DWORD>(buffer.size()),
-                      &received,
+        if (!ReadFile(read_pipe, buffer.data(), static_cast<DWORD>(buffer.size()), &received,
                       nullptr) ||
             (received == 0u))
         {
@@ -226,8 +201,8 @@ bool run_process(const std::string &application,
         }
         if (result.output.size() < kMaximumProcessOutputBytes)
         {
-            const size_t retained = std::min<size_t>(received,
-                kMaximumProcessOutputBytes - result.output.size());
+            const size_t retained =
+                std::min<size_t>(received, kMaximumProcessOutputBytes - result.output.size());
             result.output.append(buffer.data(), retained);
         }
     }
@@ -246,8 +221,7 @@ bool run_process(const std::string &application,
 
 bool blhost_result_ok(const ProcessResult &result)
 {
-    return (result.exit_code == 0u) &&
-           (result.output.find("\"value\": 0") != std::string::npos);
+    return (result.exit_code == 0u) && (result.output.find("\"value\": 0") != std::string::npos);
 }
 
 bool rblhost_result_ok(const ProcessResult &result)
@@ -269,9 +243,8 @@ bool blhost_first_response_u64(const std::string &output, uint64_t &value)
         return false;
     }
     ++cursor;
-    while ((cursor < output.size()) &&
-           ((output[cursor] == ' ') || (output[cursor] == '\t') ||
-            (output[cursor] == '\r') || (output[cursor] == '\n')))
+    while ((cursor < output.size()) && ((output[cursor] == ' ') || (output[cursor] == '\t') ||
+                                        (output[cursor] == '\r') || (output[cursor] == '\n')))
     {
         ++cursor;
     }
@@ -313,18 +286,10 @@ bool sha256_file(const std::filesystem::path &path, std::string &digest, std::st
         error = "BCryptOpenAlgorithmProvider(SHA256) failed";
         goto cleanup;
     }
-    if ((BCryptGetProperty(algorithm,
-                           BCRYPT_OBJECT_LENGTH,
-                           reinterpret_cast<PUCHAR>(&object_bytes),
-                           sizeof(object_bytes),
-                           &result_bytes,
-                           0u) < 0) ||
-        (BCryptGetProperty(algorithm,
-                           BCRYPT_HASH_LENGTH,
-                           reinterpret_cast<PUCHAR>(&hash_bytes),
-                           sizeof(hash_bytes),
-                           &result_bytes,
-                           0u) < 0))
+    if ((BCryptGetProperty(algorithm, BCRYPT_OBJECT_LENGTH, reinterpret_cast<PUCHAR>(&object_bytes),
+                           sizeof(object_bytes), &result_bytes, 0u) < 0) ||
+        (BCryptGetProperty(algorithm, BCRYPT_HASH_LENGTH, reinterpret_cast<PUCHAR>(&hash_bytes),
+                           sizeof(hash_bytes), &result_bytes, 0u) < 0))
     {
         error = "BCryptGetProperty(SHA256) failed";
         goto cleanup;
@@ -348,11 +313,8 @@ bool sha256_file(const std::filesystem::path &path, std::string &digest, std::st
         {
             input.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
             const std::streamsize count = input.gcount();
-            if ((count > 0) &&
-                (BCryptHashData(hash,
-                                reinterpret_cast<PUCHAR>(buffer.data()),
-                                static_cast<ULONG>(count),
-                                0u) < 0))
+            if ((count > 0) && (BCryptHashData(hash, reinterpret_cast<PUCHAR>(buffer.data()),
+                                               static_cast<ULONG>(count), 0u) < 0))
             {
                 error = "BCryptHashData(SHA256) failed";
                 goto cleanup;
@@ -387,11 +349,8 @@ cleanup:
     return ok;
 }
 
-bool run_blhost_stage(const std::string &blhost,
-                      const std::vector<std::string> &arguments,
-                      uint32_t timeout_ms,
-                      const std::string &operation,
-                      std::string &error,
+bool run_blhost_stage(const std::string &blhost, const std::vector<std::string> &arguments,
+                      uint32_t timeout_ms, const std::string &operation, std::string &error,
                       uint64_t *first_response = nullptr)
 {
     ProcessResult result;
@@ -405,8 +364,7 @@ bool run_blhost_stage(const std::string &blhost,
         error = summarize_failure(operation, result);
         return false;
     }
-    if ((first_response != nullptr) &&
-        !blhost_first_response_u64(result.output, *first_response))
+    if ((first_response != nullptr) && !blhost_first_response_u64(result.output, *first_response))
     {
         error = operation + " succeeded but did not report a numeric response";
         return false;
@@ -414,11 +372,8 @@ bool run_blhost_stage(const std::string &blhost,
     return true;
 }
 
-bool run_rblhost_stage(const std::string &rblhost,
-                       const std::vector<std::string> &arguments,
-                       uint32_t timeout_ms,
-                       const std::string &operation,
-                       std::string &output,
+bool run_rblhost_stage(const std::string &rblhost, const std::vector<std::string> &arguments,
+                       uint32_t timeout_ms, const std::string &operation, std::string &output,
                        std::string &error)
 {
     ProcessResult result;
@@ -436,13 +391,12 @@ bool run_rblhost_stage(const std::string &rblhost,
     return true;
 }
 
-bool program_rom_with_rblhost(const std::string &rblhost_path,
-                              const FirmwareImage &image,
-                              const ProgramProgress &progress,
-                              std::string &error)
+bool program_rom_with_rblhost(const std::string &rblhost_path, const FirmwareImage &image,
+                              const ProgramProgress &progress, std::string &error)
 {
     const std::vector<std::string> usb = {"-u", "0x1FC9,0x014F", "--"};
-    auto arguments = [&](std::initializer_list<std::string> command) {
+    auto arguments = [&](std::initializer_list<std::string> command)
+    {
         std::vector<std::string> result = usb;
         result.insert(result.end(), command.begin(), command.end());
         return result;
@@ -453,12 +407,8 @@ bool program_rom_with_rblhost(const std::string &rblhost_path,
     {
         progress(ProgramStage::query, "get-property 1");
     }
-    if (!run_rblhost_stage(rblhost_path,
-                           arguments({"get-property", "1"}),
-                           10000u,
-                           "ROM identity query",
-                           output,
-                           error))
+    if (!run_rblhost_stage(rblhost_path, arguments({"get-property", "1"}), 10000u,
+                           "ROM identity query", output, error))
     {
         return false;
     }
@@ -466,12 +416,8 @@ bool program_rom_with_rblhost(const std::string &rblhost_path,
     {
         progress(ProgramStage::erase, "internal application flash");
     }
-    if (!run_rblhost_stage(rblhost_path,
-                           arguments({"flash-erase-all"}),
-                           30000u,
-                           "flash erase",
-                           output,
-                           error))
+    if (!run_rblhost_stage(rblhost_path, arguments({"flash-erase-all"}), 30000u, "flash erase",
+                           output, error))
     {
         return false;
     }
@@ -479,12 +425,8 @@ bool program_rom_with_rblhost(const std::string &rblhost_path,
     {
         progress(ProgramStage::write, std::to_string(image.bytes) + " bytes");
     }
-    if (!run_rblhost_stage(rblhost_path,
-                           arguments({"write-memory", "0x0", image.path}),
-                           120000u,
-                           "flash write",
-                           output,
-                           error))
+    if (!run_rblhost_stage(rblhost_path, arguments({"write-memory", "0x0", image.path}), 120000u,
+                           "flash write", output, error))
     {
         return false;
     }
@@ -508,10 +450,7 @@ bool program_rom_with_rblhost(const std::string &rblhost_path,
     const bool read_ok = run_rblhost_stage(
         rblhost_path,
         arguments({"read-memory", "0x0", std::to_string(image.bytes), narrow(readback.wstring())}),
-        120000u,
-        "flash readback",
-        output,
-        error);
+        120000u, "flash readback", output, error);
     if (!read_ok)
     {
         std::error_code remove_error;
@@ -522,8 +461,7 @@ bool program_rom_with_rblhost(const std::string &rblhost_path,
     std::error_code filesystem_error;
     const uint64_t readback_bytes = std::filesystem::file_size(readback, filesystem_error);
     std::string readback_sha256;
-    const bool hash_ok = !filesystem_error &&
-                         sha256_file(readback, readback_sha256, error);
+    const bool hash_ok = !filesystem_error && sha256_file(readback, readback_sha256, error);
     std::error_code remove_error;
     (void)std::filesystem::remove(readback, remove_error);
     if (!hash_ok)
@@ -549,12 +487,7 @@ bool program_rom_with_rblhost(const std::string &rblhost_path,
     {
         progress(ProgramStage::reset, "reset to application");
     }
-    if (!run_rblhost_stage(rblhost_path,
-                           arguments({"reset"}),
-                           10000u,
-                           "ROM reset",
-                           output,
-                           error))
+    if (!run_rblhost_stage(rblhost_path, arguments({"reset"}), 10000u, "ROM reset", output, error))
     {
         return false;
     }
@@ -571,22 +504,22 @@ const char *program_stage_name(ProgramStage stage)
 {
     switch (stage)
     {
-        case ProgramStage::validate:
-            return "validate";
-        case ProgramStage::query:
-            return "query";
-        case ProgramStage::erase:
-            return "erase";
-        case ProgramStage::write:
-            return "write";
-        case ProgramStage::verify:
-            return "verify";
-        case ProgramStage::reset:
-            return "reset";
-        case ProgramStage::complete:
-            return "complete";
-        default:
-            return "unknown";
+    case ProgramStage::validate:
+        return "validate";
+    case ProgramStage::query:
+        return "query";
+    case ProgramStage::erase:
+        return "erase";
+    case ProgramStage::write:
+        return "write";
+    case ProgramStage::verify:
+        return "verify";
+    case ProgramStage::reset:
+        return "reset";
+    case ProgramStage::complete:
+        return "complete";
+    default:
+        return "unknown";
     }
 }
 
@@ -594,23 +527,23 @@ const char *programmer_backend_name(ProgrammerBackend backend)
 {
     switch (backend)
     {
-        case ProgrammerBackend::rblhost:
-            return "rblhost";
-        case ProgrammerBackend::blhost:
-            return "blhost";
-        default:
-            return "unknown";
+    case ProgrammerBackend::rblhost:
+        return "rblhost";
+    case ProgrammerBackend::blhost:
+        return "blhost";
+    default:
+        return "unknown";
     }
 }
 
-bool validate_firmware_image(const std::string &requested_path,
-                             FirmwareImage &image,
+bool validate_firmware_image(const std::string &requested_path, FirmwareImage &image,
                              std::string &error)
 {
     error.clear();
     std::error_code filesystem_error;
     const std::filesystem::path requested = std::filesystem::u8path(requested_path);
-    const std::filesystem::path path = std::filesystem::weakly_canonical(requested, filesystem_error);
+    const std::filesystem::path path =
+        std::filesystem::weakly_canonical(requested, filesystem_error);
     if (filesystem_error || !std::filesystem::is_regular_file(path))
     {
         error = "firmware image is not an existing regular file: " + requested_path;
@@ -623,9 +556,8 @@ bool validate_firmware_image(const std::string &requested_path,
         return false;
     }
     std::wstring extension = path.extension().wstring();
-    std::transform(extension.begin(), extension.end(), extension.begin(), [](wchar_t value) {
-        return static_cast<wchar_t>(std::towlower(value));
-    });
+    std::transform(extension.begin(), extension.end(), extension.begin(),
+                   [](wchar_t value) { return static_cast<wchar_t>(std::towlower(value)); });
     if (extension != L".bin")
     {
         error = "ROM programmer requires a .bin image";
@@ -634,20 +566,19 @@ bool validate_firmware_image(const std::string &requested_path,
 
     std::ifstream input(path, std::ios::binary);
     std::array<uint8_t, 8> vectors{};
-    input.read(reinterpret_cast<char *>(vectors.data()), static_cast<std::streamsize>(vectors.size()));
+    input.read(reinterpret_cast<char *>(vectors.data()),
+               static_cast<std::streamsize>(vectors.size()));
     if (input.gcount() != static_cast<std::streamsize>(vectors.size()))
     {
         error = "firmware image vector table cannot be read";
         return false;
     }
-    const uint32_t initial_sp = static_cast<uint32_t>(vectors[0]) |
-                                (static_cast<uint32_t>(vectors[1]) << 8u) |
-                                (static_cast<uint32_t>(vectors[2]) << 16u) |
-                                (static_cast<uint32_t>(vectors[3]) << 24u);
-    const uint32_t reset_pc = static_cast<uint32_t>(vectors[4]) |
-                              (static_cast<uint32_t>(vectors[5]) << 8u) |
-                              (static_cast<uint32_t>(vectors[6]) << 16u) |
-                              (static_cast<uint32_t>(vectors[7]) << 24u);
+    const uint32_t initial_sp =
+        static_cast<uint32_t>(vectors[0]) | (static_cast<uint32_t>(vectors[1]) << 8u) |
+        (static_cast<uint32_t>(vectors[2]) << 16u) | (static_cast<uint32_t>(vectors[3]) << 24u);
+    const uint32_t reset_pc =
+        static_cast<uint32_t>(vectors[4]) | (static_cast<uint32_t>(vectors[5]) << 8u) |
+        (static_cast<uint32_t>(vectors[6]) << 16u) | (static_cast<uint32_t>(vectors[7]) << 24u);
     if ((initial_sp < 0x20000000u) || (initial_sp >= 0x20100000u))
     {
         error = "firmware initial stack pointer is outside MCXN947 SRAM";
@@ -670,8 +601,7 @@ bool validate_firmware_image(const std::string &requested_path,
     return true;
 }
 
-bool resolve_programmer(const std::string &requested_path,
-                        ProgrammerTool &programmer,
+bool resolve_programmer(const std::string &requested_path, ProgrammerTool &programmer,
                         std::string &error)
 {
     std::vector<std::filesystem::path> candidates;
@@ -681,7 +611,8 @@ bool resolve_programmer(const std::string &requested_path,
     }
     else
     {
-        auto add_environment = [&](const char *name) {
+        auto add_environment = [&](const char *name)
+        {
             char *environment_path = nullptr;
             size_t environment_bytes = 0u;
             if ((_dupenv_s(&environment_path, &environment_bytes, name) == 0) &&
@@ -693,9 +624,8 @@ bool resolve_programmer(const std::string &requested_path,
         };
         add_environment("NXPC_PROGRAMMER_PATH");
         std::array<wchar_t, 32768> executable{};
-        const DWORD length = GetModuleFileNameW(nullptr,
-                                                executable.data(),
-                                                static_cast<DWORD>(executable.size()));
+        const DWORD length =
+            GetModuleFileNameW(nullptr, executable.data(), static_cast<DWORD>(executable.size()));
         if ((length > 0u) && (length < executable.size()))
         {
             const std::filesystem::path directory =
@@ -705,7 +635,8 @@ bool resolve_programmer(const std::string &requested_path,
         }
         add_environment("NXPC_RBLHOST_PATH");
         add_environment("NXPC_BLHOST_PATH");
-        candidates.emplace_back(L"C:\\nxp\\SEC_Provi_26.06\\bin\\_internal\\tools\\spsdk\\blhost.exe");
+        candidates.emplace_back(
+            L"C:\\nxp\\SEC_Provi_26.06\\bin\\_internal\\tools\\spsdk\\blhost.exe");
     }
 
     for (const std::filesystem::path &candidate : candidates)
@@ -717,11 +648,7 @@ bool resolve_programmer(const std::string &requested_path,
         {
             ProcessResult version;
             std::string version_error;
-            if (!run_process(narrow(path.wstring()),
-                             {"--version"},
-                             5000u,
-                             version,
-                             version_error))
+            if (!run_process(narrow(path.wstring()), {"--version"}, 5000u, version, version_error))
             {
                 if (!requested_path.empty())
                 {
@@ -757,19 +684,19 @@ bool resolve_programmer(const std::string &requested_path,
         }
     }
 
-    error = requested_path.empty()
-                ? "no pinned ROM programmer found; expected rblhost 0.2.0 beside the tool or blhost 3.10.0"
-                : "programmer not found: " + requested_path;
+    error = requested_path.empty() ? "no pinned ROM programmer found; expected rblhost 0.2.0 "
+                                     "beside the tool or blhost 3.10.0"
+                                   : "programmer not found: " + requested_path;
     return false;
 }
 
 static bool program_rom_with_blhost_internal(const std::string &blhost_path,
                                              const FirmwareImage &image,
-                                             const ProgramProgress &progress,
-                                             std::string &error)
+                                             const ProgramProgress &progress, std::string &error)
 {
     const std::vector<std::string> usb = {"-u", "0x1FC9:0x014F", "-j"};
-    auto arguments = [&](std::initializer_list<std::string> command) {
+    auto arguments = [&](std::initializer_list<std::string> command)
+    {
         std::vector<std::string> result = usb;
         result.insert(result.end(), command.begin(), command.end());
         return result;
@@ -779,11 +706,8 @@ static bool program_rom_with_blhost_internal(const std::string &blhost_path,
     {
         progress(ProgramStage::query, "get-property 1");
     }
-    if (!run_blhost_stage(blhost_path,
-                          arguments({"get-property", "1"}),
-                          10000u,
-                          "ROM identity query",
-                          error))
+    if (!run_blhost_stage(blhost_path, arguments({"get-property", "1"}), 10000u,
+                          "ROM identity query", error))
     {
         return false;
     }
@@ -791,10 +715,7 @@ static bool program_rom_with_blhost_internal(const std::string &blhost_path,
     {
         progress(ProgramStage::erase, "internal application flash");
     }
-    if (!run_blhost_stage(blhost_path,
-                          arguments({"flash-erase-all"}),
-                          30000u,
-                          "flash erase",
+    if (!run_blhost_stage(blhost_path, arguments({"flash-erase-all"}), 30000u, "flash erase",
                           error))
     {
         return false;
@@ -804,30 +725,22 @@ static bool program_rom_with_blhost_internal(const std::string &blhost_path,
         progress(ProgramStage::write, std::to_string(image.bytes) + " bytes");
     }
     uint64_t written_bytes = 0u;
-    if (!run_blhost_stage(blhost_path,
-                          arguments({"write-memory", "0x0", image.path}),
-                          120000u,
-                          "flash write",
-                          error,
-                          &written_bytes))
+    if (!run_blhost_stage(blhost_path, arguments({"write-memory", "0x0", image.path}), 120000u,
+                          "flash write", error, &written_bytes))
     {
         return false;
     }
     if (written_bytes != image.bytes)
     {
-        error = "flash write reported " + std::to_string(written_bytes) +
-                " bytes; expected " + std::to_string(image.bytes);
+        error = "flash write reported " + std::to_string(written_bytes) + " bytes; expected " +
+                std::to_string(image.bytes);
         return false;
     }
     if (progress)
     {
         progress(ProgramStage::reset, "reset to application");
     }
-    if (!run_blhost_stage(blhost_path,
-                          arguments({"reset"}),
-                          10000u,
-                          "ROM reset",
-                          error))
+    if (!run_blhost_stage(blhost_path, arguments({"reset"}), 10000u, "ROM reset", error))
     {
         return false;
     }
@@ -838,16 +751,14 @@ static bool program_rom_with_blhost_internal(const std::string &blhost_path,
     return true;
 }
 
-bool program_rom(const ProgrammerTool &programmer,
-                 const FirmwareImage &image,
-                 const ProgramProgress &progress,
-                 std::string &error)
+bool program_rom(const ProgrammerTool &programmer, const FirmwareImage &image,
+                 const ProgramProgress &progress, std::string &error)
 {
     if (progress)
     {
-        progress(ProgramStage::validate,
-                 std::string(programmer_backend_name(programmer.backend)) + " " +
-                     programmer.version + ", SHA-256 " + image.sha256);
+        progress(ProgramStage::validate, std::string(programmer_backend_name(programmer.backend)) +
+                                             " " + programmer.version + ", SHA-256 " +
+                                             image.sha256);
     }
     std::string discovery_error;
     const std::vector<HidDevice> devices =
@@ -895,10 +806,8 @@ bool run_programmer_self_test(std::string &error)
     uint64_t response_value = 0u;
     const std::string write_response =
         R"({"command":"write-memory","response":[370740],"status":{"value": 0}})";
-    if (!blhost_first_response_u64(write_response, response_value) ||
-        (response_value != 370740u) ||
-        blhost_first_response_u64(R"({"response":[],"status":{"value": 0}})",
-                                  response_value))
+    if (!blhost_first_response_u64(write_response, response_value) || (response_value != 370740u) ||
+        blhost_first_response_u64(R"({"response":[],"status":{"value": 0}})", response_value))
     {
         error = "blhost numeric response parsing failed";
         return false;

@@ -45,41 +45,20 @@ static inline uint16_t *camera_row(uint16_t *frame, uint32_t y)
  * 0 through 255 maps to 0 through just under 360 degrees.
  */
 color_features_t color_rgb565_to_yhsv(uint16_t pixel);
-void color_convert_rgb565_to_yhsv(const uint16_t *pixels,
-                                  color_features_t *features,
+void color_convert_rgb565_to_yhsv(const uint16_t *pixels, color_features_t *features,
                                   uint32_t count);
 uint16_t color_rgb565(uint8_t red, uint8_t green, uint8_t blue);
 
 /* Drawing is clipped to the camera frame. Null frames are safe no-ops. */
 void frame_draw_pixel(uint16_t *frame, int32_t x, int32_t y, uint16_t color);
-void frame_draw_horizontal_line(uint16_t *frame,
-                                int32_t x0,
-                                int32_t x1,
-                                int32_t y,
-                                uint16_t color);
-void frame_draw_vertical_line(uint16_t *frame,
-                              int32_t x,
-                              int32_t y0,
-                              int32_t y1,
-                              uint16_t color);
-void frame_draw_line(uint16_t *frame,
-                     int32_t x0,
-                     int32_t y0,
-                     int32_t x1,
-                     int32_t y1,
+void frame_draw_horizontal_line(uint16_t *frame, int32_t x0, int32_t x1, int32_t y, uint16_t color);
+void frame_draw_vertical_line(uint16_t *frame, int32_t x, int32_t y0, int32_t y1, uint16_t color);
+void frame_draw_line(uint16_t *frame, int32_t x0, int32_t y0, int32_t x1, int32_t y1,
                      uint16_t color);
-void frame_fill_rectangle(uint16_t *frame,
-                          int32_t x0,
-                          int32_t y0,
-                          int32_t x1,
-                          int32_t y1,
+void frame_fill_rectangle(uint16_t *frame, int32_t x0, int32_t y0, int32_t x1, int32_t y1,
                           uint16_t color);
 /* Draw at most 48 printable ASCII characters using the fixed 5x7 font. */
-void frame_draw_text(uint16_t *frame,
-                     int32_t x,
-                     int32_t y,
-                     const char *text,
-                     uint16_t color);
+void frame_draw_text(uint16_t *frame, int32_t x, int32_t y, const char *text, uint16_t color);
 
 /* Potentiometers are normalized to 0.0 through 1.0. Buttons report held state. */
 float input_alpha(void);

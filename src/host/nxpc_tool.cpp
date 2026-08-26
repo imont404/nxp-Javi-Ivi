@@ -29,15 +29,16 @@ struct Options
 
 void usage()
 {
-    std::cout << "NXP Cup one-cable host protocol probe\n\n"
-              << "usage:\n"
-              << "  nxpc_tool.exe devices\n"
-              << "  nxpc_tool.exe selftest\n"
-              << "  nxpc_tool.exe probe [--port COM34] [--frame] [--seconds 2]\n"
-              << "  nxpc_tool.exe enter-isp [--port COM34]\n\n"
-              << "  nxpc_tool.exe program --image <nxp_cup_core0.bin> [--port COM34]\n"
-              << "                       [--programmer <path>]\n\n"
-              << "probe auto-selects only when exactly one VID_1FC9/PID_0094 CDC device is present.\n";
+    std::cout
+        << "NXP Cup one-cable host protocol probe\n\n"
+        << "usage:\n"
+        << "  nxpc_tool.exe devices\n"
+        << "  nxpc_tool.exe selftest\n"
+        << "  nxpc_tool.exe probe [--port COM34] [--frame] [--seconds 2]\n"
+        << "  nxpc_tool.exe enter-isp [--port COM34]\n\n"
+        << "  nxpc_tool.exe program --image <nxp_cup_core0.bin> [--port COM34]\n"
+        << "                       [--programmer <path>]\n\n"
+        << "probe auto-selects only when exactly one VID_1FC9/PID_0094 CDC device is present.\n";
 }
 
 uint32_t parse_u32(const std::string &text, const char *name)
@@ -63,7 +64,8 @@ Options parse_args(int argc, char **argv)
     while (index < argc)
     {
         const std::string argument = argv[index++];
-        auto value = [&](const char *name) -> std::string {
+        auto value = [&](const char *name) -> std::string
+        {
             if (index >= argc)
             {
                 throw std::runtime_error(std::string("missing value for ") + name);
@@ -159,8 +161,8 @@ void print_devices()
     }
     for (const nxpc::host::HidDevice &device : rom_devices)
     {
-        std::cout << "ROM HID  " << usb_id(device.vid, device.pid) << "  "
-                  << device.friendly_name << "\n";
+        std::cout << "ROM HID  " << usb_id(device.vid, device.pid) << "  " << device.friendly_name
+                  << "\n";
         std::cout << "  " << device.instance_id << "\n";
     }
 }
@@ -169,45 +171,34 @@ std::string telemetry_value(const nxpc::host::TelemetrySample &sample)
 {
     switch (sample.value_type)
     {
-        case NXPC_DBG_TELEMETRY_TYPE_I32:
-            return std::to_string(static_cast<int32_t>(sample.value_bits));
-        case NXPC_DBG_TELEMETRY_TYPE_U32:
-            return std::to_string(sample.value_bits);
-        case NXPC_DBG_TELEMETRY_TYPE_F32:
-        {
-            float value = 0.0f;
-            std::memcpy(&value, &sample.value_bits, sizeof(value));
-            std::ostringstream out;
-            out << value;
-            return out.str();
-        }
+    case NXPC_DBG_TELEMETRY_TYPE_I32:
+        return std::to_string(static_cast<int32_t>(sample.value_bits));
+    case NXPC_DBG_TELEMETRY_TYPE_U32:
+        return std::to_string(sample.value_bits);
+    case NXPC_DBG_TELEMETRY_TYPE_F32:
+    {
+        float value = 0.0f;
+        std::memcpy(&value, &sample.value_bits, sizeof(value));
+        std::ostringstream out;
+        out << value;
+        return out.str();
+    }
     case NXPC_DBG_TELEMETRY_TYPE_BOOL:
         return sample.value_bits != 0u ? "true" : "false";
     case NXPC_DBG_TELEMETRY_TYPE_TEXT:
         return sample.text_value;
     default:
-            return "?";
+        return "?";
     }
 }
 
-bool send_and_wait(nxpc::host::SerialPort &port,
-                   nxpc::host::StreamParser &parser,
-                   uint32_t sequence,
-                   uint32_t msg_id,
-                   uint32_t arg0,
-                   uint32_t arg1,
-                   uint32_t arg2,
-                   nxpc::host::ControlResponse &response,
-                   std::string &error)
+bool send_and_wait(nxpc::host::SerialPort &port, nxpc::host::StreamParser &parser,
+                   uint32_t sequence, uint32_t msg_id, uint32_t arg0, uint32_t arg1, uint32_t arg2,
+                   nxpc::host::ControlResponse &response, std::string &error)
 {
     return nxpc::host::send_control_request(port, sequence, msg_id, arg0, arg1, arg2, error) &&
-           nxpc::host::wait_for_control_response(port,
-                                                parser,
-                                                msg_id,
-                                                sequence,
-                                                2000u,
-                                                response,
-                                                error);
+           nxpc::host::wait_for_control_response(port, parser, msg_id, sequence, 2000u, response,
+                                                 error);
 }
 
 int probe(const Options &options)
@@ -219,8 +210,8 @@ int probe(const Options &options)
         throw std::runtime_error(error);
     }
 
-    std::cout << "device=" << device.port_name << " " << usb_id(device.vid, device.pid)
-              << " " << device.friendly_name << "\n";
+    std::cout << "device=" << device.port_name << " " << usb_id(device.vid, device.pid) << " "
+              << device.friendly_name << "\n";
 
     nxpc::host::SerialPort port;
     if (!port.open(device.port_name, options.baud, 16u * 1024u * 1024u, error))
@@ -235,15 +226,7 @@ int probe(const Options &options)
 
     nxpc::host::StreamParser parser;
     nxpc::host::ControlResponse response;
-    if (!send_and_wait(port,
-                       parser,
-                       0u,
-                       NXPC_DBG_CONTROL_HELLO,
-                       0u,
-                       0u,
-                       0u,
-                       response,
-                       error))
+    if (!send_and_wait(port, parser, 0u, NXPC_DBG_CONTROL_HELLO, 0u, 0u, 0u, response, error))
     {
         throw std::runtime_error(error);
     }
@@ -266,15 +249,8 @@ int probe(const Options &options)
     {
         channels |= NXPC_DBG_CHANNEL_FRAMES | NXPC_DBG_CHANNEL_STATS;
     }
-    if (!send_and_wait(port,
-                       parser,
-                       1u,
-                       NXPC_DBG_CONTROL_SET_CHANNELS,
-                       channels,
-                       NXPC_DBG_STREAM_SOURCE_CAMERA,
-                       0u,
-                       response,
-                       error))
+    if (!send_and_wait(port, parser, 1u, NXPC_DBG_CONTROL_SET_CHANNELS, channels,
+                       NXPC_DBG_STREAM_SOURCE_CAMERA, 0u, response, error))
     {
         throw std::runtime_error(error);
     }
@@ -287,14 +263,12 @@ int probe(const Options &options)
               << std::dec << std::setfill(' ') << "\n";
 
     std::vector<uint8_t> read_buffer(256u * 1024u);
-    const auto deadline = std::chrono::steady_clock::now() +
-                          std::chrono::seconds(options.seconds);
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(options.seconds);
     nxpc::host::Frame frame;
     while (std::chrono::steady_clock::now() < deadline)
     {
-        const int received = port.read(read_buffer.data(),
-                                       static_cast<uint32_t>(read_buffer.size()),
-                                       error);
+        const int received =
+            port.read(read_buffer.data(), static_cast<uint32_t>(read_buffer.size()), error);
         if (received < 0)
         {
             throw std::runtime_error(error);
@@ -309,15 +283,8 @@ int probe(const Options &options)
         }
     }
 
-    if (send_and_wait(port,
-                      parser,
-                      2u,
-                      NXPC_DBG_CONTROL_SET_CHANNELS,
-                      0u,
-                      NXPC_DBG_STREAM_SOURCE_CAMERA,
-                      0u,
-                      response,
-                      error) &&
+    if (send_and_wait(port, parser, 2u, NXPC_DBG_CONTROL_SET_CHANNELS, 0u,
+                      NXPC_DBG_STREAM_SOURCE_CAMERA, 0u, response, error) &&
         (response.status != NXPC_DBG_CONTROL_STATUS_OK))
     {
         error = "stop SET_CHANNELS rejected with status " + std::to_string(response.status);
@@ -327,15 +294,7 @@ int probe(const Options &options)
         throw std::runtime_error(error);
     }
 
-    if (!send_and_wait(port,
-                       parser,
-                       3u,
-                       NXPC_DBG_CONTROL_CLOSE,
-                       0u,
-                       0u,
-                       0u,
-                       response,
-                       error))
+    if (!send_and_wait(port, parser, 3u, NXPC_DBG_CONTROL_CLOSE, 0u, 0u, 0u, response, error))
     {
         throw std::runtime_error(error);
     }
@@ -360,8 +319,8 @@ int probe(const Options &options)
             std::cerr << "No complete camera frame received.\n";
             return 2;
         }
-        std::cout << "camera_frame=ok id=" << frame.frame_id << " bytes="
-                  << frame.pixels.size() << "\n";
+        std::cout << "camera_frame=ok id=" << frame.frame_id << " bytes=" << frame.pixels.size()
+                  << "\n";
     }
 
     nxpc_dbg_stats_report_t stats{};
@@ -398,8 +357,8 @@ int enter_isp(const Options &options)
         throw std::runtime_error(error);
     }
 
-    std::cout << "runtime_device=" << device.port_name << " "
-              << usb_id(device.vid, device.pid) << "\n";
+    std::cout << "runtime_device=" << device.port_name << " " << usb_id(device.vid, device.pid)
+              << "\n";
     nxpc::host::SerialPort port;
     if (!port.open(device.port_name, options.baud, 16u * 1024u * 1024u, error))
     {
@@ -413,15 +372,7 @@ int enter_isp(const Options &options)
 
     nxpc::host::StreamParser parser;
     nxpc::host::ControlResponse response;
-    if (!send_and_wait(port,
-                       parser,
-                       0u,
-                       NXPC_DBG_CONTROL_HELLO,
-                       0u,
-                       0u,
-                       0u,
-                       response,
-                       error))
+    if (!send_and_wait(port, parser, 0u, NXPC_DBG_CONTROL_HELLO, 0u, 0u, 0u, response, error))
     {
         throw std::runtime_error(error);
     }
@@ -436,15 +387,8 @@ int enter_isp(const Options &options)
         throw std::runtime_error("firmware does not advertise ENTER_ISP capability");
     }
 
-    if (!send_and_wait(port,
-                       parser,
-                       1u,
-                       NXPC_DBG_CONTROL_ENTER_ISP,
-                       NXPC_DBG_ENTER_ISP_CONFIRMATION,
-                       0u,
-                       0u,
-                       response,
-                       error))
+    if (!send_and_wait(port, parser, 1u, NXPC_DBG_CONTROL_ENTER_ISP,
+                       NXPC_DBG_ENTER_ISP_CONFIRMATION, 0u, 0u, response, error))
     {
         throw std::runtime_error(error);
     }
@@ -459,10 +403,8 @@ int enter_isp(const Options &options)
     const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
     while (std::chrono::steady_clock::now() < deadline)
     {
-        const std::vector<nxpc::host::HidDevice> rom_devices =
-            nxpc::host::find_hid_devices(nxpc::host::kNxpCupUsbVid,
-                                        nxpc::host::kMcxn947RomPid,
-                                        error);
+        const std::vector<nxpc::host::HidDevice> rom_devices = nxpc::host::find_hid_devices(
+            nxpc::host::kNxpCupUsbVid, nxpc::host::kMcxn947RomPid, error);
         if (!error.empty())
         {
             throw std::runtime_error(error);
@@ -480,7 +422,8 @@ int enter_isp(const Options &options)
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    throw std::runtime_error("ENTER_ISP was acknowledged, but ROM HID did not appear within 5 seconds");
+    throw std::runtime_error(
+        "ENTER_ISP was acknowledged, but ROM HID did not appear within 5 seconds");
 }
 
 int program(const Options &options)
@@ -506,22 +449,18 @@ int program(const Options &options)
               << "sha256=" << image.sha256 << "\n"
               << "initial_sp=0x" << std::hex << image.initial_sp << "\n"
               << "reset_pc=0x" << image.reset_pc << std::dec << "\n"
-              << "programmer_backend="
-              << nxpc::host::programmer_backend_name(programmer.backend) << "\n"
+              << "programmer_backend=" << nxpc::host::programmer_backend_name(programmer.backend)
+              << "\n"
               << "programmer=" << programmer.path << "\n";
 
     const std::vector<nxpc::host::HidDevice> rom_devices =
-        nxpc::host::find_hid_devices(nxpc::host::kNxpCupUsbVid,
-                                    nxpc::host::kMcxn947RomPid,
-                                    error);
+        nxpc::host::find_hid_devices(nxpc::host::kNxpCupUsbVid, nxpc::host::kMcxn947RomPid, error);
     if (!error.empty())
     {
         throw std::runtime_error(error);
     }
-    const std::vector<nxpc::host::SerialDevice> runtime_devices =
-        nxpc::host::find_serial_devices(nxpc::host::kNxpCupUsbVid,
-                                       nxpc::host::kNxpCupRuntimePid,
-                                       error);
+    const std::vector<nxpc::host::SerialDevice> runtime_devices = nxpc::host::find_serial_devices(
+        nxpc::host::kNxpCupUsbVid, nxpc::host::kNxpCupRuntimePid, error);
     if (!error.empty())
     {
         throw std::runtime_error(error);
@@ -546,14 +485,14 @@ int program(const Options &options)
     else
     {
         throw std::runtime_error("expected exactly one runtime CDC or one ROM HID; runtime=" +
-                                 std::to_string(runtime_devices.size()) + " rom=" +
-                                 std::to_string(rom_devices.size()));
+                                 std::to_string(runtime_devices.size()) +
+                                 " rom=" + std::to_string(rom_devices.size()));
     }
 
     if (!nxpc::host::program_rom(
-            programmer,
-            image,
-            [](nxpc::host::ProgramStage stage, const std::string &detail) {
+            programmer, image,
+            [](nxpc::host::ProgramStage stage, const std::string &detail)
+            {
                 std::cout << "program_stage=" << nxpc::host::program_stage_name(stage)
                           << " detail=" << detail << "\n";
             },
@@ -587,8 +526,7 @@ int program(const Options &options)
         if (std::chrono::steady_clock::now() >= deadline)
         {
             throw std::runtime_error(
-                "programming completed, but application did not become ready: " +
-                reconnect_error);
+                "programming completed, but application did not become ready: " + reconnect_error);
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }

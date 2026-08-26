@@ -79,8 +79,7 @@ void nxpc_system__init(void);
 void nxpc_system__service(const button_snapshot_t *buttons);
 
 /* Framework-only TEST page transition. Hardware is made safe before page changes. */
-bool nxpc_system__select_test_page(nxpc_test_page_t page,
-                                   const button_snapshot_t *buttons);
+bool nxpc_system__select_test_page(nxpc_test_page_t page, const button_snapshot_t *buttons);
 
 /* Request a validated high-level action; callers cannot assign modes directly. */
 nxpc_system_action_result_t nxpc_system__request_action(nxpc_system_action_t action);

@@ -44,16 +44,12 @@ using ProgramProgress = std::function<void(ProgramStage stage, const std::string
 
 const char *program_stage_name(ProgramStage stage);
 const char *programmer_backend_name(ProgrammerBackend backend);
-bool validate_firmware_image(const std::string &requested_path,
-                             FirmwareImage &image,
+bool validate_firmware_image(const std::string &requested_path, FirmwareImage &image,
                              std::string &error);
-bool resolve_programmer(const std::string &requested_path,
-                        ProgrammerTool &programmer,
+bool resolve_programmer(const std::string &requested_path, ProgrammerTool &programmer,
                         std::string &error);
-bool program_rom(const ProgrammerTool &programmer,
-                 const FirmwareImage &image,
-                 const ProgramProgress &progress,
-                 std::string &error);
+bool program_rom(const ProgrammerTool &programmer, const FirmwareImage &image,
+                 const ProgramProgress &progress, std::string &error);
 bool run_programmer_self_test(std::string &error);
 
 } // namespace nxpc::host

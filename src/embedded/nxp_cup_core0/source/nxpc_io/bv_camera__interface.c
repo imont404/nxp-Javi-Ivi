@@ -17,7 +17,7 @@
 #include "nxpc__master_config.h"
 #include "e_tick.h"
 
-#define EZH_STACK_SIZE 64   /* stack size for EZH, see smart_dma driver recommendation */
+#define EZH_STACK_SIZE 64 /* stack size for EZH, see smart_dma driver recommendation */
 
 #define DEBUG__PCLK (1)
 #define DEBUG__VSYNC (1)
@@ -40,80 +40,84 @@
 #define CAMERA_REF_VSYNC_MASK (1UL << CAMERA_REF_VSYNC_PIN)
 #define CAMERA_REF_IRQ_MASK (CAMERA_REF_HSYNC_MASK | CAMERA_REF_VSYNC_MASK)
 
-#define CAMERA_FRAME_PIXELS (FSL_VIDEO_EXTRACT_WIDTH(CONFIG__CAMERA_RESOLUTION) * \
-                             FSL_VIDEO_EXTRACT_HEIGHT(CONFIG__CAMERA_RESOLUTION))
+#define CAMERA_FRAME_PIXELS                                                                        \
+    (FSL_VIDEO_EXTRACT_WIDTH(CONFIG__CAMERA_RESOLUTION) *                                          \
+     FSL_VIDEO_EXTRACT_HEIGHT(CONFIG__CAMERA_RESOLUTION))
 #define CAMERA_FRAME_BYTES (CAMERA_FRAME_PIXELS * sizeof(uint16_t))
 #define CAMERA_FRAME_BUFFER_COUNT CONFIG__CAMERA_FRAME_BUFFER_COUNT
 #define CAMERA_PIPELINE_DIAG_LINE_MARGIN (20U)
-#define CAMERA_PIPELINE_DIAG_LINES_MIN (CONFIG__CAMERA_RESOLUTION_Y - CAMERA_PIPELINE_DIAG_LINE_MARGIN)
-#define CAMERA_PIPELINE_DIAG_LINES_MAX (CONFIG__CAMERA_RESOLUTION_Y + CAMERA_PIPELINE_DIAG_LINE_MARGIN)
+#define CAMERA_PIPELINE_DIAG_LINES_MIN                                                             \
+    (CONFIG__CAMERA_RESOLUTION_Y - CAMERA_PIPELINE_DIAG_LINE_MARGIN)
+#define CAMERA_PIPELINE_DIAG_LINES_MAX                                                             \
+    (CONFIG__CAMERA_RESOLUTION_Y + CAMERA_PIPELINE_DIAG_LINE_MARGIN)
 /*
  * FlexIO camera pin group.
  *
  * Everything below is expressed per group so the shifter, timer, and eDMA setup
  * stays identical between them. See CONFIG__CAMERA_FLEXIO_PIN_GROUP and its
- * pin-map notes in nxpc__master_config.h.
- *
- * Naming: *_GPIO_PIN is a PORT/GPIO bit index, *_PIN (and *_PIN_START) is a
- * FLEXIO0_Dnn index. That split already existed; it is now applied per signal
- * because the PORT1 group does not keep data, PCLK, and HREF adjacent on one
- * port the way the PORT4 group does.
+ * pin-map notes in
+ * nxpc__master_config.h.
+ * Naming: *_GPIO_PIN is a PORT/GPIO bit index, *_PIN (and *_PIN_START) is
+ * a FLEXIO0_Dnn index. That split already existed; it is now applied per signal because the PORT1
+ * group does not keep data, PCLK, and HREF adjacent on one port the way the PORT4 group does.
  */
 #if CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT1
 
 /* Rev A camera wiring plus three J9_EXT jumpers. */
-#define CAMERA_FLEXIO_DATA_PORT           PORT1
-#define CAMERA_FLEXIO_DATA_PORT_CLOCK     kCLOCK_Port1
-#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (4U)   /* P1_4  */
-#define CAMERA_FLEXIO_DATA_PIN_START      (12U)  /* FLEXIO0_D12 */
+#define CAMERA_FLEXIO_DATA_PORT PORT1
+#define CAMERA_FLEXIO_DATA_PORT_CLOCK kCLOCK_Port1
+#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (4U) /* P1_4  */
+#define CAMERA_FLEXIO_DATA_PIN_START (12U)     /* FLEXIO0_D12 */
 
-#define CAMERA_FLEXIO_PCLK_PORT           PORT1
-#define CAMERA_FLEXIO_PCLK_PORT_CLOCK     kCLOCK_Port1
-#define CAMERA_FLEXIO_PCLK_GPIO_PIN       (14U)  /* P1_14 */
-#define CAMERA_FLEXIO_PCLK_PIN            (22U)  /* FLEXIO0_D22 */
+#define CAMERA_FLEXIO_PCLK_PORT PORT1
+#define CAMERA_FLEXIO_PCLK_PORT_CLOCK kCLOCK_Port1
+#define CAMERA_FLEXIO_PCLK_GPIO_PIN (14U) /* P1_14 */
+#define CAMERA_FLEXIO_PCLK_PIN (22U)      /* FLEXIO0_D22 */
 
-#define CAMERA_FLEXIO_HREF_PORT           PORT0
-#define CAMERA_FLEXIO_HREF_PORT_CLOCK     kCLOCK_Port0
-#define CAMERA_FLEXIO_HREF_GPIO           GPIO0
-#define CAMERA_FLEXIO_HREF_GPIO_PIN       (11U)  /* P0_11 */
-#define CAMERA_FLEXIO_HREF_PIN            (3U)   /* FLEXIO0_D3 */
+#define CAMERA_FLEXIO_HREF_PORT PORT0
+#define CAMERA_FLEXIO_HREF_PORT_CLOCK kCLOCK_Port0
+#define CAMERA_FLEXIO_HREF_GPIO GPIO0
+#define CAMERA_FLEXIO_HREF_GPIO_PIN (11U) /* P0_11 */
+#define CAMERA_FLEXIO_HREF_PIN (3U)       /* FLEXIO0_D3 */
 
-#define CAMERA_FLEXIO_VSYNC_PORT          PORT0
-#define CAMERA_FLEXIO_VSYNC_PORT_CLOCK    kCLOCK_Port0
-#define CAMERA_FLEXIO_VSYNC_GPIO          GPIO0
-#define CAMERA_FLEXIO_VSYNC_GPIO_CLOCK    kCLOCK_Gpio0
-#define CAMERA_FLEXIO_VSYNC_GPIO_PIN      (4U)   /* P0_4 */
-#define CAMERA_FLEXIO_VSYNC_IRQN          GPIO00_IRQn
-#define CAMERA_FLEXIO_PIN_GROUP_NAME \
-    "D0-D7=P1_4..P1_11/FLEXIO0_D12..D19 PCLK=P1_14/FLEXIO0_D22 HREF=P0_11/FLEXIO0_D3 VSYNC=P0_4/GPIO IRQ"
+#define CAMERA_FLEXIO_VSYNC_PORT PORT0
+#define CAMERA_FLEXIO_VSYNC_PORT_CLOCK kCLOCK_Port0
+#define CAMERA_FLEXIO_VSYNC_GPIO GPIO0
+#define CAMERA_FLEXIO_VSYNC_GPIO_CLOCK kCLOCK_Gpio0
+#define CAMERA_FLEXIO_VSYNC_GPIO_PIN (4U) /* P0_4 */
+#define CAMERA_FLEXIO_VSYNC_IRQN GPIO00_IRQn
+#define CAMERA_FLEXIO_PIN_GROUP_NAME                                                               \
+    "D0-D7=P1_4..P1_11/FLEXIO0_D12..D19 PCLK=P1_14/FLEXIO0_D22 HREF=P0_11/FLEXIO0_D3 "             \
+    "VSYNC=P0_4/GPIO IRQ"
 
 #else /* CAMERA_FLEXIO_PIN_GROUP_PORT4 */
 
 /* Original proven group. Needs eleven fly-wires. */
-#define CAMERA_FLEXIO_DATA_PORT           PORT4
-#define CAMERA_FLEXIO_DATA_PORT_CLOCK     kCLOCK_Port4
-#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (12U)  /* P4_12 */
-#define CAMERA_FLEXIO_DATA_PIN_START      (20U)  /* FLEXIO0_D20 */
+#define CAMERA_FLEXIO_DATA_PORT PORT4
+#define CAMERA_FLEXIO_DATA_PORT_CLOCK kCLOCK_Port4
+#define CAMERA_FLEXIO_DATA_GPIO_START_PIN (12U) /* P4_12 */
+#define CAMERA_FLEXIO_DATA_PIN_START (20U)      /* FLEXIO0_D20 */
 
-#define CAMERA_FLEXIO_PCLK_PORT           PORT4
-#define CAMERA_FLEXIO_PCLK_PORT_CLOCK     kCLOCK_Port4
-#define CAMERA_FLEXIO_PCLK_GPIO_PIN       (20U)  /* P4_20 */
-#define CAMERA_FLEXIO_PCLK_PIN            (28U)  /* FLEXIO0_D28 */
+#define CAMERA_FLEXIO_PCLK_PORT PORT4
+#define CAMERA_FLEXIO_PCLK_PORT_CLOCK kCLOCK_Port4
+#define CAMERA_FLEXIO_PCLK_GPIO_PIN (20U) /* P4_20 */
+#define CAMERA_FLEXIO_PCLK_PIN (28U)      /* FLEXIO0_D28 */
 
-#define CAMERA_FLEXIO_HREF_PORT           PORT4
-#define CAMERA_FLEXIO_HREF_PORT_CLOCK     kCLOCK_Port4
-#define CAMERA_FLEXIO_HREF_GPIO           GPIO4
-#define CAMERA_FLEXIO_HREF_GPIO_PIN       (21U)  /* P4_21 */
-#define CAMERA_FLEXIO_HREF_PIN            (29U)  /* FLEXIO0_D29 */
+#define CAMERA_FLEXIO_HREF_PORT PORT4
+#define CAMERA_FLEXIO_HREF_PORT_CLOCK kCLOCK_Port4
+#define CAMERA_FLEXIO_HREF_GPIO GPIO4
+#define CAMERA_FLEXIO_HREF_GPIO_PIN (21U) /* P4_21 */
+#define CAMERA_FLEXIO_HREF_PIN (29U)      /* FLEXIO0_D29 */
 
-#define CAMERA_FLEXIO_VSYNC_PORT          PORT4
-#define CAMERA_FLEXIO_VSYNC_PORT_CLOCK    kCLOCK_Port4
-#define CAMERA_FLEXIO_VSYNC_GPIO          GPIO4
-#define CAMERA_FLEXIO_VSYNC_GPIO_CLOCK    kCLOCK_Gpio4
-#define CAMERA_FLEXIO_VSYNC_GPIO_PIN      (22U)  /* P4_22 */
-#define CAMERA_FLEXIO_VSYNC_IRQN          GPIO40_IRQn
-#define CAMERA_FLEXIO_PIN_GROUP_NAME \
-    "D0-D7=P4_12..P4_19/FLEXIO0_D20..D27 PCLK=P4_20/FLEXIO0_D28 HREF=P4_21/FLEXIO0_D29 VSYNC=P4_22/GPIO IRQ"
+#define CAMERA_FLEXIO_VSYNC_PORT PORT4
+#define CAMERA_FLEXIO_VSYNC_PORT_CLOCK kCLOCK_Port4
+#define CAMERA_FLEXIO_VSYNC_GPIO GPIO4
+#define CAMERA_FLEXIO_VSYNC_GPIO_CLOCK kCLOCK_Gpio4
+#define CAMERA_FLEXIO_VSYNC_GPIO_PIN (22U) /* P4_22 */
+#define CAMERA_FLEXIO_VSYNC_IRQN GPIO40_IRQn
+#define CAMERA_FLEXIO_PIN_GROUP_NAME                                                               \
+    "D0-D7=P4_12..P4_19/FLEXIO0_D20..D27 PCLK=P4_20/FLEXIO0_D28 HREF=P4_21/FLEXIO0_D29 "           \
+    "VSYNC=P4_22/GPIO IRQ"
 
 #endif
 
@@ -135,7 +139,8 @@
 #define CAMERA_FLEXIO_DMA_MINOR_BYTES (CAMERA_FLEXIO_SHIFTER_COUNT * sizeof(uint32_t))
 #define CAMERA_FLEXIO_SAMPLE_WORDS (64U)
 #define CAMERA_FLEXIO_BUSY_VSYNC_TIMEOUT (3U)
-#define CAMERA_FLEXIO_SHIFT_MASK (((1UL << CAMERA_FLEXIO_SHIFTER_COUNT) - 1UL) << CAMERA_FLEXIO_SHIFTER_START)
+#define CAMERA_FLEXIO_SHIFT_MASK                                                                   \
+    (((1UL << CAMERA_FLEXIO_SHIFTER_COUNT) - 1UL) << CAMERA_FLEXIO_SHIFTER_START)
 #define CAMERA_FLEXIO_TIMER_MASK (1UL << CAMERA_FLEXIO_TIMER)
 #define CAMERA_TIMING_SOURCE_NAME "OSTIMER0"
 #define CAMERA_TIMING_CLK_ATTACH kCLK_1M_to_OSTIMER
@@ -143,7 +148,6 @@
 #define CAMERA_TIMING_TICKS_PER_SECOND (1000000U)
 #define CAMERA_TIMING_MIN_INIT (0xFFFFFFFFU)
 #define CAMERA_TIMING_OSTIMER_HIGH_MASK OSTIMER_EVTIMERH_EVTIMER_COUNT_VALUE_MASK
-
 
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
 /*
@@ -153,10 +157,9 @@
 __BSS(SRAM_H) volatile uint32_t ezh_binary[512];
 #endif
 
-SDK_ALIGN(__BSS(FRAME_BUFFERS) uint16_t g_camera_buffer[CAMERA_FRAME_PIXELS * CAMERA_FRAME_BUFFER_COUNT],
+SDK_ALIGN(__BSS(FRAME_BUFFERS)
+              uint16_t g_camera_buffer[CAMERA_FRAME_PIXELS * CAMERA_FRAME_BUFFER_COUNT],
           CAMERA_FLEXIO_DMA_MINOR_BYTES);
-
-
 
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
 /*
@@ -172,7 +175,7 @@ volatile uint32_t next_buffer = 0;
 
 volatile uint32_t line;
 
-volatile uint8_t img_ready = 0;   /* non-zero when new data signaled by SmartDMA IRQ */
+volatile uint8_t img_ready = 0; /* non-zero when new data signaled by SmartDMA IRQ */
 
 static volatile uint8_t g_samrtdma_stack[EZH_STACK_SIZE];
 #endif
@@ -219,7 +222,7 @@ static volatile uint32_t g_camera_timing_last_dma_frame_ticks;
 static volatile uint32_t g_camera_timing_min_dma_frame_ticks;
 static volatile uint32_t g_camera_timing_max_dma_frame_ticks;
 
-//This needs to be global
+// This needs to be global
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
 smartdma_camera_param_t smartdmaParam;
 #endif
@@ -229,218 +232,205 @@ static uint16_t *camera__frame_buffer(uint32_t buffer_index)
     return &g_camera_buffer[(buffer_index & 0x01U) * CAMERA_FRAME_PIXELS];
 }
 
-
-void  EZH_Camera_320240_Whole_Buf(void)
+void EZH_Camera_320240_Whole_Buf(void)
 {
-	E_NOP;/*pattern*/
-	E_NOP;/*pattern*/
-	E_NOP;/*pattern*/
-	E_NOP;/*pattern*/
+    E_NOP; /*pattern*/
+    E_NOP; /*pattern*/
+    E_NOP; /*pattern*/
+    E_NOP; /*pattern*/
 
+    E_PER_READ(R6, ARM2EZH);
+    // Align the value of R6 to word
+    E_LSR(R6, R6, 2);
+    E_LSL(R6, R6, 2);
+    E_LDR(SP, R6, 0); // EZH stack initial
+    E_LDR(R3, R6, 1); // R3 point to the store buffer in the RAM
 
-	E_PER_READ(R6, ARM2EZH);
-	//Align the value of R6 to word
-	E_LSR(R6, R6, 2);
-	E_LSL(R6, R6, 2);
-	E_LDR(SP, R6, 0);//EZH stack initial
-	E_LDR(R3, R6, 1);//R3 point to the store buffer in the RAM
+    E_LABEL("init_0");
+    E_LDR(CFS, PC, 1);        // Load CFS
+    E_LDR(CFM, PC, 1);        // Load CFM
+    E_ADD_IMM(PC, PC, 1 * 4); // E_goto
 
+    // INPUTMUX_AttachSignal(INPUTMUX0, 0, kINPUTMUX_GpioPort0Pin4ToSmartDma); //vsync
+    //    INPUTMUX_AttachSignal(INPUTMUX0, 1, kINPUTMUX_GpioPort0Pin11ToSmartDma);//hsync
+    //    INPUTMUX_AttachSignal(INPUTMUX0, 2, kINPUTMUX_GpioPort0Pin5ToSmartDma); //pclk
 
-	E_LABEL("init_0");
-	E_LDR(CFS, PC, 1); // Load CFS
-	E_LDR(CFM, PC, 1); // Load CFM
-	E_ADD_IMM(PC, PC, 1 * 4); //E_goto
+    E_DCD_VAL(BS7(0) | BS6(0) | BS5(0) | BS4(0) | BS3(0) | BS2(1) | BS1(0) |
+              BS0(2)); // Config source (C^D + C^D-)  where C^ is Clock rise, D- is Data inverted
+    E_DCD_VAL(BS7(6) | BS6(6) | BS5(6) | BS4(6) | BS3(6) | BS2(BS_FALL) | BS1(BS_RISE) |
+              BS0(BS_RISE) | (1 << 2)); // Config MUX    (C^D + C^D-)  where C^ is Clock rise, D- is
+                                        // Data inverted, enable OR
 
-	// INPUTMUX_AttachSignal(INPUTMUX0, 0, kINPUTMUX_GpioPort0Pin4ToSmartDma); //vsync
-	//    INPUTMUX_AttachSignal(INPUTMUX0, 1, kINPUTMUX_GpioPort0Pin11ToSmartDma);//hsync
-	//    INPUTMUX_AttachSignal(INPUTMUX0, 2, kINPUTMUX_GpioPort0Pin5ToSmartDma); //pclk
+    E_BCLR_IMM(GPD, GPD, 0);
+    E_BCLR_IMM(GPD, GPD, 1);
+    E_BCLR_IMM(GPD, GPD, 2);
+    E_BCLR_IMM(GPD, GPD, 3);
+    E_BCLR_IMM(GPD, GPD, 4);
+    E_BCLR_IMM(GPD, GPD, 5);
+    E_BCLR_IMM(GPD, GPD, 6);
+    E_BCLR_IMM(GPD, GPD, 7);
+    E_BSET_IMM(GPD, GPD, 13);
 
-	E_DCD_VAL(BS7(0) | BS6(0) | BS5(0) | BS4(0) | BS3(0) | BS2(1) | BS1(0) | BS0(2));   // Config source (C^D + C^D-)  where C^ is Clock rise, D- is Data inverted
-	E_DCD_VAL(BS7(6) | BS6(6) | BS5(6) | BS4(6) | BS3(6) | BS2(BS_FALL) | BS1(BS_RISE) | BS0(BS_RISE) | (1 << 2)); // Config MUX    (C^D + C^D-)  where C^ is Clock rise, D- is Data inverted, enable OR
+    E_LOAD_IMM(R1, 0xFF);
+    E_LABEL("PCLK_0");
+    E_ACC_VECTORED_HOLD_LV(PC, (1 << 0));
 
+    E_STRB_POST(R3, GPI, 1); // data will be stored from GPI bottom byte to RAM
+    E_BSET_IMM(CFM, CFM, 0); // clear the vector flag
 
-
-	E_BCLR_IMM(GPD, GPD, 0);
-	E_BCLR_IMM(GPD, GPD, 1);
-	E_BCLR_IMM(GPD, GPD, 2);
-	E_BCLR_IMM(GPD, GPD, 3);
-	E_BCLR_IMM(GPD, GPD, 4);
-	E_BCLR_IMM(GPD, GPD, 5);
-	E_BCLR_IMM(GPD, GPD, 6);
-	E_BCLR_IMM(GPD, GPD, 7);
-	E_BSET_IMM(GPD, GPD, 13);
-
-
-	E_LOAD_IMM(R1, 0xFF);
-	E_LABEL("PCLK_0");
-	E_ACC_VECTORED_HOLD_LV(PC, (1 << 0));
-
-	E_STRB_POST(R3, GPI, 1);  				// data will be stored from GPI bottom byte to RAM
-	E_BSET_IMM(CFM, CFM, 0); 				//clear the vector flag
-
-	E_SUB_IMMS(PC, PC, 4 * 5);
+    E_SUB_IMMS(PC, PC, 4 * 5);
 #if DEBUG__PCLK == (1)
-	E_BSET_IMM(GPO, GPO, 13);				//toggle the P0_18, used to measure the timming in logic device
-	E_BCLR_IMM(GPO, GPO, 13);
+    E_BSET_IMM(GPO, GPO, 13); // toggle the P0_18, used to measure the timming in logic device
+    E_BCLR_IMM(GPO, GPO, 13);
 #else
-	E_NOP;
-	E_NOP;
+    E_NOP;
+    E_NOP;
 #endif
-	E_NOP;
+    E_NOP;
 
-	E_GOSUB("VSYNC_0");//BS1
-	E_NOP;
-	E_NOP;
-	E_NOP;
+    E_GOSUB("VSYNC_0"); // BS1
+    E_NOP;
+    E_NOP;
+    E_NOP;
 
-	E_GOSUB("HSYNC_0");//BS2
-	E_NOP;
-	E_NOP;
-	E_NOP;
+    E_GOSUB("HSYNC_0"); // BS2
+    E_NOP;
+    E_NOP;
+    E_NOP;
 
+    E_LABEL("VSYNC_0");
+    E_BSET_IMM(CFM, CFM, 0); // clear the VSYNC vector flag
+    E_BSET_IMM(CFM, CFM, 1); // enable HSYNC interrupt
+    E_BSET_IMM(CFM, CFM, 2); // enable PCLK  interrupt
+    E_LDR(R3, R6, 1);        // R3 point to the store buffer in the RAM
+    E_INT_TRIGGER(0xFFFFFF); // interrupt and told ARM data is ready
 
-	E_LABEL("VSYNC_0");
-	E_BSET_IMM(CFM, CFM, 0); 			//clear the VSYNC vector flag
-    E_BSET_IMM(CFM, CFM, 1); 			//enable HSYNC interrupt
-	E_BSET_IMM(CFM, CFM, 2); 			//enable PCLK  interrupt
-	E_LDR(R3, R6, 1);							//R3 point to the store buffer in the RAM
-	E_INT_TRIGGER(0xFFFFFF); // interrupt and told ARM data is ready
-
-	E_LOAD_IMM(R4,0);
-
+    E_LOAD_IMM(R4, 0);
 
 #if DEBUG__VSYNC == (1)
-	E_BSET_IMM(GPO, GPO, 13);				//toggle the P0_18, used to measure the timming in logic device
-	E_BCLR_IMM(GPO, GPO, 13);
+    E_BSET_IMM(GPO, GPO, 13); // toggle the P0_18, used to measure the timming in logic device
+    E_BCLR_IMM(GPO, GPO, 13);
 #endif
 
-	//E_INT_TRIGGER(0x11); // interrupt and told ARM data is ready
-	E_GOSUB("PCLK_0");
+    // E_INT_TRIGGER(0x11); // interrupt and told ARM data is ready
+    E_GOSUB("PCLK_0");
 
+    E_LABEL("HSYNC_0");
 
-	E_LABEL("HSYNC_0");
+    // E_PER_WRITE(R4, EZH2ARM);
+    //	E_STR(R6,R4, 2); //save the line
+    E_ADD_IMM(R4, R4, 1);
+    //	E_INT_TRIGGER(0xFFFFFF); // interrupt and told ARM data is ready
 
-	//E_PER_WRITE(R4, EZH2ARM);
-//	E_STR(R6,R4, 2); //save the line
-	E_ADD_IMM(R4,R4,1);
-//	E_INT_TRIGGER(0xFFFFFF); // interrupt and told ARM data is ready
+    E_BSET_IMM(CFM, CFM, 1); // clear the vector flag
 
-	E_BSET_IMM(CFM, CFM, 1); 			//clear the vector flag
+#if DEBUG__HSYNC == (1)
+    E_BSET_IMM(GPO, GPO, 13); // toggle the P0_18, used to measure the timming in logic device
+    E_BCLR_IMM(GPO, GPO, 13);
+    E_BSET_IMM(GPO, GPO, 13); // toggle the P0_18, used to measure the timming in logic device
+    E_BCLR_IMM(GPO, GPO, 13);
+#endif
 
-	#if DEBUG__HSYNC == (1)
-		E_BSET_IMM(GPO, GPO, 13);				//toggle the P0_18, used to measure the timming in logic device
-		E_BCLR_IMM(GPO, GPO, 13);
-		E_BSET_IMM(GPO, GPO, 13);				//toggle the P0_18, used to measure the timming in logic device
-		E_BCLR_IMM(GPO, GPO, 13);
-		#endif
-
-	E_GOSUB("PCLK_0");
+    E_GOSUB("PCLK_0");
 }
-
 
 void camera__i2c_init();
 
-status_t camera__i2c_receiveSCCB(uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+status_t camera__i2c_receiveSCCB(uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize,
+                                 uint8_t *rxBuff, uint8_t rxBuffSize);
 
-status_t camera__i2c_sendSCCB(uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *txBuff, uint8_t txBuffSize);
-
+status_t camera__i2c_sendSCCB(uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize,
+                              uint8_t *txBuff, uint8_t txBuffSize);
 
 void camera__pull_reset_pin(bool pullUp)
 {
     if (pullUp)
         GPIO_PortSet(BOARD_INITCAMERAPINS_CAM_RST_GPIO, BOARD_INITCAMERAPINS_CAM_RST_GPIO_PIN_MASK);
     else
-        GPIO_PortClear(BOARD_INITCAMERAPINS_CAM_RST_GPIO, BOARD_INITCAMERAPINS_CAM_RST_GPIO_PIN_MASK);
+        GPIO_PortClear(BOARD_INITCAMERAPINS_CAM_RST_GPIO,
+                       BOARD_INITCAMERAPINS_CAM_RST_GPIO_PIN_MASK);
 }
 
 void camera__pull_power_pin(bool pullUp)
 {
     if (pullUp)
-        GPIO_PortSet(BOARD_INITCAMERAPINS_CAM_PDWN_GPIO, BOARD_INITCAMERAPINS_CAM_PDWN_GPIO_PIN_MASK);
+        GPIO_PortSet(BOARD_INITCAMERAPINS_CAM_PDWN_GPIO,
+                     BOARD_INITCAMERAPINS_CAM_PDWN_GPIO_PIN_MASK);
     else
-        GPIO_PortClear(BOARD_INITCAMERAPINS_CAM_PDWN_GPIO, BOARD_INITCAMERAPINS_CAM_PDWN_GPIO_PIN_MASK);
+        GPIO_PortClear(BOARD_INITCAMERAPINS_CAM_PDWN_GPIO,
+                       BOARD_INITCAMERAPINS_CAM_PDWN_GPIO_PIN_MASK);
 }
-
-
 
 #if CONFIG__CAMERA_SELECT == CAMERA__OV7670
 /* Camera resource and handle */
 
-	const ov7670_resource_t resource = {
-		.i2cSendFunc    = BOARD_Camera_I2C_SendSCCB,
-		.i2cReceiveFunc = BOARD_Camera_I2C_ReceiveSCCB,
-		.xclock         = kOV7670_InputClock12MHZ,
-	};
+const ov7670_resource_t resource = {
+    .i2cSendFunc = BOARD_Camera_I2C_SendSCCB,
+    .i2cReceiveFunc = BOARD_Camera_I2C_ReceiveSCCB,
+    .xclock = kOV7670_InputClock12MHZ,
+};
 
 #endif
-
-
 
 #if CONFIG__CAMERA_SELECT == CAMERA__OV5640
 
-	const ov5640_resource_t resource = {
-		 .i2cSendFunc    = BOARD_Camera_I2C_SendSCCB,
-		 .i2cReceiveFunc = BOARD_Camera_I2C_ReceiveSCCB,
-		.pullResetPin = camera__pull_reset_pin,      /*!< Function to pull reset pin high or low. */
-		.pullPowerDownPin = camera__pull_power_pin,  /*!< Function to pull the power down pin high or low. */
-	};
+const ov5640_resource_t resource = {
+    .i2cSendFunc = BOARD_Camera_I2C_SendSCCB,
+    .i2cReceiveFunc = BOARD_Camera_I2C_ReceiveSCCB,
+    .pullResetPin = camera__pull_reset_pin, /*!< Function to pull reset pin high or low. */
+    .pullPowerDownPin =
+        camera__pull_power_pin, /*!< Function to pull the power down pin high or low. */
+};
 
 #endif
-
-
 
 #if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_SMARTDMA_EZH
 static void ezh_camera_callback(void *param)
 {
-	//EZH_SetExternalFlag(1) ;
+    // EZH_SetExternalFlag(1) ;
 
-	line = LPC_EZH_ARCH_B0->EZHB_EZH2ARM;
+    line = LPC_EZH_ARCH_B0->EZHB_EZH2ARM;
 
-	/*
-	 * NOTE: this is an assignment, not a comparison - "=" where "==" was almost
-	 * certainly meant. It therefore always evaluates true and overwrites the
-	 * value just read from EZHB_EZH2ARM.
-	 *
-	 * Left as-is deliberately. The current behaviour (advance the buffer on
-	 * every EZH callback) is what the working competition image does, and
-	 * "fixing" the typo would gate frame advance on EZHB_EZH2ARM actually
-	 * reading 0xFFFFFF - a behavioural change with unknown EZH-side semantics
-	 * that must be verified on hardware before it is made.
-	 */
-	if(line = 0xFFFFFF)
-	{
-			next_buffer++;
+    /*
+     * NOTE: this is an assignment, not a comparison - "=" where "==" was almost
+     * certainly meant. It therefore always evaluates true and overwrites the
+     * value just read from EZHB_EZH2ARM.
+     *
+     * Left as-is deliberately. The current behaviour (advance the buffer on
+     * every EZH callback) is what the working competition image does, and
+     * "fixing" the typo would gate frame advance on EZHB_EZH2ARM actually
+     * reading 0xFFFFFF - a behavioural change with unknown EZH-side semantics
+     * that must be verified on hardware before it is made.
+     */
+    if (line = 0xFFFFFF)
+    {
+        next_buffer++;
 
-			next_buffer&=0x01;
+        next_buffer &= 0x01;
 
-			uint16_t * buf;
+        uint16_t *buf;
 
-			if(next_buffer==0)
-				buf = camera__frame_buffer(0U);
-			else
-				buf = camera__frame_buffer(1U);
+        if (next_buffer == 0)
+            buf = camera__frame_buffer(0U);
+        else
+            buf = camera__frame_buffer(1U);
 
-			smartdmaParam.p_buffer = (uint32_t *)buf;
+        smartdmaParam.p_buffer = (uint32_t *)buf;
 
-			nxpc__next_frame(buf);
-	}
-
+        nxpc__next_frame(buf);
+    }
 }
 #endif
 
+camera_device_handle_t handle = {.resource = (void *)&resource,
 
+#if CONFIG__CAMERA_SELECT == CAMERA__OV7670
+                                 .ops = &ov7670_ops,
+#endif
 
-camera_device_handle_t handle =
-{
-    .resource = (void *)&resource,
-
-	#if CONFIG__CAMERA_SELECT == CAMERA__OV7670
-		.ops      = &ov7670_ops,
-	#endif
-
-	#if CONFIG__CAMERA_SELECT == CAMERA__OV5640
-		.ops      = &ov5640_ops
-	#endif
+#if CONFIG__CAMERA_SELECT == CAMERA__OV5640
+                                 .ops = &ov5640_ops
+#endif
 
 };
 
@@ -456,24 +446,24 @@ static void camera__configure_xclk(void)
 
     uint32_t res = CONFIG__CAMERA_RESOLUTION;
 
-    switch(res)
+    switch (res)
     {
     default:
-    case FSL_VIDEO_RESOLUTION(320,200):
-		CLOCK_SetClkDiv(kCLOCK_DivClkOut,12U); //320x200
-	break;
-    case FSL_VIDEO_RESOLUTION(320,102):
-		CLOCK_SetClkDiv(kCLOCK_DivClkOut, 11U); //320x102
-	break;
-    case FSL_VIDEO_RESOLUTION(320,120):
-		CLOCK_SetClkDiv(kCLOCK_DivClkOut, 11U); //320x102
-	break;
-    case FSL_VIDEO_RESOLUTION(160,120):
-		CLOCK_SetClkDiv(kCLOCK_DivClkOut, 6U); //320x102
-	break;
-    case FSL_VIDEO_RESOLUTION(320,240):
-		CLOCK_SetClkDiv(kCLOCK_DivClkOut, 23U); //320x102
-	break;
+    case FSL_VIDEO_RESOLUTION(320, 200):
+        CLOCK_SetClkDiv(kCLOCK_DivClkOut, 12U); // 320x200
+        break;
+    case FSL_VIDEO_RESOLUTION(320, 102):
+        CLOCK_SetClkDiv(kCLOCK_DivClkOut, 11U); // 320x102
+        break;
+    case FSL_VIDEO_RESOLUTION(320, 120):
+        CLOCK_SetClkDiv(kCLOCK_DivClkOut, 11U); // 320x102
+        break;
+    case FSL_VIDEO_RESOLUTION(160, 120):
+        CLOCK_SetClkDiv(kCLOCK_DivClkOut, 6U); // 320x102
+        break;
+    case FSL_VIDEO_RESOLUTION(320, 240):
+        CLOCK_SetClkDiv(kCLOCK_DivClkOut, 23U); // 320x102
+        break;
     }
 
 #endif
@@ -493,47 +483,46 @@ static void camera__init_sensor(void)
 {
 #if (CONFIG__CAMERA_SELECT == CAMERA__OV7670)
 
+    /* Init ov7670 module with default setting. */
+    camera_config_t camconfig = {
+        .pixelFormat = kVIDEO_PixelFormatRGB565,
+        .resolution = kVIDEO_ResolutionQVGA,
+        .framePerSec = 30,
+        .interface = kCAMERA_InterfaceGatedClock,
+        .frameBufferLinePitch_Bytes = 0, /* Not used. */
+        .controlFlags = 0,               /* Not used. */
+        .bytesPerPixel = 0,              /* Not used. */
+        .mipiChannel = 0,                /* Not used. */
+        .csiLanes = 0,                   /* Not used. */
+    };
 
-        /* Init ov7670 module with default setting. */
-        camera_config_t camconfig = {
-            .pixelFormat                = kVIDEO_PixelFormatRGB565,
-            .resolution                 = kVIDEO_ResolutionQVGA,
-            .framePerSec                = 30,
-            .interface                  = kCAMERA_InterfaceGatedClock,
-            .frameBufferLinePitch_Bytes = 0, /* Not used. */
-            .controlFlags               = 0, /* Not used. */
-            .bytesPerPixel              = 0, /* Not used. */
-            .mipiChannel                = 0, /* Not used. */
-            .csiLanes                   = 0, /* Not used. */
-        };
+    camera__pull_reset_pin(true);
 
-    	camera__pull_reset_pin(true);
+    camera__pull_power_pin(true);
+    SDK_DelayAtLeastUs(10000, SystemCoreClock);
+    camera__pull_power_pin(false);
+    SDK_DelayAtLeastUs(20000, SystemCoreClock);
 
-    	camera__pull_power_pin(true);
-    	SDK_DelayAtLeastUs(10000,SystemCoreClock);
-       	camera__pull_power_pin(false);
-        SDK_DelayAtLeastUs(20000,SystemCoreClock);
+    camera__pull_reset_pin(false);
+    SDK_DelayAtLeastUs(20000, SystemCoreClock);
 
-    	camera__pull_reset_pin(false);
-    	SDK_DelayAtLeastUs(20000,SystemCoreClock);
-
-    	camera__pull_reset_pin(true);
-    	SDK_DelayAtLeastUs(20000,SystemCoreClock);
-
+    camera__pull_reset_pin(true);
+    SDK_DelayAtLeastUs(20000, SystemCoreClock);
 
 #else
 
-        camera_config_t camconfig = {
-            .pixelFormat                = kVIDEO_PixelFormatRGB565,
-            .resolution                 = CONFIG__CAMERA_RESOLUTION,
-            .framePerSec                = 30,//
-            .interface                  = kCAMERA_InterfaceNonGatedClock ,
-            .frameBufferLinePitch_Bytes = 0, /* Not used. */
-            .controlFlags               = kCAMERA_DataLatchOnRisingEdge | kCAMERA_HrefActiveHigh | kCAMERA_VsyncActiveHigh, /* Not used. */
-            .bytesPerPixel              = 0, /* Not used. */
-            .mipiChannel                = 0, /* Not used. */
-            .csiLanes                   = 0, /* Not used. */
-        };
+    camera_config_t camconfig = {
+        .pixelFormat = kVIDEO_PixelFormatRGB565,
+        .resolution = CONFIG__CAMERA_RESOLUTION,
+        .framePerSec = 30, //
+        .interface = kCAMERA_InterfaceNonGatedClock,
+        .frameBufferLinePitch_Bytes = 0, /* Not used. */
+        .controlFlags = kCAMERA_DataLatchOnRisingEdge | kCAMERA_HrefActiveHigh |
+                        kCAMERA_VsyncActiveHigh, /* Not used. */
+        .bytesPerPixel = 0,                      /* Not used. */
+        .mipiChannel = 0,                        /* Not used. */
+        .csiLanes = 0,                           /* Not used. */
+    };
 
 #endif
 
@@ -545,40 +534,33 @@ static void camera__configure_flexio_diag_inputs(void)
     CLOCK_EnableClock(kCLOCK_Gpio4);
     CLOCK_EnableClock(kCLOCK_Port4);
 
-    const gpio_pin_config_t input_config = {
-        .pinDirection = kGPIO_DigitalInput,
-        .outputLogic = 0U
-    };
+    const gpio_pin_config_t input_config = {.pinDirection = kGPIO_DigitalInput, .outputLogic = 0U};
 
     GPIO_PinInit(GPIO4, 20U, &input_config);
     GPIO_PinInit(GPIO4, 21U, &input_config);
     GPIO_PinInit(GPIO4, 22U, &input_config);
 
-    const port_pin_config_t port4_pclk_input = {
-        .pullSelect = kPORT_PullDisable,
-        .pullValueSelect = kPORT_LowPullResistor,
-        .slewRate = kPORT_FastSlewRate,
-        .passiveFilterEnable = kPORT_PassiveFilterDisable,
-        .openDrainEnable = kPORT_OpenDrainDisable,
-        .driveStrength = kPORT_LowDriveStrength,
-        .mux = kPORT_MuxAlt0,
-        .inputBuffer = kPORT_InputBufferEnable,
-        .invertInput = kPORT_InputNormal,
-        .lockRegister = kPORT_UnlockRegister
-    };
+    const port_pin_config_t port4_pclk_input = {.pullSelect = kPORT_PullDisable,
+                                                .pullValueSelect = kPORT_LowPullResistor,
+                                                .slewRate = kPORT_FastSlewRate,
+                                                .passiveFilterEnable = kPORT_PassiveFilterDisable,
+                                                .openDrainEnable = kPORT_OpenDrainDisable,
+                                                .driveStrength = kPORT_LowDriveStrength,
+                                                .mux = kPORT_MuxAlt0,
+                                                .inputBuffer = kPORT_InputBufferEnable,
+                                                .invertInput = kPORT_InputNormal,
+                                                .lockRegister = kPORT_UnlockRegister};
 
-    const port_pin_config_t port4_sync_input = {
-        .pullSelect = kPORT_PullDown,
-        .pullValueSelect = kPORT_LowPullResistor,
-        .slewRate = kPORT_FastSlewRate,
-        .passiveFilterEnable = kPORT_PassiveFilterEnable,
-        .openDrainEnable = kPORT_OpenDrainDisable,
-        .driveStrength = kPORT_LowDriveStrength,
-        .mux = kPORT_MuxAlt0,
-        .inputBuffer = kPORT_InputBufferEnable,
-        .invertInput = kPORT_InputNormal,
-        .lockRegister = kPORT_UnlockRegister
-    };
+    const port_pin_config_t port4_sync_input = {.pullSelect = kPORT_PullDown,
+                                                .pullValueSelect = kPORT_LowPullResistor,
+                                                .slewRate = kPORT_FastSlewRate,
+                                                .passiveFilterEnable = kPORT_PassiveFilterEnable,
+                                                .openDrainEnable = kPORT_OpenDrainDisable,
+                                                .driveStrength = kPORT_LowDriveStrength,
+                                                .mux = kPORT_MuxAlt0,
+                                                .inputBuffer = kPORT_InputBufferEnable,
+                                                .invertInput = kPORT_InputNormal,
+                                                .lockRegister = kPORT_UnlockRegister};
 
     PORT_SetPinConfig(PORT4, CAMERA_DIAG_PCLK_PIN, &port4_pclk_input);
     PORT_SetPinConfig(PORT4, CAMERA_DIAG_HSYNC_PIN, &port4_sync_input);
@@ -588,7 +570,8 @@ static void camera__configure_flexio_diag_inputs(void)
     GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_HSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
     GPIO_SetPinInterruptConfig(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
 
-#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) &&                                     \
+     FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
     GPIO_SetPinInterruptChannel(GPIO4, CAMERA_DIAG_PCLK_PIN, kGPIO_InterruptOutput0);
     GPIO_SetPinInterruptChannel(GPIO4, CAMERA_DIAG_HSYNC_PIN, kGPIO_InterruptOutput0);
     GPIO_SetPinInterruptChannel(GPIO4, CAMERA_DIAG_VSYNC_PIN, kGPIO_InterruptOutput0);
@@ -606,13 +589,14 @@ static void camera__configure_flexio_diag_inputs(void)
     EnableIRQ(GPIO40_IRQn);
 
     DEBUG("FlexIO camera diag inputs configured: PCLK=P4_20 HSYNC/HREF=P4_21 VSYNC=P4_22\r\n");
-    DEBUG("FlexIO camera diag interrupts: P4_21 HSYNC/HREF and P4_22 VSYNC rising edges on GPIO40_IRQn; P4_20 PCLK flag polled\r\n");
-    DEBUG("FlexIO camera diag VSYNC IRQ guard: disable P4_22 IRQ above %u edges/sec and fall back to flag polling\r\n",
+    DEBUG("FlexIO camera diag interrupts: P4_21 HSYNC/HREF and P4_22 VSYNC rising edges on "
+          "GPIO40_IRQn; P4_20 PCLK flag polled\r\n");
+    DEBUG("FlexIO camera diag VSYNC IRQ guard: disable P4_22 IRQ above %u edges/sec and fall back "
+          "to flag polling\r\n",
           CAMERA_DIAG_VSYNC_IRQ_MAX_PER_SECOND);
     DEBUG("FlexIO camera diag sync inputs use weak pulldown and passive filter\r\n");
     DEBUG("FlexIO camera diag levels: pclk=%u hsync=%u vsync=%u\r\n",
-          GPIO_PinRead(GPIO4, CAMERA_DIAG_PCLK_PIN),
-          GPIO_PinRead(GPIO4, CAMERA_DIAG_HSYNC_PIN),
+          GPIO_PinRead(GPIO4, CAMERA_DIAG_PCLK_PIN), GPIO_PinRead(GPIO4, CAMERA_DIAG_HSYNC_PIN),
           GPIO_PinRead(GPIO4, CAMERA_DIAG_VSYNC_PIN));
 }
 
@@ -624,7 +608,8 @@ static void camera__configure_reference_diag_inputs(void)
     GPIO_SetPinInterruptConfig(GPIO0, CAMERA_REF_HSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
     GPIO_SetPinInterruptConfig(GPIO0, CAMERA_REF_VSYNC_PIN, kGPIO_InterruptStatusFlagDisabled);
 
-#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) &&                                     \
+     FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
     GPIO_SetPinInterruptChannel(GPIO0, CAMERA_REF_PCLK_PIN, kGPIO_InterruptOutput0);
     GPIO_SetPinInterruptChannel(GPIO0, CAMERA_REF_HSYNC_PIN, kGPIO_InterruptOutput0);
     GPIO_SetPinInterruptChannel(GPIO0, CAMERA_REF_VSYNC_PIN, kGPIO_InterruptOutput0);
@@ -657,31 +642,28 @@ static void camera__configure_flexio_edma_pins(void)
     CLOCK_EnableClock(CAMERA_FLEXIO_VSYNC_PORT_CLOCK);
     CLOCK_EnableClock(CAMERA_FLEXIO_VSYNC_GPIO_CLOCK);
 
-    const port_pin_config_t flexio_input_config = {
-        .pullSelect = kPORT_PullDisable,
-        .pullValueSelect = kPORT_LowPullResistor,
-        .slewRate = kPORT_FastSlewRate,
-        .passiveFilterEnable = kPORT_PassiveFilterDisable,
-        .openDrainEnable = kPORT_OpenDrainDisable,
-        .driveStrength = kPORT_LowDriveStrength,
-        .mux = kPORT_MuxAlt6,
-        .inputBuffer = kPORT_InputBufferEnable,
-        .invertInput = kPORT_InputNormal,
-        .lockRegister = kPORT_UnlockRegister
-    };
+    const port_pin_config_t flexio_input_config = {.pullSelect = kPORT_PullDisable,
+                                                   .pullValueSelect = kPORT_LowPullResistor,
+                                                   .slewRate = kPORT_FastSlewRate,
+                                                   .passiveFilterEnable =
+                                                       kPORT_PassiveFilterDisable,
+                                                   .openDrainEnable = kPORT_OpenDrainDisable,
+                                                   .driveStrength = kPORT_LowDriveStrength,
+                                                   .mux = kPORT_MuxAlt6,
+                                                   .inputBuffer = kPORT_InputBufferEnable,
+                                                   .invertInput = kPORT_InputNormal,
+                                                   .lockRegister = kPORT_UnlockRegister};
 
-    const port_pin_config_t vsync_gpio_config = {
-        .pullSelect = kPORT_PullDown,
-        .pullValueSelect = kPORT_LowPullResistor,
-        .slewRate = kPORT_FastSlewRate,
-        .passiveFilterEnable = kPORT_PassiveFilterEnable,
-        .openDrainEnable = kPORT_OpenDrainDisable,
-        .driveStrength = kPORT_LowDriveStrength,
-        .mux = kPORT_MuxAlt0,
-        .inputBuffer = kPORT_InputBufferEnable,
-        .invertInput = kPORT_InputNormal,
-        .lockRegister = kPORT_UnlockRegister
-    };
+    const port_pin_config_t vsync_gpio_config = {.pullSelect = kPORT_PullDown,
+                                                 .pullValueSelect = kPORT_LowPullResistor,
+                                                 .slewRate = kPORT_FastSlewRate,
+                                                 .passiveFilterEnable = kPORT_PassiveFilterEnable,
+                                                 .openDrainEnable = kPORT_OpenDrainDisable,
+                                                 .driveStrength = kPORT_LowDriveStrength,
+                                                 .mux = kPORT_MuxAlt0,
+                                                 .inputBuffer = kPORT_InputBufferEnable,
+                                                 .invertInput = kPORT_InputNormal,
+                                                 .lockRegister = kPORT_UnlockRegister};
 
     /*
      * Data, PCLK, and HREF are configured separately rather than as one
@@ -691,18 +673,14 @@ static void camera__configure_flexio_edma_pins(void)
      */
     for (uint32_t i = 0U; i < CAMERA_FLEXIO_DATA_WIDTH; i++)
     {
-        PORT_SetPinConfig(CAMERA_FLEXIO_DATA_PORT,
-                          CAMERA_FLEXIO_DATA_GPIO_START_PIN + i,
+        PORT_SetPinConfig(CAMERA_FLEXIO_DATA_PORT, CAMERA_FLEXIO_DATA_GPIO_START_PIN + i,
                           &flexio_input_config);
     }
 
     PORT_SetPinConfig(CAMERA_FLEXIO_PCLK_PORT, CAMERA_FLEXIO_PCLK_GPIO_PIN, &flexio_input_config);
     PORT_SetPinConfig(CAMERA_FLEXIO_HREF_PORT, CAMERA_FLEXIO_HREF_GPIO_PIN, &flexio_input_config);
 
-    const gpio_pin_config_t input_config = {
-        .pinDirection = kGPIO_DigitalInput,
-        .outputLogic = 0U
-    };
+    const gpio_pin_config_t input_config = {.pinDirection = kGPIO_DigitalInput, .outputLogic = 0U};
 
     GPIO_PinInit(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN, &input_config);
     PORT_SetPinConfig(CAMERA_FLEXIO_VSYNC_PORT, CAMERA_FLEXIO_VSYNC_GPIO_PIN, &vsync_gpio_config);
@@ -713,10 +691,12 @@ static void camera__configure_flexio_edma_pins(void)
     GPIO_SetPinInterruptConfig(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN,
                                kGPIO_InterruptStatusFlagDisabled);
 
-#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) &&                                     \
+     FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
     GPIO_SetPinInterruptChannel(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_VSYNC_GPIO_PIN,
                                 kGPIO_InterruptOutput0);
-    GPIO_GpioClearInterruptChannelFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_SYNC_CLEAR_MASK, 0U);
+    GPIO_GpioClearInterruptChannelFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_SYNC_CLEAR_MASK,
+                                        0U);
 #else
     GPIO_GpioClearInterruptFlags(CAMERA_FLEXIO_VSYNC_GPIO, CAMERA_FLEXIO_SYNC_CLEAR_MASK);
 #endif
@@ -748,7 +728,8 @@ static void camera__configure_flexio_edma_pins(void)
         for (uint32_t i = 0U; i < CAMERA_FLEXIO_DATA_WIDTH; i++)
         {
             uint32_t mux = (CAMERA_FLEXIO_DATA_PORT->PCR[CAMERA_FLEXIO_DATA_GPIO_START_PIN + i] &
-                            PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
+                            PORT_PCR_MUX_MASK) >>
+                           PORT_PCR_MUX_SHIFT;
 
             data_mux |= (mux & 0xFU) << (i * 4U);
 
@@ -758,20 +739,21 @@ static void camera__configure_flexio_edma_pins(void)
             }
         }
 
-        uint32_t pclk_mux = (CAMERA_FLEXIO_PCLK_PORT->PCR[CAMERA_FLEXIO_PCLK_GPIO_PIN] &
-                             PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
-        uint32_t href_mux = (CAMERA_FLEXIO_HREF_PORT->PCR[CAMERA_FLEXIO_HREF_GPIO_PIN] &
-                             PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
-        uint32_t vsync_mux = (CAMERA_FLEXIO_VSYNC_PORT->PCR[CAMERA_FLEXIO_VSYNC_GPIO_PIN] &
-                              PORT_PCR_MUX_MASK) >> PORT_PCR_MUX_SHIFT;
+        uint32_t pclk_mux =
+            (CAMERA_FLEXIO_PCLK_PORT->PCR[CAMERA_FLEXIO_PCLK_GPIO_PIN] & PORT_PCR_MUX_MASK) >>
+            PORT_PCR_MUX_SHIFT;
+        uint32_t href_mux =
+            (CAMERA_FLEXIO_HREF_PORT->PCR[CAMERA_FLEXIO_HREF_GPIO_PIN] & PORT_PCR_MUX_MASK) >>
+            PORT_PCR_MUX_SHIFT;
+        uint32_t vsync_mux =
+            (CAMERA_FLEXIO_VSYNC_PORT->PCR[CAMERA_FLEXIO_VSYNC_GPIO_PIN] & PORT_PCR_MUX_MASK) >>
+            PORT_PCR_MUX_SHIFT;
 
         DEBUG("FlexIO camera pin mux readback: data(D7..D0)=0x%08X pclk=%u href=%u vsync=%u %s\r\n",
-              (unsigned int)data_mux,
-              (unsigned int)pclk_mux,
-              (unsigned int)href_mux,
+              (unsigned int)data_mux, (unsigned int)pclk_mux, (unsigned int)href_mux,
               (unsigned int)vsync_mux,
-              (data_ok && pclk_mux == 6U && href_mux == 6U && vsync_mux == 0U)
-                  ? "OK" : "UNEXPECTED");
+              (data_ok && pclk_mux == 6U && href_mux == 6U && vsync_mux == 0U) ? "OK"
+                                                                               : "UNEXPECTED");
     }
 }
 
@@ -791,55 +773,41 @@ static void camera__configure_flexio_camera(void)
     FLEXIO0->TIMSTAT = CAMERA_FLEXIO_TIMER_MASK;
 
     for (uint32_t shifter = CAMERA_FLEXIO_SHIFTER_START;
-         shifter < (CAMERA_FLEXIO_SHIFTER_START + CAMERA_FLEXIO_SHIFTER_COUNT);
-         shifter++)
+         shifter < (CAMERA_FLEXIO_SHIFTER_START + CAMERA_FLEXIO_SHIFTER_COUNT); shifter++)
     {
-        uint32_t input_source = (shifter == (CAMERA_FLEXIO_SHIFTER_START + CAMERA_FLEXIO_SHIFTER_COUNT - 1U)) ? 0U : 1U;
+        uint32_t input_source =
+            (shifter == (CAMERA_FLEXIO_SHIFTER_START + CAMERA_FLEXIO_SHIFTER_COUNT - 1U)) ? 0U : 1U;
 
-        FLEXIO0->SHIFTCFG[shifter] =
-            FLEXIO_SHIFTCFG_INSRC(input_source) |
-            FLEXIO_SHIFTCFG_PWIDTH(7U) |
-            FLEXIO_SHIFTCFG_SSTOP(0U) |
-            FLEXIO_SHIFTCFG_SSTART(0U);
+        FLEXIO0->SHIFTCFG[shifter] = FLEXIO_SHIFTCFG_INSRC(input_source) |
+                                     FLEXIO_SHIFTCFG_PWIDTH(7U) | FLEXIO_SHIFTCFG_SSTOP(0U) |
+                                     FLEXIO_SHIFTCFG_SSTART(0U);
 
-        FLEXIO0->SHIFTCTL[shifter] =
-            FLEXIO_SHIFTCTL_TIMSEL(CAMERA_FLEXIO_TIMER) |
-            FLEXIO_SHIFTCTL_TIMPOL(0U) |
-            FLEXIO_SHIFTCTL_PINCFG(0U) |
-            FLEXIO_SHIFTCTL_PINSEL(CAMERA_FLEXIO_DATA_PIN_START) |
-            FLEXIO_SHIFTCTL_PINPOL(0U) |
-            FLEXIO_SHIFTCTL_SMOD(1U);
+        FLEXIO0->SHIFTCTL[shifter] = FLEXIO_SHIFTCTL_TIMSEL(CAMERA_FLEXIO_TIMER) |
+                                     FLEXIO_SHIFTCTL_TIMPOL(0U) | FLEXIO_SHIFTCTL_PINCFG(0U) |
+                                     FLEXIO_SHIFTCTL_PINSEL(CAMERA_FLEXIO_DATA_PIN_START) |
+                                     FLEXIO_SHIFTCTL_PINPOL(0U) | FLEXIO_SHIFTCTL_SMOD(1U);
     }
 
-    FLEXIO0->TIMCFG[CAMERA_FLEXIO_TIMER] =
-        FLEXIO_TIMCFG_TIMOUT(1U) |
-        FLEXIO_TIMCFG_TIMDEC(2U) |
-        FLEXIO_TIMCFG_TIMRST(6U) |
-        FLEXIO_TIMCFG_TIMDIS(6U) |
-        FLEXIO_TIMCFG_TIMENA(6U) |
-        FLEXIO_TIMCFG_TSTOP(0U) |
-        FLEXIO_TIMCFG_TSTART(0U);
+    FLEXIO0->TIMCFG[CAMERA_FLEXIO_TIMER] = FLEXIO_TIMCFG_TIMOUT(1U) | FLEXIO_TIMCFG_TIMDEC(2U) |
+                                           FLEXIO_TIMCFG_TIMRST(6U) | FLEXIO_TIMCFG_TIMDIS(6U) |
+                                           FLEXIO_TIMCFG_TIMENA(6U) | FLEXIO_TIMCFG_TSTOP(0U) |
+                                           FLEXIO_TIMCFG_TSTART(0U);
 
-    FLEXIO0->TIMCMP[CAMERA_FLEXIO_TIMER] = FLEXIO_TIMCMP_CMP((8U * CAMERA_FLEXIO_SHIFTER_COUNT) - 1U);
+    FLEXIO0->TIMCMP[CAMERA_FLEXIO_TIMER] =
+        FLEXIO_TIMCMP_CMP((8U * CAMERA_FLEXIO_SHIFTER_COUNT) - 1U);
 
     FLEXIO0->TIMCTL[CAMERA_FLEXIO_TIMER] =
         FLEXIO_TIMCTL_TRGSEL(camera__flexio_timer_trigger_sel_pininput(CAMERA_FLEXIO_HREF_PIN)) |
-        FLEXIO_TIMCTL_TRGPOL(0U) |
-        FLEXIO_TIMCTL_TRGSRC(1U) |
-        FLEXIO_TIMCTL_PINCFG(0U) |
-        FLEXIO_TIMCTL_PINSEL(CAMERA_FLEXIO_PCLK_PIN) |
-        FLEXIO_TIMCTL_PINPOL(0U) |
+        FLEXIO_TIMCTL_TRGPOL(0U) | FLEXIO_TIMCTL_TRGSRC(1U) | FLEXIO_TIMCTL_PINCFG(0U) |
+        FLEXIO_TIMCTL_PINSEL(CAMERA_FLEXIO_PCLK_PIN) | FLEXIO_TIMCTL_PINPOL(0U) |
         FLEXIO_TIMCTL_TIMOD(3U);
 
     FLEXIO0->CTRL = FLEXIO_CTRL_DBGE(1U) | FLEXIO_CTRL_FLEXEN(1U);
 
-    DEBUG("FlexIO camera engine: flexio_clk=%uHz shifter=%u count=%u timer=%u dma_minor=%u frame_bytes=%u\r\n",
-          CLOCK_GetFlexioClkFreq(),
-          CAMERA_FLEXIO_SHIFTER_START,
-          CAMERA_FLEXIO_SHIFTER_COUNT,
-          CAMERA_FLEXIO_TIMER,
-          CAMERA_FLEXIO_DMA_MINOR_BYTES,
-          CAMERA_FRAME_BYTES);
+    DEBUG("FlexIO camera engine: flexio_clk=%uHz shifter=%u count=%u timer=%u dma_minor=%u "
+          "frame_bytes=%u\r\n",
+          CLOCK_GetFlexioClkFreq(), CAMERA_FLEXIO_SHIFTER_START, CAMERA_FLEXIO_SHIFTER_COUNT,
+          CAMERA_FLEXIO_TIMER, CAMERA_FLEXIO_DMA_MINOR_BYTES, CAMERA_FRAME_BYTES);
 }
 
 static uint64_t camera__timing_gray_to_binary(uint64_t gray)
@@ -876,8 +844,7 @@ static uint32_t camera__timing_read_ticks(void)
 }
 
 static void camera__timing_update_min_max(volatile uint32_t *min_ticks,
-                                          volatile uint32_t *max_ticks,
-                                          uint32_t ticks)
+                                          volatile uint32_t *max_ticks, uint32_t ticks)
 {
     if (ticks < *min_ticks)
     {
@@ -927,8 +894,7 @@ static void camera__timing_on_vsync(uint32_t vsync_tick)
 
         g_camera_timing_last_vsync_period_ticks = period_ticks;
         camera__timing_update_min_max(&g_camera_timing_min_vsync_period_ticks,
-                                      &g_camera_timing_max_vsync_period_ticks,
-                                      period_ticks);
+                                      &g_camera_timing_max_vsync_period_ticks, period_ticks);
         g_camera_timing_vsync_period_sample_count++;
     }
 
@@ -942,8 +908,7 @@ static void camera__timing_on_dma_armed(uint32_t vsync_tick)
 
     g_camera_timing_last_dma_arm_ticks = arm_ticks;
     camera__timing_update_min_max(&g_camera_timing_min_dma_arm_ticks,
-                                  &g_camera_timing_max_dma_arm_ticks,
-                                  arm_ticks);
+                                  &g_camera_timing_max_dma_arm_ticks, arm_ticks);
 }
 
 static void camera__timing_on_dma_done(void)
@@ -952,8 +917,7 @@ static void camera__timing_on_dma_done(void)
 
     g_camera_timing_last_dma_frame_ticks = frame_ticks;
     camera__timing_update_min_max(&g_camera_timing_min_dma_frame_ticks,
-                                  &g_camera_timing_max_dma_frame_ticks,
-                                  frame_ticks);
+                                  &g_camera_timing_max_dma_frame_ticks, frame_ticks);
 }
 
 static void camera__configure_frame_timing(void)
@@ -977,11 +941,11 @@ static void camera__configure_frame_timing(void)
     g_camera_timing_max_dma_frame_ticks = 0U;
 
     DEBUG("FlexIO camera timing: %s free-running at %uHz for VSYNC/DMA timestamps\r\n",
-          CAMERA_TIMING_SOURCE_NAME,
-          g_camera_timing_clock_hz);
+          CAMERA_TIMING_SOURCE_NAME, g_camera_timing_clock_hz);
 }
 
-static void camera__flexio_edma_callback(edma_handle_t *handle, void *userData, bool transferDone, uint32_t tcds)
+static void camera__flexio_edma_callback(edma_handle_t *handle, void *userData, bool transferDone,
+                                         uint32_t tcds)
 {
     (void)handle;
     (void)userData;
@@ -1046,14 +1010,10 @@ static void camera__flexio_edma_start_frame(uint32_t vsync_tick)
     FLEXIO0->SHIFTERR = CAMERA_FLEXIO_SHIFT_MASK;
     FLEXIO0->TIMSTAT = CAMERA_FLEXIO_TIMER_MASK;
 
-    EDMA_PrepareTransfer(&transfer_config,
-                         (void *)&FLEXIO0->SHIFTBUF[CAMERA_FLEXIO_SHIFTER_START],
-                         CAMERA_FLEXIO_DMA_MINOR_BYTES,
-                         (void *)buffer,
-                         CAMERA_FLEXIO_DMA_MINOR_BYTES,
-                         CAMERA_FLEXIO_DMA_MINOR_BYTES,
-                         CAMERA_FRAME_BYTES,
-                         kEDMA_PeripheralToMemory);
+    EDMA_PrepareTransfer(&transfer_config, (void *)&FLEXIO0->SHIFTBUF[CAMERA_FLEXIO_SHIFTER_START],
+                         CAMERA_FLEXIO_DMA_MINOR_BYTES, (void *)buffer,
+                         CAMERA_FLEXIO_DMA_MINOR_BYTES, CAMERA_FLEXIO_DMA_MINOR_BYTES,
+                         CAMERA_FRAME_BYTES, kEDMA_PeripheralToMemory);
 
     status_t status = EDMA_SubmitTransfer(&g_camera_flexio_edma_handle, &transfer_config);
 
@@ -1119,15 +1079,14 @@ static void camera__configure_flexio_edma(void)
     g_camera_flexio_edma_busy_vsyncs = 0U;
     g_camera_flexio_edma_last_sample_nonzero = CAMERA_FLEXIO_SAMPLE_WORDS;
 
-    DEBUG("FlexIO camera eDMA: DMA1 channel %u request %u, buffers prefilled with 0xA5 before first real capture\r\n",
-          CAMERA_FLEXIO_EDMA_CHANNEL,
-          CAMERA_FLEXIO_EDMA_REQUEST);
+    DEBUG("FlexIO camera eDMA: DMA1 channel %u request %u, buffers prefilled with 0xA5 before "
+          "first real capture\r\n",
+          CAMERA_FLEXIO_EDMA_CHANNEL, CAMERA_FLEXIO_EDMA_REQUEST);
 }
 
 static uint16_t camera__rgb565(uint8_t red, uint8_t green, uint8_t blue)
 {
-    return (uint16_t)(((uint16_t)(red & 0xF8U) << 8U) |
-                      ((uint16_t)(green & 0xFCU) << 3U) |
+    return (uint16_t)(((uint16_t)(red & 0xF8U) << 8U) | ((uint16_t)(green & 0xFCU) << 3U) |
                       ((uint16_t)(blue & 0xF8U) >> 3U));
 }
 
@@ -1242,7 +1201,8 @@ static void camera__pipeline_diag_on_vsync(uint32_t lines)
 
 void GPIO40_IRQHandler(void)
 {
-#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) &&                                     \
+     FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
     uint32_t status = GPIO_GpioGetInterruptChannelFlags(GPIO4, 0U);
     GPIO_GpioClearInterruptChannelFlags(GPIO4, status & CAMERA_DIAG_IRQ_MASK, 0U);
 #else
@@ -1250,7 +1210,8 @@ void GPIO40_IRQHandler(void)
     GPIO_GpioClearInterruptFlags(GPIO4, status & CAMERA_DIAG_IRQ_MASK);
 #endif
 
-#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA &&     CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT4
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA &&                        \
+    CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT4
     if ((status & CAMERA_DIAG_VSYNC_MASK) != 0UL)
     {
         uint32_t irq_tick = camera__timing_read_ticks();
@@ -1287,7 +1248,8 @@ void GPIO40_IRQHandler(void)
 
 void GPIO00_IRQHandler(void)
 {
-#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) &&                                     \
+     FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
     uint32_t status = GPIO_GpioGetInterruptChannelFlags(GPIO0, 0U);
     GPIO_GpioClearInterruptChannelFlags(GPIO0, status & CAMERA_REF_IRQ_MASK, 0U);
 #else
@@ -1308,7 +1270,8 @@ void GPIO00_IRQHandler(void)
         g_camera_ref_lines_last_frame = hsync_count - g_camera_ref_hsync_at_last_vsync;
         g_camera_ref_hsync_at_last_vsync = hsync_count;
 
-#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA &&     CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT1
+#if CONFIG__CAMERA_CAPTURE_BACKEND == CAMERA_CAPTURE_BACKEND_FLEXIO_EDMA &&                        \
+    CONFIG__CAMERA_FLEXIO_PIN_GROUP == CAMERA_FLEXIO_PIN_GROUP_PORT1
         /*
          * The PORT1 group puts frame start on P0_4, which this handler already
          * serviced as a reference counter. Promote it to driving capture.
@@ -1368,17 +1331,11 @@ void nxpc_camera__service(void)
     {
         uint32_t p4_pclk_seen = camera__diag_take_gpio_flag(GPIO4, CAMERA_DIAG_PCLK_PIN);
 
-        DEBUG("cam_pipe frames=%u(+%u) reject=%u p4_vs=%u(+%u) p4_hs=%u p4_lines=%u p4_pclk=%u next_buf=%u line_win=%u-%u\r\n",
-              frame_count,
-              frame_delta,
-              g_camera_pipeline_diag_rejected_vsync_count,
-              vsync_count,
-              vsync_delta,
-              g_camera_diag_hsync_count,
-              g_camera_diag_lines_last_frame,
-              p4_pclk_seen,
-              g_camera_pipeline_diag_next_buffer,
-              CAMERA_PIPELINE_DIAG_LINES_MIN,
+        DEBUG("cam_pipe frames=%u(+%u) reject=%u p4_vs=%u(+%u) p4_hs=%u p4_lines=%u p4_pclk=%u "
+              "next_buf=%u line_win=%u-%u\r\n",
+              frame_count, frame_delta, g_camera_pipeline_diag_rejected_vsync_count, vsync_count,
+              vsync_delta, g_camera_diag_hsync_count, g_camera_diag_lines_last_frame, p4_pclk_seen,
+              g_camera_pipeline_diag_next_buffer, CAMERA_PIPELINE_DIAG_LINES_MIN,
               CAMERA_PIPELINE_DIAG_LINES_MAX);
 
         last_frame_report = frame_count;
@@ -1449,17 +1406,24 @@ void nxpc_camera__service(void)
         uint32_t remaining = 0U;
         uint32_t fps_x100 = camera__timing_fps_x100(done_delta, elapsed_ticks);
         uint32_t elapsed_us = camera__timing_ticks_to_us(elapsed_ticks);
-        uint32_t vsync_last_us = camera__timing_ticks_to_us(g_camera_timing_last_vsync_period_ticks);
-        uint32_t vsync_min_us = (g_camera_timing_vsync_period_sample_count == 0U) ? 0U :
-            camera__timing_ticks_to_us(g_camera_timing_min_vsync_period_ticks);
+        uint32_t vsync_last_us =
+            camera__timing_ticks_to_us(g_camera_timing_last_vsync_period_ticks);
+        uint32_t vsync_min_us =
+            (g_camera_timing_vsync_period_sample_count == 0U)
+                ? 0U
+                : camera__timing_ticks_to_us(g_camera_timing_min_vsync_period_ticks);
         uint32_t vsync_max_us = camera__timing_ticks_to_us(g_camera_timing_max_vsync_period_ticks);
         uint32_t dma_arm_us = camera__timing_ticks_to_us(g_camera_timing_last_dma_arm_ticks);
-        uint32_t dma_arm_min_us = (g_camera_timing_min_dma_arm_ticks == CAMERA_TIMING_MIN_INIT) ? 0U :
-            camera__timing_ticks_to_us(g_camera_timing_min_dma_arm_ticks);
+        uint32_t dma_arm_min_us =
+            (g_camera_timing_min_dma_arm_ticks == CAMERA_TIMING_MIN_INIT)
+                ? 0U
+                : camera__timing_ticks_to_us(g_camera_timing_min_dma_arm_ticks);
         uint32_t dma_arm_max_us = camera__timing_ticks_to_us(g_camera_timing_max_dma_arm_ticks);
         uint32_t dma_frame_us = camera__timing_ticks_to_us(g_camera_timing_last_dma_frame_ticks);
-        uint32_t dma_frame_min_us = (g_camera_timing_min_dma_frame_ticks == CAMERA_TIMING_MIN_INIT) ? 0U :
-            camera__timing_ticks_to_us(g_camera_timing_min_dma_frame_ticks);
+        uint32_t dma_frame_min_us =
+            (g_camera_timing_min_dma_frame_ticks == CAMERA_TIMING_MIN_INIT)
+                ? 0U
+                : camera__timing_ticks_to_us(g_camera_timing_min_dma_frame_ticks);
         uint32_t dma_frame_max_us = camera__timing_ticks_to_us(g_camera_timing_max_dma_frame_ticks);
 
         if (g_camera_flexio_edma_busy != 0U)
@@ -1467,44 +1431,20 @@ void nxpc_camera__service(void)
             remaining = EDMA_GetRemainingMajorLoopCount(DMA1, CAMERA_FLEXIO_EDMA_CHANNEL);
         }
 
-        DEBUG("cam_dma t_ms=%u t_us=%u fps=%u.%02u done=%u(+%u) start=%u(+%u) p4_vs=%u(+%u) vs_us=%u/%u/%u arm_us=%u/%u/%u frame_us=%u/%u/%u busy=%u busy_vs=%u(+%u) timeout=%u(+%u) submit_err=%u(+%u) cb_err=%u(+%u) sample_nz=%u first=%04x,%04x,%04x,%04x rem=%u shiftstat=%02x shifterr=%02x timstat=%02x\r\n",
-              elapsed_ms,
-              elapsed_us,
-              fps_x100 / 100U,
-              fps_x100 % 100U,
-              done_count,
-              done_delta,
-              started_count,
-              started_delta,
-              vsync_count,
-              vsync_delta,
-              vsync_last_us,
-              vsync_min_us,
-              vsync_max_us,
-              dma_arm_us,
-              dma_arm_min_us,
-              dma_arm_max_us,
-              dma_frame_us,
-              dma_frame_min_us,
-              dma_frame_max_us,
-              g_camera_flexio_edma_busy,
-              busy_vsync_count,
-              busy_vsync_delta,
-              timeout_count,
-              timeout_delta,
-              submit_error_count,
-              submit_error_delta,
-              callback_error_count,
-              callback_error_delta,
-              g_camera_flexio_edma_last_sample_nonzero,
-              g_camera_flexio_edma_last_first_words[0],
-              g_camera_flexio_edma_last_first_words[1],
-              g_camera_flexio_edma_last_first_words[2],
-              g_camera_flexio_edma_last_first_words[3],
-              remaining,
-              FLEXIO0->SHIFTSTAT,
-              FLEXIO0->SHIFTERR,
-              FLEXIO0->TIMSTAT);
+        DEBUG("cam_dma t_ms=%u t_us=%u fps=%u.%02u done=%u(+%u) start=%u(+%u) p4_vs=%u(+%u) "
+              "vs_us=%u/%u/%u arm_us=%u/%u/%u frame_us=%u/%u/%u busy=%u busy_vs=%u(+%u) "
+              "timeout=%u(+%u) submit_err=%u(+%u) cb_err=%u(+%u) sample_nz=%u "
+              "first=%04x,%04x,%04x,%04x rem=%u shiftstat=%02x shifterr=%02x timstat=%02x\r\n",
+              elapsed_ms, elapsed_us, fps_x100 / 100U, fps_x100 % 100U, done_count, done_delta,
+              started_count, started_delta, vsync_count, vsync_delta, vsync_last_us, vsync_min_us,
+              vsync_max_us, dma_arm_us, dma_arm_min_us, dma_arm_max_us, dma_frame_us,
+              dma_frame_min_us, dma_frame_max_us, g_camera_flexio_edma_busy, busy_vsync_count,
+              busy_vsync_delta, timeout_count, timeout_delta, submit_error_count,
+              submit_error_delta, callback_error_count, callback_error_delta,
+              g_camera_flexio_edma_last_sample_nonzero, g_camera_flexio_edma_last_first_words[0],
+              g_camera_flexio_edma_last_first_words[1], g_camera_flexio_edma_last_first_words[2],
+              g_camera_flexio_edma_last_first_words[3], remaining, FLEXIO0->SHIFTSTAT,
+              FLEXIO0->SHIFTERR, FLEXIO0->TIMSTAT);
 
         last_done_report = done_count;
         last_started_report = started_count;
@@ -1562,30 +1502,17 @@ static void camera__run_flexio_diag_loop(void)
         last_ref_hsync_count = ref_hsync_count;
         last_ref_vsync_count = ref_vsync_count;
 
-        DEBUG("cam_diag t_ms=%u p4_hs=%u(+%u) p4_vs_irq=%u(+%u) p4_lines=%u p4_pclk=%u p4_vs_flag=%u p4_vs_off=%u ref_hs=%u(+%u) ref_vs=%u(+%u) ref_lines=%u ref_pclk=%u lvl_p4=%u%u%u lvl_ref=%u%u%u unexp=%u/%u\r\n",
-              elapsed_ms,
-              hsync_count,
-              hsync_delta,
-              vsync_count,
-              vsync_delta,
-              g_camera_diag_lines_last_frame,
-              p4_pclk_seen,
-              p4_vsync_flag_seen,
-              p4_vsync_irq_disabled,
-              ref_hsync_count,
-              ref_hsync_delta,
-              ref_vsync_count,
-              ref_vsync_delta,
-              g_camera_ref_lines_last_frame,
-              ref_pclk_seen,
-              GPIO_PinRead(GPIO4, CAMERA_DIAG_PCLK_PIN),
-              GPIO_PinRead(GPIO4, CAMERA_DIAG_HSYNC_PIN),
-              GPIO_PinRead(GPIO4, CAMERA_DIAG_VSYNC_PIN),
-              GPIO_PinRead(GPIO0, CAMERA_REF_PCLK_PIN),
-              GPIO_PinRead(GPIO0, CAMERA_REF_HSYNC_PIN),
-              GPIO_PinRead(GPIO0, CAMERA_REF_VSYNC_PIN),
-              g_camera_diag_irq_unexpected_count,
-              g_camera_ref_irq_unexpected_count);
+        DEBUG("cam_diag t_ms=%u p4_hs=%u(+%u) p4_vs_irq=%u(+%u) p4_lines=%u p4_pclk=%u "
+              "p4_vs_flag=%u p4_vs_off=%u ref_hs=%u(+%u) ref_vs=%u(+%u) ref_lines=%u ref_pclk=%u "
+              "lvl_p4=%u%u%u lvl_ref=%u%u%u unexp=%u/%u\r\n",
+              elapsed_ms, hsync_count, hsync_delta, vsync_count, vsync_delta,
+              g_camera_diag_lines_last_frame, p4_pclk_seen, p4_vsync_flag_seen,
+              p4_vsync_irq_disabled, ref_hsync_count, ref_hsync_delta, ref_vsync_count,
+              ref_vsync_delta, g_camera_ref_lines_last_frame, ref_pclk_seen,
+              GPIO_PinRead(GPIO4, CAMERA_DIAG_PCLK_PIN), GPIO_PinRead(GPIO4, CAMERA_DIAG_HSYNC_PIN),
+              GPIO_PinRead(GPIO4, CAMERA_DIAG_VSYNC_PIN), GPIO_PinRead(GPIO0, CAMERA_REF_PCLK_PIN),
+              GPIO_PinRead(GPIO0, CAMERA_REF_HSYNC_PIN), GPIO_PinRead(GPIO0, CAMERA_REF_VSYNC_PIN),
+              g_camera_diag_irq_unexpected_count, g_camera_ref_irq_unexpected_count);
     }
 }
 
@@ -1593,18 +1520,16 @@ static void camera__run_flexio_diag_loop(void)
 static void nxpc_camera__init_smartdma_ezh(void)
 {
 
-	DEBUG("Camera capture backend: SMARTDMA_EZH\r\n");
-	DEBUG("Build EZH Camera application\r\n");
+    DEBUG("Camera capture backend: SMARTDMA_EZH\r\n");
+    DEBUG("Build EZH Camera application\r\n");
 
-	uint32_t words_assembled = bunny_build((uint32_t* )&ezh_binary[0],
-							   sizeof(ezh_binary),
-							   EZH_Camera_320240_Whole_Buf);
+    uint32_t words_assembled =
+        bunny_build((uint32_t *)&ezh_binary[0], sizeof(ezh_binary), EZH_Camera_320240_Whole_Buf);
 
-	DEBUG(VT100_YELLOW"%d "VT100_DEFAULT" 32bit words assembled (%d bytes) \r\n"VT100_DEFAULT,words_assembled, words_assembled<<2);
-
+    DEBUG(VT100_YELLOW "%d " VT100_DEFAULT " 32bit words assembled (%d bytes) \r\n" VT100_DEFAULT,
+          words_assembled, words_assembled << 2);
 
     INPUTMUX_Init(INPUTMUX0);
-
 
     /*
      * AHB matrix priority - UNDOCUMENTED REGISTER.
@@ -1628,29 +1553,27 @@ static void nxpc_camera__init_smartdma_ezh(void)
      * run for every build in nxpc__flash_cache_init() from nxpc__init(); leaving
      * them here meant a FlexIO build ran with the flash data cache disabled.
      */
-    SYSCON->AHBMATPRIO |= (0x3<<4)|(0x3<<6);
-    
+    SYSCON->AHBMATPRIO |= (0x3 << 4) | (0x3 << 6);
 
-    INPUTMUX_AttachSignal(INPUTMUX0, 0, kINPUTMUX_GpioPort0Pin4ToSmartDma); //vsync
-    INPUTMUX_AttachSignal(INPUTMUX0, 1, kINPUTMUX_GpioPort0Pin11ToSmartDma);//hsync
-    INPUTMUX_AttachSignal(INPUTMUX0, 2, kINPUTMUX_GpioPort0Pin5ToSmartDma); //pclk
+    INPUTMUX_AttachSignal(INPUTMUX0, 0, kINPUTMUX_GpioPort0Pin4ToSmartDma);  // vsync
+    INPUTMUX_AttachSignal(INPUTMUX0, 1, kINPUTMUX_GpioPort0Pin11ToSmartDma); // hsync
+    INPUTMUX_AttachSignal(INPUTMUX0, 2, kINPUTMUX_GpioPort0Pin5ToSmartDma);  // pclk
     /* Turn off clock to inputmux to save power. Clock is only needed to make changes */
     INPUTMUX_Deinit(INPUTMUX0);
 
-    PORT1->PCR[4] = (7 << 8) | (1 << 12); // EZH_PIO0, PIO1_4,P1_4/EZH_LCD_D0_CAMERA_D0/SAI0_TXD1
-    PORT1->PCR[5] = (7 << 8) | (1 << 12); // EZH_PIO1, PIO1_5,P1_5/EZH_LCD_D1_CAMERA_D1
-    PORT1->PCR[6] = (7 << 8) | (1 << 12); // EZH_PIO2, PIO1_6,P1_6/EZH_LCD_D2_CAMERA_D2
-    PORT1->PCR[7] = (7 << 8) | (1 << 12); // EZH_PIO3, PIO1_7,P1_7/EZH_LCD_D3_CAMERA_D3
-    PORT3->PCR[4] = (7 << 8) | (1 << 12); // EZH_PIO4, PIO1_8,P1_8/EZH_LCD_D4_CAMERA_D4
-    PORT3->PCR[5] = (7 << 8) | (1 << 12); // EZH_PIO5, PIO1_9,P1_9/EZH_LCD_D5_CAMERA_D5
+    PORT1->PCR[4] = (7 << 8) | (1 << 12);  // EZH_PIO0, PIO1_4,P1_4/EZH_LCD_D0_CAMERA_D0/SAI0_TXD1
+    PORT1->PCR[5] = (7 << 8) | (1 << 12);  // EZH_PIO1, PIO1_5,P1_5/EZH_LCD_D1_CAMERA_D1
+    PORT1->PCR[6] = (7 << 8) | (1 << 12);  // EZH_PIO2, PIO1_6,P1_6/EZH_LCD_D2_CAMERA_D2
+    PORT1->PCR[7] = (7 << 8) | (1 << 12);  // EZH_PIO3, PIO1_7,P1_7/EZH_LCD_D3_CAMERA_D3
+    PORT3->PCR[4] = (7 << 8) | (1 << 12);  // EZH_PIO4, PIO1_8,P1_8/EZH_LCD_D4_CAMERA_D4
+    PORT3->PCR[5] = (7 << 8) | (1 << 12);  // EZH_PIO5, PIO1_9,P1_9/EZH_LCD_D5_CAMERA_D5
     PORT1->PCR[10] = (7 << 8) | (1 << 12); // EZH_PIO6, PIO1_10,P1_10/EZH_LCD_D6_CAMERA_D6
     PORT1->PCR[11] = (7 << 8) | (1 << 12); // EZH_PIO7, PIO1_11,P1_11/EZH_LCD_D7_CAMERA_D7
 
     PORT1->PCR[17] = (7 << 8) | (1 << 12); // EZH_PIO13, PIO1_17
 
-	smartdmaParam.smartdma_stack = (uint32_t*)g_samrtdma_stack;
-	smartdmaParam.p_buffer  	 = (uint32_t*)g_camera_buffer;
-
+    smartdmaParam.smartdma_stack = (uint32_t *)g_samrtdma_stack;
+    smartdmaParam.p_buffer = (uint32_t *)g_camera_buffer;
 
     SMARTDMA_InstallCallback(ezh_camera_callback, NULL);
     NVIC_EnableIRQ(SMARTDMA_IRQn);
@@ -1660,20 +1583,19 @@ static void nxpc_camera__init_smartdma_ezh(void)
 
     SMARTDMA_InitWithoutFirmware();
 
-    #define SMARTDMA_HANDSHAKE_EVENT  0U
-	#define SMARTDMA_HANDSHAKE_ENABLE 1U
-	#define SMARTDMA_MASK_RESP        2U
-	#define SMARTDMA_ENABLE_AHBBUF    3U
-	#define SMARTDMA_ENABLE_GPISYNCH  4U
+#define SMARTDMA_HANDSHAKE_EVENT 0U
+#define SMARTDMA_HANDSHAKE_ENABLE 1U
+#define SMARTDMA_MASK_RESP 2U
+#define SMARTDMA_ENABLE_AHBBUF 3U
+#define SMARTDMA_ENABLE_GPISYNCH 4U
 
-    LPC_EZH_ARCH_B0->EZHB_CTRL    = (0xC0DE0000U | (1U << SMARTDMA_ENABLE_GPISYNCH));
+    LPC_EZH_ARCH_B0->EZHB_CTRL = (0xC0DE0000U | (1U << SMARTDMA_ENABLE_GPISYNCH));
     LPC_EZH_ARCH_B0->EZHB_ARM2EZH = ((uint32_t)(uint8_t *)(&smartdmaParam)) | 0x02;
     LPC_EZH_ARCH_B0->EZHB_BOOT = (uint32_t)(&ezh_binary[0]);
-    LPC_EZH_ARCH_B0->EZHB_CTRL    = 0xC0DE0011U | (0U << SMARTDMA_MASK_RESP) | (0U << SMARTDMA_ENABLE_AHBBUF); /* BOOT */
-
+    LPC_EZH_ARCH_B0->EZHB_CTRL =
+        0xC0DE0011U | (0U << SMARTDMA_MASK_RESP) | (0U << SMARTDMA_ENABLE_AHBBUF); /* BOOT */
 
     DEBUG("EZH interface configured\r\n");
-
 }
 #endif
 
@@ -1701,12 +1623,12 @@ static void nxpc_camera__init_flexio_pipeline_diag(void)
     camera__configure_reference_diag_inputs();
 
     DEBUG("SmartDMA/EZH camera capture disabled for FlexIO pipeline diagnostic\r\n");
-    DEBUG("FlexIO pipeline diagnostic emits synthetic RGB565 frames on plausible VSYNC/HSYNC timing\r\n");
-    DEBUG("FlexIO pipeline diagnostic line window: %u-%u HSYNC edges per VSYNC for active %ux%u mode\r\n",
-          CAMERA_PIPELINE_DIAG_LINES_MIN,
-          CAMERA_PIPELINE_DIAG_LINES_MAX,
-          CONFIG__CAMERA_RESOLUTION_X,
-          CONFIG__CAMERA_RESOLUTION_Y);
+    DEBUG("FlexIO pipeline diagnostic emits synthetic RGB565 frames on plausible VSYNC/HSYNC "
+          "timing\r\n");
+    DEBUG("FlexIO pipeline diagnostic line window: %u-%u HSYNC edges per VSYNC for active %ux%u "
+          "mode\r\n",
+          CAMERA_PIPELINE_DIAG_LINES_MIN, CAMERA_PIPELINE_DIAG_LINES_MAX,
+          CONFIG__CAMERA_RESOLUTION_X, CONFIG__CAMERA_RESOLUTION_Y);
 }
 
 static void nxpc_camera__init_flexio_edma(void)
@@ -1720,9 +1642,9 @@ static void nxpc_camera__init_flexio_edma(void)
 
     DEBUG("SmartDMA/EZH camera capture disabled for FlexIO eDMA test\r\n");
     DEBUG("FlexIO eDMA captures one %ux%u RGB565 frame per VSYNC into ping-pong frame buffers\r\n",
-          CONFIG__CAMERA_RESOLUTION_X,
-          CONFIG__CAMERA_RESOLUTION_Y);
-    DEBUG("With D0-D7 held low, expected captured pixels are 0x0000 black; first RTT sample_nz should trend to 0\r\n");
+          CONFIG__CAMERA_RESOLUTION_X, CONFIG__CAMERA_RESOLUTION_Y);
+    DEBUG("With D0-D7 held low, expected captured pixels are 0x0000 black; first RTT sample_nz "
+          "should trend to 0\r\n");
 }
 
 void nxpc_camera__init(void)
@@ -1755,8 +1677,7 @@ void nxpc_camera__init(void)
 #endif
 }
 
-
-#define BOARD_CAMERA_I2C_CLOCK_FREQ       CLOCK_GetLPFlexCommClkFreq(BOARD_CAMERA_I2C_INSTANCE)
+#define BOARD_CAMERA_I2C_CLOCK_FREQ CLOCK_GetLPFlexCommClkFreq(BOARD_CAMERA_I2C_INSTANCE)
 
 void camera__i2c_init()
 {

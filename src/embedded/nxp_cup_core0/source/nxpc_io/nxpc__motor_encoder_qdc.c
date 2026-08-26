@@ -7,15 +7,14 @@
 #include "fsl_port.h"
 #include "fsl_reset.h"
 
-#define NXPC_QDC_CTRL_W1C_FLAGS \
+#define NXPC_QDC_CTRL_W1C_FLAGS                                                                    \
     (QDC_CTRL_HIRQ_MASK | QDC_CTRL_XIRQ_MASK | QDC_CTRL_DIRQ_MASK | QDC_CTRL_CMPIRQ_MASK)
 
-#define NXPC_QDC_CTRL2_W1C_FLAGS \
+#define NXPC_QDC_CTRL2_W1C_FLAGS                                                                   \
     (QDC_CTRL2_SABIRQ_MASK | QDC_CTRL2_ROIRQ_MASK | QDC_CTRL2_RUIRQ_MASK)
 
 static QDC_Type *const s_qdc_base[NXPC_MOTOR_ENCODER_COUNT] = {QDC0, QDC1};
 static uint32_t s_last_position[NXPC_MOTOR_ENCODER_COUNT];
-static bool s_diag_motors_enabled;
 
 static uint32_t nxpc__qdc_read_position(QDC_Type *base)
 {
@@ -131,7 +130,7 @@ void nxpc__motor_encoder_qdc_zero(void)
 }
 
 void nxpc__motor_encoder_qdc_sample(uint32_t elapsed_ms,
-                                   nxpc_motor_encoder_sample_t samples[NXPC_MOTOR_ENCODER_COUNT])
+                                    nxpc_motor_encoder_sample_t samples[NXPC_MOTOR_ENCODER_COUNT])
 {
     if (elapsed_ms == 0U)
     {
@@ -162,140 +161,5 @@ void nxpc__motor_encoder_qdc_sample(uint32_t elapsed_ms,
 
         s_last_position[index] = position;
         nxpc__qdc_clear_flags(base);
-    }
-}
-
-static void nxpc__motor_encoder_qdc_diag_set_motors(bool enable)
-{
-#if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE
-    if (enable)
-    {
-        const float pwm_m0 = (float)CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0 / 100.0f;
-        const float pwm_m1 = (float)CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1 / 100.0f;
-
-        nxpc__enable_motor_control();
-        nxpc__set_motor_pwm(pwm_m0, pwm_m1);
-    }
-    else
-    {
-        nxpc__disable_motor_control();
-    }
-
-    s_diag_motors_enabled = enable;
-#else
-    (void)enable;
-    nxpc__disable_motor_control();
-    s_diag_motors_enabled = false;
-#endif
-}
-
-void nxpc__motor_encoder_qdc_diag_run(void)
-{
-    uint32_t last_report_ms = e_tick__get_ms();
-    uint32_t center_release_sequence;
-    bool suppress_center_release;
-    button_snapshot_t buttons;
-    nxpc_motor_encoder_sample_t samples[NXPC_MOTOR_ENCODER_COUNT];
-
-    button__snapshot(&buttons);
-    center_release_sequence = buttons.button[BUTTON_ID_CENTER].release_sequence;
-    suppress_center_release = buttons.button[BUTTON_ID_CENTER].release_pending;
-
-    nxpc__motor_encoder_qdc_zero();
-    nxpc__motor_encoder_qdc_diag_set_motors(false);
-
-    DEBUG("Motor encoder QDC diagnostic active: report_ms=%u cpr=%u\r\n",
-          CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS,
-          CONFIG__MOTOR_ENCODER_COUNTS_PER_WHEEL_REV);
-
-#if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE
-    DEBUG("Motor encoder QDC diagnostic motors: center button toggles M0 at %u%% and M1 at %u%% PWM\r\n",
-          CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M0,
-          CONFIG__MOTOR_ENCODER_DIAG_PWM_PERCENT_M1);
-#else
-    DEBUG("Motor encoder QDC diagnostic motors disabled at build time; spin wheels by hand or rebuild with -EnableMotors\r\n");
-#endif
-
-#if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE && (CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS > 0U)
-    uint32_t autostart_ms = e_tick__get_ms();
-    bool autostart_pending = true;
-
-    DEBUG("Motor encoder QDC diagnostic motors: auto-start in %u ms; car must be on blocks\r\n",
-          CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS);
-#endif
-
-    while (1)
-    {
-#if CONFIG__MOTOR_ENCODER_DIAG_MOTOR_ENABLE && (CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS > 0U)
-        if (autostart_pending &&
-            e_tick__timeout(&autostart_ms, CONFIG__MOTOR_ENCODER_DIAG_AUTOSTART_MS))
-        {
-            autostart_pending = false;
-            nxpc__motor_encoder_qdc_diag_set_motors(true);
-            DEBUG("motor_encoder_diag autostart motors=1\r\n");
-        }
-#endif
-
-        button__snapshot(&buttons);
-        if (suppress_center_release)
-        {
-            if (!buttons.button[BUTTON_ID_CENTER].release_pending)
-            {
-                center_release_sequence =
-                    buttons.button[BUTTON_ID_CENTER].release_sequence;
-                suppress_center_release = false;
-            }
-        }
-        else
-        {
-            uint32_t release_delta =
-                buttons.button[BUTTON_ID_CENTER].release_sequence - center_release_sequence;
-
-            if (release_delta == 1U)
-            {
-                center_release_sequence =
-                    buttons.button[BUTTON_ID_CENTER].release_sequence;
-                nxpc__motor_encoder_qdc_diag_set_motors(!s_diag_motors_enabled);
-                DEBUG("motor_encoder_diag motors=%u\r\n", s_diag_motors_enabled ? 1U : 0U);
-            }
-            else if (release_delta != 0U)
-            {
-                center_release_sequence =
-                    buttons.button[BUTTON_ID_CENTER].release_sequence;
-                nxpc__motor_encoder_qdc_diag_set_motors(false);
-                DEBUG("motor_encoder_diag ambiguous center releases=%u; motors disabled\r\n",
-                      release_delta);
-            }
-        }
-
-        if (e_tick__timeout(&last_report_ms, CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS))
-        {
-            nxpc__motor_encoder_qdc_sample(CONFIG__MOTOR_ENCODER_DIAG_REPORT_MS, samples);
-
-            DEBUG("enc t_ms=%u motors=%u "
-                  "m0 pos=%u d=%d cps=%d rpm_m=%d imr=%04x dir=%u f=%04x/%04x "
-                  "m1 pos=%u d=%d cps=%d rpm_m=%d imr=%04x dir=%u f=%04x/%04x\r\n",
-                  e_tick__get_ms(),
-                  s_diag_motors_enabled ? 1U : 0U,
-                  samples[NXPC_MOTOR_ENCODER_M0].position,
-                  samples[NXPC_MOTOR_ENCODER_M0].delta,
-                  samples[NXPC_MOTOR_ENCODER_M0].counts_per_second,
-                  samples[NXPC_MOTOR_ENCODER_M0].rpm_milli,
-                  samples[NXPC_MOTOR_ENCODER_M0].imr,
-                  samples[NXPC_MOTOR_ENCODER_M0].direction_up ? 1U : 0U,
-                  samples[NXPC_MOTOR_ENCODER_M0].flags_ctrl,
-                  samples[NXPC_MOTOR_ENCODER_M0].flags_ctrl2,
-                  samples[NXPC_MOTOR_ENCODER_M1].position,
-                  samples[NXPC_MOTOR_ENCODER_M1].delta,
-                  samples[NXPC_MOTOR_ENCODER_M1].counts_per_second,
-                  samples[NXPC_MOTOR_ENCODER_M1].rpm_milli,
-                  samples[NXPC_MOTOR_ENCODER_M1].imr,
-                  samples[NXPC_MOTOR_ENCODER_M1].direction_up ? 1U : 0U,
-                  samples[NXPC_MOTOR_ENCODER_M1].flags_ctrl,
-                  samples[NXPC_MOTOR_ENCODER_M1].flags_ctrl2);
-        }
-
-        e__crunch();
-        CONFIG__E_WFI;
     }
 }

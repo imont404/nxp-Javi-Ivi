@@ -71,12 +71,12 @@ float nxpc__read_beta(void);
 float nxpc__read_gamma(void);
 uint16_t nxpc__read_battery_voltage(void);
 uint32_t GPIO_PinRead(void *base, uint32_t pin);
-void eGFX_DumpRaw(uint8_t *buffer,
-                  uint32_t length,
-                  uint32_t x0,
-                  uint32_t x1,
-                  uint32_t y0,
-                  uint32_t y1);
+void nxpc_display__write(const uint8_t *buffer,
+                         uint32_t length,
+                         uint32_t x0,
+                         uint32_t x1,
+                         uint32_t y0,
+                         uint32_t y1);
 
 #endif
 """
@@ -221,12 +221,12 @@ uint32_t GPIO_PinRead(void *base, uint32_t pin)
 }
 void button__snapshot(button_snapshot_t *snapshot) { *snapshot = buttons; }
 
-void eGFX_DumpRaw(uint8_t *buffer,
-                  uint32_t length,
-                  uint32_t x0,
-                  uint32_t x1,
-                  uint32_t y0,
-                  uint32_t y1)
+void nxpc_display__write(const uint8_t *buffer,
+                         uint32_t length,
+                         uint32_t x0,
+                         uint32_t x1,
+                         uint32_t y0,
+                         uint32_t y1)
 {
     (void)buffer;
     (void)x0;

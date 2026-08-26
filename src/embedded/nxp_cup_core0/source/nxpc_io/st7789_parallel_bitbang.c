@@ -15,57 +15,57 @@
 /* ER-TFT020-7 8080 proof map retained for the parallel-display experiment. */
 #define LCDP_D0_GPIO GPIO1
 #define LCDP_D0_PORT PORT1
-#define LCDP_D0_PIN  4U
+#define LCDP_D0_PIN 4U
 #define LCDP_D1_GPIO GPIO1
 #define LCDP_D1_PORT PORT1
-#define LCDP_D1_PIN  5U
+#define LCDP_D1_PIN 5U
 #define LCDP_D2_GPIO GPIO1
 #define LCDP_D2_PORT PORT1
-#define LCDP_D2_PIN  6U
+#define LCDP_D2_PIN 6U
 #define LCDP_D3_GPIO GPIO1
 #define LCDP_D3_PORT PORT1
-#define LCDP_D3_PIN  7U
+#define LCDP_D3_PIN 7U
 #define LCDP_D4_GPIO GPIO3
 #define LCDP_D4_PORT PORT3
-#define LCDP_D4_PIN  4U
+#define LCDP_D4_PIN 4U
 #define LCDP_D5_GPIO GPIO3
 #define LCDP_D5_PORT PORT3
-#define LCDP_D5_PIN  5U
+#define LCDP_D5_PIN 5U
 #define LCDP_D6_GPIO GPIO1
 #define LCDP_D6_PORT PORT1
-#define LCDP_D6_PIN  10U
+#define LCDP_D6_PIN 10U
 #define LCDP_D7_GPIO GPIO1
 #define LCDP_D7_PORT PORT1
-#define LCDP_D7_PIN  11U
+#define LCDP_D7_PIN 11U
 
 #define LCDP_WR_GPIO GPIO0
 #define LCDP_WR_PORT PORT0
-#define LCDP_WR_PIN  4U
+#define LCDP_WR_PIN 4U
 #define LCDP_RS_GPIO GPIO0
 #define LCDP_RS_PORT PORT0
-#define LCDP_RS_PIN  11U
+#define LCDP_RS_PIN 11U
 #define LCDP_CS_GPIO GPIO4
 #define LCDP_CS_PORT PORT4
-#define LCDP_CS_PIN  4U
+#define LCDP_CS_PIN 4U
 #define LCDP_RST_GPIO GPIO1
 #define LCDP_RST_PORT PORT1
-#define LCDP_RST_PIN  19U
+#define LCDP_RST_PIN 19U
 
-#define LCDP_DATA_P1_MASK (LCDP_PIN_MASK(LCDP_D0_PIN) | LCDP_PIN_MASK(LCDP_D1_PIN) | \
-                           LCDP_PIN_MASK(LCDP_D2_PIN) | LCDP_PIN_MASK(LCDP_D3_PIN) | \
-                           LCDP_PIN_MASK(LCDP_D6_PIN) | LCDP_PIN_MASK(LCDP_D7_PIN))
+#define LCDP_DATA_P1_MASK                                                                          \
+    (LCDP_PIN_MASK(LCDP_D0_PIN) | LCDP_PIN_MASK(LCDP_D1_PIN) | LCDP_PIN_MASK(LCDP_D2_PIN) |        \
+     LCDP_PIN_MASK(LCDP_D3_PIN) | LCDP_PIN_MASK(LCDP_D6_PIN) | LCDP_PIN_MASK(LCDP_D7_PIN))
 #define LCDP_DATA_P3_MASK (LCDP_PIN_MASK(LCDP_D4_PIN) | LCDP_PIN_MASK(LCDP_D5_PIN))
-#define LCDP_WR_MASK      LCDP_PIN_MASK(LCDP_WR_PIN)
-#define LCDP_RS_MASK      LCDP_PIN_MASK(LCDP_RS_PIN)
-#define LCDP_CS_MASK      LCDP_PIN_MASK(LCDP_CS_PIN)
-#define LCDP_RST_MASK     LCDP_PIN_MASK(LCDP_RST_PIN)
+#define LCDP_WR_MASK LCDP_PIN_MASK(LCDP_WR_PIN)
+#define LCDP_RS_MASK LCDP_PIN_MASK(LCDP_RS_PIN)
+#define LCDP_CS_MASK LCDP_PIN_MASK(LCDP_CS_PIN)
+#define LCDP_RST_MASK LCDP_PIN_MASK(LCDP_RST_PIN)
 
 #if defined(CONFIG_DISPLAY_ORIENTATION) && (CONFIG_DISPLAY_ORIENTATION == PORTRAIT)
-#define LCDP_WIDTH  240U
+#define LCDP_WIDTH 240U
 #define LCDP_HEIGHT 320U
 #define LCDP_MADCTL 0x00U
 #elif defined(CONFIG_DISPLAY_ORIENTATION) && (CONFIG_DISPLAY_ORIENTATION == LANDSCAPE)
-#define LCDP_WIDTH  320U
+#define LCDP_WIDTH 320U
 #define LCDP_HEIGHT 240U
 #define LCDP_MADCTL 0x60U
 #else
@@ -85,7 +85,8 @@ static void st7789_parallel__delay_ms(uint32_t ms)
     e_tick__delay_ms(ms);
 }
 
-static void st7789_parallel__gpio_output(PORT_Type *port, GPIO_Type *gpio, uint32_t pin, uint8_t initial)
+static void st7789_parallel__gpio_output(PORT_Type *port, GPIO_Type *gpio, uint32_t pin,
+                                         uint8_t initial)
 {
     gpio_pin_config_t config = {
         .pinDirection = kGPIO_DigitalOutput,
@@ -243,12 +244,12 @@ static uint16_t st7789_parallel__test_color(uint32_t x)
 
     switch (band)
     {
-        case 0:
-            return 0xF800U;
-        case 1:
-            return 0x07E0U;
-        default:
-            return 0x001FU;
+    case 0:
+        return 0xF800U;
+    case 1:
+        return 0x07E0U;
+    default:
+        return 0x001FU;
     }
 }
 
@@ -366,7 +367,8 @@ void st7789_parallel_bitbang__run_test(void)
 {
     uint32_t frame = 0U;
 
-    (void)DEBUG("parallel_lcd pins: D0-D7=P1_4,P1_5,P1_6,P1_7,P3_4,P3_5,P1_10,P1_11 WR=P0_4 RS=P0_11 CS=P4_4 RST=P1_19 RD=external-inactive-high\r\n");
+    (void)DEBUG("parallel_lcd pins: D0-D7=P1_4,P1_5,P1_6,P1_7,P3_4,P3_5,P1_10,P1_11 WR=P0_4 "
+                "RS=P0_11 CS=P4_4 RST=P1_19 RD=external-inactive-high\r\n");
 
     st7789_parallel_bitbang__init();
 
@@ -374,11 +376,8 @@ void st7789_parallel_bitbang__run_test(void)
     {
         st7789_parallel_bitbang__draw_test_pattern();
         frame++;
-        (void)DEBUG("parallel_lcd frame=%u width=%u height=%u wr_delay=%u\r\n",
-                    frame,
-                    LCDP_WIDTH,
-                    LCDP_HEIGHT,
-                    CONFIG__DISPLAY_PARALLEL_BITBANG_WR_DELAY_CYCLES);
+        (void)DEBUG("parallel_lcd frame=%u width=%u height=%u wr_delay=%u\r\n", frame, LCDP_WIDTH,
+                    LCDP_HEIGHT, CONFIG__DISPLAY_PARALLEL_BITBANG_WR_DELAY_CYCLES);
         st7789_parallel__delay_ms(CONFIG__DISPLAY_PARALLEL_BITBANG_FRAME_DELAY_MS);
     }
 }
