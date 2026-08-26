@@ -11,9 +11,11 @@ Run from the repository root:
 .\src\host\build.ps1
 ```
 
-LLVM-MinGW is the canonical compiler installed by root `setup.ps1`. The build
-produces the viewer and CLI, copies SDL2 and the pinned ROM programmer beside
-them, and publishes a runnable bundle under `out\artifacts\host`.
+LLVM-MinGW is the canonical compiler installed by root
+`setup.ps1 -IncludeMaintainerTools`. Ordinary setup installs the pinned prebuilt
+runtime instead. The maintainer build produces the viewer and CLI, copies SDL2
+and the pinned ROM programmer beside them, and publishes a runnable bundle under
+`out\artifacts\host`.
 
 Useful commands:
 

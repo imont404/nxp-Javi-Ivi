@@ -12,9 +12,24 @@ From a PowerShell terminal at the repository root:
 .\setup.ps1
 ```
 
-The setup script provisions the Arm GNU compiler, CMake, Ninja, `uv`, and
-LLVM-MinGW. Toolchains and generated state stay under the ignored `out` directory;
-the script does not persist environment variables.
+If Windows reports that script execution is disabled, allow it only for the
+current PowerShell window and rerun setup; this does not require an administrator
+or change the machine policy permanently:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup.ps1
+```
+
+The setup script provisions the pinned Arm GNU compiler, CMake, Ninja, and the
+verified `core-tools-v1.0.0` Windows viewer/flash bundle. Toolchains, cached
+downloads, and generated state stay under the ignored `out` directory; the
+script does not persist environment variables. Maintainers who need to rebuild
+the native host can opt into `uv` and LLVM-MinGW with:
+
+```powershell
+.\setup.ps1 -IncludeMaintainerTools
+```
 
 Android SDK licenses require a separate explicit setup:
 
@@ -27,7 +42,7 @@ Android SDK licenses require a separate explicit setup:
 ```powershell
 .\src\embedded\build.ps1   # Rev A competition firmware
 .\src\embedded\flash.ps1   # ROM-HID first, then J-Link Commander
-.\src\host\build.ps1       # Windows camera/telemetry viewer and CLI
+.\src\host\build.ps1       # Maintainer rebuild of the Windows viewer and CLI
 .\src\android\build.ps1    # Android unit tests and debug APK
 ```
 

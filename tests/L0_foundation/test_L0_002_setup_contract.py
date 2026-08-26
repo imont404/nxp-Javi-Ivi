@@ -6,6 +6,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 
 SETUP_SCRIPT = REPO / "setup.ps1"
+SETUP_VERSIONS = REPO / "setup.versions.json"
 ROOT_README = REPO / "README.md"
 SRC_README = REPO / "src/README.md"
 PRESETS = REPO / "src/embedded/CMakePresets.json"
@@ -21,7 +22,10 @@ ANDROID_RELAY_VIEWER = (
 
 def test_setup_script_exists():
     assert SETUP_SCRIPT.is_file(), "setup.ps1 is missing"
-    text = SETUP_SCRIPT.read_text(encoding="utf-8")
+    assert SETUP_VERSIONS.is_file(), "setup.versions.json is missing"
+    text = SETUP_SCRIPT.read_text(encoding="utf-8") + SETUP_VERSIONS.read_text(
+        encoding="utf-8"
+    )
     for tool in (
         "arm-gnu-toolchain",
         "Kitware.CMake",
@@ -30,6 +34,31 @@ def test_setup_script_exists():
         "MartinStorsjo.LLVM-MinGW.UCRT",
     ):
         assert tool in text, f"setup.ps1 does not provision {tool}"
+
+
+def test_setup_pins_an_immutable_core_tools_release():
+    pins = json.loads(SETUP_VERSIONS.read_text(encoding="utf-8"))
+    core = pins["coreTools"]
+    assert core["releaseVersion"] == "1.0.0"
+    assert core["releaseTag"] == "core-tools-v1.0.0"
+    assert core["sourceCommit"] == "d87d3d13d8d47d13d637a22243c1f7f0b9e9137c"
+    assert core["assetName"] == "nxp-cup-core-tools-win-x64-1.0.0.zip"
+    assert f"/releases/download/{core['releaseTag']}/{core['assetName']}" in core["url"]
+    assert "latest" not in core["url"].lower()
+    assert len(core["sha256"]) == 64
+    assert core["selfTestArguments"] == ["selftest"]
+
+
+def test_setup_pins_and_verifies_the_arm_archive():
+    pins = json.loads(SETUP_VERSIONS.read_text(encoding="utf-8"))
+    arm = pins["armGnu"]
+    assert arm["releaseVersion"] == "14.2.rel1"
+    assert arm["compilerVersion"] == "14.2.1"
+    assert len(arm["compilerSha256"]) == 64
+    assert len(arm["sha256"]) == 64
+    setup = SETUP_SCRIPT.read_text(encoding="utf-8")
+    assert "Get-FileHash" in setup
+    assert "Get-VerifiedArchive" in setup
 
 
 def test_setup_script_does_not_persist_environment():

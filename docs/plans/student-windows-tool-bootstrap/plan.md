@@ -36,25 +36,25 @@ depends_on = ["one-command-release-script"]
 [[steps]]
 id = "harden-base-tool-provisioning"
 title = "Pin and verify Arm GCC, require usable CMake and Ninja, refresh only the setup process environment after installs, show download progress, and fail visibly when required tools are unavailable"
-status = "active"
+status = "done"
 depends_on = ["freeze-release-contract"]
 
 [[steps]]
 id = "pinned-core-tools-install"
 title = "Teach setup.ps1 to download the pinned release asset, verify its SHA-256 and manifest, stage extraction safely, install under out/artifacts/host, and run nxpc_tool selftest idempotently"
-status = "pending"
+status = "done"
 depends_on = ["publish-first-core-tools-release", "harden-base-tool-provisioning"]
 
 [[steps]]
 id = "offline-cache"
 title = "Support a preseeded or explicitly supplied offline archive and cache downloads under out without weakening checksum or manifest verification"
-status = "pending"
+status = "done"
 depends_on = ["pinned-core-tools-install"]
 
 [[steps]]
 id = "rom-flash-recovery"
 title = "Make ROM-HID the complete student flash path, preserve useful ROM errors, document physical SW3/reset recovery, and keep J-Link as a separately installed optional maintainer fallback"
-status = "pending"
+status = "active"
 depends_on = ["pinned-core-tools-install"]
 
 [[steps]]
