@@ -202,6 +202,18 @@ id = "vision-edge-reference"
 title = "Replace the VISION threshold sandbox with an efficient one-scanline luma-gradient example that marks and counts strong rising/falling edges while leaving lane selection and color extension to students"
 status = "done"
 depends_on = ["test-vision-lab"]
+
+[[steps]]
+id = "vision-black-white-validation"
+title = "Validate scanline luma edges against stable low-value black and high-luma low-saturation white regions, with two-pixel LCD references for validated transitions only"
+status = "done"
+depends_on = ["vision-edge-reference"]
+
+[[steps]]
+id = "vision-scanline-low-pass"
+title = "Apply an in-place symmetric three-tap low-pass to scanline Y/S/V before edge and black/white classification to reduce orphan transitions from pixel noise"
+status = "done"
+depends_on = ["vision-black-white-validation"]
 +++
 
 # Reference Firmware Finalization
@@ -241,9 +253,21 @@ button release events move one page at a time and wrap across:
    marks falling and rising edges in different colors, and publishes the total edge
    count. It deliberately retains edges from other lanes or objects and does not pair,
    select, center, steer from, or otherwise turn them into a race solution. The same
-   Y/HSV feature array remains visible for later student color-edge experiments.
+   Y/HSV feature array supports a second classification stage: low HSV value identifies
+   black, while high luma plus low saturation identifies white. A four-pixel region vote
+   validates black/white transitions around each gradient candidate. Unclassified luma edges
+   remain unmarked; long red/green marks show only validated transitions. Alpha selects the
+   row, Beta adjusts brightness strictness, and Gamma adjusts
+   the saturation allowed for white. Before detection, an in-place symmetric `1, 2, 1`
+   filter smooths Y, S, and V without shifting edge locations or allocating another row;
+   circular hue is copied rather than averaged. All LCD reference marks are at least two pixels wide.
    Its second status row reports `ALGO x.xms / 41ms FRAME`; it does not add
    explanatory text over the image.
+   Native classification, region-vote, boundary, and drawing-contract tests pass. The
+   competition image was ROM-HID flashed with full readback on 2026-08-25 (SHA-256
+   `ADD94D24EDB3E3E8FAF0BE5833C759181B305ED25A8AC3173143B1DCC4978B36`), rebooted
+   on COM22, and completed a clean camera/telemetry probe with motors disabled. Visual
+   threshold tuning on the physical VISION page remains part of the bench regression.
 3. MOTORS (`NXPC_TEST_PAGE_MOTORS` internally) demonstrates alpha as left
    motor, beta as steering, and gamma as right motor. EXE requests arming, all three pots must be centered before
    outputs become live, and framework telemetry plus QDC feedback make commands

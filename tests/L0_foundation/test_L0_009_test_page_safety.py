@@ -317,12 +317,18 @@ static int fail(const char *message)
 
 static void fill(color_features_t *pixels, uint32_t count, uint8_t y)
 {
-    for (uint32_t i = 0U; i < count; i++) pixels[i].y = y;
+    for (uint32_t i = 0U; i < count; i++)
+    {
+        pixels[i].y = y;
+        pixels[i].s = 0U;
+        pixels[i].v = y;
+    }
 }
 
 int main(void)
 {
     color_features_t pixels[32] = {0};
+    color_features_t filtered[5] = {0};
     vision_edge_t edges[8] = {0};
     struct
     {
@@ -332,11 +338,28 @@ int main(void)
     } guarded = {0x12345678U, {{0U, 0}}, 0x9ABCDEF0U};
     uint32_t count;
 
+    filtered[2].y = 200U;
+    filtered[2].h = 91U;
+    filtered[2].s = 160U;
+    filtered[2].v = 120U;
+    low_pass_yhsv(filtered, 5U);
+    if ((filtered[1].y != 50U) || (filtered[2].y != 100U) || (filtered[3].y != 50U) ||
+        (filtered[1].s != 40U) || (filtered[2].s != 80U) || (filtered[3].s != 40U) ||
+        (filtered[1].v != 30U) || (filtered[2].v != 60U) || (filtered[3].v != 30U) ||
+        (filtered[2].h != 91U))
+        return fail("in-place 1-2-1 feature filter was wrong");
+    low_pass_yhsv(NULL, 5U);
+    low_pass_yhsv(filtered, 2U);
+
     fill(pixels, 32U, 200U);
     if (find_luma_edges(pixels, 32U, 1U, 40U, edges, 8U) != 0U)
         return fail("flat row produced an edge");
 
-    for (uint32_t x = 10U; x < 20U; x++) pixels[x].y = 20U;
+    for (uint32_t x = 10U; x < 20U; x++)
+    {
+        pixels[x].y = 20U;
+        pixels[x].v = 20U;
+    }
     count = find_luma_edges(pixels, 32U, 1U, 180U, edges, 8U);
     if ((count != 2U) || (edges[0].x != 10U) || (edges[0].gradient >= 0) ||
         (edges[1].x != 20U) || (edges[1].gradient <= 0))
@@ -348,7 +371,37 @@ int main(void)
     if (find_luma_edges(pixels, 32U, 1U, 181U, edges, 8U) != 0U)
         return fail("threshold comparison was not inclusive");
 
-    for (uint32_t x = 24U; x < 27U; x++) pixels[x].y = 20U;
+    if (classify_black_white(&pixels[10], 80U, 170U, 55U) != VISION_CLASS_BLACK)
+        return fail("low-value black was not classified");
+    if (classify_black_white(&pixels[0], 80U, 170U, 55U) != VISION_CLASS_WHITE)
+        return fail("bright low-saturation white was not classified");
+    pixels[0].s = 120U;
+    if (classify_black_white(&pixels[0], 80U, 170U, 55U) != VISION_CLASS_UNKNOWN)
+        return fail("bright saturated color was classified as white");
+    pixels[0].s = 0U;
+
+    if (classify_black_white_boundary(pixels, 32U, 10U, 1U, 80U, 170U, 55U) !=
+        VISION_BOUNDARY_WHITE_TO_BLACK)
+        return fail("white-to-black region vote failed");
+    if (classify_black_white_boundary(pixels, 32U, 20U, 1U, 80U, 170U, 55U) !=
+        VISION_BOUNDARY_BLACK_TO_WHITE)
+        return fail("black-to-white region vote failed");
+    pixels[8].v = 100U;
+    pixels[8].y = 100U;
+    if (classify_black_white_boundary(pixels, 32U, 10U, 1U, 80U, 170U, 55U) !=
+        VISION_BOUNDARY_WHITE_TO_BLACK)
+        return fail("one noisy region sample defeated the vote");
+    pixels[8].v = 200U;
+    pixels[8].y = 200U;
+    if (classify_black_white_boundary(pixels, 32U, 1U, 1U, 80U, 170U, 55U) !=
+        VISION_BOUNDARY_NONE)
+        return fail("out-of-range region was classified");
+
+    for (uint32_t x = 24U; x < 27U; x++)
+    {
+        pixels[x].y = 20U;
+        pixels[x].v = 20U;
+    }
     if (find_luma_edges(pixels, 32U, 1U, 180U, edges, 8U) != 4U)
         return fail("extra stripe edges were not retained");
 
@@ -542,13 +595,25 @@ def test_safe_pages_have_no_actuator_commands_or_race_solution():
         assert "motors_stop(" not in safe_page
         assert "steering_set(" not in safe_page
     assert "find_luma_edges(" in vision
+    assert "low_pass_yhsv(line_color, CAMERA_WIDTH);" in vision
     edge_helper = test_mode.split("static uint32_t find_luma_edges", 1)[1].split(
         "static float clamp_input", 1
     )[0]
     assert ".y" in edge_helper
     assert '"vision.edge_count"' in vision
-    assert "frame_draw_horizontal_line(" in vision
-    assert "frame_draw_vertical_line(" in vision
+    assert "classify_black_white_boundary(" in vision
+    assert '"vision.boundary_count"' in vision
+    assert "unclassified_color" not in vision
+    assert "draw_two_pixel_horizontal(frame, line, scan_color);" in vision
+    assert "draw_two_pixel_vertical(" in vision
+    horizontal_helper = test_mode.split("static void draw_two_pixel_horizontal", 1)[1].split(
+        "static void draw_two_pixel_vertical", 1
+    )[0]
+    vertical_helper = test_mode.split("static void draw_two_pixel_vertical", 1)[1].split(
+        "static float clamp_input", 1
+    )[0]
+    assert horizontal_helper.count("frame_draw_horizontal_line(") == 2
+    assert vertical_helper.count("frame_draw_vertical_line(") == 2
     assert "frame_fill_rectangle(" not in vision
     assert "frame_draw_text(" not in vision
     assert "not a lane" in vision.lower()
