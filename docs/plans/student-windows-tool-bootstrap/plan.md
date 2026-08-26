@@ -30,13 +30,13 @@ depends_on = ["deterministic-host-package"]
 [[steps]]
 id = "publish-first-core-tools-release"
 title = "Publish and independently download-verify the first immutable, anonymously accessible Windows core-tools GitHub Release without changing repository remotes"
-status = "active"
+status = "done"
 depends_on = ["one-command-release-script"]
 
 [[steps]]
 id = "harden-base-tool-provisioning"
 title = "Pin and verify Arm GCC, require usable CMake and Ninja, refresh only the setup process environment after installs, show download progress, and fail visibly when required tools are unavailable"
-status = "pending"
+status = "active"
 depends_on = ["freeze-release-contract"]
 
 [[steps]]
@@ -102,12 +102,12 @@ depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit"]
 [[exit_criteria]]
 id = "anonymous-release"
 title = "A versioned immutable Windows x64 core-tools asset is anonymously downloadable and tied to a source commit, manifest, licenses, and SHA-256"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "one-command-release"
 title = "One guarded maintainer command builds, tests, packages, checksums, and publishes the core-tools release while a dry run performs no external mutation"
-status = "pending"
+status = "met"
 
 [[exit_criteria]]
 id = "one-script-setup"
