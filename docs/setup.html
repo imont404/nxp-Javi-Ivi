@@ -2,276 +2,220 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>NXP Cup - Setup and Build</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXP Cup - Student Setup</title>
 <link rel="stylesheet" href="nxp_cup.css">
 </head>
 <body>
 
-<h1>NXP Cup &ndash; Setup and Build</h1>
-<p><strong>Structure migration notice (2026-08-25): this page is awaiting the
-scheduled documentation rewrite. Do not use the legacy commands below.</strong>
-Use the repository <a href="../README.md">README</a> and
-<a href="../src/README.md">source component map</a> for the current setup and
-build entry points.</p>
+<h1>NXP Cup &ndash; Student Setup</h1>
 
-<h2>Getting started, from nothing</h2>
-
-<p>Two commands. The first one is slow; later builds reuse the installed tools.</p>
-
-<pre>.\setup.ps1                              <em>once per machine, ~5 minutes</em>
-.\build.ps1                              <em>configure and build the competition image</em></pre>
-
-<p>That produces the firmware image here:</p>
-
-<pre>build\cmake\competition\nxp_cup_core0.axf
-bin\firmware\nxp_cup_core0.axf</pre>
-
-<p>The first path is the authoritative CMake output. The root
-<code>build.ps1</code> wrapper also copies the AXF and BIN into the shorter
-<code>bin\firmware</code> path.</p>
-
-<p><strong>Flashing is done with Segger Ozone</strong>, using the project in
-<code>src\nxp_cup\nxp_cup_core0\ozone__core0.jdebug</code>. See the Ozone section of
-<code>README.md</code> for installing it and connecting to the board.</p>
-
-<p>The car should come up with live camera on the LCD. That is the loop you will
-spend the week in: edit, build, flash, look at the screen.</p>
-
-<p>If you name a preset that does not exist, CMake says so and lists the real
-ones.</p>
-
-<h2>Seeing what the car is thinking</h2>
-
-<p>You have two windows into a running car, and neither needs a debugger:</p>
-
-<ul>
-<li><strong>The on-board LCD</strong> shows the live camera image. You can draw
-on it &ndash; the frame buffer is yours, so overlay the pixels your algorithm is
-actually looking at, mark the track centre you computed, and you will see it move
-as the car sees.</li>
-<li><strong>The USB stream</strong> sends the same frames to a PC when you turn it
-on, which is easier to study than a small screen bolted to a moving car.</li>
-</ul>
-
-<div class="note">
-<strong>Drawing costs time.</strong> You have about 41&nbsp;ms per frame to
-decide a steering angle. Text rendering in particular is not free. If you overlay
-too much, you will blow the frame budget and the car will drive worse than the
-one that drew nothing &ndash; which is a real lesson, and cheaper to learn here
-than on the track.
-</div>
-
-<div class="note">
-<strong>MCUXpresso is not required.</strong> It used to be. <code>setup.ps1</code>
-downloads a standalone Arm compiler instead, and the build was verified to
-produce the same firmware either way &ndash; see <em>Toolchain provisioning</em>
-below.
-</div>
-
-<h2>What setup.ps1 installs</h2>
-
-<table>
-<tr><th>Tool</th><th>Used for</th><th>Where it goes</th></tr>
-<tr><td>Arm GNU Toolchain 14.2.Rel1</td><td>compiling the firmware</td><td><code>out\toolchains\</code> in this repository</td></tr>
-<tr><td>CMake</td><td>the build system</td><td>winget, system-wide</td></tr>
-<tr><td>Ninja</td><td>the thing that actually runs the compiler</td><td>winget, system-wide</td></tr>
-<tr><td>uv</td><td>Python tooling for the quality gates</td><td>winget, system-wide</td></tr>
-<tr><td>LLVM-MinGW</td><td>building the native USB viewer plus <code>clang-format</code> and <code>clang-tidy</code></td><td>winget, system-wide</td></tr>
-</table>
-
-<p>It is safe to run more than once &ndash; anything already present is skipped.
-It does not change your <code>PATH</code> and does not set environment
-variables. The Arm toolchain lives inside the repository under
-<code>out\</code>, which is git-ignored; deleting that folder and re-running
-<code>setup.ps1</code> puts it back.</p>
+<p>This is the authoritative Windows setup, build, flash, and viewer guide.
+Run every command below from the repository root&mdash;the folder containing
+<code>setup.ps1</code>.</p>
 
 <div class="warn">
-<strong>If winget is blocked</strong> &ndash; common on managed or work laptops
-&ndash; <code>setup.ps1</code> will say which tools it could not install and
-carry on. The Arm toolchain is downloaded directly and does not need winget, so
-the firmware will still build as long as CMake and Ninja are available. Install
-the rest by hand and run <code>setup.ps1</code> again to confirm.
+<strong>Keep the car safe while setting up.</strong> Lift the driven wheels clear
+of the table or disconnect motor power. The framework owns safety stops, but new
+code should never get its first test with the car free to move.
 </div>
 
-<h2>One firmware image</h2>
+<h2>1. Before you start</h2>
 
-<p>There is one normal build: <code>competition</code>. It includes the EZH
-camera, SPI LCD, session-gated scalar/text USB telemetry, and QDC wheel-speed feedback. QDC
-is standard operating procedure, not an optional build setting. Run
-<code>.\build.ps1</code>; students do not choose among hardware presets.</p>
+<ul>
+<li>Use 64-bit Windows 10 or 11.</li>
+<li>Keep at least 2&nbsp;GB of disk space free.</li>
+<li>Use Windows PowerShell in a normal, non-administrator terminal.</li>
+<li>Have internet access for the first setup, unless your instructor supplied
+the offline archives.</li>
+<li>Use a USB cable that carries data, not a charge-only cable.</li>
+</ul>
 
-<p>Direct CMake remains available for IDE integration and automation:</p>
+<h3>PowerShell permission</h3>
 
-<pre>cmake --preset competition
-cmake --build --preset competition</pre>
+<p>First try:</p>
 
-<p>Organiser-only FlexIO and encoder diagnostics remain under
-<code>scripts\maintainer</code>. They use separate output directories and do not
-appear in the student preset list.</p>
+<pre>.\setup.ps1</pre>
 
-<h2>Optional PC and Android applications</h2>
+<p>If Windows says that running scripts is disabled, permit it only in the
+current PowerShell window:</p>
 
-<p>To build the native SDL2/Dear ImGui USB camera/telemetry viewer, run:</p>
-
-<pre>.\build_viewer.ps1</pre>
-
-<p>The viewer displays framework-owned mode, state, actuator commands, and participant
-telemetry in stable named rows. Text telemetry values are limited to 48 UTF-8 bytes.</p>
-
-<p>The runnable viewer bundle is copied to
-<code>bin\host\</code>; start it with
-<code>.\bin\host\nxpc_viewer.exe</code>. Root <code>setup.ps1</code> installs
-LLVM-MinGW for this build; Visual Studio C++ is not required.</p>
-
-<p>The Android USB bridge has a separate, explicit maintainer setup because the
-Android SDK licenses must be accepted:</p>
-
-<pre>.\scripts\android\setup_android.ps1 -AcceptLicenses  <em>once per workstation</em>
-.\build_android.ps1                                  <em>unit tests + debug APK</em>
-.\build_android.ps1 -Offline                         <em>after one connected build</em></pre>
-
-<p>The setup script installs pinned JDK 17, Android SDK Platform 35, Build Tools
-35.0.0, ADB, and Gradle 8.9 under
-<code>out\toolchains\android</code>. Gradle dependencies are cached there as
-well. Nothing is installed globally and no environment variables are persisted.
-The APK is copied to <code>bin\android\nxp_cup_bridge.apk</code>.</p>
-
-<table>
-<tr><th>Root command</th><th>Convenient output</th><th>Authoritative output</th></tr>
-<tr><td><code>.\build.ps1</code></td><td><code>bin\firmware</code></td><td><code>build\cmake\competition</code></td></tr>
-<tr><td><code>.\build_viewer.ps1</code></td><td><code>bin\host</code></td><td><code>build\host\nxp_cup_host\Release</code></td></tr>
-<tr><td><code>.\build_android.ps1</code></td><td><code>bin\android</code></td><td><code>src\android\nxp_cup_bridge\app\build</code></td></tr>
-</table>
-
-<p>Both <code>out</code> and <code>bin</code> are git-ignored. Keep
-<code>out\toolchains</code> to avoid downloading tools again; delete it only when
-you intentionally want to reprovision the machine.</p>
-
-<h2>Editing: VS Code</h2>
-
-<p>Open the repository folder in VS Code. It will offer to install the C/C++ and
-CMake Tools extensions; accept. Select the <code>competition</code> preset if the
-extension asks, or build with <code>.\build.ps1</code> in a terminal.</p>
-
-<p>IntelliSense reads <code>compile_commands.json</code> from the
-<code>competition</code> build, so <strong>configure that preset at least
-once</strong> or headers will appear unresolved:</p>
-
-<pre>cmake --preset competition</pre>
-
-<p><em>Format-on-save is deliberately off.</em> The firmware carries a mix of
-tabs and spaces inherited from the NXP SDK, and reformatting on save produces
-enormous whitespace-only diffs.</p>
-
-<p><strong>VS Code is the editor and nothing more here.</strong> There are no build
-tasks, run buttons, or debug configurations checked in, and that is deliberate:
-you build in a terminal and flash in Ozone, so there is one way to do each thing
-rather than two that can disagree.</p>
-
-<h2>Toolchain provisioning</h2>
-
-<p>The build finds a compiler in this order:</p>
-
-<ol>
-<li><code>-DNXPC_ARM_TOOLCHAIN_DIR=&lt;path to bin&gt;</code></li>
-<li>the <code>NXPC_ARM_TOOLCHAIN_DIR</code> environment variable</li>
-<li>the toolchain <code>setup.ps1</code> put in <code>out\toolchains\</code></li>
-<li>the compiler bundled with MCUXpresso, if it happens to be installed</li>
-</ol>
-
-<p>MCUXpresso is a fallback, not a requirement. The version
-<code>setup.ps1</code> downloads is the same one MCUXpresso 25.6 bundles
-(14.2.Rel1), which is what makes the two comparable.</p>
-
-<p><strong>They were compared.</strong> Building the competition image with each
-toolchain differs by exactly four bytes, and those four bytes are a build path
-that NXP's copy of the C library has baked into it
-(<code>&hellip;/arm-14-5/&hellip;</code> where Arm's says
-<code>&hellip;/arm-14/&hellip;</code>). Everything else is identical. There is no
-functional difference between a build made with either compiler.</p>
-
-<h2>Quality gates</h2>
-
-<p>One command says whether the tree is in good shape:</p>
-
-<pre>uv run rack run          <em>everything</em>
-uv run rack run L99      <em>the signoff gate only</em></pre>
-
-<table>
-<tr><th>Stratum</th><th>Checks</th><th>Needs</th></tr>
-<tr><td><code>L0_foundation</code></td><td>The build definitions are present and self-contained: presets, the checked-in source list, the vendored header, the linker captures.</td><td>nothing</td></tr>
-<tr><td><code>L1_build</code></td><td>The competition image compiles, and the source list has not drifted from the MCUXpresso project metadata.</td><td>a toolchain</td></tr>
-<tr><td><code>L2_quality</code></td><td>Complexity against <code>docs/quality/lizard-baseline.txt</code>.</td><td><code>uv</code></td></tr>
-<tr><td><code>L99_signoff</code></td><td>Governance audit, and that the student entry points and competition defaults are intact.</td><td><code>uvx</code></td></tr>
-</table>
-
-<p>Building every preset is slow, so it is opt-in:</p>
-
-<pre>$env:NXPC_TEST_ALL_PRESETS = "1"
-uv run rack run L1</pre>
+<pre>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\setup.ps1</pre>
 
 <div class="note">
-<strong>Complexity is a tracked baseline, not a cliff.</strong> Existing debt
-does not fail the gate; making something worse does. If you deliberately accept
-a more complex function, regenerate
-<code>docs/quality/lizard-baseline.txt</code> and say why in the commit.
+<strong>This is temporary.</strong> It does not require administrator access and
+ends when that PowerShell window closes. Do not change the machine-wide policy
+to <code>Unrestricted</code>. If school Group Policy or application control still
+blocks the script, stop and ask the instructor or IT staff rather than trying to
+bypass the managed policy.
 </div>
 
-<p>Governance checks alone, without the suite:</p>
+<p><code>winget</code> may show a normal Windows installer or UAC prompt for CMake
+or Ninja. On a managed laptop, winget may be disabled entirely; see
+<em>Permissions and managed laptops</em> below.</p>
 
-<pre>uvx --from wn-dev-std==2026.7.18 dev-std audit . --scope docs.plans</pre>
+<h2>2. Run setup</h2>
 
-<h3>Formatting</h3>
+<pre>.\setup.ps1</pre>
 
-<p><code>.clang-format</code> exists but is <strong>not</strong> applied across the
-tree &ndash; reformatting the NXP SDK sources would bury every real change in
-whitespace. Use it on files you are already editing:</p>
+<p>The first run installs and verifies:</p>
 
-<pre>clang-format -i src\nxp_cup\nxp_cup_core0\source\&lt;file&gt;.c</pre>
+<table>
+<tr><th>Item</th><th>Purpose</th><th>Location</th></tr>
+<tr><td>Arm GNU Toolchain 14.2.Rel1</td><td>Build the MCXN947 firmware</td><td><code>out\toolchains</code></td></tr>
+<tr><td>CMake and Ninja</td><td>Configure and run the firmware build</td><td>Installed through winget if missing</td></tr>
+<tr><td>Core tools 1.0.0</td><td>Viewer, command-line tool, and ROM-HID programmer</td><td><code>out\artifacts\host</code></td></tr>
+</table>
 
-<h2>Conventions worth knowing</h2>
+<p>The Arm download is 305&nbsp;MB and extracts to about 1.2&nbsp;GB. Setup shows
+download and extraction progress. Verified downloads are retained under
+<code>out\downloads</code>, so later runs are fast and normally use no network.</p>
 
-<h3>The source list is checked in</h3>
+<p>Setup checks exact versions and SHA-256 hashes, validates every file in the
+host package, and runs the host self-test before replacing a working install.
+Do not work around a checksum failure.</p>
 
-<p><code>src\nxp_cup\nxp_cup_core0\cmake\mcuxpresso_debug.cmake</code> lists every source
-file. It was originally generated from the MCUXpresso project files, but it is
-committed and used as-is, so a normal build needs neither Python nor
-MCUXpresso.</p>
+<div class="note">
+Ordinary students do <strong>not</strong> need Visual Studio, LLVM, Rust,
+MCUXpresso, Ozone, or J-Link. Maintainers rebuilding the Windows viewer from
+source can run <code>.\setup.ps1 -IncludeMaintainerTools</code> separately.
+</div>
 
-<p>If you change the project settings in MCUXpresso, that file can fall out of
-date. Check and update it explicitly:</p>
+<h2>3. Build the competition firmware</h2>
 
-<pre>.\scripts\maintainer\build_cmake.ps1 -CheckDrift    <em>show what changed, write nothing</em>
-.\scripts\maintainer\build_cmake.ps1 -Regenerate    <em>accept it, then review and commit</em></pre>
+<pre>.\src\embedded\build.ps1</pre>
 
-<h3>The linker scripts are captures</h3>
+<p>A successful build publishes:</p>
 
-<p><code>src\nxp_cup\nxp_cup_core0\link\</code> holds copies of the linker scripts
-MCUXpresso would otherwise generate into <code>Debug\</code>. They are the source
-of truth, and each carries a header saying so.</p>
+<ul>
+<li><code>out\artifacts\embedded\nxp_cup_core0.bin</code> &mdash; normal ROM-HID programming image</li>
+<li><code>out\artifacts\embedded\nxp_cup_core0.axf</code> &mdash; debugger image with symbols</li>
+</ul>
 
-<p>One is deliberately edited: the MCUXpresso original pulls in
-<code>libcr_newlib_nohost.a</code>, which ships only with the IDE. It was
-replaced with the standard <code>libnosys.a</code>. That change removed the
-bounded heap NXP's library provided, so
-<code>source\shared\nxpc__sbrk.c</code> restores it. If you regenerate and diff,
-expect to see exactly that one library line differ.</p>
+<p>The two normal student files are:</p>
 
-<h3>Vendored headers</h3>
+<pre>src\embedded\nxp_cup_core0\source\app\test_mode.c
+src\embedded\nxp_cup_core0\source\app\race_mode.c</pre>
 
-<p><code>source\shared\cr_section_macros.h</code> is copied from the MCUXpresso
-install because the firmware needs it for memory placement &ndash; it is what
-puts the camera frame buffers where they belong. Do not edit it.</p>
+<p>If a previous build remembered another compiler or behaves unexpectedly, make
+one clean build:</p>
 
-<h2>Older scripts</h2>
+<pre>.\src\embedded\build.ps1 -Clean</pre>
 
-<p><code>scripts\maintainer\build_cmake.ps1</code> still works and does the same thing as the
-<code>competition</code> preset. It remains for the drift check and for anything
-that already referenced it. New work should use presets.</p>
+<h2>4. Connect and flash through J11</h2>
 
-<p><code>build.ps1</code> is the competition build wrapper. Maintainers can run
-<code>scripts\maintainer\build_mcuxpresso.ps1</code> when an IDE comparison is
-needed.</p>
+<ol>
+<li>Connect the FRDM-MCXN947 <strong>J11</strong> USB port to the PC with a data cable.</li>
+<li>Wait a few seconds for Windows to enumerate the board.</li>
+<li>Close any other program using the board's serial port.</li>
+<li>Run:</li>
+</ol>
+
+<pre>.\src\embedded\flash.ps1</pre>
+
+<p>The preferred path asks a running competition application to stop safely and
+enter the MCXN947 ROM-HID bootloader. It then validates, erases, writes, resets,
+and waits for the application to reconnect. J-Link is only an optional
+maintainer fallback.</p>
+
+<h3>Physical ROM recovery</h3>
+
+<p>If the application is broken and cannot enter ROM automatically:</p>
+
+<ol>
+<li>Leave the J11 USB cable connected.</li>
+<li>Press and hold <strong>SW3</strong>.</li>
+<li>Press and release <strong>SW1 / RESET</strong>.</li>
+<li>Release <strong>SW3</strong>.</li>
+<li>Force the ROM path so its error remains visible:</li>
+</ol>
+
+<pre>.\src\embedded\flash.ps1 -Backend Rom</pre>
+
+<p>This recovery does not require J-Link. After programming, the board should
+reset and return as the normal NXP Cup USB device.</p>
+
+<h2>5. Open the viewer</h2>
+
+<pre>.\out\artifacts\host\nxpc_viewer.exe</pre>
+
+<p>The viewer connects to one NXP Cup board, negotiates telemetry, and displays
+camera frames and named values. Its firmware field automatically finds the BIN
+produced by the normal build. If several matching boards are connected, remove
+the extras rather than guessing which one will be programmed.</p>
+
+<h2>Normal work loop</h2>
+
+<pre># Edit test_mode.c or race_mode.c
+.\src\embedded\build.ps1
+.\src\embedded\flash.ps1
+.\out\artifacts\host\nxpc_viewer.exe</pre>
+
+<h2>Potential problems</h2>
+
+<h3>Permissions and managed laptops</h3>
+
+<ul>
+<li><strong>Scripts are disabled:</strong> use the process-only execution-policy
+command in step 1.</li>
+<li><strong>Group Policy, AppLocker, or antivirus blocks the script or downloaded
+executables:</strong> ask the instructor or IT staff to approve this repository
+and its pinned vendor tools. Do not disable organization security controls.</li>
+<li><strong>winget is missing or blocked:</strong> CMake and Ninja must be installed
+by IT or the instructor. Rerun setup afterward; it will verify both commands.</li>
+<li><strong>UAC appears:</strong> confirm that the prompt names the expected CMake
+or Ninja installation. Cancel unexpected prompts.</li>
+</ul>
+
+<h3>Download or checksum failure</h3>
+
+<ul>
+<li>Confirm that the PC can reach <code>developer.arm.com</code> and
+<code>github.com</code> through its proxy or firewall.</li>
+<li>Rerun setup after an interrupted download; incomplete <code>.partial</code>
+files are not accepted as cache entries.</li>
+<li>Use <code>.\setup.ps1 -Force</code> only when you intentionally want to
+redownload the pinned archives.</li>
+<li>Never edit the expected hashes or use an archive that setup rejects.</li>
+</ul>
+
+<h3>The board is not found</h3>
+
+<ul>
+<li>Confirm the cable is connected to J11 and supports data.</li>
+<li>Disconnect extra NXP Cup boards.</li>
+<li>Close the viewer, serial terminals, and other programs that may own the port.</li>
+<li>Unplug J11, reconnect it, and wait for Windows enumeration.</li>
+<li>If the application no longer runs, use the physical ROM recovery sequence above.</li>
+<li>If the default flash command complains that J-Link is missing, recover with
+<code>-Backend Rom</code>; J-Link is not required for the student path.</li>
+</ul>
+
+<h3>Setup was interrupted</h3>
+
+<p>Run <code>.\setup.ps1</code> again. Setup validates staging and cache contents
+before installation and does not replace a known-good host runtime with an
+incomplete candidate.</p>
+
+<h2>Offline archives</h2>
+
+<p>An instructor can provide the exact pinned Arm and core-tools ZIP files. Use:</p>
+
+<pre>.\setup.ps1 `
+  -ArmArchive D:\NxpCup\arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi.zip `
+  -CoreToolsArchive D:\NxpCup\nxp-cup-core-tools-win-x64-1.0.0.zip</pre>
+
+<p>The same checksum and package validation applies offline. CMake and Ninja must
+already be installed when winget cannot reach its sources.</p>
+
+<h2>Where to go next</h2>
+
+<ul>
+<li><a href="../README.md">Repository overview</a></li>
+<li><a href="../src/README.md">Source component map</a></li>
+<li><a href="../src/embedded/README.md">Embedded component details</a></li>
+</ul>
 
 </body>
 </html>

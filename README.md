@@ -4,17 +4,37 @@ This repository contains the organizer-supplied NXP Cup platform used at FIT:
 MCXN947 firmware, Windows/browser host tools, an Android telemetry relay, shared
 libraries, tests, and teaching material.
 
-## Windows setup
+## Start here
 
-From a PowerShell terminal at the repository root:
+Students: open the **[Windows setup guide](docs/setup.html)** after downloading
+or cloning the repository. It is the authoritative guide for PowerShell
+permissions, managed laptops, setup, building, ROM-HID flashing through J11,
+the viewer, physical recovery, and offline archives.
+
+The normal path, run from a PowerShell terminal at the repository root, is:
 
 ```powershell
 .\setup.ps1
+.\src\embedded\build.ps1
+.\src\embedded\flash.ps1
+.\out\artifacts\host\nxpc_viewer.exe
 ```
 
-The setup script provisions the Arm GNU compiler, CMake, Ninja, `uv`, and
-LLVM-MinGW. Toolchains and generated state stay under the ignored `out` directory;
-the script does not persist environment variables.
+The setup script provisions the pinned Arm GNU compiler, CMake, Ninja, and the
+verified `core-tools-v1.0.0` Windows viewer/flash bundle. Toolchains, cached
+downloads, and generated state stay under the ignored `out` directory; the
+script does not persist environment variables. If Windows blocks PowerShell,
+winget, USB access, or downloaded executables, follow the permission guidance in
+the setup guide rather than changing machine-wide security policy.
+
+## Maintainer and component setup
+
+Maintainers who need to rebuild the native host can opt into `uv` and
+LLVM-MinGW with:
+
+```powershell
+.\setup.ps1 -IncludeMaintainerTools
+```
 
 Android SDK licenses require a separate explicit setup:
 
@@ -22,12 +42,12 @@ Android SDK licenses require a separate explicit setup:
 .\src\android\setup.ps1 -AcceptLicenses
 ```
 
-## Build entry points
+Component entry points are:
 
 ```powershell
 .\src\embedded\build.ps1   # Rev A competition firmware
 .\src\embedded\flash.ps1   # ROM-HID first, then J-Link Commander
-.\src\host\build.ps1       # Windows camera/telemetry viewer and CLI
+.\src\host\build.ps1       # Maintainer rebuild of the Windows viewer and CLI
 .\src\android\build.ps1    # Android unit tests and debug APK
 ```
 

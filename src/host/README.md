@@ -11,9 +11,11 @@ Run from the repository root:
 .\src\host\build.ps1
 ```
 
-LLVM-MinGW is the canonical compiler installed by root `setup.ps1`. The build
-produces the viewer and CLI, copies SDL2 and the pinned ROM programmer beside
-them, and publishes a runnable bundle under `out\artifacts\host`.
+LLVM-MinGW is the canonical compiler installed by root
+`setup.ps1 -IncludeMaintainerTools`. Ordinary setup installs the pinned prebuilt
+runtime instead. The maintainer build produces the viewer and CLI, copies SDL2
+and the pinned ROM programmer beside them, and publishes a runnable bundle under
+`out\artifacts\host`.
 
 Useful commands:
 
@@ -30,11 +32,28 @@ The viewer test command expects a connected telemetry device; the CLI
 automatically resolves the published embedded image even when the viewer is
 launched from `out\artifacts\host` instead of the repository root.
 
-Create a timestamped portable zip with:
+Create a deterministic, versioned portable zip and checksum with:
 
 ```powershell
-.\src\host\package.ps1
+.\src\host\package.ps1 -Version 1.0.0
 ```
+
+Packaging refuses to replace an existing version unless `-Force` is explicit.
+Normal releases use `release.ps1`, which adds source-tree and release checks.
+
+## Maintainer release
+
+One command builds and tests the native and browser tools, packages the Windows
+x64 runtime, verifies its manifest and checksum, and stops before upload:
+
+```powershell
+.\src\host\release.ps1 -Version 1.0.0
+```
+
+Run the same command from a clean commit with `-Publish` to create a draft
+GitHub release, download and verify its archive, and then make it public. The
+script does not push branches or change remotes. For local validation while
+developing the script, `-AllowDirty` is accepted only without `-Publish`.
 
 ## Browser viewer and tests
 

@@ -2,10 +2,13 @@
 
 import json
 from pathlib import Path
+import re
 
 REPO = Path(__file__).resolve().parents[2]
 
 SETUP_SCRIPT = REPO / "setup.ps1"
+SETUP_VERSIONS = REPO / "setup.versions.json"
+SETUP_GUIDE = REPO / "docs/setup.html"
 ROOT_README = REPO / "README.md"
 SRC_README = REPO / "src/README.md"
 PRESETS = REPO / "src/embedded/CMakePresets.json"
@@ -21,7 +24,10 @@ ANDROID_RELAY_VIEWER = (
 
 def test_setup_script_exists():
     assert SETUP_SCRIPT.is_file(), "setup.ps1 is missing"
-    text = SETUP_SCRIPT.read_text(encoding="utf-8")
+    assert SETUP_VERSIONS.is_file(), "setup.versions.json is missing"
+    text = SETUP_SCRIPT.read_text(encoding="utf-8") + SETUP_VERSIONS.read_text(
+        encoding="utf-8"
+    )
     for tool in (
         "arm-gnu-toolchain",
         "Kitware.CMake",
@@ -30,6 +36,93 @@ def test_setup_script_exists():
         "MartinStorsjo.LLVM-MinGW.UCRT",
     ):
         assert tool in text, f"setup.ps1 does not provision {tool}"
+
+
+def test_setup_pins_an_immutable_core_tools_release():
+    pins = json.loads(SETUP_VERSIONS.read_text(encoding="utf-8"))
+    core = pins["coreTools"]
+    assert core["releaseVersion"] == "1.0.0"
+    assert core["releaseTag"] == "core-tools-v1.0.0"
+    assert core["sourceCommit"] == "d87d3d13d8d47d13d637a22243c1f7f0b9e9137c"
+    assert core["assetName"] == "nxp-cup-core-tools-win-x64-1.0.0.zip"
+    assert f"/releases/download/{core['releaseTag']}/{core['assetName']}" in core["url"]
+    assert "latest" not in core["url"].lower()
+    assert len(core["sha256"]) == 64
+    assert core["selfTestArguments"] == ["selftest"]
+
+
+def test_setup_pins_and_verifies_the_arm_archive():
+    pins = json.loads(SETUP_VERSIONS.read_text(encoding="utf-8"))
+    arm = pins["armGnu"]
+    assert arm["releaseVersion"] == "14.2.rel1"
+    assert arm["compilerVersion"] == "14.2.1"
+    assert len(arm["compilerSha256"]) == 64
+    assert len(arm["sha256"]) == 64
+    setup = SETUP_SCRIPT.read_text(encoding="utf-8")
+    assert "Get-FileHash" in setup
+    assert "Get-VerifiedArchive" in setup
+
+
+def test_root_readme_routes_students_to_the_authoritative_setup_guide():
+    readme = ROOT_README.read_text(encoding="utf-8")
+    assert "## Start here" in readme
+    assert "[Windows setup guide](docs/setup.html)" in readme
+    assert "authoritative" in readme
+
+
+def test_student_setup_guide_uses_current_commands_and_paths():
+    assert SETUP_GUIDE.is_file(), "docs/setup.html is missing"
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    for required in (
+        ".\\setup.ps1",
+        ".\\src\\embedded\\build.ps1",
+        ".\\src\\embedded\\flash.ps1",
+        ".\\out\\artifacts\\host\\nxpc_viewer.exe",
+        "out\\artifacts\\embedded\\nxp_cup_core0.bin",
+        "out\\artifacts\\embedded\\nxp_cup_core0.axf",
+        "-Backend Rom",
+        "-ArmArchive",
+        "-CoreToolsArchive",
+    ):
+        assert required in guide, f"setup guide is missing {required}"
+
+    for stale in (
+        ".\\build.ps1",
+        ".\\build_viewer.ps1",
+        "bin\\firmware",
+        "bin\\host",
+        "build\\cmake",
+        "scripts\\android",
+        "Flashing is done with Segger Ozone",
+    ):
+        assert stale not in guide, f"setup guide retains stale instruction {stale}"
+
+
+def test_student_setup_guide_covers_bounded_permission_and_recovery_help():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    for expected in (
+        "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass",
+        "normal, non-administrator terminal",
+        "Group Policy",
+        "AppLocker",
+        "winget is missing or blocked",
+        "J11",
+        "SW3",
+        "SW1 / RESET",
+        "data, not a charge-only cable",
+    ):
+        assert expected in guide
+    assert "-Scope LocalMachine" not in guide
+    assert "-ExecutionPolicy Unrestricted" not in guide
+
+
+def test_student_setup_guide_local_links_resolve():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    assert '<meta name="viewport"' in guide
+    for href in re.findall(r'href="([^"]+)"', guide):
+        if "://" in href or href.startswith("#"):
+            continue
+        assert (SETUP_GUIDE.parent / href).resolve().is_file(), href
 
 
 def test_setup_script_does_not_persist_environment():

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "armGnu": {
+    "releaseVersion": "14.2.rel1",
+    "compilerVersion": "14.2.1",
+    "compilerSha256": "dfb298d8f9697904a37782ca822cf8b35a973c0f2ba8d368579e5c109959afe5",
+    "archiveName": "arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi.zip",
+    "directoryName": "arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi",
+    "url": "https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi.zip",
+    "sha256": "6facb152ce431ba9a4517e939ea46f057380f8f1e56b62e8712b3f3b87d994e1"
+  },
+  "coreTools": {
+    "releaseVersion": "1.0.0",
+    "releaseTag": "core-tools-v1.0.0",
+    "sourceCommit": "d87d3d13d8d47d13d637a22243c1f7f0b9e9137c",
+    "assetName": "nxp-cup-core-tools-win-x64-1.0.0.zip",
+    "url": "https://github.com/wavenumber-eng/nxp_cup/releases/download/core-tools-v1.0.0/nxp-cup-core-tools-win-x64-1.0.0.zip",
+    "sha256": "5aca14b2abfa497f5ca85e217ba8eca63c09a186f923d2a3d6a79535125d1652",
+    "selfTestArguments": ["selftest"],
+    "payloadFiles": [
+      "Dear-ImGui-LICENSE.txt",
+      "HOST-README.md",
+      "nxpc_tool.exe",
+      "nxpc_viewer.exe",
+      "rblhost.exe",
+      "rblhost-LICENSE.txt",
+      "SDL2.dll",
+      "SDL2-LICENSE.txt"
+    ]
+  }
+}

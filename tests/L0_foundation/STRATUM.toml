@@ -34,5 +34,25 @@ module = "setup.ps1"
 
 [subtests.test_functions]
 test_setup_script_exists = "setup.ps1 is present and provisions the documented tools"
+test_root_readme_routes_students_to_the_authoritative_setup_guide = "the repository landing page routes students to one setup guide"
+test_student_setup_guide_uses_current_commands_and_paths = "the student guide uses only current setup, build, flash, viewer, and artifact paths"
+test_student_setup_guide_covers_bounded_permission_and_recovery_help = "permission help is temporary and physical ROM recovery is explicit"
+test_student_setup_guide_local_links_resolve = "the standalone setup guide's local stylesheet and navigation links resolve"
 test_readmes_are_the_current_component_map = "the root README names each supported component build command"
 test_only_competition_preset_is_student_facing = "the embedded component exposes one normal preset"
+
+[[subtests]]
+id = "L0_003"
+file = "test_L0_003_setup_install.py"
+name = "Verified setup install"
+description = "setup.ps1 verifies, stages, installs, reruns, and rolls back the pinned Windows host runtime"
+test_case_type = "algorithmic"
+
+[subtests.code_under_test]
+module = "setup.ps1"
+
+[subtests.test_functions]
+test_valid_local_archive_installs_and_rerun_is_idempotent = "a valid local archive installs and a second run is network-free"
+test_preseeded_verified_cache_installs_without_network = "a preseeded verified cache installs without reaching the network"
+test_outer_hash_mismatch_is_rejected_without_replacing_runtime = "an outer checksum mismatch cannot replace a known-good runtime"
+test_inner_hash_mismatch_is_rejected_and_known_good_is_restored = "an invalid manifest payload cannot replace a known-good runtime"
