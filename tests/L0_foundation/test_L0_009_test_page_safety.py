@@ -254,6 +254,121 @@ int main(void)
 """
 
 
+VISION_HARNESS = r"""
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+
+#include "nxp_cup.h"
+#include "app/test_mode.c"
+
+void color_convert_rgb565_to_yhsv(const uint16_t *pixels,
+                                  color_features_t *features,
+                                  uint32_t count)
+{
+    (void)pixels;
+    (void)features;
+    (void)count;
+}
+uint16_t color_rgb565(uint8_t red, uint8_t green, uint8_t blue)
+{
+    (void)red;
+    (void)green;
+    (void)blue;
+    return 0U;
+}
+void frame_draw_horizontal_line(uint16_t *frame,
+                                int32_t x0,
+                                int32_t x1,
+                                int32_t y,
+                                uint16_t color)
+{
+    (void)frame; (void)x0; (void)x1; (void)y; (void)color;
+}
+void frame_draw_vertical_line(uint16_t *frame,
+                              int32_t x,
+                              int32_t y0,
+                              int32_t y1,
+                              uint16_t color)
+{
+    (void)frame; (void)x; (void)y0; (void)y1; (void)color;
+}
+float input_alpha(void) { return 0.5f; }
+float input_beta(void) { return 0.5f; }
+float input_gamma(void) { return 0.5f; }
+float battery_voltage(void) { return 0.0f; }
+test_mode_page_t test_mode_page(void) { return TEST_MODE_VISION; }
+void motors_set_duty(float left, float right) { (void)left; (void)right; }
+void steering_set(float position) { (void)position; }
+bool telemetry_f32(const char *name, float value, const char *units)
+{
+    (void)name; (void)value; (void)units; return true;
+}
+bool telemetry_u32(const char *name, uint32_t value, const char *units)
+{
+    (void)name; (void)value; (void)units; return true;
+}
+
+static int fail(const char *message)
+{
+    (void)fprintf(stderr, "%s\n", message);
+    return 1;
+}
+
+static void fill(color_features_t *pixels, uint32_t count, uint8_t y)
+{
+    for (uint32_t i = 0U; i < count; i++) pixels[i].y = y;
+}
+
+int main(void)
+{
+    color_features_t pixels[32] = {0};
+    vision_edge_t edges[8] = {0};
+    struct
+    {
+        uint32_t before;
+        vision_edge_t edge[1];
+        uint32_t after;
+    } guarded = {0x12345678U, {{0U, 0}}, 0x9ABCDEF0U};
+    uint32_t count;
+
+    fill(pixels, 32U, 200U);
+    if (find_luma_edges(pixels, 32U, 1U, 40U, edges, 8U) != 0U)
+        return fail("flat row produced an edge");
+
+    for (uint32_t x = 10U; x < 20U; x++) pixels[x].y = 20U;
+    count = find_luma_edges(pixels, 32U, 1U, 180U, edges, 8U);
+    if ((count != 2U) || (edges[0].x != 10U) || (edges[0].gradient >= 0) ||
+        (edges[1].x != 20U) || (edges[1].gradient <= 0))
+        return fail("radius-1 stripe edges or polarity were wrong");
+
+    count = find_luma_edges(pixels, 32U, 4U, 180U, edges, 8U);
+    if ((count != 2U) || (edges[0].x != 10U) || (edges[1].x != 20U))
+        return fail("edge position drifted with radius");
+    if (find_luma_edges(pixels, 32U, 1U, 181U, edges, 8U) != 0U)
+        return fail("threshold comparison was not inclusive");
+
+    for (uint32_t x = 24U; x < 27U; x++) pixels[x].y = 20U;
+    if (find_luma_edges(pixels, 32U, 1U, 180U, edges, 8U) != 4U)
+        return fail("extra stripe edges were not retained");
+
+    count = find_luma_edges(pixels, 32U, 1U, 180U, guarded.edge, 1U);
+    if ((count != 1U) || (guarded.before != 0x12345678U) ||
+        (guarded.after != 0x9ABCDEF0U))
+        return fail("edge capacity did not protect its canaries");
+    if (find_luma_edges(pixels, 2U, 1U, 1U, edges, 8U) != 0U)
+        return fail("short input produced an edge");
+
+    pixels[0].y = 200U; pixels[1].y = 0U;
+    pixels[2].y = 100U; pixels[3].y = 100U;
+    if (find_luma_edges(pixels, 4U, 1U, 90U, edges, 8U) != 2U)
+        return fail("adjacent sign changes did not make progress");
+
+    return 0;
+}
+"""
+
+
 def test_test_page_safety_state_machine(tmp_path: Path):
     compiler = shutil.which("clang") or shutil.which("gcc") or shutil.which("cc")
     if compiler is None:
@@ -282,6 +397,48 @@ def test_test_page_safety_state_machine(tmp_path: Path):
             str(SYSTEM),
             f"-I{SOURCE}",
             f"-I{BUTTON_INCLUDE}",
+            "-o",
+            str(executable),
+        ],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert compile_result.returncode == 0, compile_result.stdout + compile_result.stderr
+
+    run_result = subprocess.run(
+        [str(executable)],
+        cwd=REPO,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert run_result.returncode == 0, run_result.stdout + run_result.stderr
+
+
+def test_vision_luma_edge_detector(tmp_path: Path):
+    compiler = shutil.which("clang") or shutil.which("gcc") or shutil.which("cc")
+    if compiler is None:
+        pytest.skip("a native C compiler is required for the vision edge trace")
+
+    harness = tmp_path / "nxpc_vision_edge_harness.c"
+    executable = tmp_path / (
+        "nxpc_vision_edge_harness.exe"
+        if Path(compiler).suffix.lower() == ".exe"
+        else "nxpc_vision_edge_harness"
+    )
+    harness.write_text(VISION_HARNESS, encoding="utf-8")
+
+    compile_result = subprocess.run(
+        [
+            compiler,
+            "-std=c99",
+            "-Wall",
+            "-Wextra",
+            "-Werror",
+            str(harness),
+            f"-I{SOURCE}",
             "-o",
             str(executable),
         ],
@@ -384,6 +541,13 @@ def test_safe_pages_have_no_actuator_commands_or_race_solution():
         assert "motors_set_duty(" not in safe_page
         assert "motors_stop(" not in safe_page
         assert "steering_set(" not in safe_page
+    assert "find_luma_edges(" in vision
+    edge_helper = test_mode.split("static uint32_t find_luma_edges", 1)[1].split(
+        "static float clamp_input", 1
+    )[0]
+    assert ".y" in edge_helper
+    assert '"vision.edge_count"' in vision
+    assert "frame_draw_horizontal_line(" in vision
     assert "frame_draw_vertical_line(" in vision
     assert "frame_fill_rectangle(" not in vision
     assert "frame_draw_text(" not in vision

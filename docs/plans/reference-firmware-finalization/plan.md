@@ -196,6 +196,12 @@ status = "pending"
 id = "external-review"
 title = "Independent review is complete"
 status = "pending"
+
+[[steps]]
+id = "vision-edge-reference"
+title = "Replace the VISION threshold sandbox with an efficient one-scanline luma-gradient example that marks and counts strong rising/falling edges while leaving lane selection and color extension to students"
+status = "done"
+depends_on = ["test-vision-lab"]
 +++
 
 # Reference Firmware Finalization
@@ -228,11 +234,16 @@ button release events move one page at a time and wrap across:
    it does not draw diagnostics over the 200-row camera image. Motors are prohibited regardless of
    participant callback behavior.
 2. VISION (`TEST_VISION` internally) combines line, edge, color, pixel drawing, fixed-font text, and
-   student algorithm experimentation in one motor-prohibited page. The exact
-   reference algorithm and page-specific pot meanings remain deliberately open
-   until the organizer discussion; it must not become a completed lane detector,
-   steering decision, PID controller, or race solution. Its second status row reports
-   `ALGO x.xms / 41ms FRAME`; it does not add explanatory text over the image.
+   student algorithm experimentation in one motor-prohibited page. Its reference
+   algorithm converts one Alpha-selected row to luma, applies a cheap one-dimensional
+   Sobel-style gradient, uses Beta for the edge threshold and Gamma for a one-to-four
+   pixel gradient radius, collapses each contiguous response to its magnitude-weighted center,
+   marks falling and rising edges in different colors, and publishes the total edge
+   count. It deliberately retains edges from other lanes or objects and does not pair,
+   select, center, steer from, or otherwise turn them into a race solution. The same
+   Y/HSV feature array remains visible for later student color-edge experiments.
+   Its second status row reports `ALGO x.xms / 41ms FRAME`; it does not add
+   explanatory text over the image.
 3. MOTORS (`NXPC_TEST_PAGE_MOTORS` internally) demonstrates alpha as left
    motor, beta as steering, and gamma as right motor. EXE requests arming, all three pots must be centered before
    outputs become live, and framework telemetry plus QDC feedback make commands
