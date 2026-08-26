@@ -4,12 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NXP Cup Live Dashboard</title>
-  <link rel="stylesheet" href="./webserial_viewer.css">
+  <!-- NXPC_DASHBOARD_STYLE -->
 </head>
-<body>
+<body data-transport="{{TRANSPORT}}">
   <main class="dashboard">
     <section class="stage" aria-label="Live NXP Cup camera and telemetry">
-      <canvas id="frameCanvas" width="320" height="200" aria-label="RGB565 camera frame"></canvas>
+      <canvas id="frameCanvas" width="320" height="200" aria-label="NXP Cup camera frame"></canvas>
+      <video id="h264Video" width="320" height="200" muted autoplay playsinline hidden aria-label="NXP Cup H.264 camera stream"></video>
       <div class="shade" aria-hidden="true"></div>
 
       <header class="topbar">
@@ -26,9 +27,11 @@
         <div id="raceControlStatus" class="race-control-status" aria-live="polite"></div>
       </section>
 
-      <div class="side-readout speed"><div class="label">Current speed</div><div class="value"><span id="dashboardSpeed">0.0</span> <small>KM/H</small></div></div>
-      <div class="side-readout battery"><div class="label">Battery</div><div class="value"><span id="dashboardBattery">--.-</span> <small>V</small></div></div>
-      <div class="side-readout fps"><div class="label">Frame rate</div><div class="value"><span id="dashboardFrameRate">0.0</span> <small>FPS</small></div></div>
+      <div class="side-readouts" aria-label="Live vehicle readouts">
+        <div class="side-readout speed"><div class="label">Current speed</div><div class="value"><span id="dashboardSpeed">0.0</span> <small>KM/H</small></div></div>
+        <div class="side-readout battery"><div class="label">Battery</div><div class="value"><span id="dashboardBattery">--.-</span> <small>V</small></div></div>
+        <div class="side-readout fps"><div class="label">Frame rate</div><div class="value"><span id="dashboardFrameRate">0.0</span> <small>FPS</small></div></div>
+      </div>
 
       <section class="hud" aria-label="Vehicle telemetry">
         <article class="card">
@@ -57,6 +60,11 @@
         <button id="stopButton" type="button" disabled>Stop stream</button>
         <button id="resetButton" type="button" disabled>Reset stats</button>
       </div>
+      <nav class="relay-modes" aria-label="Video mode">
+        <a class="mode-button" data-video="jpeg" href="?video=jpeg&amp;replace=1">JPEG</a>
+        <a class="mode-button" data-video="h264" href="?video=h264&amp;replace=1">H.264</a>
+        <a class="mode-button" data-video="raw" href="?video=raw&amp;replace=1">Raw</a>
+      </nav>
       <p class="shortcut">F: fullscreen &middot; D: diagnostics</p>
     </div>
   </details>
@@ -80,6 +88,7 @@
         </dl>
       </section>
       <section class="log-panel" aria-label="Device diagnostic log"><h2>Device Log</h2><div id="logConsole" class="log-console" role="log" aria-live="polite"></div></section>
+      <section class="relay-health-panel" aria-label="Relay health"><h2>Relay Health</h2><pre id="relayHealth">Waiting for health...</pre></section>
       <section class="plot-panel" aria-label="Selected telemetry plots">
         <div class="panel-heading"><div><h2>Telemetry Plots</h2><p>Select numeric signals in the table.</p></div><span id="plotStatus">Waiting for selected telemetry</span></div>
         <div id="plotLegend" class="plot-legend" aria-label="Plot legend"></div>
@@ -90,6 +99,7 @@
       </section>
     </div>
   </details>
-  <script src="./webserial_viewer.js"></script>
+  <!-- NXPC_DASHBOARD_SCRIPT -->
+  <!-- NXPC_ADAPTER_SCRIPT -->
 </body>
 </html>

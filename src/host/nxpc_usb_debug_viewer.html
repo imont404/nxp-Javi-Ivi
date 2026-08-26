@@ -9,14 +9,14 @@
 *{box-sizing:border-box}html,body{width:100%;height:100%}body{margin:0;overflow:hidden;background:#020304;color:#f7f8fa}button{font:inherit}
 [hidden]{display:none!important}
 .dashboard{height:100%;display:grid;place-items:center;padding:clamp(8px,1.2vw,20px)}
-.stage{position:relative;width:min(100%,calc((100vh - clamp(16px,2.4vw,40px))*1.6));aspect-ratio:8/5;overflow:hidden;border:1px solid rgba(255,255,255,.26);border-top:3px solid var(--accent);background:#000;box-shadow:0 18px 80px #000,0 0 34px rgba(243,29,59,.1)}
-#frameCanvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.72),transparent 22%,transparent 54%,rgba(0,0,0,.94))}.shade::after{content:"";position:absolute;inset:0;opacity:.1;background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px)}
+.stage{position:relative;width:min(100%,calc((100vh - clamp(16px,2.4vw,40px))*1.6));aspect-ratio: 8 / 5;overflow:hidden;border:1px solid rgba(255,255,255,.26);border-top:3px solid var(--accent);background:#000;box-shadow:0 18px 80px #000,0 0 34px rgba(243,29,59,.1)}
+#frameCanvas,#h264Video{display:block;width:100%;height:100%;object-fit:contain;background:#000;image-rendering:pixelated;image-rendering:crisp-edges}#h264Video{position:absolute;inset:0}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.72),transparent 22%,transparent 54%,rgba(0,0,0,.94))}.shade::after{content:"";position:absolute;inset:0;opacity:.1;background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px)}
 .topbar{position:absolute;inset:0 0 auto;display:flex;align-items:start;justify-content:space-between;padding:clamp(11px,1.35vw,21px);pointer-events:none}.state{display:flex;align-items:center;gap:9px;padding:9px 17px;border-left:5px solid var(--green);background:rgba(5,15,10,.88);font-size:clamp(.72rem,1vw,1rem);font-style:italic;font-weight:950;letter-spacing:.06em;clip-path:polygon(0 0,100% 0,calc(100% - 11px) 100%,0 100%)}.state::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}.state.disarmed{border-color:var(--amber)}.state.disarmed::before{background:var(--amber);box-shadow:0 0 12px var(--amber)}.state.disconnected,.state.fault{border-color:var(--accent)}.state.disconnected::before,.state.fault::before{background:var(--accent);box-shadow:0 0 12px var(--accent)}.live{padding:6px 14px 7px 20px;background:var(--accent);font-size:clamp(.62rem,.8vw,.82rem);font-style:italic;font-weight:950;letter-spacing:.16em;clip-path:polygon(12px 0,100% 0,100% 100%,0 100%)}.live.offline{background:#41454a}
 .race-controls{position:absolute;top:clamp(56px,6.3vw,98px);left:50%;display:grid;grid-template-columns:minmax(150px,1fr) auto;gap:6px;width:min(390px,45%);transform:translateX(-50%)}.race-controls button{position:relative;min-height:38px;overflow:hidden;border:1px solid rgba(255,255,255,.34);color:#fff;cursor:pointer;font-size:clamp(.66rem,.83vw,.84rem);font-style:italic;font-weight:950;letter-spacing:.08em}.race-controls button:disabled{cursor:not-allowed;opacity:.36}.race-start{background:rgba(8,52,30,.9)}.race-start.ready{border-color:var(--green);box-shadow:0 0 14px rgba(88,239,153,.24)}.race-start.holding .hold-progress{animation:hold-fill 1.5s linear forwards}.hold-progress{position:absolute;inset:0 100% 0 0;background:rgba(88,239,153,.4)}.button-copy{position:relative;z-index:1}.race-stop{min-width:78px;background:rgba(126,8,25,.92);border-color:var(--accent)!important}.race-control-status{grid-column:1/-1;min-height:14px;color:rgba(255,255,255,.7);font-size:clamp(.54rem,.6vw,.64rem);font-weight:750;letter-spacing:.03em;text-align:center;text-shadow:0 1px 4px #000}@keyframes hold-fill{from{inset-right:100%}to{inset-right:0}}
-.side-readout{position:absolute;right:0;min-width:180px;padding:8px 14px 9px 30px;text-align:right;border-right:4px solid var(--accent);background:linear-gradient(270deg,rgba(5,6,8,.94),rgba(5,6,8,.48),transparent);clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}.side-readout.battery{top:15%}.side-readout.fps{top:24%}.side-readout .label{color:#aeb2b8;font-size:clamp(.62rem,.8vw,.82rem);font-style:italic;font-weight:950;letter-spacing:.12em;text-transform:uppercase}.side-readout .value{margin-top:1px;font-size:clamp(1rem,1.9vw,1.9rem);font-style:italic;font-weight:950;font-variant-numeric:tabular-nums}.side-readout small{color:#aeb2b8;font-size:.45em}
+.side-readouts{position:absolute;top:4%;right:0;display:flex;flex-direction:column;align-items:flex-end;gap:clamp(6px,.8vw,10px)}.side-readout{position:relative;min-width:180px;padding:8px 14px 9px 30px;text-align:right;border-right:4px solid var(--accent);background:linear-gradient(270deg,rgba(5,6,8,.94),rgba(5,6,8,.48),transparent);clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}.side-readout .label{color:#aeb2b8;font-size:clamp(.62rem,.8vw,.82rem);font-style:italic;font-weight:950;letter-spacing:.12em;text-transform:uppercase}.side-readout .value{margin-top:1px;font-size:clamp(1rem,1.9vw,1.9rem);font-style:italic;font-weight:950;font-variant-numeric:tabular-nums}.side-readout small{color:#aeb2b8;font-size:.45em}
 .hud{position:absolute;inset:auto clamp(8px,1.2vw,18px) clamp(8px,1.2vw,18px);display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:clamp(6px,.8vw,11px)}.card{position:relative;min-width:0;padding:clamp(7px,.85vw,12px);border-top:2px solid rgba(255,255,255,.8);background:var(--panel);backdrop-filter:blur(10px);clip-path:polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,11px 100%,0 calc(100% - 11px))}.card::before{content:"";position:absolute;left:0;inset-block:0;width:4px;background:var(--accent)}.card-title{display:flex;align-items:center;justify-content:space-between;color:#afb3b8;font-size:clamp(.56rem,.62vw,.68rem);font-style:italic;font-weight:950;letter-spacing:.12em;text-transform:uppercase}.rpm{margin:2px 0 4px;font-size:clamp(1.2rem,2.4vw,2.5rem);line-height:.95;font-style:italic;font-weight:950;font-variant-numeric:tabular-nums;text-shadow:0 2px 12px #000}.rpm small,.steering-value small{color:#9ca1a7;font-size:.33em;letter-spacing:.08em}.command-track{position:relative;height:6px;overflow:hidden;background:#292d31;transform:skewX(-12deg)}.command-track::after{content:"";position:absolute;left:50%;inset-block:0;width:1px;background:rgba(255,255,255,.65)}.command-fill{position:absolute;inset-block:0;left:50%;width:0;background:linear-gradient(90deg,var(--accent),#ff6579);box-shadow:0 0 10px var(--accent)}.command-caption{display:flex;justify-content:space-between;margin-top:4px;color:#979ca2;font-size:clamp(.52rem,.58vw,.62rem);font-variant-numeric:tabular-nums}.steering-value{margin-top:2px;font-size:clamp(1.25rem,2.55vw,2.7rem);line-height:.95;font-style:italic;font-weight:950;font-variant-numeric:tabular-nums}.steering-track{position:relative;height:7px;margin-top:7px;background:linear-gradient(90deg,var(--accent),#3b3e42 50%,var(--accent));transform:skewX(-12deg)}.steering-marker{position:absolute;top:50%;left:50%;width:13px;height:16px;background:#fff;border:3px solid var(--accent);box-shadow:0 0 13px var(--accent);transform:translate(-50%,-50%) skewX(12deg)}
 .drawer{position:fixed;bottom:10px;z-index:5;max-width:min(620px,calc(100vw - 24px))}.drawer.operator{left:12px}.drawer.diagnostics{right:12px;width:min(760px,calc(100vw - 24px))}.drawer summary{width:fit-content;cursor:pointer;color:#8d939b;font-size:.72rem;font-style:italic;font-weight:800;text-transform:uppercase}.diagnostics>summary{margin-left:auto}.drawer-panel,.diagnostic-scroll{margin-top:6px;border:1px solid var(--line);background:rgba(9,11,14,.97);box-shadow:0 8px 35px #000}.drawer-panel{padding:10px}.drawer-panel p{margin:0 0 8px;color:#c7cbd0;font-size:.78rem}.drawer-panel .shortcut{margin:7px 0 0;color:#6f757c;font-size:.65rem}.actions{display:flex;flex-wrap:wrap;gap:5px}.actions button{min-height:32px;border:1px solid #383d43;background:#22262b;color:#dce0e4;cursor:pointer;font-size:.72rem;font-weight:800;padding:0 11px}.actions button:disabled{cursor:not-allowed;opacity:.38}#connectButton{border-color:var(--accent)}.diagnostic-scroll{max-height:min(78vh,780px);overflow:auto;padding:12px}h2,p,dl{margin:0}.stats-panel{display:grid;grid-template-columns:auto 1fr;gap:10px 18px}.stats-panel h2{color:#8d939b;font-size:.7rem;text-transform:uppercase}.stats-panel dl{display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:4px 12px}.stats-panel dl+h2{margin-left:10px}.stats-panel dl div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #272c32;padding:3px;font-size:.67rem}.stats-panel dt{color:#8d939b}.stats-panel dd{margin:0;font-variant-numeric:tabular-nums}.log-panel,.plot-panel,.telemetry-panel{margin-top:14px}.log-panel h2,.plot-panel h2,.telemetry-panel h2{margin-bottom:7px;color:#8d939b;font-size:.7rem;text-transform:uppercase}.log-console{min-height:52px;max-height:130px;overflow:auto;font-family:Consolas,"Cascadia Mono",monospace;font-size:.67rem;line-height:1.4;white-space:pre-wrap}.log-entry-warning{color:var(--amber)}.log-entry-error{color:var(--accent)}.panel-heading{display:flex;justify-content:space-between;gap:12px}.panel-heading p,#plotStatus{color:#8d939b;font-size:.65rem}#telemetryPlotCanvas{display:block;width:100%;height:auto;border:1px solid #2d3238;background:#101317}.plot-legend{display:flex;flex-wrap:wrap;gap:5px 12px;min-height:18px;margin-bottom:5px;font-size:.65rem}.plot-legend-item{display:inline-flex;align-items:center;gap:5px}.plot-swatch{width:16px;height:3px}.telemetry-table-wrap{overflow-x:auto}.telemetry-panel table{width:100%;border-collapse:collapse;font-size:.67rem;font-variant-numeric:tabular-nums}.telemetry-panel th,.telemetry-panel td{border-bottom:1px solid #272c32;padding:5px 7px;text-align:left}.telemetry-panel th{color:#8d939b;text-transform:uppercase}
-@media(max-aspect-ratio:5/4){.hud{grid-template-columns:1fr 1fr}.steering-card{grid-column:1/-1;grid-row:1}.side-readout{display:none}.race-controls{width:min(520px,70%)}}@media(max-width:680px){.race-controls{top:58px;width:calc(100% - 24px)}.drawer.diagnostics{display:none}}
+@media(max-aspect-ratio:5/4){.hud{grid-template-columns:1fr 1fr}.steering-card{grid-column:1/-1;grid-row:1}.side-readouts{display:none}.race-controls{width:min(520px,70%)}}@media(max-width:680px){.race-controls{top:58px;width:calc(100% - 24px)}.drawer.diagnostics{display:none}}
 @keyframes hold-fill{from{right:100%}to{right:0}}
 
 /* Compact projector HUD: controls stay at the edge and gauges use horizontal space. */
@@ -39,7 +39,6 @@
 .race-controls.waiting{width:138px;grid-template-columns:1fr}
 .race-controls.running{width:58px;grid-template-columns:1fr}
 .race-control-status{left:50%;width:320px;text-align:center;transform:translateX(-50%)}
-.side-readout.speed{top:33%}
 @media(max-width:680px){.race-controls{top:5px;left:50%;width:176px;transform:translateX(-50%)}.race-control-status{width:260px}}
 
 /* Race-only controls sit below the compact state badge. STOP remains available throughout race mode. */
@@ -53,11 +52,8 @@
 .race-control-status{left:0;width:245px;padding-top:2px;text-align:left;font-size:clamp(.4rem,.44vw,.48rem);transform:none}
 @media(max-width:680px){.race-controls,.race-controls.waiting{top:36px;left:7px;width:132px;grid-template-columns:1fr 39px;transform:none}.race-controls.running{width:39px}.race-control-status{left:0;width:220px;text-align:left;transform:none}}
 
-/* Upper-right readout order: speed, battery, frame rate. LIVE sits independently at top center. */
+/* Upper-right readouts stay in one non-overlapping stack. LIVE sits independently at top center. */
 .live{position:absolute;top:0;left:50%;margin-left:0;transform:translateX(-50%)}
-.side-readout.speed{top:4%}
-.side-readout.battery{top:12%}
-.side-readout.fps{top:20%}
 
 /* Wheel command gauges emphasize magnitude; the signed number carries direction. */
 .hud{grid-template-columns:1fr 1.1fr 1fr}
@@ -74,12 +70,20 @@
 .command-value{position:absolute;z-index:1;inset:0;display:grid;place-items:center;color:#fff;font-size:clamp(.48rem,.58vw,.64rem);font-style:italic;font-variant-numeric:tabular-nums;line-height:1;text-shadow:0 1px 3px #000;transform:skewX(12deg)}
 .steering-track{height:14px}
 
+/* Consumer capabilities: unsupported actions are absent from the active surface. */
+body[data-transport="webserial"] .relay-modes,body[data-transport="webserial"] .relay-health-panel{display:none}
+body[data-transport="relay"] #connectButton,body[data-transport="relay"] #startButton,body[data-transport="relay"] #stopButton,body[data-transport="relay"] #resetButton,body[data-transport="relay"] .shortcut,body[data-transport="relay"] .stats-panel,body[data-transport="relay"] .log-panel,body[data-transport="relay"] .plot-panel,body[data-transport="relay"] #raceControls{display:none!important}
+body[data-transport="relay"] .operator summary::after{content:" / video mode"}
+.relay-modes{display:flex;flex-wrap:wrap;gap:5px}.mode-button{display:grid;min-width:58px;min-height:32px;place-items:center;border:1px solid #383d43;background:#22262b;color:#dce0e4;font-size:.72rem;font-weight:800;padding:0 11px;text-decoration:none}.mode-button:hover{border-color:#777e86}.mode-button.active{border-color:var(--accent);background:#54101c;color:#fff}.relay-health-panel{margin-top:0}.relay-health-panel pre{max-height:180px;overflow:auto;margin:0;border:1px solid #272c32;background:#101317;color:#c7cbd0;padding:8px;font:.67rem/1.4 Consolas,"Cascadia Mono",monospace;white-space:pre-wrap}
+body[data-transport="relay"] .telemetry-panel{margin-top:14px}body[data-transport="relay"] .telemetry-panel th:first-child,body[data-transport="relay"] .telemetry-panel td:first-child,body[data-transport="relay"] .telemetry-panel th:nth-child(5),body[data-transport="relay"] .telemetry-panel td:nth-child(5),body[data-transport="relay"] .telemetry-panel th:nth-child(6),body[data-transport="relay"] .telemetry-panel td:nth-child(6){display:none}
+
 </style>
 </head>
-<body>
+<body data-transport="webserial">
   <main class="dashboard">
     <section class="stage" aria-label="Live NXP Cup camera and telemetry">
-      <canvas id="frameCanvas" width="320" height="200" aria-label="RGB565 camera frame"></canvas>
+      <canvas id="frameCanvas" width="320" height="200" aria-label="NXP Cup camera frame"></canvas>
+      <video id="h264Video" width="320" height="200" muted autoplay playsinline hidden aria-label="NXP Cup H.264 camera stream"></video>
       <div class="shade" aria-hidden="true"></div>
 
       <header class="topbar">
@@ -96,9 +100,11 @@
         <div id="raceControlStatus" class="race-control-status" aria-live="polite"></div>
       </section>
 
-      <div class="side-readout speed"><div class="label">Current speed</div><div class="value"><span id="dashboardSpeed">0.0</span> <small>KM/H</small></div></div>
-      <div class="side-readout battery"><div class="label">Battery</div><div class="value"><span id="dashboardBattery">--.-</span> <small>V</small></div></div>
-      <div class="side-readout fps"><div class="label">Frame rate</div><div class="value"><span id="dashboardFrameRate">0.0</span> <small>FPS</small></div></div>
+      <div class="side-readouts" aria-label="Live vehicle readouts">
+        <div class="side-readout speed"><div class="label">Current speed</div><div class="value"><span id="dashboardSpeed">0.0</span> <small>KM/H</small></div></div>
+        <div class="side-readout battery"><div class="label">Battery</div><div class="value"><span id="dashboardBattery">--.-</span> <small>V</small></div></div>
+        <div class="side-readout fps"><div class="label">Frame rate</div><div class="value"><span id="dashboardFrameRate">0.0</span> <small>FPS</small></div></div>
+      </div>
 
       <section class="hud" aria-label="Vehicle telemetry">
         <article class="card">
@@ -127,6 +133,11 @@
         <button id="stopButton" type="button" disabled>Stop stream</button>
         <button id="resetButton" type="button" disabled>Reset stats</button>
       </div>
+      <nav class="relay-modes" aria-label="Video mode">
+        <a class="mode-button" data-video="jpeg" href="?video=jpeg&amp;replace=1">JPEG</a>
+        <a class="mode-button" data-video="h264" href="?video=h264&amp;replace=1">H.264</a>
+        <a class="mode-button" data-video="raw" href="?video=raw&amp;replace=1">Raw</a>
+      </nav>
       <p class="shortcut">F: fullscreen &middot; D: diagnostics</p>
     </div>
   </details>
@@ -150,6 +161,7 @@
         </dl>
       </section>
       <section class="log-panel" aria-label="Device diagnostic log"><h2>Device Log</h2><div id="logConsole" class="log-console" role="log" aria-live="polite"></div></section>
+      <section class="relay-health-panel" aria-label="Relay health"><h2>Relay Health</h2><pre id="relayHealth">Waiting for health...</pre></section>
       <section class="plot-panel" aria-label="Selected telemetry plots">
         <div class="panel-heading"><div><h2>Telemetry Plots</h2><p>Select numeric signals in the table.</p></div><span id="plotStatus">Waiting for selected telemetry</span></div>
         <div id="plotLegend" class="plot-legend" aria-label="Plot legend"></div>
@@ -160,6 +172,150 @@
       </section>
     </div>
   </details>
+  <script>
+"use strict";
+
+(() => {
+  const WHEEL_DIAMETER_METERS = 0.075;
+
+  class DashboardPresentation {
+    constructor() {
+      this.ui = {
+        state: document.getElementById("dashboardState"),
+        live: document.getElementById("dashboardLive"),
+        speed: document.getElementById("dashboardSpeed"),
+        battery: document.getElementById("dashboardBattery"),
+        frameRate: document.getElementById("dashboardFrameRate"),
+        leftRpm: document.getElementById("dashboardLeftRpm"),
+        rightRpm: document.getElementById("dashboardRightRpm"),
+        leftCommand: document.getElementById("dashboardLeftCommand"),
+        rightCommand: document.getElementById("dashboardRightCommand"),
+        leftBar: document.getElementById("dashboardLeftBar"),
+        rightBar: document.getElementById("dashboardRightBar"),
+        steeringCommand: document.getElementById("dashboardSteeringCommand"),
+        steeringMarker: document.getElementById("dashboardSteeringMarker"),
+        canvas: document.getElementById("frameCanvas"),
+        video: document.getElementById("h264Video"),
+      };
+      this.leftWheelRpm = 0;
+      this.rightWheelRpm = 0;
+      this.systemMode = "";
+      this.systemState = "";
+    }
+
+    setConnection({ connected, live, label }) {
+      this.ui.live.textContent = live ? "LIVE" : connected ? "CONNECTED" : "OFFLINE";
+      this.ui.live.classList.toggle("offline", !live);
+      if (!connected) this.setState("");
+      if (label !== undefined) document.getElementById("connectionState").textContent = label;
+    }
+
+    setState(label) {
+      this.ui.state.textContent = label;
+      this.ui.state.hidden = !label;
+      this.ui.state.className = "state";
+      this.ui.state.classList.toggle("disarmed", /DISARMED|WAITING|CENTER POTS/.test(label));
+      this.ui.state.classList.toggle("fault", /FAULT|LOST|OVERRUN|ERROR|DISCONNECTED/.test(label));
+    }
+
+    setFrameRate(value) {
+      const numeric = Number(value);
+      this.ui.frameRate.textContent = Number.isFinite(numeric) ? numeric.toFixed(1) : "0.0";
+    }
+
+    showVideoSurface(surface) {
+      const h264 = surface === "h264";
+      this.ui.video.hidden = !h264;
+      this.ui.canvas.hidden = h264;
+    }
+
+    updateTelemetry(sample) {
+      const numeric = Number(sample.value);
+      switch (sample.name) {
+        case "system.mode":
+          this.systemMode = String(sample.value);
+          break;
+        case "system.state":
+          this.systemState = String(sample.value);
+          break;
+        case "battery.voltage":
+          if (Number.isFinite(numeric)) this.ui.battery.textContent = numeric.toFixed(1);
+          break;
+        case "wheel.left.rpm":
+          if (Number.isFinite(numeric)) {
+            this.leftWheelRpm = numeric;
+            this.ui.leftRpm.textContent = String(Math.round(numeric));
+            this.updateSpeed();
+          }
+          break;
+        case "wheel.right.rpm":
+          if (Number.isFinite(numeric)) {
+            this.rightWheelRpm = numeric;
+            this.ui.rightRpm.textContent = String(Math.round(numeric));
+            this.updateSpeed();
+          }
+          break;
+        case "motor.left.command":
+          if (Number.isFinite(numeric)) this.setCommand(this.ui.leftBar, this.ui.leftCommand, numeric);
+          break;
+        case "motor.right.command":
+          if (Number.isFinite(numeric)) this.setCommand(this.ui.rightBar, this.ui.rightCommand, numeric);
+          break;
+        case "steering.command":
+          if (Number.isFinite(numeric)) {
+            const normalized = Math.max(-1, Math.min(1, numeric));
+            const degrees = Math.round(normalized * 30);
+            this.ui.steeringCommand.textContent = degrees > 0 ? `+${degrees}` : String(degrees);
+            this.ui.steeringMarker.style.left = `${50 + normalized * 50}%`;
+          }
+          break;
+        default:
+          break;
+      }
+      if (sample.name === "system.mode" || sample.name === "system.state") {
+        this.setState([this.systemMode, this.systemState].filter(Boolean).join(" / ") || "CONNECTED");
+      }
+    }
+
+    resetTelemetry() {
+      this.leftWheelRpm = 0;
+      this.rightWheelRpm = 0;
+      this.systemMode = "";
+      this.systemState = "";
+      this.ui.speed.textContent = "0.0";
+      this.ui.battery.textContent = "--.-";
+      this.ui.leftRpm.textContent = "0";
+      this.ui.rightRpm.textContent = "0";
+      this.setCommand(this.ui.leftBar, this.ui.leftCommand, 0);
+      this.setCommand(this.ui.rightBar, this.ui.rightCommand, 0);
+      this.ui.steeringCommand.textContent = "0";
+      this.ui.steeringMarker.style.left = "50%";
+      this.setState("");
+    }
+
+    updateSpeed() {
+      const averageRpm = (this.leftWheelRpm + this.rightWheelRpm) / 2;
+      const kilometersPerHour = Math.abs(averageRpm) * Math.PI * WHEEL_DIAMETER_METERS * 60 / 1000;
+      this.ui.speed.textContent = kilometersPerHour.toFixed(1);
+    }
+
+    setCommand(bar, label, value) {
+      const normalized = Math.max(-1, Math.min(1, Number(value) || 0));
+      const magnitude = Math.abs(normalized);
+      bar.style.left = "0%";
+      bar.style.width = `${magnitude * 100}%`;
+      bar.classList.toggle("medium", magnitude >= 0.5 && magnitude < 0.75);
+      bar.classList.toggle("high", magnitude >= 0.75);
+      label.textContent = `${Math.round(normalized * 100)}%`;
+    }
+  }
+
+  window.NxpCupDashboard = Object.freeze({
+    create: () => new DashboardPresentation(),
+  });
+})();
+
+</script>
   <script>
 "use strict";
 
@@ -269,6 +425,7 @@ const ui = {
   raceControlStatus: document.getElementById("raceControlStatus"),
 };
 
+const dashboard = window.NxpCupDashboard.create();
 const context = ui.canvas.getContext("2d", { alpha: false });
 const imageData = context.createImageData(STREAM.frameWidth, STREAM.frameHeight);
 const plotContext = ui.telemetryPlotCanvas.getContext("2d", { alpha: false });
@@ -773,14 +930,7 @@ class StreamParser {
 const parser = new StreamParser();
 
 function setConnectionState(text) {
-  ui.connectionState.textContent = text;
-  ui.dashboardLive.textContent = streaming ? "LIVE" : port ? "CONNECTED" : "OFFLINE";
-  ui.dashboardLive.classList.toggle("offline", !streaming);
-  ui.dashboardState.hidden = !systemMode && !systemState;
-  if (!port) {
-    ui.dashboardState.textContent = "";
-    ui.dashboardState.hidden = true;
-  }
+  dashboard.setConnection({ connected: port !== null, live: streaming, label: text });
 }
 
 function setButtons() {
@@ -805,78 +955,12 @@ function setButtons() {
   ui.raceControlStatus.textContent = "";
 }
 
-function setCommandBar(element, value) {
-  const normalized = Math.max(-1, Math.min(1, Number(value) || 0));
-  const magnitude = Math.abs(normalized);
-  element.style.left = "0%";
-  element.style.width = `${magnitude * 100}%`;
-  element.classList.toggle("medium", magnitude >= 0.5 && magnitude < 0.75);
-  element.classList.toggle("high", magnitude >= 0.75);
-}
-
-function updateDashboardSpeed() {
-  const averageRpm = (leftWheelRpm + rightWheelRpm) / 2;
-  const kilometersPerHour = Math.abs(averageRpm) * Math.PI * DASHBOARD.wheelDiameterMeters * 60 / 1000;
-  ui.dashboardSpeed.textContent = kilometersPerHour.toFixed(1);
-}
-
 function updateDashboardTelemetry(sample) {
-  const numeric = Number(sample.value);
-  switch (sample.name) {
-    case "system.mode":
-      systemMode = String(sample.value);
-      break;
-    case "system.state":
-      systemState = String(sample.value);
-      break;
-    case "battery.voltage":
-      if (Number.isFinite(numeric)) ui.dashboardBattery.textContent = numeric.toFixed(1);
-      break;
-    case "wheel.left.rpm":
-      if (Number.isFinite(numeric)) {
-        leftWheelRpm = numeric;
-        ui.dashboardLeftRpm.textContent = String(Math.round(numeric));
-        updateDashboardSpeed();
-      }
-      break;
-    case "wheel.right.rpm":
-      if (Number.isFinite(numeric)) {
-        rightWheelRpm = numeric;
-        ui.dashboardRightRpm.textContent = String(Math.round(numeric));
-        updateDashboardSpeed();
-      }
-      break;
-    case "motor.left.command":
-      if (Number.isFinite(numeric)) {
-        ui.dashboardLeftCommand.textContent = `${Math.round(numeric * 100)}%`;
-        setCommandBar(ui.dashboardLeftBar, numeric);
-      }
-      break;
-    case "motor.right.command":
-      if (Number.isFinite(numeric)) {
-        ui.dashboardRightCommand.textContent = `${Math.round(numeric * 100)}%`;
-        setCommandBar(ui.dashboardRightBar, numeric);
-      }
-      break;
-    case "steering.command":
-      if (Number.isFinite(numeric)) {
-        const normalized = Math.max(-1, Math.min(1, numeric));
-        const angleDegrees = Math.round(normalized * 30);
-        ui.dashboardSteeringCommand.textContent = angleDegrees > 0 ? `+${angleDegrees}` : String(angleDegrees);
-        ui.dashboardSteeringMarker.style.left = `${50 + normalized * 50}%`;
-      }
-      break;
-    default:
-      break;
-  }
+  dashboard.updateTelemetry(sample);
+  if (sample.name === "system.mode") systemMode = String(sample.value);
+  if (sample.name === "system.state") systemState = String(sample.value);
 
   if (sample.name === "system.mode" || sample.name === "system.state") {
-    const label = [systemMode, systemState].filter(Boolean).join(" / ") || "CONNECTED";
-    ui.dashboardState.textContent = label;
-    ui.dashboardState.hidden = false;
-    ui.dashboardState.className = "state";
-    ui.dashboardState.classList.toggle("disarmed", /DISARMED|WAITING|CENTER POTS/.test(systemState));
-    ui.dashboardState.classList.toggle("fault", /FAULT|LOST|OVERRUN/.test(systemState));
     setButtons();
   }
 }
@@ -1108,7 +1192,7 @@ function updateStats() {
 
   ui.byteRate.textContent = formatRate(byteRate);
   ui.frameRate.textContent = `${frameRate.toFixed(2)} fps`;
-  ui.dashboardFrameRate.textContent = frameRate.toFixed(1);
+  dashboard.setFrameRate(frameRate);
   ui.renderRate.textContent = `${renderRate.toFixed(2)} fps`;
   ui.byteCount.textContent = formatNumber(parser.bytes);
   ui.frameCount.textContent = formatNumber(parser.frames);
@@ -1272,7 +1356,7 @@ async function connect() {
   systemState = "";
   leftWheelRpm = 0;
   rightWheelRpm = 0;
-  updateDashboardSpeed();
+  dashboard.resetTelemetry();
   streaming = false;
   nextControlSequence = 0;
   writeChain = Promise.resolve();
@@ -1324,7 +1408,7 @@ async function disconnect() {
     systemState = "";
     leftWheelRpm = 0;
     rightWheelRpm = 0;
-    updateDashboardSpeed();
+    dashboard.resetTelemetry();
     keepReading = false;
     if (reader) {
       await reader.cancel();

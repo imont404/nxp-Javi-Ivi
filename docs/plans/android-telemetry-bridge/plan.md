@@ -214,7 +214,7 @@ status = "pending"
 [[steps]]
 id = "shared-web-dashboard"
 title = "Extract the Formula One dashboard into src/web with shared presentation assets, separate WebSerial and Android relay adapters, generated standalone outputs, and drift/browser tests"
-status = "pending"
+status = "active"
 depends_on = ["client-video-selection"]
 
 [[steps]]
@@ -235,19 +235,14 @@ they do not independently rename protocol bytes or public firmware APIs.
 
 ## Shared Dashboard and App-Role Handoff
 
-The Formula One-style dashboard currently has three authored WebSerial inputs at
-`src/host/webserial_viewer.html`, `.css`, and `.js`; the checked
-`src/host/nxpc_usb_debug_viewer.html` is generated from them. The Android relay still
-loads its separate monolithic page from
-`src/android/nxp_cup_bridge/app/src/main/res/raw/relay_viewer.html`. Preserve both proven
-paths until the `shared-web-dashboard` step replaces duplication with an explicit build.
-
-That step creates `src/web` as the owner of transport-neutral dashboard markup, styling,
-and presentation logic. WebSerial connection, `AVCU` parsing, system actions, and direct
-RGB565 input stay in a host adapter. Android WebSocket connection, JPEG/H.264/raw mode
-selection, `AVCJ`/`AVC4`/`AVCR`, and relayed `AVCU` telemetry stay in an Android adapter.
-The build generates and drift-checks both committed standalone outputs; neither output
-may depend on a CDN, runtime package server, or repository-relative browser asset.
+The active `shared-web-dashboard` step now has its intended source boundary in the
+worktree. `src/web` owns transport-neutral dashboard markup, styling, presentation logic,
+and the deterministic standalone-page generator. WebSerial connection, `AVCU` parsing,
+system actions, and direct RGB565 input remain in `src/host/web/webserial_adapter.js`.
+Android WebSocket connection, JPEG/H.264/raw mode selection, `AVCJ`/`AVC4`/`AVCR`, and
+relayed `AVCU` telemetry remain in `src/android/web/relay_adapter.js`. The generated host
+and Android pages are committed, dependency-free runtime outputs checked by
+`src/web/build.ps1 -Check`.
 
 Do not use this extraction as permission to rewrite the proven Android relay. After the
 shared dashboard and `bridge-lifecycle-solidification` are complete, the
@@ -259,6 +254,29 @@ server, compression workers, network permissions, or hotspot lifecycle by accide
 parallel agents.
 
 ## Current Status
+
+On 2026-08-26, the shared-dashboard implementation and automated validation reached a
+pause checkpoint. The generated-page drift check and all 14 Playwright browser tests
+passed, including Android JPEG, H.264, raw RGB565, generic telemetry, and read-only
+vehicle behavior. The pinned offline Android build and JVM unit tests also passed using
+the reusable tool cache at `C:\ELI\fit2026\avc\out\toolchains\android`; the resulting APK
+is `out/artifacts/android/nxp_cup_bridge.apk`. The branch was then fast-forwarded without
+conflict to `origin/main` at `185bbc4`; the dashboard changes remain uncommitted in the
+worktree. After synchronization, the plan audit, repeated offline Android build, and full
+repository Python suite passed, with 95 tests passed and one skipped.
+
+The APK was subsequently installed on the Moto G Power with state-preserving
+`adb install -r`. Version `0.1.0` launched successfully and reported the expected idle
+`waiting_for_NXP_Cup_USB_device` health state while connected to the development PC. The
+first live browser check exposed slight overlap among the upper-right speed, battery, and
+frame-rate panels on a short/wide viewport. Those panels now use one height-aware vertical
+stack, with a 1280x480 browser geometry regression; all 15 browser tests passed, and the
+rebuilt APK was reinstalled successfully. The step remains active rather than claiming
+car-side completion. Next, move the phone to the car through the OTG adapter. Keep the
+development PC on its normal network and use a second PC joined to the phone hotspot to
+open the exact `http://<phone-address>:8765/` URL shown by the app. Re-run the real-phone
+relay and direct WebSerial hardware checks before marking `shared-web-dashboard` done and
+committing the currently uncommitted worktree.
 
 Execution was authorized on 2026-08-21. The native USB host, phone preview, and full-rate
 one-browser Wi-Fi relay are complete on the real Rev A car. The Moto G Power serves its

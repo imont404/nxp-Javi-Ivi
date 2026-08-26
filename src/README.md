@@ -5,13 +5,13 @@
 | `embedded` | FRDM-MCXN947 firmware, MCUXpresso project, CMake build, and hardware tools | `.\src\embedded\build.ps1` | Normally the VISION exercise and RACE mode named in `embedded/AGENTS.md` |
 | `host` | Native Windows camera/telemetry viewer and CLI plus the direct WebSerial viewer | `.\src\host\build.ps1` | No |
 | `android` | Maintainer phone USB-host and Wi-Fi telemetry relay | `.\src\android\build.ps1` | No |
+| `web` | Shared Formula One dashboard presentation and standalone-page generator | `.\src\web\build.ps1` | No |
 | `common` | Shared linked libraries used by the embedded and host components | Built through a consumer | No |
 
 Each buildable component owns its build entry point and detailed README. Read the
 nearest `AGENTS.md` before using an LLM to change component code.
 
-The direct WebSerial page and Android relay page currently belong to their respective
-consumers. The planned cross-consumer presentation extraction is specified in
-`docs/design/shared-web-dashboard.md`. Create `src/web` only together with its real
-`build.ps1`, README, agent guide, drift check, and generated-output contract; do not use
-`src/common` for browser assets because that folder has embedded linked-source ownership.
+The shared Formula One presentation under `web` generates the committed direct WebSerial
+and Android relay pages. Transport adapters remain with their consumers. Use
+`.\src\web\build.ps1 -Check` to detect generated-output drift; do not use `src/common`
+for browser assets because that folder has embedded linked-source ownership.

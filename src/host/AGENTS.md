@@ -16,8 +16,7 @@ Run `npm test` for the standalone viewer and lesson/browser fixtures. Generated
 artifacts belong under `out`; npm `node_modules` and Playwright output remain
 ignored component-local caches.
 
-For the current browser viewer, edit `webserial_viewer.html`, `.css`, and `.js`, then
-regenerate `nxpc_usb_debug_viewer.html`; never edit the generated page directly. The
-planned `src/web` extraction may take transport-neutral Formula One dashboard code, but
-WebSerial, `AVCU`, control actions, and browser serial lifecycle stay owned here. Follow
-`docs/design/shared-web-dashboard.md` during that handoff.
+For the browser viewer, edit the WebSerial adapter under `web` and shared presentation
+under `src/web`, then run `src/web/build.ps1`; never edit generated
+`nxpc_usb_debug_viewer.html` directly. WebSerial, `AVCU`, control actions, and browser
+serial lifecycle stay owned here. Follow `docs/design/shared-web-dashboard.md`.

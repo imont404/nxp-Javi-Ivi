@@ -15,22 +15,21 @@ host RGB565 + controls                                 JPEG / H.264 / raw + AVCU
 This is a source-ownership and build cleanup. It must not change firmware, wire values,
 USB identities, relay framing, queue bounds, or Android lifecycle behavior.
 
-## Current authoritative files
+## Implemented authoritative files
 
 | Consumer | Authored input | Generated or packaged output |
 | --- | --- | --- |
-| Direct WebSerial | `src/host/webserial_viewer.html`, `.css`, `.js` | `src/host/nxpc_usb_debug_viewer.html` |
-| Android relay | `src/android/nxp_cup_bridge/app/src/main/res/raw/relay_viewer.html` | Embedded unchanged in `nxp_cup_bridge.apk` |
+| Shared presentation | `src/web/dashboard/dashboard.html`, `.css`, `.js` | Both pages below |
+| Direct WebSerial | `src/host/web/webserial_adapter.js` | `src/host/nxpc_usb_debug_viewer.html` |
+| Android relay | `src/android/web/relay_adapter.js` | `src/android/nxp_cup_bridge/app/src/main/res/raw/relay_viewer.html`, embedded unchanged in `nxp_cup_bridge.apk` |
 
-The host source set contains the completed Formula One presentation. The Android file is
-a separate, simpler monolithic WebSocket client with proven JPEG, fragmented MP4 H.264,
-raw RGB565, generic telemetry, and video-mode selection. No uncommitted dashboard copy
-is missing.
+The shared source set contains the completed Formula One presentation. The Android
+adapter preserves the proven JPEG, fragmented MP4 H.264, raw RGB565, generic telemetry,
+and video-mode behavior without importing WebSerial or vehicle actions.
 
-## Target ownership
+## Source ownership
 
-Implement the following boundary, adjusting filenames only when the resulting ownership
-is equally obvious:
+The implemented boundary is:
 
 ```text
 src/web/

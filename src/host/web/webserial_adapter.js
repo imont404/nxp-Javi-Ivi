@@ -106,6 +106,7 @@ const ui = {
   raceControlStatus: document.getElementById("raceControlStatus"),
 };
 
+const dashboard = window.NxpCupDashboard.create();
 const context = ui.canvas.getContext("2d", { alpha: false });
 const imageData = context.createImageData(STREAM.frameWidth, STREAM.frameHeight);
 const plotContext = ui.telemetryPlotCanvas.getContext("2d", { alpha: false });
@@ -610,14 +611,7 @@ class StreamParser {
 const parser = new StreamParser();
 
 function setConnectionState(text) {
-  ui.connectionState.textContent = text;
-  ui.dashboardLive.textContent = streaming ? "LIVE" : port ? "CONNECTED" : "OFFLINE";
-  ui.dashboardLive.classList.toggle("offline", !streaming);
-  ui.dashboardState.hidden = !systemMode && !systemState;
-  if (!port) {
-    ui.dashboardState.textContent = "";
-    ui.dashboardState.hidden = true;
-  }
+  dashboard.setConnection({ connected: port !== null, live: streaming, label: text });
 }
 
 function setButtons() {
@@ -642,78 +636,12 @@ function setButtons() {
   ui.raceControlStatus.textContent = "";
 }
 
-function setCommandBar(element, value) {
-  const normalized = Math.max(-1, Math.min(1, Number(value) || 0));
-  const magnitude = Math.abs(normalized);
-  element.style.left = "0%";
-  element.style.width = `${magnitude * 100}%`;
-  element.classList.toggle("medium", magnitude >= 0.5 && magnitude < 0.75);
-  element.classList.toggle("high", magnitude >= 0.75);
-}
-
-function updateDashboardSpeed() {
-  const averageRpm = (leftWheelRpm + rightWheelRpm) / 2;
-  const kilometersPerHour = Math.abs(averageRpm) * Math.PI * DASHBOARD.wheelDiameterMeters * 60 / 1000;
-  ui.dashboardSpeed.textContent = kilometersPerHour.toFixed(1);
-}
-
 function updateDashboardTelemetry(sample) {
-  const numeric = Number(sample.value);
-  switch (sample.name) {
-    case "system.mode":
-      systemMode = String(sample.value);
-      break;
-    case "system.state":
-      systemState = String(sample.value);
-      break;
-    case "battery.voltage":
-      if (Number.isFinite(numeric)) ui.dashboardBattery.textContent = numeric.toFixed(1);
-      break;
-    case "wheel.left.rpm":
-      if (Number.isFinite(numeric)) {
-        leftWheelRpm = numeric;
-        ui.dashboardLeftRpm.textContent = String(Math.round(numeric));
-        updateDashboardSpeed();
-      }
-      break;
-    case "wheel.right.rpm":
-      if (Number.isFinite(numeric)) {
-        rightWheelRpm = numeric;
-        ui.dashboardRightRpm.textContent = String(Math.round(numeric));
-        updateDashboardSpeed();
-      }
-      break;
-    case "motor.left.command":
-      if (Number.isFinite(numeric)) {
-        ui.dashboardLeftCommand.textContent = `${Math.round(numeric * 100)}%`;
-        setCommandBar(ui.dashboardLeftBar, numeric);
-      }
-      break;
-    case "motor.right.command":
-      if (Number.isFinite(numeric)) {
-        ui.dashboardRightCommand.textContent = `${Math.round(numeric * 100)}%`;
-        setCommandBar(ui.dashboardRightBar, numeric);
-      }
-      break;
-    case "steering.command":
-      if (Number.isFinite(numeric)) {
-        const normalized = Math.max(-1, Math.min(1, numeric));
-        const angleDegrees = Math.round(normalized * 30);
-        ui.dashboardSteeringCommand.textContent = angleDegrees > 0 ? `+${angleDegrees}` : String(angleDegrees);
-        ui.dashboardSteeringMarker.style.left = `${50 + normalized * 50}%`;
-      }
-      break;
-    default:
-      break;
-  }
+  dashboard.updateTelemetry(sample);
+  if (sample.name === "system.mode") systemMode = String(sample.value);
+  if (sample.name === "system.state") systemState = String(sample.value);
 
   if (sample.name === "system.mode" || sample.name === "system.state") {
-    const label = [systemMode, systemState].filter(Boolean).join(" / ") || "CONNECTED";
-    ui.dashboardState.textContent = label;
-    ui.dashboardState.hidden = false;
-    ui.dashboardState.className = "state";
-    ui.dashboardState.classList.toggle("disarmed", /DISARMED|WAITING|CENTER POTS/.test(systemState));
-    ui.dashboardState.classList.toggle("fault", /FAULT|LOST|OVERRUN/.test(systemState));
     setButtons();
   }
 }
@@ -945,7 +873,7 @@ function updateStats() {
 
   ui.byteRate.textContent = formatRate(byteRate);
   ui.frameRate.textContent = `${frameRate.toFixed(2)} fps`;
-  ui.dashboardFrameRate.textContent = frameRate.toFixed(1);
+  dashboard.setFrameRate(frameRate);
   ui.renderRate.textContent = `${renderRate.toFixed(2)} fps`;
   ui.byteCount.textContent = formatNumber(parser.bytes);
   ui.frameCount.textContent = formatNumber(parser.frames);
@@ -1109,7 +1037,7 @@ async function connect() {
   systemState = "";
   leftWheelRpm = 0;
   rightWheelRpm = 0;
-  updateDashboardSpeed();
+  dashboard.resetTelemetry();
   streaming = false;
   nextControlSequence = 0;
   writeChain = Promise.resolve();
@@ -1161,7 +1089,7 @@ async function disconnect() {
     systemState = "";
     leftWheelRpm = 0;
     rightWheelRpm = 0;
-    updateDashboardSpeed();
+    dashboard.resetTelemetry();
     keepReading = false;
     if (reader) {
       await reader.cancel();
