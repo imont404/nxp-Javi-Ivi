@@ -226,8 +226,18 @@ if (-not $immutability.enabled) {
 if ($LASTEXITCODE -ne 0) {
     throw "Source commit $sourceCommit is not present on GitHub. Push the release commit before publishing."
 }
-& gh release view $releaseTag --repo $Repository *> $null
-if ($LASTEXITCODE -eq 0) {
+$savedErrorActionPreference = $ErrorActionPreference
+try {
+    # Windows PowerShell promotes native stderr to an ErrorRecord when the
+    # preference is Stop. A missing release is the expected result here, so
+    # capture the exit code without terminating before it can be inspected.
+    $ErrorActionPreference = "Continue"
+    & gh release view $releaseTag --repo $Repository *> $null
+    $releaseExists = ($LASTEXITCODE -eq 0)
+} finally {
+    $ErrorActionPreference = $savedErrorActionPreference
+}
+if ($releaseExists) {
     throw "GitHub release $releaseTag already exists; release versions are immutable."
 }
 $matchingTagsJson = (& gh api "repos/$Repository/git/matching-refs/tags/$releaseTag" 2>&1 | Out-String).Trim()
