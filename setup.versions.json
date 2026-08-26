@@ -10,12 +10,12 @@
     "sha256": "6facb152ce431ba9a4517e939ea46f057380f8f1e56b62e8712b3f3b87d994e1"
   },
   "coreTools": {
-    "releaseVersion": "1.0.0",
-    "releaseTag": "core-tools-v1.0.0",
-    "sourceCommit": "d87d3d13d8d47d13d637a22243c1f7f0b9e9137c",
-    "assetName": "nxp-cup-core-tools-win-x64-1.0.0.zip",
-    "url": "https://github.com/wavenumber-eng/nxp_cup/releases/download/core-tools-v1.0.0/nxp-cup-core-tools-win-x64-1.0.0.zip",
-    "sha256": "5aca14b2abfa497f5ca85e217ba8eca63c09a186f923d2a3d6a79535125d1652",
+    "releaseVersion": "1.0.1",
+    "releaseTag": "core-tools-v1.0.1",
+    "sourceCommit": "ddedfb448406dcc0636b8763d5b4b14e69dca612",
+    "assetName": "nxp-cup-core-tools-win-x64-1.0.1.zip",
+    "url": "https://github.com/wavenumber-eng/nxp_cup/releases/download/core-tools-v1.0.1/nxp-cup-core-tools-win-x64-1.0.1.zip",
+    "sha256": "53b2e557bbdaad1030e314bd123e6ca58a3db707b49d55c471a7285cf0896816",
     "selfTestArguments": ["selftest"],
     "payloadFiles": [
       "Dear-ImGui-LICENSE.txt",

@@ -19,7 +19,7 @@
 .EXAMPLE
     .\setup.ps1
     .\setup.ps1 -Force
-    .\setup.ps1 -CoreToolsArchive D:\handoff\nxp-cup-core-tools-win-x64-1.0.0.zip
+    .\setup.ps1 -CoreToolsArchive D:\handoff\nxp-cup-core-tools-win-x64-1.0.1.zip
     .\setup.ps1 -IncludeMaintainerTools
 #>
 [CmdletBinding()]

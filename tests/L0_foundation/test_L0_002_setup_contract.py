@@ -42,10 +42,10 @@ def test_setup_script_exists():
 def test_setup_pins_an_immutable_core_tools_release():
     pins = json.loads(SETUP_VERSIONS.read_text(encoding="utf-8"))
     core = pins["coreTools"]
-    assert core["releaseVersion"] == "1.0.0"
-    assert core["releaseTag"] == "core-tools-v1.0.0"
-    assert core["sourceCommit"] == "d87d3d13d8d47d13d637a22243c1f7f0b9e9137c"
-    assert core["assetName"] == "nxp-cup-core-tools-win-x64-1.0.0.zip"
+    assert core["releaseVersion"] == "1.0.1"
+    assert core["releaseTag"] == "core-tools-v1.0.1"
+    assert core["sourceCommit"] == "ddedfb448406dcc0636b8763d5b4b14e69dca612"
+    assert core["assetName"] == "nxp-cup-core-tools-win-x64-1.0.1.zip"
     assert f"/releases/download/{core['releaseTag']}/{core['assetName']}" in core["url"]
     assert "latest" not in core["url"].lower()
     assert len(core["sha256"]) == 64
@@ -161,7 +161,7 @@ def test_student_setup_guide_has_a_complete_tool_summary():
         "Arm GNU Toolchain 14.2.Rel1",
         "CMake",
         "Ninja",
-        "Core tools 1.0.0",
+        "Core tools 1.0.1",
         "nxpc_viewer.exe",
         "nxpc_tool.exe",
         "rblhost.exe",

@@ -26,7 +26,7 @@ code .
 ```
 
 The setup script provisions the pinned Arm GNU compiler, CMake, Ninja, and the
-verified `core-tools-v1.0.0` Windows viewer/flash bundle. Toolchains, cached
+verified `core-tools-v1.0.1` Windows viewer/flash bundle. Toolchains, cached
 downloads, and generated state stay under the ignored `out` directory; the
 script does not persist environment variables. If Windows blocks PowerShell,
 winget, USB access, or downloaded executables, follow the permission guidance in

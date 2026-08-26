@@ -289,7 +289,7 @@ incomplete candidate.</p>
 
 <pre>.\setup.ps1 `
   -ArmArchive D:\NxpCup\arm-gnu-toolchain-14.2.rel1-mingw-w64-i686-arm-none-eabi.zip `
-  -CoreToolsArchive D:\NxpCup\nxp-cup-core-tools-win-x64-1.0.0.zip</pre>
+  -CoreToolsArchive D:\NxpCup\nxp-cup-core-tools-win-x64-1.0.1.zip</pre>
 
 <p>The same checksum and package validation applies offline. CMake and Ninja must
 already be installed when winget cannot reach its sources.</p>
@@ -304,7 +304,7 @@ does not install or update the editor. The normal student setup provides:</p>
 <tr><td>Arm GNU Toolchain 14.2.Rel1</td><td>Pinned, downloaded, and verified by setup</td><td>Builds MCXN947 firmware under <code>out\toolchains</code></td></tr>
 <tr><td>CMake</td><td>Installed through winget if <code>cmake</code> is missing</td><td>Configures the firmware build; installed in Windows</td></tr>
 <tr><td>Ninja</td><td>Installed through winget if <code>ninja</code> is missing</td><td>Runs the firmware build; installed in Windows</td></tr>
-<tr><td>Core tools 1.0.0</td><td>Pinned, downloaded, and verified by setup</td><td>Viewer, diagnostics, and ROM-HID programming under <code>out\artifacts\host</code></td></tr>
+<tr><td>Core tools 1.0.1</td><td>Pinned, downloaded, and verified by setup</td><td>Viewer, diagnostics, and ROM-HID programming under <code>out\artifacts\host</code></td></tr>
 </table>
 
 <p>The core-tools folder contains:</p>
