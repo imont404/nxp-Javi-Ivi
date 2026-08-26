@@ -8,6 +8,9 @@ reader or grow memory without limit.
 Use `setup.ps1` only with explicit Android license acceptance and `build.ps1` for
 unit tests plus APK assembly. Hardware/deploy scripts under `tools` are
 maintainer-only and require an explicitly selected phone when ambiguity exists.
+Use `release.ps1` for versioned APK release candidates; publication requires a clean
+source commit already present on GitHub and preserves the existing debug-signing status
+until a separate signing plan is explicitly approved.
 
 The generated `res/raw/relay_viewer.html` combines shared presentation from `src/web`
 with the Android-owned `web/relay_adapter.js`. Preserve its WebSocket, video-mode, and

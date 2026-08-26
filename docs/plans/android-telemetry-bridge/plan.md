@@ -260,10 +260,10 @@ pause checkpoint. The generated-page drift check and all 14 Playwright browser t
 passed, including Android JPEG, H.264, raw RGB565, generic telemetry, and read-only
 vehicle behavior. The pinned offline Android build and JVM unit tests also passed using
 the reusable tool cache at `C:\ELI\fit2026\avc\out\toolchains\android`; the resulting APK
-is `out/artifacts/android/nxp_cup_bridge.apk`. The branch was then fast-forwarded without
-conflict to `origin/main` at `185bbc4`; the dashboard changes remain uncommitted in the
-worktree. After synchronization, the plan audit, repeated offline Android build, and full
-repository Python suite passed, with 95 tests passed and one skipped.
+is `out/artifacts/android/nxp_cup_bridge.apk`. The branch was then synchronized without
+conflict through `origin/main` at `d96ebdd`; the shared-dashboard implementation is
+committed as `2392828`. After synchronization, the plan audit, repeated offline Android
+build, and full repository Python suite passed, with 95 tests passed and one skipped.
 
 The APK was subsequently installed on the Moto G Power with state-preserving
 `adb install -r`. Version `0.1.0` launched successfully and reported the expected idle
@@ -276,7 +276,14 @@ car-side completion. Next, move the phone to the car through the OTG adapter. Ke
 development PC on its normal network and use a second PC joined to the phone hotspot to
 open the exact `http://<phone-address>:8765/` URL shown by the app. Re-run the real-phone
 relay and direct WebSerial hardware checks before marking `shared-web-dashboard` done and
-committing the currently uncommitted worktree.
+closing the step.
+
+The first GitHub-release candidate is also prepared. `src/android/release.ps1` validates
+the shared generated pages, browser tests, clean Android build, package/version metadata,
+APK signature, checksum, and provenance before allowing publication. Its `0.1.0` dry run
+passed and emitted a versioned APK, SHA-256 file, and manifest under
+`out/artifacts/android/releases`. This initial maintainer build remains debug-signed; the
+manifest records the signing-certificate digest so update compatibility is explicit.
 
 Execution was authorized on 2026-08-21. The native USB host, phone preview, and full-rate
 one-browser Wi-Fi relay are complete on the real Rev A car. The Moto G Power serves its
