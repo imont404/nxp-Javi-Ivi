@@ -128,6 +128,16 @@ def test_student_setup_guide_opens_the_repository_in_vscode():
     assert "File &gt; Open Folder" in guide
 
 
+def test_student_setup_guide_explains_how_to_get_the_repository():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    assert "https://github.com/wavenumber-eng/nxp_cup" in guide
+    assert "Code &gt; Download ZIP" in guide
+    assert "extract it" in guide
+    assert "C:\\nxp_cup" in guide
+    assert "git clone https://github.com/wavenumber-eng/nxp_cup.git nxp_cup" in guide
+    assert "folder that directly" in guide and "contains <code>setup.ps1</code>" in guide
+
+
 def test_student_setup_guide_permits_bounded_ai_setup_help():
     guide = SETUP_GUIDE.read_text(encoding="utf-8")
     assert "AI assistance is permitted for setup" in guide
@@ -181,6 +191,22 @@ def test_student_setup_guide_shows_the_programming_connections():
     assert "SW3 ISP recovery button" in guide
 
 
+def test_student_setup_guide_shows_the_first_run_sequence():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    visible_text = re.sub(r"\s+", " ", guide)
+    for image in (
+        "assets/setup.png",
+        "assets/gnu_downlaod.png",
+        "assets/GNU_EXTRACT.png",
+        "assets/setup_complete.png",
+    ):
+        assert guide.count(image) == 2
+    assert "your folder can have a different name or location" in visible_text
+    assert "Keep the terminal open while the progress counter advances" in visible_text
+    assert "After the SHA-256 check passes" in visible_text
+    assert "Success ends with <strong>Setup Complete</strong>" in visible_text
+
+
 def test_building_guide_covers_the_happy_build_and_flash_path():
     assert BUILDING_GUIDE.is_file(), "docs/building-the-code.html is missing"
     guide = BUILDING_GUIDE.read_text(encoding="utf-8")
@@ -205,8 +231,26 @@ def test_building_guide_covers_the_happy_build_and_flash_path():
 
 def test_building_guide_uses_the_annotated_j11_image_and_local_resources():
     guide = BUILDING_GUIDE.read_text(encoding="utf-8")
+    visible_text = re.sub(r"\s+", " ", guide)
     assert guide.count('assets/FRDM-MCXN947--PROGRAMMING.jpg') == 2
-    assert "Connect the PC to <strong>J11</strong>" in guide
+    assert guide.count('assets/build_complete.png') == 2
+    assert guide.count('assets/cl_program_complete.png') == 2
+    assert guide.count('assets/START_VIEWER.png') == 2
+    assert guide.count('assets/NXPC_VIEWER.png') == 2
+    assert guide.count('assets/VIEWER_PROGRAMMING_IN_PROGRESS.png') == 2
+    assert guide.count('assets/VIEWER_PROGRAMMING_COMPLETE.png') == 2
+    assert "Connect the PC to <strong>J11</strong>" in visible_text
+    assert ".\\src\\embedded\\build.ps1 -Clean" in visible_text
+    assert "A fresh clone does not require <code>-Clean</code>" in visible_text
+    assert "ends with <code>probe=ok</code>" in visible_text
+    assert "viewer executable lives under" in visible_text
+    assert "normally finds the BIN produced by the build" in visible_text
+    assert "out\\artifacts\\embedded\\nxp_cup_core0.bin" in visible_text
+    assert "No buttons are needed for a normal update" in visible_text
+    assert "restarts into ROM ISP automatically" in visible_text
+    assert "no valid firmware is running" in visible_text
+    assert "VIDEO DISCONNECTED</strong> and <strong>MCXN947 ROM connected" in visible_text
+    assert "keep J11 connected while erase, write, and verify finish" in visible_text
     for target in re.findall(r'(?:href|src)="([^"]+)"', guide):
         if "://" in target or target.startswith("#"):
             continue
@@ -251,6 +295,10 @@ def test_host_viewer_uses_published_firmware_location():
     assert "GetModuleFileNameA" in viewer
     assert "out\\build\\embedded\\competition\\nxp_cup_core0.bin" not in viewer
     assert 'ImGui::Button("Program and reconnect"' in viewer
+    assert 'ImGui::CalcTextSize("Browse...")' in viewer
+    assert "ImGui::GetContentRegionAvail().x" in viewer
+    assert 'ImGui::Button("Browse...", ImVec2(browse_button_width, 0.0f))' in viewer
+    assert "SetNextItemWidth(-78.0f)" not in viewer
     assert "Erase application flash" not in viewer
     assert "erase_confirmation" not in viewer
 

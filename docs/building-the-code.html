@@ -61,7 +61,25 @@ out\artifacts\embedded\nxp_cup_core0.axf</pre>
 before continuing. Later builds are normally faster because Ninja rebuilds only
 the files affected by your edits.</p>
 
-<!-- Screenshot slot: successful build.ps1 run. -->
+<figure>
+<a href="assets/build_complete.png"><img src="assets/build_complete.png"
+width="1746" height="482"
+alt="PowerShell showing a successful NXP Cup firmware link, memory usage, verified compile commands, AXF output, and firmware BIN output folder"></a>
+<figcaption>A successful build ends with the verified compile-command count,
+the built AXF path, and the firmware BIN output folder.</figcaption>
+</figure>
+
+<h3>Normal build versus clean build</h3>
+
+<p>Use the normal command above for the everyday edit and build loop. It keeps
+the CMake configuration and lets Ninja rebuild only what changed. Use a clean
+build when you moved a repository that already contained an <code>out\build</code>
+cache, changed compilers, or suspect stale build state:</p>
+
+<pre>.\src\embedded\build.ps1 -Clean</pre>
+
+<p>A fresh clone does not require <code>-Clean</code>; its first normal build has
+no previous cache.</p>
 
 <h2>4. Connect the board through J11</h2>
 
@@ -91,30 +109,83 @@ unplug the USB cable while programming is in progress.</p>
 
 <p>The happy path finishes with <code>program=ok</code>. J-Link is not required.</p>
 
-<!-- Screenshot slot: successful flash.ps1 and nxpc_tool programming run. -->
+<figure>
+<a href="assets/cl_program_complete.png"><img
+src="assets/cl_program_complete.png" width="1748" height="792"
+alt="PowerShell showing NXP Cup device telemetry followed by probe equals ok and program equals ok after command-line firmware programming"></a>
+<figcaption>The command-line happy path reconnects to the application, checks
+the device, and ends with <code>probe=ok</code> and
+<code>program=ok</code>.</figcaption>
+</figure>
 
 <h2>6. Open the viewer</h2>
 
 <pre>.\out\artifacts\host\nxpc_viewer.exe</pre>
 
+<figure>
+<a href="assets/START_VIEWER.png"><img src="assets/START_VIEWER.png"
+width="1552" height="118"
+alt="PowerShell navigating from the embedded source folder to the repository root, entering out artifacts host, and launching nxpc_viewer.exe"></a>
+<figcaption>The viewer executable lives under
+<code>out\artifacts\host</code>. This screenshot navigates into that folder
+before launching it; the one-line command above does the same thing from the
+repository root.</figcaption>
+</figure>
+
 <p>The viewer shows camera frames and telemetry after the board reconnects.</p>
 
 <h3>Program from the host viewer</h3>
 
-<p>The viewer can also program the board:</p>
+<figure>
+<a href="assets/NXPC_VIEWER.png"><img src="assets/NXPC_VIEWER.png"
+width="1506" height="1128"
+alt="NXP Cup telemetry viewer showing a live camera image, connected telemetry, the selected nxp_cup_core0.bin path, and an arrow pointing to Program and reconnect"></a>
+<figcaption>The host viewer normally finds the BIN produced by the build and
+fills in its path automatically. The highlighted button starts programming and
+reconnects the preview afterward.</figcaption>
+</figure>
+
+<p>The generated firmware normally lives here:</p>
+
+<pre>out\artifacts\embedded\nxp_cup_core0.bin</pre>
+
+<p>If the firmware field is blank or points somewhere else, click
+<strong>Browse</strong> and select that BIN file. Then:</p>
 
 <ol>
 <li>Build the firmware first.</li>
-<li>Confirm that the <strong>Program firmware</strong> panel shows
-<code>out\artifacts\embedded\nxp_cup_core0.bin</code>.</li>
+<li>Confirm that the <strong>Program firmware</strong> panel shows the BIN above.</li>
 <li>Click <strong>Program and reconnect</strong>.</li>
 <li>Wait for <strong>Programming complete; preview reconnected</strong>.</li>
 </ol>
 
+<figure>
+<a href="assets/VIEWER_PROGRAMMING_IN_PROGRESS.png"><img
+src="assets/VIEWER_PROGRAMMING_IN_PROGRESS.png" width="1491" height="1079"
+alt="NXP Cup viewer during firmware programming with video disconnected, MCXN947 ROM connected, and Programming write status"></a>
+<figcaption>During programming, <strong>VIDEO DISCONNECTED</strong> and
+<strong>MCXN947 ROM connected</strong> are expected. The application has
+temporarily entered ROM ISP; keep J11 connected while erase, write, and verify
+finish.</figcaption>
+</figure>
+
+<figure>
+<a href="assets/VIEWER_PROGRAMMING_COMPLETE.png"><img
+src="assets/VIEWER_PROGRAMMING_COMPLETE.png" width="1414" height="367"
+alt="NXP Cup viewer showing the green Programming complete preview reconnected status and firmware hash"></a>
+<figcaption>Programming is finished when the viewer reports
+<strong>Programming complete; preview reconnected</strong> in green.</figcaption>
+</figure>
+
+<div class="note">
+<strong>No buttons are needed for a normal update.</strong> The running NXP Cup
+firmware accepts a boot-entry command from the host and restarts into ROM ISP
+automatically. Use the SW3 plus SW1/RESET recovery sequence only when no valid
+firmware is running, or when the loaded firmware cannot accept that command.
+</div>
+
 <p>Use either the viewer button or <code>flash.ps1</code> for a programming run,
 not both at the same time.</p>
-
-<!-- Screenshot slot: host viewer Program firmware panel and successful reconnect. -->
 
 <h2>Normal edit, build, and flash loop</h2>
 

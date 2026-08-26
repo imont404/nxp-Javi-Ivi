@@ -39,6 +39,20 @@ the offline archives.</li>
 <li>Use a USB cable that carries data, not a charge-only cable.</li>
 </ul>
 
+<h3>Download the project</h3>
+
+<p>The simplest option is to open the
+<a href="https://github.com/wavenumber-eng/nxp_cup">course repository on GitHub</a>,
+choose <strong>Code &gt; Download ZIP</strong>, and extract it. A short folder such
+as <code>C:\nxp_cup</code> is recommended. Open the extracted folder that directly
+contains <code>setup.ps1</code>, not the ZIP file itself.</p>
+
+<p>If Git is already installed, cloning is also supported:</p>
+
+<pre>Set-Location C:\
+git clone https://github.com/wavenumber-eng/nxp_cup.git nxp_cup
+Set-Location C:\nxp_cup</pre>
+
 <h3>Install Visual Studio Code</h3>
 
 <p>Download and run Microsoft's <a href="https://code.visualstudio.com/docs/setup/windows">Visual Studio Code User Installer for Windows</a>.
@@ -90,6 +104,13 @@ software</em> below.</p>
 
 <pre>.\setup.ps1</pre>
 
+<figure>
+<a href="assets/setup.png"><img src="assets/setup.png" width="1724" height="363"
+alt="Windows Terminal PowerShell prompt at C colon backslash nxp_cup with dot backslash setup dot ps1 ready to run"></a>
+<figcaption>Run <code>.\setup.ps1</code> from the repository root. This example
+uses <code>C:\nxp_cup</code>; your folder can have a different name or location.</figcaption>
+</figure>
+
 <p>The first run installs and verifies the compiler, build system, viewer, and
 programming tools. The complete <a href="#installed-tools">installed tools
 summary</a> is at the end of this guide.</p>
@@ -98,9 +119,33 @@ summary</a> is at the end of this guide.</p>
 download and extraction progress. Verified downloads are retained under
 <code>out\downloads</code>, so later runs are fast and normally use no network.</p>
 
+<figure>
+<a href="assets/gnu_downlaod.png"><img src="assets/gnu_downlaod.png"
+width="1737" height="563"
+alt="PowerShell showing the first-run Arm GNU Toolchain download and its byte progress"></a>
+<figcaption>The first run downloads the pinned Arm GNU Toolchain. Keep the
+terminal open while the progress counter advances.</figcaption>
+</figure>
+
+<figure>
+<a href="assets/GNU_EXTRACT.png"><img src="assets/GNU_EXTRACT.png"
+width="1737" height="922"
+alt="PowerShell showing the Arm GNU archive verified successfully and toolchain extraction progress"></a>
+<figcaption>After the SHA-256 check passes, setup extracts the verified
+toolchain. Thousands of files are expected.</figcaption>
+</figure>
+
 <p>Setup checks exact versions and SHA-256 hashes, validates every file in the
 host package, and runs the host self-test before replacing a working install.
 Do not work around a checksum failure.</p>
+
+<figure>
+<a href="assets/setup_complete.png"><img src="assets/setup_complete.png"
+width="1724" height="922"
+alt="PowerShell showing Setup Complete, verified Arm toolchain and host runtime paths, and the next build flash and viewer commands"></a>
+<figcaption>Success ends with <strong>Setup Complete</strong> and prints the three
+commands used for the normal build, flash, and viewer workflow.</figcaption>
+</figure>
 
 <div class="note">
 Ordinary students do <strong>not</strong> need Visual Studio, LLVM, Rust,
@@ -154,9 +199,13 @@ enter the MCXN947 ROM-HID bootloader. It then validates, erases, writes, resets,
 and waits for the application to reconnect. J-Link is only an optional
 maintainer fallback.</p>
 
+<p>No buttons are needed for this normal path. The running application accepts
+the host's boot-entry command and restarts into ROM ISP automatically.</p>
+
 <h3>Physical ROM recovery</h3>
 
-<p>If the application is broken and cannot enter ROM automatically:</p>
+<p>Use this only when no valid application is running, or when the loaded
+application cannot accept the boot-entry command:</p>
 
 <ol>
 <li>Leave the J11 USB cable connected.</li>

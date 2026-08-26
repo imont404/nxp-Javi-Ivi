@@ -975,10 +975,29 @@ int viewer_main(const Options &options)
         ImGui::SetNextWindowSize(ImVec2(sidebar_width, program_height), ImGuiCond_FirstUseEver);
         ImGui::Begin("Program firmware");
         ImGui::TextWrapped("Build first, then select the generated nxp_cup_core0.bin image.");
-        ImGui::SetNextItemWidth(-78.0f);
+        const ImGuiStyle &style = ImGui::GetStyle();
+        const float browse_button_width =
+            ImGui::CalcTextSize("Browse...").x + (2.0f * style.FramePadding.x);
+        const float available_program_width = ImGui::GetContentRegionAvail().x;
+        const float minimum_path_width = 80.0f * dpi_scale;
+        const bool browse_fits_inline =
+            available_program_width >=
+            (minimum_path_width + style.ItemSpacing.x + browse_button_width);
+        if (browse_fits_inline)
+        {
+            ImGui::SetNextItemWidth(available_program_width - style.ItemSpacing.x -
+                                    browse_button_width);
+        }
+        else
+        {
+            ImGui::SetNextItemWidth(-FLT_MIN);
+        }
         ImGui::InputText("##Image", image_path.data(), image_path.size());
-        ImGui::SameLine();
-        if (ImGui::Button("Browse..."))
+        if (browse_fits_inline)
+        {
+            ImGui::SameLine();
+        }
+        if (ImGui::Button("Browse...", ImVec2(browse_button_width, 0.0f)))
         {
             choose_firmware_image(image_path);
         }
