@@ -1,4 +1,4 @@
-/* AVC documentation stylesheet.
+/* NXP Cup documentation stylesheet.
    Deliberately small. Pages reference this file only; no inline styling. */
 :root { --ink: #1d1d1f; --paper: #fff; --accent: #0a5c8a; --rule: #dcdcdc; --warn: #8a5a00; }
 body { font-family: system-ui, sans-serif; color: var(--ink); background: var(--paper);
