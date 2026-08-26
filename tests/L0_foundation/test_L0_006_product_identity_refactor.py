@@ -39,6 +39,25 @@ def test_transform_order_prefers_full_product_paths():
     )
 
 
+def test_text_transform_preserves_embedded_base64_payloads():
+    module = load_module()
+    manifest = {"text_rules": [{"from": "Avc", "to": "NxpCup"}]}
+    payload = ("A" * 125) + "Avc"
+    source = (
+        "<title>Avc</title>\n"
+        f'<script id="asset" type="text/plain">{payload}</script>\n'
+        "<p>Avc</p>\n"
+    )
+
+    transformed = module.transform_text(source, manifest)
+
+    assert "<title>NxpCup</title>" in transformed
+    assert "<p>NxpCup</p>" in transformed
+    assert f">{payload}</script>" in transformed
+    assert module.mask_embedded_base64(source).count("\n") == source.count("\n")
+    assert payload not in module.mask_embedded_base64(source)
+
+
 def test_refactor_is_currently_a_clean_second_run_after_migration():
     """Before migration this intentionally reports changes; after it, none."""
     module = load_module()
