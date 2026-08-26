@@ -14,6 +14,7 @@ FONT = REPO / "src/common/egfx/src/Core/Fonts/FONT_5_7_1BPP.c"
 LARGE_FONT = REPO / "src/common/egfx/src/Core/Fonts/FONT_10_14_1BPP.c"
 EGFX_INCLUDE = REPO / "src/common/egfx/src"
 NXPC_CONFIG_INCLUDE = SOURCE / "nxpc_config"
+NXPC_SHARED_INCLUDE = SOURCE / "shared"
 
 
 HARNESS = r"""
@@ -283,6 +284,7 @@ def test_rgb565_rasterizer_is_clipped_and_bounded(tmp_path: Path):
             str(FONT),
             str(LARGE_FONT),
             f"-I{SOURCE}",
+            f"-I{NXPC_SHARED_INCLUDE}",
             f"-I{EGFX_INCLUDE}",
             f"-I{NXPC_CONFIG_INCLUDE}",
             "-o",

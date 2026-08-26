@@ -4,15 +4,17 @@
 contains linked shared source; keep `src/common` fixed because MCUXpresso linked
 resources rely on this component remaining at the same directory depth.
 
-The normal student-editable files are:
+The normal student-editable exercises are:
 
-- `nxp_cup_core0/source/app/test_mode.c`
+- `nxp_cup_core0/source/app/vision_test.c`
 - `nxp_cup_core0/source/app/race_mode.c`
 
-`test_mode.c` contains a small CAMERA / IO, VISION, and MOTORS dispatcher so
-students can see representative input, graphics, telemetry, motor, and steering
-API calls together. The framework still owns page navigation, status rendering,
-arming, centered-pot interlock, output limits, command leases, and safe stops.
+`test_mode.c` is the automatic TEST-jumper dispatcher and is normally left alone.
+`camera_test.c`, `vision_test.c`, and `motor_test.c` keep the three examples small
+and obvious. CAMERA / IO demonstrates safe inputs and telemetry, VISION is the
+editable camera-processing exercise, and MOTORS demonstrates the actuator API.
+The framework still owns page navigation, status rendering, arming, centered-pot
+interlock, output limits, command leases, and safe stops.
 Additional top-level `.c` files under `source/app` are discovered automatically
 by CMake and MCUXpresso; keep their headers beside them and include only the
 public `nxp_cup.h` API from student modules.

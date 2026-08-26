@@ -1,4 +1,4 @@
-"""L0_005 - keep the two-file exercise boundary small and stable."""
+"""L0_005 - keep the app exercise boundary small and stable."""
 
 import re
 import shutil
@@ -12,7 +12,11 @@ REPO = Path(__file__).resolve().parents[2]
 SOURCE = REPO / "src/embedded/nxp_cup_core0/source"
 PUBLIC_HEADER = SOURCE / "nxp_cup.h"
 MAIN = SOURCE / "main.c"
-MODE_FILES = (SOURCE / "app/test_mode.c", SOURCE / "app/race_mode.c")
+RACE_MODE = SOURCE / "app/race_mode.c"
+TEST_DISPATCH = SOURCE / "app/test_mode.c"
+TEST_PAGE_FILES = tuple(
+    SOURCE / f"app/{name}" for name in ("camera_test.c", "vision_test.c", "motor_test.c")
+)
 PROTOCOL_HEADER = REPO / "src/common/nxpc_usb_debug/nxpc_usb_debug_protocol.h"
 USB_DESCRIPTOR = SOURCE / "usb_device_descriptor.c"
 USB_STREAM = SOURCE / "nxpc_io/nxpc_usb_debug_stream.c"
@@ -119,12 +123,23 @@ void exercise_api(uint16_t *frame)
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_mode_files_only_include_the_public_api_and_their_own_header():
-    for path in MODE_FILES:
+def test_app_files_only_include_the_public_api_and_small_app_headers():
+    for path in (RACE_MODE, *TEST_PAGE_FILES):
         includes = re.findall(r'^#include\s+"([^"]+)"', path.read_text(encoding="utf-8"), re.MULTILINE)
         assert includes == [path.with_suffix(".h").name, "nxp_cup.h"], (
             f"{path.name} reaches outside the public API: {includes}"
         )
+
+    dispatch_includes = re.findall(
+        r'^#include\s+"([^"]+)"', TEST_DISPATCH.read_text(encoding="utf-8"), re.MULTILINE
+    )
+    assert dispatch_includes == [
+        "test_mode.h",
+        "camera_test.h",
+        "motor_test.h",
+        "nxp_cup.h",
+        "vision_test.h",
+    ]
 
 
 def test_main_dispatches_one_callback_per_mode():
@@ -149,7 +164,7 @@ def test_main_dispatches_one_callback_per_mode():
 
 
 def test_no_prebuilt_race_solution_is_supplied():
-    race_text = MODE_FILES[1].read_text(encoding="utf-8")
+    race_text = RACE_MODE.read_text(encoding="utf-8")
     forbidden = ("pid", "lane_center", "active_differential", "edge_detector")
     assert not any(term in race_text.lower() for term in forbidden)
     for teaching_call in (

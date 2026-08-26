@@ -78,23 +78,18 @@ struct CameraAspectConstraint
 void constrain_camera_aspect(ImGuiSizeCallbackData *data)
 {
     const auto *constraint = static_cast<const CameraAspectConstraint *>(data->UserData);
-    const bool width_changed =
-        std::fabs(data->DesiredSize.x - data->CurrentSize.x) > 0.5f;
-    const bool height_changed =
-        std::fabs(data->DesiredSize.y - data->CurrentSize.y) > 0.5f;
+    const bool width_changed = std::fabs(data->DesiredSize.x - data->CurrentSize.x) > 0.5f;
+    const bool height_changed = std::fabs(data->DesiredSize.y - data->CurrentSize.y) > 0.5f;
 
     if (width_changed || !height_changed)
     {
-        data->DesiredSize.x =
-            std::max(data->DesiredSize.x, constraint->minimum_content_width);
-        data->DesiredSize.y =
-            (data->DesiredSize.x / kCameraAspectRatio) + constraint->title_height;
+        data->DesiredSize.x = std::max(data->DesiredSize.x, constraint->minimum_content_width);
+        data->DesiredSize.y = (data->DesiredSize.x / kCameraAspectRatio) + constraint->title_height;
     }
     else
     {
-        const float content_height =
-            std::max(data->DesiredSize.y - constraint->title_height,
-                     constraint->minimum_content_height);
+        const float content_height = std::max(data->DesiredSize.y - constraint->title_height,
+                                              constraint->minimum_content_height);
         data->DesiredSize.y = content_height + constraint->title_height;
         data->DesiredSize.x = content_height * kCameraAspectRatio;
     }
@@ -105,10 +100,7 @@ float display_dpi_scale(int display_index)
     float diagonal_dpi = 96.0f;
     float horizontal_dpi = 96.0f;
     float vertical_dpi = 96.0f;
-    if (SDL_GetDisplayDPI(display_index,
-                          &diagonal_dpi,
-                          &horizontal_dpi,
-                          &vertical_dpi) != 0)
+    if (SDL_GetDisplayDPI(display_index, &diagonal_dpi, &horizontal_dpi, &vertical_dpi) != 0)
     {
         return 1.0f;
     }
@@ -116,16 +108,14 @@ float display_dpi_scale(int display_index)
     return std::clamp(std::max(horizontal_dpi, vertical_dpi) / 96.0f, 1.0f, 3.0f);
 }
 
-void update_telemetry_rows(
-    std::vector<nxpc::host::TelemetrySample> &rows,
-    const std::vector<nxpc::host::TelemetrySample> &samples)
+void update_telemetry_rows(std::vector<nxpc::host::TelemetrySample> &rows,
+                           const std::vector<nxpc::host::TelemetrySample> &samples)
 {
     for (const nxpc::host::TelemetrySample &sample : samples)
     {
-        const auto existing = std::find_if(
-            rows.begin(),
-            rows.end(),
-            [&](const nxpc::host::TelemetrySample &row) { return row.name == sample.name; });
+        const auto existing =
+            std::find_if(rows.begin(), rows.end(), [&](const nxpc::host::TelemetrySample &row)
+                         { return row.name == sample.name; });
         if (existing != rows.end())
         {
             *existing = sample;
@@ -154,7 +144,8 @@ Options parse_args(int argc, char **argv)
     for (int index = 1; index < argc; ++index)
     {
         const std::string argument = argv[index];
-        auto value = [&](const char *name) -> std::string {
+        auto value = [&](const char *name) -> std::string
+        {
             if (++index >= argc)
             {
                 throw std::runtime_error(std::string("missing value for ") + name);
@@ -190,9 +181,7 @@ Options parse_args(int argc, char **argv)
     return options;
 }
 
-void publish_status(SharedState &shared,
-                    const std::string &status,
-                    const std::string &error,
+void publish_status(SharedState &shared, const std::string &status, const std::string &error,
                     bool connected)
 {
     std::lock_guard<std::mutex> lock(shared.mutex);
@@ -205,18 +194,11 @@ void publish_status(SharedState &shared,
     }
 }
 
-bool send_and_wait(nxpc::host::SerialPort &port,
-                   nxpc::host::StreamParser &parser,
-                   uint32_t sequence,
-                   uint32_t msg_id,
-                   uint32_t arg0,
-                   uint32_t arg1,
-                   uint32_t arg2,
-                   nxpc::host::ControlResponse &response,
-                   std::string &error);
+bool send_and_wait(nxpc::host::SerialPort &port, nxpc::host::StreamParser &parser,
+                   uint32_t sequence, uint32_t msg_id, uint32_t arg0, uint32_t arg1, uint32_t arg2,
+                   nxpc::host::ControlResponse &response, std::string &error);
 
-void publish_program_status(SharedState &shared,
-                            const std::string &status,
+void publish_program_status(SharedState &shared, const std::string &status,
                             const std::string &detail = {})
 {
     std::lock_guard<std::mutex> lock(shared.mutex);
@@ -252,10 +234,8 @@ bool wait_for_rom_device(SharedState &shared, std::string &error)
     const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
     while (std::chrono::steady_clock::now() < deadline)
     {
-        const std::vector<nxpc::host::HidDevice> devices =
-            nxpc::host::find_hid_devices(nxpc::host::kNxpCupUsbVid,
-                                        nxpc::host::kMcxn947RomPid,
-                                        error);
+        const std::vector<nxpc::host::HidDevice> devices = nxpc::host::find_hid_devices(
+            nxpc::host::kNxpCupUsbVid, nxpc::host::kMcxn947RomPid, error);
         if (!error.empty())
         {
             return false;
@@ -300,13 +280,12 @@ bool run_programmer(const std::string &requested_image, SharedState &shared, std
     }
 
     if (!nxpc::host::program_rom(
-            programmer,
-            image,
-            [&](nxpc::host::ProgramStage stage, const std::string &detail) {
-                publish_program_status(shared,
-                                       std::string("Programming: ") +
-                                           nxpc::host::program_stage_name(stage),
-                                       detail);
+            programmer, image,
+            [&](nxpc::host::ProgramStage stage, const std::string &detail)
+            {
+                publish_program_status(
+                    shared, std::string("Programming: ") + nxpc::host::program_stage_name(stage),
+                    detail);
             },
             error))
     {
@@ -325,11 +304,9 @@ bool run_programmer(const std::string &requested_image, SharedState &shared, std
     return true;
 }
 
-bool handle_runtime_program_request(nxpc::host::SerialPort &port,
-                                    nxpc::host::StreamParser &parser,
+bool handle_runtime_program_request(nxpc::host::SerialPort &port, nxpc::host::StreamParser &parser,
                                     const nxpc_dbg_control_hello_response_t &hello,
-                                    const std::string &image_path,
-                                    SharedState &shared)
+                                    const std::string &image_path, SharedState &shared)
 {
     std::string error;
     publish_program_status(shared, "Validating firmware image...");
@@ -352,27 +329,18 @@ bool handle_runtime_program_request(nxpc::host::SerialPort &port,
         return false;
     }
 
-    publish_program_status(shared,
-                           "Entering ROM ISP...",
+    publish_program_status(shared, "Entering ROM ISP...",
                            std::to_string(image.bytes) + " bytes, SHA-256 " + image.sha256);
     nxpc::host::ControlResponse response;
-    if (!send_and_wait(port,
-                       parser,
-                       2u,
-                       NXPC_DBG_CONTROL_ENTER_ISP,
-                       NXPC_DBG_ENTER_ISP_CONFIRMATION,
-                       0u,
-                       0u,
-                       response,
-                       error))
+    if (!send_and_wait(port, parser, 2u, NXPC_DBG_CONTROL_ENTER_ISP,
+                       NXPC_DBG_ENTER_ISP_CONFIRMATION, 0u, 0u, response, error))
     {
         fail_program(shared, error);
         return false;
     }
     if (response.status != NXPC_DBG_CONTROL_STATUS_OK)
     {
-        fail_program(shared,
-                     "ENTER_ISP rejected with status " + std::to_string(response.status));
+        fail_program(shared, "ENTER_ISP rejected with status " + std::to_string(response.status));
         return false;
     }
 
@@ -385,13 +353,12 @@ bool handle_runtime_program_request(nxpc::host::SerialPort &port,
     }
 
     if (!nxpc::host::program_rom(
-            programmer,
-            image,
-            [&](nxpc::host::ProgramStage stage, const std::string &detail) {
-                publish_program_status(shared,
-                                       std::string("Programming: ") +
-                                           nxpc::host::program_stage_name(stage),
-                                       detail);
+            programmer, image,
+            [&](nxpc::host::ProgramStage stage, const std::string &detail)
+            {
+                publish_program_status(
+                    shared, std::string("Programming: ") + nxpc::host::program_stage_name(stage),
+                    detail);
             },
             error))
     {
@@ -411,24 +378,13 @@ bool handle_runtime_program_request(nxpc::host::SerialPort &port,
     return true;
 }
 
-bool send_and_wait(nxpc::host::SerialPort &port,
-                   nxpc::host::StreamParser &parser,
-                   uint32_t sequence,
-                   uint32_t msg_id,
-                   uint32_t arg0,
-                   uint32_t arg1,
-                   uint32_t arg2,
-                   nxpc::host::ControlResponse &response,
-                   std::string &error)
+bool send_and_wait(nxpc::host::SerialPort &port, nxpc::host::StreamParser &parser,
+                   uint32_t sequence, uint32_t msg_id, uint32_t arg0, uint32_t arg1, uint32_t arg2,
+                   nxpc::host::ControlResponse &response, std::string &error)
 {
     return nxpc::host::send_control_request(port, sequence, msg_id, arg0, arg1, arg2, error) &&
-           nxpc::host::wait_for_control_response(port,
-                                                parser,
-                                                msg_id,
-                                                sequence,
-                                                2000u,
-                                                response,
-                                                error);
+           nxpc::host::wait_for_control_response(port, parser, msg_id, sequence, 2000u, response,
+                                                 error);
 }
 
 bool run_session(const Options &options, SharedState &shared, const std::atomic<bool> &running)
@@ -458,15 +414,7 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
 
     nxpc::host::StreamParser parser;
     nxpc::host::ControlResponse response;
-    if (!send_and_wait(port,
-                       parser,
-                       0u,
-                       NXPC_DBG_CONTROL_HELLO,
-                       0u,
-                       0u,
-                       0u,
-                       response,
-                       error))
+    if (!send_and_wait(port, parser, 0u, NXPC_DBG_CONTROL_HELLO, 0u, 0u, 0u, response, error))
     {
         publish_status(shared, "NXP CUP TELEMETRY did not answer HELLO", error, false);
         return false;
@@ -479,17 +427,10 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
         return false;
     }
 
-    constexpr uint32_t channels = NXPC_DBG_CHANNEL_FRAMES | NXPC_DBG_CHANNEL_LOGS |
-                                  NXPC_DBG_CHANNEL_TELEMETRY;
-    if (!send_and_wait(port,
-                       parser,
-                       1u,
-                       NXPC_DBG_CONTROL_SET_CHANNELS,
-                       channels,
-                       NXPC_DBG_STREAM_SOURCE_CAMERA,
-                       0u,
-                       response,
-                       error) ||
+    constexpr uint32_t channels =
+        NXPC_DBG_CHANNEL_FRAMES | NXPC_DBG_CHANNEL_LOGS | NXPC_DBG_CHANNEL_TELEMETRY;
+    if (!send_and_wait(port, parser, 1u, NXPC_DBG_CONTROL_SET_CHANNELS, channels,
+                       NXPC_DBG_STREAM_SOURCE_CAMERA, 0u, response, error) ||
         (response.status != NXPC_DBG_CONTROL_STATUS_OK))
     {
         if (error.empty())
@@ -525,8 +466,7 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
         std::string requested_image;
         if (take_program_request(shared, requested_image))
         {
-            (void)handle_runtime_program_request(
-                port, parser, hello, requested_image, shared);
+            (void)handle_runtime_program_request(port, parser, hello, requested_image, shared);
             return false;
         }
 
@@ -561,40 +501,24 @@ bool run_session(const Options &options, SharedState &shared, const std::atomic<
 
     // Best effort only: application unplug and shutdown remain recoverable.
     error.clear();
-    (void)send_and_wait(port,
-                        parser,
-                        2u,
-                        NXPC_DBG_CONTROL_SET_CHANNELS,
-                        0u,
-                        NXPC_DBG_STREAM_SOURCE_CAMERA,
-                        0u,
-                        response,
-                        error);
+    (void)send_and_wait(port, parser, 2u, NXPC_DBG_CONTROL_SET_CHANNELS, 0u,
+                        NXPC_DBG_STREAM_SOURCE_CAMERA, 0u, response, error);
     error.clear();
-    (void)send_and_wait(port,
-                        parser,
-                        3u,
-                        NXPC_DBG_CONTROL_CLOSE,
-                        0u,
-                        0u,
-                        0u,
-                        response,
-                        error);
+    (void)send_and_wait(port, parser, 3u, NXPC_DBG_CONTROL_CLOSE, 0u, 0u, 0u, response, error);
     publish_status(shared, "Viewer stopped", {}, false);
     return true;
 }
 
-void connection_worker(const Options &options, SharedState &shared, const std::atomic<bool> &running)
+void connection_worker(const Options &options, SharedState &shared,
+                       const std::atomic<bool> &running)
 {
     while (running.load())
     {
         (void)run_session(options, shared, running);
 
         std::string error;
-        const std::vector<nxpc::host::HidDevice> rom_devices =
-            nxpc::host::find_hid_devices(nxpc::host::kNxpCupUsbVid,
-                                        nxpc::host::kMcxn947RomPid,
-                                        error);
+        const std::vector<nxpc::host::HidDevice> rom_devices = nxpc::host::find_hid_devices(
+            nxpc::host::kNxpCupUsbVid, nxpc::host::kMcxn947RomPid, error);
         {
             std::lock_guard<std::mutex> lock(shared.mutex);
             shared.rom_connected = error.empty() && (rom_devices.size() == 1u);
@@ -614,9 +538,8 @@ void connection_worker(const Options &options, SharedState &shared, const std::a
             }
             else if (rom_devices.size() != 1u)
             {
-                fail_program(shared,
-                             "expected exactly one MCXN947 ROM HID device; found " +
-                                 std::to_string(rom_devices.size()));
+                fail_program(shared, "expected exactly one MCXN947 ROM HID device; found " +
+                                         std::to_string(rom_devices.size()));
             }
             else if (!run_programmer(requested_image, shared, error))
             {
@@ -653,25 +576,25 @@ std::string telemetry_value(const nxpc::host::TelemetrySample &sample)
 {
     switch (sample.value_type)
     {
-        case NXPC_DBG_TELEMETRY_TYPE_I32:
-            return std::to_string(static_cast<int32_t>(sample.value_bits));
-        case NXPC_DBG_TELEMETRY_TYPE_U32:
-            return std::to_string(sample.value_bits);
-        case NXPC_DBG_TELEMETRY_TYPE_F32:
-        {
-            float value = 0.0f;
-            std::memcpy(&value, &sample.value_bits, sizeof(value));
-            char text[32]{};
-            const char *format = (sample.units == "rpm") ? "%.0f" : "%.3f";
-            std::snprintf(text, sizeof(text), format, static_cast<double>(value));
-            return text;
-        }
+    case NXPC_DBG_TELEMETRY_TYPE_I32:
+        return std::to_string(static_cast<int32_t>(sample.value_bits));
+    case NXPC_DBG_TELEMETRY_TYPE_U32:
+        return std::to_string(sample.value_bits);
+    case NXPC_DBG_TELEMETRY_TYPE_F32:
+    {
+        float value = 0.0f;
+        std::memcpy(&value, &sample.value_bits, sizeof(value));
+        char text[32]{};
+        const char *format = (sample.units == "rpm") ? "%.0f" : "%.3f";
+        std::snprintf(text, sizeof(text), format, static_cast<double>(value));
+        return text;
+    }
     case NXPC_DBG_TELEMETRY_TYPE_BOOL:
         return sample.value_bits != 0u ? "true" : "false";
     case NXPC_DBG_TELEMETRY_TYPE_TEXT:
         return sample.text_value;
     default:
-            return "?";
+        return "?";
     }
 }
 
@@ -679,18 +602,18 @@ const char *log_level_name(uint8_t level)
 {
     switch (level)
     {
-        case NXPC_DBG_LOG_LEVEL_TRACE:
-            return "TRACE";
-        case NXPC_DBG_LOG_LEVEL_DEBUG:
-            return "DEBUG";
-        case NXPC_DBG_LOG_LEVEL_INFO:
-            return "INFO";
-        case NXPC_DBG_LOG_LEVEL_WARNING:
-            return "WARN";
-        case NXPC_DBG_LOG_LEVEL_ERROR:
-            return "ERROR";
-        default:
-            return "?";
+    case NXPC_DBG_LOG_LEVEL_TRACE:
+        return "TRACE";
+    case NXPC_DBG_LOG_LEVEL_DEBUG:
+        return "DEBUG";
+    case NXPC_DBG_LOG_LEVEL_INFO:
+        return "INFO";
+    case NXPC_DBG_LOG_LEVEL_WARNING:
+        return "WARN";
+    case NXPC_DBG_LOG_LEVEL_ERROR:
+        return "ERROR";
+    default:
+        return "?";
     }
 }
 
@@ -724,8 +647,8 @@ std::string default_firmware_image_path()
     }
 
     std::array<char, 32768> executable_path{};
-    const DWORD path_length = GetModuleFileNameA(
-        nullptr, executable_path.data(), static_cast<DWORD>(executable_path.size()));
+    const DWORD path_length = GetModuleFileNameA(nullptr, executable_path.data(),
+                                                 static_cast<DWORD>(executable_path.size()));
     if ((path_length > 0u) && (path_length < executable_path.size()))
     {
         fs::path directory = fs::path(executable_path.data()).parent_path();
@@ -773,12 +696,9 @@ int viewer_main(const Options &options)
 
     const uint32_t window_flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI |
                                   ((options.test_seconds > 0u) ? SDL_WINDOW_HIDDEN : 0u);
-    SDL_Window *window = SDL_CreateWindow("NXP CUP TELEMETRY",
-                                          SDL_WINDOWPOS_CENTERED,
-                                          SDL_WINDOWPOS_CENTERED,
-                                          initial_width,
-                                          initial_height,
-                                          window_flags);
+    SDL_Window *window =
+        SDL_CreateWindow("NXP CUP TELEMETRY", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                         initial_width, initial_height, window_flags);
     if (window == nullptr)
     {
         const std::string error = SDL_GetError();
@@ -804,8 +724,7 @@ int viewer_main(const Options &options)
     font_config.SizePixels = kUiFontSizePixels * dpi_scale;
     io.Fonts->AddFontDefault(&font_config);
     ImGui::StyleColorsDark();
-    ImGui::GetStyle().ScaleAllSizes((kUiFontSizePixels / kImGuiDefaultFontSizePixels) *
-                                    dpi_scale);
+    ImGui::GetStyle().ScaleAllSizes((kUiFontSizePixels / kImGuiDefaultFontSizePixels) * dpi_scale);
     ImGui_ImplSDL2_InitForSDLRenderer(window, renderer);
     ImGui_ImplSDLRenderer2_Init(renderer);
 
@@ -821,10 +740,7 @@ int viewer_main(const Options &options)
     nxpc::host::Frame display_frame;
     std::array<char, 1024> image_path{};
     const std::string default_image = default_firmware_image_path();
-    std::snprintf(image_path.data(),
-                  image_path.size(),
-                  "%s",
-                  default_image.c_str());
+    std::snprintf(image_path.data(), image_path.size(), "%s", default_image.c_str());
     double stream_fps = 0.0;
     uint64_t rate_frame_count = 0u;
     uint64_t rate_session = 0u;
@@ -914,10 +830,8 @@ int viewer_main(const Options &options)
                     }
                     texture_width = display_frame.width;
                     texture_height = display_frame.height;
-                    texture = SDL_CreateTexture(renderer,
-                                                SDL_PIXELFORMAT_RGBA32,
-                                                SDL_TEXTUREACCESS_STREAMING,
-                                                texture_width,
+                    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
+                                                SDL_TEXTUREACCESS_STREAMING, texture_width,
                                                 texture_height);
                 }
                 rgb565_to_rgba(display_frame, rgba);
@@ -939,12 +853,12 @@ int viewer_main(const Options &options)
         }
         else if (fps_seconds >= 1.0)
         {
-            const uint64_t frame_delta =
-                (counters.frames >= rate_frame_count) ? (counters.frames - rate_frame_count)
-                                                      : counters.frames;
+            const uint64_t frame_delta = (counters.frames >= rate_frame_count)
+                                             ? (counters.frames - rate_frame_count)
+                                             : counters.frames;
             const double measured_fps = static_cast<double>(frame_delta) / fps_seconds;
-            stream_fps = (stream_fps == 0.0) ? measured_fps
-                                             : ((stream_fps * 0.75) + (measured_fps * 0.25));
+            stream_fps =
+                (stream_fps == 0.0) ? measured_fps : ((stream_fps * 0.75) + (measured_fps * 0.25));
             rate_frame_count = counters.frames;
             fps_epoch = now;
         }
@@ -962,28 +876,24 @@ int viewer_main(const Options &options)
         const float minimum_camera_height = 200.0f * dpi_scale;
         const float sidebar_width = std::min(340.0f * dpi_scale, display_size.x * 0.36f);
         const float camera_width =
-            std::max(minimum_camera_width,
-                     display_size.x - sidebar_width - (3.0f * margin));
-        const float panel_height =
-            std::max(250.0f * dpi_scale, display_size.y - (2.0f * margin));
+            std::max(minimum_camera_width, display_size.x - sidebar_width - (3.0f * margin));
+        const float panel_height = std::max(250.0f * dpi_scale, display_size.y - (2.0f * margin));
         const float status_height = std::max(260.0f * dpi_scale, panel_height * 0.44f);
         const float program_height = std::max(170.0f * dpi_scale, panel_height * 0.27f);
         const float camera_title_height =
             ImGui::GetFontSize() + (2.0f * ImGui::GetStyle().FramePadding.y);
-        const float camera_height =
-            (camera_width / kCameraAspectRatio) + camera_title_height;
-        CameraAspectConstraint camera_constraint{
-            camera_title_height, minimum_camera_width, minimum_camera_height};
+        const float camera_height = (camera_width / kCameraAspectRatio) + camera_title_height;
+        CameraAspectConstraint camera_constraint{camera_title_height, minimum_camera_width,
+                                                 minimum_camera_height};
 
         ImGui::SetNextWindowPos(ImVec2(margin, margin), ImGuiCond_FirstUseEver);
         ImGui::SetNextWindowSize(ImVec2(camera_width, camera_height), ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSizeConstraints(ImVec2(minimum_camera_width,
-                                                   minimum_camera_height + camera_title_height),
-                                            ImVec2(FLT_MAX, FLT_MAX),
-                                            constrain_camera_aspect,
-                                            &camera_constraint);
+        ImGui::SetNextWindowSizeConstraints(
+            ImVec2(minimum_camera_width, minimum_camera_height + camera_title_height),
+            ImVec2(FLT_MAX, FLT_MAX), constrain_camera_aspect, &camera_constraint);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+        ImGui::Begin("Camera", nullptr,
+                     ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
         if (connected && (texture != nullptr) && (texture_width > 0) && (texture_height > 0))
         {
             const ImVec2 available = ImGui::GetContentRegionAvail();
@@ -1062,8 +972,7 @@ int viewer_main(const Options &options)
 
         ImGui::SetNextWindowPos(ImVec2(sidebar_x, status_height + 2.0f * margin),
                                 ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize(ImVec2(sidebar_width, program_height),
-                                 ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(sidebar_width, program_height), ImGuiCond_FirstUseEver);
         ImGui::Begin("Program firmware");
         ImGui::TextWrapped("Build first, then select the generated nxp_cup_core0.bin image.");
         ImGui::SetNextItemWidth(-78.0f);
@@ -1076,8 +985,7 @@ int viewer_main(const Options &options)
         const bool enter_isp_supported =
             connected && ((hello.capability_flags & NXPC_DBG_CAPABILITY_ENTER_ISP) != 0u);
         const bool target_available = enter_isp_supported || rom_connected;
-        const bool can_program =
-            target_available && !program_busy && (image_path[0] != '\0');
+        const bool can_program = target_available && !program_busy && (image_path[0] != '\0');
         ImGui::BeginDisabled(!can_program);
         if (ImGui::Button("Program and reconnect", ImVec2(-1.0f, 0.0f)))
         {
@@ -1099,9 +1007,7 @@ int viewer_main(const Options &options)
         }
         if (program_succeeded)
         {
-            ImGui::TextColored(ImVec4(0.35f, 1.0f, 0.45f, 1.0f),
-                               "%s",
-                               program_status.c_str());
+            ImGui::TextColored(ImVec4(0.35f, 1.0f, 0.45f, 1.0f), "%s", program_status.c_str());
         }
         else
         {
@@ -1113,8 +1019,7 @@ int viewer_main(const Options &options)
         }
         if (!program_error.empty())
         {
-            ImGui::TextColored(ImVec4(1.0f, 0.35f, 0.35f, 1.0f),
-                               "Error: %s",
+            ImGui::TextColored(ImVec4(1.0f, 0.35f, 0.35f, 1.0f), "Error: %s",
                                program_error.c_str());
         }
         ImGui::End();
@@ -1130,15 +1035,12 @@ int viewer_main(const Options &options)
         ImGui::BeginChild("Debug log records", ImVec2(0.0f, 0.0f));
         for (const nxpc::host::LogRecord &record : logs)
         {
-            ImGui::TextWrapped("%8lu  %-5s  [%s]  %s",
-                               static_cast<unsigned long>(record.timestamp_ms),
-                               log_level_name(record.level),
-                               record.category.c_str(),
-                               record.text.c_str());
+            ImGui::TextWrapped(
+                "%8lu  %-5s  [%s]  %s", static_cast<unsigned long>(record.timestamp_ms),
+                log_level_name(record.level), record.category.c_str(), record.text.c_str());
         }
         const uint32_t last_log_id = logs.empty() ? 0u : logs.back().record_id;
-        if ((last_log_id != displayed_last_log_id) ||
-            (connection_count != displayed_log_session))
+        if ((last_log_id != displayed_last_log_id) || (connection_count != displayed_log_session))
         {
             ImGui::SetScrollHereY(1.0f);
             displayed_last_log_id = last_log_id;

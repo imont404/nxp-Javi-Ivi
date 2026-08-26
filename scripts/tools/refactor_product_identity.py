@@ -15,6 +15,12 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DEFAULT_MANIFEST = Path(__file__).with_name("product_identity_refactor.json")
+TEXT_PLAIN_SCRIPT = re.compile(
+    r'<script\b(?=[^>]*\btype\s*=\s*(?:"text/plain"|\'text/plain\'))[^>]*>'
+    r"(?P<body>.*?)</script\s*>",
+    re.IGNORECASE | re.DOTALL,
+)
+BASE64_PAYLOAD = re.compile(r"[A-Za-z0-9+/]*={0,2}\Z")
 
 
 @dataclass(frozen=True)
@@ -66,11 +72,49 @@ def transform_path(rel: str, manifest: dict) -> str:
     return transformed
 
 
-def transform_text(text: str, manifest: dict) -> str:
+def apply_text_rules(text: str, manifest: dict) -> str:
     transformed = text
     for rule in manifest["text_rules"]:
         transformed = transformed.replace(rule["from"], rule["to"])
     return transformed
+
+
+def embedded_base64_spans(text: str) -> list[tuple[int, int]]:
+    spans: list[tuple[int, int]] = []
+    for match in TEXT_PLAIN_SCRIPT.finditer(text):
+        body = match.group("body")
+        compact = "".join(body.split())
+        if (
+            len(compact) >= 128
+            and (len(compact) % 4) == 0
+            and BASE64_PAYLOAD.fullmatch(compact)
+        ):
+            spans.append(match.span("body"))
+    return spans
+
+
+def transform_text(text: str, manifest: dict) -> str:
+    """Apply identity rules without altering embedded Base64 assets."""
+    transformed: list[str] = []
+    cursor = 0
+    for start, end in embedded_base64_spans(text):
+        transformed.append(apply_text_rules(text[cursor:start], manifest))
+        transformed.append(text[start:end])
+        cursor = end
+    transformed.append(apply_text_rules(text[cursor:], manifest))
+    return "".join(transformed)
+
+
+def mask_embedded_base64(text: str) -> str:
+    """Hide payload bytes from stale-name scans while retaining line numbers."""
+    masked: list[str] = []
+    cursor = 0
+    for start, end in embedded_base64_spans(text):
+        masked.append(text[cursor:start])
+        masked.append(re.sub(r"[^\r\n]", " ", text[start:end]))
+        cursor = end
+    masked.append(text[cursor:])
+    return "".join(masked)
 
 
 def read_text(path: Path, manifest: dict) -> str | None:
@@ -183,7 +227,8 @@ def stale_findings(manifest: dict) -> list[str]:
         text_value = read_text(path, manifest)
         if text_value is None:
             continue
-        for line_number, line in enumerate(text_value.splitlines(), start=1):
+        scan_text = mask_embedded_base64(text_value)
+        for line_number, line in enumerate(scan_text.splitlines(), start=1):
             if any(pattern.search(line) for pattern in allowed_text_patterns):
                 continue
             if any(pattern.search(line) for pattern in text_patterns):

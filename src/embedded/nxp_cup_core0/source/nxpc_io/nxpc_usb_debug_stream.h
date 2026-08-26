@@ -41,26 +41,28 @@ bool nxpc_usb_debug_stream__telemetry_bool(const char *name, bool value);
 bool nxpc_usb_debug_stream__telemetry_text(const char *name, const char *value);
 
 /* Framework-only priority path. Six queue positions are reserved for these values. */
-bool nxpc_usb_debug_stream__framework_telemetry_f32(const char *name,
-                                                    float value,
+bool nxpc_usb_debug_stream__framework_telemetry_f32(const char *name, float value,
                                                     const char *units);
 bool nxpc_usb_debug_stream__framework_telemetry_bool(const char *name, bool value);
 bool nxpc_usb_debug_stream__framework_telemetry_text(const char *name, const char *value);
 
-#define NXPC_DBG_LOG_TRACE(category, ...) \
+#define NXPC_DBG_LOG_TRACE(category, ...)                                                          \
     nxpc_usb_debug_stream__logf(NXPC_DBG_LOG_LEVEL_TRACE, (category), __VA_ARGS__)
-#define NXPC_DBG_LOG_DEBUG(category, ...) \
+#define NXPC_DBG_LOG_DEBUG(category, ...)                                                          \
     nxpc_usb_debug_stream__logf(NXPC_DBG_LOG_LEVEL_DEBUG, (category), __VA_ARGS__)
-#define NXPC_DBG_LOG_INFO(category, ...) \
+#define NXPC_DBG_LOG_INFO(category, ...)                                                           \
     nxpc_usb_debug_stream__logf(NXPC_DBG_LOG_LEVEL_INFO, (category), __VA_ARGS__)
-#define NXPC_DBG_LOG_WARNING(category, ...) \
+#define NXPC_DBG_LOG_WARNING(category, ...)                                                        \
     nxpc_usb_debug_stream__logf(NXPC_DBG_LOG_LEVEL_WARNING, (category), __VA_ARGS__)
-#define NXPC_DBG_LOG_ERROR(category, ...) \
+#define NXPC_DBG_LOG_ERROR(category, ...)                                                          \
     nxpc_usb_debug_stream__logf(NXPC_DBG_LOG_LEVEL_ERROR, (category), __VA_ARGS__)
 
-#define NXPC_DBG_VALUE_I32(name, value, units) nxpc_usb_debug_stream__telemetry_i32((name), (value), (units))
-#define NXPC_DBG_VALUE_U32(name, value, units) nxpc_usb_debug_stream__telemetry_u32((name), (value), (units))
-#define NXPC_DBG_VALUE_F32(name, value, units) nxpc_usb_debug_stream__telemetry_f32((name), (value), (units))
+#define NXPC_DBG_VALUE_I32(name, value, units)                                                     \
+    nxpc_usb_debug_stream__telemetry_i32((name), (value), (units))
+#define NXPC_DBG_VALUE_U32(name, value, units)                                                     \
+    nxpc_usb_debug_stream__telemetry_u32((name), (value), (units))
+#define NXPC_DBG_VALUE_F32(name, value, units)                                                     \
+    nxpc_usb_debug_stream__telemetry_f32((name), (value), (units))
 #define NXPC_DBG_VALUE_BOOL(name, value) nxpc_usb_debug_stream__telemetry_bool((name), (value))
 #define NXPC_DBG_VALUE_TEXT(name, value) nxpc_usb_debug_stream__telemetry_text((name), (value))
 

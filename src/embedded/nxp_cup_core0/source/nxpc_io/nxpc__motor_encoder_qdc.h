@@ -26,7 +26,6 @@ typedef struct
 void nxpc__motor_encoder_qdc_init(void);
 void nxpc__motor_encoder_qdc_zero(void);
 void nxpc__motor_encoder_qdc_sample(uint32_t elapsed_ms,
-                                   nxpc_motor_encoder_sample_t samples[NXPC_MOTOR_ENCODER_COUNT]);
-void nxpc__motor_encoder_qdc_diag_run(void);
+                                    nxpc_motor_encoder_sample_t samples[NXPC_MOTOR_ENCODER_COUNT]);
 
 #endif

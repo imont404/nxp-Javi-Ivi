@@ -15,7 +15,6 @@ typedef struct
 
 } motor_ctrl_info_t;
 
-
 extern void nxpc__motor_control_init();
 extern void nxpc__set_motor_pwm(float left, float right);
 extern void nxpc__enable_motor_control();

@@ -17,7 +17,7 @@
 
 #include "st7789.h"
 #include "lpspi1.h"
-#include "eGFX_Driver_ER-TFT020-3.h"
+#include "nxpc_display.h"
 
 #include "nxpc__adc.h"
 #include "nxpc__motor_control.h"
@@ -25,23 +25,19 @@
 
 #include "bv_camera__interface.h"
 
+#define IN_PORT 3
+#define LEFT_BTN_PIN 21
+#define RIGHT_BTN_PIN 19
+#define CENTER_BTN_PIN 17
+#define TEST_SW_PIN 18
 
-#define IN_PORT             3
-#define LEFT_BTN_PIN        21
-#define RIGHT_BTN_PIN       19
-#define CENTER_BTN_PIN      17
-#define TEST_SW_PIN         18
-
-extern byte_queue_t UART4_TX_Q;
-extern byte_queue_t UART4_RX_Q;
-
-void nxpc__init();
+void nxpc__init(void);
 
 #define CYCLE_COUNTER DWT->CYCCNT
 
-#define INIT_CYCLE_COUNTER   CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;\
-							 DWT->CYCCNT = 0;\
-							 DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk
-
+#define INIT_CYCLE_COUNTER                                                                         \
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;                                                \
+    DWT->CYCCNT = 0;                                                                               \
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk
 
 #endif /* NXPC__IO_H_ */

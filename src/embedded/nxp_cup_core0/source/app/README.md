@@ -1,5 +1,15 @@
 # Adding Student Code
 
+The supplied files have one job each:
+
+- `test_mode.c` automatically dispatches the active TEST-jumper page;
+- `camera_test.c`, `vision_test.c`, and `motor_test.c` implement those pages;
+- `race_mode.c` is the competition callback.
+
+Students normally experiment in `vision_test.c` and `race_mode.c`. The camera
+and motor pages are small public-API examples, while the dispatcher is normally
+left unchanged.
+
 Put each additional module directly in this folder:
 
 ```text
@@ -8,7 +18,7 @@ app/
   my_algorithm.h
 ```
 
-Include it from `test_mode.c` or `race_mode.c`:
+Include it from the page or race module that uses it:
 
 ```c
 #include "my_algorithm.h"

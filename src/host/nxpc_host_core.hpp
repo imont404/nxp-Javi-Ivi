@@ -37,24 +37,21 @@ struct HidDevice
 
 std::vector<SerialDevice> list_serial_devices(std::string &error);
 std::vector<SerialDevice> find_serial_devices(uint16_t vid, uint16_t pid, std::string &error);
-bool select_unique_runtime_port(const std::string &requested_port,
-                                SerialDevice &selected,
+bool select_unique_runtime_port(const std::string &requested_port, SerialDevice &selected,
                                 std::string &error);
 std::vector<HidDevice> list_hid_devices(std::string &error);
 std::vector<HidDevice> find_hid_devices(uint16_t vid, uint16_t pid, std::string &error);
 
 class SerialPort
 {
-public:
+  public:
     SerialPort();
     ~SerialPort();
 
     SerialPort(const SerialPort &) = delete;
     SerialPort &operator=(const SerialPort &) = delete;
 
-    bool open(const std::string &port_name,
-              uint32_t baud,
-              uint32_t rx_buffer_bytes,
+    bool open(const std::string &port_name, uint32_t baud, uint32_t rx_buffer_bytes,
               std::string &error);
     int read(uint8_t *buffer, uint32_t buffer_bytes, std::string &error);
     bool write_all(const uint8_t *data, uint32_t data_bytes, std::string &error);
@@ -62,7 +59,7 @@ public:
     void close();
     bool is_open() const;
 
-private:
+  private:
     void *handle_;
 };
 
@@ -122,7 +119,7 @@ struct ParserCounters
 
 class StreamParser
 {
-public:
+  public:
     StreamParser();
     ~StreamParser();
     StreamParser(StreamParser &&) noexcept;
@@ -132,8 +129,7 @@ public:
     StreamParser &operator=(const StreamParser &) = delete;
 
     void feed(const uint8_t *data, size_t data_bytes);
-    bool take_control_response(uint32_t msg_id,
-                               uint32_t request_sequence,
+    bool take_control_response(uint32_t msg_id, uint32_t request_sequence,
                                ControlResponse &response);
     bool latest_frame(uint64_t after_generation, Frame &frame) const;
     bool latest_stats(nxpc_dbg_stats_report_t &stats) const;
@@ -142,33 +138,21 @@ public:
     const ParserCounters &counters() const;
     const std::string &last_error() const;
 
-private:
+  private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
 
-nxpc_dbg_packet_header_t make_control_request(uint32_t request_sequence,
-                                              uint32_t msg_id,
-                                              uint32_t arg0 = 0u,
-                                              uint32_t arg1 = 0u,
+nxpc_dbg_packet_header_t make_control_request(uint32_t request_sequence, uint32_t msg_id,
+                                              uint32_t arg0 = 0u, uint32_t arg1 = 0u,
                                               uint32_t arg2 = 0u);
-bool send_control_request(SerialPort &port,
-                          uint32_t request_sequence,
-                          uint32_t msg_id,
-                          uint32_t arg0,
-                          uint32_t arg1,
-                          uint32_t arg2,
-                          std::string &error);
-bool wait_for_control_response(SerialPort &port,
-                               StreamParser &parser,
-                               uint32_t msg_id,
-                               uint32_t request_sequence,
-                               uint32_t timeout_ms,
-                               ControlResponse &response,
-                               std::string &error);
+bool send_control_request(SerialPort &port, uint32_t request_sequence, uint32_t msg_id,
+                          uint32_t arg0, uint32_t arg1, uint32_t arg2, std::string &error);
+bool wait_for_control_response(SerialPort &port, StreamParser &parser, uint32_t msg_id,
+                               uint32_t request_sequence, uint32_t timeout_ms,
+                               ControlResponse &response, std::string &error);
 
-bool decode_hello(const ControlResponse &response,
-                  nxpc_dbg_control_hello_response_t &hello,
+bool decode_hello(const ControlResponse &response, nxpc_dbg_control_hello_response_t &hello,
                   std::string &error);
 
 bool run_core_self_test(std::string &error);

@@ -11,5 +11,4 @@
 #include "bunny_debug.h"
 #include "bv_camera__io.h"
 
-
 #endif /* BV_CAMERA__COMMON_H_ */

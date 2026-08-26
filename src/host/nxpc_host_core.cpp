@@ -28,9 +28,8 @@ constexpr uint32_t kFrameMaxBytes = 4u * 1024u * 1024u;
 constexpr uint16_t kKnownPacketFlags = NXPC_DBG_PACKET_FLAG_RESPONSE | NXPC_DBG_PACKET_FLAG_MORE |
                                        NXPC_DBG_PACKET_FLAG_PAYLOAD_CRC32 |
                                        NXPC_DBG_PACKET_FLAG_DROPPED_BEFORE;
-constexpr uint32_t kKnownChunkFlags = NXPC_DBG_RUI_CHUNK_FRAME_START |
-                                      NXPC_DBG_RUI_CHUNK_FRAME_END |
-                                      NXPC_DBG_RUI_CHUNK_STALE_OK;
+constexpr uint32_t kKnownChunkFlags =
+    NXPC_DBG_RUI_CHUNK_FRAME_START | NXPC_DBG_RUI_CHUNK_FRAME_END | NXPC_DBG_RUI_CHUNK_STALE_OK;
 constexpr size_t kRetainedRecords = 128u;
 
 std::string win32_error(const std::string &operation)
@@ -39,12 +38,8 @@ std::string win32_error(const std::string &operation)
     LPSTR message = nullptr;
     (void)FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
                              FORMAT_MESSAGE_IGNORE_INSERTS,
-                         nullptr,
-                         code,
-                         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                         reinterpret_cast<LPSTR>(&message),
-                         0u,
-                         nullptr);
+                         nullptr, code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                         reinterpret_cast<LPSTR>(&message), 0u, nullptr);
 
     std::ostringstream out;
     out << operation << " failed (win32 " << code << ")";
@@ -66,26 +61,19 @@ std::string win32_error(const std::string &operation)
 
 std::string upper_copy(std::string text)
 {
-    std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) {
-        return static_cast<char>(std::toupper(c));
-    });
+    std::transform(text.begin(), text.end(), text.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::toupper(c)); });
     return text;
 }
 
-std::string registry_string_property(HDEVINFO devices,
-                                     SP_DEVINFO_DATA &info,
-                                     DWORD property)
+std::string registry_string_property(HDEVINFO devices, SP_DEVINFO_DATA &info, DWORD property)
 {
     std::array<char, 2048> buffer{};
     DWORD type = 0u;
     DWORD bytes = 0u;
-    if (!SetupDiGetDeviceRegistryPropertyA(devices,
-                                           &info,
-                                           property,
-                                           &type,
+    if (!SetupDiGetDeviceRegistryPropertyA(devices, &info, property, &type,
                                            reinterpret_cast<PBYTE>(buffer.data()),
-                                           static_cast<DWORD>(buffer.size()),
-                                           &bytes))
+                                           static_cast<DWORD>(buffer.size()), &bytes))
     {
         return {};
     }
@@ -129,12 +117,8 @@ std::string port_name_for_device(HDEVINFO devices, SP_DEVINFO_DATA &info)
     std::array<char, 64> port{};
     DWORD type = 0u;
     DWORD bytes = static_cast<DWORD>(port.size());
-    const LONG result = RegQueryValueExA(key,
-                                         "PortName",
-                                         nullptr,
-                                         &type,
-                                         reinterpret_cast<LPBYTE>(port.data()),
-                                         &bytes);
+    const LONG result = RegQueryValueExA(key, "PortName", nullptr, &type,
+                                         reinterpret_cast<LPBYTE>(port.data()), &bytes);
     RegCloseKey(key);
     if ((result != ERROR_SUCCESS) || (type != REG_SZ) || (port[0] == '\0'))
     {
@@ -176,10 +160,7 @@ std::string instance_id_for_device(HDEVINFO devices, SP_DEVINFO_DATA &info)
 {
     std::array<char, 1024> value{};
     DWORD required = 0u;
-    if (!SetupDiGetDeviceInstanceIdA(devices,
-                                     &info,
-                                     value.data(),
-                                     static_cast<DWORD>(value.size()),
+    if (!SetupDiGetDeviceInstanceIdA(devices, &info, value.data(), static_cast<DWORD>(value.size()),
                                      &required))
     {
         return {};
@@ -196,20 +177,18 @@ std::string normalize_port_name(const std::string &port_name)
     return "\\\\.\\" + port_name;
 }
 
-template <typename T>
-void append_object(std::vector<uint8_t> &bytes, const T &object)
+template <typename T> void append_object(std::vector<uint8_t> &bytes, const T &object)
 {
     const auto *first = reinterpret_cast<const uint8_t *>(&object);
     bytes.insert(bytes.end(), first, first + sizeof(object));
 }
 
-template <typename T>
-void retain_bounded(std::vector<T> &records)
+template <typename T> void retain_bounded(std::vector<T> &records)
 {
     if (records.size() > kRetainedRecords)
     {
-        records.erase(records.begin(), records.begin() +
-                                            static_cast<std::ptrdiff_t>(records.size() - kRetainedRecords));
+        records.erase(records.begin(), records.begin() + static_cast<std::ptrdiff_t>(
+                                                             records.size() - kRetainedRecords));
     }
 }
 
@@ -287,8 +266,7 @@ std::vector<SerialDevice> find_serial_devices(uint16_t vid, uint16_t pid, std::s
     return matches;
 }
 
-bool select_unique_runtime_port(const std::string &requested_port,
-                                SerialDevice &selected,
+bool select_unique_runtime_port(const std::string &requested_port, SerialDevice &selected,
                                 std::string &error)
 {
     const std::vector<SerialDevice> devices = list_serial_devices(error);
@@ -305,7 +283,8 @@ bool select_unique_runtime_port(const std::string &requested_port,
             {
                 if ((device.vid != kNxpCupUsbVid) || (device.pid != kNxpCupRuntimePid))
                 {
-                    error = requested_port + " is not an NXP Cup runtime device (expected VID_1FC9/PID_0094)";
+                    error = requested_port +
+                            " is not an NXP Cup runtime device (expected VID_1FC9/PID_0094)";
                     return false;
                 }
                 selected = device;
@@ -352,10 +331,8 @@ std::vector<HidDevice> list_hid_devices(std::string &error)
     std::vector<HidDevice> result;
     GUID hid_guid{};
     HidD_GetHidGuid(&hid_guid);
-    HDEVINFO devices = SetupDiGetClassDevsA(&hid_guid,
-                                             nullptr,
-                                             nullptr,
-                                             DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+    HDEVINFO devices =
+        SetupDiGetClassDevsA(&hid_guid, nullptr, nullptr, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
     if (devices == INVALID_HANDLE_VALUE)
     {
         error = win32_error("SetupDiGetClassDevsA(HID)");
@@ -376,11 +353,7 @@ std::vector<HidDevice> list_hid_devices(std::string &error)
         }
 
         DWORD required = 0u;
-        (void)SetupDiGetDeviceInterfaceDetailA(devices,
-                                               &interface_data,
-                                               nullptr,
-                                               0u,
-                                               &required,
+        (void)SetupDiGetDeviceInterfaceDetailA(devices, &interface_data, nullptr, 0u, &required,
                                                nullptr);
         if (required < sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_A))
         {
@@ -391,11 +364,7 @@ std::vector<HidDevice> list_hid_devices(std::string &error)
         detail->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_A);
         SP_DEVINFO_DATA info{};
         info.cbSize = sizeof(info);
-        if (!SetupDiGetDeviceInterfaceDetailA(devices,
-                                              &interface_data,
-                                              detail,
-                                              required,
-                                              nullptr,
+        if (!SetupDiGetDeviceInterfaceDetailA(devices, &interface_data, detail, required, nullptr,
                                               &info))
         {
             error = win32_error("SetupDiGetDeviceInterfaceDetailA(HID)");
@@ -440,26 +409,22 @@ std::vector<HidDevice> find_hid_devices(uint16_t vid, uint16_t pid, std::string 
     return matches;
 }
 
-SerialPort::SerialPort() : handle_(nullptr) {}
+SerialPort::SerialPort() : handle_(nullptr)
+{
+}
 
 SerialPort::~SerialPort()
 {
     close();
 }
 
-bool SerialPort::open(const std::string &port_name,
-                      uint32_t baud,
-                      uint32_t rx_buffer_bytes,
+bool SerialPort::open(const std::string &port_name, uint32_t baud, uint32_t rx_buffer_bytes,
                       std::string &error)
 {
     close();
-    HANDLE handle = CreateFileA(normalize_port_name(port_name).c_str(),
-                                GENERIC_READ | GENERIC_WRITE,
-                                0u,
-                                nullptr,
-                                OPEN_EXISTING,
-                                FILE_ATTRIBUTE_NORMAL,
-                                nullptr);
+    HANDLE handle =
+        CreateFileA(normalize_port_name(port_name).c_str(), GENERIC_READ | GENERIC_WRITE, 0u,
+                    nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (handle == INVALID_HANDLE_VALUE)
     {
         error = win32_error("open " + port_name);
@@ -626,11 +591,10 @@ struct StreamParser::Impl
         const auto first = buffer.begin() + static_cast<std::ptrdiff_t>(cursor);
         const auto found = std::search(first, buffer.end(), kMagic.begin(), kMagic.end());
         return (found == buffer.end()) ? std::string::npos
-                                      : static_cast<size_t>(found - buffer.begin());
+                                       : static_cast<size_t>(found - buffer.begin());
     }
 
-    void parse_frame(const nxpc_dbg_packet_header_t &header,
-                     const uint8_t *payload,
+    void parse_frame(const nxpc_dbg_packet_header_t &header, const uint8_t *payload,
                      uint32_t payload_bytes)
     {
         if (payload_bytes <= sizeof(nxpc_dbg_rui_write_frame_buffer_raw_t))
@@ -646,20 +610,16 @@ struct StreamParser::Impl
             (chunk.width != 0u) &&
             (static_cast<uint32_t>(chunk.height) <=
              (std::numeric_limits<uint32_t>::max() / static_cast<uint32_t>(chunk.width) / 2u));
-        const uint32_t geometry_bytes = multiplication_safe
-                                            ? static_cast<uint32_t>(chunk.width) * chunk.height * 2u
-                                            : 0u;
-        const bool valid = (chunk.total_frame_bytes > 0u) &&
-                           (chunk.total_frame_bytes <= kFrameMaxBytes) &&
-                           (geometry_bytes == chunk.total_frame_bytes) &&
-                           (chunk.pixel_format == NXPC_DBG_PIXEL_FORMAT_RGB565_LE) &&
-                           (chunk.buffer_id == 0u) &&
-                           (chunk.byte_offset < chunk.total_frame_bytes) &&
-                           (data_bytes <= (chunk.total_frame_bytes - chunk.byte_offset)) &&
-                           ((chunk.chunk_flags & ~kKnownChunkFlags) == 0u) &&
-                           (header.arg0 == chunk.frame_id) &&
-                           (header.arg1 == chunk.byte_offset) &&
-                           (header.arg2 == data_bytes);
+        const uint32_t geometry_bytes =
+            multiplication_safe ? static_cast<uint32_t>(chunk.width) * chunk.height * 2u : 0u;
+        const bool valid =
+            (chunk.total_frame_bytes > 0u) && (chunk.total_frame_bytes <= kFrameMaxBytes) &&
+            (geometry_bytes == chunk.total_frame_bytes) &&
+            (chunk.pixel_format == NXPC_DBG_PIXEL_FORMAT_RGB565_LE) && (chunk.buffer_id == 0u) &&
+            (chunk.byte_offset < chunk.total_frame_bytes) &&
+            (data_bytes <= (chunk.total_frame_bytes - chunk.byte_offset)) &&
+            ((chunk.chunk_flags & ~kKnownChunkFlags) == 0u) && (header.arg0 == chunk.frame_id) &&
+            (header.arg1 == chunk.byte_offset) && (header.arg2 == data_bytes);
         if (!valid)
         {
             set_error("invalid frame chunk");
@@ -688,8 +648,7 @@ struct StreamParser::Impl
             return;
         }
 
-        std::memcpy(assembling.pixels.data() + chunk.byte_offset,
-                    payload + sizeof(chunk),
+        std::memcpy(assembling.pixels.data() + chunk.byte_offset, payload + sizeof(chunk),
                     data_bytes);
         assembling_offset += data_bytes;
         ++count.frame_chunks;
@@ -710,8 +669,7 @@ struct StreamParser::Impl
         }
     }
 
-    void parse_packet(const nxpc_dbg_packet_header_t &header,
-                      const uint8_t *payload,
+    void parse_packet(const nxpc_dbg_packet_header_t &header, const uint8_t *payload,
                       uint32_t payload_bytes)
     {
         if ((header.flags & NXPC_DBG_PACKET_FLAG_DROPPED_BEFORE) != 0u)
@@ -761,8 +719,8 @@ struct StreamParser::Impl
             }
             nxpc_dbg_log_record_t wire{};
             std::memcpy(&wire, payload, sizeof(wire));
-            const uint32_t expected = static_cast<uint32_t>(sizeof(wire)) +
-                                      wire.category_bytes + wire.text_bytes;
+            const uint32_t expected =
+                static_cast<uint32_t>(sizeof(wire)) + wire.category_bytes + wire.text_bytes;
             if ((expected != payload_bytes) || (wire.level > NXPC_DBG_LOG_LEVEL_ERROR))
             {
                 set_error("invalid log payload");
@@ -793,14 +751,14 @@ struct StreamParser::Impl
             std::memcpy(&wire, payload, sizeof(wire));
             const bool text_value = wire.value_type == NXPC_DBG_TELEMETRY_TYPE_TEXT;
             const uint32_t text_bytes = text_value ? wire.value_bits : 0u;
-            const uint32_t expected = static_cast<uint32_t>(sizeof(wire)) +
-                                       wire.name_bytes + wire.units_bytes + text_bytes;
+            const uint32_t expected = static_cast<uint32_t>(sizeof(wire)) + wire.name_bytes +
+                                      wire.units_bytes + text_bytes;
             const bool type_valid = (wire.value_type >= NXPC_DBG_TELEMETRY_TYPE_I32) &&
                                     (wire.value_type <= NXPC_DBG_TELEMETRY_TYPE_TEXT);
-            const bool text_valid = !text_value ||
-                                    ((text_bytes > 0u) &&
-                                     (text_bytes <= NXPC_DBG_TELEMETRY_TEXT_MAX_BYTES) &&
-                                     (wire.units_bytes == 0u));
+            const bool text_valid =
+                !text_value ||
+                ((text_bytes > 0u) && (text_bytes <= NXPC_DBG_TELEMETRY_TEXT_MAX_BYTES) &&
+                 (wire.units_bytes == 0u));
             if ((expected != payload_bytes) || !type_valid || !text_valid ||
                 (wire.name_bytes == 0u))
             {
@@ -867,8 +825,8 @@ struct StreamParser::Impl
                 continue;
             }
 
-            const size_t packet_bytes = NXPC_DBG_PACKET_HEADER_BYTES +
-                                        static_cast<size_t>(header.payload_length);
+            const size_t packet_bytes =
+                NXPC_DBG_PACKET_HEADER_BYTES + static_cast<size_t>(header.payload_length);
             if ((buffer.size() - cursor) < packet_bytes)
             {
                 return;
@@ -881,7 +839,9 @@ struct StreamParser::Impl
     }
 };
 
-StreamParser::StreamParser() : impl_(std::make_unique<Impl>()) {}
+StreamParser::StreamParser() : impl_(std::make_unique<Impl>())
+{
+}
 StreamParser::~StreamParser() = default;
 StreamParser::StreamParser(StreamParser &&) noexcept = default;
 StreamParser &StreamParser::operator=(StreamParser &&) noexcept = default;
@@ -904,13 +864,12 @@ void StreamParser::feed(const uint8_t *data, size_t data_bytes)
     }
 }
 
-bool StreamParser::take_control_response(uint32_t msg_id,
-                                         uint32_t request_sequence,
+bool StreamParser::take_control_response(uint32_t msg_id, uint32_t request_sequence,
                                          ControlResponse &response)
 {
-    const auto found = std::find_if(impl_->responses.begin(),
-                                    impl_->responses.end(),
-                                    [&](const ControlResponse &candidate) {
+    const auto found = std::find_if(impl_->responses.begin(), impl_->responses.end(),
+                                    [&](const ControlResponse &candidate)
+                                    {
                                         return (candidate.msg_id == msg_id) &&
                                                (candidate.request_sequence == request_sequence);
                                     });
@@ -963,11 +922,8 @@ const std::string &StreamParser::last_error() const
     return impl_->error;
 }
 
-nxpc_dbg_packet_header_t make_control_request(uint32_t request_sequence,
-                                              uint32_t msg_id,
-                                              uint32_t arg0,
-                                              uint32_t arg1,
-                                              uint32_t arg2)
+nxpc_dbg_packet_header_t make_control_request(uint32_t request_sequence, uint32_t msg_id,
+                                              uint32_t arg0, uint32_t arg1, uint32_t arg2)
 {
     nxpc_dbg_packet_header_t packet{};
     packet.magic = NXPC_DBG_MAGIC;
@@ -981,29 +937,17 @@ nxpc_dbg_packet_header_t make_control_request(uint32_t request_sequence,
     return packet;
 }
 
-bool send_control_request(SerialPort &port,
-                          uint32_t request_sequence,
-                          uint32_t msg_id,
-                          uint32_t arg0,
-                          uint32_t arg1,
-                          uint32_t arg2,
-                          std::string &error)
+bool send_control_request(SerialPort &port, uint32_t request_sequence, uint32_t msg_id,
+                          uint32_t arg0, uint32_t arg1, uint32_t arg2, std::string &error)
 {
-    const nxpc_dbg_packet_header_t request = make_control_request(request_sequence,
-                                                                 msg_id,
-                                                                 arg0,
-                                                                 arg1,
-                                                                 arg2);
+    const nxpc_dbg_packet_header_t request =
+        make_control_request(request_sequence, msg_id, arg0, arg1, arg2);
     return port.write_all(reinterpret_cast<const uint8_t *>(&request), sizeof(request), error);
 }
 
-bool wait_for_control_response(SerialPort &port,
-                               StreamParser &parser,
-                               uint32_t msg_id,
-                               uint32_t request_sequence,
-                               uint32_t timeout_ms,
-                               ControlResponse &response,
-                               std::string &error)
+bool wait_for_control_response(SerialPort &port, StreamParser &parser, uint32_t msg_id,
+                               uint32_t request_sequence, uint32_t timeout_ms,
+                               ControlResponse &response, std::string &error)
 {
     std::array<uint8_t, 64u * 1024u> buffer{};
     const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(timeout_ms);
@@ -1031,8 +975,7 @@ bool wait_for_control_response(SerialPort &port,
     return false;
 }
 
-bool decode_hello(const ControlResponse &response,
-                  nxpc_dbg_control_hello_response_t &hello,
+bool decode_hello(const ControlResponse &response, nxpc_dbg_control_hello_response_t &hello,
                   std::string &error)
 {
     if (response.status != NXPC_DBG_CONTROL_STATUS_OK)
@@ -1042,8 +985,8 @@ bool decode_hello(const ControlResponse &response,
     }
     if (response.payload.size() != sizeof(hello))
     {
-        error = "HELLO response payload has unexpected size " +
-                std::to_string(response.payload.size());
+        error =
+            "HELLO response payload has unexpected size " + std::to_string(response.payload.size());
         return false;
     }
     std::memcpy(&hello, response.payload.data(), sizeof(hello));
@@ -1081,8 +1024,7 @@ bool run_core_self_test(std::string &error)
     ControlResponse response;
     nxpc_dbg_control_hello_response_t decoded{};
     if (!parser.take_control_response(NXPC_DBG_CONTROL_HELLO, 9u, response) ||
-        !decode_hello(response, decoded, error) ||
-        (decoded.session_id != hello_payload.session_id))
+        !decode_hello(response, decoded, error) || (decoded.session_id != hello_payload.session_id))
     {
         if (error.empty())
         {
@@ -1110,8 +1052,9 @@ bool run_core_self_test(std::string &error)
         chunk.width = 320u;
         chunk.height = 200u;
         chunk.pixel_format = NXPC_DBG_PIXEL_FORMAT_RGB565_LE;
-        chunk.chunk_flags = ((offset == 0u) ? NXPC_DBG_RUI_CHUNK_FRAME_START : 0u) |
-                            (((offset + data_bytes) == frame_bytes) ? NXPC_DBG_RUI_CHUNK_FRAME_END : 0u);
+        chunk.chunk_flags =
+            ((offset == 0u) ? NXPC_DBG_RUI_CHUNK_FRAME_START : 0u) |
+            (((offset + data_bytes) == frame_bytes) ? NXPC_DBG_RUI_CHUNK_FRAME_END : 0u);
         nxpc_dbg_packet_header_t header{};
         header.magic = NXPC_DBG_MAGIC;
         header.version = NXPC_DBG_VERSION;
@@ -1125,7 +1068,8 @@ bool run_core_self_test(std::string &error)
         std::vector<uint8_t> packet;
         append_object(packet, header);
         append_object(packet, chunk);
-        packet.insert(packet.end(), expected.begin() + offset, expected.begin() + offset + data_bytes);
+        packet.insert(packet.end(), expected.begin() + offset,
+                      expected.begin() + offset + data_bytes);
         for (size_t at = 0u; at < packet.size(); at += 113u)
         {
             const size_t block = std::min<size_t>(113u, packet.size() - at);
@@ -1135,8 +1079,8 @@ bool run_core_self_test(std::string &error)
     }
 
     Frame frame;
-    if (!parser.latest_frame(0u, frame) || (frame.frame_id != 42u) ||
-        (frame.pixels != expected) || (parser.counters().malformed != 0u))
+    if (!parser.latest_frame(0u, frame) || (frame.frame_id != 42u) || (frame.pixels != expected) ||
+        (parser.counters().malformed != 0u))
     {
         error = "fragmented frame self-test failed: " + parser.last_error();
         return false;

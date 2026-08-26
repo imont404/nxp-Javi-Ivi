@@ -3,24 +3,21 @@
 #ifndef __IPC_H
 #define __IPC_H
 
-#define CORE1_EXE_ADDRESS	0x4001000
+#define CORE1_EXE_ADDRESS 0x4001000
 
+typedef struct
+{
 
-typedef struct {
+    volatile uint32_t core1_counter;
+    volatile uint32_t core1_magic_boot_value;
+    volatile uint8_t *image_ptr;
+} ipc_t;
 
-	volatile uint32_t core1_counter;
-	volatile uint32_t core1_magic_boot_value;
-	volatile uint8_t * image_ptr;
-}ipc_t;
-
-
-//this value will be set in nxpc_ipc.core1_magic_boot_value once it is ready
-#define CORE1__MAGIC_BOOT_VALUE 	0x12345689
+// this value will be set in nxpc_ipc.core1_magic_boot_value once it is ready
+#define CORE1__MAGIC_BOOT_VALUE 0x12345689
 
 extern volatile ipc_t nxpc_ipc;
 
-
-#define CORE0__MAILBOX___CORE1_READY	(1<<0)
-
+#define CORE0__MAILBOX___CORE1_READY (1 << 0)
 
 #endif

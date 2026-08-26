@@ -61,5 +61,16 @@ firmware loop is edit, build, and run `flash.ps1`. Flashing prefers ROM-HID and
 automatically falls back to the command-line J-Link backend. RTT and lower-level
 maintainer tools live under `src\embedded\tools`.
 
+## Code formatting
+
+Run clang-format over all repository-owned C and C++ code from the root:
+
+```powershell
+.\scripts\tools\clang_format.ps1
+.\scripts\tools\clang_format.ps1 -Check
+```
+
+Imported SDK, generated, and vendor sources are intentionally excluded.
+
 See [`src/README.md`](src/README.md) for the source-tree map. Students and LLM
 assistants should read the nearest `AGENTS.md` before editing a component.

@@ -2,12 +2,13 @@
 
 The competition image keeps platform initialization, camera-buffer handling, display,
 USB telemetry, wheel-speed sampling, and actuator safety inside the framework. The two
-normally edited implementation files are:
+normal student exercises are:
 
-- `src/embedded/nxp_cup_core0/source/app/test_mode.c`
+- `src/embedded/nxp_cup_core0/source/app/vision_test.c`
 - `src/embedded/nxp_cup_core0/source/app/race_mode.c`
 
-Both include the single public header
+Each TEST page is a small module under `source/app`; `test_mode.c` only dispatches
+the page selected by the framework. App exercise modules include the single public header
 `src/embedded/nxp_cup_core0/source/nxp_cup.h`. They do not include board, SDK,
 camera-driver, USB, display, PWM, QDC, or framework-private headers.
 
@@ -58,9 +59,10 @@ suppress these protected diagnostics.
 It deliberately supplies no lane-center decision, steering controller, motor PID, active
 differential, completed edge detector, or race strategy.
 
-`test_mode.c` keeps three short page handlers together as executable API
-examples. CAMERA / IO reads controls and publishes telemetry, VISION owns the
-editable image-processing overlay, and MOTORS maps the three pots through
+`test_mode.c` is a short switch called automatically for accepted frames while the
+TEST jumper is installed. It dispatches three executable API examples:
+`camera_test.c` reads controls and publishes telemetry, `vision_test.c` owns the
+editable Alpha-selected luma waveform, and `motor_test.c` maps the three pots through
 `motors_set_duty()` and `steering_set()`. Those calls do not own permission:
 framework-private code still owns navigation, presentation, deliberate arming,
 the centered-pot interlock, TEST duty caps, the command lease, and every safe
@@ -78,4 +80,4 @@ race-duration timer. Three consecutive callbacks over the 41 ms frame budget ent
 
 These paths compile in both CMake and a fresh MCUXpresso headless workspace. Physical
 stall, TEST/RACE, camera-loss, and actuator tests remain part of the next Rev A bench
-regression because the board is currently in transit.
+regression; a board is available now, but the car is not.

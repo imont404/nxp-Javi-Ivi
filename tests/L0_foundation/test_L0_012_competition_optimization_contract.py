@@ -47,29 +47,37 @@ def test_builds_validate_effective_last_option_wins_commands():
 
 def test_lcd_waits_survive_optimization_and_dma_lifetimes_are_bounded():
     panel = (PROJECT / "source/nxpc_io/st7789.c").read_text(encoding="utf-8")
-    display = (PROJECT / "source/nxpc_io/eGFX_Driver_ER-TFT020-3.c").read_text(
-        encoding="utf-8"
-    )
+    display = (PROJECT / "source/nxpc_io/nxpc_display.c").read_text(encoding="utf-8")
     spi = (PROJECT / "source/nxpc_io/lpspi1.c").read_text(encoding="utf-8")
 
     assert "SDK_DelayAtLeastUs(1000U, SystemCoreClock);" in panel
     assert "for(j=0;j<16000;j++);" not in panel.replace(" ", "")
-    assert "lpspi1_wait_idle();" in display
     assert "volatile bool isTransferCompleted" in spi
     assert "while (!isTransferCompleted)" in spi
 
-    # DMA submissions that reference local storage must complete before the
-    # helper returns. Command bytes also keep RS stable through completion.
-    for signature in (
-        "void lpspi1_transfer_byte",
-        "void  Write_Data_U16",
-        "inline void  Write_Data_U32",
-        "void Write_Data",
-    ):
-        source = spi if "lpspi1" in signature else panel
-        assert "lpspi1_wait_idle();" in _function_body(source, signature)
-    for signature in ("void ST7789__display_img", "void ST7789__display_row"):
-        assert "lpspi1_wait_idle();" in _function_body(panel, signature)
+    # The command helper owns a stack byte, so it must wait before returning.
+    # Keeping command and parameter writes on that helper also holds RS stable
+    # until DMA has consumed each byte.
+    assert "lpspi1_wait_idle();" in _function_body(spi, "void lpspi1_transfer_byte")
+    for signature in ("static void st7789__write_command", "static void st7789__write_parameter"):
+        assert "lpspi1_transfer_byte(" in _function_body(panel, signature)
+
+    # Pixel writes may submit several chunks from caller-owned storage, but the
+    # last submission must complete before the display API returns.
+    display_write = _function_body(display, "void nxpc_display__write")
+    assert "lpspi1_transfer_block(buffer, block_size);" in display_write
+    assert "lpspi1_wait_idle();" in display_write
+
+
+def test_display_cleanup_has_one_owned_transport_boundary():
+    generated = (PROJECT / "cmake/mcuxpresso_debug.cmake").read_text(encoding="utf-8")
+    display = PROJECT / "source/nxpc_io/nxpc_display.c"
+    legacy_driver = PROJECT / "source/nxpc_io/eGFX_Driver_ER-TFT020-3.c"
+
+    assert display.exists()
+    assert not legacy_driver.exists()
+    assert '"${MCUX_PROJECT_ROOT}/source/nxpc_io/nxpc_display.c"' in generated
+    assert "eGFX_Driver_ER-TFT020-3.c" not in generated
 
 
 def test_isr_owned_adc_and_framework_state_are_not_cached():
@@ -79,10 +87,10 @@ def test_isr_owned_adc_and_framework_state_are_not_cached():
     assert "static volatile uint16_t adc_values" in adc
     assert "interrupt_state = DisableGlobalIRQ();" in adc
     for declaration in (
-        "static uint16_t * volatile g_latest_frame;",
-        "static volatile bool g_frame_ready;",
-        "static volatile uint32_t g_last_frame_ms;",
-        "static volatile uint32_t g_motor_lease_remaining_ms;",
-        "static volatile bool g_motor_lease_expired;",
+        r"static\s+uint16_t\s+\*\s*volatile\s+g_latest_frame;",
+        r"static\s+volatile\s+bool\s+g_frame_ready;",
+        r"static\s+volatile\s+uint32_t\s+g_last_frame_ms;",
+        r"static\s+volatile\s+uint32_t\s+g_motor_lease_remaining_ms;",
+        r"static\s+volatile\s+bool\s+g_motor_lease_expired;",
     ):
-        assert declaration in framework
+        assert re.search(declaration, framework)

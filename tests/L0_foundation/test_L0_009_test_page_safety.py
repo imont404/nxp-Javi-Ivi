@@ -258,24 +258,41 @@ VISION_HARNESS = r"""
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "nxp_cup.h"
-#include "app/test_mode.c"
+#include "app/vision_test.c"
+
+static float alpha = 0.5f;
+static uint32_t line_count;
+static uint32_t marker_count;
+static int32_t line_x0[2];
+static int32_t line_y0[2];
+static int32_t line_x1[2];
+static int32_t line_y1[2];
+static int32_t marker_y[2];
+static uint32_t scan_row_telemetry;
+static uint32_t luma_min_telemetry;
+static uint32_t luma_max_telemetry;
+static uint16_t frame[CAMERA_HEIGHT * CAMERA_STRIDE_PIXELS];
 
 void color_convert_rgb565_to_yhsv(const uint16_t *pixels,
                                   color_features_t *features,
                                   uint32_t count)
 {
-    (void)pixels;
-    (void)features;
-    (void)count;
+    for (uint32_t i = 0U; i < count; i++)
+    {
+        features[i].h = 0U;
+        features[i].s = 0U;
+        features[i].v = (uint8_t)pixels[i];
+        features[i].y = (uint8_t)pixels[i];
+    }
 }
 uint16_t color_rgb565(uint8_t red, uint8_t green, uint8_t blue)
 {
-    (void)red;
-    (void)green;
-    (void)blue;
-    return 0U;
+    return (uint16_t)(((uint16_t)(red & 0xF8U) << 8U) |
+                      ((uint16_t)(green & 0xFCU) << 3U) |
+                      ((uint16_t)blue >> 3U));
 }
 void frame_draw_horizontal_line(uint16_t *frame,
                                 int32_t x0,
@@ -283,30 +300,43 @@ void frame_draw_horizontal_line(uint16_t *frame,
                                 int32_t y,
                                 uint16_t color)
 {
-    (void)frame; (void)x0; (void)x1; (void)y; (void)color;
+    (void)frame; (void)x0; (void)x1; (void)color;
+    if (marker_count < 2U)
+        marker_y[marker_count] = y;
+    marker_count++;
 }
-void frame_draw_vertical_line(uint16_t *frame,
-                              int32_t x,
-                              int32_t y0,
-                              int32_t y1,
-                              uint16_t color)
+void frame_draw_line(uint16_t *frame,
+                     int32_t x0,
+                     int32_t y0,
+                     int32_t x1,
+                     int32_t y1,
+                     uint16_t color)
 {
-    (void)frame; (void)x; (void)y0; (void)y1; (void)color;
+    (void)frame; (void)color;
+    if (line_count < 2U)
+    {
+        line_x0[line_count] = x0;
+        line_y0[line_count] = y0;
+        line_x1[line_count] = x1;
+        line_y1[line_count] = y1;
+    }
+    line_count++;
 }
-float input_alpha(void) { return 0.5f; }
-float input_beta(void) { return 0.5f; }
-float input_gamma(void) { return 0.5f; }
-float battery_voltage(void) { return 0.0f; }
-test_mode_page_t test_mode_page(void) { return TEST_MODE_VISION; }
-void motors_set_duty(float left, float right) { (void)left; (void)right; }
-void steering_set(float position) { (void)position; }
+float input_alpha(void) { return alpha; }
 bool telemetry_f32(const char *name, float value, const char *units)
 {
     (void)name; (void)value; (void)units; return true;
 }
 bool telemetry_u32(const char *name, uint32_t value, const char *units)
 {
-    (void)name; (void)value; (void)units; return true;
+    (void)units;
+    if (strcmp(name, "vision.scan_row") == 0)
+        scan_row_telemetry = value;
+    else if (strcmp(name, "vision.luma_min") == 0)
+        luma_min_telemetry = value;
+    else if (strcmp(name, "vision.luma_max") == 0)
+        luma_max_telemetry = value;
+    return true;
 }
 
 static int fail(const char *message)
@@ -315,54 +345,39 @@ static int fail(const char *message)
     return 1;
 }
 
-static void fill(color_features_t *pixels, uint32_t count, uint8_t y)
-{
-    for (uint32_t i = 0U; i < count; i++) pixels[i].y = y;
-}
-
 int main(void)
 {
-    color_features_t pixels[32] = {0};
-    vision_edge_t edges[8] = {0};
-    struct
-    {
-        uint32_t before;
-        vision_edge_t edge[1];
-        uint32_t after;
-    } guarded = {0x12345678U, {{0U, 0}}, 0x9ABCDEF0U};
-    uint32_t count;
+    uint32_t row = 99U;
 
-    fill(pixels, 32U, 200U);
-    if (find_luma_edges(pixels, 32U, 1U, 40U, edges, 8U) != 0U)
-        return fail("flat row produced an edge");
+    if ((luma_plot_y(0U) != 199) || (luma_plot_y(255U) != 0) ||
+        (luma_plot_y(128U) != 99))
+        return fail("luma did not map across the 200-pixel plot height");
 
-    for (uint32_t x = 10U; x < 20U; x++) pixels[x].y = 20U;
-    count = find_luma_edges(pixels, 32U, 1U, 180U, edges, 8U);
-    if ((count != 2U) || (edges[0].x != 10U) || (edges[0].gradient >= 0) ||
-        (edges[1].x != 20U) || (edges[1].gradient <= 0))
-        return fail("radius-1 stripe edges or polarity were wrong");
+    camera_row(frame, row)[0] = 0U;
+    camera_row(frame, row)[1] = 255U;
+    camera_row(frame, row)[2] = 128U;
+    vision_test_on_frame(frame);
 
-    count = find_luma_edges(pixels, 32U, 4U, 180U, edges, 8U);
-    if ((count != 2U) || (edges[0].x != 10U) || (edges[1].x != 20U))
-        return fail("edge position drifted with radius");
-    if (find_luma_edges(pixels, 32U, 1U, 181U, edges, 8U) != 0U)
-        return fail("threshold comparison was not inclusive");
+    if (line_count != CAMERA_WIDTH - 1U)
+        return fail("waveform did not connect the full scanline");
+    if ((line_x0[0] != 0) || (line_y0[0] != 199) ||
+        (line_x1[0] != 1) || (line_y1[0] != 0) ||
+        (line_x0[1] != 1) || (line_y0[1] != 0) ||
+        (line_x1[1] != 2) || (line_y1[1] != 99))
+        return fail("waveform coordinates were wrong");
+    if ((marker_count != 2U) || (marker_y[0] != 99) || (marker_y[1] != 100))
+        return fail("selected scanline marker was wrong");
+    if ((scan_row_telemetry != row) || (luma_min_telemetry != 0U) ||
+        (luma_max_telemetry != 255U))
+        return fail("luma telemetry was wrong");
 
-    for (uint32_t x = 24U; x < 27U; x++) pixels[x].y = 20U;
-    if (find_luma_edges(pixels, 32U, 1U, 180U, edges, 8U) != 4U)
-        return fail("extra stripe edges were not retained");
-
-    count = find_luma_edges(pixels, 32U, 1U, 180U, guarded.edge, 1U);
-    if ((count != 1U) || (guarded.before != 0x12345678U) ||
-        (guarded.after != 0x9ABCDEF0U))
-        return fail("edge capacity did not protect its canaries");
-    if (find_luma_edges(pixels, 2U, 1U, 1U, edges, 8U) != 0U)
-        return fail("short input produced an edge");
-
-    pixels[0].y = 200U; pixels[1].y = 0U;
-    pixels[2].y = 100U; pixels[3].y = 100U;
-    if (find_luma_edges(pixels, 4U, 1U, 90U, edges, 8U) != 2U)
-        return fail("adjacent sign changes did not make progress");
+    alpha = 1.5f;
+    marker_count = 0U;
+    line_count = 0U;
+    vision_test_on_frame(frame);
+    if ((scan_row_telemetry != CAMERA_HEIGHT - 1U) ||
+        (marker_y[0] != 198) || (marker_y[1] != 199))
+        return fail("alpha clamp or bottom scanline marker was wrong");
 
     return 0;
 }
@@ -417,16 +432,16 @@ def test_test_page_safety_state_machine(tmp_path: Path):
     assert run_result.returncode == 0, run_result.stdout + run_result.stderr
 
 
-def test_vision_luma_edge_detector(tmp_path: Path):
+def test_vision_luma_waveform(tmp_path: Path):
     compiler = shutil.which("clang") or shutil.which("gcc") or shutil.which("cc")
     if compiler is None:
-        pytest.skip("a native C compiler is required for the vision edge trace")
+        pytest.skip("a native C compiler is required for the vision waveform trace")
 
-    harness = tmp_path / "nxpc_vision_edge_harness.c"
+    harness = tmp_path / "nxpc_vision_waveform_harness.c"
     executable = tmp_path / (
-        "nxpc_vision_edge_harness.exe"
+        "nxpc_vision_waveform_harness.exe"
         if Path(compiler).suffix.lower() == ".exe"
-        else "nxpc_vision_edge_harness"
+        else "nxpc_vision_waveform_harness"
     )
     harness.write_text(VISION_HARNESS, encoding="utf-8")
 
@@ -498,9 +513,11 @@ def test_navigation_is_frame_independent_and_test_mode_owns_page_callbacks():
     assert "nxpc__baseline_test_navigation();" in framework
     assert main.count("test_mode_on_frame(frame);") == 1
     assert "switch (test_mode_page())" in test_mode
+    assert "calls this automatically" in test_mode
+    assert "TEST jumper is installed" in test_mode
     assert "nxpc__apply_test_arming_transition();" in framework
     assert "motors_set_duty(0.0f, 0.0f);" in framework
-    for handler in ("camera_io_on_frame", "vision_on_frame", "motors_on_frame"):
+    for handler in ("camera_test_on_frame", "vision_test_on_frame", "motor_test_on_frame"):
         assert f"{handler}(frame);" in test_mode
 
 
@@ -529,44 +546,41 @@ def test_camera_io_samples_without_frames_and_overlays_before_publication():
 
 
 def test_safe_pages_have_no_actuator_commands_or_race_solution():
-    test_mode = (SOURCE / "app/test_mode.c").read_text(encoding="utf-8")
-    camera_io = test_mode.split("static void camera_io_on_frame", 1)[1].split(
-        "static void vision_on_frame", 1
-    )[0]
-    vision = test_mode.split("static void vision_on_frame", 1)[1].split(
-        "static void motors_on_frame", 1
-    )[0]
+    camera_io = (SOURCE / "app/camera_test.c").read_text(encoding="utf-8")
+    vision = (SOURCE / "app/vision_test.c").read_text(encoding="utf-8")
 
     for safe_page in (camera_io, vision):
         assert "motors_set_duty(" not in safe_page
         assert "motors_stop(" not in safe_page
         assert "steering_set(" not in safe_page
-    assert "find_luma_edges(" in vision
-    edge_helper = test_mode.split("static uint32_t find_luma_edges", 1)[1].split(
-        "static float clamp_input", 1
+    assert "color_convert_rgb565_to_yhsv(camera_row(frame, row)" in vision
+    assert "luma_plot_y(scanline[x].y)" in vision
+    assert "frame_draw_line(" in vision
+    assert "draw_scanline_marker(frame, row, scan_color);" in vision
+    marker_helper = vision.split("static void draw_scanline_marker", 1)[1].split(
+        "void vision_test_on_frame", 1
     )[0]
-    assert ".y" in edge_helper
-    assert '"vision.edge_count"' in vision
-    assert "frame_draw_horizontal_line(" in vision
-    assert "frame_draw_vertical_line(" in vision
+    assert marker_helper.count("frame_draw_horizontal_line(") == 2
+    assert "find_luma_edges(" not in vision
+    assert "classify_black_white" not in vision
+    assert '"vision.edge_count"' not in vision
+    assert '"vision.luma_min"' in vision
+    assert '"vision.luma_max"' in vision
     assert "frame_fill_rectangle(" not in vision
     assert "frame_draw_text(" not in vision
-    assert "not a lane" in vision.lower()
+    assert "without deciding which edges belong to a track" in vision.lower()
 
 
 def test_motors_page_control_is_student_visible_and_framework_bounded():
     framework = (SOURCE / "nxpc_framework.c").read_text(encoding="utf-8")
     test_mode = (SOURCE / "app/test_mode.c").read_text(encoding="utf-8")
+    motors_page = (SOURCE / "app/motor_test.c").read_text(encoding="utf-8")
     finish = framework.split("void nxpc_framework__finish_frame", 1)[1].split(
         "color_features_t color_rgb565_to_yhsv", 1
     )[0]
     motors_status = framework.split("static void nxpc__test_motors_status_service", 1)[1].split(
         "static nxpc_test_page_t nxpc__previous_test_page", 1
     )[0]
-    motors_page = test_mode.split("static void motors_on_frame", 1)[1].split(
-        "void test_mode_on_frame", 1
-    )[0]
-
     assert "NXPC_TEST_MOTORS_STATUS_MS (20U)" in framework
     assert "nxpc_system__test_page() != NXPC_TEST_PAGE_MOTORS" in motors_status
     assert "motors_set_duty(" not in motors_status

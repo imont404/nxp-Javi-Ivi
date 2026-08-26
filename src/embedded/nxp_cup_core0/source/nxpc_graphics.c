@@ -323,12 +323,8 @@ void nxpc_graphics__fill_rectangle(const nxpc_rgb565_surface_t *surface, int32_t
     }
 }
 
-static void nxpc_graphics__font_text(const nxpc_rgb565_surface_t *surface,
-                                     int32_t x,
-                                     int32_t y,
-                                     const char *text,
-                                     uint16_t color,
-                                     const eGFX_Font *font)
+static void nxpc_graphics__font_text(const nxpc_rgb565_surface_t *surface, int32_t x, int32_t y,
+                                     const char *text, uint16_t color, const eGFX_Font *font)
 {
     uint32_t character_index;
     int32_t cursor_x = x;
