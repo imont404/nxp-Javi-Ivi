@@ -47,7 +47,7 @@ depends_on = ["state-machine-contract"]
 
 [[steps]]
 id = "mode-files"
-title = "Make test_mode.c and race_mode.c the only normally edited files and move the TEST experiment out of main.c"
+title = "Move TEST dispatch out of main.c, keep each TEST page in a small app module, and retain vision_test.c plus race_mode.c as the normal exercises"
 status = "done"
 depends_on = ["public-api-contract", "background-services", "asynchronous-output-lease"]
 
@@ -227,7 +227,7 @@ depends_on = ["design-doc-intent-audit", "test-runtime-impact-audit", "tooling-c
 
 [[exit_criteria]]
 id = "two-files"
-title = "Every supplied exercise builds with changes confined to test_mode.c and race_mode.c, each called once per accepted frame in its mode"
+title = "Every supplied exercise builds within the small app boundary, with one TEST and one RACE callback per accepted frame in its mode"
 status = "pending"
 
 [[exit_criteria]]
@@ -342,7 +342,7 @@ obvious on a projector and low-level services must stay outside the files they e
 Sequence the work in four deliberately separate phases:
 
 1. **Firmware contract:** lock modes, simple frame lifetime, safety, the small public API,
-   exactly two normally edited files, and their final public paths. Build and commit a
+   a small normally edited surface and its final public paths. Build and commit a
    known-good baseline, then run the reviewed repository-wide AVC rename tool. Prove the
    settled names/layout through CMake, MCUXpresso, Ozone, and host builds before publishing
    `firmware-contract-checkpoint`. Nothing named in that checkpoint moves afterward.
@@ -354,7 +354,7 @@ Sequence the work in four deliberately separate phases:
 4. **Repository cutover:** create, verify, change remotes, and redirect as separately
    authorized external operations.
 
-This plan owns the cross-subsystem framework contract, public API, two editable files,
+This plan owns the cross-subsystem framework contract, public API, small editable surface,
 public NXP Cup naming, stable paths, and integration checkpoints. It does not silently
 take implementation ownership from the active subsystem plans:
 
@@ -433,11 +433,15 @@ to the untouched baseline commit; the tool never tries to reverse-guess mappings
 
 ## Editable Boundary
 
-Students normally edit exactly:
+Students normally edit:
 
-- `app/test_mode.c`: camera, generic color/edge, telemetry, pot/button, steering, and
-  motor experiments under framework safety gates;
+- `app/vision_test.c`: scanline, color, drawing, and telemetry experiments on the
+  motor-prohibited VISION page;
 - `app/race_mode.c`: per-frame execution/race algorithm, initially with no solution.
+
+`app/test_mode.c` is the automatic TEST-jumper dispatcher. The supplied
+`camera_test.c`, `vision_test.c`, and `motor_test.c` page modules remain small
+public-API examples, and students may add similarly focused app modules.
 
 Both include one framework-owned public header, tentatively `nxp_cup.h`. Recommended
 initial callback shape, to be frozen by `lock-contract`:
@@ -466,12 +470,12 @@ teaching examples outside the frozen API.
 
 The framework supplies measured speed and PWM duty, not a speed controller. It supplies
 generic edge/segment ingredients, not lane center, crossing policy, steering error/PID,
-active differential, or race strategy. The useful current scanline/color/edge and motor
-experiments may move into `test_mode.c`; safety arming, midpoint interlock, clamps, and
+active differential, or race strategy. The useful scanline/color and motor
+experiments live in their focused TEST page modules; safety arming, midpoint interlock, clamps, and
 transition/fault stops remain framework-owned.
 
-An L0 contract test builds every supplied exercise after modifications confined to
-`test_mode.c` and `race_mode.c`, compiles examples for every public API, and rejects direct
+An L0 contract test builds every supplied exercise in the app boundary, compiles
+examples for every public API, and rejects direct
 inclusion of internal headers. Generated LUTs, build configuration, and framework sources
 never require normal participant edits.
 
@@ -639,6 +643,9 @@ src/firmware/
 src/host/
 src/android/nxp_cup_bridge/
 app/test_mode.c
+app/camera_test.c
+app/vision_test.c
+app/motor_test.c
 app/race_mode.c
 docs/
 ```
@@ -755,6 +762,9 @@ Do not count workstation PATH state, caches, SDKs, or build directories as prere
 - `src/nxp_cup/nxp_cup_core0/source/nxpc_system.c`
 - `src/nxp_cup/nxp_cup_core0/source/nxpc_framework.c`
 - `src/nxp_cup/nxp_cup_core0/source/app/test_mode.c`
+- `src/nxp_cup/nxp_cup_core0/source/app/camera_test.c`
+- `src/nxp_cup/nxp_cup_core0/source/app/vision_test.c`
+- `src/nxp_cup/nxp_cup_core0/source/app/motor_test.c`
 - `src/nxp_cup/nxp_cup_core0/source/app/race_mode.c`
 - `src/nxp_cup/nxp_cup_core0/source/nxpc__line_processor.c`
 - `src/nxp_cup/nxp_cup_core0/source/nxpc_io/`

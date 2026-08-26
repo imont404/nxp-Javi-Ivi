@@ -59,7 +59,7 @@ depends_on = ["test-page-navigation"]
 
 [[steps]]
 id = "test-vision-lab"
-title = "Keep the three student-readable TEST handlers together in test_mode.c while VISION remains the editable camera-processing sandbox and framework-owned gates retain all motion authority"
+title = "Keep the three student-readable TEST pages in small app modules while VISION remains the editable camera-processing sandbox and framework-owned gates retain all motion authority"
 status = "done"
 depends_on = ["test-page-navigation"]
 
@@ -216,6 +216,12 @@ status = "done"
 depends_on = ["vision-black-white-validation"]
 
 [[steps]]
+id = "vision-luma-waveform"
+title = "Split TEST dispatch from its CAMERA, VISION, and MOTOR page modules, then simplify VISION to an Alpha-selected full-width luma waveform over the live image"
+status = "done"
+depends_on = ["vision-scanline-low-pass", "display-driver-cleanup"]
+
+[[steps]]
 id = "display-driver-cleanup"
 title = "Replace the active eGFX display-driver layer with a small owned ST7789 command boundary and bounded DMA-backed RGB565 region writer while retaining only the two generated font assets"
 status = "done"
@@ -256,6 +262,19 @@ visually confirmed to show the camera and status strip with normal color and no
 tearing or corruption. This closes the display cleanup; it does not replace the
 broader TEST/RACE, actuator, encoder, fault, and timing bench regression.
 
+The simplified VISION page was completed and physically checked on 2026-08-26.
+`test_mode.c` now contains only the automatic TEST-jumper dispatcher, while
+CAMERA / IO, VISION, and MOTORS have focused app modules. Clean CMake and fresh
+MCUXpresso builds included all 84 C sources with zero warnings, the source-list
+drift check passed, and the focused native contract suite passed 22 tests. The
+357092-byte competition image was ROM-HID flashed with full readback (SHA-256
+`8DFA37F2D005B89A0C914F107176D0B0B205E1AED78FA9D176887EE76421D7A8`), rebooted
+on COM22, and produced live camera frames with motors disabled. On the physical
+VISION page, the organizer confirmed that Alpha moves the yellow scan-row marker
+and that the cyan full-width luma waveform renders correctly over the live image.
+Car-dependent actuator, encoder, and driving checks remain deferred because only
+the board is available in the hotel room.
+
 ## Intended TEST lab
 
 Installing the TEST jumper enters a framework-owned three-page lab. Left and right
@@ -267,29 +286,13 @@ button release events move one page at a time and wrap across:
    framework-owned status strip: mode/page first, then spaced A/B/G/BAT groups;
    it does not draw diagnostics over the 200-row camera image. Motors are prohibited regardless of
    participant callback behavior.
-2. VISION (`TEST_VISION` internally) combines line, edge, color, pixel drawing, fixed-font text, and
-   student algorithm experimentation in one motor-prohibited page. Its reference
-   algorithm converts one Alpha-selected row to luma, applies a cheap one-dimensional
-   Sobel-style gradient, uses Beta for the edge threshold and Gamma for a one-to-four
-   pixel gradient radius, collapses each contiguous response to its magnitude-weighted center,
-   marks falling and rising edges in different colors, and publishes the total edge
-   count. It deliberately retains edges from other lanes or objects and does not pair,
-   select, center, steer from, or otherwise turn them into a race solution. The same
-   Y/HSV feature array supports a second classification stage: low HSV value identifies
-   black, while high luma plus low saturation identifies white. A four-pixel region vote
-   validates black/white transitions around each gradient candidate. Unclassified luma edges
-   remain unmarked; long red/green marks show only validated transitions. Alpha selects the
-   row, Beta adjusts brightness strictness, and Gamma adjusts
-   the saturation allowed for white. Before detection, an in-place symmetric `1, 2, 1`
-   filter smooths Y, S, and V without shifting edge locations or allocating another row;
-   circular hue is copied rather than averaged. All LCD reference marks are at least two pixels wide.
-   Its second status row reports `ALGO x.xms / 41ms FRAME`; it does not add
-   explanatory text over the image.
-   Native classification, region-vote, boundary, and drawing-contract tests pass. The
-   competition image was ROM-HID flashed with full readback on 2026-08-25 (SHA-256
-   `ADD94D24EDB3E3E8FAF0BE5833C759181B305ED25A8AC3173143B1DCC4978B36`), rebooted
-   on COM22, and completed a clean camera/telemetry probe with motors disabled. Visual
-   threshold tuning on the physical VISION page remains part of the bench regression.
+2. VISION (`TEST_VISION` internally) is a deliberately simple motor-prohibited
+   starting point. Alpha selects one camera row, a two-pixel yellow marker shows
+   that row, and a cyan graph plots its luma across the full 320x200 live image.
+   Dark maps to the bottom of the plot and bright maps to the top. The page also
+   publishes the selected row and luma range. It supplies no threshold, edge
+   pairing, lane selection, steering decision, or completed race solution; those
+   are later experiments students can build from the visible signal.
 3. MOTORS (`NXPC_TEST_PAGE_MOTORS` internally) demonstrates alpha as left
    motor, beta as steering, and gamma as right motor. EXE requests arming, all three pots must be centered before
    outputs become live, and framework telemetry plus QDC feedback make commands
@@ -304,10 +307,11 @@ clears the command lease, centers steering, cancels pending arming, and requires
 fresh deliberate arm. The framework owns navigation and output permission; the
 participant callback cannot weaken them.
 
-Use real typed TEST substates for safety, presentation, and telemetry. The
-participant-owned `test_mode.c` callback contains a short read-only dispatcher
-with CAMERA / IO, VISION, and MOTORS handlers so the common input, telemetry,
-graphics, motor, and steering APIs remain visible together. The framework owns
+Use real typed TEST substates for safety, presentation, and telemetry.
+`test_mode.c` contains only the short read-only dispatcher called automatically
+with the TEST jumper installed. CAMERA / IO, VISION, and MOTORS live in
+`camera_test.c`, `vision_test.c`, and `motor_test.c`, keeping each example visible
+without mixing unrelated concepts. The framework owns
 page selection, all status rendering, deliberate arming, the centered-pot
 interlock, TEST duty caps, the motor lease, and safe transitions. Participant
 code can read but cannot select the current page or weaken those gates.
@@ -442,6 +446,6 @@ compile, unit-test, or telemetry-only evidence.
 QDC wheel feedback remains standard in the competition image. Do not add build
 options for ordinary use. Do not supply lane following, PID, active differential,
 or a completed race solution. Keep normal participant edits confined to
-`source/app/test_mode.c` (VISION only) and `source/app/race_mode.c`;
+`source/app/vision_test.c` and `source/app/race_mode.c`;
 framework-owned safety, CAMERA / IO, MOTORS, navigation, and protected telemetry
 must not depend on participant callbacks.

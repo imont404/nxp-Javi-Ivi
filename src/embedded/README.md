@@ -17,11 +17,12 @@ falls back to J-Link Commander when ROM flashing is unavailable. `-Backend Rom`
 and `-Backend JLink` force one command-line path. Scripts under `tools` contain
 maintainer-only RTT, metadata-drift, MCUXpresso, and diagnostic helpers.
 
-Students normally work in `nxp_cup_core0\source\app\test_mode.c` and
-`race_mode.c`. TEST mode calls one of three plainly named handlers in
-`test_mode.c`: CAMERA / IO demonstrates inputs and telemetry, VISION is the
-camera-processing sandbox, and MOTORS demonstrates the public motor and steering
-API. Navigation and all motion-safety gates remain framework-owned.
+Students normally work in `nxp_cup_core0\source\app\vision_test.c` and
+`race_mode.c`. `test_mode.c` is a short automatic dispatcher used while the TEST
+jumper is installed. Its page implementations are separate: CAMERA / IO
+demonstrates inputs and telemetry, VISION is the camera-processing sandbox, and
+MOTORS demonstrates the public motor and steering API. Navigation and all
+motion-safety gates remain framework-owned.
 
 Additional student modules are just another `.c`/`.h` pair placed directly in
 `nxp_cup_core0\source\app`. The normal CMake build automatically compiles every
