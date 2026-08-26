@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXP Cup - Building the Code</title>
+<link rel="stylesheet" href="nxp_cup.css">
+</head>
+<body>
+
+<h1>NXP Cup &ndash; Building the Code</h1>
+
+<p>This is the simple, normal path to build, program, and run the competition
+firmware on the FRDM-MCXN947. Type every command in a PowerShell tab in Windows
+Terminal, from the repository root&mdash;the folder containing
+<code>setup.ps1</code>. On a new computer, complete the
+<a href="setup.html">Windows setup guide</a> first.</p>
+
+<div class="note">
+<strong>Designed for a fast development loop.</strong> This is a modern
+command-line CMake and Ninja build. CMake keeps the build configuration
+repeatable, and Ninja recompiles only what changed. The focused terminal output
+is also easy to share with an AI or LLM when asking for help understanding a
+compiler error or troubleshooting a failed build. Review suggested changes and
+never share passwords, access tokens, or other private information.
+</div>
+
+<div class="warn">
+<strong>Keep the car safe.</strong> Lift the driven wheels clear of the table or
+disconnect motor power before building and programming new code.
+</div>
+
+<h2>1. Open the project</h2>
+
+<p>Open the repository folder in Windows Terminal, make sure the tab says
+<strong>PowerShell</strong>, and open the entire folder in Visual Studio Code:</p>
+
+<pre>code .</pre>
+
+<h2>2. Verify the tools</h2>
+
+<p>Run setup once on a new computer. It is safe to run again; verified tools are
+reused.</p>
+
+<pre>.\setup.ps1</pre>
+
+<p>Continue when the terminal shows <strong>Setup Complete</strong>.</p>
+
+<!-- Screenshot slot: successful setup.ps1 run. -->
+
+<h2>3. Build the firmware</h2>
+
+<pre>.\src\embedded\build.ps1</pre>
+
+<p>A successful build creates:</p>
+
+<pre>out\artifacts\embedded\nxp_cup_core0.bin
+out\artifacts\embedded\nxp_cup_core0.axf</pre>
+
+<p>The BIN file is the normal ROM-HID programming image. Fix any build error
+before continuing. Later builds are normally faster because Ninja rebuilds only
+the files affected by your edits.</p>
+
+<!-- Screenshot slot: successful build.ps1 run. -->
+
+<h2>4. Connect the board through J11</h2>
+
+<figure>
+<a href="assets/FRDM-MCXN947--PROGRAMMING.jpg"><img
+src="assets/FRDM-MCXN947--PROGRAMMING.jpg" width="1280" height="720"
+alt="Annotated FRDM-MCXN947 board showing J11 high-speed USB for normal programming and camera preview, optional J17 J-Link debug, SW1 reset, and SW3 ISP recovery"></a>
+<figcaption>Connect the PC to <strong>J11</strong> with a USB data cable. J17 is
+an optional J-Link debug connection and is not part of the normal student
+path.</figcaption>
+</figure>
+
+<ol>
+<li>Connect one FRDM-MCXN947 to the PC through J11.</li>
+<li>Wait a few seconds for Windows to detect it.</li>
+<li>Close the viewer or any serial terminal already using the board.</li>
+</ol>
+
+<h2>5. Flash from Windows Terminal</h2>
+
+<pre>.\src\embedded\flash.ps1</pre>
+
+<p>This command uses the installed <code>nxpc_tool.exe</code> host tool. It asks
+the running firmware to enter ROM-HID safely, validates the BIN file, erases,
+writes, verifies, resets, and waits for the application to reconnect. Do not
+unplug the USB cable while programming is in progress.</p>
+
+<p>The happy path finishes with <code>program=ok</code>. J-Link is not required.</p>
+
+<!-- Screenshot slot: successful flash.ps1 and nxpc_tool programming run. -->
+
+<h2>6. Open the viewer</h2>
+
+<pre>.\out\artifacts\host\nxpc_viewer.exe</pre>
+
+<p>The viewer shows camera frames and telemetry after the board reconnects.</p>
+
+<h3>Program from the host viewer</h3>
+
+<p>The viewer can also program the board:</p>
+
+<ol>
+<li>Build the firmware first.</li>
+<li>Confirm that the <strong>Program firmware</strong> panel shows
+<code>out\artifacts\embedded\nxp_cup_core0.bin</code>.</li>
+<li>Click <strong>Program and reconnect</strong>.</li>
+<li>Wait for <strong>Programming complete; preview reconnected</strong>.</li>
+</ol>
+
+<p>Use either the viewer button or <code>flash.ps1</code> for a programming run,
+not both at the same time.</p>
+
+<!-- Screenshot slot: host viewer Program firmware panel and successful reconnect. -->
+
+<h2>Normal edit, build, and flash loop</h2>
+
+<pre># Edit test_mode.c or race_mode.c in Visual Studio Code
+.\src\embedded\build.ps1
+.\src\embedded\flash.ps1</pre>
+
+<p>If the happy path fails, use the
+<a href="setup.html">setup and troubleshooting guide</a> for permissions,
+connection checks, and physical ROM recovery.</p>
+
+</body>
+</html>

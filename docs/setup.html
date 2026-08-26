@@ -11,8 +11,8 @@
 <h1>NXP Cup &ndash; Student Setup</h1>
 
 <p>This is the authoritative Windows setup, build, flash, and viewer guide.
-Run every command below from the repository root&mdash;the folder containing
-<code>setup.ps1</code>.</p>
+Type every command below in a <strong>PowerShell tab in Windows Terminal</strong>,
+from the repository root&mdash;the folder containing <code>setup.ps1</code>.</p>
 
 <div class="warn">
 <strong>Keep the car safe while setting up.</strong> Lift the driven wheels clear
@@ -20,16 +20,47 @@ of the table or disconnect motor power. The framework owns safety stops, but new
 code should never get its first test with the car free to move.
 </div>
 
+<div class="note">
+<strong>AI assistance is permitted for setup.</strong> Students may use an AI or
+LLM to help understand these instructions and troubleshoot installation issues.
+Do not share passwords, access tokens, or other private information, and do not
+use AI instructions to disable Windows security or bypass device controls.
+</div>
+
 <h2>1. Before you start</h2>
 
 <ul>
 <li>Use 64-bit Windows 10 or 11.</li>
+<li>These instructions assume a personal laptop where you can install applications.</li>
 <li>Keep at least 2&nbsp;GB of disk space free.</li>
-<li>Use Windows PowerShell in a normal, non-administrator terminal.</li>
+<li>Open Windows Terminal and select PowerShell. A normal, non-administrator window is correct.</li>
 <li>Have internet access for the first setup, unless your instructor supplied
 the offline archives.</li>
 <li>Use a USB cable that carries data, not a charge-only cable.</li>
 </ul>
+
+<h3>Install Visual Studio Code</h3>
+
+<p>Download and run Microsoft's <a href="https://code.visualstudio.com/docs/setup/windows">Visual Studio Code User Installer for Windows</a>.
+The User Installer is the normal choice and does not require administrator
+access. After installation, close and reopen Windows Terminal so it can find
+the new <code>code</code> command.</p>
+
+<h3>Open the repository</h3>
+
+<p>In File Explorer, open the repository folder, right-click its background,
+and choose <strong>Open in Terminal</strong>. If that menu is unavailable, open
+Windows Terminal, select PowerShell, and use <code>cd</code> to enter the folder.
+Do not type the prompt itself&mdash;only the commands shown in the boxes below.</p>
+
+<p>From that PowerShell tab, open the entire repository in Visual Studio Code:</p>
+
+<pre>code .</pre>
+
+<p>Accept the repository's recommended C/C++ and CMake extensions when VS Code
+offers them. If <code>code</code> is not recognized after reopening Terminal, use
+<strong>File &gt; Open Folder</strong> in VS Code instead. VS Code is the editor;
+continue to run setup, build, and flash commands in the PowerShell terminal.</p>
 
 <h3>PowerShell permission</h3>
 
@@ -46,27 +77,22 @@ current PowerShell window:</p>
 <div class="note">
 <strong>This is temporary.</strong> It does not require administrator access and
 ends when that PowerShell window closes. Do not change the machine-wide policy
-to <code>Unrestricted</code>. If school Group Policy or application control still
-blocks the script, stop and ask the instructor or IT staff rather than trying to
-bypass the managed policy.
+to <code>Unrestricted</code>. In the unusual case that a school or employer manages
+the laptop and its policy still blocks the script, stop and ask the instructor
+or IT staff rather than trying to bypass that policy.
 </div>
 
 <p><code>winget</code> may show a normal Windows installer or UAC prompt for CMake
-or Ninja. On a managed laptop, winget may be disabled entirely; see
-<em>Permissions and managed laptops</em> below.</p>
+or Ninja. If Windows blocks an installation, see <em>Permissions and security
+software</em> below.</p>
 
 <h2>2. Run setup</h2>
 
 <pre>.\setup.ps1</pre>
 
-<p>The first run installs and verifies:</p>
-
-<table>
-<tr><th>Item</th><th>Purpose</th><th>Location</th></tr>
-<tr><td>Arm GNU Toolchain 14.2.Rel1</td><td>Build the MCXN947 firmware</td><td><code>out\toolchains</code></td></tr>
-<tr><td>CMake and Ninja</td><td>Configure and run the firmware build</td><td>Installed through winget if missing</td></tr>
-<tr><td>Core tools 1.0.0</td><td>Viewer, command-line tool, and ROM-HID programmer</td><td><code>out\artifacts\host</code></td></tr>
-</table>
+<p>The first run installs and verifies the compiler, build system, viewer, and
+programming tools. The complete <a href="#installed-tools">installed tools
+summary</a> is at the end of this guide.</p>
 
 <p>The Arm download is 305&nbsp;MB and extracts to about 1.2&nbsp;GB. Setup shows
 download and extraction progress. Verified downloads are retained under
@@ -104,6 +130,15 @@ one clean build:</p>
 <pre>.\src\embedded\build.ps1 -Clean</pre>
 
 <h2>4. Connect and flash through J11</h2>
+
+<figure>
+<a href="assets/FRDM-MCXN947--PROGRAMMING.jpg"><img
+src="assets/FRDM-MCXN947--PROGRAMMING.jpg" width="1280" height="720"
+alt="Annotated FRDM-MCXN947 board showing the J11 high-speed USB connection for normal programming and camera preview, optional J17 J-Link debug connection, SW1 reset button, and SW3 ISP recovery button"></a>
+<figcaption>Use J11 for the normal programming and camera-preview path. J17 is
+the optional J-Link debug connection; students normally do not use it. SW1 and
+SW3 are identified here for the recovery sequence below.</figcaption>
+</figure>
 
 <ol>
 <li>Connect the FRDM-MCXN947 <strong>J11</strong> USB port to the PC with a data cable.</li>
@@ -154,14 +189,15 @@ the extras rather than guessing which one will be programmed.</p>
 
 <h2>Potential problems</h2>
 
-<h3>Permissions and managed laptops</h3>
+<h3>Permissions and security software</h3>
 
 <ul>
 <li><strong>Scripts are disabled:</strong> use the process-only execution-policy
 command in step 1.</li>
 <li><strong>Group Policy, AppLocker, or antivirus blocks the script or downloaded
-executables:</strong> ask the instructor or IT staff to approve this repository
-and its pinned vendor tools. Do not disable organization security controls.</li>
+executables:</strong> first confirm that the repository and tools came from the
+official course links. If the laptop is managed, ask the instructor or IT staff
+to approve them. Do not disable security controls.</li>
 <li><strong>winget is missing or blocked:</strong> CMake and Ninja must be installed
 by IT or the instructor. Rerun setup afterward; it will verify both commands.</li>
 <li><strong>UAC appears:</strong> confirm that the prompt names the expected CMake
@@ -209,9 +245,37 @@ incomplete candidate.</p>
 <p>The same checksum and package validation applies offline. CMake and Ninja must
 already be installed when winget cannot reach its sources.</p>
 
+<h2 id="installed-tools">Installed tools summary</h2>
+
+<p>Visual Studio Code is installed manually in step 1; <code>setup.ps1</code>
+does not install or update the editor. The normal student setup provides:</p>
+
+<table>
+<tr><th>Tool</th><th>How it is provided</th><th>Purpose and location</th></tr>
+<tr><td>Arm GNU Toolchain 14.2.Rel1</td><td>Pinned, downloaded, and verified by setup</td><td>Builds MCXN947 firmware under <code>out\toolchains</code></td></tr>
+<tr><td>CMake</td><td>Installed through winget if <code>cmake</code> is missing</td><td>Configures the firmware build; installed in Windows</td></tr>
+<tr><td>Ninja</td><td>Installed through winget if <code>ninja</code> is missing</td><td>Runs the firmware build; installed in Windows</td></tr>
+<tr><td>Core tools 1.0.0</td><td>Pinned, downloaded, and verified by setup</td><td>Viewer, diagnostics, and ROM-HID programming under <code>out\artifacts\host</code></td></tr>
+</table>
+
+<p>The core-tools folder contains:</p>
+
+<ul>
+<li><code>nxpc_viewer.exe</code> &mdash; camera, telemetry, and firmware viewer</li>
+<li><code>nxpc_tool.exe</code> &mdash; command-line device checks and programming</li>
+<li><code>rblhost.exe</code> &mdash; pinned NXP ROM-HID programmer used by both tools</li>
+<li><code>SDL2.dll</code>, the package manifest, documentation, and license notices</li>
+</ul>
+
+<p><code>-IncludeMaintainerTools</code> additionally asks winget for
+<code>uv</code> and LLVM-MinGW. It does not install Rust, Cargo, Visual Studio,
+MCUXpresso, Ozone, or J-Link. Ordinary students do not need those maintainer
+tools.</p>
+
 <h2>Where to go next</h2>
 
 <ul>
+<li><a href="building-the-code.html">Building the Code &mdash; happy-path workflow</a></li>
 <li><a href="../README.md">Repository overview</a></li>
 <li><a href="../src/README.md">Source component map</a></li>
 <li><a href="../src/embedded/README.md">Embedded component details</a></li>

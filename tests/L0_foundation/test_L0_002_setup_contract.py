@@ -9,6 +9,7 @@ REPO = Path(__file__).resolve().parents[2]
 SETUP_SCRIPT = REPO / "setup.ps1"
 SETUP_VERSIONS = REPO / "setup.versions.json"
 SETUP_GUIDE = REPO / "docs/setup.html"
+BUILDING_GUIDE = REPO / "docs/building-the-code.html"
 ROOT_README = REPO / "README.md"
 SRC_README = REPO / "src/README.md"
 PRESETS = REPO / "src/embedded/CMakePresets.json"
@@ -67,6 +68,7 @@ def test_root_readme_routes_students_to_the_authoritative_setup_guide():
     readme = ROOT_README.read_text(encoding="utf-8")
     assert "## Start here" in readme
     assert "[Windows setup guide](docs/setup.html)" in readme
+    assert "[Building the Code](docs/building-the-code.html)" in readme
     assert "authoritative" in readme
 
 
@@ -102,7 +104,7 @@ def test_student_setup_guide_covers_bounded_permission_and_recovery_help():
     guide = SETUP_GUIDE.read_text(encoding="utf-8")
     for expected in (
         "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass",
-        "normal, non-administrator terminal",
+        "normal, non-administrator window",
         "Group Policy",
         "AppLocker",
         "winget is missing or blocked",
@@ -116,13 +118,100 @@ def test_student_setup_guide_covers_bounded_permission_and_recovery_help():
     assert "-ExecutionPolicy Unrestricted" not in guide
 
 
+def test_student_setup_guide_opens_the_repository_in_vscode():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    assert "PowerShell tab in Windows Terminal" in guide
+    assert "https://code.visualstudio.com/docs/setup/windows" in guide
+    assert "Visual Studio Code User Installer for Windows" in guide
+    assert "does not require administrator access" in guide
+    assert "<pre>code .</pre>" in guide
+    assert "File &gt; Open Folder" in guide
+
+
+def test_student_setup_guide_permits_bounded_ai_setup_help():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    assert "AI assistance is permitted for setup" in guide
+    assert "understand these instructions" in guide
+    assert "troubleshoot installation issues" in guide
+    assert "Do not share passwords, access tokens" in guide
+    assert "do not" in guide and "disable Windows security or bypass device controls" in guide
+
+
+def test_student_setup_guide_assumes_a_personal_laptop():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    assert "assume a personal laptop" in guide
+    assert "unusual case that a school or employer manages" in guide
+
+
+def test_student_setup_guide_has_a_complete_tool_summary():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    assert '<h2 id="installed-tools">Installed tools summary</h2>' in guide
+    for expected in (
+        "Visual Studio Code is installed manually",
+        "Arm GNU Toolchain 14.2.Rel1",
+        "CMake",
+        "Ninja",
+        "Core tools 1.0.0",
+        "nxpc_viewer.exe",
+        "nxpc_tool.exe",
+        "rblhost.exe",
+        "SDL2.dll",
+        "uv",
+        "LLVM-MinGW",
+        "It does not install Rust, Cargo",
+    ):
+        assert expected in guide
+
+
 def test_student_setup_guide_local_links_resolve():
     guide = SETUP_GUIDE.read_text(encoding="utf-8")
     assert '<meta name="viewport"' in guide
-    for href in re.findall(r'href="([^"]+)"', guide):
-        if "://" in href or href.startswith("#"):
+    for target in re.findall(r'(?:href|src)="([^"]+)"', guide):
+        if "://" in target or target.startswith("#"):
             continue
-        assert (SETUP_GUIDE.parent / href).resolve().is_file(), href
+        assert (SETUP_GUIDE.parent / target).resolve().is_file(), target
+
+
+def test_student_setup_guide_shows_the_programming_connections():
+    guide = SETUP_GUIDE.read_text(encoding="utf-8")
+    assert guide.count('assets/FRDM-MCXN947--PROGRAMMING.jpg') == 2
+    assert "J11 high-speed USB connection for normal programming" in guide
+    assert "optional J17 J-Link debug connection" in guide
+    assert "SW1 reset button" in guide
+    assert "SW3 ISP recovery button" in guide
+
+
+def test_building_guide_covers_the_happy_build_and_flash_path():
+    assert BUILDING_GUIDE.is_file(), "docs/building-the-code.html is missing"
+    guide = BUILDING_GUIDE.read_text(encoding="utf-8")
+    for expected in (
+        "command-line CMake and Ninja build",
+        "Ninja recompiles only what changed",
+        "AI or LLM",
+        "code .",
+        ".\\setup.ps1",
+        ".\\src\\embedded\\build.ps1",
+        ".\\src\\embedded\\flash.ps1",
+        ".\\out\\artifacts\\host\\nxpc_viewer.exe",
+        "out\\artifacts\\embedded\\nxp_cup_core0.bin",
+        "program=ok",
+        "Program from the host viewer",
+        "Program and reconnect",
+        "Programming complete; preview reconnected",
+        "J-Link is not required",
+    ):
+        assert expected in guide
+
+
+def test_building_guide_uses_the_annotated_j11_image_and_local_resources():
+    guide = BUILDING_GUIDE.read_text(encoding="utf-8")
+    assert guide.count('assets/FRDM-MCXN947--PROGRAMMING.jpg') == 2
+    assert "Connect the PC to <strong>J11</strong>" in guide
+    for target in re.findall(r'(?:href|src)="([^"]+)"', guide):
+        if "://" in target or target.startswith("#"):
+            continue
+        local_target = target.split("#", 1)[0]
+        assert (BUILDING_GUIDE.parent / local_target).resolve().is_file(), target
 
 
 def test_setup_script_does_not_persist_environment():

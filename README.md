@@ -1,4 +1,4 @@
-# Wavenumber NXP Cup
+# NXP Cup
 
 This repository contains the organizer-supplied NXP Cup platform used at FIT:
 MCXN947 firmware, Windows/browser host tools, an Android telemetry relay, shared
@@ -8,12 +8,17 @@ libraries, tests, and teaching material.
 
 Students: open the **[Windows setup guide](docs/setup.html)** after downloading
 or cloning the repository. It is the authoritative guide for PowerShell
-permissions, managed laptops, setup, building, ROM-HID flashing through J11,
-the viewer, physical recovery, and offline archives.
+permissions, setup on a personal laptop, building, ROM-HID flashing through
+J11, the viewer, physical recovery, and offline archives.
 
-The normal path, run from a PowerShell terminal at the repository root, is:
+After setup, use **[Building the Code](docs/building-the-code.html)** for the
+short, repeatable edit, build, flash, and viewer workflow.
+
+The normal path, run from a PowerShell tab in **Windows Terminal** at the
+repository root, is:
 
 ```powershell
+code .
 .\setup.ps1
 .\src\embedded\build.ps1
 .\src\embedded\flash.ps1
