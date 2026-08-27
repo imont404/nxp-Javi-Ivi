@@ -8,9 +8,9 @@
 #define BASE_SPEED 0.2f
 #define KP_HIGH 2.0f  /* abs_error > 0.5 */
 #define KP_MID  1.9f  /* abs_error > 0.2 */
-#define KP_LOW  1.6f  /* abs_error <= 0.2 */
+#define KP_LOW  1.7f  /* abs_error <= 0.2 */
 #define KD_TURN 0.0f
-#define DIFF_GAIN 2.0f  /* empezar aca, ajustar */
+#define DIFF_GAIN 1.7f  /* empezar aca, ajustar */
 
 bool white_center(const color_features_t *scaneline,
                 uint16_t width,

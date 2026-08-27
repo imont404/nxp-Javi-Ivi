@@ -66,22 +66,11 @@ static bool combines_error(int32_t center_near, bool found_near,
 
 void race_mode_on_frame(uint16_t *frame)
 {
-    /*
-     * Build one bounded frame-to-control pass here:
-     *
-     * 1. Choose one or more rows with camera_row().
-     * 2. Inspect RGB565 pixels or convert them with the color helpers.
-     * 3. Apply your own analysis and vehicle-control decision.
-     * 4. Command steering_set() and motors_set_duty().
-     * 5. Publish a few useful values with the telemetry helpers.
-     *
-     * Return promptly. Each accepted motors_set_duty() call renews the 100 ms
-     * dead-man lease; the framework stops the car if repeated callbacks exceed
-     * the 41 ms frame budget. The starter intentionally supplies no driving
-     * decision.
-     */
-    
-    uint32_t row_base = (CAMERA_HEIGHT / 2U) + 8;
+    static float last_error = 0.0f;
+    static uint32_t lost_frames = 0;
+    const uint32_t MAX_LOST_FRAMES = 15U;
+
+    uint32_t row_base = (CAMERA_HEIGHT / 2U) + 10U;
     uint32_t row_near = row_base;
     uint32_t row_mid = row_base - 25U;
     uint32_t row_far = row_base - 50U;
@@ -101,22 +90,30 @@ void race_mode_on_frame(uint16_t *frame)
                                  center_mid, found_mid,
                                  center_far, found_far,
                                  &error);
-    
-        if (!have_error)
-    {
-        /* Ninguna fila vio pista: por ahora, frenar en vez de adivinar.
-         * Mas adelante se puede reemplazar por "mantener el ultimo error
-         * conocido" para buscar la pista en vez de detenerse en seco. */
-        motors_set_duty(0.0f, 0.0f);
-        steering_set(0.0f);
 
-        (void)telemetry_i32("vision.center_near", -1, "pixel");
-        (void)telemetry_i32("vision.center_mid", -1, "pixel");
-        (void)telemetry_i32("vision.center_far", -1, "pixel");
-        (void)telemetry_f32("control.error", 0.0f, "ratio");
+    if (!have_error)
+    {
+        lost_frames++;
+
+        if (lost_frames <= MAX_LOST_FRAMES)
+        {
+            /* Seguir girando con el ultimo error conocido en vez de enderezar */
+            pd_control(last_error);
+        }
+        else
+        {
+            motors_set_duty(0.0f, 0.0f);
+            steering_set(0.0f);
+        }
+
+        (void)telemetry_f32("control.error", last_error, "ratio");
+        (void)telemetry_u32("control.lost_frames", lost_frames, "frames");
         return;
     }
-    
+
+    lost_frames = 0;
+    last_error = error;
+
     if (found_near) { draw_filled_circle(frame, center_near, (int32_t)row_near, 4, center_color); }
     if (found_mid) { draw_filled_circle(frame, center_mid, (int32_t)row_mid, 4, center_color); }
     if (found_far) { draw_filled_circle(frame, center_far, (int32_t)row_far, 4, center_color); }
@@ -127,4 +124,5 @@ void race_mode_on_frame(uint16_t *frame)
     (void)telemetry_i32("vision.center_mid", found_mid ? center_mid : -1, "pixel");
     (void)telemetry_i32("vision.center_far", found_far ? center_far : -1, "pixel");
     (void)telemetry_f32("control.error", error, "ratio");
+    (void)telemetry_u32("control.lost_frames", lost_frames, "frames");
 }
