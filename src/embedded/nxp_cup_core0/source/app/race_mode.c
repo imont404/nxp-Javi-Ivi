@@ -25,7 +25,7 @@ static bool scan_row_center(uint16_t *frame, uint32_t row, int32_t *center) {
         
         
     }
-    threshold = (uint8_t)(luma_min + (((uint32_t)luma_max - luma_min) * 3U) / 4U);
+    threshold = (uint8_t)(luma_min + (((uint32_t)luma_max - luma_min) * 8U) / 10U);
     return white_center(scanline, CAMERA_WIDTH, threshold, center, &left_edge, &right_edge, &track_width);
 
 }
@@ -81,11 +81,11 @@ void race_mode_on_frame(uint16_t *frame)
      * decision.
      */
     
-    uint32_t row_base = CAMERA_HEIGHT / 2U;
+    uint32_t row_base = (CAMERA_HEIGHT / 2U) + 8;
     uint32_t row_near = row_base;
     uint32_t row_mid = row_base - 25U;
     uint32_t row_far = row_base - 50U;
-    
+
     int32_t center_near, center_mid, center_far;
     bool found_near, found_mid, found_far;
     float error;

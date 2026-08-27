@@ -6,10 +6,11 @@
 
 
 #define BASE_SPEED 0.2f
-#define KP_HIGH 1.8f  /* abs_error > 0.5 */
-#define KP_MID  1.2f  /* abs_error > 0.2 */
-#define KP_LOW  1.0f  /* abs_error <= 0.2 */
-#define KD_TURN 1.0f
+#define KP_HIGH 2.0f  /* abs_error > 0.5 */
+#define KP_MID  1.9f  /* abs_error > 0.2 */
+#define KP_LOW  1.6f  /* abs_error <= 0.2 */
+#define KD_TURN 0.0f
+#define DIFF_GAIN 2.0f  /* empezar aca, ajustar */
 
 bool white_center(const color_features_t *scaneline,
                 uint16_t width,
@@ -93,11 +94,11 @@ void pd_control(float error)
     float left_pwm;
     float right_pwm;
 
-    if (abs_error > 0.5f)
+    if (abs_error > 0.35f)
     {
         kp_turn = KP_HIGH;
     }
-    else if (abs_error > 0.2f)
+    else if (abs_error > 0.15f)
     {
         kp_turn = KP_MID;
     }
@@ -109,15 +110,15 @@ void pd_control(float error)
     deriv = error - p_error;
     p_error = error;
 
-    turn = -kp_turn * error - KD_TURN * deriv - 0.1f;
+    turn = -kp_turn * error - KD_TURN * deriv;
 
     if (turn > 1.0f) { turn = 1.0f; }
     if (turn < -1.0f) { turn = -1.0f; }
 
     steering_set(turn);
 
-    left_pwm = input_alpha() + turn + 0.1f;
-    right_pwm = input_alpha() - turn - 0.1f;
+    left_pwm = input_alpha() + (DIFF_GAIN * turn) + 0.1f;
+    right_pwm = input_alpha() - (DIFF_GAIN * turn) - 0.1f;
 
     left_pwm = (left_pwm > 1.0f) ? 1.0f : ((left_pwm < 0.0f) ? 0.0f : left_pwm);
     right_pwm = (right_pwm > 1.0f) ? 1.0f : ((right_pwm < 0.0f) ? 0.0f : right_pwm);
