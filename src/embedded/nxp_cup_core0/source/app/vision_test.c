@@ -46,14 +46,14 @@ void vision_test_on_frame(uint16_t *frame)
     bool found1, found2, found3;
 
     uint16_t scan_color = color_rgb565(255U, 255U, 0U);
-
-    draw_scanline_marker(frame, row_1, scan_color);
-    draw_scanline_marker(frame, row_2, scan_color);
-    draw_scanline_marker(frame, row_3, scan_color);
-
+    
     found1 = scan_row_center(frame, row_1, &center1, &left1, &right1);
     found2 = scan_row_center(frame, row_2, &center2, &left2, &right2);
     found3 = scan_row_center(frame, row_3, &center3, &left3, &right3);
+    
+    draw_scanline_marker(frame, row_1, scan_color);
+    draw_scanline_marker(frame, row_2, scan_color);
+    draw_scanline_marker(frame, row_3, scan_color);
 
     if (found1)
     {
