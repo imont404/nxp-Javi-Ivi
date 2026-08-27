@@ -9,7 +9,7 @@
 #define KP_HIGH 1.8f  /* abs_error > 0.5 */
 #define KP_MID  1.2f  /* abs_error > 0.2 */
 #define KP_LOW  1.0f  /* abs_error <= 0.2 */
-#define KD_TURN 0.0f
+#define KD_TURN 1.0f
 
 bool white_center(const color_features_t *scaneline,
                 uint16_t width,
