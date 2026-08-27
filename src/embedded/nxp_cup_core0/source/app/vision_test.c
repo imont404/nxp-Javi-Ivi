@@ -36,9 +36,9 @@ static void draw_scanline_marker(uint16_t *frame, uint32_t row, uint16_t color)
 void vision_test_on_frame(uint16_t *frame)
 {
     /* Las 3 filas ahora agrupadas cerca del centro, separadas 15px entre si */
-    uint32_t row_2 = CAMERA_HEIGHT / 2U;       /* la del medio: sigue siendo el "centro" */
-    uint32_t row_1 = row_2 - 15U;
-    uint32_t row_3 = row_2 + 15U;
+    uint32_t row_1 = CAMERA_HEIGHT / 2U;       /* fila de referencia: centro de la camara */
+    uint32_t row_2 = row_1 - 50U;              /* depende de row_1 */
+    uint32_t row_3 = row_1 - 25U;              /* depende de row_1 */
 
     int32_t center1, left1, right1;
     int32_t center2, left2, right2;
