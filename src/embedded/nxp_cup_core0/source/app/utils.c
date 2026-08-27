@@ -116,8 +116,8 @@ void pd_control(float error)
 
     steering_set(turn);
 
-    left_pwm = BASE_SPEED + turn + 0.1f;
-    right_pwm = BASE_SPEED - turn - 0.1f;
+    left_pwm = input_alpha() + turn + 0.1f;
+    right_pwm = input_alpha() - turn - 0.1f;
 
     left_pwm = (left_pwm > 1.0f) ? 1.0f : ((left_pwm < 0.0f) ? 0.0f : left_pwm);
     right_pwm = (right_pwm > 1.0f) ? 1.0f : ((right_pwm < 0.0f) ? 0.0f : right_pwm);
