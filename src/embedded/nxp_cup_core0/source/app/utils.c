@@ -5,12 +5,9 @@
 #include <math.h>
 
 
-#define BASE_SPEED 0.2f
-#define KP_HIGH 2.0f  /* abs_error > 0.5 */
-#define KP_MID  1.9f  /* abs_error > 0.2 */
-#define KP_LOW  1.6f  /* abs_error <= 0.2 */
-#define KD_TURN 0.0f
-#define DIFF_GAIN 2.0f  /* empezar aca, ajustar */
+static float kd_turn = 1.2f;
+static float p_error = 0.0f;
+
 
 bool white_center(const color_features_t *scaneline,
                 uint16_t width,
@@ -24,7 +21,7 @@ bool white_center(const color_features_t *scaneline,
     int count = 0;
     int first = -1;
     int last = -1;
-    
+
     /* Escanear linea para pixeles blancos */
     for(int x=0; x<width; x++){
         // Detectar primer pixel blanco
@@ -34,7 +31,7 @@ bool white_center(const color_features_t *scaneline,
             }
             last = x;
             sum+=x;
-            count++;  
+            count++;
         }
 
     }
@@ -42,9 +39,9 @@ bool white_center(const color_features_t *scaneline,
     if (count>0){
         // Centro de masa
         *center = sum/count;
-        // Borde negro izquierda
+        // Primer pixel blanco
         *left_edge = first;
-        // Borde negro derecha
+        // Ultimo pixel blanco
         *right_edge = last;
         // Ancho total de la pista
         *track_width = *right_edge - *left_edge;
@@ -83,45 +80,76 @@ void draw_filled_circle(uint16_t *frame, int32_t cx, int32_t cy, int32_t radius,
     }
 }
 
-void pd_control(float error)
+
+void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t width_px,
+                   bool found1, bool found2, bool found3, bool motors_on)
 {
-    static float p_error = 0.0f;
-
-    float abs_error = fabsf(error);
     float kp_turn;
-    float deriv;
-    float turn;
-    float left_pwm;
-    float right_pwm;
 
-    if (abs_error > 0.35f)
-    {
-        kp_turn = KP_HIGH;
-    }
-    else if (abs_error > 0.15f)
-    {
-        kp_turn = KP_MID;
-    }
-    else
-    {
-        kp_turn = KP_LOW;
+    (void)width_px;
+
+    if (!motors_on){
+        motors_set_duty(0.0f, 0.0f);
+        return;
     }
 
-    deriv = error - p_error;
+    int total_found = (found1 ? 1 : 0) + (found2 ? 1 : 0) + (found3 ? 1 : 0);
+    if(total_found == 0){
+        motors_set_duty(0.0f, 0.0f);
+        return;
+    }
+
+    float center_img = (float)(CAMERA_WIDTH / 2);
+    float error = 0.0f;
+    float weight_sum = 0.0f;
+    float bs = input_alpha()+0.2f;
+
+    if (found1) {
+        float error1 = (center_img - (float)center1) / center_img;
+        error += 0.2f * error1;
+        weight_sum += 0.2f;
+    }
+    if (found2) {
+        float error2 = (center_img - (float)center2) / center_img;
+        error += 0.3f * error2;
+        weight_sum += 0.3f;
+    }
+    if (found3) {
+        float error3 = (center_img - (float)center3) / center_img;
+        error += 0.5f * error3;
+        weight_sum += 0.5f;
+    }
+
+    error /= weight_sum;
+    float abs_error = fabsf(error);
+
+    if (abs_error > 0.5f) {
+        kp_turn = input_gamma() + 1.8f;
+    } else if (abs_error > 0.2f) {
+        kp_turn = input_gamma() + 1.2f;
+    } else {
+        kp_turn = input_gamma() + 1.0f;
+    }
+
+    float deriv = error - p_error;
     p_error = error;
 
-    turn = -kp_turn * error - KD_TURN * deriv;
+    float turn = -kp_turn * error - kd_turn * deriv;
 
-    if (turn > 1.0f) { turn = 1.0f; }
-    if (turn < -1.0f) { turn = -1.0f; }
+    if (turn > 1.0f) turn = 1.0f;
+    if (turn < -1.0f) turn = -1.0f;
 
     steering_set(turn);
 
-    left_pwm = input_alpha() + (DIFF_GAIN * turn) + 0.1f;
-    right_pwm = input_alpha() - (DIFF_GAIN * turn) - 0.1f;
 
-    left_pwm = (left_pwm > 1.0f) ? 1.0f : ((left_pwm < 0.0f) ? 0.0f : left_pwm);
+    float left_pwm = bs + turn + 0.1f;
+    float right_pwm = bs - turn - 0.1f;
+
+    left_pwm  = (left_pwm > 1.0f) ? 1.0f : ((left_pwm < 0.0f) ? 0.0f : left_pwm);
     right_pwm = (right_pwm > 1.0f) ? 1.0f : ((right_pwm < 0.0f) ? 0.0f : right_pwm);
 
     motors_set_duty(left_pwm, right_pwm);
+
+    (void)telemetry_f32("control.error", error, "ratio");
+    (void)telemetry_f32("control.turn", turn, "ratio");
 }

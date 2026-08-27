@@ -1,130 +1,105 @@
 #include "race_mode.h"
 
+#include <stdio.h>
+
 #include "nxp_cup.h"
 #include "utils.h"
 
 
-static color_features_t scanline[CAMERA_WIDTH];
+/* Un buffer por linea procesada, igual que line_hsl / line_hsl2 / line_hsl3 */
+static color_features_t line_hsl[CAMERA_WIDTH];
+static color_features_t line_hsl2[CAMERA_WIDTH];
+static color_features_t line_hsl3[CAMERA_WIDTH];
 
-#define WEIGHT_NEAR 0.2f
-#define WEIGHT_MID  0.3f
-#define WEIGHT_FAR  0.5f
+static bool found1 = false;
+static bool found2 = false;
+static bool found3 = false;
 
+static uint32_t line_to_process1, line_to_process2, line_to_process3;
 
+static char pot_text[64];
 
-static bool scan_row_center(uint16_t *frame, uint32_t row, int32_t *center) {
-    uint8_t luma_min = 255;
-    uint8_t luma_max = 0;
-    uint8_t threshold;
-    int32_t left_edge, right_edge, track_width;
+static void race_mode__update_overlay(uint16_t *frame);
 
-    color_convert_rgb565_to_yhsv(camera_row(frame, row), scanline, CAMERA_WIDTH);
-    for (int x=0; x < CAMERA_WIDTH; x++) {
-        if (scanline[x].y < luma_min) { luma_min = scanline[x].y; }
-        if (scanline[x].y > luma_max) { luma_max = scanline[x].y; }
-        
-        
-    }
-    threshold = (uint8_t)(luma_min + (((uint32_t)luma_max - luma_min) * 8U) / 10U);
-    return white_center(scanline, CAMERA_WIDTH, threshold, center, &left_edge, &right_edge, &track_width);
-
-}
-
-static bool combines_error(int32_t center_near, bool found_near,
-                            int32_t center_mid, bool found_mid,
-                            int32_t center_far, bool found_far,
-                            float *out_error) {
-
-    float center_img = (float)CAMERA_WIDTH/2.0f;
-    float error_sum = 0.0f;
-    float weight_sum = 0.0f;
-
-    if (found_near) {
-        float error_near = (center_img - (float)center_near)/center_img;
-        error_sum += WEIGHT_NEAR*error_near;
-        weight_sum+= WEIGHT_NEAR;
-    } 
-    if (found_mid) {
-        float error_mid = (center_img - (float)center_mid)/center_img;
-        error_sum += WEIGHT_MID*error_mid;
-        weight_sum+= WEIGHT_MID;     
-    }
-    if (found_far) {
-        float error_far = (center_img - (float)center_far)/center_img;
-        error_sum += WEIGHT_FAR*error_far;
-        weight_sum+= WEIGHT_FAR;   
-    }
-
-    if (weight_sum <= 0.0f){
-        *out_error = 0.0f;
-        return false;
-    }
-
-    *out_error = error_sum/weight_sum;
-    return true;
-}
 
 void race_mode_on_frame(uint16_t *frame)
 {
-    /*
-     * Build one bounded frame-to-control pass here:
-     *
-     * 1. Choose one or more rows with camera_row().
-     * 2. Inspect RGB565 pixels or convert them with the color helpers.
-     * 3. Apply your own analysis and vehicle-control decision.
-     * 4. Command steering_set() and motors_set_duty().
-     * 5. Publish a few useful values with the telemetry helpers.
-     *
-     * Return promptly. Each accepted motors_set_duty() call renews the 100 ms
-     * dead-man lease; the framework stops the car if repeated callbacks exceed
-     * the 41 ms frame budget. The starter intentionally supplies no driving
-     * decision.
-     */
-    
-    uint32_t row_base = (CAMERA_HEIGHT / 2U) + 8;
-    uint32_t row_near = row_base;
-    uint32_t row_mid = row_base - 25U;
-    uint32_t row_far = row_base - 50U;
+    /* Seleccion de linea */
+    line_to_process1 = 110U;
+    line_to_process2 = 150U;
+    line_to_process3 = 170U;
 
-    int32_t center_near, center_mid, center_far;
-    bool found_near, found_mid, found_far;
-    float error;
-    bool have_error;
+    /* beta es el umbral de luminancia: 0.0-1.0 del pot escalado al luma 0-255 */
+    uint8_t threshold = (uint8_t)(input_beta() * 255.0f);
 
-    uint16_t center_color = color_rgb565(255U, 0U, 255U);
+    int32_t center1, left, right, width_px;
+    int32_t center2, left2, right2, width_px2;
+    int32_t center3, left3, right3, width_px3;
 
-    found_near = scan_row_center(frame, row_near, &center_near);
-    found_mid = scan_row_center(frame, row_mid, &center_mid);
-    found_far = scan_row_center(frame, row_far, &center_far);
+    color_convert_rgb565_to_yhsv(camera_row(frame, line_to_process1),
+                                 line_hsl,
+                                 CAMERA_WIDTH);
 
-    have_error = combines_error(center_near, found_near,
-                                 center_mid, found_mid,
-                                 center_far, found_far,
-                                 &error);
-    
-        if (!have_error)
+    color_convert_rgb565_to_yhsv(camera_row(frame, line_to_process2),
+                                 line_hsl2,
+                                 CAMERA_WIDTH);
+
+    color_convert_rgb565_to_yhsv(camera_row(frame, line_to_process3),
+                                 line_hsl3,
+                                 CAMERA_WIDTH);
+
+    found1 = white_center(line_hsl,
+                          CAMERA_WIDTH, threshold,
+                          &center1, &left, &right, &width_px);
+    found2 = white_center(line_hsl2,
+                          CAMERA_WIDTH, threshold,
+                          &center2, &left2, &right2, &width_px2);
+    found3 = white_center(line_hsl3,
+                          CAMERA_WIDTH, threshold,
+                          &center3, &left3, &right3, &width_px3);
+
+    if (found1)
     {
-        /* Ninguna fila vio pista: por ahora, frenar en vez de adivinar.
-         * Mas adelante se puede reemplazar por "mantener el ultimo error
-         * conocido" para buscar la pista en vez de detenerse en seco. */
-        motors_set_duty(0.0f, 0.0f);
-        steering_set(0.0f);
-
-        (void)telemetry_i32("vision.center_near", -1, "pixel");
-        (void)telemetry_i32("vision.center_mid", -1, "pixel");
-        (void)telemetry_i32("vision.center_far", -1, "pixel");
-        (void)telemetry_f32("control.error", 0.0f, "ratio");
-        return;
+        draw_filled_circle(frame, center1, (int32_t)line_to_process1, 4, color_rgb565(255U, 0U, 0U));
     }
-    
-    if (found_near) { draw_filled_circle(frame, center_near, (int32_t)row_near, 4, center_color); }
-    if (found_mid) { draw_filled_circle(frame, center_mid, (int32_t)row_mid, 4, center_color); }
-    if (found_far) { draw_filled_circle(frame, center_far, (int32_t)row_far, 4, center_color); }
 
-    pd_control(error);
+    if (found2)
+    {
+        draw_filled_circle(frame, center2, (int32_t)line_to_process2, 4, color_rgb565(255U, 0U, 0U));
+    }
 
-    (void)telemetry_i32("vision.center_near", found_near ? center_near : -1, "pixel");
-    (void)telemetry_i32("vision.center_mid", found_mid ? center_mid : -1, "pixel");
-    (void)telemetry_i32("vision.center_far", found_far ? center_far : -1, "pixel");
-    (void)telemetry_f32("control.error", error, "ratio");
+    if (found3)
+    {
+        draw_filled_circle(frame, center3, (int32_t)line_to_process3, 4, color_rgb565(255U, 0U, 0U));
+    }
+
+    motor_control(center1, center2, center3, width_px, found1, found2, found3, true);
+
+    race_mode__update_overlay(frame);
+
+    (void)telemetry_i32("vision.center1", found1 ? center1 : -1, "pixel");
+    (void)telemetry_i32("vision.center2", found2 ? center2 : -1, "pixel");
+    (void)telemetry_i32("vision.center3", found3 ? center3 : -1, "pixel");
+    (void)telemetry_u32("vision.threshold", threshold, "luma");
+}
+
+
+static void race_mode__update_overlay(uint16_t *frame)
+{
+    uint16_t text_color = color_rgb565(0U, 0xFFU, 0U);
+    uint32_t cpu;
+
+    /* Los pots se muestran en centesimos (50 = 0.50) para no depender de printf-float */
+    snprintf(pot_text, sizeof(pot_text), "a:%d b:%d g:%d",
+             (int)(input_alpha() * 100.0f),
+             (int)(input_beta() * 100.0f),
+             (int)(input_gamma() * 100.0f));
+
+    frame_draw_text(frame, 3, 3, pot_text, text_color);
+
+    cpu = (frame_processing_microseconds() * 100U) / FRAME_BUDGET_MICROSECONDS;
+
+    snprintf(pot_text, sizeof(pot_text), "CPU:%u%%", (unsigned)cpu);
+
+    frame_draw_text(frame, 3, 13, pot_text, color_rgb565(0U, 192U, 0U));
 }
