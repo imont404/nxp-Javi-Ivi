@@ -6,19 +6,21 @@
 #define COIN_SAT_MIN 90U
 
 /* Valor (brillo) minimo: descarta sombras oscuras que tienen hue ruidoso */
-#define COIN_VAL_MIN 60U
+#define COIN_VAL_MIN 30U
 
 /* Ancho minimo en pixeles para no confundir ruido con una moneda */
-#define COIN_MIN_WIDTH 4
+#define COIN_MIN_WIDTH 7
+
+
 
 /* Rangos de hue. El hue del framework es 0-255 (no 0-360).
  * Rojo cruza el wrap-around en 0, por eso son dos rangos. */
 #define HUE_RED_LO_A    0U
-#define HUE_RED_HI_A    15U
-#define HUE_RED_LO_B    240U
+#define HUE_RED_HI_A    20U
+#define HUE_RED_LO_B    235U
 #define HUE_RED_HI_B    255U
-#define HUE_YELLOW_LO   35U
-#define HUE_YELLOW_HI   50U
+#define HUE_YELLOW_LO   30U
+#define HUE_YELLOW_HI   60U
 #define HUE_BLUE_LO     140U
 #define HUE_BLUE_HI     180U
 

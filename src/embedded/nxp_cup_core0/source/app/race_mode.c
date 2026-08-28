@@ -41,14 +41,16 @@ void race_mode_on_frame(uint16_t *frame)
     int32_t center1, left, right, width_px;
     int32_t center2, left2, right2, width_px2;
     int32_t center3, left3, right3, width_px3;
-
+//-----------------------------------------------------------------------
+/*
     coin_list_t coins1, coins2, coins3;
     int32_t adj;
 
     coins1.count = 0U;
     coins2.count = 0U;
     coins3.count = 0U;
-
+*/
+//----------------------------------------------------------------------
     color_convert_rgb565_to_yhsv(camera_row(frame, line_to_process1),
                                  line_hsl,
                                  CAMERA_WIDTH);
@@ -74,6 +76,8 @@ void race_mode_on_frame(uint16_t *frame)
     /* Ajuste por monedas: corre el centro hacia las amarillas/azules y lo
      * aparta de las rojas. Si la situacion es ambigua, coins_adjust_center
      * devuelve false y el centro original queda intacto. */
+    /*
+    ///-----------------------------------------------------------------------------
     if (found1)
     {
         coins_scan_row(line_hsl, CAMERA_WIDTH, &coins1);
@@ -99,7 +103,8 @@ void race_mode_on_frame(uint16_t *frame)
         {
             center3 = adj;
         }
-    }
+    } */
+   ///-----------------------------------------------------------------------------
 
     /* Los circulos ya muestran el centro ajustado: sirve para ver en vivo
      * si el carro esta apuntando a las monedas buenas. */
@@ -130,9 +135,7 @@ void race_mode_on_frame(uint16_t *frame)
     (void)telemetry_i32("vision.center2", found2 ? center2 : -1, "pixel");
     (void)telemetry_i32("vision.center3", found3 ? center3 : -1, "pixel");
     (void)telemetry_u32("vision.threshold", threshold, "luma");
-    (void)telemetry_u32("coins.count1", coins1.count, "coins");
-    (void)telemetry_u32("coins.count2", coins2.count, "coins");
-    (void)telemetry_u32("coins.count3", coins3.count, "coins");
+
 }
 
 static void race_mode__update_overlay(uint16_t *frame)
