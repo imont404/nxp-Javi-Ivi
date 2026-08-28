@@ -35,6 +35,8 @@ void race_mode_on_frame(uint16_t *frame)
     /* Umbral de luminancia fijo: equivale a tener el pot en 0.50 */
     uint8_t threshold = LUMA_THRESHOLD;
 
+    /* left/right/width_px son requeridos por la firma de white_center pero
+     * no se usan aca (solo el centro alimenta el control). */
     int32_t center1, left, right, width_px;
     int32_t center2, left2, right2, width_px2;
     int32_t center3, left3, right3, width_px3;
@@ -76,7 +78,11 @@ void race_mode_on_frame(uint16_t *frame)
         draw_filled_circle(frame, center3, (int32_t)line_to_process3, 4, color_rgb565(255U, 0U, 0U));
     }
 
-    motor_control(center1, center2, center3, width_px, found1, found2, found3, true);
+    (void)left; (void)right; (void)width_px;
+    (void)left2; (void)right2; (void)width_px2;
+    (void)left3; (void)right3; (void)width_px3;
+
+    motor_control(center1, center2, center3, found1, found2, found3, true);
 
     race_mode__update_overlay(frame);
 

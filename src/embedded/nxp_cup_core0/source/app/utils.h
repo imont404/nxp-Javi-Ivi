@@ -15,7 +15,7 @@ bool white_center(const color_features_t *scaneline,
 
 void draw_filled_circle(uint16_t *frame, int32_t cx, int32_t cy, int32_t radius, uint16_t color);
 
-void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t width_px,
+void motor_control(int32_t center1, int32_t center2, int32_t center3,
                    bool found1, bool found2, bool found3, bool motors_on);
 
 #endif /* UTILS_H_ */

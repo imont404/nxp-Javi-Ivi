@@ -9,33 +9,11 @@ static float p_error = 0.0f;
 
 /*
  * Pots: alpha = velocidad, beta = derivativo (kd), gamma = proporcional (kp).
- * beta 0.0-1.0 se escala a 0.0-KD_MAX (beta en 0.40 da el 1.2 de antes).
+ * beta 0.0-1.0 se escala a 0.0-KD_MAX porque el pot solo llega a 1.0 y el
+ * derivativo que andaba bien (1.2) necesitaba mas rango que eso. Con
+ * KD_MAX=3.0f, beta a 0.40 reproduce el 1.2 fijo que tenia antes.
  */
 #define KD_MAX 3.0f
-
-/*
- * Velocidad variable.
- *
- * alpha marca la velocidad MAXIMA (la de recta). La fila lejana (center1) ve
- * un tramo que el carro todavia no alcanzo, asi que su error avisa de la
- * curva ANTES que las cercanas y permite bajar un poco al entrar.
- *
- * Para desactivar el frenado en curva: SPEED_MIN_SCALE en 1.0f.
- */
-#define SPEED_MAX_SCALE   1.0f  /* recta: exactamente la velocidad del pot */
-#define SPEED_MIN_SCALE   0.85f /* curva: fraccion del pot. 1.0 = sin frenar */
-#define SPEED_CURVE_GAIN  0.4f  /* cuanto frena por unidad de error adelante */
-#define SPEED_ACCEL_RATE  0.35f /* que tan rapido acelera (frenar es inmediato) */
-#define SPEED_DEADBAND_PX 5.0f  /* margen en pixeles a cada lado: se considera recta */
-
-/*
- * Ventana a la que se mapea alpha. El techo deja lugar para el +0.1 del
- * diferencial: SPEED_POT_MAX + 0.1 debe quedar en 1.0 o menos.
- */
-#define SPEED_POT_MIN     0.15f /* velocidad maxima con alpha al minimo */
-#define SPEED_POT_MAX     0.90f /* velocidad maxima con alpha al maximo */
-
-static float speed_smooth = 1.0f;
 
 
 bool white_center(const color_features_t *scaneline,
@@ -110,12 +88,10 @@ void draw_filled_circle(uint16_t *frame, int32_t cx, int32_t cy, int32_t radius,
 }
 
 
-void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t width_px,
+void motor_control(int32_t center1, int32_t center2, int32_t center3,
                    bool found1, bool found2, bool found3, bool motors_on)
 {
     float kp_turn;
-
-    (void)width_px;
 
     if (!motors_on){
         motors_set_duty(0.0f, 0.0f);
@@ -131,13 +107,11 @@ void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t wi
     float center_img = (float)(CAMERA_WIDTH / 2);
     float error = 0.0f;
     float weight_sum = 0.0f;
-    float error_far = 0.0f;
 
     if (found1) {
         float error1 = (center_img - (float)center1) / center_img;
         error += 0.2f * error1;
         weight_sum += 0.2f;
-        error_far = error1;
     }
     if (found2) {
         float error2 = (center_img - (float)center2) / center_img;
@@ -175,40 +149,8 @@ void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t wi
 
     steering_set(turn);
 
-    /*
-     * Si la fila lejana ve pista, su error decide la velocidad. Si no la ve
-     * (curva muy cerrada: la pista se sale del cuadro por arriba), se usa el
-     * error combinado, que en ese caso tambien esta indicando curva.
-     */
-    float look_ahead = found1 ? fabsf(error_far) : abs_error;
-
-    /* Margen: no hace falta estar alineado al 100% para acelerar.
-     * El error viene normalizado contra center_img, asi que los pixeles
-     * del margen se convierten a esa misma escala. */
-    float deadband = SPEED_DEADBAND_PX / center_img;
-
-    if (look_ahead < deadband) {
-        look_ahead = 0.0f;
-    } else {
-        look_ahead -= deadband;
-    }
-
-    float speed_scale = SPEED_MAX_SCALE - (SPEED_CURVE_GAIN * look_ahead);
-
-    if (speed_scale > SPEED_MAX_SCALE) { speed_scale = SPEED_MAX_SCALE; }
-    if (speed_scale < SPEED_MIN_SCALE) { speed_scale = SPEED_MIN_SCALE; }
-
-    /* Frenar es inmediato; acelerar es gradual para no patinar al salir */
-    if (speed_scale < speed_smooth) {
-        speed_smooth = speed_scale;
-    } else {
-        speed_smooth += SPEED_ACCEL_RATE * (speed_scale - speed_smooth);
-    }
-
-    /* alpha mapeado a la ventana de velocidad: todo el recorrido del pot sirve */
-    float top_speed = input_alpha() + 0.2f;
-    
-    float bs = top_speed ;
+    /* Velocidad constante: el carro gira bien a fondo, sin frenar en curva */
+    float bs = input_alpha() + 0.2f;
 
     float left_pwm = bs + turn + 0.1f;
     float right_pwm = bs - turn - 0.1f;
@@ -220,8 +162,6 @@ void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t wi
 
     (void)telemetry_f32("control.error", error, "ratio");
     (void)telemetry_f32("control.turn", turn, "ratio");
-    (void)telemetry_f32("control.look_ahead", look_ahead, "ratio");
-    (void)telemetry_f32("control.speed_scale", speed_smooth, "ratio");
     (void)telemetry_f32("control.base_speed", bs, "duty");
     (void)telemetry_f32("control.kp", kp_turn, "gain");
     (void)telemetry_f32("control.kd", kd_turn, "gain");
