@@ -4,6 +4,7 @@
 
 #include "nxp_cup.h"
 #include "utils.h"
+#include "coins.h"
 
 
 /* Un buffer por linea procesada, igual que line_hsl / line_hsl2 / line_hsl3 */
@@ -35,11 +36,18 @@ void race_mode_on_frame(uint16_t *frame)
     /* Umbral de luminancia fijo: equivale a tener el pot en 0.50 */
     uint8_t threshold = LUMA_THRESHOLD;
 
-    /* left/right/width_px son requeridos por la firma de white_center pero
-     * no se usan aca (solo el centro alimenta el control). */
+    /* left/right delimitan la pista blanca: ahora si se usan, porque
+     * coins_adjust_center los necesita para no mandar el objetivo fuera. */
     int32_t center1, left, right, width_px;
     int32_t center2, left2, right2, width_px2;
     int32_t center3, left3, right3, width_px3;
+
+    coin_list_t coins1, coins2, coins3;
+    int32_t adj;
+
+    coins1.count = 0U;
+    coins2.count = 0U;
+    coins3.count = 0U;
 
     color_convert_rgb565_to_yhsv(camera_row(frame, line_to_process1),
                                  line_hsl,
@@ -63,6 +71,38 @@ void race_mode_on_frame(uint16_t *frame)
                           CAMERA_WIDTH, threshold,
                           &center3, &left3, &right3, &width_px3);
 
+    /* Ajuste por monedas: corre el centro hacia las amarillas/azules y lo
+     * aparta de las rojas. Si la situacion es ambigua, coins_adjust_center
+     * devuelve false y el centro original queda intacto. */
+    if (found1)
+    {
+        coins_scan_row(line_hsl, CAMERA_WIDTH, &coins1);
+        if (coins_adjust_center(&coins1, center1, left, right, &adj))
+        {
+            center1 = adj;
+        }
+    }
+
+    if (found2)
+    {
+        coins_scan_row(line_hsl2, CAMERA_WIDTH, &coins2);
+        if (coins_adjust_center(&coins2, center2, left2, right2, &adj))
+        {
+            center2 = adj;
+        }
+    }
+
+    if (found3)
+    {
+        coins_scan_row(line_hsl3, CAMERA_WIDTH, &coins3);
+        if (coins_adjust_center(&coins3, center3, left3, right3, &adj))
+        {
+            center3 = adj;
+        }
+    }
+
+    /* Los circulos ya muestran el centro ajustado: sirve para ver en vivo
+     * si el carro esta apuntando a las monedas buenas. */
     if (found1)
     {
         draw_filled_circle(frame, center1, (int32_t)line_to_process1, 4, color_rgb565(255U, 0U, 0U));
@@ -78,9 +118,9 @@ void race_mode_on_frame(uint16_t *frame)
         draw_filled_circle(frame, center3, (int32_t)line_to_process3, 4, color_rgb565(255U, 0U, 0U));
     }
 
-    (void)left; (void)right; (void)width_px;
-    (void)left2; (void)right2; (void)width_px2;
-    (void)left3; (void)right3; (void)width_px3;
+    (void)width_px;
+    (void)width_px2;
+    (void)width_px3;
 
     motor_control(center1, center2, center3, found1, found2, found3, true);
 
@@ -90,8 +130,10 @@ void race_mode_on_frame(uint16_t *frame)
     (void)telemetry_i32("vision.center2", found2 ? center2 : -1, "pixel");
     (void)telemetry_i32("vision.center3", found3 ? center3 : -1, "pixel");
     (void)telemetry_u32("vision.threshold", threshold, "luma");
+    (void)telemetry_u32("coins.count1", coins1.count, "coins");
+    (void)telemetry_u32("coins.count2", coins2.count, "coins");
+    (void)telemetry_u32("coins.count3", coins3.count, "coins");
 }
-
 
 static void race_mode__update_overlay(uint16_t *frame)
 {
