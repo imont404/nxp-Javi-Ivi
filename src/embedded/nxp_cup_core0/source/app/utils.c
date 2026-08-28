@@ -168,7 +168,7 @@ void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t wi
     float kd_turn = input_beta() * KD_MAX;
 
     float turn = -kp_turn * error - kd_turn * deriv;
-    turn *= 1.3f;
+    turn *= 1.4f;
 
     if (turn > 1.0f) turn = 1.0f;
     if (turn < -1.0f) turn = -1.0f;
