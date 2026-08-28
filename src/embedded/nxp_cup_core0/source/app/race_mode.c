@@ -41,16 +41,18 @@ void race_mode_on_frame(uint16_t *frame)
     int32_t center1, left, right, width_px;
     int32_t center2, left2, right2, width_px2;
     int32_t center3, left3, right3, width_px3;
-//-----------------------------------------------------------------------
 /*
+//-----------------------------------------------------------------------
+
     coin_list_t coins1, coins2, coins3;
     int32_t adj;
 
     coins1.count = 0U;
     coins2.count = 0U;
     coins3.count = 0U;
-*/
+
 //----------------------------------------------------------------------
+*/
     color_convert_rgb565_to_yhsv(camera_row(frame, line_to_process1),
                                  line_hsl,
                                  CAMERA_WIDTH);
@@ -103,9 +105,44 @@ void race_mode_on_frame(uint16_t *frame)
         {
             center3 = adj;
         }
-    } */
+    } 
    ///-----------------------------------------------------------------------------
+   */
+  ///------------------------------------------------------------------
+        coin_row_t rows[COIN_ROWS];
+    coin_decision_t decision;
 
+    rows[0].found = found1;
+    rows[0].center = center1;
+    rows[0].track_left = left;
+    rows[0].track_right = right;
+    rows[1].found = found2;
+    rows[1].center = center2;
+    rows[1].track_left = left2;
+    rows[1].track_right = right2;
+    rows[2].found = found3;
+    rows[2].center = center3;
+    rows[2].track_left = left3;
+    rows[2].track_right = right3;
+
+    rows[0].coins.count = 0U;
+    rows[1].coins.count = 0U;
+    rows[2].coins.count = 0U;
+
+    if (found1) { coins_scan_row(line_hsl,  CAMERA_WIDTH, left,  right,  &rows[0].coins); }
+    if (found2) { coins_scan_row(line_hsl2, CAMERA_WIDTH, left2, right2, &rows[1].coins); }
+    if (found3) { coins_scan_row(line_hsl3, CAMERA_WIDTH, left3, right3, &rows[2].coins); }
+
+    decision = coins_decide(rows, COIN_ROWS);
+
+    /* Mismo desplazamiento a las tres filas: el error combinado queda coherente */
+    if (decision.offset != 0)
+    {
+        if (found1) { center1 += decision.offset; }
+        if (found2) { center2 += decision.offset; }
+        if (found3) { center3 += decision.offset; }
+    }
+//------------------------------------------------------------------------------------------
     /* Los circulos ya muestran el centro ajustado: sirve para ver en vivo
      * si el carro esta apuntando a las monedas buenas. */
     if (found1)

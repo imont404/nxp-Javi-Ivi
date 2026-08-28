@@ -1,29 +1,21 @@
 #include "coins.h"
-#include <math.h>
 
-/* Saturacion minima para considerar que un pixel tiene color real.
- * El blanco de la pista y el gris del pavimento quedan por debajo. */
-#define COIN_SAT_MIN 90U
+/* --- Deteccion --- */
 
-/* Valor (brillo) minimo: descarta sombras oscuras que tienen hue ruidoso */
-#define COIN_VAL_MIN 30U
+#define COIN_SAT_MIN   90U
+#define COIN_VAL_MIN   40U
+#define COIN_MIN_WIDTH 6
 
-/* Ancho minimo en pixeles para no confundir ruido con una moneda */
-#define COIN_MIN_WIDTH 7
+/* Margen dentro de la pista: monedas pegadas al borde se ignoran porque
+ * suelen ser reflejos o cosas fuera de pista, no monedas reales. */
+#define TRACK_MARGIN 3
 
-
-
-/* Rangos de hue. El hue del framework es 0-255 (no 0-360).
- * Rojo cruza el wrap-around en 0, por eso son dos rangos. */
-#define HUE_RED_LO_A    0U
-#define HUE_RED_HI_A    20U
-#define HUE_RED_LO_B    235U
-#define HUE_RED_HI_B    255U
+#define HUE_RED_HI_A    18U
+#define HUE_RED_LO_B    238U
 #define HUE_YELLOW_LO   30U
 #define HUE_YELLOW_HI   60U
 #define HUE_BLUE_LO     140U
 #define HUE_BLUE_HI     180U
-
 
 static coin_color_t classify_hue(uint8_t h)
 {
@@ -33,14 +25,38 @@ static coin_color_t classify_hue(uint8_t h)
     return COIN_NONE;
 }
 
-void coins_scan_row(const color_features_t *scanline, uint16_t width, coin_list_t *out)
+static void push_coin(coin_list_t *out, coin_color_t color,
+                       int32_t start, int32_t end,
+                       int32_t track_left, int32_t track_right)
+{
+    int32_t center;
+
+    if ((end - start + 1) < COIN_MIN_WIDTH) { return; }
+    if (out->count >= COINS_MAX) { return; }
+
+    center = (start + end) / 2;
+
+    /* Solo cuentan las monedas que estan sobre la pista */
+    if (center < (track_left + TRACK_MARGIN)) { return; }
+    if (center > (track_right - TRACK_MARGIN)) { return; }
+
+    out->items[out->count].color = color;
+    out->items[out->count].left_edge = start;
+    out->items[out->count].right_edge = end;
+    out->items[out->count].center = center;
+    out->count++;
+}
+
+void coins_scan_row(const color_features_t *scanline, uint16_t width,
+                     int32_t track_left, int32_t track_right, coin_list_t *out)
 {
     coin_color_t run_color = COIN_NONE;
     int32_t run_start = -1;
+    uint16_t x;
 
     out->count = 0U;
 
-    for (uint16_t x = 0U; x < width; x++)
+    for (x = 0U; x < width; x++)
     {
         coin_color_t c = COIN_NONE;
 
@@ -51,127 +67,152 @@ void coins_scan_row(const color_features_t *scanline, uint16_t width, coin_list_
 
         if (c != run_color)
         {
-            /* Cerrar la corrida anterior si era una moneda valida */
             if ((run_color != COIN_NONE) && (run_start >= 0))
             {
-                int32_t run_end = (int32_t)x - 1;
-                if (((run_end - run_start + 1) >= COIN_MIN_WIDTH) && (out->count < COINS_MAX))
-                {
-                    out->items[out->count].color = run_color;
-                    out->items[out->count].left_edge = run_start;
-                    out->items[out->count].right_edge = run_end;
-                    out->items[out->count].center = (run_start + run_end) / 2;
-                    out->count++;
-                }
+                push_coin(out, run_color, run_start, (int32_t)x - 1,
+                           track_left, track_right);
             }
             run_color = c;
             run_start = (c != COIN_NONE) ? (int32_t)x : -1;
         }
     }
 
-    /* Cerrar una corrida que llegue hasta el borde derecho */
-    if ((run_color != COIN_NONE) && (run_start >= 0) && (out->count < COINS_MAX))
+    if ((run_color != COIN_NONE) && (run_start >= 0))
     {
-        int32_t run_end = (int32_t)width - 1;
-        if ((run_end - run_start + 1) >= COIN_MIN_WIDTH)
-        {
-            out->items[out->count].color = run_color;
-            out->items[out->count].left_edge = run_start;
-            out->items[out->count].right_edge = run_end;
-            out->items[out->count].center = (run_start + run_end) / 2;
-            out->count++;
-        }
+        push_coin(out, run_color, run_start, (int32_t)width - 1,
+                   track_left, track_right);
     }
 }
 
-/* Margen extra a cada lado de una moneda roja para no rozarla */
-#define RED_CLEARANCE 8
+/* --- Decision --- */
 
-bool coins_adjust_center(const coin_list_t *coins,
-                          int32_t base_center,
-                          int32_t track_left,
-                          int32_t track_right,
-                          int32_t *out_center)
+#define RED_CLEARANCE 10
+
+/* Tope de desvio. Sin esto, una deteccion falsa manda el carro fuera de pista. */
+#define MAX_OFFSET 45
+
+static bool blocked_by_red(const coin_list_t *coins, int32_t x)
 {
-    int32_t target = base_center;
-    bool has_target = false;
-    int32_t best_dist = 0;
     uint8_t i;
 
-    if (coins->count == 0U)
-    {
-        *out_center = base_center;
-        return true;
-    }
-
-    /* Paso 1: buscar la moneda buena mas cercana al centro actual.
-     * Si hay varias, la mas cercana es la mas facil de alcanzar. */
     for (i = 0U; i < coins->count; i++)
     {
-        if ((coins->items[i].color == COIN_YELLOW) || (coins->items[i].color == COIN_BLUE))
-        {
-            int32_t d = coins->items[i].center - base_center;
-            if (d < 0) { d = -d; }
+        if (coins->items[i].color != COIN_RED) { continue; }
 
-            if (!has_target || (d < best_dist))
-            {
-                target = coins->items[i].center;
-                best_dist = d;
-                has_target = true;
-            }
+        if ((x >= (coins->items[i].left_edge - RED_CLEARANCE)) &&
+            (x <= (coins->items[i].right_edge + RED_CLEARANCE)))
+        {
+            return true;
         }
     }
 
-    /* Paso 2: verificar que el objetivo no choque con una roja.
-     * Si una roja bloquea el camino, la situacion es complicada:
-     * devolvemos false y el llamador usa el centro normal. */
-    for (i = 0U; i < coins->count; i++)
+    return false;
+}
+
+/* Decide el objetivo de UNA fila. Devuelve false si esa fila no aporta nada. */
+static bool decide_row(const coin_row_t *row, int32_t *out_target, coin_color_t *out_color)
+{
+    int32_t target = row->center;
+    int32_t best_dist = 0;
+    bool has_good = false;
+    coin_color_t color = COIN_NONE;
+    uint8_t i;
+
+    if (!row->found || (row->coins.count == 0U)) { return false; }
+
+    /* Moneda buena mas cercana que no este tapada por una roja */
+    for (i = 0U; i < row->coins.count; i++)
     {
-        if (coins->items[i].color == COIN_RED)
-        {
-            int32_t rl = coins->items[i].left_edge - RED_CLEARANCE;
-            int32_t rr = coins->items[i].right_edge + RED_CLEARANCE;
+        int32_t d;
 
-            if ((target >= rl) && (target <= rr))
-            {
-                /* El objetivo cae encima de una roja: ambiguo, ignorar monedas */
-                return false;
-            }
+        if ((row->coins.items[i].color != COIN_YELLOW) &&
+            (row->coins.items[i].color != COIN_BLUE))
+        {
+            continue;
+        }
+        if (blocked_by_red(&row->coins, row->coins.items[i].center)) { continue; }
+
+        d = row->coins.items[i].center - row->center;
+        if (d < 0) { d = -d; }
+
+        if (!has_good || (d < best_dist))
+        {
+            target = row->coins.items[i].center;
+            best_dist = d;
+            color = row->coins.items[i].color;
+            has_good = true;
         }
     }
 
-    /* Paso 3: si no hay moneda buena pero si rojas, esquivar.
-     * Se mueve el centro al lado con mas espacio libre dentro de la pista. */
-    if (!has_target)
+    /* Esquivar rojas: corre SIEMPRE, tambien cuando ya hay objetivo bueno */
+    if (blocked_by_red(&row->coins, target))
     {
-        for (i = 0U; i < coins->count; i++)
+        int32_t left_exit = -1;
+        int32_t right_exit = -1;
+        int32_t x;
+
+        for (x = target; x >= row->track_left; x--)
         {
-            if (coins->items[i].color != COIN_RED) { continue; }
-
-            int32_t rl = coins->items[i].left_edge - RED_CLEARANCE;
-            int32_t rr = coins->items[i].right_edge + RED_CLEARANCE;
-
-            if ((base_center >= rl) && (base_center <= rr))
-            {
-                int32_t space_left = rl - track_left;
-                int32_t space_right = track_right - rr;
-
-                if ((space_left <= 0) && (space_right <= 0))
-                {
-                    /* No cabe por ningun lado: ignorar monedas */
-                    return false;
-                }
-
-                target = (space_right > space_left) ? (rr + 1) : (rl - 1);
-                has_target = true;
-            }
+            if (!blocked_by_red(&row->coins, x)) { left_exit = x; break; }
         }
+        for (x = target; x <= row->track_right; x++)
+        {
+            if (!blocked_by_red(&row->coins, x)) { right_exit = x; break; }
+        }
+
+        if ((left_exit < 0) && (right_exit < 0)) { return false; }
+
+        if (left_exit < 0)       { target = right_exit; }
+        else if (right_exit < 0) { target = left_exit; }
+        else
+        {
+            target = ((target - left_exit) <= (right_exit - target)) ? left_exit : right_exit;
+        }
+
+        color = COIN_RED;
+        has_good = true;
     }
 
-    /* Paso 4: el objetivo tiene que quedar dentro de la pista */
-    if (target < track_left) { target = track_left; }
-    if (target > track_right) { target = track_right; }
+    if (!has_good) { return false; }
 
-    *out_center = target;
+    if (target < row->track_left)  { target = row->track_left; }
+    if (target > row->track_right) { target = row->track_right; }
+
+    *out_target = target;
+    *out_color = color;
     return true;
+}
+
+coin_decision_t coins_decide(const coin_row_t *rows, uint8_t row_count)
+{
+    coin_decision_t d;
+    uint8_t i;
+
+    d.offset = 0;
+    d.acting_on = COIN_NONE;
+    d.target_x = -1;
+    d.target_row = -1;
+
+    /* Se recorre de la fila mas cercana a la mas lejana y se usa la primera
+     * que tenga algo que decir. Lo cercano manda: una moneda a punto de
+     * pasar debajo del carro importa mas que una que se ve al fondo. */
+    for (i = row_count; i > 0U; i--)
+    {
+        uint8_t idx = i - 1U;
+        int32_t target;
+        coin_color_t color;
+
+        if (!decide_row(&rows[idx], &target, &color)) { continue; }
+
+        d.offset = target - rows[idx].center;
+        d.acting_on = color;
+        d.target_x = target;
+        d.target_row = (int32_t)idx;
+        break;
+    }
+
+    if (d.offset > MAX_OFFSET)  { d.offset = MAX_OFFSET; }
+    if (d.offset < -MAX_OFFSET) { d.offset = -MAX_OFFSET; }
+
+    return d;
 }

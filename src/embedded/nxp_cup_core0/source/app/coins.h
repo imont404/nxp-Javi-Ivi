@@ -14,36 +14,39 @@ typedef enum {
 
 typedef struct {
     coin_color_t color;
-    int32_t center;      /* columna del centro de la moneda */
+    int32_t center;
     int32_t left_edge;
     int32_t right_edge;
 } coin_t;
 
 #define COINS_MAX 4
+#define COIN_ROWS 3
 
 typedef struct {
     coin_t items[COINS_MAX];
     uint8_t count;
 } coin_list_t;
 
-/*
- * Escanea una fila ya convertida a YHSV y devuelve las monedas encontradas.
- * No decide nada sobre la trayectoria; solo reporta que vio.
- */
-void coins_scan_row(const color_features_t *scanline, uint16_t width, coin_list_t *out);
+/* Datos de una fila: lo que vio white_center + las monedas de esa fila */
+typedef struct {
+    bool found;
+    int32_t center;
+    int32_t track_left;
+    int32_t track_right;
+    coin_list_t coins;
+} coin_row_t;
 
-/*
- * Ajusta un centro de masa base segun las monedas de esa fila.
- *
- * base_center: el centro que dio white_center() para esa fila.
- * Devuelve true si pudo calcular un centro ajustado (lo escribe en
- * out_center); false si la situacion es ambigua y conviene ignorar las
- * monedas y usar el centro original.
- */
-bool coins_adjust_center(const coin_list_t *coins,
-                          int32_t base_center,
-                          int32_t track_left,
-                          int32_t track_right,
-                          int32_t *out_center);
+/* Resultado: un solo desplazamiento lateral para todo el frame */
+typedef struct {
+    int32_t offset;          /* pixeles; positivo = mover a la derecha */
+    coin_color_t acting_on;  /* que lo causo, para dibujar/depurar */
+    int32_t target_x;        /* columna objetivo, para dibujar */
+    int32_t target_row;      /* indice de fila que decidio, -1 si ninguna */
+} coin_decision_t;
+
+void coins_scan_row(const color_features_t *scanline, uint16_t width,
+                     int32_t track_left, int32_t track_right, coin_list_t *out);
+
+coin_decision_t coins_decide(const coin_row_t *rows, uint8_t row_count);
 
 #endif /* COINS_H_ */
