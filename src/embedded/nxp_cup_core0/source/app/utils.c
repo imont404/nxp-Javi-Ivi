@@ -5,24 +5,35 @@
 #include <math.h>
 
 
-static float kd_turn = 1.2f;
 static float p_error = 0.0f;
+
+/*
+ * Pots: alpha = velocidad, beta = derivativo (kd), gamma = proporcional (kp).
+ * beta 0.0-1.0 se escala a 0.0-KD_MAX (beta en 0.40 da el 1.2 de antes).
+ */
+#define KD_MAX 3.0f
 
 /*
  * Velocidad variable.
  *
- * La fila lejana (center1) ve un tramo de pista que el carro todavia no
- * alcanzo, asi que su error avisa de la curva ANTES que las cercanas.
- * Recta adelante -> acelera. Curva adelante -> frena antes de entrar.
+ * alpha marca la velocidad MAXIMA (la de recta). La fila lejana (center1) ve
+ * un tramo que el carro todavia no alcanzo, asi que su error avisa de la
+ * curva ANTES que las cercanas y permite bajar un poco al entrar.
  *
- * alpha marca la velocidad de CURVA (el piso). En recta se multiplica
- * por SPEED_MAX_SCALE para ir mas rapido que eso.
+ * Para desactivar el frenado en curva: SPEED_MIN_SCALE en 1.0f.
  */
-#define SPEED_MAX_SCALE   1.5f  /* techo en recta: alpha x esto */
-#define SPEED_MIN_SCALE   1.0f  /* piso en curva: exactamente alpha */
-#define SPEED_CURVE_GAIN  1.25f /* cuanto frena por unidad de error adelante */
+#define SPEED_MAX_SCALE   1.0f  /* recta: exactamente la velocidad del pot */
+#define SPEED_MIN_SCALE   0.85f /* curva: fraccion del pot. 1.0 = sin frenar */
+#define SPEED_CURVE_GAIN  0.4f  /* cuanto frena por unidad de error adelante */
 #define SPEED_ACCEL_RATE  0.35f /* que tan rapido acelera (frenar es inmediato) */
 #define SPEED_DEADBAND_PX 5.0f  /* margen en pixeles a cada lado: se considera recta */
+
+/*
+ * Ventana a la que se mapea alpha. El techo deja lugar para el +0.1 del
+ * diferencial: SPEED_POT_MAX + 0.1 debe quedar en 1.0 o menos.
+ */
+#define SPEED_POT_MIN     0.15f /* velocidad maxima con alpha al minimo */
+#define SPEED_POT_MAX     0.90f /* velocidad maxima con alpha al maximo */
 
 static float speed_smooth = 1.0f;
 
@@ -153,6 +164,9 @@ void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t wi
     float deriv = error - p_error;
     p_error = error;
 
+    /* beta ajusta el derivativo en vivo */
+    float kd_turn = input_beta() * KD_MAX;
+
     float turn = -kp_turn * error - kd_turn * deriv;
 
     if (turn > 1.0f) turn = 1.0f;
@@ -190,7 +204,10 @@ void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t wi
         speed_smooth += SPEED_ACCEL_RATE * (speed_scale - speed_smooth);
     }
 
-    float bs = (input_alpha() + 0.2f) * speed_smooth;
+    /* alpha mapeado a la ventana de velocidad: todo el recorrido del pot sirve */
+    float top_speed = input_alpha() + 0.2f;
+    
+    float bs = top_speed ;
 
     float left_pwm = bs + turn + 0.1f;
     float right_pwm = bs - turn - 0.1f;
@@ -205,4 +222,6 @@ void motor_control(int32_t center1, int32_t center2, int32_t center3, int32_t wi
     (void)telemetry_f32("control.look_ahead", look_ahead, "ratio");
     (void)telemetry_f32("control.speed_scale", speed_smooth, "ratio");
     (void)telemetry_f32("control.base_speed", bs, "duty");
+    (void)telemetry_f32("control.kp", kp_turn, "gain");
+    (void)telemetry_f32("control.kd", kd_turn, "gain");
 }

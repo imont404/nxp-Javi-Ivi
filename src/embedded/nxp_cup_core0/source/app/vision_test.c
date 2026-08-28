@@ -17,6 +17,9 @@ static bool found3 = false;
 
 static uint32_t line_to_process1, line_to_process2, line_to_process3;
 
+/* Mismo umbral fijo que race_mode.c (0.50 * 255) */
+#define LUMA_THRESHOLD 127U
+
 static char pot_text[64];
 
 static void vision_test__update_overlay(uint16_t *frame, uint8_t threshold);
@@ -29,8 +32,8 @@ void vision_test_on_frame(uint16_t *frame)
     line_to_process2 = 150U;
     line_to_process3 = 170U;
 
-    /* beta es el umbral de luminancia: 0.0-1.0 del pot escalado al luma 0-255 */
-    uint8_t threshold = (uint8_t)(input_beta() * 255.0f);
+    /* Umbral de luminancia fijo: equivale a tener el pot en 0.50 */
+    uint8_t threshold = LUMA_THRESHOLD;
 
     int32_t center1, left, right, width_px;
     int32_t center2, left2, right2, width_px2;
@@ -115,8 +118,8 @@ static void vision_test__update_overlay(uint16_t *frame, uint8_t threshold)
     uint16_t text_color = color_rgb565(0U, 0xFFU, 0U);
     uint32_t cpu;
 
-    /* Los pots se muestran en centesimos (50 = 0.50) para no depender de printf-float */
-    snprintf(pot_text, sizeof(pot_text), "a:%d b:%d g:%d TH:%u",
+    /* vel=alpha, kd=beta, kp=gamma. En centesimos para no depender de printf-float */
+    snprintf(pot_text, sizeof(pot_text), "vel:%d kd:%d kp:%d TH:%u",
              (int)(input_alpha() * 100.0f),
              (int)(input_beta() * 100.0f),
              (int)(input_gamma() * 100.0f),
